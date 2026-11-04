@@ -296,7 +296,7 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 
 ```
 .venv/bin/python -m ruff check src tests   → All checks passed!
-.venv/bin/python -m pytest -q              → 924 passed, 24 failed, 11 skipped (71 s)
+.venv/bin/python -m pytest -q              → 933 passed, 23 failed, 11 skipped (70 s)
 ```
 
 - **Nouveau fichier** `tests/test_ui_premium.py` : **22 tests**, tous verts
@@ -305,7 +305,8 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
   `prefers-reduced-motion` + `@media print`, 12 rubriques, repli + infobulles,
   contrats des trois routes, bandeaux d'indicateurs des modules, absence de
   grille inline, avertissements de portée de l'OCR, sous-pages branchées sur
-  des endpoints existants et routage fin des sous-rubriques).
+  des endpoints existants, routage fin des sous-rubriques, graphiques de la
+  page Rapports, accessibilité de base et comparaison inter-documents).
 - Les **23 échecs préexistants** sont inchangés et **environnementaux**
   (Tesseract/Indra absents, connecteur `customs_api`, routage flou) ; ils ne
   sont pas masqués.
@@ -320,9 +321,9 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 | Contrôle | Résultat |
 |---|---|
 | Chargement complet de la page | **0 erreur JS, 0 requête en échec**, 92 sections |
-| Navigation sur 14 routes | toutes affichent leur page (aucune page vide) |
+| Navigation | 24 routes vérifiées : bonne page affichée, aucune page blanche |
 | Cockpit | KPI 666 / 185 / 164 / 0 / —, graphique 3 séries, 6 tâches, 3 barres, 5 alertes |
-| Recherche globale | `dos_3c04` → 1 résultat cliquable |
+| Recherche globale | « arbitrage » → 5 résultats groupés, ouvrables |
 | Repli de la barre latérale | classe `collapsed` appliquée, état persisté |
 | Espace dossier | 11 onglets, tous rendus sans erreur, bandeau d'identité complet |
 | Comparaison OCR | matrice 2 documents × 3 champs, 1 divergence détectée et signalée |
