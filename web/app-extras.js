@@ -2247,3 +2247,140 @@ async function initLangChips() {
 
 
 
+
+/* ═══════════ ADMINISTRATION : création d'un workflow ═══════════
+   Le bouton « + Nouveau workflow » existait dans la page sans aucun
+   gestionnaire : il ne faisait rien. Il crée désormais un workflow réel
+   (`POST /api/rbac/workflows`) puis recharge la liste affichée.
+   ═══════════════════════════════════════════════════════════════ */
+(function adminWorkflows() {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+
+  function rechargerListe() {
+    const section = $("tab-workflows");
+    if (section && window.UniOCRSousPages && window.UniOCRSousPages.remplir) {
+      window.UniOCRSousPages.remplir(section);
+    }
+  }
+
+  function champ(libelle, id, type, requis) {
+    const bloc = document.createElement("div");
+    bloc.className = "ecran__champ";
+    const label = document.createElement("label");
+    label.className = "ecran__label";
+    label.setAttribute("for", id);
+    label.textContent = libelle + (requis ? " *" : "");
+    const controle = document.createElement(type === "textarea" ? "textarea" : "input");
+    controle.className = "inp";
+    controle.id = id;
+    if (type !== "textarea") controle.type = type;
+    if (requis) controle.setAttribute("aria-required", "true");
+    bloc.appendChild(label);
+    bloc.appendChild(controle);
+    return { bloc: bloc, controle: controle };
+  }
+
+  function ouvrirDialogue() {
+    const voile = document.createElement("div");
+    voile.className = "ecran__voile";
+    const boite = document.createElement("div");
+    boite.className = "ecran__boite";
+    boite.setAttribute("role", "dialog");
+    boite.setAttribute("aria-modal", "true");
+    boite.setAttribute("aria-label", "Nouveau workflow");
+
+    const entete = document.createElement("div");
+    entete.className = "ecran__boite-head";
+    const titre = document.createElement("h2");
+    titre.className = "ecran__boite-titre";
+    titre.textContent = "Nouveau workflow";
+    const fermer = document.createElement("button");
+    fermer.type = "button";
+    fermer.className = "icon-btn";
+    fermer.setAttribute("aria-label", "Fermer");
+    fermer.textContent = "✕";
+    fermer.addEventListener("click", () => voile.remove());
+    entete.appendChild(titre);
+    entete.appendChild(fermer);
+
+    const form = document.createElement("form");
+    form.className = "ecran__form";
+    const nom = champ("Nom du workflow", "wf-nom", "text", true);
+    const description = champ("Description", "wf-description", "textarea", false);
+    form.appendChild(nom.bloc);
+    form.appendChild(description.bloc);
+
+    const erreurs = document.createElement("p");
+    erreurs.className = "ecran__erreur";
+    erreurs.setAttribute("role", "alert");
+    form.appendChild(erreurs);
+
+    const pied = document.createElement("div");
+    pied.className = "ecran__boite-pied";
+    const annuler = document.createElement("button");
+    annuler.type = "button";
+    annuler.className = "btn ghost";
+    annuler.textContent = "Annuler";
+    annuler.addEventListener("click", () => voile.remove());
+    const valider = document.createElement("button");
+    valider.type = "submit";
+    valider.className = "btn btn--primaire";
+    valider.textContent = "Créer";
+    pied.appendChild(annuler);
+    pied.appendChild(valider);
+    form.appendChild(pied);
+
+    form.addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const nomValeur = nom.controle.value.trim();
+      if (!nomValeur) {
+        nom.bloc.classList.add("is-invalide");
+        erreurs.textContent = "Le nom du workflow est obligatoire.";
+        return;
+      }
+      nom.bloc.classList.remove("is-invalide");
+      erreurs.textContent = "";
+      valider.disabled = true;
+      try {
+        await api("/api/rbac/workflows", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nom: nomValeur,
+            description: description.controle.value.trim(),
+            etapes: [],
+          }),
+        });
+        voile.remove();
+        toast("Workflow créé", "success");
+        rechargerListe();
+      } catch (e) {
+        erreurs.textContent = "Création impossible : " + e.message;
+        valider.disabled = false;
+      }
+    });
+
+    boite.appendChild(entete);
+    boite.appendChild(form);
+    voile.appendChild(boite);
+    voile.addEventListener("click", (ev) => { if (ev.target === voile) voile.remove(); });
+    document.body.appendChild(voile);
+    nom.controle.focus();
+  }
+
+  function brancher() {
+    const bouton = $("addWorkflow");
+    if (bouton && !bouton.dataset.branche) {
+      bouton.dataset.branche = "1";
+      bouton.addEventListener("click", ouvrirDialogue);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => setTimeout(brancher, 400));
+  } else {
+    setTimeout(brancher, 400);
+  }
+  window.addEventListener("hashchange", () => setTimeout(brancher, 400));
+})();

@@ -63,6 +63,8 @@ ACTIONS_TESTEES: dict[str, set[str]] = {
 LIMITES: dict[str, str] = {
     "finance/reconciliation": "limite : aucun import bancaire côté serveur, "
                               "le rapprochement porte sur les factures seules",
+    "admin/sauvegardes": "création non exercée : l'API purge au-delà de 5 sauvegardes "
+                         "(les 8 archives existantes sont suivies par git)",
 }
 
 #: Écrans historiques re-testés dans cette passe : données réelles + interactions.
@@ -72,6 +74,10 @@ HISTORIQUES_VERIFIES: dict[str, str] = {
     "documents/archives": "jsdom : 25 lignes, recherche, pagination, « Ouvrir » → dossier",
     "documents/verification": "jsdom : 25 lignes, recherche, pagination, « Ouvrir » → dossier",
     "documents/revue": "jsdom : file chargée automatiquement, champs réels, « Actualiser » → GET 200",
+    "admin/moteurs-ocr": "jsdom : 6 moteurs réels (disponibilité, actif, RAM) ; routage réparé",
+    "admin/journal": "jsdom : état vide explicite (aucune entrée d'audit) ; contrôles morts retirés",
+    "admin/sauvegardes": "jsdom : 8 sauvegardes réelles (nom, taille, date)",
+    "admin/workflows": "jsdom : création exercée → POST 200, ligne affichée (auparavant bouton mort)",
 }
 
 PREUVE_PAR_DEFAUT = "rendu jsdom + GET 200 sans erreur JS"

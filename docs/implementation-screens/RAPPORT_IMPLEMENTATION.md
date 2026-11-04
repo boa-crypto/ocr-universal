@@ -221,6 +221,17 @@ enregistrements ont été supprimés. Rien n'est simulé côté écran.
    sur `preuve_livraison_signee` / `date_signature` — la preuve réelle du
    serveur. Vérifié : la livraison confirmée apparaît avec « Oui » et sa date.
 
+## 2.10 Passe 7 — administration : contrôles morts et routage
+
+| Écran | Constat mesuré | Correction |
+|---|---|---|
+| Moteurs OCR (`#admin/moteurs-ocr`) | la route `admin/moteurs` **n'existait pas** dans la carte : l'écran affichait la page Administration générique | route ajoutée ; l'écran rend les 6 moteurs réels (disponibilité, actif, RAM) |
+| Workflows | **bouton « + Nouveau workflow » sans gestionnaire** : aucun script ne le référençait | dialogue de création → `POST /api/rbac/workflows` 200, liste rechargée, ligne visible |
+| Journal d'audit | barre de filtres et bac « Chargement… » **jamais pilotés** ; le bac restait affiché indéfiniment | contrôles morts retirés, la liste réelle (recherche + pagination) occupe la page ; état vide explicite |
+| Rôles | 9 rôles réels affichés | lecture seule assumée |
+| Sauvegardes | 8 sauvegardes réelles (nom, taille, date) | liste vérifiée ; **création non exercée** : l'API purge au-delà de 5 et les 8 archives sont suivies par git — le risque de perte est réel |
+| Utilisateurs | `actif: false`, liste vide → état vide honnête | reste PARTIEL : aucun écran de création/modification d'utilisateur |
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
@@ -257,7 +268,7 @@ directement ne voit que les routes déclarées dans `api.py` — d'où le helper
 
 ## 5. Ce que ces passes ne font pas
 
-- Les **46 écrans partiels** restent à re-certifier un par un (contenu, actions,
+- Les **42 écrans partiels** restent à re-certifier un par un (contenu, actions,
   permissions, états vides) : voir `FONCTIONNALITES_RESTANTES.md`.
 - Certains écrans **réutilisent une page historique** (`#dossiers/tous`,
   `#tab-clients`, `#tab-profiles`…) : plus de bandeau, mais le contenu et les

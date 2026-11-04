@@ -759,3 +759,25 @@ def test_actions_a_parametres_utilisent_la_query_string() -> None:
     for cle in ("justificatif_sortie", "date_sortie", "date_depart", "date_reelle",
                 "preuve_signee", "date_signature"):
         assert f'cle: "{cle}"' in moteur
+
+
+def test_administration_sans_controle_mort() -> None:
+    """Les pages d'administration ne doivent pas afficher de boutons inertes.
+
+    « + Nouveau workflow » existait sans gestionnaire ; la barre du journal
+    d'audit et son bac « Chargement… » n'étaient pilotés par aucun script.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    html = (racine / "web" / "index.html").read_text(encoding="utf-8")
+    extras = (racine / "web" / "app-extras.js").read_text(encoding="utf-8")
+    nav = (racine / "web" / "navigation.js").read_text(encoding="utf-8")
+
+    assert 'id="addWorkflow"' in html
+    assert '$("addWorkflow")' in extras or "getElementById(\"addWorkflow\")" in extras
+    assert "/api/rbac/workflows" in extras
+    # Les contrôles d'audit morts ont été retirés au profit de la liste réelle.
+    for mort in ("auditAdminRefresh", "auditAdminQuery", "auditAdminLog"):
+        assert mort not in html
+    # La route des moteurs OCR doit exister pour les deux libellés.
+    assert "'admin/moteurs': 'tab-moteurs'" in nav
+    assert "'admin/moteurs-ocr': 'tab-moteurs'" in nav

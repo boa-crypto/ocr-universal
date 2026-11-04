@@ -614,6 +614,7 @@
       'admin/journal': 'tab-journal',
       'admin/utilisateurs': 'tab-utilisateurs',
       'admin/roles': 'tab-roles',
+      'admin/moteurs': 'tab-moteurs',
       'admin/moteurs-ocr': 'tab-moteurs',
       'admin/connecteurs-api': 'tab-connecteurs-api',
       'admin/workflows': 'tab-workflows',

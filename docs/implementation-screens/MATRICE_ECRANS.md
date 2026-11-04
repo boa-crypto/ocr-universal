@@ -47,16 +47,16 @@ explicite », jamais meublée de données fictives.
 | Finance & facturation | 8 | 6 | 2 | 0 | 0 | 0 |
 | Rapports & statistiques | 4 | 1 | 3 | 0 | 0 | 0 |
 | Référentiels & paramètres | 15 | 12 | 3 | 0 | 0 | 0 |
-| Administration & sécurité | 13 | 5 | 8 | 0 | 0 | 0 |
-| **Total** | **100** | **54** | **46** | **0** | **0** | **0** |
+| Administration & sécurité | 13 | 9 | 4 | 0 | 0 | 0 |
+| **Total** | **100** | **58** | **42** | **0** | **0** | **0** |
 
 - **Entrées de menu recensées** : 100
-- **Écrans conformes** : 54
-- **Écrans partiels** : 46
+- **Écrans conformes** : 58
+- **Écrans partiels** : 42
 - **Écrans absents** : 0
 - **Écrans non connectés** : 0
 
-Lecture honnête de ces chiffres : les 54 écrans conformes sont
+Lecture honnête de ces chiffres : les 58 écrans conformes sont
 ceux dont la source a répondu et dont les écritures éventuelles sont branchées ;
 les écrans « hérités » (mis en page lors des missions précédentes) restent
 marqués **PARTIEL** tant qu'ils n'ont pas été re-testés un par un dans cette
@@ -218,12 +218,12 @@ terminé.
 | Administration & sécurité | Équipes | `#admin/equipes` | Équipes (`web/ecrans.js`) | `/api/referentiels/equipes` | 0 ligne | Oui | **CONFORME** | maintenir ; étendre les champs métier si besoin |
 | Administration & sécurité | Paramètres généraux | `#admin/parametres` | Configuration générale (`web/ecrans.js`) | `/api/auth/status, /api/encryption, /api/security, /api/tracabilite/avertissement` | 0 ligne | Oui | **CONFORME** | lecture seule assumée (données serveur) |
 | Administration & sécurité | Paramètres OCR | `#admin/parametres-ocr` | Paramètres OCR (`web/ecrans.js`) | `/api/profiles/catalog, /api/watch` | 0 ligne | Oui | **CONFORME** | lecture seule assumée (données serveur) |
-| Administration & sécurité | Moteurs OCR | `#admin/moteurs-ocr` | écran existant `#tab-moteurs` | `(module historique)` | 6 lignes affichées | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
+| Administration & sécurité | Moteurs OCR | `#admin/moteurs-ocr` | écran existant `#tab-moteurs` | `(module historique)` | 6 lignes affichées | Oui | **CONFORME** | consultation et interactions vérifiées ; écritures non expérimentées |
 | Administration & sécurité | Connecteurs API | `#admin/connecteurs-api` | écran existant `#tab-connecteurs-api` | `(module historique)` | 3 lignes affichées | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
-| Administration & sécurité | Workflows | `#admin/workflows` | écran existant `#tab-workflows` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
+| Administration & sécurité | Workflows | `#admin/workflows` | écran existant `#tab-workflows` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | consultation et interactions vérifiées ; écritures non expérimentées |
 | Administration & sécurité | Référentiels | `#admin/referentiels` | Catalogue des référentiels (`web/ecrans.js`) | `/api/referentiels` | 11 lignes | Oui | **CONFORME** | lecture seule assumée (données serveur) |
-| Administration & sécurité | Journal d'audit | `#admin/journal` | écran existant `#tab-journal` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
-| Administration & sécurité | Sauvegardes | `#admin/sauvegardes` | écran existant `#tab-sauvegardes` | `(module historique)` | 8 lignes affichées | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
+| Administration & sécurité | Journal d'audit | `#admin/journal` | écran existant `#tab-journal` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | consultation et interactions vérifiées ; écritures non expérimentées |
+| Administration & sécurité | Sauvegardes | `#admin/sauvegardes` | écran existant `#tab-sauvegardes` | `(module historique)` | 8 lignes affichées | Oui | **CONFORME** | consultation et interactions vérifiées ; écritures non expérimentées |
 
 ## Écarts connus à ce stade
 
