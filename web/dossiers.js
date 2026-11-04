@@ -567,7 +567,148 @@
         }
         zone.appendChild(carte);
       });
+
+      // Comparaison inter-documents : les mêmes champs vus par chaque
+      // document. Une valeur qui diverge est signalée — l'opérateur tranche.
+      zone.appendChild(comparerExtractions(d, liste));
     });
+  }
+
+  /* ---------- 4 bis. Comparaison inter-documents ---------- */
+
+  function valeurChamp(champ) {
+    return champ.valeur_confirmee || champ.valeur_correctee ||
+      champ.valeur_normale || champ.valeur_raw || "";
+  }
+
+  function comparerExtractions(d, extractions) {
+    var bloc = el("div", "ocr-compare");
+    var tete = el("div", "dos-panel__head");
+    tete.appendChild(el("h3", "dos-panel__titre", "Comparaison inter-documents"));
+    bloc.appendChild(tete);
+
+    var documents = extractions.slice(0, 4).map(function (extraction) {
+      var champs = {};
+      (extraction.champs_extraits || []).forEach(function (champ) {
+        if (!champ || !champ.nom) return;
+        champs[champ.nom] = {
+          valeur: valeurChamp(champ),
+          confiance: Number(champ.confiance || 0),
+          statut: champ.statut || "detected"
+        };
+      });
+      return {
+        titre: extraction.type_document || "Document",
+        statut: extraction.statut,
+        champs: champs
+      };
+    });
+
+    if (documents.length < 2) {
+      bloc.appendChild(el("p", "dos-detail__empty-txt",
+        "La comparaison demande au moins deux documents extraits pour ce dossier. " +
+        "Ajoutez une pièce supplémentaire depuis l'atelier OCR."));
+      return bloc;
+    }
+
+    var noms = [];
+    documents.forEach(function (document) {
+      Object.keys(document.champs).forEach(function (nom) {
+        if (noms.indexOf(nom) === -1) noms.push(nom);
+      });
+    });
+
+    if (!noms.length) {
+      bloc.appendChild(el("p", "dos-detail__empty-txt",
+        "Aucun champ comparable : les documents n'ont pas livré de valeurs structurées."));
+      return bloc;
+    }
+
+    bloc.appendChild(el("p", "dos-panel__intro",
+      documents.length + " documents comparés · " + noms.length + " champs. " +
+      "Une divergence signale des valeurs différentes entre documents : elle est à arbitrer, pas à corriger automatiquement."));
+
+    var table = el("table", "table table--compact ocr-matrix");
+    var thead = el("thead");
+    var trh = el("tr");
+    trh.appendChild(el("th", null, "Champ"));
+    documents.forEach(function (document) {
+      trh.appendChild(el("th", null, document.titre));
+    });
+    trh.appendChild(el("th", null, ""));
+    thead.appendChild(trh);
+    table.appendChild(thead);
+
+    var tbody = el("tbody");
+    var divergences = 0;
+    noms.forEach(function (nom) {
+      var valeurs = documents.map(function (document) {
+        return document.champs[nom] ? document.champs[nom].valeur : "";
+      });
+      var distinctes = valeurs.filter(function (valeur, index) {
+        return valeur && valeurs.indexOf(valeur) === index;
+      });
+      var divergente = distinctes.length > 1;
+      if (divergente) divergences += 1;
+
+      var tr = el("tr", divergente ? "is-divergent" : "");
+      tr.appendChild(el("td", "ocr-matrix__nom", nom.replace(/_/g, " ")));
+
+      documents.forEach(function (document, index) {
+        var cellule = document.champs[nom];
+        var td = el("td", "ocr-matrix__cell");
+        td.appendChild(el("span", "ocr-matrix__val", cellule && cellule.valeur ? cellule.valeur : "—"));
+        if (cellule) {
+          var confiance = Math.round(cellule.confiance * 100);
+          var ton = confiance >= 85 ? "ok" : confiance >= 60 ? "warn" : "danger";
+          td.appendChild(el("span", "ocr-matrix__conf ocr-matrix__conf--" + ton, confiance + " %"));
+        }
+        tr.appendChild(td);
+      });
+
+      var actions = el("td", "sp-td--actions");
+      if (divergente) {
+        actions.appendChild(pill("Divergence", "danger"));
+      }
+      tr.appendChild(actions);
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+
+    var scroll = el("div", "table-wrap");
+    scroll.appendChild(table);
+    bloc.appendChild(scroll);
+    bloc.appendChild(el("p", "dos-panel__meta",
+      divergences
+        ? divergences + " champ(s) divergent(s) entre documents — à arbitrer avant validation."
+        : "Aucune divergence détectée entre les valeurs des documents comparés."));
+
+    // Les constats du contrôle documentaire complètent la lecture.
+    getJSONUrl("/api/dossiers/" + encodeURIComponent(d.id) + "/coherence")
+      .then(function (coherence) {
+        var constats = (coherence && coherence.constats) || [];
+        if (!constats.length) return;
+        var liste = el("div", "ocr-compare__constats");
+        liste.appendChild(el("h4", "dos-panel__titre", "Constats du contrôle documentaire"));
+        constats.slice(0, 6).forEach(function (constat) {
+          var ligne = el("div", "constat-row");
+          var ic = el("span", "row-ic row-ic--warn");
+          ic.textContent = "!";
+          ligne.appendChild(ic);
+          var corps = el("span", "row-main");
+          corps.appendChild(el("span", "row-title", constat.message || "Écart détecté"));
+          corps.appendChild(el("span", "row-sub",
+            [constat.champ, constat.document, constat.regle].filter(Boolean).join(" · ")));
+          ligne.appendChild(corps);
+          liste.appendChild(ligne);
+        });
+        bloc.appendChild(liste);
+      })
+      .catch(function () {
+        /* le contrôle documentaire reste consultable dans son onglet */
+      });
+
+    return bloc;
   }
 
   /* ---------- 5. Contrôle documentaire ---------- */

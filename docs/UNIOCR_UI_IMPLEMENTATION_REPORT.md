@@ -159,7 +159,12 @@ priorité, statut. Onglets (navigation clavier ← →) :
 3. **Documents** (pièces, catégorie, pages, confiance, état de vérification) ;
 4. **Résultats OCR** (`/documents-ocr` : type, champs, confiance, état, ouverture
    dans l'atelier — avec le rappel « une extraction n'est pas une validation
-   réglementaire ») ;
+   réglementaire ») **et comparaison inter-documents** : les mêmes champs sont
+   alignés par document (jusqu'à 4), chaque cellule porte sa confiance, les
+   lignes dont les valeurs divergent sont surlignées et signalées, et les
+   constats du contrôle documentaire (`/coherence`) complètent la lecture. Une
+   divergence est présentée comme **à arbitrer**, jamais corrigée
+   automatiquement ;
 5. **Contrôle documentaire** (`/coherence` : transmissible ou non, constats) ;
 6. **Anomalies** (`/api/controle/{id}/anomalies`) ;
 7. **Transport maritime** (`/transit/dossiers/{id}` + conteneurs) ;
@@ -294,7 +299,7 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 .venv/bin/python -m pytest -q              → 924 passed, 24 failed, 11 skipped (71 s)
 ```
 
-- **Nouveau fichier** `tests/test_ui_premium.py` : **21 tests**, tous verts
+- **Nouveau fichier** `tests/test_ui_premium.py` : **22 tests**, tous verts
   (ordre de cascade CSS, absence de `<style>`, présence des modules et des
   identifiants de coque, 5 KPI, palette centralisée, jetons hérités conservés,
   `prefers-reduced-motion` + `@media print`, 12 rubriques, repli + infobulles,
@@ -320,6 +325,7 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 | Recherche globale | `dos_3c04` → 1 résultat cliquable |
 | Repli de la barre latérale | classe `collapsed` appliquée, état persisté |
 | Espace dossier | 11 onglets, tous rendus sans erreur, bandeau d'identité complet |
+| Comparaison OCR | matrice 2 documents × 3 champs, 1 divergence détectée et signalée |
 | Espace de travail | barre d'outils, filtre, tri et pagination opérants (186 tâches, « 1–20 sur 186 ») |
 | Modules | 8 bandeaux de 4 indicateurs, valeurs réelles, 0 erreur |
 | Sous-pages | 10 routes testées : bonne page affichée, listes et colonnes réelles |
@@ -362,9 +368,11 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
    dédié : elles retombent sur la vue d'ensemble de leur module. Les 92
    sections `tab-*` existent ; y brancher un endpoint est un ajout de quelques
    lignes dans `web/souspages.js` quand la route existe côté serveur.
-4. **Vue OCR en deux colonnes** : l'atelier existant (`#tab-result`) fournit la
-   prévisualisation et les champs ; une vue côte à côte « document / données »
-   avec comparaison inter-documents reste à construire.
+4. **Atelier OCR** : la vue « document / données extraites » existe
+   (`#tab-result`) et la comparaison inter-documents vit dans l'espace dossier
+   (onglet Résultats OCR). Il reste à aligner les deux dans un même écran et à
+   exposer les actions valider/corriger/rejeter directement dans l'atelier
+   (elles existent déjà dans la file de validation).
 5. **Pages de référence / rapports** : contenu encore générique, à brancher sur
    `/api/stats` et les graphiques `/api/dashboard/graphique/*`.
 6. **Accessibilité** : lien d'évitement, focus visible, `aria-current` et

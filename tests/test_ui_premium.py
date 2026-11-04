@@ -105,6 +105,25 @@ def test_sous_pages_branchees_sur_des_endpoints_existants() -> None:
         assert url in chemins, f"{url} doit exister dans le contrat OpenAPI"
 
 
+def test_comparaison_inter_documents_dans_l_espace_dossier() -> None:
+    """L'onglet OCR compare les mêmes champs entre documents et signale les écarts."""
+    js = (WEB / "dossiers.js").read_text(encoding="utf-8")
+    css = (WEB / "uniocr-ds.css").read_text(encoding="utf-8")
+
+    assert "comparerExtractions" in js
+    assert "/coherence" in js, "les constats du contrôle documentaire complètent la comparaison"
+    assert 'documents.length < 2' in js, "la comparaison exige au moins deux documents"
+    # Une divergence ne doit jamais être « corrigée » automatiquement.
+    assert "à arbitrer" in js
+    for marqueur in (".ocr-compare", ".ocr-matrix", "is-divergent"):
+        assert marqueur in css, f"le style {marqueur} doit exister"
+
+    # Les 11 onglets de l'espace dossier restent déclarés.
+    for onglet in ("synthese", "informations", "documents", "ocr", "controle",
+                   "anomalies", "maritime", "douane", "frais", "enlevement", "historique"):
+        assert f'cle: "{onglet}"' in js, f"l'onglet {onglet} doit rester présent"
+
+
 def test_accessibilite_de_base() -> None:
     """Lien d'évitement, cible de contenu, champs nommés, page courante."""
     index = (WEB / "index.html").read_text(encoding="utf-8")

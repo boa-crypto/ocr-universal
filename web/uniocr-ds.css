@@ -2387,3 +2387,59 @@ dialog::backdrop { background: rgba(1, 4, 13, 0.72); backdrop-filter: blur(4px);
 
 .nav-item[aria-current="page"],
 .nav-subitem[aria-current="page"] { position: relative; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   28. OCR — COMPARAISON INTER-DOCUMENTS
+   ══════════════════════════════════════════════════════════════════════════ */
+.ocr-compare {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ds-line);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ocr-matrix th:first-child { width: 22%; }
+
+.ocr-matrix__nom {
+  text-transform: capitalize;
+  color: var(--ds-text);
+  font-weight: 550;
+}
+
+.ocr-matrix__cell { vertical-align: top; }
+
+.ocr-matrix__val {
+  display: block;
+  color: var(--ds-text);
+  font-size: 12.2px;
+  overflow-wrap: anywhere;
+}
+
+.ocr-matrix__conf {
+  display: inline-block;
+  margin-top: 3px;
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-text-faint);
+}
+.ocr-matrix__conf--ok { color: #8ff0dd; }
+.ocr-matrix__conf--warn { color: #fbd38d; }
+.ocr-matrix__conf--danger { color: #ffb3b9; }
+
+.ocr-matrix tr.is-divergent { background: rgba(240, 68, 82, 0.07); }
+.ocr-matrix tr.is-divergent .ocr-matrix__nom { color: #ffd2d6; }
+
+.ocr-compare__constats {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 8px;
+}
+
+[data-theme="light"] .ocr-matrix__conf--ok { color: #047857; }
+[data-theme="light"] .ocr-matrix__conf--warn { color: #B45309; }
+[data-theme="light"] .ocr-matrix__conf--danger { color: #B91C1C; }
+[data-theme="light"] .ocr-matrix tr.is-divergent { background: rgba(240, 68, 82, 0.06); }
+[data-theme="light"] .ocr-matrix tr.is-divergent .ocr-matrix__nom { color: #B91C1C; }
