@@ -362,6 +362,28 @@ Mesures (serveur isolé, jeu de données temporaire, jamais le poste de travail)
 La page héritée `#tab-utilisateurs` a été retirée (section, définition de
 sous-page, table de correspondance) : une seule page, un seul comportement.
 
+## 2.15 Passe 12 — rôles : livrés contre personnalisés
+
+La page « Rôles et permissions » n'affichait que le catalogue (9 rôles) en
+lecture seule : impossible de créer un rôle propre à l'exploitation, alors que
+`/api/rbac/roles` le permet.
+
+L'écran déclaratif fusionne deux sources et **distingue l'origine** :
+
+| Origine | Contenu | Actions proposées |
+|---|---|---|
+| **livré** | 9 rôles du catalogue (`roles_disponibles`) | aucune — un rôle livré ne se modifie pas |
+| **personnalisé** | rôles du magasin RBAC | Modifier, Supprimer |
+
+Mesures jsdom : 9 lignes livrées **sans bouton** ; création `chef_escale`
+(niveau 2, permissions « ecriture, export ») → **POST 200**, ligne marquée
+« personnalisé » avec ses deux boutons ; édition → **PUT 200** ; suppression →
+**DELETE 200**, retour à 9 lignes.
+
+Le moteur gagne le **masquage d'action par ligne** (`masquer(ligne)` sur
+`edition`, `suppression` et chaque action) : c'est ce qui garantit qu'aucune
+action destructrice n'est offerte sur un rôle livré.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
@@ -398,7 +420,7 @@ directement ne voit que les routes déclarées dans `api.py` — d'où le helper
 
 ## 5. Ce que ces passes ne font pas
 
-- Les **34 écrans partiels** restent à re-certifier un par un (contenu, actions,
+- Les **33 écrans partiels** restent à re-certifier un par un (contenu, actions,
   permissions, états vides) : voir `FONCTIONNALITES_RESTANTES.md`.
 - Certains écrans **réutilisent une page historique** (`#dossiers/tous`,
   `#tab-clients`, `#tab-profiles`…) : plus de bandeau, mais le contenu et les

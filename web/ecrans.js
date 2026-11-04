@@ -1234,6 +1234,79 @@
     },
 
     /* ---------------- Administration & sécurité ---------------- */
+    "admin/roles": {
+      section: "Administration & sécurité",
+      titre: "Rôles et permissions",
+      desc: "Rôles livrés avec l'application (non modifiables) et rôles " +
+            "personnalisés créés sur ce poste.",
+      source: {
+        /* Deux sources : signalées pour la mesure, chargées ensemble. */
+        sources: ["/api/rbac/utilisateurs", "/api/rbac/roles"],
+        charger: function (lire) {
+          /* Le catalogue livré (renvoyé avec les utilisateurs) et les rôles
+             personnalisés (magasin RBAC). */
+          return Promise.all([
+            lire("/api/rbac/utilisateurs").catch(function () { return null; }),
+            lire("/api/rbac/roles").catch(function () { return []; })
+          ]).then(function (reponses) {
+            var catalogue = (reponses[0] && reponses[0].roles_disponibles) || [];
+            var personnalises = Array.isArray(reponses[1]) ? reponses[1] : [];
+            var lignes = catalogue.map(function (nom) {
+              return { nom: nom, role_id: "", origine: "livré",
+                       description: "Rôle fourni avec l'application",
+                       niveau_acces: null, permissions: [] };
+            });
+            personnalises.forEach(function (role) {
+              lignes.push({ nom: role.nom, role_id: role.id, origine: "personnalisé",
+                            description: role.description,
+                            niveau_acces: role.niveau_acces,
+                            permissions: role.permissions || [] });
+            });
+            return lignes;
+          });
+        }
+      },
+      id: "role_id",
+      colonnes: [
+        { cle: "nom", libelle: "Rôle" },
+        { cle: "origine", libelle: "Origine" },
+        { cle: "description", libelle: "Description" },
+        { cle: "niveau_acces", libelle: "Niveau", format: "nombre" },
+        { cle: "permissions", libelle: "Permissions", format: "liste" }
+      ],
+      filtres: [{ cle: "origine", libelle: "Origine" }],
+      creation: {
+        url: "/api/rbac/roles",
+        champs: [
+          { cle: "nom", libelle: "Nom du rôle", requis: true,
+            aide: "Identifiant stable, par exemple « chef_escale »." },
+          { cle: "description", libelle: "Description" },
+          { cle: "niveau_acces", libelle: "Niveau d'accès", type: "number",
+            aide: "1 = lecture, 2 = écriture, 3 = administration." },
+          { cle: "permissions", libelle: "Permissions", type: "liste",
+            aide: "Séparées par des virgules, par exemple « ecriture, export »." }
+        ]
+      },
+      edition: {
+        url: "/api/rbac/roles/{id}",
+        champs: [
+          { cle: "description", libelle: "Description" },
+          { cle: "niveau_acces", libelle: "Niveau d'accès", type: "number" },
+          { cle: "permissions", libelle: "Permissions", type: "liste" }
+        ],
+        /* Un rôle livré n'est pas modifiable : le bouton disparaît. */
+        masquer: function (ligne) { return !ligne.role_id; }
+      },
+      suppression: {
+        url: "/api/rbac/roles/{id}",
+        masquer: function (ligne) { return !ligne.role_id; }
+      },
+      vide: {
+        message: "Le serveur n'annonce aucun rôle : le catalogue est vide.",
+        action: { libelle: "Créer un rôle", actionCreation: true }
+      }
+    },
+
     "admin/utilisateurs": {
       section: "Administration & sécurité",
       titre: "Utilisateurs",
@@ -2141,18 +2214,23 @@
         var tdActions = elt("td", "ecran__td-actions");
         (ecran.actions || []).forEach(function (action) {
           if (action.global) return;
+          if (typeof action.masquer === "function" && action.masquer(ligne)) return;
           var bouton = elt("button", "btn ghost sm", action.libelle);
           bouton.type = "button";
           bouton.addEventListener("click", function () { executerAction(ecran, action, ligne); });
           tdActions.appendChild(bouton);
         });
-        if (ecran.edition && peutEcrire()) {
+        var editionPossible = ecran.edition && peutEcrire() &&
+          !(typeof ecran.edition.masquer === "function" && ecran.edition.masquer(ligne));
+        if (editionPossible) {
           var editer = elt("button", "btn ghost sm", "Modifier");
           editer.type = "button";
           editer.addEventListener("click", function () { ouvrirFormulaire(ecran, ligne); });
           tdActions.appendChild(editer);
         }
-        if (ecran.suppression && peutEcrire() && !ecran.lectureSeule) {
+        var suppressionPossible = ecran.suppression && peutEcrire() && !ecran.lectureSeule &&
+          !(typeof ecran.suppression.masquer === "function" && ecran.suppression.masquer(ligne));
+        if (suppressionPossible) {
           var supprimer = elt("button", "btn ghost sm ecran__btn-danger", "Supprimer");
           supprimer.type = "button";
           supprimer.addEventListener("click", function () {

@@ -613,7 +613,7 @@
       'enlevissement/transporteurs': 'tab-transporteurs',
       'admin/journal': 'tab-journal',
       'admin/utilisateurs': 'tab-ecran',
-      'admin/roles': 'tab-roles',
+      'admin/roles': 'tab-ecran',
       'admin/moteurs': 'tab-moteurs',
       'admin/moteurs-ocr': 'tab-moteurs',
       'admin/connecteurs-api': 'tab-connecteurs-api',

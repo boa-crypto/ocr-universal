@@ -44,6 +44,7 @@ PREUVES: dict[str, str] = {
     "referentiels/navires": "jsdom : création POST 200, suppression DELETE 200",
     "admin/permissions": "jsdom : création POST 200, suppression DELETE 200",
     "admin/utilisateurs": "jsdom : création POST 200 (jeton affiché une fois), édition PUT 200, suppression DELETE 200",
+    "admin/roles": "jsdom : 9 rôles livrés en lecture (aucun bouton) ; rôle personnalisé créé POST 200, édité PUT 200, supprimé DELETE 200",
     "referentiels/clients": "jsdom : création POST 200, édition PUT 200 (ville modifiée), suppression DELETE 200 ; pays ISO bridé",
     "referentiels/fournisseurs": "jsdom : création POST 200, édition PUT 200, suppression DELETE 200 (clés alignées sur l'API)",
     "referentiels/ports": "CRUD jsdom + 7 tests API (référentiels)",

@@ -585,7 +585,10 @@ def test_pages_sorties_de_la_zone_morte_sont_branchees() -> None:
     for page, endpoint in attendus.items():
         assert f'"{page}": {{' in sous, f"page non branchée : {page}"
         bloc = sous[sous.index(f'"{page}": {{'):]
-        bloc = bloc[:bloc.index("\n    },")]
+        # La dernière entrée de PAGES n'a pas de virgule finale.
+        fin = re.search(r"\n    \}", bloc)
+        assert fin, f"bloc illisible : {page}"
+        bloc = bloc[:fin.start()]
         assert endpoint in bloc, f"{page} n'appelle pas {endpoint}"
         assert "vide:" in bloc, f"{page} n'a pas d'état vide explicite"
 
@@ -875,3 +878,26 @@ def test_ecran_utilisateurs_permet_de_creer_le_premier_compte() -> None:
     assert 'id="tab-utilisateurs"' not in html
     # Le type « liste » convertit la saisie en tableau pour l'API.
     assert 'entree.definition.type === "liste"' in moteur
+
+
+def test_ecran_roles_distingue_livres_et_personnalises() -> None:
+    """Les rôles livrés ne sont pas modifiables, les rôles locaux le sont.
+
+    La page « Rôles et permissions » affichait un catalogue en lecture seule et
+    ne permettait aucune création. Elle liste maintenant les deux origines et
+    masque les actions sur les rôles fournis avec l'application.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    moteur = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+    nav = (racine / "web" / "navigation.js").read_text(encoding="utf-8")
+    html = (racine / "web" / "index.html").read_text(encoding="utf-8")
+
+    debut = moteur.index('"admin/roles"')
+    bloc = moteur[debut:debut + 4600]
+    assert 'url: "/api/rbac/roles"' in bloc
+    assert "roles_disponibles" in bloc
+    assert "masquer: function (ligne) { return !ligne.role_id; }" in bloc
+    assert "masquer" in moteur  # le moteur sait masquer une action par ligne
+
+    assert "'admin/roles': 'tab-ecran'" in nav
+    assert 'id="tab-roles"' not in html

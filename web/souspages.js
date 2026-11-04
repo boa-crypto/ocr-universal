@@ -170,13 +170,6 @@
       filtre: function (t) { return Boolean(t.date_planifiee); },
       colonnes: ["numero_conteneur", "date_planifiee", "statut", "transporteur_id", "chauffeur_nom"],
       vide: "Aucun enlèvement planifié : la date se pose sur la demande d'enlèvement."
-    },
-    "tab-roles": {
-      titre: "Rôles disponibles",
-      url: "/api/rbac/utilisateurs",
-      cle: "roles_disponibles",
-      entete: "Rôle",
-      vide: "Aucun rôle chargé."
     }
   };
 

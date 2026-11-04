@@ -5,7 +5,7 @@ priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui rest
 la référence ligne à ligne.
 
 **Chiffres du jour, sans arrondi complaisant** : 100 entrées de menu,
-**66 conformes**, **34 partiels**, 0 absent, 0 non connecté, et
+**67 conformes**, **33 partiels**, 0 absent, 0 non connecté, et
 **plus aucun bandeau « pas encore d'écran dédié »** (contre 14 en début de
 passe 2). Les 57 partiels sont désormais des écrans qui lisent des données
 réelles mais n'ont pas encore été re-certifiés, ou dont les actions d'écriture
@@ -43,6 +43,7 @@ ne sont pas couvertes par un test.
 | ✅ P2-6 | ~~Exercer les CRUD des référentiels et des modules métier~~ | **fait en passe 9** : 11 écrans créés / édités / supprimés depuis l'interface (200 partout). Deux défauts serveur corrigés : pays trop long → **500** devenu **422** ; écran Fournisseurs qui envoyait `name`/`country`/`status` au lieu de `nom`/`nom_commercial`/`pays` (toute création échouait) |
 | ✅ P2-7 | ~~Relier « Résultat d'analyse » et « Contrôle qualité » à un document~~ | **fait en passe 10** : action « Ouvrir le résultat » depuis la liste (refusée si le document n'est pas traité), résultat réel affiché (GET 200), jauges qualité alimentées ; état vide expliqué |
 | ✅ P2-8 | ~~Créer le premier utilisateur RBAC depuis l'interface~~ | **fait en passe 11** : écran déclaratif avec création (rôles et dossiers en listes), affichage du jeton une seule fois, édition et suppression exercées (200). **Reste** : la page Rôles ne sait toujours pas créer de rôle personnalisé |
+| ✅ P2-9 | ~~Créer des rôles personnalisés depuis l'interface~~ | **fait en passe 12** : les rôles livrés restent en lecture (aucune action), les rôles personnalisés se créent (POST 200), s'éditent (PUT 200) et se suppriment (DELETE 200) |
 | P2-5 | Découpler les écrans de référence des pages historiques : `#dossiers/tous` ouvre encore la page héritée `#tab-dossiers` | fonctionne, mais le contenu et les actions restent ceux de la page historique |
 
 ## P3 — Référentiels, administration, statistiques avancées
