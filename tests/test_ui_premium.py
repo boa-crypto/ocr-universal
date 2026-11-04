@@ -485,3 +485,36 @@ def test_theme_sombre_par_defaut() -> None:
     assert "prefers-color-scheme: light" not in extras
     # La bascule manuelle reste disponible.
     assert 'localStorage.setItem("unocr_theme", next)' in extras
+
+
+def test_comparaison_inter_documents_dans_l_atelier() -> None:
+    """L'atelier confronte l'extraction courante à d'autres documents réels."""
+    racine = Path(__file__).resolve().parent.parent
+    index = (racine / "web" / "index.html").read_text(encoding="utf-8")
+    extras = (racine / "web" / "app-extras.js").read_text(encoding="utf-8")
+    css = (racine / "web" / "uniocr-ds.css").read_text(encoding="utf-8")
+
+    # Le panneau vit dans la page « Résultat d'analyse », pas dans une copie.
+    section = index[index.index('<section id="tab-result"'):]
+    section = section[:section.index("<!-- ─────────── 04 · QUALITÉ")]
+    assert 'id="compareToggle"' in section
+    assert 'id="compareHost"' in section
+    assert 'aria-controls="compareHost"' in section
+    assert "Comparaison inter-documents" in section
+    # La portée est rappelée : une extraction n'est pas une validation.
+    assert "validation" in section and "réglementaire" in section
+
+    # Les documents proposés viennent de l'API, jamais d'une liste figée.
+    assert 'fetchJson("/api/jobs?limit=500")' in extras
+    assert 'j.status === "done"' in extras
+    assert '"/api/jobs/" + id + "/result"' in extras
+    assert "COMPARE_MAX = 3" in extras
+    assert "matriceComparaison" in extras
+    assert "source_file" in extras
+    assert "is-divergent" in extras
+    assert "aucune valeur" in extras.lower() or "n'est corrigée" in extras
+
+    # Le rendu réutilise la matrice du design system (styles existants).
+    assert ".ocr-matrix tr.is-divergent" in css
+    assert ".ocr-compare__liste" in css
+    assert ".ocr-matrix__type" in css

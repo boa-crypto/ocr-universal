@@ -177,7 +177,18 @@ priorité, statut. Onglets (navigation clavier ← →) :
 10. **Enlèvement et livraison** (`/api/terminal` filtré par dossier) ;
 11. **Historique** (`/dossiers/{id}/trace`, avertissement de portée inclus).
 
-Chaque panneau se charge **à la demande** avec un squelette, et affiche une
+#### Comparaison inter-documents dans l'atelier
+
+La page « Résultat d'analyse » porte un panneau **E · Arbitrage** : il liste les
+documents déjà traités (`GET /api/jobs`, filtrés sur `done`), en accepte
+jusqu'à trois, puis aligne leurs champs (`GET /api/jobs/{id}/result`) avec la
+confiance de chaque valeur et le type de document en en-tête. Les lignes dont
+les valeurs normalisées diffèrent sont surlignées, et le pied de matrice
+annonce « *n* champ(s) divergent(s) — à arbitrer avant validation ». Rien n'est
+corrigé automatiquement : la comparaison éclaire la décision, elle ne la prend
+pas. Changer de document réinitialise la sélection.
+
+Chaque panneau de l’espace dossier se charge **à la demande** avec un squelette, et affiche une
 erreur explicite si la source est indisponible — jamais de valeur de secours.
 
 L'atelier d'analyse (vue « source / données extraites ») et la file de
@@ -319,10 +330,10 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 
 ```
 .venv/bin/python -m ruff check src tests   → All checks passed!
-.venv/bin/python -m pytest -q              → 939 passed, 23 failed, 11 skipped (72 s)
+.venv/bin/python -m pytest -q              → 940 passed, 23 failed, 11 skipped (76 s)
 ```
 
-- **Nouveau fichier** `tests/test_ui_premium.py` : **28 tests**, tous verts
+- **Nouveau fichier** `tests/test_ui_premium.py` : **29 tests**, tous verts
   (ordre de cascade CSS, absence de `<style>`, présence des modules et des
   identifiants de coque, 5 KPI, palette centralisée, jetons hérités conservés,
   `prefers-reduced-motion` + `@media print`, 12 rubriques, repli + infobulles,
@@ -333,7 +344,7 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
   accessibilité des pages historiques après la refonte de la barre latérale,
   absence de couleur codée en dur dans les modules de rendu, intégrité du
   balisage, barre latérale utilisable en mode rail, stratégie du service
-  worker, thème sombre par défaut).
+  worker, thème sombre par défaut, comparaison inter-documents de l'atelier).
 - Les **23 échecs préexistants** sont inchangés et **environnementaux**
   (Tesseract/Indra absents, connecteur `customs_api`, routage flou) ; ils ne
   sont pas masqués.
@@ -353,7 +364,8 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 | Recherche globale | « arbitrage » → 5 résultats groupés, ouvrables |
 | Repli de la barre latérale | classe `collapsed` appliquée, état persisté |
 | Espace dossier | 11 onglets, tous rendus sans erreur, bandeau d'identité complet |
-| Comparaison OCR | matrice 2 documents × 3 champs, 1 divergence détectée et signalée |
+| Comparaison OCR (dossier) | matrice 2 documents × 3 champs, 1 divergence détectée et signalée |
+| Comparaison OCR (atelier) | 40 documents proposés, 2 sélectionnés → matrice 3 colonnes (`bl_port.pdf · courant`, `parcours_colisage.pdf`, `parcours_bl.pdf`), 38 champs, 14 divergences signalées, 0 erreur |
 | Espace de travail | barre d'outils, filtre, tri et pagination opérants (186 tâches, « 1–20 sur 186 ») |
 | Modules | 8 bandeaux de 4 indicateurs, valeurs réelles, 0 erreur |
 | Sous-pages | 10 routes testées : bonne page affichée, listes et colonnes réelles |
@@ -409,10 +421,12 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
    sections `tab-*` existent ; y brancher un endpoint est un ajout de quelques
    lignes dans `web/souspages.js` quand la route existe côté serveur.
 4. **Atelier OCR** : la vue « document / données extraites » (`#tab-result`)
-   expose désormais valider / rejeter par champ et relancer un traitement ; la
-   comparaison inter-documents vit dans l'espace dossier (onglet Résultats OCR).
-   Il reste à réunir prévisualisation du document et tableau extrait dans une
-   colonne unique et à proposer la comparaison depuis l'atelier lui-même.
+   affiche la page réelle du document à gauche (image servie par
+   `/api/jobs/{id}/page/{n}/image`, zones de mots superposées, champ cliquable
+   surligné), les champs à droite avec valider / rejeter / relancer, et la
+   comparaison inter-documents depuis le panneau E · Arbitrage. Reste à faire :
+   un mode plein écran pour les très grands formats et la sélection de la
+   source (PDF paginé vs image).
 5. **Pages de référence / rapports** : contenu encore générique, à brancher sur
    `/api/stats` et les graphiques `/api/dashboard/graphique/*`.
 6. **Accessibilité** : lien d'évitement, focus visible, `aria-current` et

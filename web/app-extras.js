@@ -258,6 +258,15 @@ async function loadResult(id) {
   currentPage = 1;
   renderResult();
 
+  // La comparaison porte sur le document affiché : on repart d'une sélection vide.
+  const hoteCompare = document.getElementById("compareHost");
+  if (hoteCompare) { hoteCompare.dataset.ouvert = "0"; hoteCompare.innerHTML = ""; }
+  const boutonCompare = document.getElementById("compareToggle");
+  if (boutonCompare) {
+    boutonCompare.setAttribute("aria-expanded", "false");
+    boutonCompare.textContent = "Choisir des documents…";
+  }
+
   const links = document.getElementById("exportLinks");
   const links2 = document.getElementById("exportLinksResult");
   [links, links2].forEach(box => { box.innerHTML = ""; });
@@ -482,6 +491,274 @@ function renderPage() {
   });
 }
 
+/* =================== COMPARAISON INTER-DOCUMENTS ===================
+   Confronte l'extraction courante à d'autres documents déjà traités. Le
+   calcul reste côté client sur des valeurs réelles : aucune valeur n'est
+   inventée ni corrigée, une divergence est seulement signalée. */
+const COMPARE_MAX = 3;
+
+function valeurComparee(champ) {
+  if (!champ) return "";
+  const brut = champ.normalized_value ?? champ.raw_value ?? "";
+  return String(brut).trim();
+}
+
+function basculerComparaison() {
+  const hote = document.getElementById("compareHost");
+  const bouton = document.getElementById("compareToggle");
+  if (!hote || !bouton) return;
+  const ouvert = hote.dataset.ouvert === "1";
+  if (ouvert) {
+    hote.dataset.ouvert = "0";
+    hote.innerHTML = "";
+    bouton.setAttribute("aria-expanded", "false");
+    bouton.textContent = "Choisir des documents…";
+    return;
+  }
+  hote.dataset.ouvert = "1";
+  bouton.setAttribute("aria-expanded", "true");
+  bouton.textContent = "Masquer la comparaison";
+  preparerComparaison();
+}
+
+async function preparerComparaison() {
+  const hote = document.getElementById("compareHost");
+  if (!hote) return;
+  if (!currentJob || !currentResult) {
+    hote.innerHTML = '<p class="dos-detail__empty-txt">Ouvrez d\'abord un document ' +
+      'depuis les résultats d\'analyse : la comparaison a besoin d\'une extraction courante.</p>';
+    return;
+  }
+  hote.innerHTML = '<p class="dos-detail__empty-txt">Chargement des documents déjà traités…</p>';
+
+  let jobs = [];
+  try {
+    const liste = await fetchJson("/api/jobs?limit=500");
+    jobs = (liste || []).filter(j => j && j.status === "done" && j.id !== currentJob);
+  } catch (e) {
+    hote.innerHTML = '<p class="dos-detail__empty-txt">Liste indisponible : ' + esc(e.message) + '</p>';
+    return;
+  }
+  if (!jobs.length) {
+    hote.innerHTML = '<p class="dos-detail__empty-txt">Aucun autre document traité : ' +
+      'la comparaison demande au moins deux extractions.</p>';
+    return;
+  }
+
+  const form = document.createElement("div");
+  form.className = "ocr-compare__choix";
+
+  const entete = document.createElement("div");
+  entete.className = "ocr-compare__entete";
+  entete.innerHTML = '<span class="muted mono" data-compare-info></span>';
+  form.appendChild(entete);
+
+  const liste = document.createElement("div");
+  liste.className = "ocr-compare__liste";
+  liste.setAttribute("role", "group");
+  liste.setAttribute("aria-label", "Documents à comparer");
+  form.appendChild(liste);
+
+  const info = entete.querySelector("[data-compare-info]");
+  const cases = [];
+
+  const action = document.createElement("button");
+  action.type = "button";
+  action.className = "btn sm";
+  action.textContent = "Comparer";
+  action.disabled = true;
+
+  function majChoix() {
+    const choisis = cases.filter(c => c.checked).length;
+    cases.forEach(c => { c.disabled = !c.checked && choisis >= COMPARE_MAX; });
+    info.textContent = choisis + " / " + COMPARE_MAX + " document(s) sélectionné(s)";
+    action.disabled = choisis === 0;
+  }
+
+  jobs.slice(0, 40).forEach(function (job) {
+    const label = document.createElement("label");
+    label.className = "ph-check ocr-compare__item";
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.value = job.id;
+    cb.addEventListener("change", majChoix);
+    const texte = document.createElement("span");
+    texte.textContent = job.filename || job.id;
+    const meta = document.createElement("span");
+    meta.className = "ocr-compare__meta";
+    meta.textContent = job.created_at
+      ? new Date(job.created_at * 1000).toLocaleDateString("fr-FR")
+      : "";
+    label.appendChild(cb);
+    label.appendChild(texte);
+    label.appendChild(meta);
+    liste.appendChild(label);
+    cases.push(cb);
+  });
+
+  const pied = document.createElement("div");
+  pied.className = "rowflex";
+  pied.appendChild(action);
+  form.appendChild(pied);
+  hote.innerHTML = "";
+  hote.appendChild(form);
+  majChoix();
+
+  action.addEventListener("click", function () {
+    const ids = cases.filter(c => c.checked).map(c => c.value);
+    if (ids.length) lancerComparaison(ids);
+  });
+}
+
+async function lancerComparaison(ids) {
+  const hote = document.getElementById("compareHost");
+  if (!hote) return;
+  hote.innerHTML = '<p class="dos-detail__empty-txt">Comparaison en cours…</p>';
+
+  const documents = [{
+    titre: currentResult.source_file || "Document courant",
+    type: currentResult.profile_used || "",
+    champs: currentResult.fields || {},
+    courant: true
+  }];
+
+  for (const id of ids) {
+    try {
+      const res = await fetchJson("/api/jobs/" + id + "/result");
+      documents.push({
+        titre: res.source_file || id,
+        type: res.profile_used || "",
+        champs: res.fields || {},
+        courant: false
+      });
+    } catch (e) {
+      toast("Document illisible : " + e.message, "error");
+    }
+  }
+
+  if (documents.length < 2) {
+    hote.innerHTML = '<p class="dos-detail__empty-txt">Aucune extraction n\'a pu être ' +
+      'chargée : la comparaison est impossible.</p>';
+    return;
+  }
+  hote.innerHTML = "";
+  hote.appendChild(matriceComparaison(documents));
+}
+
+function matriceComparaison(documents) {
+  const bloc = document.createElement("div");
+  bloc.className = "ocr-compare";
+
+  const noms = [];
+  documents.forEach(function (doc) {
+    Object.keys(doc.champs).forEach(function (nom) {
+      if (noms.indexOf(nom) === -1) noms.push(nom);
+    });
+  });
+
+  if (!noms.length) {
+    const vide = document.createElement("p");
+    vide.className = "dos-detail__empty-txt";
+    vide.textContent = "Aucun champ comparable : les documents n'ont pas livré de valeurs structurées.";
+    bloc.appendChild(vide);
+    return bloc;
+  }
+
+  const intro = document.createElement("p");
+  intro.className = "dos-panel__intro";
+  intro.textContent = documents.length + " documents comparés · " + noms.length +
+    " champs. Une divergence signale des valeurs différentes entre documents : elle est à arbitrer, pas à corriger automatiquement.";
+  bloc.appendChild(intro);
+
+  const table = document.createElement("table");
+  table.className = "table table--compact ocr-matrix";
+  const thead = document.createElement("thead");
+  const trh = document.createElement("tr");
+  const thChamp = document.createElement("th");
+  thChamp.textContent = "Champ";
+  trh.appendChild(thChamp);
+  documents.forEach(function (doc) {
+    const th = document.createElement("th");
+    const fort = document.createElement("span");
+    fort.textContent = doc.titre + (doc.courant ? " · courant" : "");
+    th.appendChild(fort);
+    if (doc.type) {
+      const type = document.createElement("span");
+      type.className = "ocr-matrix__type";
+      type.textContent = doc.type;
+      th.appendChild(type);
+    }
+    trh.appendChild(th);
+  });
+  const thArb = document.createElement("th");
+  thArb.textContent = "";
+  trh.appendChild(thArb);
+  thead.appendChild(trh);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  let divergences = 0;
+
+  noms.forEach(function (nom) {
+    const valeurs = documents.map(d => valeurComparee(d.champs[nom]));
+    const distinctes = valeurs.filter((v, i) => v && valeurs.indexOf(v) === i);
+    const divergente = distinctes.length > 1;
+    if (divergente) divergences += 1;
+
+    const tr = document.createElement("tr");
+    if (divergente) tr.className = "is-divergent";
+    const tdNom = document.createElement("td");
+    tdNom.className = "ocr-matrix__nom";
+    const champRef = documents[0].champs[nom] || documents.find(d => d.champs[nom]).champs[nom];
+    tdNom.textContent = (champRef && champRef.label) || nom.replace(/_/g, " ");
+    tr.appendChild(tdNom);
+
+    documents.forEach(function (doc) {
+      const champ = doc.champs[nom];
+      const td = document.createElement("td");
+      td.className = "ocr-matrix__cell";
+      const val = document.createElement("span");
+      val.className = "ocr-matrix__val";
+      val.textContent = valeurComparee(champ) || "—";
+      td.appendChild(val);
+      if (champ && typeof champ.confidence === "number") {
+        const confiance = Math.round(champ.confidence * 100);
+        const ton = confiance >= 85 ? "ok" : (confiance >= 60 ? "warn" : "danger");
+        const badge = document.createElement("span");
+        badge.className = "ocr-matrix__conf ocr-matrix__conf--" + ton;
+        badge.textContent = confiance + " %";
+        td.appendChild(badge);
+      }
+      tr.appendChild(td);
+    });
+
+    const actions = document.createElement("td");
+    actions.className = "sp-td--actions";
+    if (divergente) {
+      const pill = document.createElement("span");
+      pill.className = "badge crit";
+      pill.textContent = "Divergence";
+      actions.appendChild(pill);
+    }
+    tr.appendChild(actions);
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+  const scroll = document.createElement("div");
+  scroll.className = "table-wrap";
+  scroll.appendChild(table);
+  bloc.appendChild(scroll);
+
+  const pied = document.createElement("p");
+  pied.className = "dos-panel__meta";
+  pied.textContent = divergences
+    ? divergences + " champ(s) divergent(s) entre documents — à arbitrer avant validation."
+    : "Aucune divergence détectée entre les valeurs des documents comparés.";
+  bloc.appendChild(pied);
+  return bloc;
+}
+
 function highlightField(f) {
   if (!f || !f.bbox) { toast("Champ sans géométrie localisée", "info"); return; }
   if (f.page_num && f.page_num !== currentPage) {
@@ -555,6 +832,9 @@ document.getElementById("prevPage").addEventListener("click", () => {
 document.getElementById("nextPage").addEventListener("click", () => {
   if (currentResult && currentPage < currentResult.pages.length) { currentPage++; renderPage(); }
 });
+const compareBouton = document.getElementById("compareToggle");
+if (compareBouton) compareBouton.addEventListener("click", basculerComparaison);
+
 document.getElementById("textSearch").addEventListener("input", e => {
   const q = e.target.value;
   const t = document.getElementById("textView");

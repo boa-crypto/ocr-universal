@@ -2105,7 +2105,24 @@
             <div id="enginesView" style="margin-top:18px"></div>
           </div>
         </div>
-      
+
+        <div class="rule"></div>
+
+        <!-- E · arbitrage inter-documents -->
+        <div class="panel" id="atelierCompare">
+          <div class="panel-head"><span class="idx">E · Arbitrage</span>
+            <h3 class="sec-title">Comparaison inter-documents</h3>
+            <button class="btn ghost sm" id="compareToggle" type="button"
+                    aria-expanded="false" aria-controls="compareHost">Choisir des documents…</button>
+          </div>
+          <p class="dos-panel__intro">
+            Confrontez les valeurs extraites de ce document à celles d'un autre document
+            déjà traité. Une divergence est à arbitrer par un opérateur : aucune valeur
+            n'est corrigée automatiquement, et aucune extraction ne vaut validation
+            réglementaire.
+          </p>
+          <div id="compareHost" class="ocr-compare-host"></div>
+        </div>
 
       <!-- ─────────── 04 · QUALITÉ ─────────── -->
       
