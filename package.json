@@ -8,7 +8,8 @@
     "ui:dump": "node docs/implementation-screens/outils/dump_interface.js",
     "ui:registres": "node tests/ui_registres.js",
     "ui:comparaison": "node tests/ui_comparaison.js",
-    "ui:declarations": "node tests/ui_declarations.js"
+    "ui:declarations": "node tests/ui_declarations.js",
+    "ui:terminal": "node tests/ui_terminal.js"
   },
   "devDependencies": {
     "jsdom": "^24.1.3"

@@ -569,9 +569,9 @@
     "enlevissement/sortie-port": {
       section: "Enlèvement & livraison",
       titre: "Sortie portuaire",
-      desc: "Demandes d'enlèvement prêtes à sortir : mainlevée, BAD et frais portuaires.",
+      desc: "Planifiez l’enlèvement avant autorisation. Mainlevée, BAD, frais payés et justificatif sont requis ; la sortie exige une autorisation préalable.",
       source: { url: "/api/terminal" },
-      id: "enlevement_id",
+      id: "id",
       colonnes: [
         { cle: "numero_conteneur", libelle: "Conteneur" },
         { cle: "numero_bl", libelle: "B/L" },
@@ -584,6 +584,7 @@
       filtres: [{ cle: "statut", libelle: "Statut" }],
       actions: [{
         libelle: "Autoriser la sortie",
+        masquer: function (ligne) { return ligne.statut !== "planifie"; },
         url: "/api/terminal/{id}/autoriser_sortie",
         methode: "POST",
         emplacement: "query",
@@ -601,6 +602,7 @@
         ]
       }, {
         libelle: "Enregistrer la sortie",
+        masquer: function (ligne) { return ligne.statut !== "sortie_autorisee"; },
         url: "/api/terminal/{id}/sortie",
         methode: "POST",
         emplacement: "query",
@@ -705,7 +707,7 @@
       titre: "Suivi des opérations",
       desc: "Vue consolidée des demandes d'enlèvement et de leur avancement.",
       source: { url: "/api/terminal" },
-      id: "enlevement_id",
+      id: "id",
       colonnes: [
         { cle: "numero_conteneur", libelle: "Conteneur" },
         { cle: "numero_bl", libelle: "B/L" },

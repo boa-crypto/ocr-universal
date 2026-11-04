@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 27. Ce document est la liste de travail
+État au 2026-11-04, après la passe 28. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -128,3 +128,12 @@ La matrice régénérée revient à **101 conformes, 0 partiel**. Les bilans 25�
 ci-dessus sont historiques. Restent les contrôles d'intégrité référentielle et
 les règles de transition métier ; la certification CRUD n'est pas une validation
 douanière officielle.
+
+### Passe 28 — garde-fous terminal
+
+✅ Séquence API demande → planification → autorisation → sortie, prérequis et
+preuve obligatoires, contournements de statut par création/PUT refusés.
+Tests : `pytest tests/test_terminal_workflow.py -q` (16 cas) et
+`npm run ui:terminal` (visibilité par état, données simulées).
+Restent l'intégrité référentielle, les écritures concurrentes d'un même objet,
+une procédure de révocation/correction et le parcours terminal UI complet.

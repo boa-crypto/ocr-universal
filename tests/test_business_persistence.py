@@ -3,26 +3,9 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
-from fastapi import FastAPI
-from fastapi.testclient import TestClient
 
 from unocr.business_store import BusinessStore
 from unocr.models import DeclarationDouaniere
-from unocr.routes import declarations, terminal
-
-
-@pytest.fixture
-def client_factory(tmp_path, monkeypatch):
-    cfg = SimpleNamespace(data_dir=tmp_path, log_dir=tmp_path / "logs")
-    monkeypatch.setattr(declarations, "cfg", cfg)
-    monkeypatch.setattr(terminal, "cfg", cfg)
-
-    def nouveau():
-        app = FastAPI()
-        app.include_router(declarations.router)
-        app.include_router(terminal.router)
-        return TestClient(app)
-    return nouveau
 
 
 @pytest.mark.parametrize("route,corps,champ_id,modification", [

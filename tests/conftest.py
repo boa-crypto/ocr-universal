@@ -68,3 +68,25 @@ def tmp_cfg(tmp_path):
     api.app.state.cfg = original_app_cfg
     api._dossiers = original_dossiers
     set_config(original)
+
+
+@pytest.fixture
+def client_factory(tmp_path, monkeypatch):
+    """API métier temporaire, sans état ni données du serveur du poste."""
+    from types import SimpleNamespace
+
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+
+    from unocr.routes import declarations, terminal
+
+    cfg = SimpleNamespace(data_dir=tmp_path, log_dir=tmp_path / "logs")
+    monkeypatch.setattr(declarations, "cfg", cfg)
+    monkeypatch.setattr(terminal, "cfg", cfg)
+
+    def nouveau():
+        app = FastAPI()
+        app.include_router(declarations.router)
+        app.include_router(terminal.router)
+        return TestClient(app)
+    return nouveau

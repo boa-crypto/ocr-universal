@@ -994,6 +994,41 @@ maintenant cette preuve complète : **101 conformes, 0 partiel**. Cela certifie
 le parcours CRUD local, pas l'intégrité référentielle, les règles de transition
 métier ou une connexion à un service douanier externe.
 
+## 2.31 Passe 28 — verrouiller les transitions du terminal
+
+Le stockage durable ne suffisait pas : une demande pouvait être créée directement
+au statut `sortis`, le PUT générique pouvait remplacer le statut, et l'action de
+sortie ne vérifiait pas l'autorisation. La séquence prise en charge est désormais :
+`demande` → `planifie` → `sortie_autorisee` → `sortis`.
+
+- Création exclusivement en demande, dossier/B-L/conteneur non vides.
+- Planification autorisée pour demande/planifie uniquement, avec date canonique
+  AAAA-MM-JJ et informations transport/chauffeur non vides.
+- Autorisation exclusivement depuis planifie, mainlevée/BAD/frais à vrai et
+  référence de justificatif non vide. Ces valeurs restent des déclarations de
+  l'opérateur, pas une vérification auprès d'un service externe.
+- Sortie exclusivement depuis sortie_autorisee, avec recontrôle des trois
+  prérequis, du justificatif et d'une date valide. Une seconde sortie est refusée.
+- PUT ne change pas le statut ; date/preuve de sortie réservées au workflow.
+  Après autorisation, seules les observations peuvent changer. Une valeur nulle
+  incompatible renvoie 422 avant écriture, pas une erreur de validation tardive.
+- Refus de transition tracés `enlevement_transition_refusee`, erreur 409 (état),
+  400 (prérequis manquants) ou 422 (données invalides).
+
+`tests/test_terminal_workflow.py` : **16 passed**, API réelle avec magasins
+SQLite temporaires et relecture après refus. La fixture d'API temporaire est
+partagée via conftest avec les neuf tests de persistance.
+
+L'écran Sortie portuaire utilise la vraie clé `id` (pas `enlevement_id`) et
+masque les actions hors étape. `npm run ui:terminal` vérifie quatre états avec
+données simulées, aucune écriture ; les tests API vérifient les refus côté serveur.
+
+Limites : pas de migration des anciens statuts intermédiaires, pas de procédure
+d'annulation/révocation ni de verrou optimiste entre deux requêtes concurrentes.
+Le parcours complet de création/planification terminal dans l'UI n'est pas certifié
+par ce test de visibilité. Le contrôle de l'existence des dossiers reste à faire.
+Matrice inchangée : 101 entrées, aucun nouvel écran ajouté.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
