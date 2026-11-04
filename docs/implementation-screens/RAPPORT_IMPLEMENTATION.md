@@ -509,6 +509,49 @@ Mesures jsdom : 7 lignes, colonne « État » (`défaut` / `modifié`), édition
 La matrice repasse à **100 entrées : 99 conformes, 1 partiel** (l'archivage
 irréversible de `#finance/cloture`).
 
+## 2.18 Passe 15 — les référentiels entrent dans les formulaires
+
+Les référentiels (pays, ports) existaient, se remplissaient, et ne servaient
+à rien : les formulaires métier demandaient le pays ou le port en texte libre.
+Saisir « DZ » ici et « Algérie » là produit des listes qui ne se recoupent
+jamais.
+
+### Ce qui change dans les formulaires
+
+Un champ peut désormais déclarer `referentiel: "pays"`. Le moteur interroge
+`/api/referentiels/{nom}`, alimente une **`<datalist>`** et affiche ce qu'il a
+trouvé :
+
+- *1 entrée proposée depuis le référentiel « pays »* — la suggestion est là ;
+- *Référentiel « pays » vide : saisie libre. Ajoutez des entrées dans
+  Référentiels pour les proposer ici.* — la liste vide est dite, pas subie.
+
+Le champ reste un champ texte : un port absent du référentiel n'empêche pas de
+créer un dossier. **Relier n'est pas verrouiller.**
+
+### Où c'est branché
+
+| Écran | Champ | Référentiel |
+|---|---|---|
+| Clients (création) | Pays (ISO 2 lettres) | `pays` |
+| Fournisseurs (création) | Pays (ISO 2 lettres) | `pays` |
+| Navires (création) | Pavillon | `pays` |
+| Dossier → Créer (`#dossiers/nouveau`) | Port de chargement / destination | `ports` |
+
+Le dialogue de création de dossier charge les ports à l'ouverture et le dit :
+*1 port proposé par le référentiel* (ou *référentiel des ports vide : saisie
+libre*). Le référentiel est interrogé une fois par session, pas à chaque
+frappe.
+
+### Mesures
+
+- pays `DZ` créé par l'API → formulaire Client : `list` renseigné, option `DZ`,
+  note « 1 entrée proposée » ; après suppression de l'entrée, note « vide :
+  saisie libre » ;
+- port `DZORAN` créé → dialogue de dossier : « 1 port proposé », option
+  `DZORAN` ; sans entrée : message explicite, zéro option ;
+- aucune erreur réseau dans les deux cas ; entrées d'essai supprimées.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

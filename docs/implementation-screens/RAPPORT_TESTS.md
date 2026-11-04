@@ -12,13 +12,13 @@ les produit. Les tests ajoutés dans cette passe sont marqués 🆕.
 | Commande | Résultat | Commentaire |
 |---|---|---|
 | `ruff check src tests` | **All checks passed** | 0 erreur de style |
-| `python -m pytest -q` | **981 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
-| `python -m pytest tests/test_ui_premium.py -q` | **48 passed** | +10 en passe 12, +1 en passe 14 (paramètres généraux) |
+| `python -m pytest -q` | **982 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
+| `python -m pytest tests/test_ui_premium.py -q` | **49 passed** | +10 en passe 12, +1 en passe 14, +1 en passe 15 (référentiels dans les formulaires) |
 | `python -m pytest tests/test_parametres.py -q` | **10 passed** 🆕 | écriture, bornes, persistance, effet réel sur l'import |
 | `python -m pytest tests/test_referentiels.py -q` | **7 passed** 🆕 | CRUD, persistance, doublons, audit |
 | `python -m pytest tests/test_route_ordering.py -q` | **4 passed** 🆕 | détection des routes masquées |
 
-Comparaison avec le début du cycle : 945 → **981 tests passants**
+Comparaison avec le début du cycle : 945 → **982 tests passants**
 (+7 référentiels, +4 ordre des routes, +10 écrans rôles/utilisateurs, +4
 intégrité UI, moins un test de service worker réécrit pour être
 version-agnostique).
@@ -37,7 +37,8 @@ jetables) a parcouru les 99 routes :
   supprimée ensuite) ;
 - `dossiers/clients` : 3 boutons, état vide explicite (plus de page héritée
   muette) ;
-- `#referentiels/parametres` supprimée : plus de formulaire sans sauvegarde.
+- `#referentiels/parametres` supprimée puis rétablie en passe 14 sur une API réelle ;
+- formulaires : pays/ports alimentés par les référentiels, état vide expliqué.
 
 ## 2. Tests serveur ajoutés
 

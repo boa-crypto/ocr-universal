@@ -490,12 +490,17 @@
               </label>
               <label class="dos-field">
                 <span>Port de chargement</span>
-                <input name="port_chargement" type="text" maxlength="80" autocomplete="off">
+                <input name="port_chargement" type="text" maxlength="80" autocomplete="off"
+                       list="dos-ports-chargement">
+                <datalist id="dos-ports-chargement"></datalist>
               </label>
               <label class="dos-field">
                 <span>Port de destination</span>
-                <input name="port_destination" type="text" maxlength="80" autocomplete="off">
+                <input name="port_destination" type="text" maxlength="80" autocomplete="off"
+                       list="dos-ports-destination">
+                <datalist id="dos-ports-destination"></datalist>
               </label>
+              <p class="dos-dialog__aide" id="dos-ports-aide"></p>
               <p class="dos-dialog__erreur" id="dos-create-erreur" hidden></p>
             </div>
             <footer class="dos-dialog__foot">

@@ -1224,9 +1224,47 @@
 
   /* ---------- Création d'un dossier ---------- */
 
+  /* Ports proposés depuis le référentiel : la saisie reste libre (un port
+     inconnu du référentiel ne doit pas bloquer la création), mais l'opérateur
+     voit immédiatement ce qui est déjà référencé — et lit que c'est vide. */
+  var portsCharges = null;
+
+  function remplirPorts() {
+    if (portsCharges) return portsCharges;
+    portsCharges = fetch("/api/referentiels/ports", { headers: { Accept: "application/json" } })
+      .then(function (r) { return r.ok ? r.json() : { entrees: [] }; })
+      .then(function (corps) {
+        var entrees = (corps && corps.entrees) || [];
+        var valeurs = entrees.map(function (e) { return e.code || e.libelle; })
+          .filter(function (v) { return v; });
+        ["dos-ports-chargement", "dos-ports-destination"].forEach(function (id) {
+          var liste = $(id);
+          if (!liste) return;
+          liste.textContent = "";
+          valeurs.forEach(function (valeur) {
+            var option = document.createElement("option");
+            option.value = valeur;
+            liste.appendChild(option);
+          });
+        });
+        var aide = $("dos-ports-aide");
+        if (aide) {
+          aide.textContent = valeurs.length
+            ? valeurs.length + " port" + (valeurs.length > 1 ? "s" : "") +
+              " proposé" + (valeurs.length > 1 ? "s" : "") + " par le référentiel."
+            : "Référentiel des ports vide : saisie libre. Ajoutez des ports dans " +
+              "Référentiels pour les proposer ici.";
+        }
+        return valeurs;
+      })
+      .catch(function () { return []; });
+    return portsCharges;
+  }
+
   function ouvrirCreation() {
     var dlg = $("dos-create");
     if (!dlg) return;
+    remplirPorts();
     var err = $("dos-create-erreur");
     if (err) { err.hidden = true; err.textContent = ""; }
     var premier = dlg.querySelector('input[name="label"]');

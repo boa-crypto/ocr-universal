@@ -932,3 +932,31 @@ def test_ecran_parametres_generaux_ecrit_vraiment() -> None:
     # le serveur valide en nommant le champ et persiste hors de config/
     assert '"champ": self.cle' in serveur
     assert "parametres.json" in serveur or "parametres_path" in serveur
+
+
+def test_formulaires_proposent_les_referentiels_et_disent_quand_ils_sont_vides() -> None:
+    """Les champs « pays » et « ports » s'appuient sur les référentiels réels.
+
+    Un référentiel vide ne doit pas bloquer une saisie : le champ reste libre
+    et l'interface explique où ajouter les entrées. Ce test vérifie le câblage
+    (moteur + dialogue de création de dossier) ; le contenu vient de l'API.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    moteur = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+    dossiers = (racine / "web" / "dossiers.js").read_text(encoding="utf-8")
+    html = (racine / "web" / "index.html").read_text(encoding="utf-8")
+
+    # moteur générique : datalist alimentée par /api/referentiels/<nom>
+    assert "function suggestionsReferentiel(nom)" in moteur
+    assert 'lire("/api/referentiels/" + encodeURIComponent(nom))' in moteur
+    assert "Référentiel « \" + champ.referentiel + \" » vide : " in moteur
+    assert "datalist" in moteur
+
+    # champs reliés : clients, fournisseurs, navires
+    assert moteur.count('referentiel: "pays"') >= 3
+
+    # dialogue de création de dossier : ports servis par le référentiel
+    assert 'list="dos-ports-chargement"' in html
+    assert 'id="dos-ports-aide"' in html
+    assert 'fetch("/api/referentiels/ports"' in dossiers
+    assert "Référentiel des ports vide : saisie libre" in dossiers

@@ -1089,7 +1089,7 @@
           { cle: "city", libelle: "Ville" },
           { cle: "wilaya", libelle: "Wilaya" },
           { cle: "country", libelle: "Pays (code ISO à 2 lettres)",
-            longueurMax: 2, valeur: "DZ",
+            longueurMax: 2, valeur: "DZ", referentiel: "pays",
             aide: "Code ISO 3166-1 alpha-2 : DZ, FR, ES…" },
           { cle: "status", libelle: "Statut", type: "select", options: ["active", "inactive"] }
         ]
@@ -1135,6 +1135,7 @@
           { cle: "nom_commercial", libelle: "Nom commercial", requis: true,
             aide: "Champ obligatoire côté serveur, au même titre que le nom." },
           { cle: "pays", libelle: "Pays (code ISO à 2 lettres)", longueurMax: 2,
+            referentiel: "pays",
             aide: "Code ISO 3166-1 alpha-2 : FR, ES, CN…" },
           { cle: "nif", libelle: "NIF / identifiant fiscal" },
           { cle: "rc", libelle: "Registre de commerce" },
@@ -1150,7 +1151,8 @@
         champs: [
           { cle: "nom", libelle: "Nom" },
           { cle: "nom_commercial", libelle: "Nom commercial" },
-          { cle: "pays", libelle: "Pays (code ISO à 2 lettres)", longueurMax: 2 },
+          { cle: "pays", libelle: "Pays (code ISO à 2 lettres)", longueurMax: 2,
+            referentiel: "pays" },
           { cle: "nif", libelle: "NIF / identifiant fiscal" },
           { cle: "rc", libelle: "Registre de commerce" },
           { cle: "contact", libelle: "Personne de contact" },
@@ -1221,7 +1223,7 @@
           { cle: "nom", libelle: "Nom du navire", requis: true },
           { cle: "numero_imo", libelle: "Numéro IMO" },
           { cle: "compagnie", libelle: "Compagnie" },
-          { cle: "pays_immatri", libelle: "Pavillon" },
+          { cle: "pays_immatri", libelle: "Pavillon", referentiel: "pays" },
           { cle: "type_navire", libelle: "Type" },
           { cle: "notes", libelle: "Notes", type: "textarea" }
         ]
@@ -2435,7 +2437,12 @@
       controle.value = defaut === null || defaut === undefined ? "" : String(defaut);
       if (champ.requis) controle.setAttribute("aria-required", "true");
       bloc.appendChild(controle);
-      if (champ.aide) bloc.appendChild(elt("p", "ecran__aide", champ.aide));
+      var aide = null;
+      if (champ.aide) {
+        aide = elt("p", "ecran__aide", champ.aide);
+        bloc.appendChild(aide);
+      }
+      if (champ.referentiel) brancherSuggestions(controle, bloc, champ);
       form.appendChild(bloc);
       entrees[champ.cle] = { controle: controle, definition: champ, bloc: bloc };
     });
@@ -2570,6 +2577,59 @@
 
   /* ==================== 5. Formulaire ==================== */
 
+  /* Suggestions issues des référentiels.
+     Une saisie libre reste possible — un référentiel vide ne doit pas bloquer
+     la création d'un dossier — mais l'utilisateur voit immédiatement ce que
+     l'exploitation a déjà référencé, et le dit quand la liste est vide. */
+  var referentielsCache = {};
+
+  function suggestionsReferentiel(nom) {
+    if (referentielsCache[nom]) return referentielsCache[nom];
+    referentielsCache[nom] = lire("/api/referentiels/" + encodeURIComponent(nom))
+      .then(function (corps) {
+        var entrees = (corps && (corps.entrees || corps.items)) || [];
+        return entrees.map(function (e) {
+          return {
+            valeur: e.code || e.libelle || "",
+            libelle: e.libelle || e.code || ""
+          };
+        }).filter(function (o) { return o.valeur; });
+      })
+      .catch(function () { return []; });
+    return referentielsCache[nom];
+  }
+
+  function brancherSuggestions(controle, bloc, champ) {
+    var liste = elt("datalist");
+    var identifiant = "dl-" + champ.cle.replace(/\./g, "-") + "-" +
+      Math.random().toString(36).slice(2, 7);
+    liste.id = identifiant;
+    controle.setAttribute("list", identifiant);
+    controle.setAttribute("autocomplete", "off");
+    bloc.appendChild(liste);
+    var note = elt("p", "ecran__aide ecran__aide--ref", "");
+    bloc.appendChild(note);
+    suggestionsReferentiel(champ.referentiel).then(function (options) {
+      options.forEach(function (option) {
+        var o = elt("option");
+        o.value = option.valeur;
+        if (option.libelle && option.libelle !== option.valeur) {
+          o.label = option.libelle;
+        }
+        liste.appendChild(o);
+      });
+      if (!options.length) {
+        note.textContent = "Référentiel « " + champ.referentiel + " » vide : " +
+          "saisie libre. Ajoutez des entrées dans Référentiels pour les proposer ici.";
+      } else {
+        note.textContent = options.length + " entrée" +
+          (options.length > 1 ? "s" : "") + " proposée" +
+          (options.length > 1 ? "s" : "") + " depuis le référentiel « " +
+          champ.referentiel + " ».";
+      }
+    });
+  }
+
   function champValeur(ligne, cle) {
     if (!ligne) return "";
     if (cle.indexOf("attributs.") === 0) {
@@ -2649,7 +2709,12 @@
       else controle.value = valeur === null || valeur === undefined ? "" : valeur;
 
       bloc.appendChild(controle);
-      if (champ.aide) bloc.appendChild(elt("p", "ecran__aide", champ.aide));
+      var aide = null;
+      if (champ.aide) {
+        aide = elt("p", "ecran__aide", champ.aide);
+        bloc.appendChild(aide);
+      }
+      if (champ.referentiel) brancherSuggestions(controle, bloc, champ);
       form.appendChild(bloc);
       entrees[champ.cle] = { controle: controle, definition: champ, bloc: bloc };
     });
