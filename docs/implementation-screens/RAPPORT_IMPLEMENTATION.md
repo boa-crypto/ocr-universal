@@ -1441,3 +1441,43 @@ Tests SIGKILL sautés hors POSIX. Ceci n'est pas une coupure électrique : le no
 et les caches du système de fichiers survivent. La durabilité de l'entrée de
 répertoire et les arrêts brutaux pendant upload/suppression/restauration complète
 restent hors de cette preuve. Pas de nouvelle mesure de matrice ni de navigateur.
+
+
+## 2.42 Passe 39 — suppression sans écrasement de quarantaine
+
+Correction d'un risque de perte de preuve : le déplacement `os.replace` pouvait
+remplacer une quarantaine préexistante, puis un rollback tenter de restaurer cette
+ancienne copie au mauvais endroit. La suppression refuse désormais une quarantaine
+existante (fichier, lien symbolique même cassé, ou répertoire), y compris lorsque
+le blob original est absent. Réponse 409, métadonnées et fichiers conservés.
+
+Quand le blob existe, `os.link` réserve exclusivement le nom de quarantaine avant
+retrait du nom original. Une collision apparue après le contrôle est aussi refusée
+sans écrasement. Un système de fichiers sans liens durs produit une erreur 503,
+sans fallback vers un remplacement. L'opération conserve le verrou SQLite existant.
+Le code suit explicitement la propriété de la quarantaine : une copie préexistante
+n'est jamais nettoyée ni utilisée par le rollback.
+
+Après une panne SQLite, le rétablissement du nom original est également exclusif.
+Un fichier apparu à cet emplacement n'est pas remplacé. Si ce rétablissement échoue,
+la transaction métier est annulée, la quarantaine reste disponible et l'API répond
+503 avec « rétablissement incomplet » et orientation vers `pieces-check` ; le défaut
+est journalisé. La pièce peut alors rester indisponible jusqu'à examen opérateur.
+Après commit réussi, un échec du nettoyage conserve la quarantaine et journalise
+le résidu : la suppression métier reste réussie (200), sans fausse restauration.
+
+Validation : **9 nouveaux cas**, soit **26 tests de persistance**, couvrant
+quarantaines préexistantes, collision à la réservation, liens durs indisponibles,
+retrait source refusé, rollback impossible (collision ou disque) et nettoyage
+post-commit refusé. Ciblés persistance/récupération/diagnostic/UI-API réelle :
+**59 passed**. Ruff OK. Suite complète : **1176 passed / 23 failed / 11 skipped**,
+les échecs OCR environnementaux connus demeurent.
+
+Aucune suppression sur données utilisateur. Aucune purge automatique ni réparation
+de liens ajoutée. Les tests SIGKILL de la passe 38 concernent toujours la récupération,
+pas cette suppression ; arrêt entre création du lien et retrait du nom original,
+coupure électrique et modification hostile des répertoires restent hors preuve.
+Dans un tel état interrompu, source et quarantaine peuvent coexister : examiner,
+ne pas forcer la suppression et ne pas effacer la quarantaine automatiquement.
+
+Aperçu redémarré avec le backend corrigé, `UNOCR_PREVIEW=1`, port 8000.

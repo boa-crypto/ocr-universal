@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 38. Ce document est la liste de travail
+État au 2026-11-04, après la passe 39. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -235,3 +235,14 @@ seulement, pas pour l'ensemble des flux fichiers.
 Restent les coupures électriques/durabilité répertoire, les interruptions pendant
 upload/suppression/backup, la collecte contrôlée des résidus et l'antivirus.
 Aucune purge ou collecte automatique ajoutée.
+
+
+### Passe 39 — collision de quarantaine sécurisée
+
+✅ Suppression et rollback n'écrasent plus une quarantaine/destination existante.
+Refus 409 en cas de quarantaine déjà présente ; copie conservée et erreur 503
+explicite si rétablissement impossible. 9 nouveaux cas isolés, 59 tests ciblés
+réussis avec le parcours UI/API réel. Pas de purge automatique.
+Restent le vrai SIGKILL pendant cette séquence de suppression (notamment entre
+création du lien et retrait du blob), la durabilité après coupure électrique,
+la collecte contrôlée des preuves/résidus et l'antivirus.

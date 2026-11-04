@@ -201,3 +201,115 @@ def test_sauvegarde_refuse_symlink_justificatif(client_factory, piece, tmp_path,
         (racine / ("a" * 32 + ".bin")).symlink_to(cible / "secret.bin")
     with pytest.raises(BackupError, match="symbolique"):
         creer_sauvegarde(frais.cfg, destination=tmp_path / "archives")
+
+
+@pytest.mark.parametrize("etat", ["fichier", "symlink", "source_absente"])
+def test_suppression_preserve_quarantaine_preexistante(client_factory, piece, tmp_path, etat):
+    with client_factory() as client:
+        identifiant = upload(client, piece).json()["id"]
+        fichier = next((tmp_path / "justificatifs").glob("*.bin"))
+        quarantaine = fichier.with_name("." + fichier.name + ".deleted.tmp")
+        if etat == "symlink":
+            quarantaine.symlink_to(tmp_path / "absent")
+        else:
+            quarantaine.write_bytes(b"preuve precedente")
+        if etat == "source_absente":
+            fichier.unlink()
+        assert client.delete(f"/api/frais/justificatif/{identifiant}").status_code == 409
+        assert client.get(f"/api/frais/{piece}").json()["justificatifs"] == [identifiant]
+        assert client.get(f"/api/frais/{piece}/justificatifs").json()[0]["id"] == identifiant
+        if etat == "symlink":
+            assert quarantaine.is_symlink()
+        else:
+            assert quarantaine.read_bytes() == b"preuve precedente"
+        if etat != "source_absente":
+            assert fichier.read_bytes() == b"piece test"
+
+
+@pytest.mark.parametrize("panne", ["collision", "lien_indisponible", "retrait_source"])
+def test_suppression_echec_reservation_preserve_source(client_factory, piece, tmp_path, monkeypatch, panne):
+    from pathlib import Path
+
+    with client_factory() as client:
+        identifiant = upload(client, piece).json()["id"]
+        fichier = next((tmp_path / "justificatifs").glob("*.bin"))
+        quarantaine = fichier.with_name("." + fichier.name + ".deleted.tmp")
+        original_link = frais.os.link
+        original_unlink = Path.unlink
+        def lien(source, destination, *args, **kwargs):
+            if destination == quarantaine:
+                if panne == "collision":
+                    quarantaine.write_bytes(b"preuve concurrente")
+                elif panne == "lien_indisponible":
+                    raise OSError("liens durs indisponibles")
+            return original_link(source, destination, *args, **kwargs)
+        def retrait(self, *args, **kwargs):
+            if self == fichier and panne == "retrait_source":
+                raise PermissionError("source verrouillée")
+            return original_unlink(self, *args, **kwargs)
+        monkeypatch.setattr(frais.os, "link", lien)
+        monkeypatch.setattr(Path, "unlink", retrait)
+        rep = client.delete(f"/api/frais/justificatif/{identifiant}")
+        assert rep.status_code == (409 if panne == "collision" else 503), rep.text
+        assert fichier.read_bytes() == b"piece test"
+        assert client.get(f"/api/frais/{piece}").json()["justificatifs"] == [identifiant]
+        if panne == "collision":
+            assert quarantaine.read_bytes() == b"preuve concurrente"
+        else:
+            assert not quarantaine.exists()
+
+
+@pytest.mark.parametrize("panne_rollback", ["collision", "disque"])
+def test_rollback_suppression_preserve_preuve(client_factory, piece, tmp_path, monkeypatch, panne_rollback):
+    with client_factory() as client:
+        identifiant = upload(client, piece).json()["id"]
+        fichier = next((tmp_path / "justificatifs").glob("*.bin"))
+        quarantaine = fichier.with_name("." + fichier.name + ".deleted.tmp")
+        original = BusinessStore.__delitem__
+        def panne(self, cle):
+            if self.collection == "justificatif":
+                if panne_rollback == "collision":
+                    fichier.write_bytes(b"nouveau fichier")
+                raise sqlite3.OperationalError("panne après retrait de la source")
+            return original(self, cle)
+        original_link = frais.os.link
+        def lien(source, destination):
+            if destination == fichier and panne_rollback == "disque":
+                raise OSError("rétablissement indisponible")
+            return original_link(source, destination)
+        monkeypatch.setattr(BusinessStore, "__delitem__", panne)
+        monkeypatch.setattr(frais.os, "link", lien)
+        rep = client.delete(f"/api/frais/justificatif/{identifiant}")
+        assert rep.status_code == 503 and "rétablissement incomplet" in rep.json()["detail"]
+        if panne_rollback == "collision":
+            assert fichier.read_bytes() == b"nouveau fichier"
+        else:
+            assert not fichier.exists()
+        assert quarantaine.read_bytes() == b"piece test"
+        assert client.get(f"/api/frais/{piece}").json()["justificatifs"] == [identifiant]
+        assert client.get(f"/api/frais/{piece}/justificatifs").json()[0]["id"] == identifiant
+
+
+def test_nettoyage_quarantaine_echoue_apres_commit(client_factory, piece, tmp_path, monkeypatch):
+    from pathlib import Path
+
+    from unocr.justificatifs_diagnostic import diagnostiquer_pieces
+
+    with client_factory() as client:
+        identifiant = upload(client, piece).json()["id"]
+        fichier = next((tmp_path / "justificatifs").glob("*.bin"))
+        quarantaine = fichier.with_name("." + fichier.name + ".deleted.tmp")
+        original = Path.unlink
+        def retrait(self, *args, **kwargs):
+            if self == quarantaine:
+                raise PermissionError("nettoyage différé")
+            return original(self, *args, **kwargs)
+        monkeypatch.setattr(Path, "unlink", retrait)
+        assert client.delete(f"/api/frais/justificatif/{identifiant}").status_code == 200
+        assert not fichier.exists()
+        assert quarantaine.read_bytes() == b"piece test"
+        assert client.get(f"/api/frais/{piece}").json()["justificatifs"] == []
+        assert client.get(f"/api/frais/{piece}/justificatifs").json() == []
+        assert client.get(f"/api/frais/justificatif/{identifiant}/download").status_code == 404
+    diagnostic = diagnostiquer_pieces(tmp_path)
+    assert {a["categorie"] for a in diagnostic["anomalies"]} == {"quarantaine"}

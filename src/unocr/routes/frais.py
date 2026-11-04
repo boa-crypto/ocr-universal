@@ -574,15 +574,24 @@ def download_justificatif(justificatif_id: str, request: Request) -> Response:
 @router.delete("/justificatif/{justificatif_id}")
 def delete_justificatif(justificatif_id: str, request: Request) -> dict:
     chemin = quarantaine = None
+    quarantaine_creee = False
+    source_retiree = False
     try:
         with _get_justificatif_store(request).transaction() as transaction:
             justificatif = transaction.get(justificatif_id)
             if justificatif is None:
                 raise HTTPException(404, "Justificatif introuvable")
             chemin = _chemin_justificatif(justificatif)
+            quarantaine = chemin.with_name("." + chemin.name + ".deleted.tmp")
+            if quarantaine.exists() or quarantaine.is_symlink():
+                raise HTTPException(409, "Quarantaine déjà présente : examiner avec pieces-check avant suppression")
             if chemin.exists():
-                quarantaine = chemin.with_name("." + chemin.name + ".deleted.tmp")
-                os.replace(chemin, quarantaine)
+                # Réserve le nom sans écraser une preuve, même apparue depuis
+                # le contrôle précédent. Aucun fallback vers replace.
+                os.link(chemin, quarantaine)
+                quarantaine_creee = True
+                chemin.unlink()
+                source_retiree = True
             frais_store = transaction.related("frais", Frais)
             frais = frais_store.get(justificatif.frais_id)
             if frais is not None:
@@ -590,12 +599,23 @@ def delete_justificatif(justificatif_id: str, request: Request) -> dict:
                 frais_store[frais.id] = frais
             del transaction[justificatif_id]
     except Exception as exc:
-        if quarantaine is not None and quarantaine.exists():
-            os.replace(quarantaine, chemin)
+        if quarantaine_creee:
+            try:
+                if source_retiree:
+                    # Ne jamais remplacer un fichier apparu pendant le rollback.
+                    os.link(quarantaine, chemin)
+                elif not os.path.samefile(quarantaine, chemin):
+                    raise OSError("Le fichier source a changé pendant la suppression")
+                quarantaine.unlink()
+            except OSError as restauration:
+                log.exception("Rétablissement impossible ; quarantaine conservée : %s", quarantaine)
+                raise HTTPException(503, "Suppression annulée ; rétablissement incomplet, examiner avec pieces-check") from restauration
+        if isinstance(exc, FileExistsError):
+            raise HTTPException(409, "Quarantaine apparue pendant la suppression : aucun écrasement") from exc
         if isinstance(exc, (OSError, sqlite3.Error)):
             raise HTTPException(503, "Suppression du justificatif impossible") from exc
         raise
-    if quarantaine is not None:
+    if quarantaine_creee:
         try:
             quarantaine.unlink(missing_ok=True)
         except OSError:
