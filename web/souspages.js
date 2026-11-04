@@ -105,6 +105,31 @@
       colonnes: ["horodatage", "action", "acteur", "details"],
       vide: "Aucune entrée d'audit pour le moment."
     },
+    "tab-moteurs": {
+      titre: "Moteurs OCR",
+      url: "/api/engines",
+      colonnes: ["name", "kind", "available", "active", "ram_required_mb"],
+      vide: "Aucun moteur déclaré par le serveur."
+    },
+    "tab-connecteurs-api": {
+      titre: "Connecteurs API",
+      url: "/api/connectors",
+      cle: "catalog",
+      colonnes: ["nom", "name", "type", "categorie", "externe"],
+      vide: "Aucun connecteur dans le catalogue."
+    },
+    "tab-workflows": {
+      titre: "Workflows",
+      url: "/api/rbac/workflows",
+      vide: "Aucun workflow personnalisé : les transitions par défaut du serveur s'appliquent."
+    },
+    "tab-sauvegardes": {
+      titre: "Sauvegardes",
+      url: "/api/backups",
+      cle: "sauvegardes",
+      colonnes: ["nom", "taille", "cree_le"],
+      vide: "Aucune sauvegarde dans le répertoire de l'application."
+    },
     "tab-utilisateurs": {
       titre: "Utilisateurs",
       url: "/api/rbac/utilisateurs",
@@ -115,6 +140,7 @@
       titre: "Rôles disponibles",
       url: "/api/rbac/utilisateurs",
       cle: "roles_disponibles",
+      entete: "Rôle",
       vide: "Aucun rôle chargé."
     }
   };
@@ -172,7 +198,15 @@
     numero_conteneur: "Conteneur",
     navire: "Navire",
     montant: "Montant",
-    devise: "Devise"
+    devise: "Devise",
+    nom: "Nom",
+    taille: "Taille",
+    available: "Disponible",
+    active: "Actif",
+    kind: "Type",
+    ram_required_mb: "RAM requise (Mo)",
+    externe: "Externe",
+    cree_le: "Créé le"
   };
 
   function libelle(cle) {
@@ -292,7 +326,10 @@
       var table = elt("table", "table sp-table");
       var thead = elt("thead");
       var trh = elt("tr");
-      cols.forEach(function (cle) { trh.appendChild(elt("th", null, libelle(cle))); });
+      cols.forEach(function (cle) {
+        var entete = cle === "valeur" ? (definition.entete || "Valeur") : libelle(cle);
+        trh.appendChild(elt("th", null, entete));
+      });
       trh.appendChild(elt("th", null, ""));
       thead.appendChild(trh);
       table.appendChild(thead);

@@ -519,7 +519,11 @@
       'referentiels/fournisseurs': 'tab-fournisseurs',
       'admin/journal': 'tab-journal',
       'admin/utilisateurs': 'tab-utilisateurs',
-      'admin/roles': 'tab-roles'
+      'admin/roles': 'tab-roles',
+      'admin/moteurs-ocr': 'tab-moteurs',
+      'admin/connecteurs-api': 'tab-connecteurs-api',
+      'admin/workflows': 'tab-workflows',
+      'admin/sauvegardes': 'tab-sauvegardes'
     };
 
     const pageId = routePages[hash.replace('#', '')] || pageMapping[sectionKey];

@@ -196,7 +196,7 @@ indisponible affiche « — », jamais un zéro trompeur.
 
 ### 3.7 Sous-pages de modules (listes réelles)
 
-Dix-sept sous-rubriques du menu ouvrent désormais **leur propre page** au lieu
+Vingt-et-une sous-rubriques du menu ouvrent désormais **leur propre page** au lieu
 de retomber sur la vue d'ensemble du module, et affichent une liste alimentée
 par l'API :
 
@@ -212,6 +212,10 @@ par l'API :
 | Frais | `/api/frais` | dossier, catégorie, montant, devise, statut |
 | Journal d'audit | `/api/rbac/audit` | horodatage, action, acteur, détails |
 | Utilisateurs / Rôles | `/api/rbac/utilisateurs` | utilisateurs, rôles disponibles |
+| Moteurs OCR | `/api/engines` | nom, type, disponibilité, actif, RAM requise |
+| Connecteurs API | `/api/connectors` (catalogue) | catalogue des adaptateurs |
+| Workflows | `/api/rbac/workflows` | workflows personnalisés |
+| Sauvegardes | `/api/backups` | nom, taille, date |
 
 Chaque liste offre un **filtre plein texte**, un **compteur**, une **pagination**
 (25 lignes) et un bouton **Ouvrir** quand un dossier est concerné. Les colonnes
@@ -346,7 +350,7 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 2. **Validation visuelle sur navigateur** : aucune capture n'a pu être produite
    dans cet environnement (pas de Chromium). Le rendu a été vérifié par DOM et
    cascade CSS, pas à l'œil.
-3. **Sous-pages restantes** : 17 sous-rubriques sont désormais branchées.
+3. **Sous-pages restantes** : 21 sous-rubriques sont désormais branchées.
    Les autres (`maritime/escales`, `maritime/voyages`, `douane/controles`,
    `douane/liquidation`, `douane/paiements`, `enlevissement/livraison`,
    `finance/facturation`, `referentiels/parametres`,
