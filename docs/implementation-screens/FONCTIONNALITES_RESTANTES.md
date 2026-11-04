@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 32. Ce document est la liste de travail
+État au 2026-11-04, après la passe 33. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -174,3 +174,14 @@ rejouable avec API simulée : `npm run ui:finance`.
 Restent en priorité les justificatifs (métadonnées, fichiers, téléversement,
 suppression cohérente, sauvegarde), l'import bancaire réel et la validation
 comptable des montants/devises. Le rapprochement ne simule aucune opération réelle.
+
+### Passe 33 — stockage et API justificatifs
+
+✅ Métadonnées et lien au frais persistants, fichiers dans le répertoire configuré,
+téléversement borné, téléchargement contrôlé, suppression cohérente sur erreurs
+gérées et sauvegarde/restauration testée ailleurs. La limite « en mémoire » des
+passes précédentes est levée pour les nouvelles pièces de ce circuit API.
+Restent l'interface utilisateur de gestion des pièces, la récupération/collecte
+explicite d'anciens blobs ou quarantaines, le contrôle antivirus et le comportement
+après arrêt brutal à toutes les frontières fichier/DB. Aucun ancien fichier migré
+automatiquement. Le circuit ne représente pas un import bancaire.

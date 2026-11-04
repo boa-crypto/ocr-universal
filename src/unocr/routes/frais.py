@@ -2,13 +2,19 @@
 
 from __future__ import annotations
 
+import hashlib
 import os
+import re
+import sqlite3
+import tempfile
 import uuid
 from datetime import datetime
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import List, Optional
+from urllib.parse import quote
 
-from fastapi import APIRouter, Body, File, HTTPException, Request, UploadFile
+from fastapi import APIRouter, Body, File, Form, HTTPException, Request, UploadFile
+from fastapi.responses import Response
 from pydantic import BaseModel, ValidationError
 
 from ..business_links import exiger_dossier
@@ -25,13 +31,14 @@ cfg = get_config()
 
 
 # ───────────────────────────────────────────────────────────────
-# Frais/factures persistants ; justificatifs encore en mémoire
+# Frais, factures et métadonnées des justificatifs persistants
 # ───────────────────────────────────────────────────────────────
 
-def _get_justificatif_store(request: Request) -> dict:
-    if not hasattr(request.app.state, 'justificatif_store'):
-        request.app.state.justificatif_store = {}
-    return request.app.state.justificatif_store
+MAX_JUSTIFICATIF = 20 * 1024 * 1024
+
+
+def _get_justificatif_store(request: Request) -> BusinessStore[Justificatif]:
+    return BusinessStore(cfg.data_dir / "metier.sqlite3", "justificatif", Justificatif)
 
 
 def _get_frais_store(request: Request) -> BusinessStore[Frais]:
@@ -216,7 +223,8 @@ def delete_frais(
         frais = transaction.get(frais_id)
         if frais is None:
             raise HTTPException(404, "Frais introuvable")
-        if frais.justificatifs:
+        if frais.justificatifs or any(j.frais_id == frais_id for j in
+                transaction.related("justificatif", Justificatif).values()):
             raise HTTPException(409, "Ce frais possède des justificatifs : suppression refusée")
         del transaction[frais_id]
     audit(cfg.log_dir, "frais_supprime", cible=frais_id)
@@ -458,100 +466,139 @@ def _match_transaction(facture: Facture, operation: dict) -> bool:
     return False
 # ───────────────────────────────────────────────────────────────
 
+def _repertoire_justificatifs() -> Path:
+    repertoire = cfg.data_dir / "justificatifs"
+    if repertoire.is_symlink():
+        raise HTTPException(503, "Répertoire des justificatifs non sûr")
+    repertoire.mkdir(parents=True, exist_ok=True)
+    return repertoire
+
+
+def _chemin_justificatif(justificatif: Justificatif) -> Path:
+    relatif = PurePosixPath(justificatif.chemin_fichier)
+    if (len(relatif.parts) != 2 or relatif.parts[0] != "justificatifs"
+            or not re.fullmatch(r"[a-f0-9]{32}\.bin", relatif.parts[1])):
+        raise HTTPException(403, "Chemin de justificatif refusé")
+    chemin = _repertoire_justificatifs() / relatif.parts[1]
+    if chemin.is_symlink():
+        raise HTTPException(403, "Lien symbolique de justificatif refusé")
+    return chemin
+
+
 @router.post("/justificatif/upload")
 async def upload_justificatif(
     request: Request,
-    frais_id: str = Body(...),
+    frais_id: str = Form(...),
     fichier: UploadFile = File(...),
 ) -> dict:
-    """Upload un justificatif pour un frais."""
-    import hashlib
-
-    import aiofiles
-
-    from ..config import get_config
-
-    cfg = get_config()
-    upload_dir = Path(cfg.data_dir) / "justificatifs"
-    upload_dir.mkdir(parents=True, exist_ok=True)
-
-    frais_store = _get_frais_store(request)
-    frais = frais_store.get(frais_id)
-    if not frais:
-        raise HTTPException(404, "Frais introuvable")
-
-    # Lire le fichier et calculer hash
-    content = await fichier.read()
-    sha256 = hashlib.sha256(content).hexdigest()
-
-    # Sauvegarder le fichier
-    ext = Path(fichier.filename).suffix
-    filename = f"{uuid.uuid4().hex}{ext}"
-    file_path = Path("data") / "justificatifs" / filename
-    file_path.parent.mkdir(parents=True, exist_ok=True)
-
-    async with aiofiles.open(file_path, "wb") as f:
-        await f.write(content)
-
-    # Créer le justificatif
+    """Conserve une pièce (20 Mio max) et son lien au frais dans le magasin local."""
+    try:
+        contenu = await fichier.read(MAX_JUSTIFICATIF + 1)
+    finally:
+        await fichier.close()
+    if not contenu:
+        raise HTTPException(422, "Le justificatif est vide")
+    if len(contenu) > MAX_JUSTIFICATIF:
+        raise HTTPException(413, "Justificatif trop volumineux (maximum 20 Mio)")
+    nom = (fichier.filename or "justificatif").replace("\\", "/").rsplit("/", 1)[-1]
+    nom = "".join(c for c in nom if ord(c) >= 32 and ord(c) != 127)[:200] or "justificatif"
+    mime = fichier.content_type or "application/octet-stream"
+    if not re.fullmatch(r"[a-zA-Z0-9.+-]+/[a-zA-Z0-9.+-]+", mime):
+        mime = "application/octet-stream"
+    utilisateur = getattr(request.state, "utilisateur", None)
     justificatif = Justificatif(
-        id=new_id("just_"),
-        frais_id=frais_id,
-        nom_fichier=fichier.filename,
-        chemin_fichier=str(file_path),
-        type_mime=fichier.content_type or "application/octet-stream",
-        taille_octets=len(content),
-        uploaded_by="user",  # TODO: récupérer user réel
-        hash_sha256=sha256,
+        id=new_id("just_"), frais_id=frais_id, nom_fichier=nom,
+        chemin_fichier="justificatifs/" + uuid.uuid4().hex + ".bin",
+        type_mime=mime, taille_octets=len(contenu),
+        uploaded_by=getattr(utilisateur, "nom", "utilisateur"),
+        hash_sha256=hashlib.sha256(contenu).hexdigest(),
     )
+    chemin = _chemin_justificatif(justificatif)
+    temporaire = None
+    try:
+        with _get_frais_store(request).transaction() as transaction:
+            frais = transaction.get(frais_id)
+            if frais is None:
+                raise HTTPException(404, "Frais introuvable")
+            exiger_dossier(cfg, frais.dossier_id)
+            with tempfile.NamedTemporaryFile(dir=chemin.parent, suffix=".tmp", delete=False) as fichier_tmp:
+                temporaire = Path(fichier_tmp.name)
+                fichier_tmp.write(contenu)
+                fichier_tmp.flush()
+                os.fsync(fichier_tmp.fileno())
+            os.replace(temporaire, chemin)
+            transaction.related("justificatif", Justificatif)[justificatif.id] = justificatif
+            frais.justificatifs.append(justificatif.id)
+            transaction[frais_id] = frais
+    except Exception as exc:
+        chemin.unlink(missing_ok=True)
+        if temporaire is not None:
+            temporaire.unlink(missing_ok=True)
+        if isinstance(exc, (OSError, sqlite3.Error)):
+            raise HTTPException(503, "Enregistrement du justificatif impossible") from exc
+        raise
+    audit(cfg.log_dir, "justificatif_ajoute", cible=justificatif.id, frais=frais_id)
+    return {"id": justificatif.id, "nom_fichier": nom, "hash": justificatif.hash_sha256}
 
-    # Sauvegarder le justificatif
-    justificatif_store = _get_justificatif_store(request)
-    justificatif_store[frais_id] = justificatif_store.get(frais_id, []) + [justificatif]
 
-    # Lier au frais
-    frais.justificatifs.append(f.id)
-    frais_store[frais_id] = frais
-
-    return {"id": justificatif.id, "nom_fichier": justificatif.nom_fichier, "hash": justificatif.hash_sha256}
+@router.get("/{frais_id}/justificatifs")
+def list_justificatifs(frais_id: str, request: Request) -> list[dict]:
+    with _get_frais_store(request).transaction() as transaction:
+        if frais_id not in transaction:
+            raise HTTPException(404, "Frais introuvable")
+        return [j.model_dump(exclude={"chemin_fichier"}) for j in
+                transaction.related("justificatif", Justificatif).values() if j.frais_id == frais_id]
 
 
 @router.get("/justificatif/{justificatif_id}/download")
-async def download_justificatif(justificatif_id: str, request: Request):
-    """Télécharger un justificatif."""
-    import os
-
-    from fastapi.responses import FileResponse
-
-    justificatif_store = _get_justificatif_store(request)
-    for frais_id, justificatifs in justificatif_store.items():
-        for j in justificatifs:
-            if j.id == justificatif_id:
-                if os.path.exists(j.chemin_fichier):
-                    return FileResponse(
-                        j.chemin_fichier,
-                        filename=j.nom_fichier,
-                        media_type=j.type_mime
-                    )
-    raise HTTPException(404, "Justificatif introuvable")
+def download_justificatif(justificatif_id: str, request: Request) -> Response:
+    with _get_justificatif_store(request).transaction() as transaction:
+        justificatif = transaction.get(justificatif_id)
+        if justificatif is None:
+            raise HTTPException(404, "Justificatif introuvable")
+        chemin = _chemin_justificatif(justificatif)
+        try:
+            with chemin.open("rb") as fichier:
+                contenu = fichier.read(MAX_JUSTIFICATIF + 1)
+        except FileNotFoundError:
+            raise HTTPException(404, "Fichier justificatif absent") from None
+        if (len(contenu) > MAX_JUSTIFICATIF or len(contenu) != justificatif.taille_octets
+                or hashlib.sha256(contenu).hexdigest() != justificatif.hash_sha256):
+            raise HTTPException(409, "Le fichier justificatif ne correspond plus à son empreinte")
+    return Response(contenu, media_type=justificatif.type_mime, headers={
+        "Content-Disposition": "attachment; filename*=UTF-8''" + quote(justificatif.nom_fichier, safe=""),
+        "X-Content-Type-Options": "nosniff",
+    })
 
 
 @router.delete("/justificatif/{justificatif_id}")
-async def delete_justificatif(justificatif_id: str, request: Request):
-    """Supprimer un justificatif."""
-    justificatif_store = _get_justificatif_store(request)
-    for frais_id, justificatifs in justificatif_store.items():
-        for i, j in enumerate(justificatifs):
-            if j.id == justificatif_id:
-                # Supprimer fichier physique
-                if os.path.exists(j.chemin_fichier):
-                    os.remove(j.chemin_fichier)
-                # Retirer de la liste
-                justificatif_store[frais_id].pop(i)
-                # Retirer du frais
-                frais_store = _get_frais_store(request)
-                for f in frais_store.values():
-                    if j.id in f.justificatifs:
-                        f.justificatifs.remove(j.id)
-                return {"deleted": True, "id": justificatif_id}
-    raise HTTPException(404, "Justificatif introuvable")
+def delete_justificatif(justificatif_id: str, request: Request) -> dict:
+    chemin = quarantaine = None
+    try:
+        with _get_justificatif_store(request).transaction() as transaction:
+            justificatif = transaction.get(justificatif_id)
+            if justificatif is None:
+                raise HTTPException(404, "Justificatif introuvable")
+            chemin = _chemin_justificatif(justificatif)
+            if chemin.exists():
+                quarantaine = chemin.with_name("." + chemin.name + ".deleted.tmp")
+                os.replace(chemin, quarantaine)
+            frais_store = transaction.related("frais", Frais)
+            frais = frais_store.get(justificatif.frais_id)
+            if frais is not None:
+                frais.justificatifs = [j for j in frais.justificatifs if j != justificatif_id]
+                frais_store[frais.id] = frais
+            del transaction[justificatif_id]
+    except Exception as exc:
+        if quarantaine is not None and quarantaine.exists():
+            os.replace(quarantaine, chemin)
+        if isinstance(exc, (OSError, sqlite3.Error)):
+            raise HTTPException(503, "Suppression du justificatif impossible") from exc
+        raise
+    if quarantaine is not None:
+        try:
+            quarantaine.unlink(missing_ok=True)
+        except OSError:
+            log.error("justificatif supprimé, nettoyage de quarantaine requis : %s", quarantaine)
+    audit(cfg.log_dir, "justificatif_supprime", cible=justificatif_id)
+    return {"deleted": True, "id": justificatif_id}

@@ -1169,6 +1169,47 @@ Limites : pas de certification des montants/devises ou obligations comptables,
 pas de journal bancaire ; justificatifs à traiter séparément. Aucune donnée
 financière d'exploitation ajoutée. Matrice inchangée, pas de nouvel écran.
 
+## 2.36 Passe 33 — justificatifs persistants, téléversement et reprise
+
+Le téléversement écrivait dans `data/justificatifs` en ignorant le répertoire
+configuré, conservait les métadonnées en mémoire puis échouait sur `f.id` au lieu
+de l'ID du justificatif. Il utilise désormais le vrai champ multipart `frais_id`
+(Form), la collection SQLite `justificatif` et le répertoire configuré.
+
+- Fichiers non vides, limite 20 Mio, nom physique UUID généré sans extension client.
+- Nom d'affichage nettoyé, MIME borné syntaxiquement, téléchargement en pièce jointe
+  avec `nosniff`. Aucune analyse antivirus ou validation de contenu n'est prétendue.
+- Écriture temporaire, flush/fsync et renommage ; métadonnées et lien au frais
+  enregistrés dans la même transaction. Un échec géré annule ces écritures et
+  nettoie les fichiers créés. Le frais et son dossier sont recontrôlés sous verrou.
+- Chemin enregistré relatif (`justificatifs/<uuid>.bin`) : restauration possible
+  dans un autre répertoire. Chemins arbitraires et symlinks refusés.
+- `GET /api/frais/{frais_id}/justificatifs` expose les métadonnées sans chemin disque.
+- Téléchargement après réouverture : taille et SHA-256 vérifiés ; fichier absent
+  = 404, altéré = 409. Les pièces ne sont pas rendues inline.
+- Suppression : fichier mis temporairement en quarantaine ; métadonnées et lien
+  retirés transactionnellement. En cas de rollback testé, fichier et lien restaurés.
+  Le frais ne peut pas être supprimé tant que ses IDs ou métadonnées portent une pièce.
+
+Les sauvegardes incluent `justificatifs/`. Elles prennent le même verrou SQLite
+pendant la copie des fichiers et l'instantané de la base : téléversements et
+suppressions des routes concernées attendent. Les fichiers temporaires sont ignorés,
+les symlinks de justificatifs font refuser l'archive. Ce verrou ne rend pas tous les
+fichiers JSON du magasin transactionnels. Restaurer serveur arrêté.
+
+`tests/test_justificatifs_persistence.py` : **17 passed**, dont réouvertures,
+suppression/rollback, limite, frais absent, erreurs DB lors de chaque écriture,
+chemins hostiles, fichiers absents/altérés, symlink, sauvegarde restaurée ailleurs
+et suppression concurrente à l'archivage. Tout vit dans les répertoires temporaires.
+Suite complète : **1133 passed / 23 failed / 11 skipped** ; smoke **15/15** ; Ruff OK.
+
+Limites : pas de nouvel écran de téléversement certifié ; preuve API uniquement.
+Pas de récupération automatique des anciens fichiers/métadonnées volatiles, ni de
+collecte automatique des blobs/quarantaines laissés par un arrêt brutal entre
+renommage et commit. Les erreurs de nettoyage de quarantaine sont journalisées.
+Le système de fichiers et SQLite ne constituent pas une transaction distribuée.
+Aucun fichier d'exploitation ajouté au dépôt (`data/justificatifs/` ignoré).
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

@@ -27,13 +27,15 @@ from dataclasses import dataclass, field
 from pathlib import Path, PurePosixPath
 from typing import Iterable
 
+from .business_store import BusinessStore
 from .logging_setup import audit, get_logger
+from .models import Justificatif
 
 log = get_logger("backup")
 
 #: répertoires du magasin à sauvegarder, dans l'ordre de criticité
 REPERTOIRES = ("jobs", "dossiers", "exports", "connectors", "formulaires",
-               "profiles", "keys")
+               "profiles", "keys", "justificatifs")
 
 #: fichiers isolés à conserver (l'audit est irremplaçable)
 #: `rbac.json` figure ici pour une raison de sécurité : sans lui, une
@@ -90,9 +92,13 @@ def _fichiers_utiles(racine: Path) -> Iterable[tuple[Path, Path]]:
     """
     for nom in REPERTOIRES:
         base = racine / nom
+        if nom == "justificatifs" and base.is_symlink():
+            raise BackupError("répertoire justificatifs symbolique refusé")
         if not base.is_dir():
             continue
         for src in sorted(base.rglob("*")):
+            if nom == "justificatifs" and src.is_symlink():
+                raise BackupError("lien symbolique de justificatif refusé")
             if not src.is_file():
                 continue
             if src.name.startswith(".") or src.suffix == ".tmp":
@@ -132,7 +138,10 @@ def creer_sauvegarde(cfg, destination: Path | None = None,
     chemin = cible_dir / f"sauvegarde-{horodatage}{suffixe}.zip"
 
     fichiers: list[dict] = []
-    with zipfile.ZipFile(chemin, "w", zipfile.ZIP_DEFLATED) as zf:
+    # Même verrou que les téléversements/suppressions : les blobs ne peuvent
+    # changer entre leur copie et l'instantané SQLite des métadonnées.
+    magasin = BusinessStore(racine / "metier.sqlite3", "justificatif", Justificatif)
+    with magasin.transaction(), zipfile.ZipFile(chemin, "w", zipfile.ZIP_DEFLATED) as zf:
         for src, rel in list(_fichiers_utiles(racine)) + list(
                 _fichiers_journal(cfg)):
             nom_archive = rel.as_posix()

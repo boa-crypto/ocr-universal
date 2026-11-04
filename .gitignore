@@ -18,3 +18,6 @@ node_modules/
 
 # Stockage métier local (données utilisateur, pas une fixture)
 data/metier.sqlite3*
+
+# Fichiers justificatifs locaux
+data/justificatifs/
