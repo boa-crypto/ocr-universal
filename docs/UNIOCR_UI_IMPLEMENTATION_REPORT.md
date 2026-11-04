@@ -41,10 +41,14 @@ index.html
 └── uniocr-ds.css         (NOUVEAU design system v4, chargé en dernier)
 web/
 ├── navigation.js         (groupes repliables, badges, infobulles, état mémorisé)
-├── charts.js             (NOUVEAU — 3 primitives SVG, zéro dépendance)
+├── charts.js             (NOUVEAU — courbes, barres, anneau, étincelles ; SVG natif)
 ├── shell.js              (NOUVEAU — coque : repli, menus, recherche, bootstrap)
 ├── cockpit.js            (réécrit — 5 KPI, tâches, progression, arrivées, alertes)
-└── dossiers.js           (étendu — 11 onglets d'espace dossier)
+├── dossiers.js           (étendu — 11 onglets d'espace dossier)
+├── workspace.js          (réécrit — filtres, tri, pagination, lignes actionnables)
+├── modules.js            (NOUVEAU — bandeaux d'indicateurs des modules)
+├── souspages.js          (NOUVEAU — 21 listes réelles pour les sous-rubriques)
+└── rapports.js           (NOUVEAU — 7 graphiques du serveur)
 src/unocr/routes/dashboard.py   (+ GET /api/dashboard/serie-dossiers)
 src/unocr/api.py               (+ GET /api/search/global, + GET /api/ui/bootstrap)
 ```
