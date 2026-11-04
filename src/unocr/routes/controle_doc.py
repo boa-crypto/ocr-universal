@@ -89,8 +89,12 @@ def lister_regles() -> dict:
             }
             for nom, regle in REGLES_COMPARAISON.items()
         ],
-        "types_anomalie": [t.value for t in TypeAnomalie],
-        "gravites": [g.value for g in Gravite],
+        # `TypeAnomalie` / `Gravite` sont des classes de constantes (pas des
+        # Enum) : les parcourir directement levait « 'type' object is not
+        # iterable ». On lit donc les attributs texte déclarés.
+        "types_anomalie": [v for v in vars(TypeAnomalie).values()
+                           if isinstance(v, str)],
+        "gravites": [v for v in vars(Gravite).values() if isinstance(v, str)],
     }
 
 

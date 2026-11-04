@@ -732,6 +732,25 @@ def icon_svg():
     return FileResponse(path, media_type="image/svg+xml")
 
 
+# Le service worker précache `./index.html` et `./styles.css` ; sans ces deux
+# routes l'installation du cache échouait en 404 et l'UI hors ligne était
+# incomplète. On les sert à la racine, comme le fait déjà `sw.js`.
+@app.get("/index.html", include_in_schema=False)
+def index_html() -> HTMLResponse:
+    path = cfg.web_dir / "index.html"
+    if not path.is_file():
+        raise HTTPException(status_code=404, detail="UI non installée")
+    return HTMLResponse(path.read_text(encoding="utf-8"))
+
+
+@app.get("/styles.css", include_in_schema=False)
+def styles_css() -> FileResponse:
+    path = cfg.web_dir / "styles.css"
+    if not path.is_file():
+        raise HTTPException(status_code=404, detail="feuille de style absente")
+    return FileResponse(path, media_type="text/css")
+
+
 # ─────────────────────── A2 · calibration de confiance ───────────────────────
 def _calibration_path() -> Path:
     return cfg.data_dir / "calibration.json"
@@ -2882,13 +2901,31 @@ def patch_classification(job_id: str, request: Request, body: dict) -> dict:
 def creer_dossier(body: dict, request: Request) -> dict:
     # rôle exigé : creer un dossier. RBAC inactif = contrôle sans effet.
     _exige(OPERATEUR)(request)
-    label = str(body.get("label") or "").strip()
+    # `ref`/`reference` sont acceptés comme libellé : le formulaire Transit
+    # envoie une référence, l'écran Dossiers un libellé — les deux désignent
+    # le même champ, et refuser l'un des deux rendait le formulaire inutilisable.
+    label = str(body.get("label") or body.get("ref") or body.get("reference") or "").strip()
     if not label:
         raise HTTPException(422, "libellé de dossier requis")
     profil = str(body.get("profile") or "personnalise")
     if profil not in PROFILS_DOSSIER:
         raise HTTPException(422, f"profil inconnu : {profil}")
-    dossier = _dossiers.creer(label, profil, acteur=str(body.get("user") or "utilisateur"))
+    acteur = str(body.get("user") or "utilisateur")
+    dossier = _dossiers.creer(label, profil, acteur=acteur)
+    # Champs facultatifs fournis à la création (client, référence, priorité…).
+    champs_initiaux = {
+        nom: body[cle] for cle, nom in (
+            ("client", "client_importateur"),
+            ("client_importateur", "client_importateur"),
+            ("reference", "reference"),
+            ("priorite", "priorite"),
+            ("gestionnaire", "gestionnaire"),
+            ("port_chargement", "port_chargement"),
+            ("port_destination", "port_destination"),
+        ) if body.get(cle) not in (None, "")
+    }
+    if champs_initiaux:
+        dossier = _dossiers.mettre_a_jour(dossier.id, champs_initiaux, acteur=acteur) or dossier
     # Un opérateur au périmètre restreint doit voir le dossier qu'il vient de
     # créer : son identifiant est généré par le système, il ne peut pas figurer
     # à l'avance dans son périmètre. Sans cet ajout, créer un dossier le

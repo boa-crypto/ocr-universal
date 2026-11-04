@@ -304,7 +304,10 @@
       const res = await fetch(`${BASE}/dossiers`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ref, client, status: "nouveau" }),
+        // L'API attend un libellé (`label`) et des champs métier ; `client`
+        // alimente `client_importateur`. L'ancien `{ref, status}` était rejeté
+        // en 422 et aucun dossier n'était créé.
+        body: JSON.stringify({ label: ref, client: client, reference: ref }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const d = await res.json();
@@ -365,9 +368,38 @@
       form.append("profile", "generic");
       form.append("quality_mode", "accurate");
 
-      const res = await fetch(`${BASE}/process`, { method: "POST", body: form });
+      // Le traitement est asynchrone : POST /documents renvoie un job_id,
+      // puis on interroge /jobs/{id} jusqu'à `done` et on lit le résultat.
+      // L'ancien appel synchrone à /process n'existait pas côté API (404).
+      const res = await fetch(`${BASE}/documents`, { method: "POST", body: form });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const result = await res.json();
+      const job = await res.json();
+
+      if (statEl) statEl.textContent = "Analyse en cours…";
+      let etat = null;
+      for (let i = 0; i < 180; i++) {
+        await new Promise(r => setTimeout(r, 1000));
+        const rj = await fetch(`${BASE}/jobs/${encodeURIComponent(job.job_id)}`);
+        if (!rj.ok) continue;
+        etat = await rj.json();
+        if (statEl) {
+          statEl.textContent = `Analyse… ${Math.round((etat.progress || 0) * 100)}%`;
+        }
+        if (etat.status === "done" || etat.status === "error") break;
+      }
+      if (!etat || etat.status !== "done") {
+        throw new Error(etat?.error || "traitement interrompu");
+      }
+
+      const rr = await fetch(`${BASE}/jobs/${encodeURIComponent(job.job_id)}/result`);
+      if (!rr.ok) throw new Error(`résultat indisponible (HTTP ${rr.status})`);
+      const result = await rr.json();
+      const texte = (result.pages || []).map(p => p.text || "").join("\n").trim();
+      // Le pipeline ne produit pas de bloc « anomalies » : les avertissements
+      // d'extraction en tiennent lieu, sans rien inventer.
+      const anomalies = (result.warnings || []).map(w => ({
+        type: "avertissement", severity: "warning", message: String(w),
+      }));
 
       if (statEl) statEl.textContent = "Terminé ✓";
       if (msgEl) { msgEl.textContent = `Confiance: ${Math.round((result.quality?.global || 0) * 100)}%`; msgEl.style.color = "var(--semantic-success)"; }
@@ -376,14 +408,14 @@
       const ap = $("transitApercu");
       if (ap) {
         ap.innerHTML = `<div class="muted" style="font-size:12px;line-height:1.8;max-height:200px;overflow-y:auto">
-          ${esc(result.text?.slice(0, 500) || "Aucun texte extrait")}
+          ${esc(texte.slice(0, 500) || "Aucun texte extrait")}
         </div>`;
       }
 
       // Show anomalies
       const an = $("transitAnomalies");
-      if (an && result.anomalies?.length) {
-        an.innerHTML = result.anomalies.slice(0, 5).map(a =>
+      if (an && anomalies.length) {
+        an.innerHTML = anomalies.slice(0, 5).map(a =>
           `<div class="anomaly-item anomaly-item--${a.severity === "error" ? "error" : "warning"}" style="margin-bottom:8px">
             <span class="anomaly-item__type">${esc(a.type)}</span>
             <span class="anomaly-item__text">${esc(a.message)}</span>
@@ -395,8 +427,8 @@
       const act = $("transitActions");
       if (act) {
         act.innerHTML = `<div style="display:flex;flex-direction:column;gap:8px">
-          <button class="btn btn-sm" onclick="window.__uniocr_open_dossier('${result.job_id || result.id}')">Ouvrir le dossier</button>
-          <button class="btn btn-sm btn-ghost" onclick="window.location.href='${BASE}/jobs/${encodeURIComponent(result.job_id || result.id)}/export/json'">Exporter JSON</button>
+          <button class="btn btn-sm" onclick="window.__uniocr_open_dossier('${job.job_id}')">Ouvrir le dossier</button>
+          <button class="btn btn-sm btn-ghost" onclick="window.location.href='${BASE}/jobs/${encodeURIComponent(job.job_id)}/export/json'">Exporter JSON</button>
         </div>`;
       }
 

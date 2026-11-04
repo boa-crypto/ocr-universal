@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from datetime import datetime
+
 from fastapi import APIRouter, Body, Depends, Request, HTTPException
 from pydantic import BaseModel
 from typing import Any, Optional, List
@@ -10,6 +12,7 @@ from ..dashboard import DashboardService
 from ..dashboard import get_dashboard_service
 from ..config import get_config
 from ..logging_setup import audit, get_logger
+from .frais import _get_frais_store, _get_facture_store
 from ..rbac import ADMINISTRATEUR, LECTEUR
 
 log = get_logger("dashboard")
@@ -47,7 +50,9 @@ def indicateurs_operationnels(
 ) -> dict:
     """15+ indicateurs opérationnels clés pour le pilotage maritime."""
     service = get_dashboard_service()
-    return service.indicateurs_operationnels()
+    return service.indicateurs_operationnels(
+        _get_frais_store(request), _get_facture_store(request)
+    )
 
 
 @router.get("/alertes")
@@ -66,7 +71,9 @@ def resume_financier(
 ) -> dict:
     """Résumé financier d'un dossier."""
     service = get_dashboard_service()
-    return service.resume_financier_dossier(dossier_id)
+    return service.resume_financier_dossier(
+        dossier_id, _get_frais_store(request), _get_facture_store(request)
+    )
 
 
 @router.get("/historique/{dossier_id}")
@@ -97,7 +104,10 @@ def graphique_financier_mensuel(
 ) -> dict:
     """Graphique: évolution financière mensuelle."""
     service = get_dashboard_service()
-    return service.graphique_financier_mensuel(mois_debut, mois_fin)
+    return service.graphique_financier_mensuel(
+        mois_debut, mois_fin,
+        _get_frais_store(request), _get_facture_store(request),
+    )
 
 
 @router.get("/graphique/repartition-par-port")
@@ -156,11 +166,16 @@ def sante_systeme(
     service = get_dashboard_service()
     stats = service.statistiques_generales()
     alertes = service.alertes_systeme()
-    financiers = service.resume_financier_dossier("__synthese__")
+    financiers = service.resume_financier_dossier(
+        "__synthese__", _get_frais_store(request), _get_facture_store(request)
+    )
 
     return {
         "systeme_actif": True,
         "statistiques": stats,
+        # `alertes` (liste complète) est le champ attendu par le contrat d'API ;
+        # les deux autres restent pour les consommateurs existants.
+        "alertes": alertes.get("alertes", []),
         "alertes_critiques": [a for a in alertes["alertes"] if a["niveau"] in ["critical", "error"]],
         "alertes_totales": alertes["nb_total"],
         "sante_financiere": {

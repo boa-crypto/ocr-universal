@@ -1196,7 +1196,7 @@
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-              legend: { display: true, position: "bottom" as const }
+              legend: { display: true, position: "bottom" }
             },
             scales: {
               y: { beginAtZero: true },
@@ -1239,7 +1239,7 @@
               responsive: true,
               maintainAspectRatio: false,
               plugins: {
-                legend: { position: "bottom" as const }
+                legend: { position: "bottom" }
               }
             }
           });
@@ -1274,7 +1274,7 @@
               maintainAspectRatio: false,
               cutoutPercentage: 80,
               plugins: {
-                legend: { position: "bottom" as const }
+                legend: { position: "bottom" }
               }
             }
           });
@@ -1316,14 +1316,14 @@
 
             // Render charts
             renderBarChart("chartEtatDossiers", {
-              labels: graphEtat.series?.map((s: any) => s.name) || [],
-              series: graphEtat.series?.map((s: any) => s.y) || [],
+              labels: graphEtat.series?.map((s) => s.name) || [],
+              series: graphEtat.series?.map((s) => s.y) || [],
               titre: graphEtat.titre || "Répartition par état"
             });
 
             // Monthly financial chart
-            const monthlyLabels = graphFretMensuel.series?.map((s: any) => s.name) || [];
-            const monthlyData = graphFretMensuel.series?.map((s: any) => s.y) || [];
+            const monthlyLabels = graphFretMensuel.series?.map((s) => s.name) || [];
+            const monthlyData = graphFretMensuel.series?.map((s) => s.y) || [];
             renderBarChart("chartFretMensuel", {
               labels: monthlyLabels,
               series: monthlyData,
@@ -1332,28 +1332,28 @@
 
             // Fret par gestionnaire
             renderBarChart("chartFretParGestionnaire", {
-              labels: graphFretGestionnaire.series?.map((s: any) => s.name) || [],
-              series: graphFretGestionnaire.series?.map((s: any) => s.y) || [],
+              labels: graphFretGestionnaire.series?.map((s) => s.name) || [],
+              series: graphFretGestionnaire.series?.map((s) => s.y) || [],
               titre: graphFretGestionnaire.titre || "Coût du fret par gestionnaire"
             });
 
             // Top clients (doughnut)
             renderDoughnutChart("chartTopClients", {
-              labels: graphTopClients.series?.map((s: any) => s.name) || [],
-              series: graphTopClients.series?.map((s: any) => s.y) || [],
+              labels: graphTopClients.series?.map((s) => s.name) || [],
+              series: graphTopClients.series?.map((s) => s.y) || [],
               titre: graphTopClients.titre || "Top clients"
             });
 
             // Anomalies par type
             renderBarChart("chartAnomaliesParType", {
-              labels: graphAnomalies.series?.map((s: any) => s.name) || [],
-              series: graphAnomalies.series?.map((s: any) => s.y) || [],
+              labels: graphAnomalies.series?.map((s) => s.name) || [],
+              series: graphAnomalies.series?.map((s) => s.y) || [],
               titre: graphAnomalies.titre || "Anomalies par type"
             });
 
             // Taux de réussite par mois
-            const tauxLabels = graphTauxReussite.series?.map((s: any) => s.name) || [];
-            const tauxData = graphTauxReussite.series?.map((s: any) => ({
+            const tauxLabels = graphTauxReussite.series?.map((s) => s.name) || [];
+            const tauxData = graphTauxReussite.series?.map((s) => ({
               y: s.y,
               total: s.total,
               taux: s.taux

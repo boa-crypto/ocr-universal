@@ -28,6 +28,13 @@ from .logging_setup import audit, get_logger
 
 log = get_logger("dossier")
 
+#: Champs restaurés par un traitement dédié dans `DossierStore._lire` ; les
+#: autres champs du dataclass sont recopiés tels quels depuis le JSON.
+CHAMPS_DOSSIER_SPECIAUX = frozenset({
+    "id", "label", "profile", "state", "version", "created_at", "updated_at",
+    "history", "arbitrages", "pieces",
+})
+
 
 class DossierState(str, Enum):
     """Les dix états exigés par le parcours."""
@@ -212,6 +219,8 @@ class Dossier:
     created_at: float = field(default_factory=time.time)
     updated_at: float = field(default_factory=time.time)
     history: list[Evenement] = field(default_factory=list)
+    #: pièces déjà traitées rattachées au dossier (référencées par `job_id`).
+    pieces: list[Piece] = field(default_factory=list)
     #: arbitrages humains des constats de cohérence, indexés par règle. Les
     #: constats sont recalculés à chaque lecture : sans cette mémoire, une
     #: divergence tranchée par un humain réapparaîtrait « à trancher » au
@@ -232,8 +241,8 @@ class Dossier:
     eta: str = ""
     eta_effective: str = ""
     reference_bl: str = ""
-    incoterm: str = "",
-    lieu_incoterm: str = "",
+    incoterm: str = ""
+    lieu_incoterm: str = ""
     numero_conteneur: str = ""
     numero_scelle: str = ""
     type_conteneur: str = ""
@@ -243,22 +252,39 @@ class Dossier:
     echeances: list[dict[str, Any]] = field(default_factory=list)
     frais_associes: float = 0.0
 
-    frais_de_fret: float = 0.0,
-    frais_transport_terrestre: float = 0.0,
-    frais_portuaires: float = 0.0,
-    frais_manutention: float = 0.0,
-    frais_magasinage: float = 0.0,
-    frais_surestaries: float = 0.0,
-    frais_detention: float = 0.0,
-    droits_douane: float = 0.0,
-    tva: float = 0.0,
-    tpc: float = 0.0,
-    autres_frais: float = 0.0,
-    devise_frais: str = "EUR",
-    reference_facture: str = "",
-    date_dernier_paiement: float = field(default_factory=time.time),
-    statut_paiement: str = "non_paye",
-    commentaire: str = "",
+    # ─────────────────────── valeur commerciale & marchandise ───────────────────
+    # Ces champs sont exposés par `as_dict()` et alimentent l'UI ; ils doivent
+    # donc exister sur le dataclass (leur absence faisait échouer toute lecture
+    # de dossier en 500).
+    devise: str = "EUR"
+    valeur_commerciale: float = 0.0
+    nombre_colis: int = 0
+    poids_brut: float = 0.0
+    poids_net: float = 0.0
+    description_marchandise: str = ""
+    code_sh: str = ""
+    conteneurs_associes: list[str] = field(default_factory=list)
+    gestionnaire: str = ""
+    date_ouverture: float = 0.0
+    dernier_etat_evolution: str = ""
+    priorite: str = "normale"
+
+    frais_de_fret: float = 0.0
+    frais_transport_terrestre: float = 0.0
+    frais_portuaires: float = 0.0
+    frais_manutention: float = 0.0
+    frais_magasinage: float = 0.0
+    frais_surestaries: float = 0.0
+    frais_detention: float = 0.0
+    droits_douane: float = 0.0
+    tva: float = 0.0
+    tpc: float = 0.0
+    autres_frais: float = 0.0
+    devise_frais: str = "EUR"
+    reference_facture: str = ""
+    date_dernier_paiement: float = field(default_factory=time.time)
+    statut_paiement: str = "non_paye"
+    commentaire: str = ""
     observations: str = ""
 
     # ─────────────────────────── dérivés ───────────────────────────
@@ -359,6 +385,14 @@ class DossierStore:
         except Exception as exc:
             log.error("dossier illisible (%s) : %s", p.name, exc)
             return None
+        # Tous les champs métier (informations maritimes, valeur commerciale,
+        # frais, priorité…) doivent survivre à un rechargement : on les recopie
+        # génériquement pour qu'aucun ajout de champ n'exige de retoucher ici.
+        champs_metier = {
+            nom: valeur for nom, valeur in data.items()
+            if nom in Dossier.__dataclass_fields__
+            and nom not in CHAMPS_DOSSIER_SPECIAUX
+        }
         dossier = Dossier(
             id=data["id"], label=data.get("label", ""),
             profile=data.get("profile", "personnalise"),
@@ -371,6 +405,7 @@ class DossierStore:
                     for e in data.get("history", [])],
             arbitrages={k: v for k, v in (data.get("arbitrages") or {}).items()
                         if isinstance(v, dict)},
+            **champs_metier,
         )
         dossier.pieces = [Piece(**{k: v for k, v in piece.items()
                                     if k in Piece.__dataclass_fields__})
@@ -430,6 +465,29 @@ class DossierStore:
     def get(self, dossier_id: str) -> Optional[Dossier]:
         return self._lire(dossier_id)
 
+    def mettre_a_jour(self, dossier_id: str, champs: dict[str, Any],
+                      acteur: str = "systeme") -> Optional[Dossier]:
+        """Applique des champs métier à un dossier et persiste le résultat.
+
+        Seuls les champs du dataclass sont acceptés : une clé inconnue est
+        ignorée plutôt que de faire échouer la requête entière (les clients
+        envoient parfois des champs d'affichage comme `state_label`).
+        """
+        dossier = self._lire(dossier_id)
+        if dossier is None:
+            return None
+        modifies = {
+            nom: valeur for nom, valeur in champs.items()
+            if nom in Dossier.__dataclass_fields__
+            and nom not in CHAMPS_DOSSIER_SPECIAUX
+        }
+        if modifies:
+            for nom, valeur in modifies.items():
+                setattr(dossier, nom, valeur)
+            self._journalise(dossier, "mise_a_jour", modifies, acteur)
+            self._ecrire(dossier)
+        return dossier
+
     def liste(self) -> list[Dossier]:
         dossiers = []
         for p in sorted(self.root.glob("*.json")):
@@ -451,104 +509,6 @@ class DossierStore:
         return True
 
 # ─────────────────────────── conteneurs ───────────────────────────
-
-class Conteneur:
-    """Fiche de suivi d'un conteneur associé à un dossier."""
-    def __init__(self, reference: str, type_conteneur: str = "",
-                 poids: float = 0.0, scelle: str = "",
-                 statut_documentaire: str = "",
-                 statut_enlèvement: str = "",
-                 gestionnaire: str = "") -> None:
-        self.reference = reference
-        self.type_conteneur = type_conteneur
-        self.poids = poids
-        self.scelle = scelle
-        self.statut_documentaire = statut_documentaire
-        self.statut_enlèvement = statut_enlèvement
-        self.gestionnaire = gestionnaire
-        self.date_creation = time.time()
-        self.historique: list[dict[str, Any]] = []
-        self.date_enlèvement: float | None = None
-        self.date_restitution: float | None = None
-        self.anomalies: list[dict[str, Any]] = []
-
-    def associer_au_dossier(self, dossier_id: str, acteur: str = "systeme") -> None:
-        """Lier ce conteneur à un dossier."""
-        self.historique.append({
-            "action": "association_au_dossier",
-            "dossier_id": dossier_id,
-            "acteur": acteur,
-            "date": time.time(),
-        })
-
-    def detacher_du_dossier(self, dossier_id: str, acteur: str = "systeme") -> None:
-        """Dissocier ce conteneur du dossier."""
-        self.historique.append({
-            "action": "detachement_du_dossier",
-            "dossier_id": dossier_id,
-            "acteur": acteur,
-            "date": time.time(),
-        })
-
-    def marquer_enlèvement(self, date: float, acteur: str = "systeme") -> None:
-        """Marquer l'enlèvement du conteneur."""
-        self.date_enlèvement = date
-        self.historique.append({
-            "action": "enlèvement",
-            "date": date,
-            "acteur": acteur,
-        })
-
-    def marquer_restitution(self, date: float, acteur: str = "systeme") -> None:
-        """Marquer la restitution du conteneur."""
-        self.date_restitution = date
-        self.historique.append({
-            "action": "restitution",
-            "date": date,
-            "acteur": acteur,
-        })
-
-    def ajouter_anomalie(self, description: str, detail: dict[str, Any] | None = None, acteur: str = "systeme") -> None:
-        """Ajouter une anomalie au conteneur."""
-        self.anomalies.append({
-            "action": "anomalie",
-            "description": description,
-            "detail": detail or {},
-            "acteur": acteur,
-            "date": time.time(),
-        })
-
-    def as_dict(self) -> dict[str, Any]:
-        return {
-            "reference": self.reference,
-            "type_conteneur": self.type_conteneur,
-            "poids": self.poids,
-            "scelle": self.scelle,
-            "statut_documentaire": self.statut_documentaire,
-            "statut_enlèvement": self.statut_enlèvement,
-            "gestionnaire": self.gestionnaire,
-            "date_creation": self.date_creation,
-            "date_enlèvement": self.date_enlèvement,
-            "date_restitution": self.date_restitution,
-            "anomalies": self.anomalies,
-        }
-
-    @staticmethod
-    def from_dict(data: dict[str, Any]) -> "Conteneur":
-        c = Conteneur(
-            reference=data.get("reference", ""),
-            type_conteneur=data.get("type_conteneur", ""),
-            poids=data.get("poids", 0.0),
-            scelle=data.get("scelle", ""),
-            statut_documentaire=data.get("statut_documentaire", ""),
-            statut_enlèvement=data.get("statut_enlèvement", ""),
-            gestionnaire=data.get("gestionnaire", ""),
-        )
-        c.date_creation = data.get("date_creation", time.time())
-        c.date_enlèvement = data.get("date_enlèvement")
-        c.date_restitution = data.get("date_restitution")
-        c.anomalies = data.get("anomalies", [])
-        return c
 
     # ─────────────────────────── pièces ───────────────────────────
 
@@ -745,3 +705,101 @@ class Conteneur:
             "champs_par_document": donnees,
             "history_tail": [e.as_dict() for e in dossier.history[-20:]],
         }
+
+class Conteneur:
+    """Fiche de suivi d'un conteneur associé à un dossier."""
+    def __init__(self, reference: str, type_conteneur: str = "",
+                 poids: float = 0.0, scelle: str = "",
+                 statut_documentaire: str = "",
+                 statut_enlèvement: str = "",
+                 gestionnaire: str = "") -> None:
+        self.reference = reference
+        self.type_conteneur = type_conteneur
+        self.poids = poids
+        self.scelle = scelle
+        self.statut_documentaire = statut_documentaire
+        self.statut_enlèvement = statut_enlèvement
+        self.gestionnaire = gestionnaire
+        self.date_creation = time.time()
+        self.historique: list[dict[str, Any]] = []
+        self.date_enlèvement: float | None = None
+        self.date_restitution: float | None = None
+        self.anomalies: list[dict[str, Any]] = []
+
+    def associer_au_dossier(self, dossier_id: str, acteur: str = "systeme") -> None:
+        """Lier ce conteneur à un dossier."""
+        self.historique.append({
+            "action": "association_au_dossier",
+            "dossier_id": dossier_id,
+            "acteur": acteur,
+            "date": time.time(),
+        })
+
+    def detacher_du_dossier(self, dossier_id: str, acteur: str = "systeme") -> None:
+        """Dissocier ce conteneur du dossier."""
+        self.historique.append({
+            "action": "detachement_du_dossier",
+            "dossier_id": dossier_id,
+            "acteur": acteur,
+            "date": time.time(),
+        })
+
+    def marquer_enlèvement(self, date: float, acteur: str = "systeme") -> None:
+        """Marquer l'enlèvement du conteneur."""
+        self.date_enlèvement = date
+        self.historique.append({
+            "action": "enlèvement",
+            "date": date,
+            "acteur": acteur,
+        })
+
+    def marquer_restitution(self, date: float, acteur: str = "systeme") -> None:
+        """Marquer la restitution du conteneur."""
+        self.date_restitution = date
+        self.historique.append({
+            "action": "restitution",
+            "date": date,
+            "acteur": acteur,
+        })
+
+    def ajouter_anomalie(self, description: str, detail: dict[str, Any] | None = None, acteur: str = "systeme") -> None:
+        """Ajouter une anomalie au conteneur."""
+        self.anomalies.append({
+            "action": "anomalie",
+            "description": description,
+            "detail": detail or {},
+            "acteur": acteur,
+            "date": time.time(),
+        })
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "reference": self.reference,
+            "type_conteneur": self.type_conteneur,
+            "poids": self.poids,
+            "scelle": self.scelle,
+            "statut_documentaire": self.statut_documentaire,
+            "statut_enlèvement": self.statut_enlèvement,
+            "gestionnaire": self.gestionnaire,
+            "date_creation": self.date_creation,
+            "date_enlèvement": self.date_enlèvement,
+            "date_restitution": self.date_restitution,
+            "anomalies": self.anomalies,
+        }
+
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> "Conteneur":
+        c = Conteneur(
+            reference=data.get("reference", ""),
+            type_conteneur=data.get("type_conteneur", ""),
+            poids=data.get("poids", 0.0),
+            scelle=data.get("scelle", ""),
+            statut_documentaire=data.get("statut_documentaire", ""),
+            statut_enlèvement=data.get("statut_enlèvement", ""),
+            gestionnaire=data.get("gestionnaire", ""),
+        )
+        c.date_creation = data.get("date_creation", time.time())
+        c.date_enlèvement = data.get("date_enlèvement")
+        c.date_restitution = data.get("date_restitution")
+        c.anomalies = data.get("anomalies", [])
+        return c
