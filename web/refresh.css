@@ -728,3 +728,224 @@
 [dir="rtl"] .dos-row.is-selected { border-right-color: var(--accent); }
 [dir="rtl"] .dos-search svg { order: 2; }
 [dir="rtl"] .dos-kv__val { text-align: left; }
+
+/* ---------- 15 · Socle utilitaire des écrans hérités ----------
+   Les anciennes pages utilisent un vocabulaire de classes (grilles, cartes,
+   pastilles) qui n'était défini nulle part : elles s'affichaient sans marges
+   ni structure. Ce bloc fournit les primitives manquantes, sans toucher aux
+   écrans déjà refondus. */
+.grid { display: grid; }
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-1 { flex: 1 1 0%; min-width: 0; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+.space-y-4 > * + * { margin-top: 16px; }
+.space-y-5 > * + * { margin-top: 20px; }
+.space-y-6 > * + * { margin-top: 24px; }
+
+.grid-cols-1 { grid-template-columns: minmax(0, 1fr); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.col-span-1 { grid-column: span 1; }
+.col-span-2 { grid-column: span 2; }
+.col-span-3 { grid-column: span 3; }
+@media (min-width: 1100px) {
+  .col-span-lg-3 { grid-column: span 3; }
+  .col-span-lg-5 { grid-column: span 5; }
+  .col-span-lg-6 { grid-column: span 6; }
+  .grid-cols-2 > .col-span-lg-6,
+  .grid-cols-2 > .col-span-lg-5 { grid-column: span 1; }
+}
+
+.mt-1 { margin-top: 4px; }  .mt-3 { margin-top: 12px; }
+.mt-4 { margin-top: 16px; } .mt-6 { margin-top: 24px; }
+.mt-8 { margin-top: 32px; }
+.mb-0 { margin-bottom: 0; } .mb-1 { margin-bottom: 4px; }
+.mb-2 { margin-bottom: 8px; } .mb-3 { margin-bottom: 12px; }
+.mb-4 { margin-bottom: 16px; } .mb-6 { margin-bottom: 24px; }
+.mr-1 { margin-right: 4px; }
+.p-2 { padding: 8px; } .p-3 { padding: 12px; } .p-4 { padding: 16px; }
+.p-5 { padding: 20px; } .p-6 { padding: 24px; }
+.pt-4 { padding-top: 16px; } .py-12 { padding: 48px 0; }
+.min-w-0 { min-width: 0; }
+.max-w-3xl { max-width: 48rem; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cursor-pointer { cursor: pointer; }
+.rounded-lg { border-radius: var(--r-lg); }
+.transition-colors { transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out); }
+
+.text-center { text-align: center; }
+.text-sm { font-size: 12.5px; }
+.text-secondary { color: var(--muted); }
+.text-tertiary { color: var(--faint); }
+.font-medium { font-weight: var(--font-weight-medium); }
+.font-mono { font-family: var(--font-mono); }
+.caption { font-size: 11.5px; color: var(--faint); }
+.body { font-size: 13px; color: var(--text); }
+.body-sm { font-size: 12px; }
+.body-medium { font-size: 13px; font-weight: var(--font-weight-medium); }
+.lead, .lede { font-size: 13.5px; color: var(--muted); }
+
+/* Cartes héritées : le corps n'avait aucun style */
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 14px 18px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.card-body { padding: 16px 18px; }
+.card-title { margin: 0; font-size: 13.5px; font-weight: var(--font-weight-semibold); }
+.card-footer { padding: 12px 18px; border-top: 1px solid var(--line-soft); }
+.card-elevated { box-shadow: var(--shadow-1); }
+
+/* Boutons */
+.btn-block { width: 100%; justify-content: center; }
+.btn-primary { background: var(--accent); color: var(--bg); border-color: transparent; }
+.btn-primary:hover:not(:disabled) { filter: brightness(1.06); }
+.btn-lg { padding: 11px 18px; font-size: 14px; }
+.btn-icon, .icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; padding: 0;
+  border-radius: 9px; border: 1px solid var(--line);
+  background: transparent; color: var(--muted); cursor: pointer;
+}
+.btn-icon:hover, .icon-btn:hover { color: var(--text); background: color-mix(in srgb, var(--accent) 8%, transparent); }
+
+/* Icônes */
+.icon { width: 18px; height: 18px; }
+.icon-sm { width: 14px; height: 14px; }
+.icon-md { width: 20px; height: 20px; }
+.icon-lg { width: 24px; height: 24px; }
+.icon-2xl { width: 40px; height: 40px; }
+.icon-brand { color: var(--accent); }
+.icon-muted { color: var(--faint); }
+
+/* Pastilles et étiquettes */
+.badge-brand { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); }
+.badge-neutral { background: color-mix(in srgb, var(--muted) 14%, transparent); color: var(--muted); }
+.badge-sm { font-size: 10.5px; padding: 2px 8px; }
+.pill-brand { background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); }
+.label-badge-neutral { background: color-mix(in srgb, var(--muted) 14%, transparent); color: var(--muted); }
+.label-badge-info { background: rgba(59, 130, 246, .14); color: #3B82F6; }
+.label-badge-maritime { background: rgba(14, 165, 233, .14); color: #0EA5E9; }
+
+/* En-têtes de page hérités */
+.page-header { margin-bottom: 22px; }
+.page-header__meta { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+.page-header__stats { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; }
+.stat { display: grid; gap: 2px; }
+.stat-label { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+.stat-value { font-size: 20px; font-weight: var(--font-weight-semibold); }
+.stat-value-sm { font-size: 15px; }
+
+/* Tuiles d'indicateurs héritées */
+.kpi-card {
+  padding: 16px 18px; border-radius: 14px;
+  background: var(--surface); border: 1px solid var(--line);
+}
+.kpi-value { font-size: 24px; font-weight: var(--font-weight-bold); line-height: 1.1; }
+.kpi-label { margin-top: 4px; font-size: 11px; color: var(--faint); }
+
+/* Zone de dépôt de l'atelier OCR */
+.file-input-wrapper { display: grid; gap: 10px; }
+.file-dropzone {
+  display: grid; justify-items: center; gap: 8px;
+  padding: 34px 22px; text-align: center;
+  border: 1.5px dashed color-mix(in srgb, var(--accent) 35%, var(--line));
+  border-radius: 14px; cursor: pointer;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+  transition: border-color var(--duration-fast) var(--ease-out),
+              background var(--duration-fast) var(--ease-out);
+}
+.file-dropzone:hover, .file-dropzone.is-dragover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.file-dropzone__icon { color: var(--accent); }
+.file-dropzone__filename { font-size: 12px; color: var(--muted); }
+.file-dropzone__selected { font-weight: var(--font-weight-semibold); }
+.file-input-preview { display: grid; gap: 6px; font-size: 12px; }
+.file-input-button {
+  display: inline-flex; padding: 7px 12px; border-radius: 9px;
+  border: 1px solid var(--line); background: transparent;
+  color: var(--text); font: inherit; font-size: 12px; cursor: pointer;
+}
+.log-box {
+  background: color-mix(in srgb, var(--bg) 70%, var(--surface));
+  border: 1px solid var(--line-soft); border-radius: 10px;
+  font-size: 11.5px; color: var(--muted);
+}
+
+/* États vides */
+.empty-state { display: grid; justify-items: center; gap: 8px; padding: 28px 18px; text-align: center; color: var(--muted); }
+
+/* Étapes (pipeline, parcours, visites guidées) */
+.pipeline-steps { display: flex; flex-wrap: wrap; gap: 6px; }
+.step-marker { display: inline-flex; align-items: center; gap: 6px; }
+.step-index {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent); font-size: 10px; font-weight: var(--font-weight-bold);
+}
+.step-title { display: block; font-size: 12px; }
+.step-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); }
+.step-pending { opacity: .6; }
+.step-content { display: grid; gap: 2px; }
+
+/* Barre d'outils / filtres hérités */
+.filter-bar, .dashboard-toolbar, .toolbar-group { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.toolbar-label, .toolbar-group > label { font-size: 11px; color: var(--faint); }
+.toolbar-select, .select, .input, .select-md, .input-md {
+  padding: 8px 10px; border-radius: 9px;
+  border: 1px solid var(--line); background: var(--surface);
+  color: var(--text); font: inherit; font-size: 12.5px;
+}
+.segmented { display: inline-flex; padding: 2px; gap: 2px; border-radius: 9px; border: 1px solid var(--line); }
+.segmented button, .segmented .seg { border: 0; background: transparent; color: var(--muted); padding: 5px 10px; border-radius: 7px; font: inherit; font-size: 11.5px; cursor: pointer; }
+.segmented button.on, .segmented .seg.on { background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); }
+
+/* Transparence des états de chargement */
+.hover\:bg-bg-hover:hover { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+.bg-bg-hover { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+.border-b { border-bottom: 1px solid var(--line-soft); }
+.border-t { border-top: 1px solid var(--line-soft); }
+.border-border { border-color: var(--line); }
+
+/* ---------- 16 · Compléments (modale d'aide, grilles) ---------- */
+.grid-cols-1, .grid-cols-2, .grid-cols-3 { display: grid; }
+.col-span-12 { grid-column: span 12; }
+
+.modal-bg {
+  position: fixed; inset: 0; z-index: 90;
+  display: grid; place-items: center; padding: 20px;
+  background: rgba(3, 7, 18, .6);
+  backdrop-filter: blur(3px);
+}
+.modal-bg.hidden { display: none; }
+.modal-bg .modal {
+  width: min(560px, 100%);
+  max-height: min(80vh, 640px); overflow: auto;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 16px; box-shadow: var(--elevation-2);
+}
+.modal-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 14px 18px;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 13.5px; font-weight: var(--font-weight-semibold);
+}
+.kbd-grid { display: grid; gap: 9px; padding: 16px 18px; font-size: 12.5px; color: var(--muted); }
+.kbd {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 20px; padding: 1px 6px;
+  border: 1px solid var(--line); border-bottom-width: 2px;
+  border-radius: 6px; background: var(--bg);
+  font-family: var(--font-mono); font-size: 11px; color: var(--text);
+}
