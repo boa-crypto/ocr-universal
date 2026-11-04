@@ -125,9 +125,7 @@
       <div id="appNavigation" class="app-navigation"></div>
 
       <!-- ═══════ COCKPIT ═══════ -->
-      
-</section>
-<section id="tab-cockpit" class="page" role="region" aria-labelledby="cockpit-title">
+      <section id="tab-cockpit" class="page" role="region" aria-labelledby="cockpit-title">
         <div class="ws-head">
           <div>
             <span class="label label-badge label-badge-brand">ESPACE DE TRAVAIL</span>
@@ -1544,7 +1542,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          
 
           <!-- Sidebar: Settings -->
           <aside class="col-span-1 col-span-lg-5 space-y-6" aria-labelledby="settings-heading">
@@ -1814,7 +1812,7 @@
               </div>
             </div>
           </aside>
-        </div>
+        
 
         <!-- Batch Processing Section -->
         <div class="card card-elevated mt-8">
@@ -1866,14 +1864,16 @@
 
             <!-- Batch Results -->
             <div id="batchResult" role="region" aria-label="Résultats du lot"></div>
-          </div>
-        </div>
+          
+        
       
 
       <!-- ─────────── 02 · DOCUMENTS ─────────── -->
       
 </section>
-<section id="tab-docs" class="page">
+<</div>
+</div>
+section id="tab-docs" class="page">
         <header class="page-head">
           <div class="page-index">02 — Atelier · Archive</div>
           <h1 class="display" data-i18n="h.docs">Documents <em>traités</em></h1>
@@ -3730,7 +3730,7 @@
         <div class="panel panel-flush">
           <div class="table-scroll">
             <table class="tbl" id="historiqueTable">
-              <thead><tr><th>Référence</th><th>Date</th><th>Type</th><th>Résultat</><th>État</><th></th></tr></thead>
+              <thead><tr><th>Référence</th><th>Date</th><th>Type</th><th>Résultat</th><th>État</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -3751,7 +3751,7 @@
         <div class="panel panel-flush">
           <div class="table-scroll">
             <table class="tbl" id="mainlevesTable">
-              <thead><tr><th>Nom</><th>Type</><th>Date</><th>Statut</><th></th></tr></thead>
+              <thead><tr><th>Nom</th><th>Type</th><th>Date</th><th>Statut</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -3773,7 +3773,7 @@
         <div class="panel panel-flush">
           <div class="table-scroll">
             <table class="tbl" id="terminalTable">
-              <thead><tr><th>Numéro ISO</><th>Type><th>Dimensions><th>Poids><th>État><th></th></tr></thead>
+              <thead><tr><th>Numéro ISO</th><th>Type</th><th>Dimensions</th><th>Poids</th><th>État</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -3786,14 +3786,14 @@
 </section>
 <section id="tab-disponibilite" class="page">
         <header class="page-head">
-          <div class="page-index">PORT & ENLÈVEMENT · Disponibilité</h1>
+          <div class="page-index">PORT & ENLÈVEMENT · Disponibilité</div>
           <p class="lede">État de disponibilité des conteneurs et des espaces en terminal.</p>
         </header>
         <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Disponibilité des conteneurs</h3></div>
         <div class="panel panel-flush">
           <div class="table-scroll">
             <table class="tbl" id="disponibiliteTable">
-              <thead><tr><th>Conteneur</><th>Statut><th>Emplacement><th>Disponible><th></th></tr></thead>
+              <thead><tr><th>Conteneur</th><th>Statut</th><th>Emplacement</th><th>Disponible</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -3806,14 +3806,14 @@
 </section>
 <section id="tab-frais-portuaires" class="page">
         <header class="page-head">
-          <div class="page-index">PORT & ENLÈVEMENT · Frais portuaires</h1>
+          <div class="page-index">PORT & ENLÈVEMENT · Frais portuaires</div>
           <p class="lede">Registre des frais portuaires : pilotage, remorquage, amarrage.</p>
         </header>
         <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Liste des frais portuaires</h3></div>
         <div class="panel panel-flush">
           <div class="table-scroll">
             <table class="tbl" id="fraisPortuairesTable">
-              <thead><tr><th>Type</><th>Montant><th>Devise><th>Date><th>État><th></th></tr></thead>
+              <thead><tr><th>Type</th><th>Montant</th><th>Devise</th><th>Date</th><th>État</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -3826,14 +3826,14 @@
 </section>
 <section id="tab-enlevement" class="page">
         <header class="page-head">
-          <div class="page-index">PORT & ENLÈVEMENT · Demandes d'enlèvement</h1>
+          <div class="page-index">PORT & ENLÈVEMENT · Demandes d'enlèvement</div>
           <p class="lede">Registre des demandes d'enlèvement de conteneurs avec détails et statut.</p>
         </header>
         <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Liste des demandes d'enlèvement</h3></div>
         <div class="panel panel-flush">
           <div class="table-scroll">
             <table class="tbl" id="enlevementTable">
-              <thead><tr><th>Référence</><th>Conteneur><th>Demandeur><th>Date demande><th>État><th></th></tr></thead>
+              <thead><tr><th>Référence</th><th>Conteneur</th><th>Demandeur</th><th>Date demande</th><th>État</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -3846,14 +3846,14 @@
 </section>
 <section id="tab-planification" class="page">
         <header class="page-head">
-          <div class="page-index">PORT & ENLÈVEMENT · Planification</h1>
+          <div class="page-index">PORT & ENLÈVEMENT · Planification</div>
           <p class="lede">Planification des enlèvements et des mouvements de conteneurs.</p>
         </header>
         <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Planning d'enlèvement</h3></div>
         <div class="panel panel-flush">
           <div class="table-scroll">
             <table class="tbl" id="planificationTable">
-              <thead><tr><th>Conteneur</><th>Date enlèvement><th>Priorité><th>Responsable><th>État><th></th></tr></thead>
+              <thead><tr><th>Conteneur</th><th>Date enlèvement</th><th>Priorité</th><th>Responsable</th><th>État</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -3866,14 +3866,14 @@
 </section>
 <section id="tab-bons-sortie" class="page">
         <header class="page-head">
-          <div class="page-index">PORT & ENLÈVEMENT · Bons de sortie</h1>
+          <div class="page-index">PORT & ENLÈVEMENT · Bons de sortie</div>
           <p class="lede">Registre des bons de sortie émis pour les enlèvements de conteneurs.</p>
         </header>
         <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Listes des bons de sortie</h3></div>
         <div class="panel panel-flush">
           <div class="table-scroll">
             <table class="tbl" id="bonsSortieTable">
-              <thead><tr><th>Bon de sortie</><th>Conteneur><th>Client><th>Date><th>État><th></th></tr></thead>
+              <thead><tr><th>Bon de sortie</th><th>Conteneur</th><th>Client</th><th>Date</th><th>État</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -3886,14 +3886,14 @@
 </section>
 <section id="tab-mouvements" class="page">
         <header class="page-head">
-          <div class="page-index">PORT & ENLÈVEMENT · Mouvements</h1>
+          <div class="page-index">PORT & ENLÈVEMENT · Mouvements</div>
           <p class="lede">Suivi des mouvements de conteneurs entre les différentes zones du terminal.</p>
         </header>
         <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Mouvements de conteneurs</h3></div>
         <div class="panel panel-flush">
           <div class="table-scroll">
             <table class="tbl" id="mouvementsTable">
-              <thead><tr><th>Conteneur</><th>Type mouvement><th>Zone source><th>Zone destination><th>Date><th></th></tr></thead>
+              <thead><tr><th>Conteneur</th><th>Type mouvement</th><th>Zone source</th><th>Zone destination</th><th>Date</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -3902,7 +3902,6 @@
       
 
 
-    <footer class="footer-note">
         <header class="page-head">
           <div class="page-index">CONTRÔLES & INSPECTIONS · Contrôle documentaire</div>
           <h1 class="display">Contrôle <em>documentaire</em></h1>
@@ -3925,14 +3924,14 @@
 </section>
 <section id="tab-conformite" class="page">
         <header class="page-head">
-          <div class="page-index">CONTRÔLES & INSPECTIONS · Conformité</h1>
+          <div class="page-index">CONTRÔLES & INSPECTIONS · Conformité</div>
           <p class="lede">Validation de la conformité des extraits aux règles métier.</p>
         </header>
         <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Listes de contrôle</h3></div>
         <div class="panel panel-flush">
           <div class="table-scroll">
             <table class="tbl" id="conformiteTable">
-              <thead><tr><th>Document</th><th>Règles</th><th>Résultat</><th>Statut</><th></th></tr></thead>
+              <thead><tr><th>Document</th><th>Règles</th><th>Résultat</th><th>Statut</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -3945,14 +3944,14 @@
 </section>
 <section id="tab-phytosan" class="page">
         <header class="page-head">
-          <div class="page-index">CONTRÔLES & INSPECTIONS · Phytosanitaire</h1>
+          <div class="page-index">CONTRÔLES & INSPECTIONS · Phytosanitaire</div>
           <p class="lede">Contrôles phytosanitaires pour les envois de produits végétaux.</p>
         </header>
         <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Contrôles phytosanitaires</h3></div>
         <div class="panel panel-flush">
           <div class="table-scroll">
             <table class="tbl" id="phytosanTable">
-              <thead><tr><th>Document</><th>Plante</><th>Organisme</><th>Date</><th>État</><th></th></tr></thead>
+              <thead><tr><th>Document</th><th>Plante</th><th>Organisme</th><th>Date</th><th>État</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -3965,14 +3964,14 @@
 </section>
 <section id="tab-veterinaire" class="page">
         <header class="page-head">
-          <div class="page-index">CONTRÔLES & INSPECTIONS · Vétérinaire</h1>
+          <div class="page-index">CONTRÔLES & INSPECTIONS · Vétérinaire</div>
           <p class="lede">Contrôles vétérinaires pour les envois d'animaux et produits d'origine animale.</p>
         </header>
         <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Contrôles vétérinaires</h3></div>
         <div class="panel panel-flush">
           <div class="table-scroll">
             <table class="tbl" id="veterinaireTable">
-              <thead><tr><th>Document</><th>Animal</><th>Vétérinaire</><th>Date</><th>État</><th></th></tr></thead>
+              <thead><tr><th>Document</th><th>Animal</th><th>Vétérinaire</th><th>Date</th><th>État</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -3985,14 +3984,14 @@
 </section>
 <section id="tab-analyses" class="page">
         <header class="page-head">
-          <div class="page-index">CONTRÔLES & INSPECTIONS · Analyses</h1>
+          <div class="page-index">CONTRÔLES & INSPECTIONS · Analyses</div>
           <p class="lede">Rapports d'analyses techniques et résultats d'essais.</p>
         </header>
         <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Analyses répertoriées</h3></div>
         <div class="panel panel-flush">
           <div class="table-scroll">
             <table class="tbl" id="analysesTable">
-              <thead><tr><th>Type d'analyse</><th>Résultat><th>Date><th>Responsable><th>État><th></th></tr></thead>
+              <thead><tr><th>Type d'analyse</th><th>Résultat</th><th>Date</th><th>Responsable</th><th>État</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -4005,14 +4004,14 @@
 </section>
 <section id="tab-certificats" class="page">
         <header class="page-head">
-          <div class="page-index">CONTRÔLES & INSPECTIONS · Certificats</h1>
+          <div class="page-index">CONTRÔLES & INSPECTIONS · Certificats</div>
           <p class="lede">Certificats officiels délivrés pour les marchandises et documents.</p>
         </header>
         <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Certificats répertoriés</h3></div>
         <div class="panel panel-flush">
           <div class="table-scroll">
             <table class="tbl" id="certificatsTable">
-              <thead><tr><th>Type de certificat</><th>Destinataire><th>Date émission><th>Date expiration><th>État><th></th></tr></thead>
+              <thead><tr><th>Type de certificat</th><th>Destinataire</th><th>Date émission</th><th>Date expiration</th><th>État</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
@@ -4025,14 +4024,14 @@
 </section>
 <section id="tab-decision" class="page">
         <header class="page-head">
-          <div class="page-index">CONTRÔLES & INSPECTIONS · Décisions</h1>
+          <div class="page-index">CONTRÔLES & INSPECTIONS · Décisions</div>
           <p class="lede">Décisions prises suite aux contrôles et inspections effectuées.</p>
         </header>
         <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Décisions prises</h3></div>
         <div class="panel panel-flush">
           <div class="table-scroll">
             <table class="tbl" id="decisionTable">
-              <thead><tr><th>Document</><th>Décision><th>Date><th>Motivation><th>État><th></th></tr></thead>
+              <thead><tr><th>Document</th><th>Décision</th><th>Date</th><th>Motivation</th><th>État</th><th></th></tr></thead>
               <tbody></tbody>
             </table>
           </div>

@@ -329,6 +329,17 @@
 
     window.addEventListener('hashchange', handleHashChange);
 
+    // Le document hérité contient des balises déséquilibrées : le navigateur
+    // peut sortir certaines sections de <main> (reparentage par les tableaux
+    // malformés). On les replace toutes dans la zone de travail pour que la
+    // mise en page (barre latérale + contenu) reste cohérente.
+    const zone = document.querySelector("main.workspace");
+    if (zone) {
+      document.querySelectorAll("section.page").forEach(section => {
+        if (section.parentElement !== zone) zone.appendChild(section);
+      });
+    }
+
     // Afficher immédiatement le cockpit : sans cela, toutes les sections
     // resteraient visibles les unes sous les autres tant que le hash est vide.
     if (!window.location.hash) {
