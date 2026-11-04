@@ -1893,6 +1893,31 @@
         { cle: "code", libelle: "Code" },
         { cle: "cree_le", libelle: "Créé le", format: "date" }
       ],
+      actions: (["ports", "pays", "devises"].indexOf(def.collection) >= 0 ? [{
+        /* Données de référence publiques : un poste neuf n'a aucune raison de
+           faire ressaisir les ports, pays et devises à la main. L'opération
+           est idempotente et ne touche ni dossiers ni montants. */
+        libelle: "Charger le jeu de base",
+        url: "/api/referentiels/" + def.collection + "/base",
+        methode: "POST",
+        global: true,
+        confirmation: "Ajouter les entrées de référence manquantes ? Les entrées " +
+                      "déjà présentes ne sont pas modifiées.",
+        succes: "Jeu de base appliqué",
+        resultat: true,
+        resumer: function (reponse) {
+          if (!reponse || typeof reponse.ajoutes !== "number") return "";
+          if (!reponse.ajoutes) {
+            return "Rien à ajouter : les " + reponse.deja_presents +
+                   " entrées de référence sont déjà présentes.";
+          }
+          return reponse.ajoutes + " entrée" + (reponse.ajoutes > 1 ? "s" : "") +
+                 " ajoutée" + (reponse.ajoutes > 1 ? "s" : "") + ", " +
+                 reponse.deja_presents + " déjà présente" +
+                 (reponse.deja_presents > 1 ? "s" : "") + " — total " +
+                 reponse.total + ".";
+        }
+      }] : []),
       creation: { url: "/api/referentiels/" + def.collection, champs: champsCreation },
       edition: { url: "/api/referentiels/" + def.collection + "/{id}", champs: champsCreation },
       suppression: { url: "/api/referentiels/" + def.collection + "/{id}" },
@@ -2382,14 +2407,18 @@
       if (action.afficher) {
         /* Action de lecture (texte, résultat, détail) : on affiche la réponse
            et on ne recharge pas la liste, sinon le panneau serait effacé. */
-        afficherResultat(action.libelle, reponse);
+        afficherResultat(action.libelle, reponse,
+          action.resumer ? action.resumer(reponse) : "");
         return;
       }
       charger(ecran.__route, true);
       if (action.resultat) {
         /* Action d'écriture qui renvoie un verdict : on l'affiche après le
            rechargement de la liste, sinon le rendu le remplacerait. */
-        setTimeout(function () { afficherResultat(action.libelle, reponse); }, 450);
+        setTimeout(function () {
+          afficherResultat(action.libelle, reponse,
+            action.resumer ? action.resumer(reponse) : "");
+        }, 450);
       }
     }).catch(function (erreur) {
       toast((action.libelle || "Action") + " : " + erreur.message, "error");
@@ -2588,16 +2617,21 @@
     zone.insertBefore(bloc, zone.firstChild);
   }
 
-  function afficherResultat(titre, donnees) {
+  function afficherResultat(titre, donnees, resume) {
     var zone = hote();
     if (!zone) return;
     var ancien = zone.querySelector(".ecran__resultat");
     if (ancien) ancien.remove();
     var bloc = elt("div", "ecran__resultat");
     bloc.appendChild(elt("h3", "ecran__resultat-titre", titre));
-    var pre = elt("pre", "ecran__resultat-corps");
-    pre.textContent = JSON.stringify(donnees, null, 2);
-    bloc.appendChild(pre);
+    if (resume) {
+      /* Une phrase claire vaut mieux qu'un JSON quand la réponse est simple. */
+      bloc.appendChild(elt("p", "ecran__resultat-resume", resume));
+    } else {
+      var pre = elt("pre", "ecran__resultat-corps");
+      pre.textContent = JSON.stringify(donnees, null, 2);
+      bloc.appendChild(pre);
+    }
     var fermer = elt("button", "btn ghost sm", "Fermer");
     fermer.type = "button";
     fermer.addEventListener("click", function () { bloc.remove(); });

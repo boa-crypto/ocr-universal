@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 20. Ce document est la liste de travail
+État au 2026-11-04, après la passe 21. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -53,7 +53,8 @@ validation nommant le champ, effet immédiat et persistant.
 
 | # | Tâche | Constat |
 |---|---|---|
-| P3-1 | **Remplir les 12 référentiels** (ports, pays, devises, natures, tarifs, règles documentaires, paramètres, équipes, types de documents…) | les écrans sont conformes, les CRUD exercés et les formulaires les proposent désormais ; il manque le **contenu d'exploitation** (saisie métier, pas du code) |
+| ✅ P3-1a | ~~Amorcer les référentiels de référence (ports, pays, devises)~~ | **fait en passe 21** : bouton « Charger le jeu de base » (idempotent, non destructif, tracé) ; 12 pays, 5 devises, 10 ports proposés aux formulaires |
+| P3-1b | Remplir le **contenu d'exploitation** (tarifs, règles documentaires, équipes, paramètres métier, natures de marchandise) | ces collections n'ont pas de jeu de référence public : elles relèvent d'une saisie métier, pas d'un code |
 | ✅ P3-2 | ~~Relier les référentiels aux formulaires métier~~ | **fait en passe 15** : `datalist` alimentée par `/api/referentiels/{nom}` sur Clients (pays), Fournisseurs (pays), Navires (pavillon) et le dialogue de création de dossier (ports) ; un référentiel vide le dit et laisse la saisie libre |
 | ✅ P3-3 | ~~Couvrir les écrans d'administration (utilisateurs, rôles, sécurité, intégrations)~~ | **fait en passes 11 à 13** : 13 entrées mesurées (16 liens, 23 cartes, 3 sources API sur le hub ; utilisateurs et rôles CRUD ; connecteurs API 3 lignes) |
 | P3-4 | Statistiques avancées (séries, comparaisons, export planifié) | l'écran actuel affiche les indicateurs réels de `/api/stats`, rien de plus |

@@ -1034,3 +1034,29 @@ def test_ecran_cloture_archive_avec_confirmation() -> None:
     assert "confirmation:" in bloc and "Archiver ce dossier" in bloc
     assert 'ligne.state || "") !== "archive"' in bloc      # jamais sur un archivé
     assert "succes:" in bloc
+
+
+def test_referentiels_proposent_le_jeu_de_base() -> None:
+    """Un poste neuf peut charger ports/pays/devises sans les ressaisir.
+
+    L'action est globale (pas par ligne), idempotente côté serveur, et son
+    résultat s'affiche en phrase plutôt qu'en JSON.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    moteur = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+    serveur = (racine / "src" / "unocr" / "routes" / "referentiels.py").read_text(
+        encoding="utf-8")
+
+    assert '["ports", "pays", "devises"].indexOf(def.collection) >= 0' in moteur
+    assert 'url: "/api/referentiels/" + def.collection + "/base"' in moteur
+    assert "global: true" in moteur
+    assert "Charger le jeu de base" in moteur
+    # résultat lisible : « 12 entrées ajoutées… » et non un bloc JSON
+    assert "resumer: function (reponse)" in moteur
+    assert "entrée\" + (reponse.ajoutes > 1" in moteur or 'reponse.ajoutes + " entrée"' in moteur
+    assert "function afficherResultat(titre, donnees, resume)" in moteur
+
+    # côté serveur : jeu de base explicite, idempotent, jamais destructif
+    assert "JEU_DE_BASE" in serveur
+    assert '"origine": "jeu de base"' in serveur
+    assert "referentiel_amorce" in serveur

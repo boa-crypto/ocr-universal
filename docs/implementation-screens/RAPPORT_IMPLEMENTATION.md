@@ -781,6 +781,48 @@ sont là, il échoue franchement et affiche la sortie complète du harnais.
 Les codes de sortie sont utilisables en CI : `0` tout passe, `1` une
 vérification tombe, `2` environnement (serveur injoignable).
 
+## 2.24 Passe 21 — un poste neuf peut charger ses référentiels
+
+La passe 15 avait relié les référentiels aux formulaires : le champ « Pays »
+propose ce que contient le référentiel. Mais sur un poste neuf, le référentiel
+est **vide** — la suggestion ne servait à rien tant que quelqu'un n'avait pas
+saisi douze pays, dix ports et cinq devises à la main.
+
+### Ce que l'amorçage apporte, et ce qu'il n'est pas
+
+`POST /api/referentiels/{collection}/base` ajoute les entrées **manquantes**
+d'un jeu de référence public : pays (DZ, FR, ES, IT, DE, BE, MA, TN, TR, CN,
+AE, US), devises (DZD, EUR, USD, GBP, CNY), ports (Alger, Oran, Arzew,
+Mostaganem, Skikda, Béjaïa, Annaba, Marseille, Valence, Gênes).
+
+Ce ne sont **pas des données d'exemple** : aucun dossier, aucun montant, aucune
+pièce n'est créé. Ce sont des listes stables et vérifiables, que personne ne
+devrait ressaisir. Chaque entrée porte `origine: "jeu de base"`, ce qui permet
+de distinguer plus tard une saisie métier d'une entrée d'amorçage.
+
+### Trois garde-fous
+
+1. **Idempotent** : relancé, l'amorçage n'ajoute que ce qui manque (mesuré :
+   12 ajoutés puis 0 ajouté, 12 déjà présents).
+2. **Jamais destructif** : une entrée saisie à la main avec le même code n'est
+   pas réécrite (test dédié : `Algerie (saisie locale)` reste intacte).
+3. **Tracé et borné** : `referentiel_amorce` dans le journal ; `tarifs` — qui
+   n'a pas de base — répond 404 en listant les collections disponibles.
+
+### Côté écran
+
+Les trois référentiels concernés affichent un bouton global **« Charger le jeu
+de base »** (confirmation, puis rechargement de la liste). Le résultat ne
+s'affiche plus en JSON mais en phrase : *« 12 entrées ajoutées, 0 déjà
+présente — total 12 »*, ou *« Rien à ajouter : les 12 entrées de référence sont
+déjà présentes »*. Le moteur gagne pour cela un résumé optionnel d'action
+(`resumer`), sans casser le panneau JSON utilisé ailleurs.
+
+Mesure jsdom : `#referentiels/ports` vide → clic → `POST …/base 200`, **10
+lignes**, puis le dialogue de création de dossier propose **10 ports** — la
+liaison de la passe 15 trouve enfin sa matière. Les données de démonstration du
+dépôt n'ont pas été modifiées : c'est l'opérateur qui décide de l'amorçage.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

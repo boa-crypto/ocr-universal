@@ -129,9 +129,11 @@ async function ouvrirRoute(w, doc, route, delai) {
       await attendre(1800);
       const items = doc.querySelectorAll(".chrono-item").length;
       const bloc = doc.querySelector(".ecran__resultat");
-      noter("Historique d'un document", Boolean(bloc) && (items > 0 ||
-        (bloc.textContent || "").includes("Aucun événement")),
-        items + " événement(s)");
+      /* Un historique vide est acceptable — à condition qu'il s'explique. */
+      const explique = Boolean(doc.querySelector(".chrono-vide")) &&
+        (doc.querySelector(".chrono-vide").textContent || "").trim().length > 20;
+      noter("Historique d'un document", Boolean(bloc) && (items > 0 || explique),
+        items + " événement(s)" + (explique ? " (vide expliqué)" : ""));
     }
   }
 

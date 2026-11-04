@@ -216,6 +216,119 @@ def creer_entree(request: Request, collection: str, entree: EntreeCreate) -> dic
     return enregistrement
 
 
+
+#: Jeu de base des référentiels : **données de référence publiques**, pas des
+#: données d'exploitation. Un port, un pays ou une devise ne s'inventent pas —
+#: ces listes sont stables, vérifiables, et servent d'amorce à la saisie.
+#: L'opération est idempotente : relancée, elle n'ajoute que ce qui manque.
+JEU_DE_BASE: dict[str, list[dict[str, Any]]] = {
+    "pays": [
+        {"libelle": "Algérie", "code": "DZ", "attributs": {"zone": "Maghreb"}},
+        {"libelle": "France", "code": "FR", "attributs": {"zone": "Union européenne"}},
+        {"libelle": "Espagne", "code": "ES", "attributs": {"zone": "Union européenne"}},
+        {"libelle": "Italie", "code": "IT", "attributs": {"zone": "Union européenne"}},
+        {"libelle": "Allemagne", "code": "DE", "attributs": {"zone": "Union européenne"}},
+        {"libelle": "Belgique", "code": "BE", "attributs": {"zone": "Union européenne"}},
+        {"libelle": "Maroc", "code": "MA", "attributs": {"zone": "Maghreb"}},
+        {"libelle": "Tunisie", "code": "TN", "attributs": {"zone": "Maghreb"}},
+        {"libelle": "Turquie", "code": "TR", "attributs": {"zone": "Méditerranée"}},
+        {"libelle": "Chine", "code": "CN", "attributs": {"zone": "Asie"}},
+        {"libelle": "Émirats arabes unis", "code": "AE", "attributs": {"zone": "Golfe"}},
+        {"libelle": "États-Unis", "code": "US", "attributs": {"zone": "Amérique du Nord"}},
+    ],
+    "devises": [
+        {"libelle": "Dinar algérien", "code": "DZD", "attributs": {"symbole": "DA"}},
+        {"libelle": "Euro", "code": "EUR", "attributs": {"symbole": "€"}},
+        {"libelle": "Dollar américain", "code": "USD", "attributs": {"symbole": "$"}},
+        {"libelle": "Livre sterling", "code": "GBP", "attributs": {"symbole": "£"}},
+        {"libelle": "Yuan", "code": "CNY", "attributs": {"symbole": "¥"}},
+    ],
+    "ports": [
+        {"libelle": "Port d'Alger", "code": "DZALG",
+         "attributs": {"pays": "DZ", "type": "port"}},
+        {"libelle": "Port d'Oran", "code": "DZORN",
+         "attributs": {"pays": "DZ", "type": "port"}},
+        {"libelle": "Port d'Arzew", "code": "DZARZ",
+         "attributs": {"pays": "DZ", "type": "port"}},
+        {"libelle": "Port de Mostaganem", "code": "DZMOS",
+         "attributs": {"pays": "DZ", "type": "port"}},
+        {"libelle": "Port de Skikda", "code": "DZSKI",
+         "attributs": {"pays": "DZ", "type": "port"}},
+        {"libelle": "Port de Béjaïa", "code": "DZBJA",
+         "attributs": {"pays": "DZ", "type": "port"}},
+        {"libelle": "Port d'Annaba", "code": "DZANN",
+         "attributs": {"pays": "DZ", "type": "port"}},
+        {"libelle": "Port de Marseille", "code": "FRMRS",
+         "attributs": {"pays": "FR", "type": "port"}},
+        {"libelle": "Port de Valence", "code": "ESVLC",
+         "attributs": {"pays": "ES", "type": "port"}},
+        {"libelle": "Port de Gênes", "code": "ITGOA",
+         "attributs": {"pays": "IT", "type": "port"}},
+    ],
+}
+
+
+@router.get("/{collection}/base/apercu")
+def apercu_jeu_de_base(collection: str) -> dict:
+    """Combien d'entrées le jeu de base apporterait à cette collection."""
+    _collection_valide(collection)
+    base = JEU_DE_BASE.get(collection)
+    if base is None:
+        return {"collection": collection, "disponible": False, "total": 0,
+                "nouveaux": 0, "deja_presents": 0}
+    donnees = _charger()
+    existants = {str(e.get("code") or "").strip().upper()
+                 for e in donnees.get(collection, {}).values()}
+    nouveaux = [e for e in base if e["code"].upper() not in existants]
+    return {"collection": collection, "disponible": True, "total": len(base),
+            "nouveaux": len(nouveaux),
+            "deja_presents": len(base) - len(nouveaux)}
+
+
+@router.post("/{collection}/base")
+def amorcer_du_jeu_de_base(request: Request, collection: str) -> dict:
+    """Ajoute les entrées manquantes du jeu de base (idempotent, tracé).
+
+    **Ce que ce n'est pas.** Ce n'est pas un remplissage d'exemple : aucune
+    donnée d'exploitation n'est créée (pas de dossier, pas de montant). Ce sont
+    des listes de référence publiques — pays, devises, ports — qui manquent à
+    un poste neuf et que personne ne devrait ressaisir à la main.
+    """
+    _collection_valide(collection)
+    base = JEU_DE_BASE.get(collection)
+    if base is None:
+        raise HTTPException(
+            404, f"aucun jeu de base pour « {collection} » (disponibles : "
+                 + (", ".join(sorted(JEU_DE_BASE)) or "aucun") + ")")
+    donnees = _charger()
+    entrees = donnees.setdefault(collection, {})
+    codes = {str(e.get("code") or "").strip().upper() for e in entrees.values()}
+    ajoutes = []
+    for modele in base:
+        if modele["code"].upper() in codes:
+            continue
+        identifiant = new_id(f"{collection[:4]}_")
+        maintenant = time.time()
+        entrees[identifiant] = {
+            "id": identifiant,
+            "libelle": modele["libelle"],
+            "code": modele["code"],
+            "attributs": dict(modele.get("attributs") or {}),
+            "cree_le": maintenant,
+            "modifie_le": maintenant,
+            "origine": "jeu de base",
+        }
+        codes.add(modele["code"].upper())
+        ajoutes.append(entrees[identifiant])
+    if ajoutes:
+        _sauver(donnees)
+    audit(request.app.state.cfg.log_dir, "referentiel_amorce",
+          collection=collection, ajoutes=len(ajoutes), total=len(entrees))
+    return {"collection": collection, "ajoutes": len(ajoutes),
+            "deja_presents": len(base) - len(ajoutes), "total": len(entrees),
+            "libelles": [e["libelle"] for e in ajoutes]}
+
+
 @router.get("/{collection}/{entree_id}")
 def lire_entree(collection: str, entree_id: str) -> dict:
     _collection_valide(collection)

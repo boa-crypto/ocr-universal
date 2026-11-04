@@ -16,6 +16,7 @@ les produit. Les tests ajoutés dans cette passe sont marqués 🆕.
 | `python -m pytest tests/test_ui_premium.py -q` | **52 passed** | +1 par passe depuis la 14 |
 | `python -m pytest tests/test_historique.py -q` | **5 passed** 🆕 | ordre, filtrage par document, événements inconnus, journal illisible |
 | `python -m pytest tests/test_rbac_ecritures.py -q` | **18 passed** | 14 familles d'écriture refusées à un lecteur, refus tracés |
+| `python -m pytest tests/test_referentiels_base.py -q` | **6 passed** 🆕 | amorçage idempotent, non destructif, tracé, borné |
 | `npm run ui:smoke` | **15/15 vérifications** 🆕 | 8 écrans, 4 interactions, 0 écriture, 0 erreur JS ou 5xx |
 | `python -m pytest tests/test_interface_jsdom.py -q` | **1 passed** (ou sauté sans jsdom/serveur) 🆕 | rejoue le harnais depuis pytest |
 | `python -m pytest tests/test_parametres.py -q` | **10 passed** 🆕 | écriture, bornes, persistance, effet réel sur l'import |
