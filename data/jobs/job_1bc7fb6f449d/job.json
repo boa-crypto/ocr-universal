@@ -1,0 +1,22 @@
+{
+  "id": "job_1bc7fb6f449d",
+  "filename": "qr_code.png",
+  "status": "done",
+  "created_at": 1792269096.4665618,
+  "updated_at": 1792269096.8407247,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "fast",
+    "preprocess": true,
+    "export_formats": [
+      "json",
+      "txt"
+    ]
+  },
+  "result_id": "doc_378a9bb548bb",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1
+}

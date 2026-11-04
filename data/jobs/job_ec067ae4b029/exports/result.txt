@@ -1,0 +1,5 @@
+--- Page 1 ---
+REF DESIGNATION QTE PRIX
+A1 Clavier 50 25,00
+B2 Souris 20 12,50
+C3 Ecran 10 150,00

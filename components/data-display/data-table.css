@@ -1,0 +1,189 @@
+/**
+ * OCR Universal - Data Table
+ * HIGH Priority: Dense, scannable data display
+ * Requirements: Appropriate density for 50-200 docs/day, sticky header, sortable
+ */
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-primary);
+  font-size: var(--text-body-sm);
+  background-color: var(--surface-base);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: var(--elevation-1);
+}
+
+.data-table thead {
+  background-color: var(--neutral-100);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.data-table th {
+  padding: var(--space-3) var(--space-4);
+  font-weight: 600;
+  color: var(--neutral-700);
+  text-align: left;
+  border-bottom: 2px solid var(--neutral-300);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: var(--space-3) var(--space-4);
+  color: var(--neutral-800);
+  border-bottom: 1px solid var(--neutral-200);
+}
+
+/* Striped rows */
+.data-table--striped tbody tr:nth-child(even) {
+  background-color: var(--neutral-50);
+}
+
+/* Hoverable rows */
+.data-table--hoverable tbody tr {
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.data-table--hoverable tbody tr:hover {
+  background-color: var(--neutral-100);
+}
+
+/* Monospace cells for OCR data */
+.data-table__cell--mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-data);
+  letter-spacing: var(--text-data-spacing);
+}
+
+/* Confidence badge inline in cell */
+.data-table__cell--confidence {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Sortable column headers */
+.data-table__header--sortable {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-right: var(--space-8);
+}
+
+.data-table__header--sortable:hover {
+  background-color: var(--neutral-200);
+}
+
+.data-table__header--sortable::after {
+  content: '';
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid var(--neutral-400);
+  opacity: 0.3;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.data-table__header--sorted-asc::after {
+  border-bottom: 4px solid var(--brand-secondary);
+  opacity: 1;
+}
+
+.data-table__header--sorted-desc::after {
+  border-bottom: none;
+  border-top: 4px solid var(--brand-secondary);
+  opacity: 1;
+}
+
+/* Clickable rows */
+.data-table__row--clickable {
+  cursor: pointer;
+}
+
+.data-table__row--clickable:focus-visible {
+  outline: 2px solid var(--brand-secondary);
+  outline-offset: -2px;
+}
+
+/* Row selection */
+.data-table__row--selected {
+  background-color: rgba(8, 145, 178, 0.1);
+}
+
+/* Cell alignment */
+.data-table__cell--right {
+  text-align: right;
+}
+
+.data-table__cell--center {
+  text-align: center;
+}
+
+/* Compact variant for high-density data */
+.data-table--compact th,
+.data-table--compact td {
+  padding: var(--space-2) var(--space-3);
+}
+
+/* Responsive: horizontal scroll on mobile */
+.data-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+  .data-table {
+    font-size: var(--text-caption);
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: var(--space-2) var(--space-3);
+  }
+}
+
+/* Dark mode */
+[data-theme="dark"] .data-table {
+  background-color: var(--surface-raised);
+}
+
+[data-theme="dark"] .data-table thead {
+  background-color: var(--neutral-800);
+}
+
+[data-theme="dark"] .data-table th {
+  color: var(--neutral-300);
+  border-bottom-color: var(--neutral-600);
+}
+
+[data-theme="dark"] .data-table td {
+  color: var(--neutral-200);
+  border-bottom-color: var(--neutral-700);
+}
+
+[data-theme="dark"] .data-table--striped tbody tr:nth-child(even) {
+  background-color: var(--neutral-900);
+}
+
+[data-theme="dark"] .data-table--hoverable tbody tr:hover {
+  background-color: var(--neutral-800);
+}
+
+[data-theme="dark"] .data-table__row--selected {
+  background-color: rgba(8, 145, 178, 0.2);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .data-table--hoverable tbody tr {
+    transition: none;
+  }
+}

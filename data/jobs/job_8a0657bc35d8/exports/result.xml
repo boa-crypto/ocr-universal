@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='utf-8'?>
+<document id="job_8a0657bc35d8" source="bl_port.pdf" hash="1460e53b8490a789c2ac6a2a47142f4ff4867fedf4cfb047d57639f830f9d592" profile="port_bl">
+  <meta>
+    <engines>easyocr,indra,native_pdf,paddleocr,tesseract</engines>
+    <mean_engine_confidence>0.995</mean_engine_confidence>
+    <mean_global_confidence>0.761</mean_global_confidence>
+  </meta>
+  <pages>
+    <page num="1" width="1653" height="2338">
+      <text>BILL OF LADING
+B/L No: MSCU123456789
+Booking Number: BK-998877
+Shipper: SARL Exemple Alger
+Consignee: Global Import GmbH
+Notify Party: Logistics Partner SA
+Vessel: MSC AURORA
+Voyage Number: 512W
+Shipping Line: MSC
+Port of Loading: ALGER
+Port of Discharge: HAMBURG
+Place of Delivery: HAMBURG
+Container Number: CSQU3054383
+ISO Type Code: 22G1
+Seal Number: SL-445566
+Description of Goods: MACHINERY PARTS
+Packages: 120
+Gross Weight: 8500 KG
+Net Weight: 8100 KG
+Volume: 28.5 M3
+HS Code: 8471.30
+Marks and Numbers: N/M
+ETA: 28/03/2024
+ETD: 15/03/2024</text>
+    </page>
+  </pages>
+  <fields>
+    <field name="date" label="Date" status="ambiguous" origin="normalisation automatique" source="ocr" zone="" confidence="0.868" engine_confidence="0.995" page="" raw="2024-03-28 | 2024-03-15" normalized="2024-03-28 | 2024-03-15" corrected="" confirmed="" />
+    <field name="email" label="E-mail" status="not_detected" origin="transcription moteur" source="ocr" zone="" confidence="0.0" engine_confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="url" label="URL" status="not_detected" origin="transcription moteur" source="ocr" zone="" confidence="0.0" engine_confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="phone" label="Téléphone" status="detected" origin="normalisation automatique" source="ocr" zone="x0=164.4 y0=281.1 x1=603.1 y1=311.8" confidence="0.761" engine_confidence="0.995" page="1" raw="998877 | 445566 | 847130" normalized="998877 | 445566 | 847130" corrected="" confirmed="" />
+    <field name="iban" label="IBAN" status="not_detected" origin="transcription moteur" source="ocr" zone="" confidence="0.0" engine_confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="invoice_number" label="Référence facture" status="not_detected" origin="transcription moteur" source="rule" zone="" confidence="0.0" engine_confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="vat_number" label="N° TVA" status="not_detected" origin="transcription moteur" source="ocr" zone="" confidence="0.0" engine_confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="container_number" label="N° de conteneur" status="detected" origin="normalisation automatique" source="rule" zone="x0=165.3 y0=947.9 x1=684.4 y1=972.4" confidence="0.765" engine_confidence="1.0" page="1" raw="CSQU3054383" normalized="CSQU3054383" corrected="" confirmed="" />
+    <field name="serial_number" label="N° de série" status="not_detected" origin="transcription moteur" source="ocr" zone="" confidence="0.0" engine_confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="amount" label="Montant" status="not_detected" origin="transcription moteur" source="ocr" zone="" confidence="0.0" engine_confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="percent" label="Pourcentage" status="not_detected" origin="transcription moteur" source="ocr" zone="" confidence="0.0" engine_confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="quantity" label="Quantité + unité" status="detected" origin="normalisation automatique" source="ocr" zone="x0=164.3 y0=1280.7 x1=520.9 y1=1312.2" confidence="0.761" engine_confidence="0.995" page="1" raw="8500 | 8100 | 28.5" normalized="8500 | 8100 | 28.5" corrected="" confirmed="" />
+    <field name="bl_number" label="Bill of Lading (BL)" status="detected" origin="normalisation automatique" source="rule" zone="x0=169.9 y0=214.3 x1=551.9 y1=239.2" confidence="0.765" engine_confidence="1.0" page="1" raw="MSCU123456789" normalized="MSCU123456789" corrected="" confirmed="" />
+    <field name="booking_number" label="Booking Number" status="detected" origin="normalisation automatique" source="rule" zone="x0=164.4 y0=281.1 x1=603.1 y1=311.8" confidence="0.765" engine_confidence="1.0" page="1" raw="BK-998877" normalized="BK-998877" corrected="" confirmed="" />
+    <field name="iso_type_code" label="ISO Container Type Code" status="detected" origin="normalisation automatique" source="rule" zone="x0=164.4 y0=1013.8 x1=493.4 y1=1044.7" confidence="0.765" engine_confidence="1.0" page="1" raw="22G1" normalized="22G1" corrected="" confirmed="" />
+    <field name="seal_number" label="Seal Number" status="detected" origin="normalisation automatique" source="rule" zone="x0=164.7 y0=1079.9 x1=543.4 y1=1108.7" confidence="0.765" engine_confidence="1.0" page="1" raw="SL-445566" normalized="SL-445566" corrected="" confirmed="" />
+    <field name="vessel_name" label="Vessel Name" status="detected" origin="normalisation automatique" source="rule" zone="x0=165.2 y0=547.8 x1=515.5 y1=573.4" confidence="0.765" engine_confidence="1.0" page="1" raw="MSC AURORA" normalized="MSC AURORA" corrected="" confirmed="" />
+    <field name="voyage_number" label="Voyage Number" status="detected" origin="normalisation automatique" source="rule" zone="x0=164.3 y0=614.1 x1=516.4 y1=645.7" confidence="0.765" engine_confidence="1.0" page="1" raw="512W" normalized="512W" corrected="" confirmed="" />
+    <field name="shipping_line" label="Shipping Line" status="detected" origin="normalisation automatique" source="rule" zone="x0=165.2 y0=547.8 x1=515.5 y1=573.4" confidence="0.765" engine_confidence="1.0" page="1" raw="MSC" normalized="MSC" corrected="" confirmed="" />
+    <field name="shipper" label="Shipper (expéditeur)" status="detected" origin="normalisation automatique" source="rule" zone="x0=164.3 y0=347.6 x1=616.9 y1=379.1" confidence="0.765" engine_confidence="1.0" page="1" raw="SARL Exemple Alger" normalized="SARL Exemple Alger" corrected="" confirmed="" />
+    <field name="consignee" label="Consignee (destinataire)" status="detected" origin="normalisation automatique" source="rule" zone="x0=164.2 y0=413.6 x1=649.0 y1=445.7" confidence="0.765" engine_confidence="1.0" page="1" raw="Global Import GmbH" normalized="Global Import GmbH" corrected="" confirmed="" />
+    <field name="notify_party" label="Notify Party" status="detected" origin="normalisation automatique" source="rule" zone="x0=164.2 y0=480.6 x1=662.7 y1=513.1" confidence="0.765" engine_confidence="1.0" page="1" raw="Logistics Partner SA" normalized="Logistics Partner SA" corrected="" confirmed="" />
+    <field name="port_of_loading" label="Port of Loading" status="detected" origin="normalisation automatique" source="rule" zone="x0=164.3 y0=347.6 x1=616.9 y1=379.1" confidence="0.765" engine_confidence="1.0" page="1" raw="ALGER" normalized="ALGER" corrected="" confirmed="" />
+    <field name="port_of_discharge" label="Port of Discharge" status="detected" origin="normalisation automatique" source="rule" zone="x0=164.2 y0=814.0 x1=612.4 y1=845.9" confidence="0.765" engine_confidence="1.0" page="1" raw="HAMBURG" normalized="HAMBURG" corrected="" confirmed="" />
+    <field name="place_of_receipt" label="Place of Receipt" status="not_detected" origin="transcription moteur" source="rule" zone="" confidence="0.0" engine_confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="place_of_delivery" label="Place of Delivery" status="detected" origin="normalisation automatique" source="rule" zone="x0=164.2 y0=814.0 x1=612.4 y1=845.9" confidence="0.765" engine_confidence="1.0" page="1" raw="HAMBURG" normalized="HAMBURG" corrected="" confirmed="" />
+    <field name="goods_description" label="Description des marchandises" status="detected" origin="normalisation automatique" source="rule" zone="x0=164.3 y0=1147.1 x1=817.9 y1=1178.8" confidence="0.765" engine_confidence="1.0" page="1" raw="MACHINERY PARTS" normalized="MACHINERY PARTS" corrected="" confirmed="" />
+    <field name="packages_count" label="Nombre de colis" status="detected" origin="normalisation automatique" source="rule" zone="x0=164.4 y0=1214.3 x1=388.4 y1=1245.3" confidence="0.765" engine_confidence="1.0" page="1" raw="120" normalized="120" corrected="" confirmed="" />
+    <field name="gross_weight" label="Poids brut" status="detected" origin="normalisation automatique" source="rule" zone="x0=164.3 y0=1280.7 x1=520.9 y1=1312.2" confidence="0.765" engine_confidence="1.0" page="1" raw="8500" normalized="8500" corrected="" confirmed="" />
+    <field name="net_weight" label="Poids net" status="detected" origin="normalisation automatique" source="rule" zone="x0=164.3 y0=1347.2 x1=484.4 y1=1378.8" confidence="0.765" engine_confidence="1.0" page="1" raw="8100" normalized="8100" corrected="" confirmed="" />
+    <field name="volume" label="Volume" status="detected" origin="normalisation automatique" source="rule" zone="x0=165.3 y0=1414.9 x1=419.5 y1=1439.8" confidence="0.765" engine_confidence="1.0" page="1" raw="28.5" normalized="28.5" corrected="" confirmed="" />
+    <field name="hs_code" label="HS Code" status="detected" origin="normalisation automatique" source="rule" zone="x0=165.3 y0=1481.6 x1=442.2 y1=1506.2" confidence="0.765" engine_confidence="1.0" page="1" raw="8471.30" normalized="847130" corrected="" confirmed="" />
+    <field name="marks_numbers" label="Marks and Numbers" status="detected" origin="normalisation automatique" source="rule" zone="x0=165.2 y0=1546.8 x1=547.5 y1=1572.5" confidence="0.765" engine_confidence="1.0" page="1" raw="N/M" normalized="N/M" corrected="" confirmed="" />
+    <field name="eta" label="ETA" status="detected" origin="normalisation automatique" source="rule" zone="x0=165.4 y0=1615.8 x1=419.3 y1=1639.8" confidence="0.765" engine_confidence="1.0" page="1" raw="28/03/2024" normalized="2024-03-28" corrected="" confirmed="" />
+    <field name="etd" label="ETD" status="detected" origin="normalisation automatique" source="rule" zone="x0=165.4 y0=1682.4 x1=419.4 y1=1706.8" confidence="0.765" engine_confidence="1.0" page="1" raw="15/03/2024" normalized="2024-03-15" corrected="" confirmed="" />
+    <field name="manifest_number" label="N° de manifeste" status="not_detected" origin="transcription moteur" source="rule" zone="" confidence="0.0" engine_confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="customs_reference" label="Référence douanière" status="not_detected" origin="transcription moteur" source="rule" zone="" confidence="0.0" engine_confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+  </fields>
+  <tables />
+  <anomalies>
+    <anomaly code="PAGE_OVEREXPOSED" severity="info" page="1">page 1 : overexposed</anomaly>
+    <anomaly code="PAGE_LOW_CONTRAST" severity="info" page="1">page 1 : low_contrast</anomaly>
+    <anomaly code="AMBIGUOUS_VALUE" severity="warning" page="">champ 'date' ambigu : 2024-03-28 | 2024-03-15</anomaly>
+  </anomalies>
+</document>

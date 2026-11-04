@@ -1,0 +1,22 @@
+{
+ "id": "dos_c30e232adaa7",
+ "label": "Dossier rendu 1792332187760",
+ "profile": "importation",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792332187.764681,
+ "updated_at": 1792332187.7749665,
+ "history": [
+  {
+   "ts": 1792332187.7646837,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

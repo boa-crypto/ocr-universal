@@ -1,0 +1,38 @@
+﻿name,label,raw_value,normalized_value,corrected_value,confirmed_value,confidence,engine_confidence,status,page,source
+date,Date,2024-03-28 | 2024-03-15,2024-03-28 | 2024-03-15,,,0.727,0.95,detected,1,ocr
+email,E-mail,,,,,0.0,0.0,not_detected,,ocr
+url,URL,,,,,0.0,0.0,not_detected,,ocr
+phone,Téléphone,998877 | 445566 | 847130,998877 | 445566 | 847130,,,0.727,0.95,detected,1,ocr
+iban,IBAN,,,,,0.0,0.0,not_detected,,ocr
+invoice_number,Référence facture,,,,,0.0,0.0,not_detected,,rule
+vat_number,N° TVA,,,,,0.0,0.0,not_detected,,ocr
+container_number,N° de conteneur,CSQU3054383,CSQU3054383,,,0.765,1.0,detected,1,rule
+serial_number,N° de série,,,,,0.0,0.0,not_detected,,ocr
+amount,Montant,,,,,0.0,0.0,not_detected,,ocr
+percent,Pourcentage,,,,,0.0,0.0,not_detected,,ocr
+quantity,Quantité + unité,8500 | 8100 | 28.5,8500 | 8100 | 28.5,,,0.727,0.95,detected,1,ocr
+bl_number,Bill of Lading (BL),MSCU123456789,MSCU123456789,,,0.765,1.0,detected,1,rule
+booking_number,Booking Number,BK-998877,BK-998877,,,0.765,1.0,detected,1,rule
+iso_type_code,ISO Container Type Code,22G1,22G1,,,0.765,1.0,detected,1,rule
+seal_number,Seal Number,SL-445566,SL-445566,,,0.765,1.0,detected,1,rule
+vessel_name,Vessel Name,MSC AURORA,MSC AURORA,,,0.765,1.0,detected,1,rule
+voyage_number,Voyage Number,512W,512W,,,0.765,1.0,detected,1,rule
+shipping_line,Shipping Line,MSC,MSC,,,0.765,1.0,detected,1,rule
+shipper,Shipper (expéditeur),SARL Exemple Alger,SARL Exemple Alger,,,0.765,1.0,detected,1,rule
+consignee,Consignee (destinataire),Global Import GmbH,Global Import GmbH,,,0.765,1.0,detected,1,rule
+notify_party,Notify Party,Logistics Partner SA,Logistics Partner SA,,,0.765,1.0,detected,1,rule
+port_of_loading,Port of Loading,ALGER,ALGER,,,0.765,1.0,detected,1,rule
+port_of_discharge,Port of Discharge,HAMBURG,HAMBURG,,,0.765,1.0,detected,1,rule
+place_of_receipt,Place of Receipt,,,,,0.0,0.0,not_detected,,rule
+place_of_delivery,Place of Delivery,HAMBURG,HAMBURG,,,0.765,1.0,detected,1,rule
+goods_description,Description des marchandises,MACHINERY PARTS,MACHINERY PARTS,,,0.765,1.0,detected,1,rule
+packages_count,Nombre de colis,120,120,,,0.765,1.0,detected,1,rule
+gross_weight,Poids brut,8500,8500,,,0.765,1.0,detected,1,rule
+net_weight,Poids net,8100,8100,,,0.765,1.0,detected,1,rule
+volume,Volume,28.5,28.5,,,0.765,1.0,detected,1,rule
+hs_code,HS Code,8471.30,847130,,,0.765,1.0,detected,1,rule
+marks_numbers,Marks and Numbers,N/M,N/M,,,0.765,1.0,detected,1,rule
+eta,ETA,28/03/2024,2024-03-28,,,0.765,1.0,detected,1,rule
+etd,ETD,15/03/2024,2024-03-15,,,0.765,1.0,detected,1,rule
+manifest_number,N° de manifeste,,,,,0.0,0.0,not_detected,,rule
+customs_reference,Référence douanière,,,,,0.0,0.0,not_detected,,rule

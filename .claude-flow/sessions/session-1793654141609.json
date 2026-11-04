@@ -1,0 +1,21 @@
+{
+  "id": "session-1793654141609",
+  "startedAt": "2026-11-02T21:15:41.609Z",
+  "cwd": "C:\\workSpace\\ocr-universal",
+  "context": {
+    "lastMatchedPatterns": [
+      "insight-1793527638960-iaga",
+      "insight-1793281565253-j0n9"
+    ]
+  },
+  "metrics": {
+    "edits": 75,
+    "commands": 0,
+    "tasks": 0,
+    "errors": 0
+  },
+  "restoredAt": "2026-11-02T21:57:32.494Z",
+  "updatedAt": "2026-11-03T09:35:34.878Z",
+  "endedAt": "2026-11-03T12:24:04.175Z",
+  "duration": 54502568
+}

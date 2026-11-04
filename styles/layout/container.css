@@ -1,0 +1,125 @@
+/* ==========================================================================
+   UniOCR Premium — Container System
+   Responsive centered containers with fluid padding
+   ========================================================================== */
+
+/* ── Base Container ── */
+.container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
+.container-sm { max-width: var(--container-sm); }
+.container-md { max-width: var(--container-md); }
+.container-lg { max-width: var(--container-lg); }
+.container-xl { max-width: var(--container-xl); }
+.container-2xl { max-width: var(--container-2xl); }
+.container-full { max-width: none; }
+
+/* ── Responsive Containers (Mobile-first) ── */
+@media (min-width: 640px) {
+  .container { padding-inline: var(--space-5); }
+  .container-sm { max-width: var(--container-sm); }
+}
+
+@media (min-width: 768px) {
+  .container { padding-inline: var(--space-6); }
+  .container-md { max-width: var(--container-md); }
+}
+
+@media (min-width: 1024px) {
+  .container { padding-inline: var(--space-6); }
+  .container-lg { max-width: var(--container-lg); }
+}
+
+@media (min-width: 1280px) {
+  .container-xl { max-width: var(--container-xl); }
+}
+
+@media (min-width: 1536px) {
+  .container-2xl { max-width: var(--container-2xl); }
+}
+
+/* ── Container Variants ── */
+.container-fluid { max-width: none; }
+.container-narrow { max-width: var(--container-md); }
+.container-wide { max-width: var(--container-2xl); }
+.container-no-padding { padding-inline: 0; }
+
+/* ── Section (Vertical Spacing) ── */
+.section {
+  padding-block: var(--space-10);
+}
+
+.section-sm { padding-block: var(--space-6); }
+.section-lg { padding-block: var(--space-14); }
+.section-xl { padding-block: var(--space-16); }
+
+@media (min-width: 768px) {
+  .section { padding-block: var(--space-14); }
+  .section-lg { padding-block: var(--space-16); }
+  .section-xl { padding-block: var(--space-20); }
+}
+
+@media (min-width: 1024px) {
+  .section { padding-block: var(--space-16); }
+  .section-lg { padding-block: var(--space-20); }
+  .section-xl { padding-block: var(--space-24); }
+}
+
+/* ── Page Layout Containers ── */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header { flex-shrink: 0; }
+.page-main { flex: 1; }
+.page-footer { flex-shrink: 0; }
+
+/* ── App Layout (Sidebar + Main) ── */
+.app-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+}
+
+@media (min-width: 1024px) {
+  .app-layout {
+    grid-template-columns: var(--sidebar-width) 1fr;
+  }
+}
+
+.app-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  border-inline-end: 1px solid var(--color-border);
+  background: var(--color-bg-elevated);
+  z-index: var(--z-sticky);
+}
+
+.app-main {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Collapsed sidebar */
+.app-layout.sidebar-collapsed .app-sidebar {
+  width: var(--sidebar-width-collapsed);
+}
+
+@media (min-width: 1024px) {
+  .app-layout.sidebar-collapsed {
+    grid-template-columns: var(--sidebar-width-collapsed) 1fr;
+  }
+}
+
+/* ── Print ── */
+@media print {
+  .container { max-width: none; padding-inline: 0; }
+  .section { padding-block: var(--space-4); }
+}

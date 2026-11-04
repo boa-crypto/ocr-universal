@@ -1,0 +1,490 @@
+{
+  "id": "doc_af34f2b4f068",
+  "created_at": 1792273620.546164,
+  "info": {
+    "title": null,
+    "doc_type": "vehicle_plate",
+    "doc_number": null,
+    "issue_date": null,
+    "due_date": null,
+    "issuer": null,
+    "sender": null,
+    "recipient": null,
+    "languages": [
+      "so"
+    ],
+    "page_count": 1,
+    "source_format": "png"
+  },
+  "pages": [
+    {
+      "page_num": 1,
+      "width": 1800.0,
+      "height": 300.0,
+      "text": "1HGBH41JXMN109186",
+      "blocks": [
+        {
+          "text": "1HGBH41JXMN109186",
+          "bbox": {
+            "x0": 71.0,
+            "y0": 103.0,
+            "x1": 1282.0,
+            "y1": 194.0,
+            "page_width": 1800.0,
+            "page_height": 300.0
+          },
+          "order": 0,
+          "column": 0,
+          "lines": [
+            {
+              "text": "1HGBH41JXMN109186",
+              "bbox": {
+                "x0": 71.0,
+                "y0": 103.0,
+                "x1": 1282.0,
+                "y1": 194.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "1HGBH41JXMN109186",
+                  "bbox": {
+                    "x0": 71.0,
+                    "y0": 103.0,
+                    "x1": 1282.0,
+                    "y1": 194.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.67,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.67
+            }
+          ],
+          "kind": "paragraph"
+        }
+      ],
+      "lines": [
+        {
+          "text": "1HGBH41JXMN109186",
+          "bbox": {
+            "x0": 71.0,
+            "y0": 103.0,
+            "x1": 1282.0,
+            "y1": 194.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "1HGBH41JXMN109186",
+              "bbox": {
+                "x0": 71.0,
+                "y0": 103.0,
+                "x1": 1282.0,
+                "y1": 194.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.67,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.67
+        }
+      ],
+      "words": [
+        {
+          "text": "1HGBH41JXMN109186",
+          "bbox": {
+            "x0": 71.0,
+            "y0": 103.0,
+            "x1": 1282.0,
+            "y1": 194.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.67,
+          "engine": "tesseract",
+          "page_num": 1
+        }
+      ],
+      "quality": {
+        "brightness": 214.3345962962963,
+        "contrast": 63.57922017382013,
+        "blur_score": 879.8870296296296,
+        "noise_score": 0.0,
+        "estimated_skew_deg": 0.0,
+        "estimated_dpi": 150.0,
+        "ink_ratio": 0.09745,
+        "is_blank": false,
+        "issues": []
+      },
+      "preprocess_ops": [],
+      "engine_runs": [
+        {
+          "engine": "tesseract",
+          "page_num": 1,
+          "languages": [
+            "fra",
+            "eng"
+          ],
+          "mean_confidence": 0.67,
+          "word_count": 1,
+          "duration_ms": 491.2496489996556,
+          "ok": true,
+          "error": null
+        }
+      ],
+      "orientation_deg": 0,
+      "detected_languages": [
+        "so"
+      ],
+      "has_native_text": false,
+      "native_text_ratio": 0.0,
+      "variant_selected": "preprocessed",
+      "blank": false
+    }
+  ],
+  "fields": {
+    "date": {
+      "name": "date",
+      "label": "Date",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "email": {
+      "name": "email",
+      "label": "E-mail",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "url": {
+      "name": "url",
+      "label": "URL",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "phone": {
+      "name": "phone",
+      "label": "Téléphone",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "iban": {
+      "name": "iban",
+      "label": "IBAN",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "invoice_number": {
+      "name": "invoice_number",
+      "label": "Numéro de facture",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "vat_number": {
+      "name": "vat_number",
+      "label": "N° TVA",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "container_number": {
+      "name": "container_number",
+      "label": "N° conteneur",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "serial_number": {
+      "name": "serial_number",
+      "label": "N° de série",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "amount": {
+      "name": "amount",
+      "label": "Montant",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "percent": {
+      "name": "percent",
+      "label": "Pourcentage",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "quantity": {
+      "name": "quantity",
+      "label": "Quantité + unité",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "plate_number": {
+      "name": "plate_number",
+      "label": "Plaque d'immatriculation",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "vehicle_plate"
+    },
+    "vin": {
+      "name": "vin",
+      "label": "N° de châssis (VIN)",
+      "raw_value": "1HGBH41JXMN109186",
+      "normalized_value": "1HGBH41JXMN109186",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 71.0,
+        "y0": 103.0,
+        "x1": 1282.0,
+        "y1": 194.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "\\b([A-HJ-NPR-Z0-9]{15,17})\\b",
+      "anomalies": [],
+      "profile": "vehicle_plate"
+    },
+    "make_model": {
+      "name": "make_model",
+      "label": "Marque / modèle (si marqué)",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "vehicle_plate"
+    }
+  },
+  "tables": [],
+  "categories": {
+    "dates": [],
+    "contacts": [],
+    "identifiants": [],
+    "numeriques": [],
+    "_required": [
+      "plate_number"
+    ]
+  },
+  "barcodes": [],
+  "form_zones": [],
+  "quality": {
+    "mean_engine_confidence": 0.67,
+    "mean_global_confidence": 0.67,
+    "pages_low_confidence": [
+      1
+    ],
+    "fields_low_confidence": [],
+    "anomalies": [
+      {
+        "code": "MISSING_REQUIRED_FIELD",
+        "severity": "error",
+        "message": "champ obligatoire absent : plate_number",
+        "page_num": null,
+        "bbox": null,
+        "context": {}
+      }
+    ],
+    "disagreements": [],
+    "checks": [
+      {
+        "code": "MISSING_REQUIRED_FIELD",
+        "severity": "error",
+        "field": "plate_number",
+        "message": "champ obligatoire absent : Plaque d'immatriculation"
+      }
+    ]
+  },
+  "engines_used": [
+    "tesseract"
+  ],
+  "profile_used": "vehicle_plate",
+  "timings_ms": {
+    "ingest_ms": 8.7,
+    "ocr_ms": 665.4,
+    "tables_ms": 20.5,
+    "fields_ms": 1.5,
+    "barcodes_ms": 9.4,
+    "total_ms": 711.9
+  },
+  "warnings": [],
+  "source_file": "photo_vin.png",
+  "source_hash": "2871c5774c8f9450907466f1eb7dc14d9b62208d16b2900dd2e58df3bf1dfff6",
+  "exports": []
+}

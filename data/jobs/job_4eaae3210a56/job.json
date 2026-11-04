@@ -1,0 +1,37 @@
+{
+  "id": "job_4eaae3210a56",
+  "filename": "corrupt.pdf",
+  "status": "error",
+  "created_at": 1792334228.5999186,
+  "updated_at": 1792334229.310434,
+  "error": "SecurityError: document illisible ou corrompu: Failed to load document (PDFium: Data format error).",
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "accurate",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json",
+      "txt",
+      "csv",
+      "xlsx",
+      "xml",
+      "pdf"
+    ],
+    "page_range": "",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7,
+    "auto_classify": true
+  },
+  "result_id": null,
+  "progress": 0.05,
+  "stage": "ingest",
+  "attempts": 1,
+  "file_hash": "64e882de4ffb9d69bd8128df3186999b2d2de1eaedf8bdedacabf04d92a06045"
+}

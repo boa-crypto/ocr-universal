@@ -1,0 +1,182 @@
+/**
+ * OCR Universal - Print Styles
+ * Optimize for professional document printing
+ */
+
+@media print {
+  /* === HIDE NON-ESSENTIAL UI === */
+  .no-print,
+  .nav-sidebar,
+  .theme-toggle,
+  button,
+  .header,
+  .footer,
+  nav,
+  .toolbar {
+    display: none !important;
+  }
+
+  /* === OPTIMIZE FOR PRINT === */
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+    color: black;
+    background: white;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* === PAGE BREAKS === */
+  /* Avoid breaks inside these elements */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+
+  pre,
+  blockquote,
+  table,
+  figure {
+    page-break-inside: avoid;
+  }
+
+  /* Utility classes for page breaks */
+  .page-break-before {
+    page-break-before: always;
+  }
+
+  .page-break-after {
+    page-break-after: always;
+  }
+
+  .no-page-break {
+    page-break-inside: avoid;
+  }
+
+  /* === LAYOUT ADJUSTMENTS === */
+  .container {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .split-view {
+    display: block;
+  }
+
+  .split-view__panel {
+    width: 100%;
+    padding: 0;
+    margin-bottom: 2cm;
+  }
+
+  /* === LINKS === */
+  /* Show URLs for external links */
+  a[href^="http"]:after {
+    content: " (" attr(href) ")";
+    font-size: 10pt;
+    color: #666;
+  }
+
+  /* Don't show URLs for internal links */
+  a[href^="#"]:after,
+  a[href^="/"]:after {
+    content: "";
+  }
+
+  /* === IMAGES === */
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  /* === TABLES === */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 8pt;
+    text-align: left;
+  }
+
+  th {
+    background: #f5f5f5 !important;
+    font-weight: bold;
+  }
+
+  /* === TYPOGRAPHY === */
+  h1 {
+    font-size: 24pt;
+    margin-bottom: 12pt;
+  }
+
+  h2 {
+    font-size: 20pt;
+    margin-bottom: 10pt;
+  }
+
+  h3 {
+    font-size: 16pt;
+    margin-bottom: 8pt;
+  }
+
+  /* === CODE === */
+  code,
+  pre {
+    font-family: 'Courier New', monospace;
+    font-size: 10pt;
+    border: 1px solid #ddd;
+    padding: 4pt;
+    background: #f9f9f9 !important;
+  }
+
+  /* === FORMS === */
+  /* Show form values */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  textarea {
+    border-bottom: 1px solid #000;
+  }
+
+  /* === PRINT-SPECIFIC UTILITIES === */
+  .print-only {
+    display: block !important;
+  }
+
+  .print-hide {
+    display: none !important;
+  }
+
+  /* === PAGE MARGINS === */
+  @page {
+    margin: 2cm;
+  }
+
+  @page :first {
+    margin-top: 3cm;
+  }
+}
+
+/* === SCREEN-ONLY UTILITIES === */
+@media screen {
+  .print-only {
+    display: none !important;
+  }
+}

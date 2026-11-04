@@ -1,0 +1,23 @@
+{
+ "id": "dos_834b661a1349",
+ "label": "nouveau",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792394733.26534,
+ "updated_at": 1792394733.2655017,
+ "history": [
+  {
+   "ts": 1792394733.2653441,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

@@ -1,0 +1,33 @@
+{
+  "id": "job_176182eb897c",
+  "filename": "parcours_facture.pdf",
+  "status": "done",
+  "created_at": 1792358844.7382882,
+  "updated_at": 1792358845.7648776,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "accurate",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json",
+      "txt"
+    ],
+    "page_range": "",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7,
+    "auto_classify": true
+  },
+  "result_id": "job_176182eb897c",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1,
+  "file_hash": "95ffc1690e8ab88cafa0a9668f9127fc1b9e9f64dd5504f7b6ec5a166715f2d2"
+}

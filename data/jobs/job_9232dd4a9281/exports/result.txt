@@ -1,0 +1,16 @@
+--- Page 1 ---
+FACTURE N 2024-001
+Date : 15/03/2024
+Echeance : 15/04/2024
+Client : SARL Exemple Alger
+Email : contact@example.dz
+Telephone : +213 555 12 34 56
+Description : Fourniture de materiel informatique
+Total HT : 1000,00 EUR
+Total TTC : 1200,00 EUR
+
+--- Page 2 ---
+DETAIL DES LIGNES
+Clavier sans fil 50 x 25,00 EUR
+Souris optique 20 x 12,50 EUR
+Total : 1500,00 EUR

@@ -1,0 +1,136 @@
+/**
+ * OCR Universal - Color System
+ * Premium Enterprise Design System
+ * WCAG AA Compliant - Colorblind Safe
+ */
+
+:root {
+  /* === PRIMARY BRAND PALETTE === */
+  /* Slate profond — autorité technique, profondeur calme */
+  --brand-primary: #1e293b;           /* Slate 800 — UI principale, headers */
+  --brand-primary-light: #334155;     /* Slate 700 — hover states */
+  --brand-primary-dark: #0f172a;      /* Slate 900 — emphasis forte */
+
+  /* Cyan précis — données validées, état optimal */
+  --brand-secondary: #0891b2;         /* Cyan 600 — accent principal, CTA */
+  --brand-secondary-light: #06b6d4;   /* Cyan 500 — hover, active states */
+  --brand-secondary-dark: #0e7490;    /* Cyan 700 — pressed states */
+
+  /* Amber intelligent — attention contrôlée, signaux cognitifs */
+  --brand-accent: #f59e0b;            /* Amber 500 — warnings, review needed */
+  --brand-accent-light: #fbbf24;      /* Amber 400 — hover warnings */
+  --brand-accent-dark: #d97706;       /* Amber 600 — critical attention */
+
+  /* === SEMANTIC COLORS === */
+  /* Success — validation, confiance élevée */
+  --semantic-success: #10b981;        /* Emerald 500 */
+  --semantic-success-bg: #d1fae5;     /* Emerald 100 */
+  --semantic-success-border: #6ee7b7; /* Emerald 300 */
+
+  /* Error — anomalies, échecs, rejets */
+  --semantic-error: #ef4444;          /* Red 500 */
+  --semantic-error-bg: #fee2e2;       /* Red 100 */
+  --semantic-error-border: #fca5a5;   /* Red 300 */
+
+  /* Warning — révision recommandée, ambiguïté */
+  --semantic-warning: #f59e0b;        /* Amber 500 */
+  --semantic-warning-bg: #fef3c7;     /* Amber 100 */
+  --semantic-warning-border: #fcd34d; /* Amber 300 */
+
+  /* Info — métadonnées, contexte additionnel */
+  --semantic-info: #3b82f6;           /* Blue 500 */
+  --semantic-info-bg: #dbeafe;        /* Blue 100 */
+  --semantic-info-border: #93c5fd;    /* Blue 300 */
+
+  /* === NEUTRAL SYSTEM === */
+  --neutral-50: #f8fafc;   /* Backgrounds — air, séparation */
+  --neutral-100: #f1f5f9;  /* Surfaces secondaires */
+  --neutral-200: #e2e8f0;  /* Borders subtiles */
+  --neutral-300: #cbd5e1;  /* Borders visibles */
+  --neutral-400: #94a3b8;  /* Text disabled, placeholders */
+  --neutral-500: #64748b;  /* Text secondaire, labels */
+  --neutral-600: #475569;  /* Text principal */
+  --neutral-700: #334155;  /* Text emphasis */
+  --neutral-800: #1e293b;  /* Headings, high contrast */
+  --neutral-900: #0f172a;  /* Maximum contrast */
+
+  /* === DATA VISUALIZATION PALETTE === */
+  /* Confiance / Qualité — séquentiel, colorblind-safe */
+  --data-confidence-high: #10b981;    /* 95-100% - Emerald */
+  --data-confidence-good: #84cc16;    /* 85-94% - Lime */
+  --data-confidence-medium: #f59e0b;  /* 70-84% - Amber */
+  --data-confidence-low: #f97316;     /* 50-69% - Orange */
+  --data-confidence-poor: #ef4444;    /* <50% - Red */
+
+  /* Moteurs OCR — catégoriel distinctif */
+  --data-engine-tesseract: #0891b2;   /* Cyan */
+  --data-engine-native: #8b5cf6;      /* Violet */
+  --data-engine-easyocr: #ec4899;     /* Pink */
+  --data-engine-paddleocr: #f59e0b;   /* Amber */
+
+  /* === SURFACE & ELEVATION === */
+  --surface-base: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-overlay: #ffffff;
+
+  --elevation-1: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  --elevation-2: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --elevation-3: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --elevation-4: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+}
+
+/* === DARK MODE === */
+[data-theme="dark"] {
+  --brand-primary: #e2e8f0;
+  --brand-primary-light: #f1f5f9;
+  --brand-primary-dark: #cbd5e1;
+
+  --neutral-50: #0f172a;
+  --neutral-100: #1e293b;
+  --neutral-200: #334155;
+  --neutral-300: #475569;
+  --neutral-400: #64748b;
+  --neutral-500: #94a3b8;
+  --neutral-600: #cbd5e1;
+  --neutral-700: #e2e8f0;
+  --neutral-800: #f1f5f9;
+  --neutral-900: #f8fafc;
+
+  --surface-base: #0f172a;
+  --surface-raised: #1e293b;
+  --surface-overlay: #334155;
+
+  --elevation-1: 0 1px 3px 0 rgb(0 0 0 / 0.4);
+  --elevation-2: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+  --elevation-3: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+  --elevation-4: 0 20px 25px -5px rgb(0 0 0 / 0.6);
+}
+
+/* === SYSTEM THEME PREFERENCE === */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --brand-primary: #e2e8f0;
+    --brand-primary-light: #f1f5f9;
+    --brand-primary-dark: #cbd5e1;
+
+    --neutral-50: #0f172a;
+    --neutral-100: #1e293b;
+    --neutral-200: #334155;
+    --neutral-300: #475569;
+    --neutral-400: #64748b;
+    --neutral-500: #94a3b8;
+    --neutral-600: #cbd5e1;
+    --neutral-700: #e2e8f0;
+    --neutral-800: #f1f5f9;
+    --neutral-900: #f8fafc;
+
+    --surface-base: #0f172a;
+    --surface-raised: #1e293b;
+    --surface-overlay: #334155;
+
+    --elevation-1: 0 1px 3px 0 rgb(0 0 0 / 0.4);
+    --elevation-2: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+    --elevation-3: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+    --elevation-4: 0 20px 25px -5px rgb(0 0 0 / 0.6);
+  }
+}

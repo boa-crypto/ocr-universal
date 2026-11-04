@@ -1,0 +1,23 @@
+{
+ "id": "dos_bbe35cb21116",
+ "label": "arbitrage",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792395594.6734412,
+ "updated_at": 1792395594.6735673,
+ "history": [
+  {
+   "ts": 1792395594.6734443,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

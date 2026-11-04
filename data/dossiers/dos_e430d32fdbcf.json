@@ -1,0 +1,55 @@
+{
+ "id": "dos_e430d32fdbcf",
+ "label": "test nom piece",
+ "profile": "personnalise",
+ "state": "revision_requise",
+ "state_label": "Révision requise",
+ "pieces": [
+  {
+   "job_id": "job_dd76d1494650",
+   "filename": "parcours_bl.pdf",
+   "category": "bill_of_lading",
+   "added_at": 1792395593.5746515,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "bill_of_lading": 1
+ },
+ "version": 1,
+ "created_at": 1792395593.569608,
+ "updated_at": 1792395593.576809,
+ "history": [
+  {
+   "ts": 1792395593.5696113,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792395593.574656,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_dd76d1494650",
+    "filename": "parcours_bl.pdf",
+    "category": "bill_of_lading"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792395593.5767,
+   "action": "state_changed",
+   "detail": {
+    "from": "en_preparation",
+    "to": "revision_requise",
+    "pieces": 1
+   },
+   "acteur": "systeme"
+  }
+ ],
+ "arbitrages": {}
+}

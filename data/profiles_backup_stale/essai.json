@@ -1,0 +1,23 @@
+{
+  "name": "essai",
+  "label": "Mon profil",
+  "description": "",
+  "document_types": [],
+  "fields": [
+    {
+      "key": "numero",
+      "label": "Numéro",
+      "patterns": [
+        "N°\\s*(\\d+)"
+      ],
+      "required": false,
+      "validators": [],
+      "normalize": null,
+      "category": "general",
+      "multiline": false
+    }
+  ],
+  "relations": [],
+  "consistency_checks": [],
+  "export_rules": {}
+}

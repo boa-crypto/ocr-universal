@@ -1,0 +1,23 @@
+{
+  "name": "invoice",
+  "label": "Facture personnalisée",
+  "description": "",
+  "document_types": [],
+  "fields": [
+    {
+      "key": "mon_champ",
+      "label": "",
+      "patterns": [
+        "MON[:\\s]+(\\w+)"
+      ],
+      "required": false,
+      "validators": [],
+      "normalize": null,
+      "category": "general",
+      "multiline": false
+    }
+  ],
+  "relations": [],
+  "consistency_checks": [],
+  "export_rules": {}
+}

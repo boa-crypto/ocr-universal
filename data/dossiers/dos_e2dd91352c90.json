@@ -1,0 +1,23 @@
+{
+ "id": "dos_e2dd91352c90",
+ "label": "Dossier expédition TESTSTAR",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1793185397.855222,
+ "updated_at": 1793185397.856224,
+ "history": [
+  {
+   "ts": 1793185397.855222,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

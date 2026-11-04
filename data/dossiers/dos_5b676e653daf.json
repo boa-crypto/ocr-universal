@@ -1,0 +1,102 @@
+{
+ "id": "dos_5b676e653daf",
+ "label": "Rendu avec pièces 1792334417989",
+ "profile": "importation",
+ "state": "revision_requise",
+ "state_label": "Révision requise",
+ "pieces": [
+  {
+   "job_id": "job_a3a0c9668348",
+   "filename": "injection.png",
+   "category": "unknown",
+   "added_at": 1792334418.005095,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_dbe4382dca9a",
+   "filename": "form_zones.png",
+   "category": "unknown",
+   "added_at": 1792334418.00955,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_1c13648d2976",
+   "filename": "data.csv",
+   "category": "unknown",
+   "added_at": 1792334418.015385,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "unknown": 3
+ },
+ "version": 1,
+ "created_at": 1792334417.9911044,
+ "updated_at": 1792334418.0241468,
+ "history": [
+  {
+   "ts": 1792334417.9911058,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792334418.0050976,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_a3a0c9668348",
+    "filename": "injection.png",
+    "category": "unknown"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792334418.006236,
+   "action": "state_changed",
+   "detail": {
+    "from": "en_preparation",
+    "to": "incomplet",
+    "pieces": 1
+   },
+   "acteur": "systeme"
+  },
+  {
+   "ts": 1792334418.0095527,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_dbe4382dca9a",
+    "filename": "form_zones.png",
+    "category": "unknown"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792334418.0153883,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_1c13648d2976",
+    "filename": "data.csv",
+    "category": "unknown"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792334418.0171363,
+   "action": "state_changed",
+   "detail": {
+    "from": "incomplet",
+    "to": "revision_requise",
+    "pieces": 3
+   },
+   "acteur": "systeme"
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "id": "dos_ffc75927c021",
+ "label": "Dossier rendu 1792332426938",
+ "profile": "importation",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792332426.9422357,
+ "updated_at": 1792332426.9498818,
+ "history": [
+  {
+   "ts": 1792332426.9422386,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+  "id": "job_0046b5e1f810",
+  "filename": "bl.pdf",
+  "status": "done",
+  "created_at": 1792331207.4136536,
+  "updated_at": 1792331208.5880904,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "accurate",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json",
+      "txt"
+    ],
+    "page_range": "",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7,
+    "auto_classify": true
+  },
+  "result_id": "doc_5ffb7f516c10",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1,
+  "file_hash": "259561bb3c1f3e24777101d6fd8348b7c9d94b60f9c24017cf6acbcc2f553f5e"
+}

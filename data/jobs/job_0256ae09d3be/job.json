@@ -1,0 +1,21 @@
+{
+  "id": "job_0256ae09d3be",
+  "filename": "lazy.pdf",
+  "status": "done",
+  "created_at": 1792270045.8637714,
+  "updated_at": 1792270049.717844,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "fast",
+    "preprocess": true,
+    "export_formats": [
+      "json"
+    ]
+  },
+  "result_id": "doc_65136b52b846",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1
+}

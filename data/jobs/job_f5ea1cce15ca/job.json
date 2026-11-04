@@ -1,0 +1,22 @@
+{
+  "id": "job_f5ea1cce15ca",
+  "filename": "evil.exe",
+  "status": "error",
+  "created_at": 1792265742.568444,
+  "updated_at": 1792265742.5721865,
+  "error": "SecurityError: extension non autorisée: .exe",
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "accurate",
+    "preprocess": true,
+    "export_formats": [
+      "json",
+      "txt"
+    ]
+  },
+  "result_id": null,
+  "progress": 0.05,
+  "stage": "ingest",
+  "attempts": 1
+}

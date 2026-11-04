@@ -1,0 +1,171 @@
+/* ==========================================================================
+   UniOCR Premium — Split View
+   Side-by-side document viewer + data form (core OCR workflow)
+   ========================================================================== */
+
+/* ── Split View Container ── */
+.split-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Panels ── */
+.split-view__panel {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  position: relative;
+}
+
+.split-view__panel--document {
+  background: var(--color-bg-elevated);
+  padding: var(--space-4);
+  border-inline-end: 1px solid var(--color-border);
+}
+
+.split-view__panel--data {
+  background: var(--color-bg);
+  padding: var(--space-4);
+}
+
+/* ── Divider (Resizable) ── */
+.split-view__divider {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--split-handle-width);
+  height: 100%;
+  background: var(--color-border-subtle);
+  cursor: col-resize;
+  transition: background var(--transition-fast), width var(--transition-fast);
+  z-index: var(--z-sticky);
+}
+
+.split-view__divider:hover {
+  background: var(--color-brand);
+  width: var(--split-handle-hover-width);
+}
+
+.split-view__divider:active {
+  background: var(--color-brand-active);
+}
+
+.split-view__divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 48px;
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.split-view__divider:hover::before {
+  opacity: 1;
+}
+
+/* Resizable panels */
+.split-view--resizable .split-view__panel--document {
+  min-width: var(--split-min-size);
+  max-width: calc(100% - var(--split-min-size));
+}
+
+.split-view--resizable .split-view__panel--data {
+  min-width: var(--split-min-size);
+  max-width: calc(100% - var(--split-min-size));
+}
+
+/* ── Responsive: Stack on Mobile ── */
+@media (max-width: 767px) {
+  .split-view {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .split-view__panel--document {
+    border-inline-end: none;
+    border-bottom: 1px solid var(--color-border);
+    min-height: 50vh;
+  }
+
+  .split-view__divider {
+    display: none;
+  }
+}
+
+/* ── Accessibility ── */
+.split-view__panel:focus-within {
+  outline: 2px solid var(--color-brand);
+  outline-offset: -2px;
+}
+
+.split-view__skip-link {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-brand);
+  color: var(--color-fg-inverse);
+  border-radius: var(--radius-md);
+  z-index: var(--z-fixed);
+  transform: translateY(-200%);
+  transition: transform var(--transition-fast);
+}
+
+.split-view__skip-link:focus {
+  transform: translateY(0);
+}
+
+/* ── Synchronized Scroll (JS integration) ── */
+.split-view__panel--sync-source {
+  /* Source panel for synchronized scroll */
+}
+
+.split-view__panel--sync-target {
+  /* Target panel that follows scroll */
+}
+
+/* Field highlight in document panel */
+.split-view__panel--document .field-highlight {
+  background: var(--color-brand-bg);
+  border: 2px solid var(--color-brand);
+  border-radius: var(--radius-sm);
+  animation: pulse-highlight var(--duration-normal) var(--ease-out);
+}
+
+@keyframes pulse-highlight {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* ── Performance ── */
+.split-view__panel {
+  will-change: scroll-position;
+  transform: translateZ(0);
+  -webkit-overflow-scrolling: touch;
+}
+
+.split-view--resizing * {
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Print ── */
+@media print {
+  .split-view {
+    display: block;
+    height: auto;
+  }
+  .split-view__panel { overflow: visible; height: auto; }
+  .split-view__divider { display: none; }
+}

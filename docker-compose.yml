@@ -1,0 +1,29 @@
+# UniOCR — déploiement en une commande
+#
+#   docker compose up --build
+#   → http://localhost:8000        (interface)
+#   → http://localhost:8000/docs   (API Swagger)
+#
+# Les documents, exports et journaux sont écrits dans le volume `unocr-data`
+# (et non dans l'image) : ils survivent aux reconstructions.
+
+services:
+  unocr:
+    build: .
+    image: unocr:latest
+    container_name: unocr
+    ports:
+      - "127.0.0.1:${UNOCR_PORT:-8000}:8000"
+    volumes:
+      - unocr-data:/data
+    environment:
+      # racine de l'application dans le conteneur
+      UNOCR_ROOT: /app
+      # les modèles tessdata sont ceux de l'image (déjà installés)
+      TESSDATA_PREFIX: /usr/share/tesseract-ocr/5/tessdata
+      UNOCR_LOG_DIR: /data/logs
+      UNIOCR_TOKEN: ${UNIOCR_TOKEN:-}
+    restart: unless-stopped
+
+volumes:
+  unocr-data:

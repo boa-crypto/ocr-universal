@@ -1,0 +1,22 @@
+{
+ "id": "dos_01e4e05dd542",
+ "label": "Debug 1792332065594",
+ "profile": "importation",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792332065.6001503,
+ "updated_at": 1792332065.6158311,
+ "history": [
+  {
+   "ts": 1792332065.600153,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

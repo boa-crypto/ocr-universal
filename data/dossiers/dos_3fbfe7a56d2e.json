@@ -1,0 +1,115 @@
+{
+ "id": "dos_3fbfe7a56d2e",
+ "label": "Scénario MV TEST STAR",
+ "profile": "personnalise",
+ "state": "revision_requise",
+ "state_label": "Révision requise",
+ "pieces": [
+  {
+   "job_id": "job_4c484bdadeb9",
+   "filename": "parcours_facture.pdf",
+   "category": "invoice",
+   "added_at": 1792359025.5493207,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_b455c50aaeec",
+   "filename": "parcours_bl.pdf",
+   "category": "bill_of_lading",
+   "added_at": 1792359025.554529,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_97edf79aa881",
+   "filename": "parcours_colisage.pdf",
+   "category": "packing_list",
+   "added_at": 1792359025.5610437,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "invoice": 1,
+  "bill_of_lading": 1,
+  "packing_list": 1
+ },
+ "version": 2,
+ "created_at": 1792359025.5460997,
+ "updated_at": 1792359025.5917091,
+ "history": [
+  {
+   "ts": 1792359025.5461023,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792359025.5493233,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_4c484bdadeb9",
+    "filename": "parcours_facture.pdf",
+    "category": "invoice"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792359025.5505178,
+   "action": "state_changed",
+   "detail": {
+    "from": "en_preparation",
+    "to": "revision_requise",
+    "pieces": 1
+   },
+   "acteur": "systeme"
+  },
+  {
+   "ts": 1792359025.5545318,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_b455c50aaeec",
+    "filename": "parcours_bl.pdf",
+    "category": "bill_of_lading"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792359025.5610464,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_97edf79aa881",
+    "filename": "parcours_colisage.pdf",
+    "category": "packing_list"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792359025.586235,
+   "action": "constat_tranche",
+   "detail": {
+    "rule": "conteneur_absent:container_number->packing_list",
+    "status": "accepte",
+    "motif": "écart expliqué par la correction",
+    "precedent": null
+   },
+   "acteur": "amina"
+  }
+ ],
+ "arbitrages": {
+  "conteneur_absent:container_number->packing_list": {
+   "rule": "conteneur_absent:container_number->packing_list",
+   "status": "accepte",
+   "acteur": "amina",
+   "motif": "écart expliqué par la correction",
+   "ts": 1792359025.5862305,
+   "remplace": null
+  }
+ }
+}

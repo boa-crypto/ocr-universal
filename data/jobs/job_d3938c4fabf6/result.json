@@ -1,0 +1,3628 @@
+{
+  "id": "doc_659d09624f5b",
+  "created_at": 1792269426.5903363,
+  "info": {
+    "title": null,
+    "doc_type": "invoice",
+    "doc_number": "2024-001",
+    "issue_date": "2024-03-15",
+    "due_date": "2024-04-15",
+    "issuer": null,
+    "sender": null,
+    "recipient": null,
+    "languages": [
+      "fr",
+      "en"
+    ],
+    "page_count": 2,
+    "source_format": "pdf"
+  },
+  "pages": [
+    {
+      "page_num": 1,
+      "width": 1653.543260362413,
+      "height": 2338.5826958550347,
+      "text": "FACTURE N 2024-001\nDate : 15/03/2024\nEcheance : 15/04/2024\nClient : SARL Exemple Alger\nEmail : contact@example.dz\nTelephone : +213 555 12 34 56\nDescription : Fourniture de materiel informatique\nTotal HT : 1000,00 EUR\nTotal TTC : 1200,00 EUR",
+      "blocks": [
+        {
+          "text": "FACTURE N 2024-001\nDate : 15/03/2024\nEcheance : 15/04/2024\nClient : SARL Exemple Alger\nEmail : contact@example.dz\nTelephone : +213 555 12 34 56\nDescription : Fourniture de materiel informatique\nTotal HT : 1000,00 EUR\nTotal TTC : 1200,00 EUR",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 228.81602918836816,
+            "x1": 913.2,
+            "y1": 839.9271402994792,
+            "page_width": 1653.543260362413,
+            "page_height": 2338.5826958550347
+          },
+          "order": 0,
+          "column": 0,
+          "lines": [
+            {
+              "text": "FACTURE N 2024-001",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 228.81602918836816,
+                "x1": 540.8333333333333,
+                "y1": 262.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "FACTURE",
+                  "bbox": {
+                    "x0": 200.0,
+                    "y0": 228.81602918836816,
+                    "x1": 357.4,
+                    "y1": 262.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "N",
+                  "bbox": {
+                    "x0": 366.66666666666663,
+                    "y0": 228.81602918836816,
+                    "x1": 390.7333333333333,
+                    "y1": 262.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "2024-001",
+                  "bbox": {
+                    "x0": 400.0,
+                    "y0": 228.81602918836816,
+                    "x1": 540.8333333333333,
+                    "y1": 262.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "Date : 15/03/2024",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 301.03825141059036,
+                "x1": 464.99999999999994,
+                "y1": 334.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Date",
+                  "bbox": {
+                    "x0": 200.0,
+                    "y0": 301.03825141059036,
+                    "x1": 270.4,
+                    "y1": 334.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 279.6666666666667,
+                    "y0": 301.03825141059036,
+                    "x1": 288.93333333333334,
+                    "y1": 334.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "15/03/2024",
+                  "bbox": {
+                    "x0": 298.2,
+                    "y0": 301.03825141059036,
+                    "x1": 464.99999999999994,
+                    "y1": 334.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "Echeance : 15/04/2024",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 373.2604736328126,
+                "x1": 542.8333333333333,
+                "y1": 406.5938069661459,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Echeance",
+                  "bbox": {
+                    "x0": 200.0,
+                    "y0": 373.2604736328126,
+                    "x1": 348.23333333333335,
+                    "y1": 406.5938069661459,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 357.49999999999994,
+                    "y0": 373.2604736328126,
+                    "x1": 366.76666666666665,
+                    "y1": 406.5938069661459,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "15/04/2024",
+                  "bbox": {
+                    "x0": 376.03333333333336,
+                    "y0": 373.2604736328126,
+                    "x1": 542.8333333333333,
+                    "y1": 406.5938069661459,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "Client : SARL Exemple Alger",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 445.4826958550348,
+                "x1": 626.0666666666666,
+                "y1": 478.81602918836813,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Client",
+                  "bbox": {
+                    "x0": 200.0,
+                    "y0": 445.4826958550348,
+                    "x1": 285.2,
+                    "y1": 478.81602918836813,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 294.4666666666667,
+                    "y0": 445.4826958550348,
+                    "x1": 303.73333333333335,
+                    "y1": 478.81602918836813,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "SARL",
+                  "bbox": {
+                    "x0": 313.0,
+                    "y0": 445.4826958550348,
+                    "x1": 400.06666666666666,
+                    "y1": 478.81602918836813,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Exemple",
+                  "bbox": {
+                    "x0": 409.33333333333337,
+                    "y0": 445.4826958550348,
+                    "x1": 539.0,
+                    "y1": 478.81602918836813,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Alger",
+                  "bbox": {
+                    "x0": 548.2666666666665,
+                    "y0": 445.4826958550348,
+                    "x1": 626.0666666666666,
+                    "y1": 478.81602918836813,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Email : contact@example.dz",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 517.704918077257,
+                "x1": 622.8666666666667,
+                "y1": 551.0382514105903,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Email",
+                  "bbox": {
+                    "x0": 200.0,
+                    "y0": 517.704918077257,
+                    "x1": 283.3333333333333,
+                    "y1": 551.0382514105903,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 292.6,
+                    "y0": 517.704918077257,
+                    "x1": 301.8666666666667,
+                    "y1": 551.0382514105903,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "contact@example.dz",
+                  "bbox": {
+                    "x0": 311.1333333333333,
+                    "y0": 517.704918077257,
+                    "x1": 622.8666666666667,
+                    "y1": 551.0382514105903,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "Telephone : +213 555 12 34 56",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 589.9271402994792,
+                "x1": 664.2333333333333,
+                "y1": 623.2604736328126,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Telephone",
+                  "bbox": {
+                    "x0": 200.0,
+                    "y0": 589.9271402994792,
+                    "x1": 357.50000000000006,
+                    "y1": 623.2604736328126,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 366.76666666666665,
+                    "y0": 589.9271402994792,
+                    "x1": 376.03333333333336,
+                    "y1": 623.2604736328126,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "+213",
+                  "bbox": {
+                    "x0": 385.29999999999995,
+                    "y0": 589.9271402994792,
+                    "x1": 460.3666666666667,
+                    "y1": 623.2604736328126,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "555",
+                  "bbox": {
+                    "x0": 469.63333333333327,
+                    "y0": 589.9271402994792,
+                    "x1": 525.2333333333332,
+                    "y1": 623.2604736328126,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "12",
+                  "bbox": {
+                    "x0": 534.4999999999999,
+                    "y0": 589.9271402994792,
+                    "x1": 571.5666666666666,
+                    "y1": 623.2604736328126,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "34",
+                  "bbox": {
+                    "x0": 580.8333333333333,
+                    "y0": 589.9271402994792,
+                    "x1": 617.9,
+                    "y1": 623.2604736328126,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "56",
+                  "bbox": {
+                    "x0": 627.1666666666666,
+                    "y0": 589.9271402994792,
+                    "x1": 664.2333333333333,
+                    "y1": 623.2604736328126,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Description : Fourniture de materiel informatique",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 662.1493625217015,
+                "x1": 913.2,
+                "y1": 695.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Description",
+                  "bbox": {
+                    "x0": 200.0,
+                    "y0": 662.1493625217015,
+                    "x1": 366.7,
+                    "y1": 695.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 375.9666666666667,
+                    "y0": 662.1493625217015,
+                    "x1": 385.2333333333334,
+                    "y1": 695.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Fourniture",
+                  "bbox": {
+                    "x0": 394.49999999999994,
+                    "y0": 662.1493625217015,
+                    "x1": 546.4,
+                    "y1": 695.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "de",
+                  "bbox": {
+                    "x0": 555.6666666666665,
+                    "y0": 662.1493625217015,
+                    "x1": 592.7333333333332,
+                    "y1": 695.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "materiel",
+                  "bbox": {
+                    "x0": 601.9999999999999,
+                    "y0": 662.1493625217015,
+                    "x1": 720.5333333333332,
+                    "y1": 695.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "informatique",
+                  "bbox": {
+                    "x0": 729.7999999999998,
+                    "y0": 662.1493625217015,
+                    "x1": 913.2,
+                    "y1": 695.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "Total HT : 1000,00 EUR",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 734.3715847439237,
+                "x1": 555.6999999999999,
+                "y1": 767.704918077257,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Total",
+                  "bbox": {
+                    "x0": 200.0,
+                    "y0": 734.3715847439237,
+                    "x1": 274.1,
+                    "y1": 767.704918077257,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "HT",
+                  "bbox": {
+                    "x0": 283.3666666666667,
+                    "y0": 734.3715847439237,
+                    "x1": 327.8,
+                    "y1": 767.704918077257,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 337.06666666666666,
+                    "y0": 734.3715847439237,
+                    "x1": 346.3333333333333,
+                    "y1": 767.704918077257,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "1000,00",
+                  "bbox": {
+                    "x0": 355.6,
+                    "y0": 734.3715847439237,
+                    "x1": 476.0666666666666,
+                    "y1": 767.704918077257,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "EUR",
+                  "bbox": {
+                    "x0": 485.33333333333326,
+                    "y0": 734.3715847439237,
+                    "x1": 555.6999999999999,
+                    "y1": 767.704918077257,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Total TTC : 1200,00 EUR",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 806.593806966146,
+                "x1": 576.0666666666666,
+                "y1": 839.9271402994792,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Total",
+                  "bbox": {
+                    "x0": 200.0,
+                    "y0": 806.593806966146,
+                    "x1": 274.1,
+                    "y1": 839.9271402994792,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "TTC",
+                  "bbox": {
+                    "x0": 283.3666666666667,
+                    "y0": 806.593806966146,
+                    "x1": 348.1666666666667,
+                    "y1": 839.9271402994792,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 357.43333333333334,
+                    "y0": 806.593806966146,
+                    "x1": 366.70000000000005,
+                    "y1": 839.9271402994792,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "1200,00",
+                  "bbox": {
+                    "x0": 375.9666666666667,
+                    "y0": 806.593806966146,
+                    "x1": 496.4333333333333,
+                    "y1": 839.9271402994792,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "EUR",
+                  "bbox": {
+                    "x0": 505.7,
+                    "y0": 806.593806966146,
+                    "x1": 576.0666666666666,
+                    "y1": 839.9271402994792,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            }
+          ],
+          "kind": "paragraph"
+        }
+      ],
+      "lines": [
+        {
+          "text": "FACTURE N 2024-001",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 228.81602918836816,
+            "x1": 540.8333333333333,
+            "y1": 262.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "FACTURE",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 228.81602918836816,
+                "x1": 357.4,
+                "y1": 262.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "N",
+              "bbox": {
+                "x0": 366.66666666666663,
+                "y0": 228.81602918836816,
+                "x1": 390.7333333333333,
+                "y1": 262.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "2024-001",
+              "bbox": {
+                "x0": 400.0,
+                "y0": 228.81602918836816,
+                "x1": 540.8333333333333,
+                "y1": 262.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "Date : 15/03/2024",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 301.03825141059036,
+            "x1": 464.99999999999994,
+            "y1": 334.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Date",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 301.03825141059036,
+                "x1": 270.4,
+                "y1": 334.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 279.6666666666667,
+                "y0": 301.03825141059036,
+                "x1": 288.93333333333334,
+                "y1": 334.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "15/03/2024",
+              "bbox": {
+                "x0": 298.2,
+                "y0": 301.03825141059036,
+                "x1": 464.99999999999994,
+                "y1": 334.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "Echeance : 15/04/2024",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 373.2604736328126,
+            "x1": 542.8333333333333,
+            "y1": 406.5938069661459,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Echeance",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 373.2604736328126,
+                "x1": 348.23333333333335,
+                "y1": 406.5938069661459,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 357.49999999999994,
+                "y0": 373.2604736328126,
+                "x1": 366.76666666666665,
+                "y1": 406.5938069661459,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "15/04/2024",
+              "bbox": {
+                "x0": 376.03333333333336,
+                "y0": 373.2604736328126,
+                "x1": 542.8333333333333,
+                "y1": 406.5938069661459,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "Client : SARL Exemple Alger",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 445.4826958550348,
+            "x1": 626.0666666666666,
+            "y1": 478.81602918836813,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Client",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 445.4826958550348,
+                "x1": 285.2,
+                "y1": 478.81602918836813,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 294.4666666666667,
+                "y0": 445.4826958550348,
+                "x1": 303.73333333333335,
+                "y1": 478.81602918836813,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "SARL",
+              "bbox": {
+                "x0": 313.0,
+                "y0": 445.4826958550348,
+                "x1": 400.06666666666666,
+                "y1": 478.81602918836813,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Exemple",
+              "bbox": {
+                "x0": 409.33333333333337,
+                "y0": 445.4826958550348,
+                "x1": 539.0,
+                "y1": 478.81602918836813,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Alger",
+              "bbox": {
+                "x0": 548.2666666666665,
+                "y0": 445.4826958550348,
+                "x1": 626.0666666666666,
+                "y1": 478.81602918836813,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Email : contact@example.dz",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 517.704918077257,
+            "x1": 622.8666666666667,
+            "y1": 551.0382514105903,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Email",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 517.704918077257,
+                "x1": 283.3333333333333,
+                "y1": 551.0382514105903,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 292.6,
+                "y0": 517.704918077257,
+                "x1": 301.8666666666667,
+                "y1": 551.0382514105903,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "contact@example.dz",
+              "bbox": {
+                "x0": 311.1333333333333,
+                "y0": 517.704918077257,
+                "x1": 622.8666666666667,
+                "y1": 551.0382514105903,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "Telephone : +213 555 12 34 56",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 589.9271402994792,
+            "x1": 664.2333333333333,
+            "y1": 623.2604736328126,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Telephone",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 589.9271402994792,
+                "x1": 357.50000000000006,
+                "y1": 623.2604736328126,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 366.76666666666665,
+                "y0": 589.9271402994792,
+                "x1": 376.03333333333336,
+                "y1": 623.2604736328126,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "+213",
+              "bbox": {
+                "x0": 385.29999999999995,
+                "y0": 589.9271402994792,
+                "x1": 460.3666666666667,
+                "y1": 623.2604736328126,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "555",
+              "bbox": {
+                "x0": 469.63333333333327,
+                "y0": 589.9271402994792,
+                "x1": 525.2333333333332,
+                "y1": 623.2604736328126,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "12",
+              "bbox": {
+                "x0": 534.4999999999999,
+                "y0": 589.9271402994792,
+                "x1": 571.5666666666666,
+                "y1": 623.2604736328126,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "34",
+              "bbox": {
+                "x0": 580.8333333333333,
+                "y0": 589.9271402994792,
+                "x1": 617.9,
+                "y1": 623.2604736328126,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "56",
+              "bbox": {
+                "x0": 627.1666666666666,
+                "y0": 589.9271402994792,
+                "x1": 664.2333333333333,
+                "y1": 623.2604736328126,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Description : Fourniture de materiel informatique",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 662.1493625217015,
+            "x1": 913.2,
+            "y1": 695.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Description",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 662.1493625217015,
+                "x1": 366.7,
+                "y1": 695.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 375.9666666666667,
+                "y0": 662.1493625217015,
+                "x1": 385.2333333333334,
+                "y1": 695.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Fourniture",
+              "bbox": {
+                "x0": 394.49999999999994,
+                "y0": 662.1493625217015,
+                "x1": 546.4,
+                "y1": 695.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "de",
+              "bbox": {
+                "x0": 555.6666666666665,
+                "y0": 662.1493625217015,
+                "x1": 592.7333333333332,
+                "y1": 695.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "materiel",
+              "bbox": {
+                "x0": 601.9999999999999,
+                "y0": 662.1493625217015,
+                "x1": 720.5333333333332,
+                "y1": 695.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "informatique",
+              "bbox": {
+                "x0": 729.7999999999998,
+                "y0": 662.1493625217015,
+                "x1": 913.2,
+                "y1": 695.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "Total HT : 1000,00 EUR",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 734.3715847439237,
+            "x1": 555.6999999999999,
+            "y1": 767.704918077257,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Total",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 734.3715847439237,
+                "x1": 274.1,
+                "y1": 767.704918077257,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "HT",
+              "bbox": {
+                "x0": 283.3666666666667,
+                "y0": 734.3715847439237,
+                "x1": 327.8,
+                "y1": 767.704918077257,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 337.06666666666666,
+                "y0": 734.3715847439237,
+                "x1": 346.3333333333333,
+                "y1": 767.704918077257,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "1000,00",
+              "bbox": {
+                "x0": 355.6,
+                "y0": 734.3715847439237,
+                "x1": 476.0666666666666,
+                "y1": 767.704918077257,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "EUR",
+              "bbox": {
+                "x0": 485.33333333333326,
+                "y0": 734.3715847439237,
+                "x1": 555.6999999999999,
+                "y1": 767.704918077257,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Total TTC : 1200,00 EUR",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 806.593806966146,
+            "x1": 576.0666666666666,
+            "y1": 839.9271402994792,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Total",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 806.593806966146,
+                "x1": 274.1,
+                "y1": 839.9271402994792,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "TTC",
+              "bbox": {
+                "x0": 283.3666666666667,
+                "y0": 806.593806966146,
+                "x1": 348.1666666666667,
+                "y1": 839.9271402994792,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 357.43333333333334,
+                "y0": 806.593806966146,
+                "x1": 366.70000000000005,
+                "y1": 839.9271402994792,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "1200,00",
+              "bbox": {
+                "x0": 375.9666666666667,
+                "y0": 806.593806966146,
+                "x1": 496.4333333333333,
+                "y1": 839.9271402994792,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "EUR",
+              "bbox": {
+                "x0": 505.7,
+                "y0": 806.593806966146,
+                "x1": 576.0666666666666,
+                "y1": 839.9271402994792,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        }
+      ],
+      "words": [
+        {
+          "text": "FACTURE",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 228.81602918836816,
+            "x1": 357.4,
+            "y1": 262.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "N",
+          "bbox": {
+            "x0": 366.66666666666663,
+            "y0": 228.81602918836816,
+            "x1": 390.7333333333333,
+            "y1": 262.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "2024-001",
+          "bbox": {
+            "x0": 400.0,
+            "y0": 228.81602918836816,
+            "x1": 540.8333333333333,
+            "y1": 262.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Date",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 301.03825141059036,
+            "x1": 270.4,
+            "y1": 334.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 279.6666666666667,
+            "y0": 301.03825141059036,
+            "x1": 288.93333333333334,
+            "y1": 334.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "15/03/2024",
+          "bbox": {
+            "x0": 298.2,
+            "y0": 301.03825141059036,
+            "x1": 464.99999999999994,
+            "y1": 334.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Echeance",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 373.2604736328126,
+            "x1": 348.23333333333335,
+            "y1": 406.5938069661459,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 357.49999999999994,
+            "y0": 373.2604736328126,
+            "x1": 366.76666666666665,
+            "y1": 406.5938069661459,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "15/04/2024",
+          "bbox": {
+            "x0": 376.03333333333336,
+            "y0": 373.2604736328126,
+            "x1": 542.8333333333333,
+            "y1": 406.5938069661459,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Client",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 445.4826958550348,
+            "x1": 285.2,
+            "y1": 478.81602918836813,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 294.4666666666667,
+            "y0": 445.4826958550348,
+            "x1": 303.73333333333335,
+            "y1": 478.81602918836813,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "SARL",
+          "bbox": {
+            "x0": 313.0,
+            "y0": 445.4826958550348,
+            "x1": 400.06666666666666,
+            "y1": 478.81602918836813,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Exemple",
+          "bbox": {
+            "x0": 409.33333333333337,
+            "y0": 445.4826958550348,
+            "x1": 539.0,
+            "y1": 478.81602918836813,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Alger",
+          "bbox": {
+            "x0": 548.2666666666665,
+            "y0": 445.4826958550348,
+            "x1": 626.0666666666666,
+            "y1": 478.81602918836813,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Email",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 517.704918077257,
+            "x1": 283.3333333333333,
+            "y1": 551.0382514105903,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 292.6,
+            "y0": 517.704918077257,
+            "x1": 301.8666666666667,
+            "y1": 551.0382514105903,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "contact@example.dz",
+          "bbox": {
+            "x0": 311.1333333333333,
+            "y0": 517.704918077257,
+            "x1": 622.8666666666667,
+            "y1": 551.0382514105903,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Telephone",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 589.9271402994792,
+            "x1": 357.50000000000006,
+            "y1": 623.2604736328126,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 366.76666666666665,
+            "y0": 589.9271402994792,
+            "x1": 376.03333333333336,
+            "y1": 623.2604736328126,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "+213",
+          "bbox": {
+            "x0": 385.29999999999995,
+            "y0": 589.9271402994792,
+            "x1": 460.3666666666667,
+            "y1": 623.2604736328126,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "555",
+          "bbox": {
+            "x0": 469.63333333333327,
+            "y0": 589.9271402994792,
+            "x1": 525.2333333333332,
+            "y1": 623.2604736328126,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "12",
+          "bbox": {
+            "x0": 534.4999999999999,
+            "y0": 589.9271402994792,
+            "x1": 571.5666666666666,
+            "y1": 623.2604736328126,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "34",
+          "bbox": {
+            "x0": 580.8333333333333,
+            "y0": 589.9271402994792,
+            "x1": 617.9,
+            "y1": 623.2604736328126,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "56",
+          "bbox": {
+            "x0": 627.1666666666666,
+            "y0": 589.9271402994792,
+            "x1": 664.2333333333333,
+            "y1": 623.2604736328126,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Description",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 662.1493625217015,
+            "x1": 366.7,
+            "y1": 695.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 375.9666666666667,
+            "y0": 662.1493625217015,
+            "x1": 385.2333333333334,
+            "y1": 695.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Fourniture",
+          "bbox": {
+            "x0": 394.49999999999994,
+            "y0": 662.1493625217015,
+            "x1": 546.4,
+            "y1": 695.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "de",
+          "bbox": {
+            "x0": 555.6666666666665,
+            "y0": 662.1493625217015,
+            "x1": 592.7333333333332,
+            "y1": 695.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "materiel",
+          "bbox": {
+            "x0": 601.9999999999999,
+            "y0": 662.1493625217015,
+            "x1": 720.5333333333332,
+            "y1": 695.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "informatique",
+          "bbox": {
+            "x0": 729.7999999999998,
+            "y0": 662.1493625217015,
+            "x1": 913.2,
+            "y1": 695.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Total",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 734.3715847439237,
+            "x1": 274.1,
+            "y1": 767.704918077257,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "HT",
+          "bbox": {
+            "x0": 283.3666666666667,
+            "y0": 734.3715847439237,
+            "x1": 327.8,
+            "y1": 767.704918077257,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 337.06666666666666,
+            "y0": 734.3715847439237,
+            "x1": 346.3333333333333,
+            "y1": 767.704918077257,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "1000,00",
+          "bbox": {
+            "x0": 355.6,
+            "y0": 734.3715847439237,
+            "x1": 476.0666666666666,
+            "y1": 767.704918077257,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "EUR",
+          "bbox": {
+            "x0": 485.33333333333326,
+            "y0": 734.3715847439237,
+            "x1": 555.6999999999999,
+            "y1": 767.704918077257,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Total",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 806.593806966146,
+            "x1": 274.1,
+            "y1": 839.9271402994792,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "TTC",
+          "bbox": {
+            "x0": 283.3666666666667,
+            "y0": 806.593806966146,
+            "x1": 348.1666666666667,
+            "y1": 839.9271402994792,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 357.43333333333334,
+            "y0": 806.593806966146,
+            "x1": 366.70000000000005,
+            "y1": 839.9271402994792,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "1200,00",
+          "bbox": {
+            "x0": 375.9666666666667,
+            "y0": 806.593806966146,
+            "x1": 496.4333333333333,
+            "y1": 839.9271402994792,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "EUR",
+          "bbox": {
+            "x0": 505.7,
+            "y0": 806.593806966146,
+            "x1": 576.0666666666666,
+            "y1": 839.9271402994792,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        }
+      ],
+      "quality": {
+        "brightness": 253.3120986707183,
+        "contrast": 19.06364378908319,
+        "blur_score": 313.58719065237835,
+        "noise_score": 0.0,
+        "estimated_skew_deg": 0.0,
+        "estimated_dpi": 200.0,
+        "ink_ratio": 0.008151562822297688,
+        "is_blank": false,
+        "issues": [
+          "overexposed",
+          "low_contrast"
+        ]
+      },
+      "preprocess_ops": [
+        {
+          "name": "shadow_removal",
+          "applied": true,
+          "params": {},
+          "reason": "éclairage inégal détecté"
+        },
+        {
+          "name": "contrast",
+          "applied": true,
+          "params": {},
+          "reason": "contraste faible (écart-type luminance bas)"
+        },
+        {
+          "name": "binarize",
+          "applied": true,
+          "params": {},
+          "reason": "contraste ET éclairage dégradés"
+        }
+      ],
+      "engine_runs": [
+        {
+          "engine": "native_pdf",
+          "page_num": 1,
+          "languages": [
+            "*"
+          ],
+          "mean_confidence": 0.95,
+          "word_count": 40,
+          "duration_ms": 0.0,
+          "ok": true,
+          "error": null
+        },
+        {
+          "engine": "tesseract",
+          "page_num": 1,
+          "languages": [
+            "fra"
+          ],
+          "mean_confidence": 0.9332499999999999,
+          "word_count": 40,
+          "duration_ms": 1172.7388320005048,
+          "ok": true,
+          "error": null
+        }
+      ],
+      "orientation_deg": 0,
+      "detected_languages": [
+        "fr",
+        "en"
+      ],
+      "has_native_text": true,
+      "native_text_ratio": 1.0,
+      "variant_selected": "preprocessed",
+      "blank": false
+    },
+    {
+      "page_num": 2,
+      "width": 1653.543260362413,
+      "height": 2338.5826958550347,
+      "text": "DETAIL DES LIGNES\nClavier sans fil 50 x 25,00 EUR\nSouris optique 20 x 12,50 EUR\nTotal : 1500,00 EUR",
+      "blocks": [
+        {
+          "text": "DETAIL DES LIGNES\nClavier sans fil 50 x 25,00 EUR\nSouris optique 20 x 12,50 EUR\nTotal : 1500,00 EUR",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 228.81602918836816,
+            "x1": 661.2666666666665,
+            "y1": 478.81602918836813,
+            "page_width": 1653.543260362413,
+            "page_height": 2338.5826958550347
+          },
+          "order": 0,
+          "column": 0,
+          "lines": [
+            {
+              "text": "DETAIL DES LIGNES",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 228.81602918836816,
+                "x1": 526.0333333333333,
+                "y1": 262.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "DETAIL",
+                  "bbox": {
+                    "x0": 200.0,
+                    "y0": 228.81602918836816,
+                    "x1": 316.7,
+                    "y1": 262.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                },
+                {
+                  "text": "DES",
+                  "bbox": {
+                    "x0": 325.96666666666664,
+                    "y0": 228.81602918836816,
+                    "x1": 394.5,
+                    "y1": 262.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                },
+                {
+                  "text": "LIGNES",
+                  "bbox": {
+                    "x0": 403.76666666666665,
+                    "y0": 228.81602918836816,
+                    "x1": 526.0333333333333,
+                    "y1": 262.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "Clavier sans fil 50 x 25,00 EUR",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 301.03825141059036,
+                "x1": 661.2666666666665,
+                "y1": 334.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Clavier",
+                  "bbox": {
+                    "x0": 200.0,
+                    "y0": 301.03825141059036,
+                    "x1": 303.7,
+                    "y1": 334.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                },
+                {
+                  "text": "sans",
+                  "bbox": {
+                    "x0": 312.9666666666667,
+                    "y0": 301.03825141059036,
+                    "x1": 383.3666666666667,
+                    "y1": 334.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                },
+                {
+                  "text": "fil",
+                  "bbox": {
+                    "x0": 392.6333333333334,
+                    "y0": 301.03825141059036,
+                    "x1": 416.7,
+                    "y1": 334.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                },
+                {
+                  "text": "50",
+                  "bbox": {
+                    "x0": 425.9666666666667,
+                    "y0": 301.03825141059036,
+                    "x1": 463.03333333333325,
+                    "y1": 334.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                },
+                {
+                  "text": "x",
+                  "bbox": {
+                    "x0": 472.29999999999995,
+                    "y0": 301.03825141059036,
+                    "x1": 488.96666666666664,
+                    "y1": 334.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                },
+                {
+                  "text": "25,00",
+                  "bbox": {
+                    "x0": 498.23333333333323,
+                    "y0": 301.03825141059036,
+                    "x1": 581.6333333333332,
+                    "y1": 334.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                },
+                {
+                  "text": "EUR",
+                  "bbox": {
+                    "x0": 590.9,
+                    "y0": 301.03825141059036,
+                    "x1": 661.2666666666665,
+                    "y1": 334.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Souris optique 20 x 12,50 EUR",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 373.2604736328126,
+                "x1": 657.6333333333332,
+                "y1": 406.5938069661459,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Souris",
+                  "bbox": {
+                    "x0": 200.0,
+                    "y0": 373.2604736328126,
+                    "x1": 294.4666666666667,
+                    "y1": 406.5938069661459,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                },
+                {
+                  "text": "optique",
+                  "bbox": {
+                    "x0": 303.7333333333333,
+                    "y0": 373.2604736328126,
+                    "x1": 413.0666666666666,
+                    "y1": 406.5938069661459,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                },
+                {
+                  "text": "20",
+                  "bbox": {
+                    "x0": 422.3333333333333,
+                    "y0": 373.2604736328126,
+                    "x1": 459.3999999999999,
+                    "y1": 406.5938069661459,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                },
+                {
+                  "text": "x",
+                  "bbox": {
+                    "x0": 468.6666666666666,
+                    "y0": 373.2604736328126,
+                    "x1": 485.33333333333326,
+                    "y1": 406.5938069661459,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                },
+                {
+                  "text": "12,50",
+                  "bbox": {
+                    "x0": 494.5999999999999,
+                    "y0": 373.2604736328126,
+                    "x1": 577.9999999999999,
+                    "y1": 406.5938069661459,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                },
+                {
+                  "text": "EUR",
+                  "bbox": {
+                    "x0": 587.2666666666667,
+                    "y0": 373.2604736328126,
+                    "x1": 657.6333333333332,
+                    "y1": 406.5938069661459,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "Total : 1500,00 EUR",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 445.4826958550348,
+                "x1": 501.9999999999999,
+                "y1": 478.81602918836813,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Total",
+                  "bbox": {
+                    "x0": 200.0,
+                    "y0": 445.4826958550348,
+                    "x1": 274.1,
+                    "y1": 478.81602918836813,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 283.3666666666667,
+                    "y0": 445.4826958550348,
+                    "x1": 292.6333333333333,
+                    "y1": 478.81602918836813,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                },
+                {
+                  "text": "1500,00",
+                  "bbox": {
+                    "x0": 301.9,
+                    "y0": 445.4826958550348,
+                    "x1": 422.3666666666666,
+                    "y1": 478.81602918836813,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                },
+                {
+                  "text": "EUR",
+                  "bbox": {
+                    "x0": 431.63333333333327,
+                    "y0": 445.4826958550348,
+                    "x1": 501.9999999999999,
+                    "y1": 478.81602918836813,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 2
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            }
+          ],
+          "kind": "paragraph"
+        }
+      ],
+      "lines": [
+        {
+          "text": "DETAIL DES LIGNES",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 228.81602918836816,
+            "x1": 526.0333333333333,
+            "y1": 262.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "DETAIL",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 228.81602918836816,
+                "x1": 316.7,
+                "y1": 262.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            },
+            {
+              "text": "DES",
+              "bbox": {
+                "x0": 325.96666666666664,
+                "y0": 228.81602918836816,
+                "x1": 394.5,
+                "y1": 262.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            },
+            {
+              "text": "LIGNES",
+              "bbox": {
+                "x0": 403.76666666666665,
+                "y0": 228.81602918836816,
+                "x1": 526.0333333333333,
+                "y1": 262.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "Clavier sans fil 50 x 25,00 EUR",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 301.03825141059036,
+            "x1": 661.2666666666665,
+            "y1": 334.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Clavier",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 301.03825141059036,
+                "x1": 303.7,
+                "y1": 334.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            },
+            {
+              "text": "sans",
+              "bbox": {
+                "x0": 312.9666666666667,
+                "y0": 301.03825141059036,
+                "x1": 383.3666666666667,
+                "y1": 334.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            },
+            {
+              "text": "fil",
+              "bbox": {
+                "x0": 392.6333333333334,
+                "y0": 301.03825141059036,
+                "x1": 416.7,
+                "y1": 334.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            },
+            {
+              "text": "50",
+              "bbox": {
+                "x0": 425.9666666666667,
+                "y0": 301.03825141059036,
+                "x1": 463.03333333333325,
+                "y1": 334.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            },
+            {
+              "text": "x",
+              "bbox": {
+                "x0": 472.29999999999995,
+                "y0": 301.03825141059036,
+                "x1": 488.96666666666664,
+                "y1": 334.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            },
+            {
+              "text": "25,00",
+              "bbox": {
+                "x0": 498.23333333333323,
+                "y0": 301.03825141059036,
+                "x1": 581.6333333333332,
+                "y1": 334.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            },
+            {
+              "text": "EUR",
+              "bbox": {
+                "x0": 590.9,
+                "y0": 301.03825141059036,
+                "x1": 661.2666666666665,
+                "y1": 334.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Souris optique 20 x 12,50 EUR",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 373.2604736328126,
+            "x1": 657.6333333333332,
+            "y1": 406.5938069661459,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Souris",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 373.2604736328126,
+                "x1": 294.4666666666667,
+                "y1": 406.5938069661459,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            },
+            {
+              "text": "optique",
+              "bbox": {
+                "x0": 303.7333333333333,
+                "y0": 373.2604736328126,
+                "x1": 413.0666666666666,
+                "y1": 406.5938069661459,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            },
+            {
+              "text": "20",
+              "bbox": {
+                "x0": 422.3333333333333,
+                "y0": 373.2604736328126,
+                "x1": 459.3999999999999,
+                "y1": 406.5938069661459,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            },
+            {
+              "text": "x",
+              "bbox": {
+                "x0": 468.6666666666666,
+                "y0": 373.2604736328126,
+                "x1": 485.33333333333326,
+                "y1": 406.5938069661459,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            },
+            {
+              "text": "12,50",
+              "bbox": {
+                "x0": 494.5999999999999,
+                "y0": 373.2604736328126,
+                "x1": 577.9999999999999,
+                "y1": 406.5938069661459,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            },
+            {
+              "text": "EUR",
+              "bbox": {
+                "x0": 587.2666666666667,
+                "y0": 373.2604736328126,
+                "x1": 657.6333333333332,
+                "y1": 406.5938069661459,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "Total : 1500,00 EUR",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 445.4826958550348,
+            "x1": 501.9999999999999,
+            "y1": 478.81602918836813,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Total",
+              "bbox": {
+                "x0": 200.0,
+                "y0": 445.4826958550348,
+                "x1": 274.1,
+                "y1": 478.81602918836813,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 283.3666666666667,
+                "y0": 445.4826958550348,
+                "x1": 292.6333333333333,
+                "y1": 478.81602918836813,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            },
+            {
+              "text": "1500,00",
+              "bbox": {
+                "x0": 301.9,
+                "y0": 445.4826958550348,
+                "x1": 422.3666666666666,
+                "y1": 478.81602918836813,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            },
+            {
+              "text": "EUR",
+              "bbox": {
+                "x0": 431.63333333333327,
+                "y0": 445.4826958550348,
+                "x1": 501.9999999999999,
+                "y1": 478.81602918836813,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 2
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        }
+      ],
+      "words": [
+        {
+          "text": "DETAIL",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 228.81602918836816,
+            "x1": 316.7,
+            "y1": 262.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "DES",
+          "bbox": {
+            "x0": 325.96666666666664,
+            "y0": 228.81602918836816,
+            "x1": 394.5,
+            "y1": 262.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "LIGNES",
+          "bbox": {
+            "x0": 403.76666666666665,
+            "y0": 228.81602918836816,
+            "x1": 526.0333333333333,
+            "y1": 262.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "Clavier",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 301.03825141059036,
+            "x1": 303.7,
+            "y1": 334.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "sans",
+          "bbox": {
+            "x0": 312.9666666666667,
+            "y0": 301.03825141059036,
+            "x1": 383.3666666666667,
+            "y1": 334.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "fil",
+          "bbox": {
+            "x0": 392.6333333333334,
+            "y0": 301.03825141059036,
+            "x1": 416.7,
+            "y1": 334.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "50",
+          "bbox": {
+            "x0": 425.9666666666667,
+            "y0": 301.03825141059036,
+            "x1": 463.03333333333325,
+            "y1": 334.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "x",
+          "bbox": {
+            "x0": 472.29999999999995,
+            "y0": 301.03825141059036,
+            "x1": 488.96666666666664,
+            "y1": 334.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "25,00",
+          "bbox": {
+            "x0": 498.23333333333323,
+            "y0": 301.03825141059036,
+            "x1": 581.6333333333332,
+            "y1": 334.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "EUR",
+          "bbox": {
+            "x0": 590.9,
+            "y0": 301.03825141059036,
+            "x1": 661.2666666666665,
+            "y1": 334.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "Souris",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 373.2604736328126,
+            "x1": 294.4666666666667,
+            "y1": 406.5938069661459,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "optique",
+          "bbox": {
+            "x0": 303.7333333333333,
+            "y0": 373.2604736328126,
+            "x1": 413.0666666666666,
+            "y1": 406.5938069661459,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "20",
+          "bbox": {
+            "x0": 422.3333333333333,
+            "y0": 373.2604736328126,
+            "x1": 459.3999999999999,
+            "y1": 406.5938069661459,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "x",
+          "bbox": {
+            "x0": 468.6666666666666,
+            "y0": 373.2604736328126,
+            "x1": 485.33333333333326,
+            "y1": 406.5938069661459,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "12,50",
+          "bbox": {
+            "x0": 494.5999999999999,
+            "y0": 373.2604736328126,
+            "x1": 577.9999999999999,
+            "y1": 406.5938069661459,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "EUR",
+          "bbox": {
+            "x0": 587.2666666666667,
+            "y0": 373.2604736328126,
+            "x1": 657.6333333333332,
+            "y1": 406.5938069661459,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "Total",
+          "bbox": {
+            "x0": 200.0,
+            "y0": 445.4826958550348,
+            "x1": 274.1,
+            "y1": 478.81602918836813,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 283.3666666666667,
+            "y0": 445.4826958550348,
+            "x1": 292.6333333333333,
+            "y1": 478.81602918836813,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "1500,00",
+          "bbox": {
+            "x0": 301.9,
+            "y0": 445.4826958550348,
+            "x1": 422.3666666666666,
+            "y1": 478.81602918836813,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        },
+        {
+          "text": "EUR",
+          "bbox": {
+            "x0": 431.63333333333327,
+            "y0": 445.4826958550348,
+            "x1": 501.9999999999999,
+            "y1": 478.81602918836813,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 2
+        }
+      ],
+      "quality": {
+        "brightness": 254.28369304878686,
+        "contrast": 12.492880556915726,
+        "blur_score": 132.28547736633385,
+        "noise_score": 0.0,
+        "estimated_skew_deg": 0.0,
+        "estimated_dpi": 200.0,
+        "ink_ratio": 0.0034303459606390353,
+        "is_blank": false,
+        "issues": [
+          "overexposed",
+          "low_contrast",
+          "nearly_blank"
+        ]
+      },
+      "preprocess_ops": [
+        {
+          "name": "rotate_90",
+          "applied": true,
+          "params": {
+            "deg": 180
+          },
+          "reason": "orientation détectée par OSD"
+        },
+        {
+          "name": "shadow_removal",
+          "applied": true,
+          "params": {},
+          "reason": "éclairage inégal détecté"
+        },
+        {
+          "name": "contrast",
+          "applied": true,
+          "params": {},
+          "reason": "contraste faible (écart-type luminance bas)"
+        },
+        {
+          "name": "binarize",
+          "applied": true,
+          "params": {},
+          "reason": "contraste ET éclairage dégradés"
+        }
+      ],
+      "engine_runs": [
+        {
+          "engine": "native_pdf",
+          "page_num": 2,
+          "languages": [
+            "*"
+          ],
+          "mean_confidence": 0.9499999999999998,
+          "word_count": 20,
+          "duration_ms": 0.0,
+          "ok": true,
+          "error": null
+        },
+        {
+          "engine": "tesseract",
+          "page_num": 2,
+          "languages": [
+            "fra"
+          ],
+          "mean_confidence": 0.376,
+          "word_count": 20,
+          "duration_ms": 670.7481739995274,
+          "ok": true,
+          "error": null
+        }
+      ],
+      "orientation_deg": 0,
+      "detected_languages": [
+        "fr"
+      ],
+      "has_native_text": true,
+      "native_text_ratio": 0.495,
+      "variant_selected": "preprocessed",
+      "blank": false
+    }
+  ],
+  "fields": {
+    "date": {
+      "name": "date",
+      "label": "Date",
+      "raw_value": "2024-03-15 | 2024-04-15",
+      "normalized_value": "2024-03-15 | 2024-04-15",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.727,
+      "engine_confidence": 0.95,
+      "page_num": 2,
+      "bbox": {
+        "x0": 422.3333333333333,
+        "y0": 373.2604736328126,
+        "x1": 459.3999999999999,
+        "y1": 406.5938069661459,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "date",
+      "anomalies": [],
+      "profile": null
+    },
+    "email": {
+      "name": "email",
+      "label": "E-mail",
+      "raw_value": "contact@example.dz",
+      "normalized_value": "contact@example.dz",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.727,
+      "engine_confidence": 0.95,
+      "page_num": 1,
+      "bbox": {
+        "x0": 311.1333333333333,
+        "y0": 517.704918077257,
+        "x1": 622.8666666666667,
+        "y1": 551.0382514105903,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "email",
+      "anomalies": [],
+      "profile": null
+    },
+    "url": {
+      "name": "url",
+      "label": "URL",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "phone": {
+      "name": "phone",
+      "label": "Téléphone",
+      "raw_value": "2024001 | +213555123456",
+      "normalized_value": "2024001 | +213555123456",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.727,
+      "engine_confidence": 0.95,
+      "page_num": 2,
+      "bbox": {
+        "x0": 422.3333333333333,
+        "y0": 373.2604736328126,
+        "x1": 459.3999999999999,
+        "y1": 406.5938069661459,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "phone",
+      "anomalies": [],
+      "profile": null
+    },
+    "iban": {
+      "name": "iban",
+      "label": "IBAN",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "invoice_number": {
+      "name": "invoice_number",
+      "label": "Numéro de facture",
+      "raw_value": "2024-001",
+      "normalized_value": "2024-001",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 400.0,
+        "y0": 228.81602918836816,
+        "x1": 540.8333333333333,
+        "y1": 262.1493625217015,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:facture|invoice)\\s*(?:num[ée]ro|n[°o\\s]|no\\.?)?\\s*[:#]?\\s*([A-Z0-9][A-Z0-9\\-/_]{2,30})",
+      "anomalies": [],
+      "profile": "invoice"
+    },
+    "vat_number": {
+      "name": "vat_number",
+      "label": "N° TVA",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "invoice"
+    },
+    "container_number": {
+      "name": "container_number",
+      "label": "N° conteneur",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "serial_number": {
+      "name": "serial_number",
+      "label": "N° de série",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "amount": {
+      "name": "amount",
+      "label": "Montant",
+      "raw_value": "001 | 1000.00 | 1200.00 | 25.00 | 12.50 | 1500.00",
+      "normalized_value": "001 | 1000.00 | 1200.00 | 25.00 | 12.50 | 1500.00",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.727,
+      "engine_confidence": 0.95,
+      "page_num": 1,
+      "bbox": {
+        "x0": 400.0,
+        "y0": 228.81602918836816,
+        "x1": 540.8333333333333,
+        "y1": 262.1493625217015,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "amount",
+      "anomalies": [],
+      "profile": null
+    },
+    "percent": {
+      "name": "percent",
+      "label": "Pourcentage",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "quantity": {
+      "name": "quantity",
+      "label": "Quantité + unité",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "issue_date": {
+      "name": "issue_date",
+      "label": "Date d'émission",
+      "raw_value": "15/03/2024",
+      "normalized_value": "2024-03-15",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 298.2,
+        "y0": 301.03825141059036,
+        "x1": 464.99999999999994,
+        "y1": 334.3715847439237,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:^|\\n)\\s*date\\s*[:#]?\\s*(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})",
+      "anomalies": [],
+      "profile": "invoice"
+    },
+    "due_date": {
+      "name": "due_date",
+      "label": "Date d'échéance",
+      "raw_value": "15/04/2024",
+      "normalized_value": "2024-04-15",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 376.03333333333336,
+        "y0": 373.2604736328126,
+        "x1": 542.8333333333333,
+        "y1": 406.5938069661459,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:[ée]ch[ée]ance|due\\s*date|à\\s*r[ée]gler\\s*le|payable\\s*by)\\s*[:#]?\\s*(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})",
+      "anomalies": [],
+      "profile": "invoice"
+    },
+    "total_ht": {
+      "name": "total_ht",
+      "label": "Total HT",
+      "raw_value": "100",
+      "normalized_value": "100",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 355.6,
+        "y0": 734.3715847439237,
+        "x1": 476.0666666666666,
+        "y1": 767.704918077257,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:total\\s*ht|sous-total|subtotal|total\\s*excl)\\s*[:#]?\\s*(\\d{1,3}(?:[ .]\\d{3})*(?:,\\d{1,2})?|\\d+(?:[.,]\\d{1,2})?)",
+      "anomalies": [],
+      "profile": "invoice"
+    },
+    "total_ttc": {
+      "name": "total_ttc",
+      "label": "Total TTC",
+      "raw_value": "120",
+      "normalized_value": "120",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 375.9666666666667,
+        "y0": 806.593806966146,
+        "x1": 496.4333333333333,
+        "y1": 839.9271402994792,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:total\\s*ttc|total\\s*(?:due|amount|net\\s*to\\s*pay|g[ée]n[ée]ral))\\s*[:#]?\\s*(\\d{1,3}(?:[ .]\\d{3})*(?:,\\d{1,2})?|\\d+(?:[.,]\\d{1,2})?)",
+      "anomalies": [],
+      "profile": "invoice"
+    },
+    "currency": {
+      "name": "currency",
+      "label": "Devise",
+      "raw_value": "EUR",
+      "normalized_value": "EUR",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 485.33333333333326,
+        "y0": 734.3715847439237,
+        "x1": 555.6999999999999,
+        "y1": 767.704918077257,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "\\b(EUR|USD|DZD|GBP|DA|€|\\$)\\b",
+      "anomalies": [],
+      "profile": "invoice"
+    }
+  },
+  "tables": [],
+  "categories": {
+    "dates": [
+      "date"
+    ],
+    "contacts": [
+      "email",
+      "phone"
+    ],
+    "identifiants": [
+      "invoice_number"
+    ],
+    "numeriques": [
+      "amount"
+    ],
+    "_required": [
+      "invoice_number",
+      "issue_date",
+      "total_ttc"
+    ]
+  },
+  "barcodes": [],
+  "form_zones": [],
+  "quality": {
+    "mean_engine_confidence": 0.95,
+    "mean_global_confidence": 0.727,
+    "pages_low_confidence": [],
+    "fields_low_confidence": [],
+    "anomalies": [
+      {
+        "code": "PAGE_OVEREXPOSED",
+        "severity": "info",
+        "message": "page 1 : overexposed",
+        "page_num": 1,
+        "bbox": null,
+        "context": {
+          "blur": 313.58719065237835,
+          "dpi": 200.0
+        }
+      },
+      {
+        "code": "PAGE_LOW_CONTRAST",
+        "severity": "info",
+        "message": "page 1 : low_contrast",
+        "page_num": 1,
+        "bbox": null,
+        "context": {
+          "blur": 313.58719065237835,
+          "dpi": 200.0
+        }
+      },
+      {
+        "code": "PAGE_OVEREXPOSED",
+        "severity": "info",
+        "message": "page 2 : overexposed",
+        "page_num": 2,
+        "bbox": null,
+        "context": {
+          "blur": 132.28547736633385,
+          "dpi": 200.0
+        }
+      },
+      {
+        "code": "PAGE_LOW_CONTRAST",
+        "severity": "info",
+        "message": "page 2 : low_contrast",
+        "page_num": 2,
+        "bbox": null,
+        "context": {
+          "blur": 132.28547736633385,
+          "dpi": 200.0
+        }
+      },
+      {
+        "code": "PAGE_NEARLY_BLANK",
+        "severity": "info",
+        "message": "page 2 : nearly_blank",
+        "page_num": 2,
+        "bbox": null,
+        "context": {
+          "blur": 132.28547736633385,
+          "dpi": 200.0
+        }
+      }
+    ],
+    "disagreements": [],
+    "checks": []
+  },
+  "engines_used": [
+    "native_pdf",
+    "tesseract"
+  ],
+  "profile_used": "invoice",
+  "timings_ms": {
+    "ingest_ms": 109.4,
+    "ocr_ms": 3898.5,
+    "tables_ms": 79.6,
+    "fields_ms": 4.9,
+    "barcodes_ms": 94.4,
+    "total_ms": 4189.2
+  },
+  "warnings": [],
+  "source_file": "text_pdf.pdf",
+  "source_hash": "b009bac337e6b6239a586f41e9fada2a5f63568bf92b0de5112225d193db0bb3",
+  "exports": [
+    {
+      "format": "json",
+      "path": "/home/user/ocr-universal/data/jobs/job_d3938c4fabf6/exports/result.json",
+      "size_bytes": 107413
+    },
+    {
+      "format": "txt",
+      "path": "/home/user/ocr-universal/data/jobs/job_d3938c4fabf6/exports/result.txt",
+      "size_bytes": 371
+    }
+  ]
+}

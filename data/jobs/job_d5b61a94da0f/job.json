@@ -1,0 +1,32 @@
+{
+  "id": "job_d5b61a94da0f",
+  "filename": "bl_port.pdf",
+  "status": "done",
+  "created_at": 1792305823.10022,
+  "updated_at": 1792305832.8727353,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "invoice",
+    "quality_mode": "fast",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json",
+      "txt"
+    ],
+    "page_range": "",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7
+  },
+  "result_id": "doc_4d95279a8d72",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1,
+  "file_hash": "1e9f7d6d021721dfffd5ad1941f83d0e20913cd2ad339005f53a4d63a268aeb4"
+}

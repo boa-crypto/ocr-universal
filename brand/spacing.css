@@ -1,0 +1,44 @@
+/**
+ * OCR Universal - Spacing System
+ * Premium Enterprise Design System
+ * Base-4 scale for consistent rhythm
+ */
+
+:root {
+  /* === SPACING SCALE === */
+  --space-0: 0;
+  --space-1: 0.25rem;   /* 4px — Micro-espaces, fine-tuning */
+  --space-2: 0.5rem;    /* 8px — Espacement serré, inline gaps */
+  --space-3: 0.75rem;   /* 12px — Padding compact */
+  --space-4: 1rem;      /* 16px — Base unit, card padding */
+  --space-5: 1.25rem;   /* 20px — Comfortable padding */
+  --space-6: 1.5rem;    /* 24px — Section spacing */
+  --space-8: 2rem;      /* 32px — Large gaps */
+  --space-10: 2.5rem;   /* 40px — Section separation */
+  --space-12: 3rem;     /* 48px — Major sections */
+  --space-16: 4rem;     /* 64px — Page-level spacing */
+  --space-20: 5rem;     /* 80px — Hero spacing */
+  --space-24: 6rem;     /* 96px — Extra large */
+}
+
+/* === UTILITY CLASSES === */
+.p-0 { padding: var(--space-0); }
+.p-1 { padding: var(--space-1); }
+.p-2 { padding: var(--space-2); }
+.p-3 { padding: var(--space-3); }
+.p-4 { padding: var(--space-4); }
+.p-6 { padding: var(--space-6); }
+.p-8 { padding: var(--space-8); }
+
+.m-0 { margin: var(--space-0); }
+.m-1 { margin: var(--space-1); }
+.m-2 { margin: var(--space-2); }
+.m-3 { margin: var(--space-3); }
+.m-4 { margin: var(--space-4); }
+.m-6 { margin: var(--space-6); }
+.m-8 { margin: var(--space-8); }
+
+.gap-2 { gap: var(--space-2); }
+.gap-4 { gap: var(--space-4); }
+.gap-6 { gap: var(--space-6); }
+.gap-8 { gap: var(--space-8); }

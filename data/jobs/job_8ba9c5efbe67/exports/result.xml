@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<document id="doc_25cebf77273a" source="transport-routier-conteneur.jpg" hash="14a7a12cf7dbe6a98221f21ae46ffb3114224b9b065762bf54af692d384b50a7" profile="vehicle_plate">
+  <meta>
+    <engines>tesseract</engines>
+    <mean_engine_confidence>0.0</mean_engine_confidence>
+    <mean_global_confidence>0.0</mean_global_confidence>
+  </meta>
+  <pages>
+    <page num="1" width="550" height="275">
+      <text />
+    </page>
+  </pages>
+  <fields>
+    <field name="date" label="Date" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="email" label="E-mail" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="url" label="URL" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="phone" label="Téléphone" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="iban" label="IBAN" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="invoice_number" label="Numéro de facture" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="vat_number" label="N° TVA" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="container_number" label="N° conteneur" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="serial_number" label="N° de série" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="amount" label="Montant" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="percent" label="Pourcentage" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="quantity" label="Quantité + unité" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="plate_number" label="Plaque d'immatriculation" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="vin" label="N° de châssis (VIN)" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="make_model" label="Marque / modèle (si marqué)" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+  </fields>
+  <tables />
+  <anomalies>
+    <anomaly code="PAGE_SKEWED" severity="warning" page="1">page 1 : skewed</anomaly>
+    <anomaly code="OCR_FAILED" severity="error" page="1">aucun texte reconnu page 1</anomaly>
+    <anomaly code="MISSING_REQUIRED_FIELD" severity="error" page="">champ obligatoire absent : plate_number</anomaly>
+  </anomalies>
+</document>

@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unocr"
+version = "0.1.0"
+description = "UniOCR - moteur OCR universel, multimoteur, traçable et sécurisé"
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2",
+  "pillow>=10",
+  "numpy>=1.26",
+  "opencv-python>=4.8",
+  "pytesseract>=0.3.10",
+  "pypdfium2>=4",
+  "pdfminer.six>=20231228",
+  "reportlab>=4",
+  "python-docx>=1.1",
+  "odfpy>=1.4",
+  "xlrd>=2.0",
+  "openpyxl>=3.1",
+  "pandas>=2.0",
+  "striprtf>=0.0.33",
+  "rapidfuzz>=3.0",
+  "langdetect>=1.0.9",
+  "zxing-cpp>=2.2",
+  "segno>=1.6",
+  "fastapi>=0.110",
+  "uvicorn[standard]>=0.29",
+  "python-multipart>=0.0.9",
+  "aiofiles>=23.0",
+  "psutil>=5.9",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8",
+  "ruff>=0.6",
+  "httpx>=0.27",
+]
+
+[project.scripts]
+unocr = "unocr.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = ["slow: tests de performance mesurée (plusieurs minutes)"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+# Base volontairement pragmatique : erreurs réelles (F), imports (I),
+# style whitespace (W) et pycodestyle errors (E4/E7/E9).
+# Les règles d'opinion (BLE001, SIM, PLR, S) sont écartées : le code défensif
+# d'un moteur OCR attrape légitimement des exceptions larges.
+select = ["E4", "E7", "E9", "F", "I", "W"]
+
+[tool.ruff.lint.per-file-ignores]
+# Ces fichiers manipulent sys.path avant leurs imports : l'ordre est intentionnel.
+"tests/conftest.py" = ["E402"]
+"tests/make_fixtures.py" = ["E402"]
+"benchmarks/*.py" = ["E402"]

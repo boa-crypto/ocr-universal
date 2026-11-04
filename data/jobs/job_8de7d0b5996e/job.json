@@ -1,0 +1,33 @@
+{
+  "id": "job_8de7d0b5996e",
+  "filename": "parcours_bl.pdf",
+  "status": "done",
+  "created_at": 1792356811.1556892,
+  "updated_at": 1792356811.5569046,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "accurate",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json",
+      "txt"
+    ],
+    "page_range": "",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7,
+    "auto_classify": true
+  },
+  "result_id": "job_8de7d0b5996e",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1,
+  "file_hash": "4169aad97d556420c91d757e1d707de70f9d194869c2644645fb4ee89c64386b"
+}

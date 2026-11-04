@@ -1,0 +1,16 @@
+﻿name,label,raw_value,normalized_value,corrected_value,confirmed_value,confidence,engine_confidence,status,page,source
+date,Date d'émission,15/03/2024,2024-03-15,,,0.765,1.0,detected,1,rule
+email,E-mail,contact@example.dz,contact@example.dz,,,0.765,1.0,detected,1,rule
+url,URL,,,,,0.0,0.0,not_detected,,ocr
+phone,Téléphone,'+213 555 12 34 56,213555123456,,,0.765,1.0,detected,1,rule
+iban,IBAN,,,,,0.0,0.0,not_detected,,ocr
+invoice_number,Numéro de facture,2024-001 | Fourniture,2024-001 | Fourniture,,,0.727,0.95,detected,1,ocr
+vat_number,N° TVA,,,,,0.0,0.0,not_detected,,ocr
+container_number,N° conteneur,,,,,0.0,0.0,not_detected,,ocr
+serial_number,N° de série,,,,,0.0,0.0,not_detected,,ocr
+amount,Montant,001 | 1000.00 | 1200.00 | 25.00 | 12.50 | 1500.00,001 | 1000.00 | 1200.00 | 25.00 | 12.50 | 1500.00,,,0.727,0.95,detected,1,ocr
+percent,Pourcentage,,,,,0.0,0.0,not_detected,,ocr
+quantity,Quantité + unité,,,,,0.0,0.0,not_detected,,ocr
+title,Titre,FACTURE N 2024-001,FACTURE N 2024-001,,,0.765,1.0,detected,1,rule
+document_number,Numéro de document,2024-001,2024-001,,,0.765,1.0,detected,1,rule
+total_amount,Montant total,120,120,,,0.765,1.0,detected,1,rule

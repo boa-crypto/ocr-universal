@@ -1,0 +1,1059 @@
+{
+  "id": "doc_872463587d9f",
+  "created_at": 1792271140.2146218,
+  "info": {
+    "title": "Facture 2024- -1234",
+    "doc_type": "generic",
+    "doc_number": "2024-",
+    "issue_date": null,
+    "due_date": null,
+    "issuer": null,
+    "sender": null,
+    "recipient": null,
+    "languages": [
+      "ro"
+    ],
+    "page_count": 1,
+    "source_format": "png"
+  },
+  "pages": [
+    {
+      "page_num": 1,
+      "width": 962.0,
+      "height": 622.0,
+      "text": "CONTENEUR mscu 423456 7\nFacture 2024- -1234\nTotal : 2 500,00 pzD",
+      "blocks": [
+        {
+          "text": "CONTENEUR mscu 423456 7\nFacture 2024- -1234\nTotal : 2 500,00 pzD",
+          "bbox": {
+            "x0": 50.0,
+            "y0": 105.0,
+            "x1": 478.0,
+            "y1": 301.0,
+            "page_width": 962.0,
+            "page_height": 622.0
+          },
+          "order": 0,
+          "column": 0,
+          "lines": [
+            {
+              "text": "CONTENEUR mscu 423456 7",
+              "bbox": {
+                "x0": 50.0,
+                "y0": 105.0,
+                "x1": 478.0,
+                "y1": 186.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "CONTENEUR",
+                  "bbox": {
+                    "x0": 50.0,
+                    "y0": 141.0,
+                    "x1": 236.0,
+                    "y1": 186.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.91,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "mscu",
+                  "bbox": {
+                    "x0": 246.0,
+                    "y0": 127.0,
+                    "x1": 329.0,
+                    "y1": 160.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.76,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "423456",
+                  "bbox": {
+                    "x0": 342.0,
+                    "y0": 110.0,
+                    "x1": 453.0,
+                    "y1": 146.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.82,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "7",
+                  "bbox": {
+                    "x0": 464.0,
+                    "y0": 105.0,
+                    "x1": 478.0,
+                    "y1": 129.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.94,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.8574999999999999
+            },
+            {
+              "text": "Facture 2024- -1234",
+              "bbox": {
+                "x0": 57.0,
+                "y0": 182.0,
+                "x1": 335.0,
+                "y1": 242.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Facture",
+                  "bbox": {
+                    "x0": 57.0,
+                    "y0": 212.0,
+                    "x1": 164.0,
+                    "y1": 242.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.89,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "2024-",
+                  "bbox": {
+                    "x0": 175.0,
+                    "y0": 194.0,
+                    "x1": 259.0,
+                    "y1": 225.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "-1234",
+                  "bbox": {
+                    "x0": 251.0,
+                    "y0": 182.0,
+                    "x1": 335.0,
+                    "y1": 213.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.86,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.8833333333333333
+            },
+            {
+              "text": "Total : 2 500,00 pzD",
+              "bbox": {
+                "x0": 62.0,
+                "y0": 233.0,
+                "x1": 368.0,
+                "y1": 301.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Total",
+                  "bbox": {
+                    "x0": 62.0,
+                    "y0": 265.0,
+                    "x1": 151.0,
+                    "y1": 296.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.58,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 144.0,
+                    "y0": 256.0,
+                    "x1": 156.0,
+                    "y1": 301.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.81,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "2",
+                  "bbox": {
+                    "x0": 162.0,
+                    "y0": 260.0,
+                    "x1": 179.0,
+                    "y1": 283.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "500,00",
+                  "bbox": {
+                    "x0": 192.0,
+                    "y0": 244.0,
+                    "x1": 293.0,
+                    "y1": 278.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "pzD",
+                  "bbox": {
+                    "x0": 305.0,
+                    "y0": 233.0,
+                    "x1": 368.0,
+                    "y1": 263.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.42,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.74
+            }
+          ],
+          "kind": "paragraph"
+        }
+      ],
+      "lines": [
+        {
+          "text": "CONTENEUR mscu 423456 7",
+          "bbox": {
+            "x0": 50.0,
+            "y0": 105.0,
+            "x1": 478.0,
+            "y1": 186.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "CONTENEUR",
+              "bbox": {
+                "x0": 50.0,
+                "y0": 141.0,
+                "x1": 236.0,
+                "y1": 186.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.91,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "mscu",
+              "bbox": {
+                "x0": 246.0,
+                "y0": 127.0,
+                "x1": 329.0,
+                "y1": 160.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.76,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "423456",
+              "bbox": {
+                "x0": 342.0,
+                "y0": 110.0,
+                "x1": 453.0,
+                "y1": 146.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.82,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "7",
+              "bbox": {
+                "x0": 464.0,
+                "y0": 105.0,
+                "x1": 478.0,
+                "y1": 129.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.94,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.8574999999999999
+        },
+        {
+          "text": "Facture 2024- -1234",
+          "bbox": {
+            "x0": 57.0,
+            "y0": 182.0,
+            "x1": 335.0,
+            "y1": 242.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Facture",
+              "bbox": {
+                "x0": 57.0,
+                "y0": 212.0,
+                "x1": 164.0,
+                "y1": 242.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.89,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "2024-",
+              "bbox": {
+                "x0": 175.0,
+                "y0": 194.0,
+                "x1": 259.0,
+                "y1": 225.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "-1234",
+              "bbox": {
+                "x0": 251.0,
+                "y0": 182.0,
+                "x1": 335.0,
+                "y1": 213.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.86,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.8833333333333333
+        },
+        {
+          "text": "Total : 2 500,00 pzD",
+          "bbox": {
+            "x0": 62.0,
+            "y0": 233.0,
+            "x1": 368.0,
+            "y1": 301.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Total",
+              "bbox": {
+                "x0": 62.0,
+                "y0": 265.0,
+                "x1": 151.0,
+                "y1": 296.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.58,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 144.0,
+                "y0": 256.0,
+                "x1": 156.0,
+                "y1": 301.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.81,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "2",
+              "bbox": {
+                "x0": 162.0,
+                "y0": 260.0,
+                "x1": 179.0,
+                "y1": 283.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "500,00",
+              "bbox": {
+                "x0": 192.0,
+                "y0": 244.0,
+                "x1": 293.0,
+                "y1": 278.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "pzD",
+              "bbox": {
+                "x0": 305.0,
+                "y0": 233.0,
+                "x1": 368.0,
+                "y1": 263.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.42,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.74
+        }
+      ],
+      "words": [
+        {
+          "text": "CONTENEUR",
+          "bbox": {
+            "x0": 50.0,
+            "y0": 141.0,
+            "x1": 236.0,
+            "y1": 186.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.91,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "mscu",
+          "bbox": {
+            "x0": 246.0,
+            "y0": 127.0,
+            "x1": 329.0,
+            "y1": 160.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.76,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "423456",
+          "bbox": {
+            "x0": 342.0,
+            "y0": 110.0,
+            "x1": 453.0,
+            "y1": 146.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.82,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "7",
+          "bbox": {
+            "x0": 464.0,
+            "y0": 105.0,
+            "x1": 478.0,
+            "y1": 129.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.94,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "Facture",
+          "bbox": {
+            "x0": 57.0,
+            "y0": 212.0,
+            "x1": 164.0,
+            "y1": 242.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.89,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "2024-",
+          "bbox": {
+            "x0": 175.0,
+            "y0": 194.0,
+            "x1": 259.0,
+            "y1": 225.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "-1234",
+          "bbox": {
+            "x0": 251.0,
+            "y0": 182.0,
+            "x1": 335.0,
+            "y1": 213.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.86,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "Total",
+          "bbox": {
+            "x0": 62.0,
+            "y0": 265.0,
+            "x1": 151.0,
+            "y1": 296.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.58,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 144.0,
+            "y0": 256.0,
+            "x1": 156.0,
+            "y1": 301.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.81,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "2",
+          "bbox": {
+            "x0": 162.0,
+            "y0": 260.0,
+            "x1": 179.0,
+            "y1": 283.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "500,00",
+          "bbox": {
+            "x0": 192.0,
+            "y0": 244.0,
+            "x1": 293.0,
+            "y1": 278.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "pzD",
+          "bbox": {
+            "x0": 305.0,
+            "y0": 233.0,
+            "x1": 368.0,
+            "y1": 263.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.42,
+          "engine": "tesseract",
+          "page_num": 1
+        }
+      ],
+      "quality": {
+        "brightness": 252.11505204190092,
+        "contrast": 25.71011210303438,
+        "blur_score": 1035.6422144380344,
+        "noise_score": 0.0,
+        "estimated_skew_deg": 0.0,
+        "estimated_dpi": 150.0,
+        "ink_ratio": 0.012982064429009767,
+        "is_blank": false,
+        "issues": [
+          "overexposed",
+          "low_contrast"
+        ]
+      },
+      "preprocess_ops": [
+        {
+          "name": "preprocess",
+          "applied": false,
+          "params": {},
+          "reason": "prétraitement désactivé par option"
+        }
+      ],
+      "engine_runs": [
+        {
+          "engine": "tesseract",
+          "page_num": 1,
+          "languages": [
+            "eng"
+          ],
+          "mean_confidence": 0.815,
+          "word_count": 12,
+          "duration_ms": 379.3768790001195,
+          "ok": true,
+          "error": null
+        }
+      ],
+      "orientation_deg": 0,
+      "detected_languages": [
+        "ro"
+      ],
+      "has_native_text": false,
+      "native_text_ratio": 0.0,
+      "variant_selected": "original",
+      "blank": false
+    }
+  ],
+  "fields": {
+    "date": {
+      "name": "date",
+      "label": "Date d'émission",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "generic"
+    },
+    "email": {
+      "name": "email",
+      "label": "E-mail",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "generic"
+    },
+    "url": {
+      "name": "url",
+      "label": "URL",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "phone": {
+      "name": "phone",
+      "label": "Téléphone",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "generic"
+    },
+    "iban": {
+      "name": "iban",
+      "label": "IBAN",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "invoice_number": {
+      "name": "invoice_number",
+      "label": "Numéro de facture",
+      "raw_value": "2024-",
+      "normalized_value": "2024-",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.623,
+      "engine_confidence": 0.815,
+      "page_num": 1,
+      "bbox": {
+        "x0": 175.0,
+        "y0": 194.0,
+        "x1": 259.0,
+        "y1": 225.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "invoice_number",
+      "anomalies": [],
+      "profile": null
+    },
+    "vat_number": {
+      "name": "vat_number",
+      "label": "N° TVA",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "container_number": {
+      "name": "container_number",
+      "label": "N° conteneur",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "serial_number": {
+      "name": "serial_number",
+      "label": "N° de série",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "amount": {
+      "name": "amount",
+      "label": "Montant",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "percent": {
+      "name": "percent",
+      "label": "Pourcentage",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "quantity": {
+      "name": "quantity",
+      "label": "Quantité + unité",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "title": {
+      "name": "title",
+      "label": "Titre",
+      "raw_value": "Facture 2024- -1234",
+      "normalized_value": "Facture 2024- -1234",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 57.0,
+        "y0": 182.0,
+        "x1": 335.0,
+        "y1": 242.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "^(?:FACTURE|INVOICE|BON DE COMMANDE|CONTRAT|CONTRACT|BILL OF LADING|MANIFESTE|RELEV[EÉ]|COURRIER)[^\\n]{0,80}",
+      "anomalies": [],
+      "profile": "generic"
+    },
+    "document_number": {
+      "name": "document_number",
+      "label": "Numéro de document",
+      "raw_value": "2024-",
+      "normalized_value": "2024-",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 175.0,
+        "y0": 194.0,
+        "x1": 259.0,
+        "y1": 225.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:facture|invoice|r[ée]f[érence]*\\.?|ref\\.?|BL|B/L|n[°o\\s]|no\\.?)\\s*[:#]?\\s*([A-Z0-9][A-Z0-9\\-/_]{3,30})",
+      "anomalies": [],
+      "profile": "generic"
+    },
+    "total_amount": {
+      "name": "total_amount",
+      "label": "Montant total",
+      "raw_value": "2 500,00",
+      "normalized_value": "2500.00",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 162.0,
+        "y0": 244.0,
+        "x1": 293.0,
+        "y1": 283.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:total\\s*(?:ttc|g[ée]n[ée]ral|amount|due|net)?|montant\\s*total|net\\s*to\\s*pay)\\s*[:#]?\\s*(\\d{1,3}(?:[ .]\\d{3})*(?:,\\d{1,2})?|\\d+(?:[.,]\\d{1,2})?)\\s*(EUR|USD|DZD|DA|GBP|€|\\$|£)?",
+      "anomalies": [],
+      "profile": "generic"
+    }
+  },
+  "tables": [],
+  "categories": {
+    "dates": [],
+    "contacts": [
+      "phone"
+    ],
+    "identifiants": [
+      "invoice_number"
+    ],
+    "numeriques": [],
+    "_required": []
+  },
+  "barcodes": [],
+  "form_zones": [],
+  "quality": {
+    "mean_engine_confidence": 0.815,
+    "mean_global_confidence": 0.623,
+    "pages_low_confidence": [
+      1
+    ],
+    "fields_low_confidence": [
+      "invoice_number"
+    ],
+    "anomalies": [
+      {
+        "code": "PAGE_OVEREXPOSED",
+        "severity": "info",
+        "message": "page 1 : overexposed",
+        "page_num": 1,
+        "bbox": null,
+        "context": {
+          "blur": 1035.6422144380344,
+          "dpi": 150.0
+        }
+      },
+      {
+        "code": "PAGE_LOW_CONTRAST",
+        "severity": "info",
+        "message": "page 1 : low_contrast",
+        "page_num": 1,
+        "bbox": null,
+        "context": {
+          "blur": 1035.6422144380344,
+          "dpi": 150.0
+        }
+      }
+    ],
+    "disagreements": [],
+    "checks": []
+  },
+  "engines_used": [
+    "tesseract"
+  ],
+  "profile_used": "generic",
+  "timings_ms": {
+    "ingest_ms": 9.5,
+    "ocr_ms": 419.4,
+    "fields_ms": 1.2,
+    "total_ms": 432.1
+  },
+  "warnings": [
+    "extraction des tableaux désactivée (option)"
+  ],
+  "source_file": "skewed.png",
+  "source_hash": "226b2c77b7386639f2a602a3dcea82b2d66ddcfdf1ab651c94d2bd12e7807416",
+  "exports": [
+    {
+      "format": "json",
+      "path": "/home/user/ocr-universal/data/jobs/job_313221b6216c/exports/result.json",
+      "size_bytes": 27776
+    }
+  ]
+}

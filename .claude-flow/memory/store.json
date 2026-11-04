@@ -1,0 +1,275 @@
+{
+  "entries": {
+    "cmd-1793527428247": {
+      "key": "cmd-1793527428247",
+      "value": "{\"command\":\"find . -type f -name \\\"*.json\\\" | head -20\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T10:03:48.247Z",
+      "lastAccessed": "2026-11-01T10:03:48.247Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T10:03:48.247Z"
+    },
+    "cmd-1793527453368": {
+      "key": "cmd-1793527453368",
+      "value": "{\"command\":\"rtk ls -la C:\\\\workspace\\\\ocr-universal\",\"exitCode\":2,\"success\":false}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T10:04:13.368Z",
+      "lastAccessed": "2026-11-01T10:04:13.368Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T10:04:13.368Z"
+    },
+    "cmd-1793545516005": {
+      "key": "cmd-1793545516005",
+      "value": "{\"command\":\"python -m pytest tests/ -q --tb=no 2>&1 | tail -50\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:05:16.005Z",
+      "lastAccessed": "2026-11-01T15:05:16.005Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:05:16.005Z"
+    },
+    "cmd-1793545533388": {
+      "key": "cmd-1793545533388",
+      "value": "{\"command\":\"python -m pytest tests/test_annulation_correction.py -v 2>&1 | head -60\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:05:33.388Z",
+      "lastAccessed": "2026-11-01T15:05:33.388Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:05:33.388Z"
+    },
+    "cmd-1793545734410": {
+      "key": "cmd-1793545734410",
+      "value": "{\"command\":\"python -m pytest tests/test_annulation_correction.py -v 2>&1 | head -40\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:08:54.410Z",
+      "lastAccessed": "2026-11-01T15:08:54.410Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:08:54.410Z"
+    },
+    "cmd-1793545979779": {
+      "key": "cmd-1793545979779",
+      "value": "{\"command\":\"python -m pytest tests/test_annulation_correction.py -v 2>&1 | head -50\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:12:59.779Z",
+      "lastAccessed": "2026-11-01T15:12:59.779Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:12:59.779Z"
+    },
+    "cmd-1793546080039": {
+      "key": "cmd-1793546080039",
+      "value": "{\"command\":\"python -m pytest tests/test_annulation_correction.py -v 2>&1 | head -50\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:14:40.039Z",
+      "lastAccessed": "2026-11-01T15:14:40.039Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:14:40.039Z"
+    },
+    "cmd-1793546146301": {
+      "key": "cmd-1793546146301",
+      "value": "{\"command\":\"python -m pytest tests/test_annulation_correction.py -v 2>&1 | head -50\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:15:46.301Z",
+      "lastAccessed": "2026-11-01T15:15:46.301Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:15:46.301Z"
+    },
+    "cmd-1793546193429": {
+      "key": "cmd-1793546193429",
+      "value": "{\"command\":\"python -m pytest tests/test_annulation_correction.py -v 2>&1 | head -50\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:16:33.429Z",
+      "lastAccessed": "2026-11-01T15:16:33.429Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:16:33.429Z"
+    },
+    "cmd-1793546332323": {
+      "key": "cmd-1793546332323",
+      "value": "{\"command\":\"python -m pytest tests/ -q --tb=no 2>&1 | tail -50\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:18:52.323Z",
+      "lastAccessed": "2026-11-01T15:18:52.323Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:18:52.323Z"
+    },
+    "cmd-1793546756218": {
+      "key": "cmd-1793546756218",
+      "value": "{\"command\":\"rtk read C:\\\\workspace\\\\ocr-universal\\\\web\\\\styles.css --max-lines 200\",\"exitCode\":1,\"success\":false}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:25:56.218Z",
+      "lastAccessed": "2026-11-01T15:25:56.218Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:25:56.218Z"
+    },
+    "cmd-1793547520527": {
+      "key": "cmd-1793547520527",
+      "value": "{\"command\":\"rtk read /workspace/ocr-universal/web/styles.css --max-lines 200\",\"exitCode\":1,\"success\":false}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:38:40.527Z",
+      "lastAccessed": "2026-11-01T15:38:40.527Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:38:40.527Z"
+    },
+    "cmd-1793548389199": {
+      "key": "cmd-1793548389199",
+      "value": "{\"command\":\"rtk ls /workspace/ocr-universal/web/\",\"exitCode\":2,\"success\":false}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:53:09.199Z",
+      "lastAccessed": "2026-11-01T15:53:09.199Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:53:09.199Z"
+    },
+    "cmd-1793548553782": {
+      "key": "cmd-1793548553782",
+      "value": "{\"command\":\"find / -name \\\"ocr-universal\\\" -type d 2>/dev/null | head -5\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:55:53.782Z",
+      "lastAccessed": "2026-11-01T15:55:53.782Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:55:53.782Z"
+    },
+    "cmd-1793548559188": {
+      "key": "cmd-1793548559188",
+      "value": "{\"command\":\"pwd\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:55:59.188Z",
+      "lastAccessed": "2026-11-01T15:55:59.188Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:55:59.188Z"
+    },
+    "cmd-1793548630007": {
+      "key": "cmd-1793548630007",
+      "value": "{\"command\":\"rtk read /c/workspace/ocr-universal/web/styles.css --max-lines 200\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:57:10.007Z",
+      "lastAccessed": "2026-11-01T15:57:10.007Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:57:10.007Z"
+    },
+    "cmd-1793548636518": {
+      "key": "cmd-1793548636518",
+      "value": "{\"command\":\"rtk read /c/workspace/ocr-universal/web/styles.css --max-lines 500\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:57:16.518Z",
+      "lastAccessed": "2026-11-01T15:57:16.518Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:57:16.518Z"
+    },
+    "cmd-1793548651605": {
+      "key": "cmd-1793548651605",
+      "value": "{\"command\":\"sed -n '218,320p' /c/workspace/ocr-universal/web/styles.css\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:57:31.605Z",
+      "lastAccessed": "2026-11-01T15:57:31.605Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:57:31.605Z"
+    },
+    "cmd-1793548688050": {
+      "key": "cmd-1793548688050",
+      "value": "{\"command\":\"rtk read /c/workspace/ocr-universal/web/styles-premium.css --max-lines 300\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:58:08.050Z",
+      "lastAccessed": "2026-11-01T15:58:08.050Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:58:08.050Z"
+    },
+    "cmd-1793548715238": {
+      "key": "cmd-1793548715238",
+      "value": "{\"command\":\"rtk ls /c/workspace/ocr-universal/web/\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:58:35.238Z",
+      "lastAccessed": "2026-11-01T15:58:35.238Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:58:35.238Z"
+    },
+    "cmd-1793548720888": {
+      "key": "cmd-1793548720888",
+      "value": "{\"command\":\"rtk ls /c/workspace/ocr-universal/web/modules/\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:58:40.888Z",
+      "lastAccessed": "2026-11-01T15:58:40.888Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:58:40.888Z"
+    },
+    "cmd-1793548734822": {
+      "key": "cmd-1793548734822",
+      "value": "{\"command\":\"sed -n '943,1107p' /c/workspace/ocr-universal/web/index.html\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T15:58:54.822Z",
+      "lastAccessed": "2026-11-01T15:58:54.822Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T15:58:54.822Z"
+    },
+    "cmd-1793568257108": {
+      "key": "cmd-1793568257108",
+      "value": "{\"command\":\"rtk ls -la\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-01T21:24:17.108Z",
+      "lastAccessed": "2026-11-01T21:24:17.108Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-01T21:24:17.108Z"
+    },
+    "cmd-1793607053177": {
+      "key": "cmd-1793607053177",
+      "value": "{\"command\":\"which ruflo && ruflo --version\",\"exitCode\":1,\"success\":false}",
+      "namespace": "commands",
+      "storedAt": "2026-11-02T08:10:53.177Z",
+      "lastAccessed": "2026-11-02T08:10:53.177Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-02T08:10:53.177Z"
+    },
+    "cmd-1793607064489": {
+      "key": "cmd-1793607064489",
+      "value": "{\"command\":\"npm list -g ruflo 2>/dev/null || npm list ruflo 2>/dev/null || echo \\\"Not found in npm\\\"\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-02T08:11:04.489Z",
+      "lastAccessed": "2026-11-02T08:11:04.489Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-02T08:11:04.489Z"
+    },
+    "cmd-1793607072216": {
+      "key": "cmd-1793607072216",
+      "value": "{\"command\":\"ls -la /c/Users/DELL\\\\ 3650/.claude/ | rtk grep -i ruflo\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-02T08:11:12.216Z",
+      "lastAccessed": "2026-11-02T08:11:12.216Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-02T08:11:12.216Z"
+    },
+    "cmd-1793607173301": {
+      "key": "cmd-1793607173301",
+      "value": "{\"command\":\"ls -la /c/Users/DELL\\\\ 3650/.claude/ | grep -i ruflo\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-02T08:12:53.301Z",
+      "lastAccessed": "2026-11-02T08:12:53.301Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-02T08:12:53.301Z"
+    },
+    "cmd-1793607296739": {
+      "key": "cmd-1793607296739",
+      "value": "{\"command\":\"ls -la C:\\\\workspace\\\\ocr-universal\\\\web\\\\\",\"exitCode\":2,\"success\":false}",
+      "namespace": "commands",
+      "storedAt": "2026-11-02T08:14:56.739Z",
+      "lastAccessed": "2026-11-02T08:14:56.739Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-02T08:14:56.739Z"
+    },
+    "cmd-1793607299742": {
+      "key": "cmd-1793607299742",
+      "value": "{\"command\":\"ls -la C:/workspace/ocr-universal/web/\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-02T08:14:59.742Z",
+      "lastAccessed": "2026-11-02T08:14:59.742Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-02T08:14:59.742Z"
+    },
+    "cmd-1793607393879": {
+      "key": "cmd-1793607393879",
+      "value": "{\"command\":\"ls -la C:/workspace/ocr-universal/web/styles-maritime.css C:/workspace/ocr-universal/web/transit-maritime.js 2>/dev/null || echo \\\"Files not yet created\\\"\",\"exitCode\":0,\"success\":true}",
+      "namespace": "commands",
+      "storedAt": "2026-11-02T08:16:33.879Z",
+      "lastAccessed": "2026-11-02T08:16:33.879Z",
+      "accessCount": 0,
+      "expiresAt": "2026-12-02T08:16:33.879Z"
+    }
+  },
+  "version": "3.0.0"
+}

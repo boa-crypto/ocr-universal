@@ -1,0 +1,33 @@
+{
+  "id": "job_d16672b2cebf",
+  "filename": "facture.pdf",
+  "status": "done",
+  "created_at": 1792331207.3718343,
+  "updated_at": 1792331208.676299,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "accurate",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json",
+      "txt"
+    ],
+    "page_range": "",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7,
+    "auto_classify": true
+  },
+  "result_id": "doc_f2782f014895",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1,
+  "file_hash": "852a42f0966c0337faff03c3b913f4c5b77de8b6783546c1369c4bbbe27ac84a"
+}

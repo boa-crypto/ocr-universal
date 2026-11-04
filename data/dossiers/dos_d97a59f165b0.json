@@ -1,0 +1,45 @@
+{
+ "id": "dos_d97a59f165b0",
+ "label": "de-marie",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [
+  {
+   "job_id": "job1",
+   "filename": "facture.pdf",
+   "category": "facture",
+   "added_at": 1792394670.6376796,
+   "added_by": "marie",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "facture": 1
+ },
+ "version": 1,
+ "created_at": 1792394670.6374397,
+ "updated_at": 1792394670.6377182,
+ "history": [
+  {
+   "ts": 1792394670.6374424,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "marie"
+  },
+  {
+   "ts": 1792394670.6376815,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job1",
+    "filename": "facture.pdf",
+    "category": "facture"
+   },
+   "acteur": "marie"
+  }
+ ],
+ "arbitrages": {}
+}

@@ -1,0 +1,31 @@
+{
+  "id": "job_2b161b61b4ac",
+  "filename": "t.pdf",
+  "status": "done",
+  "created_at": 1792275288.5970607,
+  "updated_at": 1792275292.2738214,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "fast",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json",
+      "txt"
+    ],
+    "page_range": "",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7
+  },
+  "result_id": "doc_2bde4b415c62",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1
+}

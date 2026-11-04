@@ -1,0 +1,104 @@
+{
+  "name": "invoice",
+  "label": "Facture",
+  "description": "Facture fournisseur : numéro, dates, parties, montants, TVA.",
+  "document_types": [
+    "invoice"
+  ],
+  "fields": [
+    {
+      "key": "invoice_number",
+      "label": "Numéro de facture",
+      "patterns": [
+        "(?:facture|invoice)\\s*(?:num[ée]ro|n[°o\\s]|no\\.?)?\\s*[:#]?\\s*(?!(?:invoice|facture|num[ée]ro|number|n[°o]\\b|no\\b|ref\\b|B/?L\\b)[:\\s])([A-Z0-9][A-Z0-9\\-/_]{2,30})"
+      ],
+      "required": true,
+      "validators": [
+        "not_empty"
+      ],
+      "category": "identifiants",
+      "normalize": "upper"
+    },
+    {
+      "key": "issue_date",
+      "label": "Date d'émission",
+      "patterns": [
+        "(?:date\\s*(?:d['’]émission|de\\s*facturation|of\\s*issue|facture)|issued?\\s*on|émis le)\\s*[:#]?\\s*(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})",
+        "(?:^|\\n)\\s*date\\s*[:#]?\\s*(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})"
+      ],
+      "required": true,
+      "validators": [
+        "date_iso"
+      ],
+      "category": "dates",
+      "normalize": "date"
+    },
+    {
+      "key": "due_date",
+      "label": "Date d'échéance",
+      "patterns": [
+        "(?:[ée]ch[ée]ance|due\\s*date|à\\s*r[ée]gler\\s*le|payable\\s*by)\\s*[:#]?\\s*(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})"
+      ],
+      "required": false,
+      "validators": [
+        "date_iso"
+      ],
+      "category": "dates",
+      "normalize": "date"
+    },
+    {
+      "key": "vat_number",
+      "label": "N° TVA",
+      "patterns": [
+        "(?:TVA|VAT|N°\\s*TVA)\\s*[:#]?\\s*([A-Z]{0,2}\\d{8,12})"
+      ],
+      "required": false,
+      "category": "identifiants",
+      "normalize": "upper"
+    },
+    {
+      "key": "total_ht",
+      "label": "Total HT",
+      "patterns": [
+        "(?:total\\s*ht|sous-total|subtotal|total\\s*excl)\\s*[:#]?\\s*(\\d{1,3}(?:[ .]\\d{3})*(?:,\\d{1,2})?|\\d+(?:[.,]\\d{1,2})?)"
+      ],
+      "required": false,
+      "category": "numeriques",
+      "normalize": "amount"
+    },
+    {
+      "key": "total_ttc",
+      "label": "Total TTC",
+      "patterns": [
+        "(?:total\\s*ttc|total\\s*(?:due|amount|net\\s*to\\s*pay|g[ée]n[ée]ral))\\s*[:#]?\\s*(\\d{1,3}(?:[ .]\\d{3})*(?:,\\d{1,2})?|\\d+(?:[.,]\\d{1,2})?)"
+      ],
+      "required": true,
+      "category": "numeriques",
+      "normalize": "amount"
+    },
+    {
+      "key": "currency",
+      "label": "Devise",
+      "patterns": [
+        "\\b(EUR|USD|DZD|GBP|DA|€|\\$)\\b"
+      ],
+      "required": false,
+      "category": "numeriques",
+      "normalize": "upper"
+    }
+  ],
+  "relations": [
+    {
+      "type": "date_order",
+      "before": "issue_date",
+      "after": "due_date",
+      "message": "La date d'échéance précède la date d'émission"
+    }
+  ],
+  "consistency_checks": [],
+  "export_rules": {
+    "primary_keys": [
+      "invoice_number"
+    ]
+  }
+}

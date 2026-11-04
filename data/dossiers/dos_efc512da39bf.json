@@ -1,0 +1,22 @@
+{
+ "id": "dos_efc512da39bf",
+ "label": "Rendu avec pièces 1792332203885",
+ "profile": "importation",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792332203.8865132,
+ "updated_at": 1792332203.8866327,
+ "history": [
+  {
+   "ts": 1792332203.8865147,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

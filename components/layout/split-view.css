@@ -1,0 +1,127 @@
+/**
+ * OCR Universal - Split View Layout
+ * ⭐ CRITICAL: Side-by-side document + data view
+ * Requirement: 50/50 split, synchronized scrolling support, mobile stack
+ */
+
+.split-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--neutral-50);
+  gap: 1px; /* Subtle divider */
+}
+
+.split-view__left,
+.split-view__right {
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--surface-base);
+  scroll-behavior: smooth;
+}
+
+.split-view__left {
+  border-right: 1px solid var(--neutral-200);
+}
+
+/* Document viewer side */
+.split-view__left {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Data form side */
+.split-view__right {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+}
+
+/* Optional resizable divider (not MVP, prepared) */
+.split-view--resizable {
+  grid-template-columns: 1fr auto 1fr;
+}
+
+.split-view__divider {
+  width: 8px;
+  background-color: var(--neutral-200);
+  cursor: col-resize;
+  position: relative;
+  user-select: none;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.split-view__divider:hover,
+.split-view__divider:active {
+  background-color: var(--brand-secondary);
+}
+
+.split-view__divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 2px;
+  height: 32px;
+  background-color: var(--neutral-400);
+  border-radius: 1px;
+}
+
+/* Synchronized scroll indicator (optional visual feedback) */
+.split-view--synced .split-view__left::after,
+.split-view--synced .split-view__right::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--brand-secondary) 50%,
+    transparent
+  );
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+/* Mobile responsive - stack vertical */
+@media (max-width: 768px) {
+  .split-view {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: auto;
+  }
+
+  .split-view__left {
+    border-right: none;
+    border-bottom: 1px solid var(--neutral-200);
+    max-height: 40vh;
+  }
+
+  .split-view__right {
+    padding: var(--space-4);
+  }
+
+  .split-view__divider {
+    display: none;
+  }
+}
+
+/* Loading state */
+.split-view--loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .split-view__left,
+  .split-view__right {
+    scroll-behavior: auto;
+  }
+}

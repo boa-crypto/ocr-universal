@@ -1,0 +1,4668 @@
+{
+  "id": "doc_aacf0a6617a3",
+  "created_at": 1792271853.0593874,
+  "info": {
+    "title": "BILL OF LADING",
+    "doc_type": "generic",
+    "doc_number": "MSCU123456789",
+    "issue_date": null,
+    "due_date": null,
+    "issuer": null,
+    "sender": null,
+    "recipient": null,
+    "languages": [
+      "en"
+    ],
+    "page_count": 1,
+    "source_format": "pdf"
+  },
+  "pages": [
+    {
+      "page_num": 1,
+      "width": 1653.543260362413,
+      "height": 2338.5826958550347,
+      "text": "BILL OF LADING\nB/L No: MSCU123456789\nBooking Number: BK-998877\nShipper: SARL Exemple Alger\nConsignee: Global Import GmbH\nNotify Party: Logistics Partner SA\nVessel: MSC AURORA\nVoyage Number: 512W\nShipping Line: MSC\nPort of Loading: ALGER\nPort of Discharge: HAMBURG\nPlace of Delivery: HAMBURG\nContainer Number: CSQU3054383\nISO Type Code: 22G1\nSeal Number: SL-445566\nDescription of Goods: MACHINERY PARTS\nPackages: 120\nGross Weight: 8500 KG\nNet Weight: 8100 KG\nVolume: 28.5 M3\nHS Code: 8471.30\nMarks and Numbers: N/M\nETA: 28/03/2024\nETD: 15/03/2024",
+      "blocks": [
+        {
+          "text": "BILL OF LADING\nB/L No: MSCU123456789\nBooking Number: BK-998877\nShipper: SARL Exemple Alger\nConsignee: Global Import GmbH\nNotify Party: Logistics Partner SA\nVessel: MSC AURORA\nVoyage Number: 512W\nShipping Line: MSC\nPort of Loading: ALGER\nPort of Discharge: HAMBURG\nPlace of Delivery: HAMBURG\nContainer Number: CSQU3054383\nISO Type Code: 22G1\nSeal Number: SL-445566\nDescription of Goods: MACHINERY PARTS\nPackages: 120\nGross Weight: 8500 KG\nNet Weight: 8100 KG\nVolume: 28.5 M3\nHS Code: 8471.30\nMarks and Numbers: N/M\nETA: 28/03/2024\nETD: 15/03/2024",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 145.48269585503482,
+            "x1": 816.8333333333331,
+            "y1": 1712.1493625217015,
+            "page_width": 1653.543260362413,
+            "page_height": 2338.5826958550347
+          },
+          "order": 0,
+          "column": 0,
+          "lines": [
+            {
+              "text": "BILL OF LADING",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 145.48269585503482,
+                "x1": 424.1666666666667,
+                "y1": 178.81602918836816,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "BILL",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 145.48269585503482,
+                    "x1": 235.23333333333332,
+                    "y1": 178.81602918836816,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "OF",
+                  "bbox": {
+                    "x0": 244.50000000000003,
+                    "y0": 145.48269585503482,
+                    "x1": 290.79999999999995,
+                    "y1": 178.81602918836816,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "LADING",
+                  "bbox": {
+                    "x0": 300.06666666666666,
+                    "y0": 145.48269585503482,
+                    "x1": 424.1666666666667,
+                    "y1": 178.81602918836816,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "B/L No: MSCU123456789",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 212.14936252170148,
+                "x1": 552.0333333333332,
+                "y1": 245.48269585503482,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "B/L",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 212.14936252170148,
+                    "x1": 216.7,
+                    "y1": 245.48269585503482,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "No:",
+                  "bbox": {
+                    "x0": 225.96666666666667,
+                    "y0": 212.14936252170148,
+                    "x1": 277.8333333333333,
+                    "y1": 245.48269585503482,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "MSCU123456789",
+                  "bbox": {
+                    "x0": 287.09999999999997,
+                    "y0": 212.14936252170148,
+                    "x1": 552.0333333333332,
+                    "y1": 245.48269585503482,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "Booking Number: BK-998877",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 278.81602918836813,
+                "x1": 600.1999999999999,
+                "y1": 312.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Booking",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 278.81602918836813,
+                    "x1": 287.09999999999997,
+                    "y1": 312.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Number:",
+                  "bbox": {
+                    "x0": 296.3666666666667,
+                    "y0": 278.81602918836813,
+                    "x1": 424.16666666666663,
+                    "y1": 312.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "BK-998877",
+                  "bbox": {
+                    "x0": 433.43333333333334,
+                    "y0": 278.81602918836813,
+                    "x1": 600.1999999999999,
+                    "y1": 312.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "Shipper: SARL Exemple Alger",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 345.4826958550348,
+                "x1": 613.1333333333333,
+                "y1": 378.81602918836813,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Shipper:",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 345.4826958550348,
+                    "x1": 290.8,
+                    "y1": 378.81602918836813,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "SARL",
+                  "bbox": {
+                    "x0": 300.06666666666666,
+                    "y0": 345.4826958550348,
+                    "x1": 387.1333333333334,
+                    "y1": 378.81602918836813,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Exemple",
+                  "bbox": {
+                    "x0": 396.40000000000003,
+                    "y0": 345.4826958550348,
+                    "x1": 526.0666666666666,
+                    "y1": 378.81602918836813,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Alger",
+                  "bbox": {
+                    "x0": 535.3333333333334,
+                    "y0": 345.4826958550348,
+                    "x1": 613.1333333333333,
+                    "y1": 378.81602918836813,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Consignee: Global Import GmbH",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 412.1493625217015,
+                "x1": 650.1666666666667,
+                "y1": 445.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Consignee:",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 412.1493625217015,
+                    "x1": 335.26666666666665,
+                    "y1": 445.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Global",
+                  "bbox": {
+                    "x0": 344.5333333333333,
+                    "y0": 412.1493625217015,
+                    "x1": 440.8666666666666,
+                    "y1": 445.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Import",
+                  "bbox": {
+                    "x0": 450.1333333333333,
+                    "y0": 412.1493625217015,
+                    "x1": 544.6,
+                    "y1": 445.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "GmbH",
+                  "bbox": {
+                    "x0": 553.8666666666667,
+                    "y0": 412.1493625217015,
+                    "x1": 650.1666666666667,
+                    "y1": 445.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Notify Party: Logistics Partner SA",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 478.81602918836813,
+                "x1": 659.4333333333334,
+                "y1": 512.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Notify",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 478.81602918836813,
+                    "x1": 251.86666666666665,
+                    "y1": 512.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Party:",
+                  "bbox": {
+                    "x0": 261.1333333333333,
+                    "y0": 478.81602918836813,
+                    "x1": 348.19999999999993,
+                    "y1": 512.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Logistics",
+                  "bbox": {
+                    "x0": 357.46666666666664,
+                    "y0": 478.81602918836813,
+                    "x1": 487.1333333333333,
+                    "y1": 512.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Partner",
+                  "bbox": {
+                    "x0": 496.4,
+                    "y0": 478.81602918836813,
+                    "x1": 605.7,
+                    "y1": 512.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "SA",
+                  "bbox": {
+                    "x0": 614.9666666666667,
+                    "y0": 478.81602918836813,
+                    "x1": 659.4333333333334,
+                    "y1": 512.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Vessel: MSC AURORA",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 545.4826958550348,
+                "x1": 511.1666666666667,
+                "y1": 578.8160291883681,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Vessel:",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 545.4826958550348,
+                    "x1": 275.96666666666664,
+                    "y1": 578.8160291883681,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "MSC",
+                  "bbox": {
+                    "x0": 285.2333333333333,
+                    "y0": 545.4826958550348,
+                    "x1": 359.29999999999995,
+                    "y1": 578.8160291883681,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "AURORA",
+                  "bbox": {
+                    "x0": 368.56666666666666,
+                    "y0": 545.4826958550348,
+                    "x1": 511.1666666666667,
+                    "y1": 578.8160291883681,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "Voyage Number: 512W",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 612.1493625217015,
+                "x1": 513.0999999999999,
+                "y1": 645.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Voyage",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 612.1493625217015,
+                    "x1": 279.7,
+                    "y1": 645.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Number:",
+                  "bbox": {
+                    "x0": 288.9666666666667,
+                    "y0": 612.1493625217015,
+                    "x1": 416.76666666666665,
+                    "y1": 645.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "512W",
+                  "bbox": {
+                    "x0": 426.0333333333333,
+                    "y0": 612.1493625217015,
+                    "x1": 513.0999999999999,
+                    "y1": 645.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "Shipping Line: MSC",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 678.8160291883681,
+                "x1": 461.2333333333333,
+                "y1": 712.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Shipping",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 678.8160291883681,
+                    "x1": 296.3666666666667,
+                    "y1": 712.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Line:",
+                  "bbox": {
+                    "x0": 305.6333333333333,
+                    "y0": 678.8160291883681,
+                    "x1": 377.90000000000003,
+                    "y1": 712.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "MSC",
+                  "bbox": {
+                    "x0": 387.16666666666663,
+                    "y0": 678.8160291883681,
+                    "x1": 461.2333333333333,
+                    "y1": 712.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "Port of Loading: ALGER",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 745.4826958550348,
+                "x1": 524.2666666666667,
+                "y1": 778.8160291883681,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Port",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 745.4826958550348,
+                    "x1": 227.79999999999998,
+                    "y1": 778.8160291883681,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "of",
+                  "bbox": {
+                    "x0": 237.06666666666663,
+                    "y0": 745.4826958550348,
+                    "x1": 264.8666666666667,
+                    "y1": 778.8160291883681,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Loading:",
+                  "bbox": {
+                    "x0": 274.1333333333333,
+                    "y0": 745.4826958550348,
+                    "x1": 402.0,
+                    "y1": 778.8160291883681,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "ALGER",
+                  "bbox": {
+                    "x0": 411.2666666666666,
+                    "y0": 745.4826958550348,
+                    "x1": 524.2666666666667,
+                    "y1": 778.8160291883681,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Port of Discharge: HAMBURG",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 812.1493625217015,
+                "x1": 613.0666666666666,
+                "y1": 845.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Port",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 812.1493625217015,
+                    "x1": 227.79999999999998,
+                    "y1": 845.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "of",
+                  "bbox": {
+                    "x0": 237.06666666666663,
+                    "y0": 812.1493625217015,
+                    "x1": 264.8666666666667,
+                    "y1": 845.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Discharge:",
+                  "bbox": {
+                    "x0": 274.1333333333333,
+                    "y0": 812.1493625217015,
+                    "x1": 433.43333333333334,
+                    "y1": 845.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "HAMBURG",
+                  "bbox": {
+                    "x0": 442.69999999999993,
+                    "y0": 812.1493625217015,
+                    "x1": 613.0666666666666,
+                    "y1": 845.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Place of Delivery: HAMBURG",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 878.8160291883681,
+                "x1": 605.6333333333333,
+                "y1": 912.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Place",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 878.8160291883681,
+                    "x1": 250.03333333333333,
+                    "y1": 912.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "of",
+                  "bbox": {
+                    "x0": 259.3,
+                    "y0": 878.8160291883681,
+                    "x1": 287.1,
+                    "y1": 912.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Delivery:",
+                  "bbox": {
+                    "x0": 296.3666666666667,
+                    "y0": 878.8160291883681,
+                    "x1": 426.0,
+                    "y1": 912.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "HAMBURG",
+                  "bbox": {
+                    "x0": 435.26666666666665,
+                    "y0": 878.8160291883681,
+                    "x1": 605.6333333333333,
+                    "y1": 912.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Container Number: CSQU3054383",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 945.4826958550346,
+                "x1": 683.5333333333332,
+                "y1": 978.816029188368,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Container",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 945.4826958550346,
+                    "x1": 311.16666666666663,
+                    "y1": 978.816029188368,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Number:",
+                  "bbox": {
+                    "x0": 320.4333333333333,
+                    "y0": 945.4826958550346,
+                    "x1": 448.23333333333323,
+                    "y1": 978.816029188368,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "CSQU3054383",
+                  "bbox": {
+                    "x0": 457.49999999999994,
+                    "y0": 945.4826958550346,
+                    "x1": 683.5333333333332,
+                    "y1": 978.816029188368,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "ISO Type Code: 22G1",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1012.1493625217013,
+                "x1": 496.4666666666666,
+                "y1": 1045.4826958550345,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "ISO",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 1012.1493625217013,
+                    "x1": 224.1,
+                    "y1": 1045.4826958550345,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Type",
+                  "bbox": {
+                    "x0": 233.36666666666665,
+                    "y0": 1012.1493625217013,
+                    "x1": 307.46666666666664,
+                    "y1": 1045.4826958550345,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Code:",
+                  "bbox": {
+                    "x0": 316.73333333333335,
+                    "y0": 1012.1493625217013,
+                    "x1": 405.6666666666667,
+                    "y1": 1045.4826958550345,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "22G1",
+                  "bbox": {
+                    "x0": 414.9333333333333,
+                    "y0": 1012.1493625217013,
+                    "x1": 496.4666666666666,
+                    "y1": 1045.4826958550345,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Seal Number: SL-445566",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1078.816029188368,
+                "x1": 542.7666666666667,
+                "y1": 1112.1493625217013,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Seal",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 1078.816029188368,
+                    "x1": 233.36666666666665,
+                    "y1": 1112.1493625217013,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Number:",
+                  "bbox": {
+                    "x0": 242.63333333333335,
+                    "y0": 1078.816029188368,
+                    "x1": 370.4333333333333,
+                    "y1": 1112.1493625217013,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "SL-445566",
+                  "bbox": {
+                    "x0": 379.7,
+                    "y0": 1078.816029188368,
+                    "x1": 542.7666666666667,
+                    "y1": 1112.1493625217013,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "Description of Goods: MACHINERY PARTS",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1145.4826958550345,
+                "x1": 816.8333333333331,
+                "y1": 1178.816029188368,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Description",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 1145.4826958550345,
+                    "x1": 333.3666666666667,
+                    "y1": 1178.816029188368,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "of",
+                  "bbox": {
+                    "x0": 342.6333333333333,
+                    "y0": 1145.4826958550345,
+                    "x1": 370.4333333333333,
+                    "y1": 1178.816029188368,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Goods:",
+                  "bbox": {
+                    "x0": 379.7,
+                    "y0": 1145.4826958550345,
+                    "x1": 487.16666666666663,
+                    "y1": 1178.816029188368,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "MACHINERY",
+                  "bbox": {
+                    "x0": 496.4333333333333,
+                    "y0": 1145.4826958550345,
+                    "x1": 696.433333333333,
+                    "y1": 1178.816029188368,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "PARTS",
+                  "bbox": {
+                    "x0": 705.6999999999998,
+                    "y0": 1145.4826958550345,
+                    "x1": 816.8333333333331,
+                    "y1": 1178.816029188368,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Packages: 120",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1212.1493625217013,
+                "x1": 387.1666666666666,
+                "y1": 1245.4826958550345,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Packages:",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 1212.1493625217013,
+                    "x1": 322.29999999999995,
+                    "y1": 1245.4826958550345,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "120",
+                  "bbox": {
+                    "x0": 331.5666666666666,
+                    "y0": 1212.1493625217013,
+                    "x1": 387.1666666666666,
+                    "y1": 1245.4826958550345,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Gross Weight: 8500 KG",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1278.816029188368,
+                "x1": 518.6666666666666,
+                "y1": 1312.1493625217013,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Gross",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 1278.816029188368,
+                    "x1": 255.56666666666666,
+                    "y1": 1312.1493625217013,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Weight:",
+                  "bbox": {
+                    "x0": 264.8333333333333,
+                    "y0": 1278.816029188368,
+                    "x1": 377.83333333333337,
+                    "y1": 1312.1493625217013,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "8500",
+                  "bbox": {
+                    "x0": 387.09999999999997,
+                    "y0": 1278.816029188368,
+                    "x1": 461.2333333333333,
+                    "y1": 1312.1493625217013,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "KG",
+                  "bbox": {
+                    "x0": 470.49999999999994,
+                    "y0": 1278.816029188368,
+                    "x1": 518.6666666666666,
+                    "y1": 1312.1493625217013,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Net Weight: 8100 KG",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1345.4826958550345,
+                "x1": 481.6333333333333,
+                "y1": 1378.816029188368,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Net",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 1345.4826958550345,
+                    "x1": 218.53333333333333,
+                    "y1": 1378.816029188368,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Weight:",
+                  "bbox": {
+                    "x0": 227.8,
+                    "y0": 1345.4826958550345,
+                    "x1": 340.8,
+                    "y1": 1378.816029188368,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "8100",
+                  "bbox": {
+                    "x0": 350.06666666666666,
+                    "y0": 1345.4826958550345,
+                    "x1": 424.19999999999993,
+                    "y1": 1378.816029188368,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "KG",
+                  "bbox": {
+                    "x0": 433.46666666666664,
+                    "y0": 1345.4826958550345,
+                    "x1": 481.6333333333333,
+                    "y1": 1378.816029188368,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Volume: 28.5 M3",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1412.1493625217013,
+                "x1": 418.6333333333333,
+                "y1": 1445.4826958550345,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Volume:",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 1412.1493625217013,
+                    "x1": 288.93333333333334,
+                    "y1": 1445.4826958550345,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "28.5",
+                  "bbox": {
+                    "x0": 298.2,
+                    "y0": 1412.1493625217013,
+                    "x1": 363.06666666666666,
+                    "y1": 1445.4826958550345,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "M3",
+                  "bbox": {
+                    "x0": 372.3333333333333,
+                    "y0": 1412.1493625217013,
+                    "x1": 418.6333333333333,
+                    "y1": 1445.4826958550345,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "HS Code: 8471.30",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1478.8160291883678,
+                "x1": 440.89999999999986,
+                "y1": 1512.149362521701,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "HS",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 1478.8160291883678,
+                    "x1": 212.96666666666667,
+                    "y1": 1512.149362521701,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Code:",
+                  "bbox": {
+                    "x0": 222.2333333333333,
+                    "y0": 1478.8160291883678,
+                    "x1": 311.16666666666663,
+                    "y1": 1512.149362521701,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "8471.30",
+                  "bbox": {
+                    "x0": 320.4333333333333,
+                    "y0": 1478.8160291883678,
+                    "x1": 440.89999999999986,
+                    "y1": 1512.149362521701,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "Marks and Numbers: N/M",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1545.4826958550345,
+                "x1": 546.3666666666666,
+                "y1": 1578.8160291883678,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Marks",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 1545.4826958550345,
+                    "x1": 257.4,
+                    "y1": 1578.8160291883678,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "and",
+                  "bbox": {
+                    "x0": 266.66666666666663,
+                    "y0": 1545.4826958550345,
+                    "x1": 322.26666666666665,
+                    "y1": 1578.8160291883678,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Numbers:",
+                  "bbox": {
+                    "x0": 331.5333333333333,
+                    "y0": 1545.4826958550345,
+                    "x1": 475.99999999999994,
+                    "y1": 1578.8160291883678,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "N/M",
+                  "bbox": {
+                    "x0": 485.26666666666654,
+                    "y0": 1545.4826958550345,
+                    "x1": 546.3666666666666,
+                    "y1": 1578.8160291883678,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "ETA: 28/03/2024",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1612.149362521701,
+                "x1": 416.83333333333326,
+                "y1": 1645.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "ETA:",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 1612.149362521701,
+                    "x1": 240.76666666666665,
+                    "y1": 1645.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "28/03/2024",
+                  "bbox": {
+                    "x0": 250.03333333333333,
+                    "y0": 1612.149362521701,
+                    "x1": 416.83333333333326,
+                    "y1": 1645.4826958550348,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "ETD: 15/03/2024",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1678.816029188368,
+                "x1": 418.6666666666666,
+                "y1": 1712.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "ETD:",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 1678.816029188368,
+                    "x1": 242.6,
+                    "y1": 1712.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "15/03/2024",
+                  "bbox": {
+                    "x0": 251.86666666666665,
+                    "y0": 1678.816029188368,
+                    "x1": 418.6666666666666,
+                    "y1": 1712.1493625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            }
+          ],
+          "kind": "paragraph"
+        }
+      ],
+      "lines": [
+        {
+          "text": "BILL OF LADING",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 145.48269585503482,
+            "x1": 424.1666666666667,
+            "y1": 178.81602918836816,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "BILL",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 145.48269585503482,
+                "x1": 235.23333333333332,
+                "y1": 178.81602918836816,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "OF",
+              "bbox": {
+                "x0": 244.50000000000003,
+                "y0": 145.48269585503482,
+                "x1": 290.79999999999995,
+                "y1": 178.81602918836816,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "LADING",
+              "bbox": {
+                "x0": 300.06666666666666,
+                "y0": 145.48269585503482,
+                "x1": 424.1666666666667,
+                "y1": 178.81602918836816,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "B/L No: MSCU123456789",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 212.14936252170148,
+            "x1": 552.0333333333332,
+            "y1": 245.48269585503482,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "B/L",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 212.14936252170148,
+                "x1": 216.7,
+                "y1": 245.48269585503482,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "No:",
+              "bbox": {
+                "x0": 225.96666666666667,
+                "y0": 212.14936252170148,
+                "x1": 277.8333333333333,
+                "y1": 245.48269585503482,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "MSCU123456789",
+              "bbox": {
+                "x0": 287.09999999999997,
+                "y0": 212.14936252170148,
+                "x1": 552.0333333333332,
+                "y1": 245.48269585503482,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "Booking Number: BK-998877",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 278.81602918836813,
+            "x1": 600.1999999999999,
+            "y1": 312.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Booking",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 278.81602918836813,
+                "x1": 287.09999999999997,
+                "y1": 312.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Number:",
+              "bbox": {
+                "x0": 296.3666666666667,
+                "y0": 278.81602918836813,
+                "x1": 424.16666666666663,
+                "y1": 312.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "BK-998877",
+              "bbox": {
+                "x0": 433.43333333333334,
+                "y0": 278.81602918836813,
+                "x1": 600.1999999999999,
+                "y1": 312.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "Shipper: SARL Exemple Alger",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 345.4826958550348,
+            "x1": 613.1333333333333,
+            "y1": 378.81602918836813,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Shipper:",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 345.4826958550348,
+                "x1": 290.8,
+                "y1": 378.81602918836813,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "SARL",
+              "bbox": {
+                "x0": 300.06666666666666,
+                "y0": 345.4826958550348,
+                "x1": 387.1333333333334,
+                "y1": 378.81602918836813,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Exemple",
+              "bbox": {
+                "x0": 396.40000000000003,
+                "y0": 345.4826958550348,
+                "x1": 526.0666666666666,
+                "y1": 378.81602918836813,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Alger",
+              "bbox": {
+                "x0": 535.3333333333334,
+                "y0": 345.4826958550348,
+                "x1": 613.1333333333333,
+                "y1": 378.81602918836813,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Consignee: Global Import GmbH",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 412.1493625217015,
+            "x1": 650.1666666666667,
+            "y1": 445.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Consignee:",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 412.1493625217015,
+                "x1": 335.26666666666665,
+                "y1": 445.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Global",
+              "bbox": {
+                "x0": 344.5333333333333,
+                "y0": 412.1493625217015,
+                "x1": 440.8666666666666,
+                "y1": 445.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Import",
+              "bbox": {
+                "x0": 450.1333333333333,
+                "y0": 412.1493625217015,
+                "x1": 544.6,
+                "y1": 445.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "GmbH",
+              "bbox": {
+                "x0": 553.8666666666667,
+                "y0": 412.1493625217015,
+                "x1": 650.1666666666667,
+                "y1": 445.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Notify Party: Logistics Partner SA",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 478.81602918836813,
+            "x1": 659.4333333333334,
+            "y1": 512.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Notify",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 478.81602918836813,
+                "x1": 251.86666666666665,
+                "y1": 512.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Party:",
+              "bbox": {
+                "x0": 261.1333333333333,
+                "y0": 478.81602918836813,
+                "x1": 348.19999999999993,
+                "y1": 512.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Logistics",
+              "bbox": {
+                "x0": 357.46666666666664,
+                "y0": 478.81602918836813,
+                "x1": 487.1333333333333,
+                "y1": 512.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Partner",
+              "bbox": {
+                "x0": 496.4,
+                "y0": 478.81602918836813,
+                "x1": 605.7,
+                "y1": 512.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "SA",
+              "bbox": {
+                "x0": 614.9666666666667,
+                "y0": 478.81602918836813,
+                "x1": 659.4333333333334,
+                "y1": 512.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Vessel: MSC AURORA",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 545.4826958550348,
+            "x1": 511.1666666666667,
+            "y1": 578.8160291883681,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Vessel:",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 545.4826958550348,
+                "x1": 275.96666666666664,
+                "y1": 578.8160291883681,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "MSC",
+              "bbox": {
+                "x0": 285.2333333333333,
+                "y0": 545.4826958550348,
+                "x1": 359.29999999999995,
+                "y1": 578.8160291883681,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "AURORA",
+              "bbox": {
+                "x0": 368.56666666666666,
+                "y0": 545.4826958550348,
+                "x1": 511.1666666666667,
+                "y1": 578.8160291883681,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "Voyage Number: 512W",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 612.1493625217015,
+            "x1": 513.0999999999999,
+            "y1": 645.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Voyage",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 612.1493625217015,
+                "x1": 279.7,
+                "y1": 645.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Number:",
+              "bbox": {
+                "x0": 288.9666666666667,
+                "y0": 612.1493625217015,
+                "x1": 416.76666666666665,
+                "y1": 645.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "512W",
+              "bbox": {
+                "x0": 426.0333333333333,
+                "y0": 612.1493625217015,
+                "x1": 513.0999999999999,
+                "y1": 645.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "Shipping Line: MSC",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 678.8160291883681,
+            "x1": 461.2333333333333,
+            "y1": 712.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Shipping",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 678.8160291883681,
+                "x1": 296.3666666666667,
+                "y1": 712.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Line:",
+              "bbox": {
+                "x0": 305.6333333333333,
+                "y0": 678.8160291883681,
+                "x1": 377.90000000000003,
+                "y1": 712.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "MSC",
+              "bbox": {
+                "x0": 387.16666666666663,
+                "y0": 678.8160291883681,
+                "x1": 461.2333333333333,
+                "y1": 712.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "Port of Loading: ALGER",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 745.4826958550348,
+            "x1": 524.2666666666667,
+            "y1": 778.8160291883681,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Port",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 745.4826958550348,
+                "x1": 227.79999999999998,
+                "y1": 778.8160291883681,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "of",
+              "bbox": {
+                "x0": 237.06666666666663,
+                "y0": 745.4826958550348,
+                "x1": 264.8666666666667,
+                "y1": 778.8160291883681,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Loading:",
+              "bbox": {
+                "x0": 274.1333333333333,
+                "y0": 745.4826958550348,
+                "x1": 402.0,
+                "y1": 778.8160291883681,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "ALGER",
+              "bbox": {
+                "x0": 411.2666666666666,
+                "y0": 745.4826958550348,
+                "x1": 524.2666666666667,
+                "y1": 778.8160291883681,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Port of Discharge: HAMBURG",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 812.1493625217015,
+            "x1": 613.0666666666666,
+            "y1": 845.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Port",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 812.1493625217015,
+                "x1": 227.79999999999998,
+                "y1": 845.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "of",
+              "bbox": {
+                "x0": 237.06666666666663,
+                "y0": 812.1493625217015,
+                "x1": 264.8666666666667,
+                "y1": 845.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Discharge:",
+              "bbox": {
+                "x0": 274.1333333333333,
+                "y0": 812.1493625217015,
+                "x1": 433.43333333333334,
+                "y1": 845.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "HAMBURG",
+              "bbox": {
+                "x0": 442.69999999999993,
+                "y0": 812.1493625217015,
+                "x1": 613.0666666666666,
+                "y1": 845.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Place of Delivery: HAMBURG",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 878.8160291883681,
+            "x1": 605.6333333333333,
+            "y1": 912.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Place",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 878.8160291883681,
+                "x1": 250.03333333333333,
+                "y1": 912.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "of",
+              "bbox": {
+                "x0": 259.3,
+                "y0": 878.8160291883681,
+                "x1": 287.1,
+                "y1": 912.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Delivery:",
+              "bbox": {
+                "x0": 296.3666666666667,
+                "y0": 878.8160291883681,
+                "x1": 426.0,
+                "y1": 912.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "HAMBURG",
+              "bbox": {
+                "x0": 435.26666666666665,
+                "y0": 878.8160291883681,
+                "x1": 605.6333333333333,
+                "y1": 912.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Container Number: CSQU3054383",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 945.4826958550346,
+            "x1": 683.5333333333332,
+            "y1": 978.816029188368,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Container",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 945.4826958550346,
+                "x1": 311.16666666666663,
+                "y1": 978.816029188368,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Number:",
+              "bbox": {
+                "x0": 320.4333333333333,
+                "y0": 945.4826958550346,
+                "x1": 448.23333333333323,
+                "y1": 978.816029188368,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "CSQU3054383",
+              "bbox": {
+                "x0": 457.49999999999994,
+                "y0": 945.4826958550346,
+                "x1": 683.5333333333332,
+                "y1": 978.816029188368,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "ISO Type Code: 22G1",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1012.1493625217013,
+            "x1": 496.4666666666666,
+            "y1": 1045.4826958550345,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "ISO",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1012.1493625217013,
+                "x1": 224.1,
+                "y1": 1045.4826958550345,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Type",
+              "bbox": {
+                "x0": 233.36666666666665,
+                "y0": 1012.1493625217013,
+                "x1": 307.46666666666664,
+                "y1": 1045.4826958550345,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Code:",
+              "bbox": {
+                "x0": 316.73333333333335,
+                "y0": 1012.1493625217013,
+                "x1": 405.6666666666667,
+                "y1": 1045.4826958550345,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "22G1",
+              "bbox": {
+                "x0": 414.9333333333333,
+                "y0": 1012.1493625217013,
+                "x1": 496.4666666666666,
+                "y1": 1045.4826958550345,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Seal Number: SL-445566",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1078.816029188368,
+            "x1": 542.7666666666667,
+            "y1": 1112.1493625217013,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Seal",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1078.816029188368,
+                "x1": 233.36666666666665,
+                "y1": 1112.1493625217013,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Number:",
+              "bbox": {
+                "x0": 242.63333333333335,
+                "y0": 1078.816029188368,
+                "x1": 370.4333333333333,
+                "y1": 1112.1493625217013,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "SL-445566",
+              "bbox": {
+                "x0": 379.7,
+                "y0": 1078.816029188368,
+                "x1": 542.7666666666667,
+                "y1": 1112.1493625217013,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "Description of Goods: MACHINERY PARTS",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1145.4826958550345,
+            "x1": 816.8333333333331,
+            "y1": 1178.816029188368,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Description",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1145.4826958550345,
+                "x1": 333.3666666666667,
+                "y1": 1178.816029188368,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "of",
+              "bbox": {
+                "x0": 342.6333333333333,
+                "y0": 1145.4826958550345,
+                "x1": 370.4333333333333,
+                "y1": 1178.816029188368,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Goods:",
+              "bbox": {
+                "x0": 379.7,
+                "y0": 1145.4826958550345,
+                "x1": 487.16666666666663,
+                "y1": 1178.816029188368,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "MACHINERY",
+              "bbox": {
+                "x0": 496.4333333333333,
+                "y0": 1145.4826958550345,
+                "x1": 696.433333333333,
+                "y1": 1178.816029188368,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "PARTS",
+              "bbox": {
+                "x0": 705.6999999999998,
+                "y0": 1145.4826958550345,
+                "x1": 816.8333333333331,
+                "y1": 1178.816029188368,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Packages: 120",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1212.1493625217013,
+            "x1": 387.1666666666666,
+            "y1": 1245.4826958550345,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Packages:",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1212.1493625217013,
+                "x1": 322.29999999999995,
+                "y1": 1245.4826958550345,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "120",
+              "bbox": {
+                "x0": 331.5666666666666,
+                "y0": 1212.1493625217013,
+                "x1": 387.1666666666666,
+                "y1": 1245.4826958550345,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Gross Weight: 8500 KG",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1278.816029188368,
+            "x1": 518.6666666666666,
+            "y1": 1312.1493625217013,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Gross",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1278.816029188368,
+                "x1": 255.56666666666666,
+                "y1": 1312.1493625217013,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Weight:",
+              "bbox": {
+                "x0": 264.8333333333333,
+                "y0": 1278.816029188368,
+                "x1": 377.83333333333337,
+                "y1": 1312.1493625217013,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "8500",
+              "bbox": {
+                "x0": 387.09999999999997,
+                "y0": 1278.816029188368,
+                "x1": 461.2333333333333,
+                "y1": 1312.1493625217013,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "KG",
+              "bbox": {
+                "x0": 470.49999999999994,
+                "y0": 1278.816029188368,
+                "x1": 518.6666666666666,
+                "y1": 1312.1493625217013,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Net Weight: 8100 KG",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1345.4826958550345,
+            "x1": 481.6333333333333,
+            "y1": 1378.816029188368,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Net",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1345.4826958550345,
+                "x1": 218.53333333333333,
+                "y1": 1378.816029188368,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Weight:",
+              "bbox": {
+                "x0": 227.8,
+                "y0": 1345.4826958550345,
+                "x1": 340.8,
+                "y1": 1378.816029188368,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "8100",
+              "bbox": {
+                "x0": 350.06666666666666,
+                "y0": 1345.4826958550345,
+                "x1": 424.19999999999993,
+                "y1": 1378.816029188368,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "KG",
+              "bbox": {
+                "x0": 433.46666666666664,
+                "y0": 1345.4826958550345,
+                "x1": 481.6333333333333,
+                "y1": 1378.816029188368,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Volume: 28.5 M3",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1412.1493625217013,
+            "x1": 418.6333333333333,
+            "y1": 1445.4826958550345,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Volume:",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1412.1493625217013,
+                "x1": 288.93333333333334,
+                "y1": 1445.4826958550345,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "28.5",
+              "bbox": {
+                "x0": 298.2,
+                "y0": 1412.1493625217013,
+                "x1": 363.06666666666666,
+                "y1": 1445.4826958550345,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "M3",
+              "bbox": {
+                "x0": 372.3333333333333,
+                "y0": 1412.1493625217013,
+                "x1": 418.6333333333333,
+                "y1": 1445.4826958550345,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "HS Code: 8471.30",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1478.8160291883678,
+            "x1": 440.89999999999986,
+            "y1": 1512.149362521701,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "HS",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1478.8160291883678,
+                "x1": 212.96666666666667,
+                "y1": 1512.149362521701,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Code:",
+              "bbox": {
+                "x0": 222.2333333333333,
+                "y0": 1478.8160291883678,
+                "x1": 311.16666666666663,
+                "y1": 1512.149362521701,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "8471.30",
+              "bbox": {
+                "x0": 320.4333333333333,
+                "y0": 1478.8160291883678,
+                "x1": 440.89999999999986,
+                "y1": 1512.149362521701,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "Marks and Numbers: N/M",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1545.4826958550345,
+            "x1": 546.3666666666666,
+            "y1": 1578.8160291883678,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Marks",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1545.4826958550345,
+                "x1": 257.4,
+                "y1": 1578.8160291883678,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "and",
+              "bbox": {
+                "x0": 266.66666666666663,
+                "y0": 1545.4826958550345,
+                "x1": 322.26666666666665,
+                "y1": 1578.8160291883678,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Numbers:",
+              "bbox": {
+                "x0": 331.5333333333333,
+                "y0": 1545.4826958550345,
+                "x1": 475.99999999999994,
+                "y1": 1578.8160291883678,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "N/M",
+              "bbox": {
+                "x0": 485.26666666666654,
+                "y0": 1545.4826958550345,
+                "x1": 546.3666666666666,
+                "y1": 1578.8160291883678,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "ETA: 28/03/2024",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1612.149362521701,
+            "x1": 416.83333333333326,
+            "y1": 1645.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "ETA:",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1612.149362521701,
+                "x1": 240.76666666666665,
+                "y1": 1645.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "28/03/2024",
+              "bbox": {
+                "x0": 250.03333333333333,
+                "y0": 1612.149362521701,
+                "x1": 416.83333333333326,
+                "y1": 1645.4826958550348,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "ETD: 15/03/2024",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1678.816029188368,
+            "x1": 418.6666666666666,
+            "y1": 1712.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "ETD:",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 1678.816029188368,
+                "x1": 242.6,
+                "y1": 1712.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "15/03/2024",
+              "bbox": {
+                "x0": 251.86666666666665,
+                "y0": 1678.816029188368,
+                "x1": 418.6666666666666,
+                "y1": 1712.1493625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        }
+      ],
+      "words": [
+        {
+          "text": "BILL",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 145.48269585503482,
+            "x1": 235.23333333333332,
+            "y1": 178.81602918836816,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "OF",
+          "bbox": {
+            "x0": 244.50000000000003,
+            "y0": 145.48269585503482,
+            "x1": 290.79999999999995,
+            "y1": 178.81602918836816,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "LADING",
+          "bbox": {
+            "x0": 300.06666666666666,
+            "y0": 145.48269585503482,
+            "x1": 424.1666666666667,
+            "y1": 178.81602918836816,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "B/L",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 212.14936252170148,
+            "x1": 216.7,
+            "y1": 245.48269585503482,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "No:",
+          "bbox": {
+            "x0": 225.96666666666667,
+            "y0": 212.14936252170148,
+            "x1": 277.8333333333333,
+            "y1": 245.48269585503482,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "MSCU123456789",
+          "bbox": {
+            "x0": 287.09999999999997,
+            "y0": 212.14936252170148,
+            "x1": 552.0333333333332,
+            "y1": 245.48269585503482,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Booking",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 278.81602918836813,
+            "x1": 287.09999999999997,
+            "y1": 312.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Number:",
+          "bbox": {
+            "x0": 296.3666666666667,
+            "y0": 278.81602918836813,
+            "x1": 424.16666666666663,
+            "y1": 312.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "BK-998877",
+          "bbox": {
+            "x0": 433.43333333333334,
+            "y0": 278.81602918836813,
+            "x1": 600.1999999999999,
+            "y1": 312.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Shipper:",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 345.4826958550348,
+            "x1": 290.8,
+            "y1": 378.81602918836813,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "SARL",
+          "bbox": {
+            "x0": 300.06666666666666,
+            "y0": 345.4826958550348,
+            "x1": 387.1333333333334,
+            "y1": 378.81602918836813,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Exemple",
+          "bbox": {
+            "x0": 396.40000000000003,
+            "y0": 345.4826958550348,
+            "x1": 526.0666666666666,
+            "y1": 378.81602918836813,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Alger",
+          "bbox": {
+            "x0": 535.3333333333334,
+            "y0": 345.4826958550348,
+            "x1": 613.1333333333333,
+            "y1": 378.81602918836813,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Consignee:",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 412.1493625217015,
+            "x1": 335.26666666666665,
+            "y1": 445.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Global",
+          "bbox": {
+            "x0": 344.5333333333333,
+            "y0": 412.1493625217015,
+            "x1": 440.8666666666666,
+            "y1": 445.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Import",
+          "bbox": {
+            "x0": 450.1333333333333,
+            "y0": 412.1493625217015,
+            "x1": 544.6,
+            "y1": 445.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "GmbH",
+          "bbox": {
+            "x0": 553.8666666666667,
+            "y0": 412.1493625217015,
+            "x1": 650.1666666666667,
+            "y1": 445.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Notify",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 478.81602918836813,
+            "x1": 251.86666666666665,
+            "y1": 512.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Party:",
+          "bbox": {
+            "x0": 261.1333333333333,
+            "y0": 478.81602918836813,
+            "x1": 348.19999999999993,
+            "y1": 512.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Logistics",
+          "bbox": {
+            "x0": 357.46666666666664,
+            "y0": 478.81602918836813,
+            "x1": 487.1333333333333,
+            "y1": 512.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Partner",
+          "bbox": {
+            "x0": 496.4,
+            "y0": 478.81602918836813,
+            "x1": 605.7,
+            "y1": 512.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "SA",
+          "bbox": {
+            "x0": 614.9666666666667,
+            "y0": 478.81602918836813,
+            "x1": 659.4333333333334,
+            "y1": 512.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Vessel:",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 545.4826958550348,
+            "x1": 275.96666666666664,
+            "y1": 578.8160291883681,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "MSC",
+          "bbox": {
+            "x0": 285.2333333333333,
+            "y0": 545.4826958550348,
+            "x1": 359.29999999999995,
+            "y1": 578.8160291883681,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "AURORA",
+          "bbox": {
+            "x0": 368.56666666666666,
+            "y0": 545.4826958550348,
+            "x1": 511.1666666666667,
+            "y1": 578.8160291883681,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Voyage",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 612.1493625217015,
+            "x1": 279.7,
+            "y1": 645.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Number:",
+          "bbox": {
+            "x0": 288.9666666666667,
+            "y0": 612.1493625217015,
+            "x1": 416.76666666666665,
+            "y1": 645.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "512W",
+          "bbox": {
+            "x0": 426.0333333333333,
+            "y0": 612.1493625217015,
+            "x1": 513.0999999999999,
+            "y1": 645.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Shipping",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 678.8160291883681,
+            "x1": 296.3666666666667,
+            "y1": 712.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Line:",
+          "bbox": {
+            "x0": 305.6333333333333,
+            "y0": 678.8160291883681,
+            "x1": 377.90000000000003,
+            "y1": 712.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "MSC",
+          "bbox": {
+            "x0": 387.16666666666663,
+            "y0": 678.8160291883681,
+            "x1": 461.2333333333333,
+            "y1": 712.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Port",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 745.4826958550348,
+            "x1": 227.79999999999998,
+            "y1": 778.8160291883681,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "of",
+          "bbox": {
+            "x0": 237.06666666666663,
+            "y0": 745.4826958550348,
+            "x1": 264.8666666666667,
+            "y1": 778.8160291883681,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Loading:",
+          "bbox": {
+            "x0": 274.1333333333333,
+            "y0": 745.4826958550348,
+            "x1": 402.0,
+            "y1": 778.8160291883681,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "ALGER",
+          "bbox": {
+            "x0": 411.2666666666666,
+            "y0": 745.4826958550348,
+            "x1": 524.2666666666667,
+            "y1": 778.8160291883681,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Port",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 812.1493625217015,
+            "x1": 227.79999999999998,
+            "y1": 845.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "of",
+          "bbox": {
+            "x0": 237.06666666666663,
+            "y0": 812.1493625217015,
+            "x1": 264.8666666666667,
+            "y1": 845.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Discharge:",
+          "bbox": {
+            "x0": 274.1333333333333,
+            "y0": 812.1493625217015,
+            "x1": 433.43333333333334,
+            "y1": 845.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "HAMBURG",
+          "bbox": {
+            "x0": 442.69999999999993,
+            "y0": 812.1493625217015,
+            "x1": 613.0666666666666,
+            "y1": 845.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Place",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 878.8160291883681,
+            "x1": 250.03333333333333,
+            "y1": 912.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "of",
+          "bbox": {
+            "x0": 259.3,
+            "y0": 878.8160291883681,
+            "x1": 287.1,
+            "y1": 912.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Delivery:",
+          "bbox": {
+            "x0": 296.3666666666667,
+            "y0": 878.8160291883681,
+            "x1": 426.0,
+            "y1": 912.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "HAMBURG",
+          "bbox": {
+            "x0": 435.26666666666665,
+            "y0": 878.8160291883681,
+            "x1": 605.6333333333333,
+            "y1": 912.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Container",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 945.4826958550346,
+            "x1": 311.16666666666663,
+            "y1": 978.816029188368,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Number:",
+          "bbox": {
+            "x0": 320.4333333333333,
+            "y0": 945.4826958550346,
+            "x1": 448.23333333333323,
+            "y1": 978.816029188368,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "CSQU3054383",
+          "bbox": {
+            "x0": 457.49999999999994,
+            "y0": 945.4826958550346,
+            "x1": 683.5333333333332,
+            "y1": 978.816029188368,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "ISO",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1012.1493625217013,
+            "x1": 224.1,
+            "y1": 1045.4826958550345,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Type",
+          "bbox": {
+            "x0": 233.36666666666665,
+            "y0": 1012.1493625217013,
+            "x1": 307.46666666666664,
+            "y1": 1045.4826958550345,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Code:",
+          "bbox": {
+            "x0": 316.73333333333335,
+            "y0": 1012.1493625217013,
+            "x1": 405.6666666666667,
+            "y1": 1045.4826958550345,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "22G1",
+          "bbox": {
+            "x0": 414.9333333333333,
+            "y0": 1012.1493625217013,
+            "x1": 496.4666666666666,
+            "y1": 1045.4826958550345,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Seal",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1078.816029188368,
+            "x1": 233.36666666666665,
+            "y1": 1112.1493625217013,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Number:",
+          "bbox": {
+            "x0": 242.63333333333335,
+            "y0": 1078.816029188368,
+            "x1": 370.4333333333333,
+            "y1": 1112.1493625217013,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "SL-445566",
+          "bbox": {
+            "x0": 379.7,
+            "y0": 1078.816029188368,
+            "x1": 542.7666666666667,
+            "y1": 1112.1493625217013,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Description",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1145.4826958550345,
+            "x1": 333.3666666666667,
+            "y1": 1178.816029188368,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "of",
+          "bbox": {
+            "x0": 342.6333333333333,
+            "y0": 1145.4826958550345,
+            "x1": 370.4333333333333,
+            "y1": 1178.816029188368,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Goods:",
+          "bbox": {
+            "x0": 379.7,
+            "y0": 1145.4826958550345,
+            "x1": 487.16666666666663,
+            "y1": 1178.816029188368,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "MACHINERY",
+          "bbox": {
+            "x0": 496.4333333333333,
+            "y0": 1145.4826958550345,
+            "x1": 696.433333333333,
+            "y1": 1178.816029188368,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "PARTS",
+          "bbox": {
+            "x0": 705.6999999999998,
+            "y0": 1145.4826958550345,
+            "x1": 816.8333333333331,
+            "y1": 1178.816029188368,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Packages:",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1212.1493625217013,
+            "x1": 322.29999999999995,
+            "y1": 1245.4826958550345,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "120",
+          "bbox": {
+            "x0": 331.5666666666666,
+            "y0": 1212.1493625217013,
+            "x1": 387.1666666666666,
+            "y1": 1245.4826958550345,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Gross",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1278.816029188368,
+            "x1": 255.56666666666666,
+            "y1": 1312.1493625217013,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Weight:",
+          "bbox": {
+            "x0": 264.8333333333333,
+            "y0": 1278.816029188368,
+            "x1": 377.83333333333337,
+            "y1": 1312.1493625217013,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "8500",
+          "bbox": {
+            "x0": 387.09999999999997,
+            "y0": 1278.816029188368,
+            "x1": 461.2333333333333,
+            "y1": 1312.1493625217013,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "KG",
+          "bbox": {
+            "x0": 470.49999999999994,
+            "y0": 1278.816029188368,
+            "x1": 518.6666666666666,
+            "y1": 1312.1493625217013,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Net",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1345.4826958550345,
+            "x1": 218.53333333333333,
+            "y1": 1378.816029188368,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Weight:",
+          "bbox": {
+            "x0": 227.8,
+            "y0": 1345.4826958550345,
+            "x1": 340.8,
+            "y1": 1378.816029188368,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "8100",
+          "bbox": {
+            "x0": 350.06666666666666,
+            "y0": 1345.4826958550345,
+            "x1": 424.19999999999993,
+            "y1": 1378.816029188368,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "KG",
+          "bbox": {
+            "x0": 433.46666666666664,
+            "y0": 1345.4826958550345,
+            "x1": 481.6333333333333,
+            "y1": 1378.816029188368,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Volume:",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1412.1493625217013,
+            "x1": 288.93333333333334,
+            "y1": 1445.4826958550345,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "28.5",
+          "bbox": {
+            "x0": 298.2,
+            "y0": 1412.1493625217013,
+            "x1": 363.06666666666666,
+            "y1": 1445.4826958550345,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "M3",
+          "bbox": {
+            "x0": 372.3333333333333,
+            "y0": 1412.1493625217013,
+            "x1": 418.6333333333333,
+            "y1": 1445.4826958550345,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "HS",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1478.8160291883678,
+            "x1": 212.96666666666667,
+            "y1": 1512.149362521701,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Code:",
+          "bbox": {
+            "x0": 222.2333333333333,
+            "y0": 1478.8160291883678,
+            "x1": 311.16666666666663,
+            "y1": 1512.149362521701,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "8471.30",
+          "bbox": {
+            "x0": 320.4333333333333,
+            "y0": 1478.8160291883678,
+            "x1": 440.89999999999986,
+            "y1": 1512.149362521701,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Marks",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1545.4826958550345,
+            "x1": 257.4,
+            "y1": 1578.8160291883678,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "and",
+          "bbox": {
+            "x0": 266.66666666666663,
+            "y0": 1545.4826958550345,
+            "x1": 322.26666666666665,
+            "y1": 1578.8160291883678,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Numbers:",
+          "bbox": {
+            "x0": 331.5333333333333,
+            "y0": 1545.4826958550345,
+            "x1": 475.99999999999994,
+            "y1": 1578.8160291883678,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "N/M",
+          "bbox": {
+            "x0": 485.26666666666654,
+            "y0": 1545.4826958550345,
+            "x1": 546.3666666666666,
+            "y1": 1578.8160291883678,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "ETA:",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1612.149362521701,
+            "x1": 240.76666666666665,
+            "y1": 1645.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "28/03/2024",
+          "bbox": {
+            "x0": 250.03333333333333,
+            "y0": 1612.149362521701,
+            "x1": 416.83333333333326,
+            "y1": 1645.4826958550348,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "ETD:",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 1678.816029188368,
+            "x1": 242.6,
+            "y1": 1712.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "15/03/2024",
+          "bbox": {
+            "x0": 251.86666666666665,
+            "y0": 1678.816029188368,
+            "x1": 418.6666666666666,
+            "y1": 1712.1493625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        }
+      ],
+      "quality": {
+        "brightness": 250.71284481167604,
+        "contrast": 30.218513542685027,
+        "blur_score": 774.7273098550264,
+        "noise_score": 0.0,
+        "estimated_skew_deg": -0.43733838556065935,
+        "estimated_dpi": 200.0,
+        "ink_ratio": 0.02063739141718187,
+        "is_blank": false,
+        "issues": [
+          "overexposed",
+          "low_contrast"
+        ]
+      },
+      "preprocess_ops": [
+        {
+          "name": "shadow_removal",
+          "applied": true,
+          "params": {},
+          "reason": "éclairage inégal détecté"
+        },
+        {
+          "name": "contrast",
+          "applied": true,
+          "params": {},
+          "reason": "contraste faible (écart-type luminance bas)"
+        },
+        {
+          "name": "binarize",
+          "applied": true,
+          "params": {},
+          "reason": "contraste ET éclairage dégradés"
+        }
+      ],
+      "engine_runs": [
+        {
+          "engine": "native_pdf",
+          "page_num": 1,
+          "languages": [
+            "*"
+          ],
+          "mean_confidence": 0.9500000000000001,
+          "word_count": 82,
+          "duration_ms": 0.0,
+          "ok": true,
+          "error": null
+        },
+        {
+          "engine": "tesseract",
+          "page_num": 1,
+          "languages": [
+            "eng"
+          ],
+          "mean_confidence": 0.9482926829268291,
+          "word_count": 82,
+          "duration_ms": 2424.108545999843,
+          "ok": true,
+          "error": null
+        },
+        {
+          "engine": "tesseract",
+          "page_num": 1,
+          "languages": [
+            "eng"
+          ],
+          "mean_confidence": 0.9489024390243901,
+          "word_count": 82,
+          "duration_ms": 2821.318496999993,
+          "ok": true,
+          "error": null
+        }
+      ],
+      "orientation_deg": 0,
+      "detected_languages": [
+        "en"
+      ],
+      "has_native_text": true,
+      "native_text_ratio": 1.0,
+      "variant_selected": "preprocessed",
+      "blank": false
+    }
+  ],
+  "fields": {
+    "date": {
+      "name": "date",
+      "label": "Date d'émission",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "generic"
+    },
+    "email": {
+      "name": "email",
+      "label": "E-mail",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "generic"
+    },
+    "url": {
+      "name": "url",
+      "label": "URL",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "phone": {
+      "name": "phone",
+      "label": "Téléphone",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "generic"
+    },
+    "iban": {
+      "name": "iban",
+      "label": "IBAN",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "invoice_number": {
+      "name": "invoice_number",
+      "label": "Numéro de facture",
+      "raw_value": "MSCU123456789 | tify",
+      "normalized_value": "MSCU123456789 | tify",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.727,
+      "engine_confidence": 0.95,
+      "page_num": 1,
+      "bbox": {
+        "x0": 287.09999999999997,
+        "y0": 212.14936252170148,
+        "x1": 552.0333333333332,
+        "y1": 245.48269585503482,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "invoice_number",
+      "anomalies": [],
+      "profile": null
+    },
+    "vat_number": {
+      "name": "vat_number",
+      "label": "N° TVA",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "container_number": {
+      "name": "container_number",
+      "label": "N° conteneur",
+      "raw_value": "CSQU3054383",
+      "normalized_value": "CSQU3054383",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.727,
+      "engine_confidence": 0.95,
+      "page_num": 1,
+      "bbox": {
+        "x0": 457.49999999999994,
+        "y0": 945.4826958550346,
+        "x1": 683.5333333333332,
+        "y1": 978.816029188368,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "container_number",
+      "anomalies": [],
+      "profile": null
+    },
+    "serial_number": {
+      "name": "serial_number",
+      "label": "N° de série",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "amount": {
+      "name": "amount",
+      "label": "Montant",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "percent": {
+      "name": "percent",
+      "label": "Pourcentage",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "quantity": {
+      "name": "quantity",
+      "label": "Quantité + unité",
+      "raw_value": "8500 | 8100 | 28.5",
+      "normalized_value": "8500 | 8100 | 28.5",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.727,
+      "engine_confidence": 0.95,
+      "page_num": 1,
+      "bbox": {
+        "x0": 387.09999999999997,
+        "y0": 1278.816029188368,
+        "x1": 461.2333333333333,
+        "y1": 1312.1493625217013,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "quantity",
+      "anomalies": [],
+      "profile": null
+    },
+    "title": {
+      "name": "title",
+      "label": "Titre",
+      "raw_value": "BILL OF LADING",
+      "normalized_value": "BILL OF LADING",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 166.66666666666666,
+        "y0": 145.48269585503482,
+        "x1": 424.1666666666667,
+        "y1": 178.81602918836816,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "^(?:FACTURE|INVOICE|BON DE COMMANDE|CONTRAT|CONTRACT|BILL OF LADING|MANIFESTE|RELEV[EÉ]|COURRIER)[^\\n]{0,80}",
+      "anomalies": [],
+      "profile": "generic"
+    },
+    "document_number": {
+      "name": "document_number",
+      "label": "Numéro de document",
+      "raw_value": "MSCU123456789",
+      "normalized_value": "MSCU123456789",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 287.09999999999997,
+        "y0": 212.14936252170148,
+        "x1": 552.0333333333332,
+        "y1": 245.48269585503482,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:facture|invoice|r[ée]f[érence]*\\.?|ref\\.?|BL|B/L|n[°o\\s]|no\\.?)\\s*[:#]?\\s*([A-Z0-9][A-Z0-9\\-/_]{3,30})",
+      "anomalies": [],
+      "profile": "generic"
+    },
+    "total_amount": {
+      "name": "total_amount",
+      "label": "Montant total",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "generic"
+    }
+  },
+  "tables": [],
+  "categories": {
+    "dates": [
+      "date"
+    ],
+    "contacts": [
+      "phone"
+    ],
+    "identifiants": [
+      "invoice_number",
+      "container_number"
+    ],
+    "numeriques": [
+      "quantity"
+    ],
+    "_required": []
+  },
+  "barcodes": [],
+  "form_zones": [],
+  "quality": {
+    "mean_engine_confidence": 0.95,
+    "mean_global_confidence": 0.727,
+    "pages_low_confidence": [],
+    "fields_low_confidence": [],
+    "anomalies": [
+      {
+        "code": "PAGE_OVEREXPOSED",
+        "severity": "info",
+        "message": "page 1 : overexposed",
+        "page_num": 1,
+        "bbox": null,
+        "context": {
+          "blur": 774.7273098550264,
+          "dpi": 200.0
+        }
+      },
+      {
+        "code": "PAGE_LOW_CONTRAST",
+        "severity": "info",
+        "message": "page 1 : low_contrast",
+        "page_num": 1,
+        "bbox": null,
+        "context": {
+          "blur": 774.7273098550264,
+          "dpi": 200.0
+        }
+      }
+    ],
+    "disagreements": [],
+    "checks": []
+  },
+  "engines_used": [
+    "native_pdf",
+    "tesseract"
+  ],
+  "profile_used": "generic",
+  "timings_ms": {
+    "ingest_ms": 46.1,
+    "ocr_ms": 7168.9,
+    "tables_ms": 47.8,
+    "fields_ms": 2.6,
+    "barcodes_ms": 69.6,
+    "total_ms": 7338.2
+  },
+  "warnings": [],
+  "source_file": "bl_port.pdf",
+  "source_hash": "a6587670a56f23bc3efa7d06a05a31a53e6b2b3d64339284a34aa64973f13842",
+  "exports": []
+}

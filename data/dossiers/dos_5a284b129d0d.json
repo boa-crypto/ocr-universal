@@ -1,0 +1,23 @@
+{
+ "id": "dos_5a284b129d0d",
+ "label": "nouveau",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792412920.835878,
+ "updated_at": 1792412920.835878,
+ "history": [
+  {
+   "ts": 1792412920.835878,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

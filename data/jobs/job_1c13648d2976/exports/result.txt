@@ -1,0 +1,5 @@
+--- Page 1 ---
+# Sheet1
+ref	designation	quantite	prix
+A1	Clavier	50	25.00
+B2	Souris	20	12.50

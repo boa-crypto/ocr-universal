@@ -1,0 +1,15 @@
+{
+  "id": "session-1793636832641",
+  "startedAt": "2026-11-02T16:27:12.641Z",
+  "cwd": "C:\\workSpace\\ocr-universal",
+  "context": {},
+  "metrics": {
+    "edits": 0,
+    "commands": 0,
+    "tasks": 0,
+    "errors": 0
+  },
+  "restoredAt": "2026-11-02T16:27:36.442Z",
+  "endedAt": "2026-11-02T16:30:11.032Z",
+  "duration": 178391
+}

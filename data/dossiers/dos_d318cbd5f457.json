@@ -1,0 +1,23 @@
+{
+ "id": "dos_d318cbd5f457",
+ "label": "nouveau",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792394807.752021,
+ "updated_at": 1792394807.7521172,
+ "history": [
+  {
+   "ts": 1792394807.7520232,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

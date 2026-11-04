@@ -1,0 +1,33 @@
+{
+  "id": "job_94ffda711b24",
+  "filename": "parcours_colisage.pdf",
+  "status": "done",
+  "created_at": 1792396716.4095511,
+  "updated_at": 1792396716.7577581,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "accurate",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json",
+      "txt"
+    ],
+    "page_range": "",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7,
+    "auto_classify": true
+  },
+  "result_id": "job_94ffda711b24",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1,
+  "file_hash": "3233f5b87636ed39c75d41b8df3e90bcedec7874fdd1d0fad775e3f1d73d91ae"
+}

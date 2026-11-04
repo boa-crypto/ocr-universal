@@ -1,0 +1,16 @@
+﻿name,label,raw_value,normalized_value,corrected_value,confirmed_value,confidence,engine_confidence,status,page,source
+date,Date d'émission,,,,,0.0,0.0,not_detected,,rule
+email,E-mail,,,,,0.0,0.0,not_detected,,rule
+url,URL,,,,,0.0,0.0,not_detected,,ocr
+phone,Téléphone,,,,,0.0,0.0,not_detected,,rule
+iban,IBAN,,,,,0.0,0.0,not_detected,,ocr
+invoice_number,Numéro de facture,designation,designation,,,0.95,0.95,detected,1,ocr
+vat_number,N° TVA,,,,,0.0,0.0,not_detected,,ocr
+container_number,N° conteneur,,,,,0.0,0.0,not_detected,,ocr
+serial_number,N° de série,,,,,0.0,0.0,not_detected,,ocr
+amount,Montant,,,,,0.0,0.0,not_detected,,ocr
+percent,Pourcentage,,,,,0.0,0.0,not_detected,,ocr
+quantity,Quantité + unité,,,,,0.0,0.0,not_detected,,ocr
+title,Titre,,,,,0.0,0.0,not_detected,,rule
+document_number,Numéro de document,designation,DESIGNATION,,,1.0,1.0,detected,1,rule
+total_amount,Montant total,,,,,0.0,0.0,not_detected,,rule

@@ -1,0 +1,94 @@
+{
+ "id": "dos_9b998382fc03",
+ "label": "Rendu avec pièces 1792356089464",
+ "profile": "importation",
+ "state": "revision_requise",
+ "state_label": "Révision requise",
+ "pieces": [
+  {
+   "job_id": "job_81a3019780d3",
+   "filename": "parcours_facture.pdf",
+   "category": "invoice",
+   "added_at": 1792356089.4791224,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_cc285ddecff9",
+   "filename": "parcours_bl.pdf",
+   "category": "bill_of_lading",
+   "added_at": 1792356089.4848082,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_ee9e35766c17",
+   "filename": "parcours_colisage.pdf",
+   "category": "packing_list",
+   "added_at": 1792356089.4917338,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "invoice": 1,
+  "bill_of_lading": 1,
+  "packing_list": 1
+ },
+ "version": 1,
+ "created_at": 1792356089.4655132,
+ "updated_at": 1792356089.5063415,
+ "history": [
+  {
+   "ts": 1792356089.4655156,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792356089.479125,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_81a3019780d3",
+    "filename": "parcours_facture.pdf",
+    "category": "invoice"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792356089.480345,
+   "action": "state_changed",
+   "detail": {
+    "from": "en_preparation",
+    "to": "revision_requise",
+    "pieces": 1
+   },
+   "acteur": "systeme"
+  },
+  {
+   "ts": 1792356089.4848108,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_cc285ddecff9",
+    "filename": "parcours_bl.pdf",
+    "category": "bill_of_lading"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792356089.4917362,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_ee9e35766c17",
+    "filename": "parcours_colisage.pdf",
+    "category": "packing_list"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "container",
+  "label": "Photo conteneur (ISO 6346)",
+  "description": "Photo ou scan d'un conteneur : n° ISO 6346 avec chiffre de contrôle vérifié, type, sceau.",
+  "document_types": ["container_photo", "container_marking"],
+  "fields": [
+    {"key": "container_number", "label": "N° de conteneur (ISO 6346)", "patterns": ["\\b([A-Z]{4}[\\s-]?\\d[\\s-]?\\d[\\s-]?\\d[\\s-]?\\d[\\s-]?\\d[\\s-]?\\d[\\s-]?\\d)\\b"], "required": true, "validators": ["iso6346"], "category": "identifiants", "normalize": "upper"},
+    {"key": "iso_type_code", "label": "ISO Container Type Code", "patterns": ["(?:ISO|type|type\\s*code|code\\s*type)\\s*[:#]?\\s*(\\d{2}[A-Z]\\d)\\b"], "validators": ["container_type"], "category": "identifiants", "normalize": "upper"},
+    {"key": "seal_number", "label": "Seal Number (sceau)", "patterns": ["(?:Seal|Sceau|N[°o]\\s*sceau)\\s*(?:Number|N[°o]|No\\.?)?\\s*[:#]?\\s*([A-Z0-9\\-]{4,20})"], "category": "identifiants", "normalize": "upper"},
+    {"key": "plate_number", "label": "Plaque du camion (si visible)", "patterns": ["\\b(\\d{3,6}[\\s-]?[A-Z\\u0621-\\u064A]{1,2}[\\s-]?\\d{2})\\b", "\\b([A-Z]{2}[\\s-]?\\d{3}[\\s-]?[A-Z]{2})\\b"], "validators": ["plate"], "category": "transport", "normalize": "upper"}
+  ],
+  "relations": [],
+  "consistency_checks": [],
+  "export_rules": {"primary_keys": ["container_number"], "keep_row_relations": false}
+}

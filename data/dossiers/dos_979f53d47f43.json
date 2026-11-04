@@ -1,0 +1,23 @@
+{
+ "id": "dos_979f53d47f43",
+ "label": "arbitrage",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1793026176.6477575,
+ "updated_at": 1793026176.6477575,
+ "history": [
+  {
+   "ts": 1793026176.6477575,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

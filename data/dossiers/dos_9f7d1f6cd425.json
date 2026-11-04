@@ -1,0 +1,23 @@
+{
+ "id": "dos_9f7d1f6cd425",
+ "label": "Dossier recherche test",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792358287.9484363,
+ "updated_at": 1792358287.9486227,
+ "history": [
+  {
+   "ts": 1792358287.94844,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

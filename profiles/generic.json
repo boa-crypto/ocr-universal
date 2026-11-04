@@ -1,0 +1,17 @@
+{
+  "name": "generic",
+  "label": "Profil générique",
+  "description": "Extraction générique de champs courants (dates, contacts, identifiants, montants).",
+  "document_types": ["any"],
+  "fields": [
+    {"key": "title", "label": "Titre", "patterns": ["^(?:FACTURE|INVOICE|BON DE COMMANDE|CONTRAT|CONTRACT|BILL OF LADING|MANIFESTE|RELEV[EÉ]|COURRIER)[^\\n]{0,80}"], "required": false, "category": "general", "normalize": "generic"},
+    {"key": "document_number", "label": "Numéro de document", "patterns": ["(?:facture|invoice|r[ée]f[érence]*\\.?|ref\\.?|BL|B/L|n[°o\\s]|no\\.?)\\s*[:#]?\\s*([A-Z0-9][A-Z0-9\\-/_]{3,30})", "^([A-Z]{2,4}[/-]\\d{3,12})$"], "required": false, "validators": ["not_empty"], "category": "identifiants", "normalize": "upper"},
+    {"key": "date", "label": "Date d'émission", "patterns": ["(?:date|émis le|issued?\\s*on|fait le)\\s*[:#]?\\s*(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})", "^\\s*(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4})\\s*$"], "required": false, "validators": ["date_iso"], "category": "dates", "normalize": "date"},
+    {"key": "email", "label": "E-mail", "patterns": ["([\\w.+-]+@[\\w-]+\\.[\\w.]{2,})"], "required": false, "category": "contacts", "normalize": "generic"},
+    {"key": "phone", "label": "Téléphone", "patterns": ["(?:(?:t[ée]l|phone|tel\\.?|fax)\\s*[:#]?\\s*)((?:\\+?\\d{1,3}[\\s.\\-]?)?(?:\\(?\\d{2,4}\\)?[\\s.\\-]?){2,4}\\d{2,4})"], "required": false, "category": "contacts", "normalize": "digits"},
+    {"key": "total_amount", "label": "Montant total", "patterns": ["(?:total\\s*(?:ttc|g[ée]n[ée]ral|amount|due|net)?|montant\\s*total|net\\s*to\\s*pay)\\s*[:#]?\\s*(\\d{1,3}(?:[ .]\\d{3})*(?:,\\d{1,2})?|\\d+(?:[.,]\\d{1,2})?)\\s*(EUR|USD|DZD|DA|GBP|€|\\$|£)?"], "required": false, "category": "numeriques", "normalize": "amount"}
+  ],
+  "relations": [],
+  "consistency_checks": [],
+  "export_rules": {"primary_keys": ["document_number", "date"]}
+}

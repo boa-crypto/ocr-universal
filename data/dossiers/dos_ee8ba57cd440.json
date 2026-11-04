@@ -1,0 +1,102 @@
+{
+ "id": "dos_ee8ba57cd440",
+ "label": "Rendu avec pièces 1792354320310",
+ "profile": "importation",
+ "state": "revision_requise",
+ "state_label": "Révision requise",
+ "pieces": [
+  {
+   "job_id": "job_f",
+   "filename": "facture.pdf",
+   "category": "unknown",
+   "added_at": 1792354320.3252535,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_b",
+   "filename": "bl.pdf",
+   "category": "unknown",
+   "added_at": 1792354320.3290324,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_3f3c7101b0a4",
+   "filename": "colisage.pdf",
+   "category": "unknown",
+   "added_at": 1792354320.332386,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "unknown": 3
+ },
+ "version": 1,
+ "created_at": 1792354320.3122416,
+ "updated_at": 1792354320.3401816,
+ "history": [
+  {
+   "ts": 1792354320.3122437,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792354320.325256,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_f",
+    "filename": "facture.pdf",
+    "category": "unknown"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792354320.325746,
+   "action": "state_changed",
+   "detail": {
+    "from": "en_preparation",
+    "to": "incomplet",
+    "pieces": 1
+   },
+   "acteur": "systeme"
+  },
+  {
+   "ts": 1792354320.3290482,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_b",
+    "filename": "bl.pdf",
+    "category": "unknown"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792354320.3323884,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_3f3c7101b0a4",
+    "filename": "colisage.pdf",
+    "category": "unknown"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792354320.3337092,
+   "action": "state_changed",
+   "detail": {
+    "from": "incomplet",
+    "to": "revision_requise",
+    "pieces": 3
+   },
+   "acteur": "systeme"
+  }
+ ]
+}

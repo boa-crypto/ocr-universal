@@ -1,0 +1,64 @@
+{
+ "id": "dos_90ad9f56e0b9",
+ "label": "Partage A",
+ "profile": "importation",
+ "state": "archive",
+ "state_label": "Archivé",
+ "pieces": [
+  {
+   "job_id": "job_a3a0c9668348",
+   "filename": "injection.png",
+   "category": "invoice",
+   "added_at": 1792335652.7932556,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "invoice": 1
+ },
+ "version": 2,
+ "created_at": 1792335652.7447278,
+ "updated_at": 1792335652.8150196,
+ "history": [
+  {
+   "ts": 1792335652.7447329,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792335652.7932603,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_a3a0c9668348",
+    "filename": "injection.png",
+    "category": "invoice"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792335652.794098,
+   "action": "state_changed",
+   "detail": {
+    "from": "en_preparation",
+    "to": "incomplet",
+    "pieces": 1
+   },
+   "acteur": "systeme"
+  },
+  {
+   "ts": 1792335652.8149,
+   "action": "state_forced",
+   "detail": {
+    "from": "incomplet",
+    "to": "archive",
+    "motif": "clos"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "job_ec067ae4b029",
+  "filename": "table_pdf.pdf",
+  "status": "done",
+  "created_at": 1792270061.197132,
+  "updated_at": 1792270062.9036467,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "accurate",
+    "preprocess": true,
+    "export_formats": [
+      "json",
+      "txt",
+      "csv",
+      "xlsx",
+      "xml",
+      "pdf"
+    ]
+  },
+  "result_id": "doc_d91714143ddf",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1
+}

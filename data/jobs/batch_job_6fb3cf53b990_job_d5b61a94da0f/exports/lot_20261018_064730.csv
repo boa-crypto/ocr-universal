@@ -1,0 +1,35 @@
+﻿document,champ,valeur_brute,valeur_normalisee,confiance,statut
+text_pdf.pdf,date,2024-03-15 | 2024-04-15,2024-03-15 | 2024-04-15,0.727,detected
+text_pdf.pdf,email,contact@example.dz,contact@example.dz,0.727,detected
+text_pdf.pdf,url,,,0.0,not_detected
+text_pdf.pdf,phone,2024001 | +213555123456,2024001 | +213555123456,0.727,detected
+text_pdf.pdf,iban,,,0.0,not_detected
+text_pdf.pdf,invoice_number,2024-001,2024-001,0.765,detected
+text_pdf.pdf,vat_number,,,0.0,not_detected
+text_pdf.pdf,container_number,,,0.0,not_detected
+text_pdf.pdf,serial_number,,,0.0,not_detected
+text_pdf.pdf,amount,001 | 1000.00 | 1200.00 | 25.00 | 12.50 | 1500.00,001 | 1000.00 | 1200.00 | 25.00 | 12.50 | 1500.00,0.727,detected
+text_pdf.pdf,percent,,,0.0,not_detected
+text_pdf.pdf,quantity,,,0.0,not_detected
+text_pdf.pdf,issue_date,15/03/2024,2024-03-15,0.765,detected
+text_pdf.pdf,due_date,15/04/2024,2024-04-15,0.765,detected
+text_pdf.pdf,total_ht,100,100,0.765,detected
+text_pdf.pdf,total_ttc,120,120,0.765,detected
+text_pdf.pdf,currency,EUR,EUR,0.765,detected
+bl_port.pdf,date,2024-03-28 | 2024-03-15,2024-03-28 | 2024-03-15,0.727,detected
+bl_port.pdf,email,,,0.0,not_detected
+bl_port.pdf,url,,,0.0,not_detected
+bl_port.pdf,phone,998877 | 445566 | 847130,998877 | 445566 | 847130,0.727,detected
+bl_port.pdf,iban,,,0.0,not_detected
+bl_port.pdf,invoice_number,,,0.0,not_detected
+bl_port.pdf,vat_number,,,0.0,not_detected
+bl_port.pdf,container_number,CSQU3054383,CSQU3054383,0.727,detected
+bl_port.pdf,serial_number,,,0.0,not_detected
+bl_port.pdf,amount,,,0.0,not_detected
+bl_port.pdf,percent,,,0.0,not_detected
+bl_port.pdf,quantity,8500 | 8100 | 28.5,8500 | 8100 | 28.5,0.727,detected
+bl_port.pdf,issue_date,,,0.0,not_detected
+bl_port.pdf,due_date,,,0.0,not_detected
+bl_port.pdf,total_ht,,,0.0,not_detected
+bl_port.pdf,total_ttc,,,0.0,not_detected
+bl_port.pdf,currency,,,0.0,not_detected

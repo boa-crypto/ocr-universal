@@ -1,0 +1,23 @@
+{
+ "id": "dos_b35be7511227",
+ "label": "de marie",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792394944.2017832,
+ "updated_at": 1792394944.2043145,
+ "history": [
+  {
+   "ts": 1792394944.201785,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

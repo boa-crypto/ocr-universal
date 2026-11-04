@@ -1,0 +1,23 @@
+{
+ "id": "dos_e2a9c0c08d64",
+ "label": "de marie",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792394687.376484,
+ "updated_at": 1792394687.3789418,
+ "history": [
+  {
+   "ts": 1792394687.3764856,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

@@ -1,0 +1,25 @@
+--- Page 1 ---
+BILL OF LADING
+B/L No: MSCU123456789
+Booking Number: BK-998877
+Shipper: SARL Exemple Alger
+Consignee: Global Import GmbH
+Notify Party: Logistics Partner SA
+Vessel: MSC AURORA
+Voyage Number: 512W
+Shipping Line: MSC
+Port of Loading: ALGER
+Port of Discharge: HAMBURG
+Place of Delivery: HAMBURG
+Container Number: CSQU3054383
+ISO Type Code: 22G1
+Seal Number: SL-445566
+Description of Goods: MACHINERY PARTS
+Packages: 120
+Gross Weight: 8500 KG
+Net Weight: 8100 KG
+Volume: 28.5 M3
+HS Code: 8471.30
+Marks and Numbers: N/M
+ETA: 28/03/2024
+ETD: 15/03/2024

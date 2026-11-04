@@ -1,0 +1,55 @@
+{
+ "id": "dos_94332a2d57fa",
+ "label": "prive",
+ "profile": "personnalise",
+ "state": "revision_requise",
+ "state_label": "Révision requise",
+ "pieces": [
+  {
+   "job_id": "job_6fdafd69a172",
+   "filename": "parcours_colisage.pdf",
+   "category": "packing_list",
+   "added_at": 1792394441.0503333,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "packing_list": 1
+ },
+ "version": 1,
+ "created_at": 1792394441.0321941,
+ "updated_at": 1792394441.0513847,
+ "history": [
+  {
+   "ts": 1792394441.032198,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792394441.0503368,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_6fdafd69a172",
+    "filename": "parcours_colisage.pdf",
+    "category": "packing_list"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792394441.0513234,
+   "action": "state_changed",
+   "detail": {
+    "from": "en_preparation",
+    "to": "revision_requise",
+    "pieces": 1
+   },
+   "acteur": "systeme"
+  }
+ ],
+ "arbitrages": {}
+}

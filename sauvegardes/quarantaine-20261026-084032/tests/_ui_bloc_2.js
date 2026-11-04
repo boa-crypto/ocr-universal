@@ -1,0 +1,83 @@
+
+/* ═══════════════════ i18n de l'interface (C3) ═══════════════════
+ * Mécanisme : tout élément portant data-i18n="clé" reçoit la traduction
+ * de la langue courante. Un élément sans traduction GARDE son texte
+ * existant (repli gracieux) : aucune chaîne n'est jamais effacée.
+ * L'arabe bascule aussi document.documentElement.dir = "rtl". */
+var I18N = {
+  fr: {
+    "nav.import": "Importer", "nav.docs": "Documents", "nav.result": "Résultat",
+    "nav.quality": "Qualité", "nav.config": "Configuration",
+    "nav.dashboard": "Tableau de bord", "nav.review": "Révision",
+    "nav.profiles": "Profils", "nav.connectors": "Connecteurs",
+    "page.connectors": ["Connecteur Hub", "Transmission vers les systèmes externes, sous contrôle humain"],
+    "nav.dossier": "Dossier",
+    "page.dossier": ["Parcours documentaire", "Dossier, cohérence entre documents et paquet de données"],
+    "h.dossier": "Parcours documentaire",
+    "h.dossier.sub": "Regrouper les documents d'un même envoi, les comparer entre eux, puis produire un paquet de données. Chaque état affiché est déduit de faits réels — rien n'est déclaré terminé sans l'avoir été.",
+    "page.import": ["Importer un document", "Analyse visuelle et textuelle → données structurées"],
+    "page.docs": ["Documents", "Historique des traitements et suivi des jobs"],
+    "page.result": ["Résultat d'analyse", "Texte, champs, tableaux — reliés au document source"],
+    "page.quality": ["Contrôle qualité", "Confiances, anomalies et cohérence métier"],
+    "page.config": ["Configuration", "Moteurs, langues et profils réellement disponibles"],
+    "page.dashboard": ["Tableau de bord", "Activité et ressources système"],
+    "page.review": ["Révision humaine", "Champs sous le seuil de confiance à valider"],
+    "page.profiles": ["Profils d'extraction", "Créer, tester et ajuster vos propres profils"],
+    "search.placeholder": "Rechercher un document, un champ, un mot…",
+    "lang.label": "Langue de l'interface",
+    "h.import": "Importez. Vérifiez. Exportez.",
+    "h.docs": "Documents traités", "h.result": "Résultat d'analyse",
+    "h.quality": "Contrôle qualité", "h.config": "Configuration réelle",
+    "h.dashboard": "Tableau de bord", "h.profiles": "Profils métier", "h.connectors": "Connecteur Hub"
+  },
+  en: {
+    "nav.import": "Import", "nav.docs": "Documents", "nav.result": "Result",
+    "nav.quality": "Quality", "nav.config": "Settings",
+    "nav.dashboard": "Dashboard", "nav.review": "Review",
+    "nav.profiles": "Profiles", "nav.connectors": "Connectors",
+    "page.connectors": ["Connector Hub", "Transmission to external systems, under human control"],
+    "nav.dossier": "Folder",
+    "page.dossier": ["Documentary workflow", "Folder, cross-document consistency and data package"],
+    "h.dossier": "Documentary workflow",
+    "h.dossier.sub": "Group the documents of one shipment, compare them with each other, then produce a data package. Every state shown is derived from real facts — nothing is reported as done before it actually is.",
+    "page.import": ["Import a document", "Visual and textual analysis → structured data"],
+    "page.docs": ["Documents", "Processing history and job tracking"],
+    "page.result": ["Analysis result", "Text, fields, tables — tied to the source document"],
+    "page.quality": ["Quality control", "Confidences, anomalies and business consistency"],
+    "page.config": ["Settings", "Engines, languages and actually available profiles"],
+    "page.dashboard": ["Dashboard", "Activity and system resources"],
+    "page.review": ["Human review", "Fields below the confidence threshold to validate"],
+    "page.profiles": ["Extraction profiles", "Create, test and tune your own profiles"],
+    "search.placeholder": "Search a document, a field, a word…",
+    "lang.label": "Interface language",
+    "h.import": "Import. Verify. Export.",
+    "h.docs": "Processed documents", "h.result": "Analysis result",
+    "h.quality": "Quality control", "h.config": "Real configuration",
+    "h.dashboard": "Dashboard", "h.profiles": "Business profiles", "h.connectors": "Connector Hub"
+  },
+  ar: {
+    "nav.import": "استيراد", "nav.docs": "المستندات", "nav.result": "النتيجة",
+    "nav.quality": "الجودة", "nav.config": "الإعدادات",
+    "nav.dashboard": "لوحة القيادة", "nav.review": "المراجعة",
+    "nav.profiles": "الملفات الشخصية", "nav.connectors": "الموصّلات",
+    "page.connectors": ["مركز الموصّلات", "الإرسال إلى الأنظمة الخارجية تحت التحقق البشري"],
+    "nav.dossier": "الملف",
+    "page.dossier": ["مسار المستندات", "الملف واتساق المستندات وحزمة البيانات"],
+    "h.dossier": "مسار المستندات",
+    "h.dossier.sub": "تجميع مستندات شحنة واحدة ومقارنتها فيما بينها ثم إنتاج حزمة بيانات. كل حالة معروضة مشتقّة من وقائع فعلية — لا شيء يُعلن منتهيًا قبل أن يكون كذلك.",
+    "page.import": ["استيراد مستند", "تحليل بصري ونصي ← بيانات منظّمة"],
+    "page.docs": ["المستندات", "سجل المعالجة ومتابعة المهام"],
+    "page.result": ["نتيجة التحليل", "النص والحقول والجداول — مرتبطة بالمستند الأصلي"],
+    "page.quality": ["مراقبة الجودة", "الثقتان (المحرك والنظام) والشذوذ واتساق العمل"],
+    "page.config": ["الإعدادات", "المحركات واللغات والملفات المتاحة فعليًا"],
+    "page.dashboard": ["لوحة القيادة", "النشاط وموارد النظام"],
+    "page.review": ["المراجعة البشرية", "الحقول دون حد الثقة وتحتاج تأكيدًا"],
+    "page.profiles": ["ملفات الاستخراج", "أنشئ ملفاتك الخاصة واختبرها واضبطها"],
+    "search.placeholder": "ابحث عن مستند أو حقل أو كلمة…",
+    "lang.label": "لغة الواجهة",
+    "h.import": "استورد. تحقّق. صدّر.",
+    "h.docs": "المستندات المعالجة", "h.result": "نتيجة التحليل",
+    "h.quality": "مراقبة الجودة", "h.config": "الإعدادات الفعلية",
+    "h.dashboard": "لوحة القيادة", "h.profiles": "ملفات العمل", "h.connectors": "مركز الموصّلات"
+  }
+};

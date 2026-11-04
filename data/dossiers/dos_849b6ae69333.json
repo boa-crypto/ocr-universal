@@ -1,0 +1,22 @@
+{
+ "id": "dos_849b6ae69333",
+ "label": "Dossier rendu 1792332216949",
+ "profile": "importation",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792332216.9530387,
+ "updated_at": 1792332216.962495,
+ "history": [
+  {
+   "ts": 1792332216.9530404,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

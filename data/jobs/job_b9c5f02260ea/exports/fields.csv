@@ -1,0 +1,18 @@
+﻿name,label,raw_value,normalized_value,corrected_value,confirmed_value,confidence,engine_confidence,status,page,source
+date,Date,2024-03-15 | 2024-04-15,2024-03-15 | 2024-04-15,,,0.727,0.95,detected,2,ocr
+email,E-mail,contact@example.dz,contact@example.dz,,,0.727,0.95,detected,1,ocr
+url,URL,,,,,0.0,0.0,not_detected,,ocr
+phone,Téléphone,2024001 | +213555123456,2024001 | +213555123456,,,0.727,0.95,detected,2,ocr
+iban,IBAN,,,,,0.0,0.0,not_detected,,ocr
+invoice_number,Numéro de facture,,,,,0.0,0.0,not_detected,,rule
+vat_number,N° TVA,,,,,0.0,0.0,not_detected,,rule
+container_number,N° conteneur,,,,,0.0,0.0,not_detected,,ocr
+serial_number,N° de série,,,,,0.0,0.0,not_detected,,ocr
+amount,Montant,001 | 1000.00 | 1200.00 | 25.00 | 12.50 | 1500.00,001 | 1000.00 | 1200.00 | 25.00 | 12.50 | 1500.00,,,0.727,0.95,detected,1,ocr
+percent,Pourcentage,,,,,0.0,0.0,not_detected,,ocr
+quantity,Quantité + unité,,,,,0.0,0.0,not_detected,,ocr
+issue_date,Date d'émission,,,,,0.0,0.0,not_detected,,rule
+due_date,Date d'échéance,15/04/2024,15/04/2024,,,0.765,1.0,invalid,1,rule
+total_ht,Total HT,100,100,,,0.765,1.0,detected,1,rule
+total_ttc,Total TTC,120,120,,,0.765,1.0,detected,1,rule
+currency,Devise,EUR,EUR,,,0.765,1.0,detected,1,rule

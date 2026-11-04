@@ -1,0 +1,30 @@
+{
+  "id": "job_6a8b52f904fd",
+  "filename": "text_pdf.pdf",
+  "status": "error",
+  "created_at": 1792271374.4532707,
+  "updated_at": 1792271374.5051389,
+  "error": "SecurityError: plage de pages hors document : '99'",
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "fast",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json"
+    ],
+    "page_range": "99",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7
+  },
+  "result_id": null,
+  "progress": 0.05,
+  "stage": "ingest",
+  "attempts": 1
+}

@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8'?>
+<document id="doc_3a48d8ca2b85" source="text_pdf.pdf" hash="804644d0037a4366c06c4ea1cd57e08c09e8bbddfb2b8211eef64c86c3771f61" profile="invoice">
+  <meta>
+    <engines>tesseract</engines>
+    <mean_engine_confidence>0.95</mean_engine_confidence>
+    <mean_global_confidence>0.727</mean_global_confidence>
+  </meta>
+  <pages>
+    <page num="1" width="1653" height="2338">
+      <text>FACTURE N 2024-001
+Date : 15/03/2024
+Echeance : 15/04/2024
+Client : SARL Exemple Alger
+Email : contact@example.dz
+Telephone : +213 555 12 34 56
+Description : Fourniture de materiel informatique
+Total HT : 1000,00 EUR
+Total TTC : 1200,00 EUR
+</text>
+    </page>
+    <page num="2" width="1653" height="2338">
+      <text>DETAIL DES LIGNES
+Clavier sans fil 50 x 25,00 EUR
+Souris optique 20 x 12,50 EUR
+Total : 1500,00 EUR
+</text>
+    </page>
+  </pages>
+  <fields>
+    <field name="date" label="Date" status="detected" confidence="0.727" page="2" raw="2024-03-15 | 2024-04-15" normalized="2024-03-15 | 2024-04-15" corrected="" confirmed="" />
+    <field name="email" label="E-mail" status="detected" confidence="0.727" page="1" raw="contact@example.dz" normalized="contact@example.dz" corrected="" confirmed="" />
+    <field name="url" label="URL" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="phone" label="Téléphone" status="detected" confidence="0.727" page="2" raw="2024001 | +213555123456" normalized="2024001 | +213555123456" corrected="" confirmed="" />
+    <field name="iban" label="IBAN" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="invoice_number" label="Numéro de facture" status="detected" confidence="0.765" page="1" raw="2024-001" normalized="2024-001" corrected="" confirmed="" />
+    <field name="vat_number" label="N° TVA" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="container_number" label="N° conteneur" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="serial_number" label="N° de série" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="amount" label="Montant" status="detected" confidence="0.727" page="1" raw="001 | 1000.00 | 1200.00 | 25.00 | 12.50 | 1500.00" normalized="001 | 1000.00 | 1200.00 | 25.00 | 12.50 | 1500.00" corrected="" confirmed="" />
+    <field name="percent" label="Pourcentage" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="quantity" label="Quantité + unité" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="issue_date" label="Date d'émission" status="detected" confidence="0.765" page="1" raw="15/03/2024" normalized="2024-03-15" corrected="" confirmed="" />
+    <field name="due_date" label="Date d'échéance" status="detected" confidence="0.765" page="1" raw="15/04/2024" normalized="2024-04-15" corrected="" confirmed="" />
+    <field name="total_ht" label="Total HT" status="detected" confidence="0.765" page="1" raw="100" normalized="100" corrected="" confirmed="" />
+    <field name="total_ttc" label="Total TTC" status="detected" confidence="0.765" page="1" raw="120" normalized="120" corrected="" confirmed="" />
+    <field name="currency" label="Devise" status="detected" confidence="0.765" page="1" raw="EUR" normalized="EUR" corrected="" confirmed="" />
+  </fields>
+  <tables />
+  <anomalies>
+    <anomaly code="PAGE_OVEREXPOSED" severity="info" page="1">page 1 : overexposed</anomaly>
+    <anomaly code="PAGE_LOW_CONTRAST" severity="info" page="1">page 1 : low_contrast</anomaly>
+    <anomaly code="PAGE_OVEREXPOSED" severity="info" page="2">page 2 : overexposed</anomaly>
+    <anomaly code="PAGE_LOW_CONTRAST" severity="info" page="2">page 2 : low_contrast</anomaly>
+    <anomaly code="PAGE_NEARLY_BLANK" severity="info" page="2">page 2 : nearly_blank</anomaly>
+  </anomalies>
+</document>

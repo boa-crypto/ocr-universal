@@ -1,0 +1,22 @@
+{
+ "id": "dos_eea5e0382230",
+ "label": "Dossier rendu 1792338908680",
+ "profile": "importation",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792338908.684631,
+ "updated_at": 1792338908.6944838,
+ "history": [
+  {
+   "ts": 1792338908.6846328,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

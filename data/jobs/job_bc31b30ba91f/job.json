@@ -1,0 +1,37 @@
+{
+  "id": "job_bc31b30ba91f",
+  "filename": "bl_port.pdf",
+  "status": "error",
+  "created_at": 1792420829.7202551,
+  "updated_at": 1792420829.94838,
+  "error": "TypeError: cannot unpack non-iterable numpy.int32 object",
+  "options": {
+    "languages": [],
+    "profile": "port_bl",
+    "quality_mode": "accurate",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json",
+      "txt",
+      "csv",
+      "xlsx",
+      "xml",
+      "pdf"
+    ],
+    "page_range": "",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7,
+    "auto_classify": true
+  },
+  "result_id": null,
+  "progress": 0.1,
+  "stage": "ocr",
+  "attempts": 1,
+  "file_hash": "064adde94d98ca41d56ee022463594d9d11e1b01a064a69c7beadbd6213a8b4c"
+}

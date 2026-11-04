@@ -1,0 +1,32 @@
+{
+  "id": "job_c22c8a3e81c7",
+  "filename": "arrive.pdf",
+  "status": "queued",
+  "created_at": 1792304331.9601772,
+  "updated_at": 1792304331.9604833,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "invoice",
+    "quality_mode": "fast",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json",
+      "txt"
+    ],
+    "page_range": "",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7
+  },
+  "result_id": null,
+  "progress": 0.0,
+  "stage": "",
+  "attempts": 0,
+  "file_hash": "2102ee780e0d5711919ce92b83d802bc90033aac2e8c2b406122c90cff179b8d"
+}

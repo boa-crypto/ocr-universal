@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "unocr-ui",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["server.py"],
+      "port": 9000,
+      "cwd": "C:/workSpace/ocr-universal/web"
+    },
+    {
+      "name": "ocr-universal-demo",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["server.py"],
+      "port": 9000,
+      "cwd": "C:/workSpace/ocr-universal/web"
+    }
+  ]
+}

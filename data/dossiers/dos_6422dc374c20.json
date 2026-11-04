@@ -1,0 +1,32 @@
+{
+ "id": "dos_6422dc374c20",
+ "label": "Garde anti-rétrogradation",
+ "profile": "importation",
+ "state": "archive",
+ "state_label": "Archivé",
+ "pieces": [],
+ "categories": {},
+ "version": 2,
+ "created_at": 1792336353.1343296,
+ "updated_at": 1792336353.1577194,
+ "history": [
+  {
+   "ts": 1792336353.134333,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792336353.1575387,
+   "action": "state_forced",
+   "detail": {
+    "from": "en_preparation",
+    "to": "archive",
+    "motif": "test"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

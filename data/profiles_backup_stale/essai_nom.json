@@ -1,0 +1,23 @@
+{
+  "name": "essai_nom",
+  "label": "Essai nom",
+  "description": "",
+  "document_types": [],
+  "fields": [
+    {
+      "key": "ref",
+      "label": "Référence",
+      "patterns": [
+        "(?:REF|Réf)\\s*[:#]\\s*([A-Z0-9-]{4,})"
+      ],
+      "required": false,
+      "validators": [],
+      "normalize": null,
+      "category": "general",
+      "multiline": false
+    }
+  ],
+  "relations": [],
+  "consistency_checks": [],
+  "export_rules": {}
+}

@@ -1,0 +1,8 @@
+Import section: 0 opening, 1 closing
+Import section length: 25793
+Ends with: '>\n          </div>\n        </div>\n      </section>'
+
+Between first and second close: 1690 chars
+Starts with: '\n\n      <!-- ─────────── 02 · DOCUMENTS ─────────── -->\n      <section id="tab-docs" class="page">\n '
+Contains tab-docs: True
+Contains id="tab-docs": True

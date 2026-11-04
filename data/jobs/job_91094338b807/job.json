@@ -1,0 +1,33 @@
+{
+  "id": "job_91094338b807",
+  "filename": "colisage.pdf",
+  "status": "done",
+  "created_at": 1792331207.473496,
+  "updated_at": 1792331209.09014,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "accurate",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json",
+      "txt"
+    ],
+    "page_range": "",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7,
+    "auto_classify": true
+  },
+  "result_id": "doc_8ebe67463044",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1,
+  "file_hash": "ec549cf2aa0def1814a1c74d06f12eacd8900dbf787d18474161032c7bae36b5"
+}

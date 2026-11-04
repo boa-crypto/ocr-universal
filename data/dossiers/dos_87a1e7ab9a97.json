@@ -1,0 +1,94 @@
+{
+ "id": "dos_87a1e7ab9a97",
+ "label": "Import 2024-118",
+ "profile": "importation",
+ "state": "revision_requise",
+ "state_label": "Révision requise",
+ "pieces": [
+  {
+   "job_id": "job_1abd049d0738",
+   "filename": "facture.pdf",
+   "category": "invoice",
+   "added_at": 1792326181.153916,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_0ea589ef62de",
+   "filename": "bl.pdf",
+   "category": "bill_of_lading",
+   "added_at": 1792326181.157517,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_3c450cd73272",
+   "filename": "colisage.pdf",
+   "category": "packing_list",
+   "added_at": 1792326181.1622145,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "invoice": 1,
+  "bill_of_lading": 1,
+  "packing_list": 1
+ },
+ "version": 1,
+ "created_at": 1792326181.1517124,
+ "updated_at": 1792334447.1011963,
+ "history": [
+  {
+   "ts": 1792326181.1517167,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792326181.1539204,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_1abd049d0738",
+    "filename": "facture.pdf",
+    "category": "invoice"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792326181.1551092,
+   "action": "state_changed",
+   "detail": {
+    "from": "en_preparation",
+    "to": "revision_requise",
+    "pieces": 1
+   },
+   "acteur": "systeme"
+  },
+  {
+   "ts": 1792326181.1575193,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_0ea589ef62de",
+    "filename": "bl.pdf",
+    "category": "bill_of_lading"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792326181.1622162,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_3c450cd73272",
+    "filename": "colisage.pdf",
+    "category": "packing_list"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

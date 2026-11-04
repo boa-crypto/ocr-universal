@@ -1,0 +1,43 @@
+{
+ "id": "dos_523e11653f73",
+ "label": "à arbitrer",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 2,
+ "created_at": 1792417590.308533,
+ "updated_at": 1792417590.308533,
+ "history": [
+  {
+   "ts": 1792417590.308533,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792417590.308533,
+   "action": "constat_tranche",
+   "detail": {
+    "rule": "poids_divergent:gross_weight",
+    "status": "accepte",
+    "motif": "vérifié",
+    "precedent": null
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {
+  "poids_divergent:gross_weight": {
+   "rule": "poids_divergent:gross_weight",
+   "status": "accepte",
+   "acteur": "utilisateur",
+   "motif": "vérifié",
+   "ts": 1792417590.308533,
+   "remplace": null
+  }
+ }
+}

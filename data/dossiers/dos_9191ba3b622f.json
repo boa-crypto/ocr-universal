@@ -1,0 +1,23 @@
+{
+ "id": "dos_9191ba3b622f",
+ "label": "à marie",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792390632.145475,
+ "updated_at": 1792390632.1456115,
+ "history": [
+  {
+   "ts": 1792390632.1454787,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

@@ -1,0 +1,30 @@
+{
+  "id": "job_7a25ee4cce60",
+  "filename": "vin_corrompu.png",
+  "status": "done",
+  "created_at": 1792276140.2047033,
+  "updated_at": 1792276140.7239525,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "carte_grise",
+    "quality_mode": "fast",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json"
+    ],
+    "page_range": "",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7
+  },
+  "result_id": "doc_1147e115767d",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1
+}

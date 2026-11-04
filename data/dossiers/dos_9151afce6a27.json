@@ -1,0 +1,23 @@
+{
+ "id": "dos_9151afce6a27",
+ "label": "secret marie",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792394268.3659399,
+ "updated_at": 1792394268.366061,
+ "history": [
+  {
+   "ts": 1792394268.3659432,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

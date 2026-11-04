@@ -1,0 +1,2 @@
+name,label,raw_value,normalized_value,corrected_value,confirmed_value,confidence,engine_confidence,status,page,source
+date,Date,2024-03-28 | 2024-03-15,2024-03-28 | 2024-03-15,,,0.727,0.95,detected,1,ocr

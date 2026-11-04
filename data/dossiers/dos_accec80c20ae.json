@@ -1,0 +1,32 @@
+{
+ "id": "dos_accec80c20ae",
+ "label": "Archive rendu 1792356524747",
+ "profile": "importation",
+ "state": "archive",
+ "state_label": "Archivé",
+ "pieces": [],
+ "categories": {},
+ "version": 2,
+ "created_at": 1792356524.7490375,
+ "updated_at": 1792356524.7519395,
+ "history": [
+  {
+   "ts": 1792356524.7490394,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792356524.75177,
+   "action": "state_forced",
+   "detail": {
+    "from": "en_preparation",
+    "to": "archive",
+    "motif": "contrôle du harnais"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

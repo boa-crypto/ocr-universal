@@ -1,0 +1,45 @@
+{
+ "id": "dos_1fbc56ac9ad0",
+ "label": "D-PAUL",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [
+  {
+   "job_id": "job1",
+   "filename": "facture.pdf",
+   "category": "facture",
+   "added_at": 1792394642.4455495,
+   "added_by": "paul",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "facture": 1
+ },
+ "version": 1,
+ "created_at": 1792394642.4430554,
+ "updated_at": 1792394648.1499224,
+ "history": [
+  {
+   "ts": 1792394642.4430568,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "paul"
+  },
+  {
+   "ts": 1792394642.4455512,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job1",
+    "filename": "facture.pdf",
+    "category": "facture"
+   },
+   "acteur": "paul"
+  }
+ ],
+ "arbitrages": {}
+}

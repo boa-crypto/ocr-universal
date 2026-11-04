@@ -1,0 +1,22 @@
+{
+ "id": "dos_5d538e732c35",
+ "label": "Dossier rendu 1792355124419",
+ "profile": "importation",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792355124.4233992,
+ "updated_at": 1792355124.4381387,
+ "history": [
+  {
+   "ts": 1792355124.4234033,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

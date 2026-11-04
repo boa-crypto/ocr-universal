@@ -1,0 +1,32 @@
+{
+  "id": "job_849b27260b77",
+  "filename": "skewed.png",
+  "status": "done",
+  "created_at": 1792271259.011004,
+  "updated_at": 1792271259.4325023,
+  "error": null,
+  "options": {
+    "languages": [
+      "eng"
+    ],
+    "profile": "generic",
+    "quality_mode": "fast",
+    "preprocess": true,
+    "preprocess_mode": "off",
+    "variant_comparison": false,
+    "export_formats": [
+      "json"
+    ],
+    "page_range": "",
+    "render_dpi": 150,
+    "engine": "tesseract",
+    "extract_fields": true,
+    "extract_tables": false,
+    "extract_barcodes": false,
+    "min_confidence_review": 0.9
+  },
+  "result_id": "doc_cb5477b0e33c",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1
+}

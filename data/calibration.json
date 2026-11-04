@@ -1,0 +1,12 @@
+{
+  "method": "platt",
+  "a": 2.2169465501053476,
+  "b": 1.216946550105351,
+  "steps": [],
+  "n_samples": 32,
+  "n_positive": 31,
+  "synthetic": true,
+  "active": false,
+  "fitted_at": 1792309740.651378,
+  "note": "Platt sur 32 échantillons (31 corrects) — ajusté sur données SYNTHÉTIQUES : désactivé par prudence (relancer avec force=True ou fournir des photos réelles)"
+}

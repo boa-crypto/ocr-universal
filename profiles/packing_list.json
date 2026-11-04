@@ -1,0 +1,107 @@
+{
+  "name": "packing_list",
+  "label": "Portuaire — Liste de colisage",
+  "description": "Packing list : conteneurs, colis, poids, volumes, marquage.",
+  "document_types": [
+    "packing_list"
+  ],
+  "fields": [
+    {
+      "key": "packing_list_number",
+      "label": "N° liste de colisage",
+      "patterns": [
+        "(?:Packing\\s*List|PL)\\s*(?:No\\.?|N[°o])?\\s*[:#]?\\s*(?!(?:invoice|facture|num[é]ro|number|n[°o]\\b|no\\b|ref\\b|B/?L\\b)[:\\s])([A-Z0-9][A-Z0-9\\-/_]{3,25})"
+      ],
+      "required": true,
+      "category": "identifiants",
+      "normalize": "upper"
+    },
+    {
+      "key": "container_number",
+      "label": "N° de conteneur",
+      "patterns": [
+        "\\b([A-Z]{4}[\\s-]?\\d{7})\\b"
+      ],
+      "validators": [
+        "iso6346"
+      ],
+      "category": "identifiants",
+      "normalize": "upper"
+    },
+    {
+      "key": "seal_number",
+      "label": "Seal Number",
+      "patterns": [
+        "(?:Seal|Sceau)\\s*(?:Number|N[°o]|No\\.?)?\\s*[:#]?\\s*([A-Z0-9\\-]{4,20})"
+      ],
+      "category": "identifiants",
+      "normalize": "upper"
+    },
+    {
+      "key": "packages_count",
+      "label": "Nombre de colis",
+      "patterns": [
+        "(?:Total\\s*[Pp]ackages|Colis|Packages)\\s*[:#]?\\s*(\\d{1,6})"
+      ],
+      "category": "cargaison",
+      "normalize": "digits"
+    },
+    {
+      "key": "gross_weight",
+      "label": "Poids brut",
+      "patterns": [
+        "(?:Gross\\s*[Ww]eight|Poids\\s*brut)\\s*[:#]?\\s*(\\d{1,3}(?:[ .,\\u00a0\\u202f]\\d{3})+(?:[.,]\\d{1,3})?|\\d+(?:[.,]\\d{1,3})?)\\s*(KG|kg|KGS|T|MT)?"
+      ],
+      "category": "cargaison",
+      "normalize": "amount"
+    },
+    {
+      "key": "net_weight",
+      "label": "Poids net",
+      "patterns": [
+        "(?:Net\\s*[Ww]eight|Poids\\s*net)\\s*[:#]?\\s*(\\d{1,3}(?:[ .,\\u00a0\\u202f]\\d{3})+(?:[.,]\\d{1,3})?|\\d+(?:[.,]\\d{1,3})?)\\s*(KG|kg|KGS|T|MT)?"
+      ],
+      "category": "cargaison",
+      "normalize": "amount"
+    },
+    {
+      "key": "volume",
+      "label": "Volume",
+      "patterns": [
+        "(?:Volume|CBM)\\s*[:#]?\\s*(\\d+(?:[.,]\\d{1,3})?)\\s*(M3|m3|m³|CBM)?"
+      ],
+      "category": "cargaison",
+      "normalize": "generic"
+    },
+    {
+      "key": "marks_numbers",
+      "label": "Marks and Numbers",
+      "patterns": [
+        "(?:Marks\\s*(?:&|and)\\s*Numbers|Marques)\\s*[:#]?\\s*([^\\n]{2,120})"
+      ],
+      "category": "cargaison",
+      "normalize": "generic"
+    },
+    {
+      "key": "invoice_number",
+      "label": "Référence facture",
+      "patterns": [
+        "(?:Invoice\\s*(?:No\\.?|N[°o]|Number|ref\\w*)|Facture\\s*(?:N[°o]|num[ée]ro)?)\\s*[:#]?\\s*(?!(?:invoice|facture|num[ée]ro|number|n[°o]\\b|no\\b|ref\\b|B/?L\\b)[:\\s])([A-Z0-9][A-Z0-9\\-/_]{2,30})"
+      ],
+      "required": false,
+      "validators": [],
+      "normalize": "upper",
+      "category": "identifiants",
+      "multiline": false
+    }
+  ],
+  "relations": [],
+  "consistency_checks": [],
+  "export_rules": {
+    "primary_keys": [
+      "packing_list_number",
+      "container_number"
+    ],
+    "keep_row_relations": true
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "bl_interne",
+  "label": "Bon de livraison interne",
+  "description": "test",
+  "document_types": [],
+  "fields": [
+    {
+      "key": "ref",
+      "label": "Référence",
+      "patterns": [
+        "REF[:\\s]+([A-Z0-9-]+)"
+      ],
+      "required": false,
+      "validators": [],
+      "normalize": "upper",
+      "category": "general",
+      "multiline": false
+    }
+  ],
+  "relations": [],
+  "consistency_checks": [],
+  "export_rules": {}
+}

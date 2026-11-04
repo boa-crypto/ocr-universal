@@ -1,0 +1,61 @@
+........................................................................ [  8%]
+.........................................................FF.F....FF.F... [ 17%]
+........................................................................ [ 25%]
+........................................................................ [ 34%]
+........................................................................ [ 42%]
+...................................................................F.... [ 51%]
+.....................................................s.................. [ 60%]
+.........s.............................................................. [ 68%]
+........................................................................ [ 77%]
+........................................................................ [ 85%]
+.........................................................ss............. [ 94%]
+................................................                         [100%]
+================================== FAILURES ===================================
+E   AssertionError: assert 'esau3054583' == 'CSQU3054383'
+      
+      - CSQU3054383
+      + esau3054583
+C:\workSpace\ocr-universal\tests\test_capture_profiles.py:205: AssertionError: assert 'esau3054583' == 'CSQU3054383'
+E   assert None == 'AB-123-CD'
+     +  where None = FieldValue(name='plate_number', label="Plaque d'immatriculation", raw_value=None, normalized_value=None, corrected_val...one, bbox=None, status=<FieldStatus.NOT_DETECTED: 'not_detected'>, pattern=None, anomalies=[], profile='vehicle_plate').normalized_value
+C:\workSpace\ocr-universal\tests\test_capture_profiles.py:214: assert None == 'AB-123-CD'
+E   AssertionError: assert None == '1HGBH41JXMN109186'
+     +  where None = FieldValue(name='vin', label='N° de châssis (VIN)', raw_value=None, normalized_value=None, corrected_value=None, confi...one, bbox=None, status=<FieldStatus.NOT_DETECTED: 'not_detected'>, pattern=None, anomalies=[], profile='vehicle_plate').normalized_value
+C:\workSpace\ocr-universal\tests\test_capture_profiles.py:230: AssertionError: assert None == '1HGBH41JXMN109186'
+E   AssertionError: plate_number: 'ABAZ3-CD' != 'AB-123-CD'
+    assert 'ABAZ3-CD' == 'AB-123-CD'
+      
+      - AB-123-CD
+      + ABAZ3-CD
+C:\workSpace\ocr-universal\tests\test_capture_profiles.py:289: AssertionError: plate_number: 'ABAZ3-CD' != 'AB-123-CD'
+E   AssertionError: engine_number absent
+    assert None
+     +  where None = FieldValue(name='engine_number', label='N° moteur', raw_value=None, normalized_value=None, corrected_value=None, confi...=None, bbox=None, status=<FieldStatus.NOT_DETECTED: 'not_detected'>, pattern=None, anomalies=[], profile='carte_grise').raw_value
+C:\workSpace\ocr-universal\tests\test_capture_profiles.py:303: AssertionError: engine_number absent
+E   AssertionError: aucun texte après secours variante
+    assert ''
+     +  where '' = <built-in method strip of str object at 0x00007FFA62219CA0>()
+     +    where <built-in method strip of str object at 0x00007FFA62219CA0> = ''.strip
+     +      where '' = PageResult(page_num=1, width=1522.0, height=440.0, text='', blocks=[], lines=[], words=[], quality=PageQuality(brightn...es=[], has_native_text=False, native_text_ratio=0.0, variant_selected='preprocessed', direction='neutral', blank=False).text
+C:\workSpace\ocr-universal\tests\test_capture_profiles.py:338: AssertionError: aucun texte après secours variante
+E   AssertionError: le dossier touché en dernier doit venir en premier
+    assert 'dos_5cfb585d3742' == 'dos_a8eab4654ade'
+      
+      - dos_a8eab4654ade
+      + dos_5cfb585d3742
+C:\workSpace\ocr-universal\tests\test_dossier.py:223: AssertionError: le dossier touché en dernier doit venir en premier
+============================== warnings summary ===============================
+..\..\Users\DELL 3650\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\DELL 3650\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_capture_profiles.py::TestCaptureOCR::test_photo_conteneur
+FAILED tests/test_capture_profiles.py::TestCaptureOCR::test_photo_plaque_fr
+FAILED tests/test_capture_profiles.py::TestCaptureOCR::test_photo_vin - Asser...
+FAILED tests/test_capture_profiles.py::TestCarteGriseProfile::test_photo_carte_grise_13_champs
+FAILED tests/test_capture_profiles.py::TestCarteGriseProfile::test_champs_carte_grise_algerienne
+FAILED tests/test_capture_profiles.py::TestSecoursVariantePretraitee::test_field_hard_n_est_plus_perdu
+FAILED tests/test_dossier.py::test_liste_triee_par_activite - AssertionError:...
+7 failed, 829 passed, 4 skipped, 1 warning in 242.97s (0:04:02)

@@ -1,0 +1,22 @@
+{
+ "id": "dos_20ccc4be5257",
+ "label": "Dossier rendu 1792335132518",
+ "profile": "importation",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792335132.5236964,
+ "updated_at": 1792335132.5416818,
+ "history": [
+  {
+   "ts": 1792335132.5237005,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

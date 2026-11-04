@@ -1,0 +1,271 @@
+/* ==========================================================================
+   UniOCR Premium — Icon System
+   SVG inline icons, consistent sizing, semantic variants
+   ========================================================================== */
+
+/* ── Base Icon ── */
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: currentColor;
+  overflow: visible;
+}
+
+.icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Sizes ── */
+.icon-xs { width: 12px; height: 12px; }
+.icon-sm { width: 16px; height: 16px; }
+.icon-md { width: 20px; height: 20px; }
+.icon-lg { width: 24px; height: 24px; }
+.icon-xl { width: 32px; height: 32px; }
+.icon-2xl { width: 48px; height: 48px; }
+
+/* ── Semantic Colors ── */
+.icon-brand { color: var(--color-brand); }
+.icon-success { color: var(--color-success); }
+.icon-warn { color: var(--color-warn); }
+.icon-error { color: var(--color-error); }
+.icon-info { color: var(--color-info); }
+.icon-muted { color: var(--color-fg-muted); }
+.icon-subtle { color: var(--color-fg-subtle); }
+
+/* ── Interactive Icons ── */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  color: var(--color-fg-muted);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.icon-btn:hover {
+  color: var(--color-fg);
+  background: var(--color-bg-hover);
+}
+
+.icon-btn:active {
+  background: var(--color-bg-active);
+}
+
+.icon-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.icon-btn.icon-btn-brand:hover {
+  color: var(--color-brand);
+  background: var(--color-brand-bg);
+}
+
+.icon-btn.icon-btn-error:hover {
+  color: var(--color-error);
+  background: var(--color-error-bg);
+}
+
+/* Icon button sizes */
+.icon-btn-sm { width: 28px; height: 28px; }
+.icon-btn-md { width: 36px; height: 36px; }
+.icon-btn-lg { width: 44px; height: 44px; }
+
+/* ── Animated Icons ── */
+@keyframes icon-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes icon-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.95); }
+}
+
+@keyframes icon-bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-4px); }
+  60% { transform: translateY(-2px); }
+}
+
+.icon-spin { animation: icon-spin 1s linear infinite; }
+.icon-pulse { animation: icon-pulse 1.5s ease-in-out infinite; }
+.icon-bounce { animation: icon-bounce 1s ease-in-out infinite; }
+
+/* ── RTL Support ── */
+[dir="rtl"] .icon-rtl-flip {
+  transform: scaleX(-1);
+}
+
+/* ── Icon Stack (for badges on icons) ── */
+.icon-stack {
+  position: relative;
+  display: inline-flex;
+}
+
+.icon-stack .icon-badge {
+  position: absolute;
+  top: -4px;
+  inset-inline-end: -4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  font-size: var(--text-2xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-fg-inverse);
+  background: var(--color-error);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-bg);
+}
+
+/* ── Common UI Icons (inline SVG definitions) ── */
+/* These can be used via <svg class="icon"><use href="#icon-name"></use></svg> */
+/* Or inlined directly in HTML */
+
+.icon-search { /* search */ }
+.icon-menu { /* menu/hamburger */ }
+.icon-close { /* x/close */ }
+.icon-chevron-down { /* chevron down */ }
+.icon-chevron-up { /* chevron up */ }
+.icon-chevron-left { /* chevron left */ }
+.icon-chevron-right { /* chevron right */ }
+.icon-arrow-left { /* arrow left */ }
+.icon-arrow-right { /* arrow right */ }
+.icon-arrow-up { /* arrow up */ }
+.icon-arrow-down { /* arrow down */ }
+.icon-home { /* home */ }
+.icon-document { /* document/file */ }
+.icon-folder { /* folder */ }
+.icon-image { /* image */ }
+.icon-pdf { /* pdf */ }
+.icon-download { /* download */ }
+.icon-upload { /* upload */ }
+.icon-delete { /* trash/delete */ }
+.icon-edit { /* edit/pencil */ }
+.icon-eye { /* eye/view */ }
+.icon-eye-off { /* eye off/hide */ }
+.icon-settings { /* gear/settings */ }
+.icon-user { /* user */ }
+.icon-users { /* users/group */ }
+.icon-lock { /* lock */ }
+.icon-unlock { /* unlock */ }
+.icon-key { /* key/token */ }
+.icon-shield { /* shield/security */ }
+.icon-bell { /* bell/notification */ }
+.icon-bell-off { /* bell off */ }
+.icon-check { /* check */ }
+.icon-check-circle { /* check circle */ }
+.icon-x { /* x */ }
+.icon-x-circle { /* x circle */ }
+.icon-alert { /* alert triangle */ }
+.icon-alert-circle { /* alert circle */ }
+.icon-info { /* info */ }
+.icon-help { /* help circle */ }
+.icon-plus { /* plus */ }
+.icon-minus { /* minus */ }
+.icon-more-horizontal { /* more horizontal */ }
+.icon-more-vertical { /* more vertical */ }
+.icon-filter { /* filter */ }
+.icon-sort { /* sort */ }
+.icon-grid { /* grid view */ }
+.icon-list { /* list view */ }
+.icon-layout { /* layout/split */ }
+.icon-split { /* split view */ }
+.icon-fullscreen { /* fullscreen */ }
+.icon-minimize { /* minimize */ }
+.icon-maximize { /* maximize */ }
+.icon-copy { /* copy */ }
+.icon-link { /* link */ }
+.icon-share { /* share */ }
+.icon-print { /* print */ }
+.icon-refresh { /* refresh/sync */ }
+.icon-rotate-ccw { /* rotate counter-clockwise */ }
+.icon-rotate-cw { /* rotate clockwise */ }
+.icon-zoom-in { /* zoom in */ }
+.icon-zoom-out { /* zoom out */ }
+.icon-scan { /* scan/qr */ }
+.icon-camera { /* camera */ }
+.icon-mic { /* microphone */ }
+.icon-mic-off { /* microphone off */ }
+.icon-language { /* language/globe */ }
+.icon-translate { /* translate */ }
+.icon-flag { /* flag */ }
+.icon-calendar { /* calendar */ }
+.icon-clock { /* clock/time */ }
+.icon-timer { /* timer */ }
+.icon-history { /* history/clock-arrow */ }
+.icon-tag { /* tag */ }
+.icon-bookmark { /* bookmark */ }
+.icon-star { /* star */ }
+.icon-heart { /* heart/favorite */ }
+.icon-archive { /* archive/box */ }
+.icon-inbox { /* inbox */ }
+.icon-send { /* send/paper-plane */ }
+.icon-reply { /* reply */ }
+.icon-forward { /* forward */ }
+.icon-attachment { /* paperclip/attachment */ }
+.icon-paperclip { /* paperclip */ }
+.icon-database { /* database */ }
+.icon-server { /* server */ }
+.icon-cpu { /* cpu/chip */ }
+.icon-memory { /* memory/ram */ }
+.icon-network { /* network/wifi */ }
+.icon-cloud { /* cloud */ }
+.icon-cloud-upload { /* cloud upload */ }
+.icon-cloud-download { /* cloud download */ }
+.icon-lock-open { /* lock open */ }
+.icon-user-check { /* user check */ }
+.icon-user-plus { /* user plus */ }
+.icon-user-minus { /* user minus */ }
+.icon-user-cog { /* user settings */ }
+.icon-log-in { /* log in */ }
+.icon-log-out { /* log out */ }
+.icon-menu { /* menu */ }
+.icon-sidebar { /* sidebar */ }
+.icon-columns { /* columns */ }
+.icon-table { /* table */ }
+.icon-chart { /* chart/bar-chart */ }
+.icon-pie-chart { /* pie chart */ }
+.icon-activity { /* activity/heartbeat */ }
+.icon-trending-up { /* trending up */ }
+.icon-trending-down { /* trending down */ }
+.icon-percent { /* percent */ }
+.icon-calculator { /* calculator */ }
+.icon-file-text { /* file text */ }
+.icon-file-code { /* file code */ }
+.icon-file-image { /* file image */ }
+.icon-file-pdf { /* file pdf */ }
+.icon-file-spreadsheet { /* file spreadsheet */ }
+.icon-file-audio { /* file audio */ }
+.icon-file-video { /* file video */ }
+.icon-file-archive { /* file archive */ }
+.icon-folder-open { /* folder open */ }
+.icon-folder-plus { /* folder plus */ }
+.icon-folder-minus { /* folder minus */ }
+.icon-folder-search { /* folder search */ }
+
+/* ── Icon Font Fallback (if using icon font) ── */
+.icon-font {
+  font-family: 'UniOCR Icons', sans-serif;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Print ── */
+@media print {
+  .icon { color: #000 !important; }
+  .icon-btn { display: none !important; }
+}

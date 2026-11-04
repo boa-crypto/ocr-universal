@@ -1,0 +1,139 @@
+/**
+ * OCR Universal - CSS Reset
+ * Modern, strategic reset (not aggressive full reset)
+ * Preserves browser defaults where useful
+ */
+
+/* === BOX SIZING === */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* === DOCUMENT === */
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* === BODY === */
+body {
+  margin: 0;
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.6;
+}
+
+/* === HEADINGS & PARAGRAPHS === */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+p {
+  margin: 0;
+}
+
+/* === LISTS === */
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* === MEDIA === */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* === FORMS === */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+input,
+textarea,
+select {
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+/* Preserve native form appearance where appropriate */
+input[type="checkbox"],
+input[type="radio"] {
+  cursor: pointer;
+}
+
+/* === TABLES === */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* === LINKS === */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* === ACCESSIBILITY === */
+/* Remove all animations for people who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* === UTILITY RESETS === */
+/* Remove default button styles */
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+/* Remove default fieldset styles */
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+/* Remove default legend styles */
+legend {
+  padding: 0;
+}

@@ -1,0 +1,353 @@
+[
+  {
+    "suite": "synth",
+    "samples": 16,
+    "rows": [
+      {
+        "file": "carte_grise__blurred.png",
+        "variant": "blurred",
+        "seconds": 2.29,
+        "cer": 0.0065,
+        "wer": 0.0526,
+        "fields_exact": "5/5",
+        "fields_detected": "5/5",
+        "field_detail": {
+          "plate_number": {
+            "attendu": "AB-123-CD",
+            "obtenu": "AB-123-CD",
+            "exact": true
+          },
+          "vin": {
+            "attendu": "1HGBH41JXMN109186",
+            "obtenu": "1HGBH41JXMN109186",
+            "exact": true
+          },
+          "make": {
+            "attendu": "RENAULT",
+            "obtenu": "RENAULT",
+            "exact": true
+          },
+          "fuel": {
+            "attendu": "DIESEL",
+            "obtenu": "DIESEL",
+            "exact": true
+          },
+          "first_reg_date": {
+            "attendu": "2019-03-12",
+            "obtenu": "2019-03-12",
+            "exact": true
+          }
+        }
+      },
+      {
+        "file": "carte_grise__clean.png",
+        "variant": "clean",
+        "seconds": 1.8,
+        "cer": 0.0065,
+        "wer": 0.0526,
+        "fields_exact": "5/5",
+        "fields_detected": "5/5",
+        "field_detail": {
+          "plate_number": {
+            "attendu": "AB-123-CD",
+            "obtenu": "AB-123-CD",
+            "exact": true
+          },
+          "vin": {
+            "attendu": "1HGBH41JXMN109186",
+            "obtenu": "1HGBH41JXMN109186",
+            "exact": true
+          },
+          "make": {
+            "attendu": "RENAULT",
+            "obtenu": "RENAULT",
+            "exact": true
+          },
+          "fuel": {
+            "attendu": "DIESEL",
+            "obtenu": "DIESEL",
+            "exact": true
+          },
+          "first_reg_date": {
+            "attendu": "2019-03-12",
+            "obtenu": "2019-03-12",
+            "exact": true
+          }
+        }
+      },
+      {
+        "file": "carte_grise__field_hard.png",
+        "variant": "field_hard",
+        "seconds": 2.53,
+        "cer": 0.0258,
+        "wer": 0.1579,
+        "fields_exact": "4/5",
+        "fields_detected": "5/5",
+        "field_detail": {
+          "plate_number": {
+            "attendu": "AB-123-CD",
+            "obtenu": "AB-123-CD",
+            "exact": true
+          },
+          "vin": {
+            "attendu": "1HGBH41JXMN109186",
+            "obtenu": "1HGBH413XMN109186",
+            "exact": false
+          },
+          "make": {
+            "attendu": "RENAULT",
+            "obtenu": "RENAULT",
+            "exact": true
+          },
+          "fuel": {
+            "attendu": "DIESEL",
+            "obtenu": "DIESEL",
+            "exact": true
+          },
+          "first_reg_date": {
+            "attendu": "2019-03-12",
+            "obtenu": "2019-03-12",
+            "exact": true
+          }
+        }
+      },
+      {
+        "file": "carte_grise__skew.png",
+        "variant": "skew",
+        "seconds": 1.87,
+        "cer": 0.0065,
+        "wer": 0.0526,
+        "fields_exact": "5/5",
+        "fields_detected": "5/5",
+        "field_detail": {
+          "plate_number": {
+            "attendu": "AB-123-CD",
+            "obtenu": "AB-123-CD",
+            "exact": true
+          },
+          "vin": {
+            "attendu": "1HGBH41JXMN109186",
+            "obtenu": "1HGBH41JXMN109186",
+            "exact": true
+          },
+          "make": {
+            "attendu": "RENAULT",
+            "obtenu": "RENAULT",
+            "exact": true
+          },
+          "fuel": {
+            "attendu": "DIESEL",
+            "obtenu": "DIESEL",
+            "exact": true
+          },
+          "first_reg_date": {
+            "attendu": "2019-03-12",
+            "obtenu": "2019-03-12",
+            "exact": true
+          }
+        }
+      },
+      {
+        "file": "container__blurred.png",
+        "variant": "blurred",
+        "seconds": 0.47,
+        "cer": 0.0,
+        "wer": 0.0,
+        "fields_exact": "1/1",
+        "fields_detected": "1/1",
+        "field_detail": {
+          "container_number": {
+            "attendu": "CSQU 3054383",
+            "obtenu": "CSQU 3054383",
+            "exact": true
+          }
+        }
+      },
+      {
+        "file": "container__clean.png",
+        "variant": "clean",
+        "seconds": 0.43,
+        "cer": 0.0,
+        "wer": 0.0,
+        "fields_exact": "1/1",
+        "fields_detected": "1/1",
+        "field_detail": {
+          "container_number": {
+            "attendu": "CSQU 3054383",
+            "obtenu": "CSQU 3054383",
+            "exact": true
+          }
+        }
+      },
+      {
+        "file": "container__field_hard.png",
+        "variant": "field_hard",
+        "seconds": 1.6,
+        "cer": 0.0833,
+        "wer": 0.5,
+        "fields_exact": "1/1",
+        "fields_detected": "1/1",
+        "field_detail": {
+          "container_number": {
+            "attendu": "CSQU 3054383",
+            "obtenu": "CSQU 3054383",
+            "exact": true
+          }
+        }
+      },
+      {
+        "file": "container__skew.png",
+        "variant": "skew",
+        "seconds": 0.56,
+        "cer": 0.0,
+        "wer": 0.0,
+        "fields_exact": "1/1",
+        "fields_detected": "1/1",
+        "field_detail": {
+          "container_number": {
+            "attendu": "CSQU 3054383",
+            "obtenu": "CSQU 3054383",
+            "exact": true
+          }
+        }
+      },
+      {
+        "file": "plate_dz__blurred.png",
+        "variant": "blurred",
+        "seconds": 0.48,
+        "cer": 0.0,
+        "wer": 0.0,
+        "fields_exact": "1/1",
+        "fields_detected": "1/1",
+        "field_detail": {
+          "plate_number": {
+            "attendu": "12345 AB 16",
+            "obtenu": "12345 AB 16",
+            "exact": true
+          }
+        }
+      },
+      {
+        "file": "plate_dz__clean.png",
+        "variant": "clean",
+        "seconds": 0.45,
+        "cer": 0.0,
+        "wer": 0.0,
+        "fields_exact": "1/1",
+        "fields_detected": "1/1",
+        "field_detail": {
+          "plate_number": {
+            "attendu": "12345 AB 16",
+            "obtenu": "12345 AB 16",
+            "exact": true
+          }
+        }
+      },
+      {
+        "file": "plate_dz__field_hard.png",
+        "variant": "field_hard",
+        "seconds": 1.28,
+        "cer": 0.0,
+        "wer": 0.0,
+        "fields_exact": "1/1",
+        "fields_detected": "1/1",
+        "field_detail": {
+          "plate_number": {
+            "attendu": "12345 AB 16",
+            "obtenu": "12345 AB 16",
+            "exact": true
+          }
+        }
+      },
+      {
+        "file": "plate_dz__skew.png",
+        "variant": "skew",
+        "seconds": 0.57,
+        "cer": 0.0,
+        "wer": 0.0,
+        "fields_exact": "1/1",
+        "fields_detected": "1/1",
+        "field_detail": {
+          "plate_number": {
+            "attendu": "12345 AB 16",
+            "obtenu": "12345 AB 16",
+            "exact": true
+          }
+        }
+      },
+      {
+        "file": "plate_fr__blurred.png",
+        "variant": "blurred",
+        "seconds": 0.45,
+        "cer": 0.0,
+        "wer": 0.0,
+        "fields_exact": "1/1",
+        "fields_detected": "1/1",
+        "field_detail": {
+          "plate_number": {
+            "attendu": "AB-123-CD",
+            "obtenu": "AB-123-CD",
+            "exact": true
+          }
+        }
+      },
+      {
+        "file": "plate_fr__clean.png",
+        "variant": "clean",
+        "seconds": 0.48,
+        "cer": 0.0,
+        "wer": 0.0,
+        "fields_exact": "1/1",
+        "fields_detected": "1/1",
+        "field_detail": {
+          "plate_number": {
+            "attendu": "AB-123-CD",
+            "obtenu": "AB-123-CD",
+            "exact": true
+          }
+        }
+      },
+      {
+        "file": "plate_fr__field_hard.png",
+        "variant": "field_hard",
+        "seconds": 1.43,
+        "cer": 0.0,
+        "wer": 0.0,
+        "fields_exact": "1/1",
+        "fields_detected": "1/1",
+        "field_detail": {
+          "plate_number": {
+            "attendu": "AB-123-CD",
+            "obtenu": "AB-123-CD",
+            "exact": true
+          }
+        }
+      },
+      {
+        "file": "plate_fr__skew.png",
+        "variant": "skew",
+        "seconds": 0.5,
+        "cer": 0.0,
+        "wer": 0.0,
+        "fields_exact": "1/1",
+        "fields_detected": "1/1",
+        "field_detail": {
+          "plate_number": {
+            "attendu": "AB-123-CD",
+            "obtenu": "AB-123-CD",
+            "exact": true
+          }
+        }
+      }
+    ],
+    "mean_cer": 0.008,
+    "mean_wer": 0.051,
+    "field_accuracy": "31/32"
+  },
+  {
+    "suite": "real",
+    "samples": 0,
+    "rows": [],
+    "note": "aucune photo réelle fournie — voir --help"
+  }
+]

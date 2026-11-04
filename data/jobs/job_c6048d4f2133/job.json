@@ -1,0 +1,33 @@
+{
+  "id": "job_c6048d4f2133",
+  "filename": "attente.pdf",
+  "status": "queued",
+  "created_at": 1793025654.5919788,
+  "updated_at": 1793025654.5926578,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "accurate",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json",
+      "txt"
+    ],
+    "page_range": "",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7,
+    "auto_classify": true
+  },
+  "result_id": null,
+  "progress": 0.0,
+  "stage": "",
+  "attempts": 0,
+  "file_hash": "fc022288f3e49d09353987de1c32fc1427bd2a8b3657a340e86efb8e34efe003"
+}

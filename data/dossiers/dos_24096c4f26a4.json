@@ -1,0 +1,23 @@
+{
+ "id": "dos_24096c4f26a4",
+ "label": "nouveau",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792394687.2717698,
+ "updated_at": 1792394687.2718713,
+ "history": [
+  {
+   "ts": 1792394687.2717729,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

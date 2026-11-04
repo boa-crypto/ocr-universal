@@ -1,0 +1,30 @@
+{
+  "id": "job_3036197d64fd",
+  "filename": "photo_container.png",
+  "status": "done",
+  "created_at": 1792273617.4188964,
+  "updated_at": 1792273618.740256,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "container",
+    "quality_mode": "fast",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json"
+    ],
+    "page_range": "",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7
+  },
+  "result_id": "doc_29e5b431b05a",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1
+}

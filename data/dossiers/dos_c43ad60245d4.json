@@ -1,0 +1,23 @@
+{
+ "id": "dos_c43ad60245d4",
+ "label": "arbitrage",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1793405813.9925847,
+ "updated_at": 1793405813.9935837,
+ "history": [
+  {
+   "ts": 1793405813.9925847,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

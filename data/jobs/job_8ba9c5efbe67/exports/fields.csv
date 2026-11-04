@@ -1,0 +1,16 @@
+﻿name,label,raw_value,normalized_value,corrected_value,confirmed_value,confidence,engine_confidence,status,page,source
+date,Date,,,,,0.0,0.0,not_detected,,ocr
+email,E-mail,,,,,0.0,0.0,not_detected,,ocr
+url,URL,,,,,0.0,0.0,not_detected,,ocr
+phone,Téléphone,,,,,0.0,0.0,not_detected,,ocr
+iban,IBAN,,,,,0.0,0.0,not_detected,,ocr
+invoice_number,Numéro de facture,,,,,0.0,0.0,not_detected,,ocr
+vat_number,N° TVA,,,,,0.0,0.0,not_detected,,ocr
+container_number,N° conteneur,,,,,0.0,0.0,not_detected,,ocr
+serial_number,N° de série,,,,,0.0,0.0,not_detected,,ocr
+amount,Montant,,,,,0.0,0.0,not_detected,,ocr
+percent,Pourcentage,,,,,0.0,0.0,not_detected,,ocr
+quantity,Quantité + unité,,,,,0.0,0.0,not_detected,,ocr
+plate_number,Plaque d'immatriculation,,,,,0.0,0.0,not_detected,,rule
+vin,N° de châssis (VIN),,,,,0.0,0.0,not_detected,,rule
+make_model,Marque / modèle (si marqué),,,,,0.0,0.0,not_detected,,rule

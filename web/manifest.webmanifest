@@ -1,0 +1,28 @@
+{
+  "name": "UniOCR — Future Editorial Intelligence",
+  "short_name": "UniOCR",
+  "description": "Moteur OCR universel local : texte, structure, champs, tableaux, codes-barres. 100 % hors ligne.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#080A0D",
+  "theme_color": "#080A0D",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

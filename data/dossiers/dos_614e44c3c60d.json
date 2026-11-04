@@ -1,0 +1,23 @@
+{
+ "id": "dos_614e44c3c60d",
+ "label": "Dossier expédition TESTSTAR",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792358315.490734,
+ "updated_at": 1792358315.4908988,
+ "history": [
+  {
+   "ts": 1792358315.4907386,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

@@ -1,0 +1,162 @@
+{
+  "container__clean.png": {
+    "profile": "container",
+    "text": "CSQU 3054383",
+    "fields": {
+      "container_number": "CSQU 3054383"
+    },
+    "variant": "clean",
+    "synthetic": true
+  },
+  "container__skew.png": {
+    "profile": "container",
+    "text": "CSQU 3054383",
+    "fields": {
+      "container_number": "CSQU 3054383"
+    },
+    "variant": "skew",
+    "synthetic": true
+  },
+  "container__blurred.png": {
+    "profile": "container",
+    "text": "CSQU 3054383",
+    "fields": {
+      "container_number": "CSQU 3054383"
+    },
+    "variant": "blurred",
+    "synthetic": true
+  },
+  "container__field_hard.png": {
+    "profile": "container",
+    "text": "CSQU 3054383",
+    "fields": {
+      "container_number": "CSQU 3054383"
+    },
+    "variant": "field_hard",
+    "synthetic": true
+  },
+  "plate_fr__clean.png": {
+    "profile": "vehicle_plate",
+    "text": "AB-123-CD",
+    "fields": {
+      "plate_number": "AB-123-CD"
+    },
+    "variant": "clean",
+    "synthetic": true
+  },
+  "plate_fr__skew.png": {
+    "profile": "vehicle_plate",
+    "text": "AB-123-CD",
+    "fields": {
+      "plate_number": "AB-123-CD"
+    },
+    "variant": "skew",
+    "synthetic": true
+  },
+  "plate_fr__blurred.png": {
+    "profile": "vehicle_plate",
+    "text": "AB-123-CD",
+    "fields": {
+      "plate_number": "AB-123-CD"
+    },
+    "variant": "blurred",
+    "synthetic": true
+  },
+  "plate_fr__field_hard.png": {
+    "profile": "vehicle_plate",
+    "text": "AB-123-CD",
+    "fields": {
+      "plate_number": "AB-123-CD"
+    },
+    "variant": "field_hard",
+    "synthetic": true
+  },
+  "plate_dz__clean.png": {
+    "profile": "vehicle_plate",
+    "text": "12345 AB 16",
+    "fields": {
+      "plate_number": "12345 AB 16"
+    },
+    "variant": "clean",
+    "synthetic": true
+  },
+  "plate_dz__skew.png": {
+    "profile": "vehicle_plate",
+    "text": "12345 AB 16",
+    "fields": {
+      "plate_number": "12345 AB 16"
+    },
+    "variant": "skew",
+    "synthetic": true
+  },
+  "plate_dz__blurred.png": {
+    "profile": "vehicle_plate",
+    "text": "12345 AB 16",
+    "fields": {
+      "plate_number": "12345 AB 16"
+    },
+    "variant": "blurred",
+    "synthetic": true
+  },
+  "plate_dz__field_hard.png": {
+    "profile": "vehicle_plate",
+    "text": "12345 AB 16",
+    "fields": {
+      "plate_number": "12345 AB 16"
+    },
+    "variant": "field_hard",
+    "synthetic": true
+  },
+  "carte_grise__clean.png": {
+    "profile": "carte_grise",
+    "text": "CERTIFICAT D'IMMATRICULATION\nPlaque : AB-123-CD\nN° d'identification : 1HGBH41JXMN109186\nMarque : RENAULT\nÉnergie : DIESEL\n1ère immatriculation : 12/03/2019",
+    "fields": {
+      "plate_number": "AB-123-CD",
+      "vin": "1HGBH41JXMN109186",
+      "make": "RENAULT",
+      "fuel": "DIESEL",
+      "first_reg_date": "2019-03-12"
+    },
+    "variant": "clean",
+    "synthetic": true
+  },
+  "carte_grise__skew.png": {
+    "profile": "carte_grise",
+    "text": "CERTIFICAT D'IMMATRICULATION\nPlaque : AB-123-CD\nN° d'identification : 1HGBH41JXMN109186\nMarque : RENAULT\nÉnergie : DIESEL\n1ère immatriculation : 12/03/2019",
+    "fields": {
+      "plate_number": "AB-123-CD",
+      "vin": "1HGBH41JXMN109186",
+      "make": "RENAULT",
+      "fuel": "DIESEL",
+      "first_reg_date": "2019-03-12"
+    },
+    "variant": "skew",
+    "synthetic": true
+  },
+  "carte_grise__blurred.png": {
+    "profile": "carte_grise",
+    "text": "CERTIFICAT D'IMMATRICULATION\nPlaque : AB-123-CD\nN° d'identification : 1HGBH41JXMN109186\nMarque : RENAULT\nÉnergie : DIESEL\n1ère immatriculation : 12/03/2019",
+    "fields": {
+      "plate_number": "AB-123-CD",
+      "vin": "1HGBH41JXMN109186",
+      "make": "RENAULT",
+      "fuel": "DIESEL",
+      "first_reg_date": "2019-03-12"
+    },
+    "variant": "blurred",
+    "synthetic": true
+  },
+  "carte_grise__field_hard.png": {
+    "profile": "carte_grise",
+    "text": "CERTIFICAT D'IMMATRICULATION\nPlaque : AB-123-CD\nN° d'identification : 1HGBH41JXMN109186\nMarque : RENAULT\nÉnergie : DIESEL\n1ère immatriculation : 12/03/2019",
+    "fields": {
+      "plate_number": "AB-123-CD",
+      "vin": "1HGBH41JXMN109186",
+      "make": "RENAULT",
+      "fuel": "DIESEL",
+      "first_reg_date": "2019-03-12"
+    },
+    "variant": "field_hard",
+    "synthetic": true
+  }
+}

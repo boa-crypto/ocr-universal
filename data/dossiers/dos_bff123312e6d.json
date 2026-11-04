@@ -1,0 +1,23 @@
+{
+ "id": "dos_bff123312e6d",
+ "label": "Dossier rendu 1792395612040",
+ "profile": "importation",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792395612.045147,
+ "updated_at": 1792395612.087474,
+ "history": [
+  {
+   "ts": 1792395612.0451484,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

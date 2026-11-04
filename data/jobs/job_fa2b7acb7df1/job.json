@@ -1,0 +1,25 @@
+{
+  "id": "job_fa2b7acb7df1",
+  "filename": "text_pdf.pdf",
+  "status": "error",
+  "created_at": 1792265624.8133125,
+  "updated_at": 1792265627.986535,
+  "error": "UnboundLocalError: cannot access local variable 'EngineRun' where it is not associated with a value",
+  "options": {
+    "languages": [],
+    "profile": "invoice",
+    "quality_mode": "fast",
+    "preprocess": true,
+    "export_formats": [
+      "json",
+      "txt",
+      "csv",
+      "xlsx",
+      "xml"
+    ]
+  },
+  "result_id": null,
+  "progress": 0.1,
+  "stage": "ocr",
+  "attempts": 1
+}

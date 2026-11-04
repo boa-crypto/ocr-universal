@@ -1,0 +1,23 @@
+{
+ "id": "dos_63cf1dc0c57b",
+ "label": "Dossier rendu 1792358760447",
+ "profile": "importation",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792358760.45299,
+ "updated_at": 1792358760.4713728,
+ "history": [
+  {
+   "ts": 1792358760.4529924,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

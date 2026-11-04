@@ -1,0 +1,75 @@
+{
+  "max_file_size_mb": 50,
+  "max_batch_size_mb": 200,
+  "max_pages": 500,
+  "render_dpi": 200,
+  "quality_mode": "accurate",
+  "default_languages": [
+    "fra",
+    "eng"
+  ],
+  "ocr": {
+    "engine_order": [
+      "native_pdf",
+      "indra",
+      "tesseract"
+    ],
+    "tesseract_psm": 3,
+    "min_word_confidence": 45.0
+  },
+  "preprocess": {
+    "enabled": true,
+    "variant_comparison": true,
+    "auto_binarize": true,
+    "target_dpi": 200
+  },
+  "extraction": {
+    "profiles_dir": "profiles",
+    "default_profile": "generic"
+  },
+  "security": {
+    "max_zip_uncompressed_mb": 200,
+    "max_zip_ratio": 100,
+    "retention_days": 30,
+    "encryption": {
+      "enabled": false
+    }
+  },
+  "jobs": {
+    "data_dir": "data",
+    "workers": 2
+  },
+  "api": {
+    "host": "127.0.0.1",
+    "port": 8000,
+    "allowed_hosts": [
+      "127.0.0.1",
+      "localhost",
+      "::1",
+      "testserver"
+    ],
+    "hsts": false,
+    "cors_origins": [
+      "http://127.0.0.1:8000",
+      "http://localhost:8000",
+      "http://127.0.0.1",
+      "http://localhost"
+    ]
+  },
+  "log_dir": "logs",
+  "coherence": {
+    "tolerances": {
+      "gross_weight": 0.02,
+      "net_weight": 0.02,
+      "quantity": 0.05,
+      "packages_count": 0.05,
+      "amount": 0.01,
+      "total_ttc": 0.01
+    },
+    "regles_bloquantes": [],
+    "regles_desactivees": [],
+    "cles_reference": [
+      "invoice_number"
+    ]
+  }
+}

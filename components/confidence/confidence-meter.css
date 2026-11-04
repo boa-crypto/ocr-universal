@@ -1,0 +1,119 @@
+/**
+ * OCR Universal - Confidence Meter
+ * ⭐ CRITICAL: Visual progress bar for confidence scoring
+ * Requirements: 100-150px width, color by level, accessible alternative
+ */
+
+.confidence-meter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 100px;
+  max-width: 150px;
+}
+
+.confidence-meter__bar {
+  position: relative;
+  flex: 1;
+  height: 8px;
+  background-color: var(--neutral-200);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.confidence-meter__fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 4px;
+  transition: width var(--duration-base) var(--ease-fluid),
+              background-color var(--duration-fast) var(--ease-out);
+}
+
+/* Color by confidence level */
+.confidence-meter__fill--high {
+  background-color: var(--data-confidence-high);
+}
+
+.confidence-meter__fill--good {
+  background-color: var(--data-confidence-good);
+}
+
+.confidence-meter__fill--medium {
+  background-color: var(--data-confidence-medium);
+}
+
+.confidence-meter__fill--low {
+  background-color: var(--data-confidence-low);
+}
+
+.confidence-meter__fill--poor {
+  background-color: var(--data-confidence-poor);
+}
+
+/* Label display */
+.confidence-meter__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  font-weight: 600;
+  color: var(--neutral-700);
+  min-width: 36px;
+  text-align: right;
+  letter-spacing: -0.01em;
+}
+
+/* Compact variant */
+.confidence-meter--compact {
+  min-width: 80px;
+  max-width: 100px;
+}
+
+.confidence-meter--compact .confidence-meter__bar {
+  height: 6px;
+}
+
+.confidence-meter--compact .confidence-meter__label {
+  font-size: 0.6875rem; /* 11px */
+  min-width: 30px;
+}
+
+/* Accessible text alternative (hidden visually, available to screen readers) */
+.confidence-meter__accessible-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Dark mode */
+[data-theme="dark"] .confidence-meter__bar {
+  background-color: var(--neutral-700);
+}
+
+[data-theme="dark"] .confidence-meter__label {
+  color: var(--neutral-300);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .confidence-meter__fill {
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .confidence-meter__bar {
+    border: 1px solid currentColor;
+  }
+
+  .confidence-meter__fill {
+    border-right: 2px solid var(--neutral-900);
+  }
+}

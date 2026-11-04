@@ -1,0 +1,78 @@
+"""Le module du Connecteur Hub doit rester synchronisé entre sa source
+(`web/connectors.js`) et la copie servie dans `web/index.html`).
+
+**Pourquoi ce test existe.** La page est un fichier unique hors ligne : le
+module est donc dupliqué. Pendant le développement, la copie servie a reçu les
+correctifs alors que `web/connectors.js` conservait l'ancien code — corriger
+dans le fichier ne changeait alors rien à l'application, et l'inverse
+réintroduisait des bugs déjà corrigés. `tools/sync_web_module.py --check` fait
+échouer ce test dès que les deux copies divergent.
+"""
+from __future__ import annotations
+
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+RACINE = Path(__file__).resolve().parent.parent
+INDEX = RACINE / "web" / "index.html"
+SOURCE = RACINE / "web" / "connectors.js"
+SCRIPT = RACINE / "tools" / "sync_web_module.py"
+
+
+def test_module_synchronise_avec_index_html() -> None:
+    """La copie servie doit être exactement le contenu de connectors.js."""
+    assert SCRIPT.exists(), "tools/sync_web_module.py est introuvable"
+    r = subprocess.run([sys.executable, str(SCRIPT), "--check"],
+                       capture_output=True, text=True, cwd=RACINE)
+    assert r.returncode == 0, (
+        "web/connectors.js et web/index.html ont divergé.\n"
+        f"{r.stdout}{r.stderr}\n"
+        "Correctif : python3 tools/sync_web_module.py"
+    )
+
+
+def test_marqueurs_presents_dans_index_html() -> None:
+    html = INDEX.read_text(encoding="utf-8")
+    assert "CNXHUB:BEGIN" in html, "marqueur de début absent de web/index.html"
+    assert "CNXHUB:END" in html, "marqueur de fin absent de web/index.html"
+
+
+def test_module_servi_est_le_meme_code() -> None:
+    """Le bloc entre les marqueurs contient bien le module de connectors.js."""
+    html = INDEX.read_text(encoding="utf-8")
+    i = html.index("CNXHUB:BEGIN")
+    j = html.index("CNXHUB:END") + len("CNXHUB:END")
+    region = html[i:j]
+    source = SOURCE.read_text(encoding="utf-8").strip("\n")
+    assert "const CnxHub" in region, "le module CnxHub n'est pas dans la région marquée"
+    assert source in region, (
+        "le contenu de web/connectors.js ne se retrouve pas dans la région marquée"
+    )
+
+
+def test_les_deux_copies_ne_sont_pas_vides() -> None:
+    assert SOURCE.stat().st_size > 5000, "web/connectors.js est suspicieusement petit"
+    assert INDEX.stat().st_size > 100_000, "web/index.html est suspicieusement petit"
+
+
+def test_anciennes_formes_buguees_absentes() -> None:
+    """Garde-fou anti-régression : les formes qui avaient cassé la page.
+
+    Ces trois bugs ont réellement existé (page muette, catalogue vide,
+    assistant bloqué). Si l'une de ces formes revient dans le module *servi*,
+    c'est une régression, pas une variante de style.
+    """
+    html = INDEX.read_text(encoding="utf-8")
+    region = html[html.index("CNXHUB:BEGIN"):]
+    assert "not_configured" not in region, (
+        "état 'not_configured' réapparu : l'état réel est 'unconfigured'"
+    )
+    assert "c.modes" not in region, (
+        "le catalogue expose 'mode' (valeur unique), pas 'modes'"
+    )
+    bloque = re.search(r"if \(wizardStep === 3\) \{[^}]*return;", region)
+    assert bloque is None, (
+        "l'étape 3 de l'assistant bloque à nouveau (« Suivant » sans avancer)"
+    )

@@ -1,0 +1,11 @@
+--- Page 1 ---
+COMMERCIAL INVOICE
+Invoice No: INV-2024-118
+Date: 12/03/2024
+Seller: EXPEDITEUR TEST SARL
+Buyer: CLIENT TEST SA
+INCOterm: FOB ALGER
+Currency: EUR
+Description Qty Unit price Amount
+Ref A 100 12,50 1 250,00
+TOTAL AMOUNT: 1 250,00 EUR

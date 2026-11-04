@@ -1,0 +1,25 @@
+{
+  "id": "job_a3ec586596cd",
+  "filename": "text_pdf.pdf",
+  "status": "done",
+  "created_at": 1792270037.8356628,
+  "updated_at": 1792270042.030047,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "invoice",
+    "quality_mode": "fast",
+    "preprocess": true,
+    "export_formats": [
+      "json",
+      "txt",
+      "csv",
+      "xlsx",
+      "xml"
+    ]
+  },
+  "result_id": "doc_827ce7f5b38d",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1
+}

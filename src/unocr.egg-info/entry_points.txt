@@ -1,0 +1,2 @@
+[console_scripts]
+unocr = unocr.cli:main

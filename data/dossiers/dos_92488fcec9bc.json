@@ -1,0 +1,95 @@
+{
+ "id": "dos_92488fcec9bc",
+ "label": "Rendu avec pièces 1792357055667",
+ "profile": "importation",
+ "state": "revision_requise",
+ "state_label": "Révision requise",
+ "pieces": [
+  {
+   "job_id": "job_fb1086cf9796",
+   "filename": "parcours_facture.pdf",
+   "category": "invoice",
+   "added_at": 1792357055.683548,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_8de7d0b5996e",
+   "filename": "parcours_bl.pdf",
+   "category": "bill_of_lading",
+   "added_at": 1792357055.6918526,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_bc9c6f143a17",
+   "filename": "parcours_colisage.pdf",
+   "category": "packing_list",
+   "added_at": 1792357055.6996462,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "invoice": 1,
+  "bill_of_lading": 1,
+  "packing_list": 1
+ },
+ "version": 1,
+ "created_at": 1792357055.6692882,
+ "updated_at": 1792357055.7169983,
+ "history": [
+  {
+   "ts": 1792357055.6692903,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792357055.6835525,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_fb1086cf9796",
+    "filename": "parcours_facture.pdf",
+    "category": "invoice"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792357055.685649,
+   "action": "state_changed",
+   "detail": {
+    "from": "en_preparation",
+    "to": "revision_requise",
+    "pieces": 1
+   },
+   "acteur": "systeme"
+  },
+  {
+   "ts": 1792357055.6918566,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_8de7d0b5996e",
+    "filename": "parcours_bl.pdf",
+    "category": "bill_of_lading"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792357055.699649,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_bc9c6f143a17",
+    "filename": "parcours_colisage.pdf",
+    "category": "packing_list"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

@@ -1,0 +1,205 @@
+/* ==========================================================================
+   UniOCR Premium — Avatars
+   User avatars, document avatars, engine avatars, group avatars
+   ========================================================================== */
+
+/* ── Base Avatar ── */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-hover);
+  color: var(--color-fg-muted);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Sizes ── */
+.avatar-xs { width: var(--avatar-xs); height: var(--avatar-xs); font-size: var(--text-2xs); }
+.avatar-sm { width: var(--avatar-sm); height: var(--avatar-sm); font-size: var(--text-xs); }
+.avatar-md { width: var(--avatar-md); height: var(--avatar-md); font-size: var(--text-sm); }
+.avatar-lg { width: var(--avatar-lg); height: var(--avatar-lg); font-size: var(--text-base); }
+.avatar-xl { width: var(--avatar-xl); height: var(--avatar-xl); font-size: var(--text-xl); }
+
+/* ── Shape Variants ── */
+.avatar-square { border-radius: var(--radius-md); }
+.avatar-rounded { border-radius: var(--radius-lg); }
+
+/* ── Status Indicator ── */
+.avatar-with-status {
+  position: relative;
+}
+
+.avatar-status {
+  position: absolute;
+  bottom: 0;
+  inset-inline-end: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--color-bg);
+  flex-shrink: 0;
+}
+
+.avatar-xs .avatar-status { width: 7px; height: 7px; }
+.avatar-sm .avatar-status { width: 8px; height: 8px; }
+.avatar-md .avatar-status { width: 10px; height: 10px; }
+.avatar-lg .avatar-status { width: 12px; height: 12px; }
+.avatar-xl .avatar-status { width: 16px; height: 16px; }
+
+.avatar-status-online { background: var(--color-success); }
+.avatar-status-offline { background: var(--color-fg-subtle); }
+.avatar-status-busy { background: var(--color-warn); }
+.avatar-status-error { background: var(--color-error); }
+
+/* ── Group Avatars (stacked) ── */
+.avatar-group {
+  display: inline-flex;
+}
+
+.avatar-group .avatar {
+  border: 2px solid var(--color-bg);
+  margin-inline-start: -8px;
+}
+
+.avatar-group .avatar:first-child { margin-inline-start: 0; }
+.avatar-group .avatar:hover { z-index: 1; transform: scale(1.1); }
+
+.avatar-group-sm .avatar { margin-inline-start: -6px; }
+.avatar-group-lg .avatar { margin-inline-start: -12px; }
+
+/* ── Avatar with fallback initials ── */
+.avatar-fallback {
+  background: var(--color-bg-hover);
+  color: var(--color-fg-muted);
+}
+
+/* Color variants for fallback avatars (based on hash) */
+.avatar-fallback-0 { background: #1E3A5F; color: #60A5FA; }
+.avatar-fallback-1 { background: #3F2E5E; color: #A78BFA; }
+.avatar-fallback-2 { background: #1E4D3A; color: #4ADE80; }
+.avatar-fallback-3 { background: #5E3A1E; color: #FB923C; }
+.avatar-fallback-4 { background: #4D1E3A; color: #F472B6; }
+.avatar-fallback-5 { background: #1E3F5E; color: #22D3EE; }
+.avatar-fallback-6 { background: #3A1E5E; color: #C084FC; }
+.avatar-fallback-7 { background: #5E4A1E; color: #FACC15; }
+
+/* ── Document Avatar (file type) ── */
+.document-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--avatar-md);
+  height: var(--avatar-md);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.document-avatar-lg { width: var(--avatar-lg); height: var(--avatar-lg); font-size: var(--text-sm); }
+.document-avatar-xl { width: var(--avatar-xl); height: var(--avatar-xl); font-size: var(--text-base); }
+
+/* Document type colors */
+.document-avatar-pdf { background: #3E1E1E; color: #EF4444; }
+.document-avatar-image { background: #1E3A2E; color: #4ADE80; }
+.document-avatar-docx { background: #1E3A5F; color: #60A5FA; }
+.document-avatar-odt { background: #1E4D3A; color: #4ADE80; }
+.document-avatar-txt { background: #3A3A3A; color: #9CA3AF; }
+.document-avatar-rtf { background: #3A3A3A; color: #9CA3AF; }
+.document-avatar-csv { background: #3F2E5E; color: #A78BFA; }
+.document-avatar-xlsx { background: #1E4D2E; color: #22C55E; }
+.document-avatar-xls { background: #1E4D2E; color: #22C55E; }
+.document-avatar-unknown { background: var(--color-bg-hover); color: var(--color-fg-muted); }
+
+/* ── Engine Avatar ── */
+.engine-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--avatar-sm);
+  height: var(--avatar-sm);
+  border-radius: var(--radius-md);
+  font-size: var(--text-2xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.engine-avatar-tesseract { background: #1E3A5F; color: #60A5FA; }
+.engine-avatar-pdfminer { background: #3F2E5E; color: #A78BFA; }
+.engine-avatar-easyocr { background: #1E4D3A; color: #4ADE80; }
+.engine-avatar-paddleocr { background: #5E3A1E; color: #FB923C; }
+.engine-avatar-native { background: #1E4D2E; color: #22C55E; }
+.engine-avatar-simulated { background: #3A3A3A; color: #9CA3AF; }
+
+/* ── Avatar with Ring (progress, confidence) ── */
+.avatar-ring {
+  position: relative;
+}
+
+.avatar-ring::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 2px solid transparent;
+  border-top-color: var(--color-brand);
+  animation: avatar-ring-spin 1.2s linear infinite;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.avatar-ring.loading::before { opacity: 1; }
+
+@keyframes avatar-ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Progress ring (conic gradient) */
+.avatar-progress {
+  position: relative;
+}
+
+.avatar-progress::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  background: conic-gradient(var(--color-brand) calc(var(--progress, 0) * 1%), transparent 0);
+  -webkit-mask: radial-gradient(circle closest-side, transparent 70%, black 71%);
+  mask: radial-gradient(circle closest-side, transparent 70%, black 71%);
+}
+
+/* ── Clickable Avatar ── */
+.avatar-clickable {
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.avatar-clickable:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-2);
+}
+
+.avatar-clickable:active {
+  transform: scale(0.95);
+}
+
+/* ── Print ── */
+@media print {
+  .avatar { border: 1px solid #999; background: white !important; color: #000 !important; }
+  .avatar-group .avatar { border: 1px solid #999; margin-inline-start: -4px; }
+  .document-avatar, .engine-avatar { border: 1px solid #999; background: white !important; color: #000 !important; }
+}

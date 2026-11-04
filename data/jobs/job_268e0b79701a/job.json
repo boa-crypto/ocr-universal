@@ -1,0 +1,22 @@
+{
+  "id": "job_268e0b79701a",
+  "filename": "t.pdf",
+  "status": "done",
+  "created_at": 1792266011.5875883,
+  "updated_at": 1792266015.6922324,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "fast",
+    "preprocess": true,
+    "export_formats": [
+      "json",
+      "txt"
+    ]
+  },
+  "result_id": "doc_2f20521f60cb",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1
+}

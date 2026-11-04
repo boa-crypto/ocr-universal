@@ -1,0 +1,22 @@
+{
+ "id": "dos_ebc835cdc4b7",
+ "label": "Dossier rendu 1792356212123",
+ "profile": "importation",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792356212.1266646,
+ "updated_at": 1792356212.1382542,
+ "history": [
+  {
+   "ts": 1792356212.1266675,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

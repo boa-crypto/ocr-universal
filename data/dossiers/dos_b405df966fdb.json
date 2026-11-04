@@ -1,0 +1,32 @@
+{
+ "id": "dos_b405df966fdb",
+ "label": "Cycle réel trace",
+ "profile": "importation",
+ "state": "archive",
+ "state_label": "Archivé",
+ "pieces": [],
+ "categories": {},
+ "version": 2,
+ "created_at": 1792335566.8371449,
+ "updated_at": 1792335566.8783407,
+ "history": [
+  {
+   "ts": 1792335566.8371506,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792335566.8782103,
+   "action": "state_forced",
+   "detail": {
+    "from": "en_preparation",
+    "to": "archive",
+    "motif": "archivage depuis l'interface"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

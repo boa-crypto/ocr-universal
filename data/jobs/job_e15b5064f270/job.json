@@ -1,0 +1,32 @@
+{
+  "id": "job_e15b5064f270",
+  "filename": "pending.pdf",
+  "status": "queued",
+  "created_at": 1792304326.8563907,
+  "updated_at": 1792304326.8566055,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "accurate",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json",
+      "txt"
+    ],
+    "page_range": "",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7
+  },
+  "result_id": null,
+  "progress": 0.0,
+  "stage": "",
+  "attempts": 0,
+  "file_hash": "3016ef88e3166466281c563b984abed5412a2de823d37ed99c2af39be422fab1"
+}

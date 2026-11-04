@@ -1,0 +1,160 @@
+/**
+ * OCR Universal - Focus Management & Keyboard Navigation
+ * ⭐ CRITICAL: Accessible keyboard navigation throughout app
+ * Requirements: Visible focus rings, skip links, WCAG AA contrast
+ */
+
+/* Global focus ring style */
+.focus-ring,
+*:focus-visible {
+  outline: 2px solid var(--brand-secondary);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* Remove default focus for mouse users, keep for keyboard */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Skip to main content link (accessibility) */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-4);
+  z-index: 9999;
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--brand-secondary);
+  color: white;
+  font-family: var(--font-primary);
+  font-size: var(--text-body);
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0.375rem;
+  box-shadow: var(--elevation-3);
+  transition: top var(--duration-fast) var(--ease-out);
+}
+
+.skip-link:focus {
+  top: var(--space-4);
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* Skip links container */
+.skip-links {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
+/* Focus trap for modals/dialogs */
+.focus-trap {
+  position: relative;
+}
+
+.focus-trap__start,
+.focus-trap__end {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Keyboard shortcut display */
+.kbd {
+  display: inline-block;
+  padding: 2px var(--space-2);
+  margin-left: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  font-weight: 600;
+  color: var(--neutral-700);
+  background-color: var(--neutral-100);
+  border: 1px solid var(--neutral-300);
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 0 0 var(--neutral-300);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Shortcut hint (inline with buttons) */
+.shortcut-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-left: var(--space-3);
+  font-size: var(--text-caption);
+  color: var(--neutral-500);
+}
+
+/* Focus within container (highlight parent when child focused) */
+.focus-within-highlight:focus-within {
+  background-color: var(--neutral-50);
+  border-color: var(--brand-secondary);
+}
+
+/* Interactive element focus states */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[role="link"]:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  outline: 2px solid var(--brand-secondary);
+  outline-offset: 2px;
+}
+
+/* Custom focus for specific components */
+.card:focus-visible,
+.data-table__row:focus-visible {
+  outline: 2px solid var(--brand-secondary);
+  outline-offset: -2px; /* Inside border */
+}
+
+/* Focus indicator for low-confidence fields (extra emphasis) */
+.field-low-confidence:focus-within {
+  outline: 2px solid var(--semantic-error);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .kbd {
+  color: var(--neutral-300);
+  background-color: var(--neutral-800);
+  border-color: var(--neutral-600);
+  box-shadow: 0 1px 0 0 var(--neutral-600);
+}
+
+[data-theme="dark"] .shortcut-hint {
+  color: var(--neutral-400);
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  *:focus-visible {
+    outline-width: 3px;
+    outline-offset: 3px;
+  }
+
+  .skip-link:focus {
+    outline-width: 3px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+}

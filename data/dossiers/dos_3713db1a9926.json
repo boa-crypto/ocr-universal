@@ -1,0 +1,23 @@
+{
+ "id": "dos_3713db1a9926",
+ "label": "de l'admin",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1793184325.2127764,
+ "updated_at": 1793184325.2137783,
+ "history": [
+  {
+   "ts": 1793184325.2127764,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

@@ -1,0 +1,32 @@
+Metadata-Version: 2.4
+Name: unocr
+Version: 0.1.0
+Summary: UniOCR - moteur OCR universel, multimoteur, traçable et sécurisé
+Requires-Python: >=3.11
+Requires-Dist: pydantic>=2
+Requires-Dist: pillow>=10
+Requires-Dist: numpy>=1.26
+Requires-Dist: opencv-python>=4.8
+Requires-Dist: pytesseract>=0.3.10
+Requires-Dist: pypdfium2>=4
+Requires-Dist: pdfminer.six>=20231228
+Requires-Dist: reportlab>=4
+Requires-Dist: python-docx>=1.1
+Requires-Dist: odfpy>=1.4
+Requires-Dist: xlrd>=2.0
+Requires-Dist: openpyxl>=3.1
+Requires-Dist: pandas>=2.0
+Requires-Dist: striprtf>=0.0.33
+Requires-Dist: rapidfuzz>=3.0
+Requires-Dist: langdetect>=1.0.9
+Requires-Dist: zxing-cpp>=2.2
+Requires-Dist: segno>=1.6
+Requires-Dist: fastapi>=0.110
+Requires-Dist: uvicorn[standard]>=0.29
+Requires-Dist: python-multipart>=0.0.9
+Requires-Dist: aiofiles>=23.0
+Requires-Dist: psutil>=5.9
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"
+Requires-Dist: ruff>=0.6; extra == "dev"
+Requires-Dist: httpx>=0.27; extra == "dev"

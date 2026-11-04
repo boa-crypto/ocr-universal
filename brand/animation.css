@@ -1,0 +1,52 @@
+/**
+ * OCR Universal - Animation System
+ * Premium Enterprise Design System
+ * Functional motion only - no decorative animations
+ */
+
+:root {
+  /* === TIMING FUNCTIONS === */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-sharp: cubic-bezier(0.4, 0, 0.6, 1);      /* Snappy UI responses */
+  --ease-fluid: cubic-bezier(0.2, 0, 0.38, 0.9);   /* Smooth transitions */
+
+  /* === DURATION SCALE === */
+  --duration-instant: 100ms;   /* Hover, focus — perception immédiate */
+  --duration-fast: 200ms;      /* Dropdowns, tooltips — réponse rapide */
+  --duration-base: 300ms;      /* Modals, slides — transition standard */
+  --duration-slow: 400ms;      /* Panels, drawers — mouvement notable */
+  --duration-slower: 600ms;    /* Page transitions — transformation majeure */
+}
+
+/* === ANIMATION RULES === */
+/* Respect user preferences for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* === UTILITY CLASSES === */
+.transition-all {
+  transition: all var(--duration-base) var(--ease-in-out);
+}
+
+.transition-fast {
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.transition-colors {
+  transition: color var(--duration-fast) var(--ease-out),
+              background-color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+.transition-transform {
+  transition: transform var(--duration-base) var(--ease-fluid);
+}

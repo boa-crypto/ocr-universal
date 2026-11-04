@@ -1,0 +1,226 @@
+/* ==========================================================================
+   UniOCR Premium — Maritime Transit Design Tokens
+   Extensions spécialisées pour le module Transit Maritime
+   ========================================================================== */
+
+:root {
+  /* ── Couleurs Maritimes ── */
+  /* Statuts navires / conteneurs */
+  --color-vessel-arrived: #22C55E;
+  --color-vessel-arrived-bg: rgba(34, 197, 94, 0.12);
+  --color-vessel-arrived-border: rgba(34, 197, 94, 0.3);
+
+  --color-vessel-at-sea: #00D4AA;
+  --color-vessel-at-sea-bg: rgba(0, 212, 170, 0.12);
+  --color-vessel-at-sea-border: rgba(0, 212, 170, 0.3);
+
+  --color-vessel-berthed: #1890FF;
+  --color-vessel-berthed-bg: rgba(24, 144, 255, 0.12);
+  --color-vessel-berthed-border: rgba(24, 144, 255, 0.3);
+
+  --color-vessel-anchored: #F5A623;
+  --color-vessel-anchored-bg: rgba(245, 166, 35, 0.12);
+  --color-vessel-anchored-border: rgba(245, 166, 35, 0.3);
+
+  --color-vessel-departed: #8B95A3;
+  --color-vessel-departed-bg: rgba(139, 149, 163, 0.12);
+  --color-vessel-departed-border: rgba(139, 149, 163, 0.3);
+
+  --color-vessel-delayed: #FF4D4F;
+  --color-vessel-delayed-bg: rgba(255, 77, 79, 0.12);
+  --color-vessel-delayed-border: rgba(255, 77, 79, 0.3);
+
+  /* Types de conteneurs */
+  --color-container-standard: #00D4AA;
+  --color-container-reefer: #1890FF;
+  --color-container-tank: #F5A623;
+  --color-container-open-top: #A78BFA;
+  --color-container-flat-rack: #FB923C;
+  --color-container-high-cube: #4ADE80;
+  --color-container-dangerous: #FF4D4F;
+
+  /* Régimes douaniers */
+  --color-regime-definitive: #22C55E;
+  --color-regime-temporaire: #1890FF;
+  --color-regime-suspensif: #F5A623;
+  --color-regime-transit: #A78BFA;
+  --color-regime-entrepot: #4ADE80;
+  --color-regime-perfectionnement: #FB923C;
+
+  /* Priorités dossier */
+  --color-priority-critical: #FF4D4F;
+  --color-priority-critical-bg: rgba(255, 77, 79, 0.15);
+  --color-priority-high: #F5A623;
+  --color-priority-high-bg: rgba(245, 166, 35, 0.15);
+  --color-priority-normal: #00D4AA;
+  --color-priority-normal-bg: rgba(0, 212, 170, 0.12);
+  --color-priority-low: #8B95A3;
+  --color-priority-low-bg: rgba(139, 149, 163, 0.12);
+
+  /* États dossier transit */
+  --color-dossier-nouveau: #8B95A3;
+  --color-dossier-preparation: #1890FF;
+  --color-dossier-en-cours: #00D4AA;
+  --color-dossier-attente: #F5A623;
+  --color-dossier-bloque: #FF4D4F;
+  --color-dossier-livre: #22C55E;
+  --color-dossier-cloture: #6366F1;
+
+  /* Frais / Finance */
+  --color-fee-portuaire: #00D4AA;
+  --color-fee-douane: #1890FF;
+  --color-fee-transport: #F5A623;
+  --color-fee-assurance: #A78BFA;
+  --color-fee-manutention: #4ADE80;
+  --color-fee-surestarie: #FF4D4F;
+  --color-fee-autre: #8B95A3;
+
+  /* ── Badges Maritimes ── */
+  --badge-vessel-size-sm: 20px;
+  --badge-vessel-size-md: 24px;
+  --badge-vessel-size-lg: 28px;
+
+  /* ── Timeline ── */
+  --timeline-line-width: 2px;
+  --timeline-dot-size: 12px;
+  --timeline-dot-size-lg: 16px;
+  --timeline-gap: var(--space-4);
+
+  /* ── Conteneur Card ── */
+  --container-card-width: 320px;
+  --container-card-height: 180px;
+  --container-card-radius: var(--radius-lg);
+
+  /* ── Dossier Header ── */
+  --dossier-header-height: 140px;
+  --dossier-header-height-compact: 100px;
+
+  /* ── Progress Ring ── */
+  --progress-ring-size: 64px;
+  --progress-ring-size-lg: 96px;
+  --progress-ring-stroke: 6px;
+  --progress-ring-gap: 4px;
+
+  /* ── Animation Durations (Maritime-specific) ── */
+  --duration-timeline-step: 300ms;
+  --duration-card-flip: 400ms;
+  --duration-panel-expand: 250ms;
+  --duration-map-pan: 500ms;
+  --duration-progress-ring: 600ms;
+
+  /* ── Z-index Maritime ── */
+  --z-vessel-tooltip: 900;
+  --z-container-detail: 850;
+  --z-map-overlay: 800;
+}
+
+/* ==========================================================================
+   THÈME CLAIR — Ajustements maritimes
+   ========================================================================== */
+[data-theme="light"] {
+  --color-vessel-arrived: #16A34A;
+  --color-vessel-arrived-bg: rgba(22, 163, 74, 0.1);
+  --color-vessel-arrived-border: rgba(22, 163, 74, 0.3);
+
+  --color-vessel-at-sea: #00A888;
+  --color-vessel-at-sea-bg: rgba(0, 168, 136, 0.1);
+  --color-vessel-at-sea-border: rgba(0, 168, 136, 0.3);
+
+  --color-vessel-berthed: #1D4ED8;
+  --color-vessel-berthed-bg: rgba(29, 78, 216, 0.1);
+  --color-vessel-berthed-border: rgba(29, 78, 216, 0.3);
+
+  --color-vessel-anchored: #D97706;
+  --color-vessel-anchored-bg: rgba(217, 119, 6, 0.1);
+  --color-vessel-anchored-border: rgba(217, 119, 6, 0.3);
+
+  --color-vessel-departed: #64748B;
+  --color-vessel-departed-bg: rgba(100, 116, 139, 0.1);
+  --color-vessel-departed-border: rgba(100, 116, 139, 0.3);
+
+  --color-vessel-delayed: #DC2626;
+  --color-vessel-delayed-bg: rgba(220, 38, 38, 0.1);
+  --color-vessel-delayed-border: rgba(220, 38, 38, 0.3);
+
+  --color-container-standard: #00A888;
+  --color-container-reefer: #1D4ED8;
+  --color-container-tank: #D97706;
+  --color-container-open-top: #9333EA;
+  --color-container-flat-rack: #EA580C;
+  --color-container-high-cube: #22C55E;
+  --color-container-dangerous: #DC2626;
+
+  --color-regime-definitive: #16A34A;
+  --color-regime-temporaire: #1D4ED8;
+  --color-regime-suspensif: #D97706;
+  --color-regime-transit: #9333EA;
+  --color-regime-entrepot: #22C55E;
+  --color-regime-perfectionnement: #EA580C;
+
+  --color-priority-critical: #DC2626;
+  --color-priority-critical-bg: rgba(220, 38, 38, 0.12);
+  --color-priority-high: #D97706;
+  --color-priority-high-bg: rgba(217, 119, 6, 0.12);
+  --color-priority-normal: #00A888;
+  --color-priority-normal-bg: rgba(0, 168, 136, 0.1);
+  --color-priority-low: #64748B;
+  --color-priority-low-bg: rgba(100, 116, 139, 0.1);
+
+  --color-dossier-nouveau: #64748B;
+  --color-dossier-preparation: #1D4ED8;
+  --color-dossier-en-cours: #00A888;
+  --color-dossier-attente: #D97706;
+  --color-dossier-bloque: #DC2626;
+  --color-dossier-livre: #16A34A;
+  --color-dossier-cloture: #4F46E5;
+
+  --color-fee-portuaire: #00A888;
+  --color-fee-douane: #1D4ED8;
+  --color-fee-transport: #D97706;
+  --color-fee-assurance: #9333EA;
+  --color-fee-manutention: #22C55E;
+  --color-fee-surestarie: #DC2626;
+  --color-fee-autre: #64748B;
+}
+
+/* ==========================================================================
+   HIGH CONTRAST MODE — Maritime
+   ========================================================================== */
+@media (forced-colors: active) {
+  :root {
+    --color-vessel-arrived: CanvasText;
+    --color-vessel-at-sea: CanvasText;
+    --color-vessel-berthed: CanvasText;
+    --color-vessel-anchored: CanvasText;
+    --color-vessel-departed: CanvasText;
+    --color-vessel-delayed: CanvasText;
+    --color-container-standard: CanvasText;
+    --color-container-reefer: CanvasText;
+    --color-container-tank: CanvasText;
+    --color-container-dangerous: CanvasText;
+    --color-regime-definitive: CanvasText;
+    --color-regime-temporaire: CanvasText;
+    --color-priority-critical: CanvasText;
+    --color-priority-high: CanvasText;
+    --color-priority-normal: CanvasText;
+    --color-dossier-nouveau: CanvasText;
+    --color-dossier-preparation: CanvasText;
+    --color-dossier-en-cours: CanvasText;
+    --color-dossier-attente: CanvasText;
+    --color-dossier-bloque: CanvasText;
+    --color-dossier-livre: CanvasText;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION — Maritime
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-timeline-step: 0ms;
+    --duration-card-flip: 0ms;
+    --duration-panel-expand: 0ms;
+    --duration-map-pan: 0ms;
+    --duration-progress-ring: 0ms;
+  }
+}

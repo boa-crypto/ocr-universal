@@ -1,0 +1,2445 @@
+[
+  {
+    "timestamp": 1793182315640,
+    "nodes": 0,
+    "edges": 0,
+    "pageRankSum": 0,
+    "confidences": [],
+    "accessCounts": [],
+    "topPatterns": []
+  },
+  {
+    "timestamp": 1793187530685,
+    "nodes": 3,
+    "edges": 3,
+    "pageRankSum": 1,
+    "confidences": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793187530678-q7ya",
+        "summary": "Frequently edited: test_preprocess_photo.py (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.5208692975273159,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-tu9m",
+        "summary": "Frequently edited: customs.py (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.28155110874039796,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-crr6",
+        "summary": "Frequently edited: styles.css (7x)",
+        "confidence": 0.5,
+        "pageRank": 0.19757959373228626,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793189534789,
+    "nodes": 3,
+    "edges": 3,
+    "pageRankSum": 1,
+    "confidences": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793187530678-q7ya",
+        "summary": "Frequently edited: test_preprocess_photo.py (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.5208692975273159,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-tu9m",
+        "summary": "Frequently edited: customs.py (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.28155110874039796,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-crr6",
+        "summary": "Frequently edited: styles.css (7x)",
+        "confidence": 0.5,
+        "pageRank": 0.19757959373228626,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793189634495,
+    "nodes": 3,
+    "edges": 3,
+    "pageRankSum": 1,
+    "confidences": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793187530678-q7ya",
+        "summary": "Frequently edited: test_preprocess_photo.py (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.5208692975273159,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-tu9m",
+        "summary": "Frequently edited: customs.py (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.28155110874039796,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-crr6",
+        "summary": "Frequently edited: styles.css (7x)",
+        "confidence": 0.5,
+        "pageRank": 0.19757959373228626,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793189648031,
+    "nodes": 3,
+    "edges": 3,
+    "pageRankSum": 1,
+    "confidences": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793187530678-q7ya",
+        "summary": "Frequently edited: test_preprocess_photo.py (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.5208692975273159,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-tu9m",
+        "summary": "Frequently edited: customs.py (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.28155110874039796,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-crr6",
+        "summary": "Frequently edited: styles.css (7x)",
+        "confidence": 0.5,
+        "pageRank": 0.19757959373228626,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793192742047,
+    "nodes": 4,
+    "edges": 6,
+    "pageRankSum": 1,
+    "confidences": [
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793192742040-ougj",
+        "summary": "Frequently edited: launch.json (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.45137645980128616,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-q7ya",
+        "summary": "Frequently edited: test_preprocess_photo.py (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.24398711987361352,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-tu9m",
+        "summary": "Frequently edited: customs.py (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.17121898663367108,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-crr6",
+        "summary": "Frequently edited: styles.css (7x)",
+        "confidence": 0.5,
+        "pageRank": 0.13341743369142933,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793281565259,
+    "nodes": 6,
+    "edges": 15,
+    "pageRankSum": 1,
+    "confidences": [
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793281565253-wk0c",
+        "summary": "Frequently edited: ocr_engines.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.37487163927411216,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793281565253-j0n9",
+        "summary": "Frequently edited: index.html (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.2026334131836222,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793192742040-ougj",
+        "summary": "Frequently edited: launch.json (3x)",
+        "confidence": 0.495,
+        "pageRank": 0.1421988920619963,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-q7ya",
+        "summary": "Frequently edited: test_preprocess_photo.py (5x)",
+        "confidence": 0.495,
+        "pageRank": 0.11080430766993951,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-tu9m",
+        "summary": "Frequently edited: customs.py (3x)",
+        "confidence": 0.495,
+        "pageRank": 0.09138496613996563,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-crr6",
+        "summary": "Frequently edited: styles.css (7x)",
+        "confidence": 0.495,
+        "pageRank": 0.07810678167036422,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793310822851,
+    "nodes": 7,
+    "edges": 21,
+    "pageRankSum": 1,
+    "confidences": [
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793310822845-835l",
+        "summary": "Frequently edited: pipeline.py (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.3508672103473103,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793281565253-wk0c",
+        "summary": "Frequently edited: ocr_engines.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.18965799192886082,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793281565253-j0n9",
+        "summary": "Frequently edited: index.html (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.13309332304527582,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793192742040-ougj",
+        "summary": "Frequently edited: launch.json (3x)",
+        "confidence": 0.495,
+        "pageRank": 0.10370906830221502,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-q7ya",
+        "summary": "Frequently edited: test_preprocess_photo.py (5x)",
+        "confidence": 0.495,
+        "pageRank": 0.08553323772282329,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-tu9m",
+        "summary": "Frequently edited: customs.py (3x)",
+        "confidence": 0.495,
+        "pageRank": 0.07310531987027376,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-crr6",
+        "summary": "Frequently edited: styles.css (7x)",
+        "confidence": 0.495,
+        "pageRank": 0.06403384878324102,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793312430201,
+    "nodes": 7,
+    "edges": 21,
+    "pageRankSum": 1,
+    "confidences": [
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793310822845-835l",
+        "summary": "Frequently edited: pipeline.py (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.3508672103473103,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793281565253-wk0c",
+        "summary": "Frequently edited: ocr_engines.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.18965799192886082,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793281565253-j0n9",
+        "summary": "Frequently edited: index.html (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.13309332304527582,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793192742040-ougj",
+        "summary": "Frequently edited: launch.json (3x)",
+        "confidence": 0.495,
+        "pageRank": 0.10370906830221502,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-q7ya",
+        "summary": "Frequently edited: test_preprocess_photo.py (5x)",
+        "confidence": 0.495,
+        "pageRank": 0.08553323772282329,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-tu9m",
+        "summary": "Frequently edited: customs.py (3x)",
+        "confidence": 0.495,
+        "pageRank": 0.07310531987027376,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793187530678-crr6",
+        "summary": "Frequently edited: styles.css (7x)",
+        "confidence": 0.495,
+        "pageRank": 0.06403384878324102,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793450718880,
+    "nodes": 19,
+    "edges": 171,
+    "pageRankSum": 1,
+    "confidences": [
+      0.485,
+      0.485,
+      0.485,
+      0.49,
+      0.495,
+      0.495,
+      0.495,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793450718872-9u4t",
+        "summary": "Frequently edited: Form.js (10x)",
+        "confidence": 0.5,
+        "pageRank": 0.23976309473675245,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-d2xo",
+        "summary": "Frequently edited: components-demo.html (9x)",
+        "confidence": 0.5,
+        "pageRank": 0.12960163046078169,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-qf8e",
+        "summary": "Frequently edited: dashboard.py (6x)",
+        "confidence": 0.5,
+        "pageRank": 0.09094851324092953,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-n73c",
+        "summary": "Frequently edited: reglementation.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.07086898034682372,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-pvmh",
+        "summary": "Frequently edited: dossiers.py (10x)",
+        "confidence": 0.5,
+        "pageRank": 0.05844865328533274,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-0qo0",
+        "summary": "Frequently edited: clients.py (7x)",
+        "confidence": 0.5,
+        "pageRank": 0.04995612243609087,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-18z5",
+        "summary": "Frequently edited: watch.py (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.043757194519801305,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-cpnv",
+        "summary": "Frequently edited: profiles.py (6x)",
+        "confidence": 0.5,
+        "pageRank": 0.039019159896238026,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-6gdh",
+        "summary": "Frequently edited: dependencies.py (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.03527156128653933,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-6vkp",
+        "summary": "Frequently edited: transit.py (15x)",
+        "confidence": 0.5,
+        "pageRank": 0.032227825799503125,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793527638968,
+    "nodes": 22,
+    "edges": 231,
+    "pageRankSum": 1,
+    "confidences": [
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.49,
+      0.49,
+      0.49,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793527638960-t1s0",
+        "summary": "Frequently edited: dossier.py (16x)",
+        "confidence": 0.5,
+        "pageRank": 0.22805201615004023,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-ou6a",
+        "summary": "Frequently edited: styles.css (9x)",
+        "confidence": 0.5,
+        "pageRank": 0.12327135091190261,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-iaga",
+        "summary": "Frequently edited: index.html (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.08650622063351068,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-9u4t",
+        "summary": "Frequently edited: Form.js (10x)",
+        "confidence": 0.5,
+        "pageRank": 0.06740745476358012,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-d2xo",
+        "summary": "Frequently edited: components-demo.html (9x)",
+        "confidence": 0.5,
+        "pageRank": 0.055593785312257,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-qf8e",
+        "summary": "Frequently edited: dashboard.py (6x)",
+        "confidence": 0.5,
+        "pageRank": 0.04751606201372535,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-n73c",
+        "summary": "Frequently edited: reglementation.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.04161991288820156,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-pvmh",
+        "summary": "Frequently edited: dossiers.py (10x)",
+        "confidence": 0.5,
+        "pageRank": 0.037113301407909735,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-0qo0",
+        "summary": "Frequently edited: clients.py (7x)",
+        "confidence": 0.5,
+        "pageRank": 0.03354874936726842,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-18z5",
+        "summary": "Frequently edited: watch.py (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.030653681232048036,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793546402729,
+    "nodes": 22,
+    "edges": 231,
+    "pageRankSum": 1,
+    "confidences": [
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.485,
+      0.485,
+      0.49,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793527638960-t1s0",
+        "summary": "Frequently edited: dossier.py (16x)",
+        "confidence": 0.5,
+        "pageRank": 0.22805201615004023,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-ou6a",
+        "summary": "Frequently edited: styles.css (9x)",
+        "confidence": 0.5,
+        "pageRank": 0.12327135091190261,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-iaga",
+        "summary": "Frequently edited: index.html (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.08650622063351068,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-9u4t",
+        "summary": "Frequently edited: Form.js (10x)",
+        "confidence": 0.495,
+        "pageRank": 0.06740745476358012,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-d2xo",
+        "summary": "Frequently edited: components-demo.html (9x)",
+        "confidence": 0.495,
+        "pageRank": 0.055593785312257,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-qf8e",
+        "summary": "Frequently edited: dashboard.py (6x)",
+        "confidence": 0.495,
+        "pageRank": 0.04751606201372535,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-n73c",
+        "summary": "Frequently edited: reglementation.py (4x)",
+        "confidence": 0.495,
+        "pageRank": 0.04161991288820156,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-pvmh",
+        "summary": "Frequently edited: dossiers.py (10x)",
+        "confidence": 0.495,
+        "pageRank": 0.037113301407909735,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-0qo0",
+        "summary": "Frequently edited: clients.py (7x)",
+        "confidence": 0.495,
+        "pageRank": 0.03354874936726842,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-18z5",
+        "summary": "Frequently edited: watch.py (3x)",
+        "confidence": 0.495,
+        "pageRank": 0.030653681232048036,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793612326289,
+    "nodes": 24,
+    "edges": 276,
+    "pageRankSum": 1.0000000000000002,
+    "confidences": [
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.485,
+      0.485,
+      0.485,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.495,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793612326281-477t",
+        "summary": "Frequently edited: settings.json (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.2215045010508875,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-w71i",
+        "summary": "Frequently edited: dossier.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.11973212090648121,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-t1s0",
+        "summary": "Frequently edited: dossier.py (16x)",
+        "confidence": 0.5,
+        "pageRank": 0.08402253841895958,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-ou6a",
+        "summary": "Frequently edited: styles.css (9x)",
+        "confidence": 0.5,
+        "pageRank": 0.06547211369786946,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-iaga",
+        "summary": "Frequently edited: index.html (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.053997626774963406,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-9u4t",
+        "summary": "Frequently edited: Form.js (10x)",
+        "confidence": 0.495,
+        "pageRank": 0.046151824489930875,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-d2xo",
+        "summary": "Frequently edited: components-demo.html (9x)",
+        "confidence": 0.495,
+        "pageRank": 0.04042496152705177,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-qf8e",
+        "summary": "Frequently edited: dashboard.py (6x)",
+        "confidence": 0.495,
+        "pageRank": 0.0360477411691658,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-n73c",
+        "summary": "Frequently edited: reglementation.py (4x)",
+        "confidence": 0.495,
+        "pageRank": 0.032585532624647716,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-pvmh",
+        "summary": "Frequently edited: dossiers.py (10x)",
+        "confidence": 0.495,
+        "pageRank": 0.029773586233241143,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793626064546,
+    "nodes": 24,
+    "edges": 276,
+    "pageRankSum": 1.0000000000000002,
+    "confidences": [
+      0.475,
+      0.475,
+      0.475,
+      0.475,
+      0.485,
+      0.485,
+      0.485,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.495,
+      0.495,
+      0.495,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793612326281-477t",
+        "summary": "Frequently edited: settings.json (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.2215045010508875,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-w71i",
+        "summary": "Frequently edited: dossier.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.11973212090648121,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-t1s0",
+        "summary": "Frequently edited: dossier.py (16x)",
+        "confidence": 0.495,
+        "pageRank": 0.08402253841895958,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-ou6a",
+        "summary": "Frequently edited: styles.css (9x)",
+        "confidence": 0.495,
+        "pageRank": 0.06547211369786946,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-iaga",
+        "summary": "Frequently edited: index.html (5x)",
+        "confidence": 0.495,
+        "pageRank": 0.053997626774963406,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-9u4t",
+        "summary": "Frequently edited: Form.js (10x)",
+        "confidence": 0.49,
+        "pageRank": 0.046151824489930875,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-d2xo",
+        "summary": "Frequently edited: components-demo.html (9x)",
+        "confidence": 0.49,
+        "pageRank": 0.04042496152705177,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-qf8e",
+        "summary": "Frequently edited: dashboard.py (6x)",
+        "confidence": 0.49,
+        "pageRank": 0.0360477411691658,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-n73c",
+        "summary": "Frequently edited: reglementation.py (4x)",
+        "confidence": 0.49,
+        "pageRank": 0.032585532624647716,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-pvmh",
+        "summary": "Frequently edited: dossiers.py (10x)",
+        "confidence": 0.49,
+        "pageRank": 0.029773586233241143,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793626283153,
+    "nodes": 24,
+    "edges": 276,
+    "pageRankSum": 1.0000000000000002,
+    "confidences": [
+      0.44999999999999996,
+      0.44999999999999996,
+      0.44999999999999996,
+      0.44999999999999996,
+      0.47,
+      0.47,
+      0.47,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.49,
+      0.49,
+      0.49,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793612326281-477t",
+        "summary": "Frequently edited: settings.json (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.2215045010508875,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-w71i",
+        "summary": "Frequently edited: dossier.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.11973212090648121,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-t1s0",
+        "summary": "Frequently edited: dossier.py (16x)",
+        "confidence": 0.49,
+        "pageRank": 0.08402253841895958,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-ou6a",
+        "summary": "Frequently edited: styles.css (9x)",
+        "confidence": 0.49,
+        "pageRank": 0.06547211369786946,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-iaga",
+        "summary": "Frequently edited: index.html (5x)",
+        "confidence": 0.49,
+        "pageRank": 0.053997626774963406,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-9u4t",
+        "summary": "Frequently edited: Form.js (10x)",
+        "confidence": 0.48,
+        "pageRank": 0.046151824489930875,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-d2xo",
+        "summary": "Frequently edited: components-demo.html (9x)",
+        "confidence": 0.48,
+        "pageRank": 0.04042496152705177,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-qf8e",
+        "summary": "Frequently edited: dashboard.py (6x)",
+        "confidence": 0.48,
+        "pageRank": 0.0360477411691658,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-n73c",
+        "summary": "Frequently edited: reglementation.py (4x)",
+        "confidence": 0.48,
+        "pageRank": 0.032585532624647716,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-pvmh",
+        "summary": "Frequently edited: dossiers.py (10x)",
+        "confidence": 0.48,
+        "pageRank": 0.029773586233241143,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793637011029,
+    "nodes": 25,
+    "edges": 300,
+    "pageRankSum": 1,
+    "confidences": [
+      0.475,
+      0.475,
+      0.475,
+      0.475,
+      0.48,
+      0.48,
+      0.485,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.495,
+      0.495,
+      0.495,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793637011020-b33b",
+        "summary": "Frequently edited: rbac.py (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.21852964697409158,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-477t",
+        "summary": "Frequently edited: settings.json (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.11812414593041815,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-w71i",
+        "summary": "Frequently edited: dossier.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.08289414996082105,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-t1s0",
+        "summary": "Frequently edited: dossier.py (16x)",
+        "confidence": 0.495,
+        "pageRank": 0.06459285274198824,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-ou6a",
+        "summary": "Frequently edited: styles.css (9x)",
+        "confidence": 0.495,
+        "pageRank": 0.053272461526851,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-iaga",
+        "summary": "Frequently edited: index.html (5x)",
+        "confidence": 0.495,
+        "pageRank": 0.04553202204788598,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-9u4t",
+        "summary": "Frequently edited: Form.js (10x)",
+        "confidence": 0.49,
+        "pageRank": 0.039882065411748324,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-d2xo",
+        "summary": "Frequently edited: components-demo.html (9x)",
+        "confidence": 0.49,
+        "pageRank": 0.03556362660525142,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-qf8e",
+        "summary": "Frequently edited: dashboard.py (6x)",
+        "confidence": 0.49,
+        "pageRank": 0.032147911835428915,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-n73c",
+        "summary": "Frequently edited: reglementation.py (4x)",
+        "confidence": 0.49,
+        "pageRank": 0.029373726906225587,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793638440282,
+    "nodes": 25,
+    "edges": 300,
+    "pageRankSum": 1,
+    "confidences": [
+      0.44999999999999996,
+      0.44999999999999996,
+      0.44999999999999996,
+      0.44999999999999996,
+      0.45999999999999996,
+      0.45999999999999996,
+      0.47,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.49,
+      0.49,
+      0.49,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793637011020-b33b",
+        "summary": "Frequently edited: rbac.py (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.21852964697409158,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-477t",
+        "summary": "Frequently edited: settings.json (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.11812414593041815,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-w71i",
+        "summary": "Frequently edited: dossier.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.08289414996082105,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-t1s0",
+        "summary": "Frequently edited: dossier.py (16x)",
+        "confidence": 0.49,
+        "pageRank": 0.06459285274198824,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-ou6a",
+        "summary": "Frequently edited: styles.css (9x)",
+        "confidence": 0.49,
+        "pageRank": 0.053272461526851,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-iaga",
+        "summary": "Frequently edited: index.html (5x)",
+        "confidence": 0.49,
+        "pageRank": 0.04553202204788598,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-9u4t",
+        "summary": "Frequently edited: Form.js (10x)",
+        "confidence": 0.48,
+        "pageRank": 0.039882065411748324,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-d2xo",
+        "summary": "Frequently edited: components-demo.html (9x)",
+        "confidence": 0.48,
+        "pageRank": 0.03556362660525142,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-qf8e",
+        "summary": "Frequently edited: dashboard.py (6x)",
+        "confidence": 0.48,
+        "pageRank": 0.032147911835428915,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-n73c",
+        "summary": "Frequently edited: reglementation.py (4x)",
+        "confidence": 0.48,
+        "pageRank": 0.029373726906225587,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793640066988,
+    "nodes": 25,
+    "edges": 300,
+    "pageRankSum": 1,
+    "confidences": [
+      0.475,
+      0.475,
+      0.475,
+      0.475,
+      0.48,
+      0.48,
+      0.485,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.495,
+      0.495,
+      0.495,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793637011020-b33b",
+        "summary": "Frequently edited: rbac.py (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.21852964697409158,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-477t",
+        "summary": "Frequently edited: settings.json (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.11812414593041815,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-w71i",
+        "summary": "Frequently edited: dossier.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.08289414996082105,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-t1s0",
+        "summary": "Frequently edited: dossier.py (16x)",
+        "confidence": 0.495,
+        "pageRank": 0.06459285274198824,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-ou6a",
+        "summary": "Frequently edited: styles.css (9x)",
+        "confidence": 0.495,
+        "pageRank": 0.053272461526851,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-iaga",
+        "summary": "Frequently edited: index.html (5x)",
+        "confidence": 0.495,
+        "pageRank": 0.04553202204788598,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-9u4t",
+        "summary": "Frequently edited: Form.js (10x)",
+        "confidence": 0.49,
+        "pageRank": 0.039882065411748324,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-d2xo",
+        "summary": "Frequently edited: components-demo.html (9x)",
+        "confidence": 0.49,
+        "pageRank": 0.03556362660525142,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-qf8e",
+        "summary": "Frequently edited: dashboard.py (6x)",
+        "confidence": 0.49,
+        "pageRank": 0.032147911835428915,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793450718872-n73c",
+        "summary": "Frequently edited: reglementation.py (4x)",
+        "confidence": 0.49,
+        "pageRank": 0.029373726906225587,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793708644169,
+    "nodes": 30,
+    "edges": 435,
+    "pageRankSum": 1,
+    "confidences": [
+      0.47,
+      0.47,
+      0.47,
+      0.475,
+      0.48,
+      0.48,
+      0.48,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.49,
+      0.495,
+      0.495,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793708644148-3pzs",
+        "summary": "Frequently edited: coherence.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.2059482606189542,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-f96i",
+        "summary": "Frequently edited: dashboard.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.1113233468934661,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-l3dv",
+        "summary": "Frequently edited: test_security_maritime.py (11x)",
+        "confidence": 0.5,
+        "pageRank": 0.07812164399701874,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-r2e6",
+        "summary": "Frequently edited: workflow.py (6x)",
+        "confidence": 0.5,
+        "pageRank": 0.060874012764466176,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-7hqe",
+        "summary": "Frequently edited: frais.py (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.050205377161621115,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793637011020-b33b",
+        "summary": "Frequently edited: rbac.py (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.042910584293893314,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-477t",
+        "summary": "Frequently edited: settings.json (5x)",
+        "confidence": 0.495,
+        "pageRank": 0.037585918061075765,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-w71i",
+        "summary": "Frequently edited: dossier.py (4x)",
+        "confidence": 0.495,
+        "pageRank": 0.03351610932624801,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-t1s0",
+        "summary": "Frequently edited: dossier.py (16x)",
+        "confidence": 0.49,
+        "pageRank": 0.030297051332267504,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-ou6a",
+        "summary": "Frequently edited: styles.css (9x)",
+        "confidence": 0.49,
+        "pageRank": 0.027682587728277194,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793708668677,
+    "nodes": 30,
+    "edges": 435,
+    "pageRankSum": 1,
+    "confidences": [
+      0.43999999999999995,
+      0.43999999999999995,
+      0.43999999999999995,
+      0.44999999999999996,
+      0.45999999999999996,
+      0.45999999999999996,
+      0.45999999999999996,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.48,
+      0.49,
+      0.49,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793708644148-3pzs",
+        "summary": "Frequently edited: coherence.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.2059482606189542,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-f96i",
+        "summary": "Frequently edited: dashboard.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.1113233468934661,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-l3dv",
+        "summary": "Frequently edited: test_security_maritime.py (11x)",
+        "confidence": 0.5,
+        "pageRank": 0.07812164399701874,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-r2e6",
+        "summary": "Frequently edited: workflow.py (6x)",
+        "confidence": 0.5,
+        "pageRank": 0.060874012764466176,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-7hqe",
+        "summary": "Frequently edited: frais.py (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.050205377161621115,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793637011020-b33b",
+        "summary": "Frequently edited: rbac.py (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.042910584293893314,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-477t",
+        "summary": "Frequently edited: settings.json (5x)",
+        "confidence": 0.49,
+        "pageRank": 0.037585918061075765,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-w71i",
+        "summary": "Frequently edited: dossier.py (4x)",
+        "confidence": 0.49,
+        "pageRank": 0.03351610932624801,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-t1s0",
+        "summary": "Frequently edited: dossier.py (16x)",
+        "confidence": 0.48,
+        "pageRank": 0.030297051332267504,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-ou6a",
+        "summary": "Frequently edited: styles.css (9x)",
+        "confidence": 0.48,
+        "pageRank": 0.027682587728277194,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793724851370,
+    "nodes": 30,
+    "edges": 435,
+    "pageRankSum": 1,
+    "confidences": [
+      0.47,
+      0.47,
+      0.47,
+      0.47,
+      0.475,
+      0.475,
+      0.48,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.49,
+      0.49,
+      0.49,
+      0.495,
+      0.495,
+      0.495,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793708644148-3pzs",
+        "summary": "Frequently edited: coherence.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.2059482606189542,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-f96i",
+        "summary": "Frequently edited: dashboard.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.1113233468934661,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-l3dv",
+        "summary": "Frequently edited: test_security_maritime.py (11x)",
+        "confidence": 0.5,
+        "pageRank": 0.07812164399701874,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-r2e6",
+        "summary": "Frequently edited: workflow.py (6x)",
+        "confidence": 0.5,
+        "pageRank": 0.060874012764466176,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-7hqe",
+        "summary": "Frequently edited: frais.py (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.050205377161621115,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793637011020-b33b",
+        "summary": "Frequently edited: rbac.py (3x)",
+        "confidence": 0.495,
+        "pageRank": 0.042910584293893314,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-477t",
+        "summary": "Frequently edited: settings.json (5x)",
+        "confidence": 0.495,
+        "pageRank": 0.037585918061075765,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-w71i",
+        "summary": "Frequently edited: dossier.py (4x)",
+        "confidence": 0.495,
+        "pageRank": 0.03351610932624801,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-t1s0",
+        "summary": "Frequently edited: dossier.py (16x)",
+        "confidence": 0.49,
+        "pageRank": 0.030297051332267504,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-ou6a",
+        "summary": "Frequently edited: styles.css (9x)",
+        "confidence": 0.49,
+        "pageRank": 0.027682587728277194,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793731320191,
+    "nodes": 30,
+    "edges": 435,
+    "pageRankSum": 1,
+    "confidences": [
+      0.47,
+      0.47,
+      0.47,
+      0.47,
+      0.475,
+      0.475,
+      0.48,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.49,
+      0.49,
+      0.49,
+      0.495,
+      0.495,
+      0.495,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793708644148-3pzs",
+        "summary": "Frequently edited: coherence.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.2059482606189542,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-f96i",
+        "summary": "Frequently edited: dashboard.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.1113233468934661,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-l3dv",
+        "summary": "Frequently edited: test_security_maritime.py (11x)",
+        "confidence": 0.5,
+        "pageRank": 0.07812164399701874,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-r2e6",
+        "summary": "Frequently edited: workflow.py (6x)",
+        "confidence": 0.5,
+        "pageRank": 0.060874012764466176,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-7hqe",
+        "summary": "Frequently edited: frais.py (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.050205377161621115,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793637011020-b33b",
+        "summary": "Frequently edited: rbac.py (3x)",
+        "confidence": 0.495,
+        "pageRank": 0.042910584293893314,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-477t",
+        "summary": "Frequently edited: settings.json (5x)",
+        "confidence": 0.495,
+        "pageRank": 0.037585918061075765,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-w71i",
+        "summary": "Frequently edited: dossier.py (4x)",
+        "confidence": 0.495,
+        "pageRank": 0.03351610932624801,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-t1s0",
+        "summary": "Frequently edited: dossier.py (16x)",
+        "confidence": 0.49,
+        "pageRank": 0.030297051332267504,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-ou6a",
+        "summary": "Frequently edited: styles.css (9x)",
+        "confidence": 0.49,
+        "pageRank": 0.027682587728277194,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793742614900,
+    "nodes": 31,
+    "edges": 465,
+    "pageRankSum": 1,
+    "confidences": [
+      0.47,
+      0.47,
+      0.47,
+      0.47,
+      0.475,
+      0.475,
+      0.48,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.49,
+      0.49,
+      0.49,
+      0.495,
+      0.495,
+      0.495,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793742614890-tij9",
+        "summary": "Frequently edited: navigation.js (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.2038009034096101,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-3pzs",
+        "summary": "Frequently edited: coherence.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.11016260157098332,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-f96i",
+        "summary": "Frequently edited: dashboard.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.07730708061113946,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-l3dv",
+        "summary": "Frequently edited: test_security_maritime.py (11x)",
+        "confidence": 0.5,
+        "pageRank": 0.060239285555803414,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-r2e6",
+        "summary": "Frequently edited: workflow.py (6x)",
+        "confidence": 0.5,
+        "pageRank": 0.04968188964526371,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-7hqe",
+        "summary": "Frequently edited: frais.py (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.04246315859861612,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793637011020-b33b",
+        "summary": "Frequently edited: rbac.py (3x)",
+        "confidence": 0.495,
+        "pageRank": 0.037194012249108226,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-477t",
+        "summary": "Frequently edited: settings.json (5x)",
+        "confidence": 0.495,
+        "pageRank": 0.03316663928828242,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-w71i",
+        "summary": "Frequently edited: dossier.py (4x)",
+        "confidence": 0.495,
+        "pageRank": 0.02998114643882352,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-t1s0",
+        "summary": "Frequently edited: dossier.py (16x)",
+        "confidence": 0.49,
+        "pageRank": 0.02739394394759648,
+        "accessCount": 0
+      }
+    ]
+  },
+  {
+    "timestamp": 1793743406687,
+    "nodes": 31,
+    "edges": 465,
+    "pageRankSum": 1,
+    "confidences": [
+      0.47,
+      0.47,
+      0.47,
+      0.47,
+      0.475,
+      0.475,
+      0.475,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.485,
+      0.49,
+      0.49,
+      0.49,
+      0.495,
+      0.495,
+      0.495,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "accessCounts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "topPatterns": [
+      {
+        "id": "insight-1793742614890-tij9",
+        "summary": "Frequently edited: navigation.js (3x)",
+        "confidence": 0.5,
+        "pageRank": 0.2038009034096101,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-3pzs",
+        "summary": "Frequently edited: coherence.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.11016260157098332,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-f96i",
+        "summary": "Frequently edited: dashboard.py (4x)",
+        "confidence": 0.5,
+        "pageRank": 0.07730708061113946,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-l3dv",
+        "summary": "Frequently edited: test_security_maritime.py (11x)",
+        "confidence": 0.5,
+        "pageRank": 0.060239285555803414,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-r2e6",
+        "summary": "Frequently edited: workflow.py (6x)",
+        "confidence": 0.5,
+        "pageRank": 0.04968188964526371,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793708644148-7hqe",
+        "summary": "Frequently edited: frais.py (5x)",
+        "confidence": 0.5,
+        "pageRank": 0.04246315859861612,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793637011020-b33b",
+        "summary": "Frequently edited: rbac.py (3x)",
+        "confidence": 0.495,
+        "pageRank": 0.037194012249108226,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-477t",
+        "summary": "Frequently edited: settings.json (5x)",
+        "confidence": 0.495,
+        "pageRank": 0.03316663928828242,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793612326281-w71i",
+        "summary": "Frequently edited: dossier.py (4x)",
+        "confidence": 0.495,
+        "pageRank": 0.02998114643882352,
+        "accessCount": 0
+      },
+      {
+        "id": "insight-1793527638960-t1s0",
+        "summary": "Frequently edited: dossier.py (16x)",
+        "confidence": 0.49,
+        "pageRank": 0.02739394394759648,
+        "accessCount": 0
+      }
+    ]
+  }
+]

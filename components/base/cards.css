@@ -1,0 +1,160 @@
+/**
+ * OCR Universal - Card Components
+ * HIGH Priority: Content containers and surfaces
+ * Requirements: Consistent elevation, subtle hover, border-radius 0.5rem
+ */
+
+.card {
+  background-color: var(--surface-base);
+  border: 1px solid var(--neutral-200);
+  border-radius: 0.5rem;
+  box-shadow: var(--elevation-1);
+  overflow: hidden;
+  transition: all var(--duration-base) var(--ease-in-out);
+}
+
+/* Interactive card (clickable) */
+.card-interactive {
+  cursor: pointer;
+}
+
+.card-interactive:hover {
+  box-shadow: var(--elevation-2);
+  transform: translateY(-2px);
+  border-color: var(--neutral-300);
+}
+
+.card-interactive:active {
+  transform: translateY(0);
+  box-shadow: var(--elevation-1);
+}
+
+/* Card header */
+.card__header {
+  padding: var(--space-4) var(--space-4) var(--space-3);
+  border-bottom: 1px solid var(--neutral-200);
+}
+
+.card__title {
+  font-family: var(--font-primary);
+  font-size: var(--text-h4);
+  font-weight: var(--text-h4-weight);
+  color: var(--neutral-800);
+  margin: 0;
+}
+
+.card__subtitle {
+  font-size: var(--text-body-sm);
+  color: var(--neutral-500);
+  margin-top: var(--space-1);
+}
+
+/* Card body */
+.card__body {
+  padding: var(--space-4);
+}
+
+/* Card footer */
+.card__footer {
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  border-top: 1px solid var(--neutral-200);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+/* Compact variant for dense lists */
+.card-compact .card__header {
+  padding: var(--space-3);
+}
+
+.card-compact .card__body {
+  padding: var(--space-3);
+}
+
+.card-compact .card__footer {
+  padding: var(--space-2) var(--space-3) var(--space-3);
+}
+
+/* Elevated surfaces */
+.surface-raised {
+  background-color: var(--surface-raised);
+  border-radius: 0.5rem;
+  box-shadow: var(--elevation-2);
+  border: 1px solid var(--neutral-200);
+}
+
+/* Overlay surfaces (modals, popovers) */
+.surface-overlay {
+  background-color: var(--surface-overlay);
+  border-radius: 0.5rem;
+  box-shadow: var(--elevation-3);
+  border: 1px solid var(--neutral-300);
+}
+
+/* Card with status indicator */
+.card--success {
+  border-left: 4px solid var(--semantic-success);
+}
+
+.card--warning {
+  border-left: 4px solid var(--semantic-warning);
+}
+
+.card--error {
+  border-left: 4px solid var(--semantic-error);
+}
+
+.card--info {
+  border-left: 4px solid var(--semantic-info);
+}
+
+/* Card states */
+.card--selected {
+  border-color: var(--brand-secondary);
+  box-shadow: 0 0 0 2px rgba(8, 145, 178, 0.1);
+}
+
+.card--disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Dark mode */
+[data-theme="dark"] .card {
+  background-color: var(--surface-raised);
+  border-color: var(--neutral-700);
+}
+
+[data-theme="dark"] .card__header {
+  border-bottom-color: var(--neutral-700);
+}
+
+[data-theme="dark"] .card__title {
+  color: var(--neutral-100);
+}
+
+[data-theme="dark"] .card__subtitle {
+  color: var(--neutral-400);
+}
+
+[data-theme="dark"] .card__footer {
+  border-top-color: var(--neutral-700);
+}
+
+[data-theme="dark"] .card-interactive:hover {
+  border-color: var(--neutral-600);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: box-shadow var(--duration-base) var(--ease-in-out),
+                border-color var(--duration-base) var(--ease-in-out);
+  }
+
+  .card-interactive:hover {
+    transform: none;
+  }
+}

@@ -1,0 +1,32 @@
+{
+ "id": "dos_cdde3c20b309",
+ "label": "Archive rendu 1792355875141",
+ "profile": "importation",
+ "state": "archive",
+ "state_label": "Archivé",
+ "pieces": [],
+ "categories": {},
+ "version": 2,
+ "created_at": 1792355875.1428719,
+ "updated_at": 1792355875.1465316,
+ "history": [
+  {
+   "ts": 1792355875.1428738,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792355875.1464064,
+   "action": "state_forced",
+   "detail": {
+    "from": "en_preparation",
+    "to": "archive",
+    "motif": "contrôle du harnais"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

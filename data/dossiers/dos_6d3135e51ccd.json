@@ -1,0 +1,64 @@
+{
+ "id": "dos_6d3135e51ccd",
+ "label": "Trace avec pièces",
+ "profile": "importation",
+ "state": "archive",
+ "state_label": "Archivé",
+ "pieces": [
+  {
+   "job_id": "job_a3a0c9668348",
+   "filename": "injection.png",
+   "category": "invoice",
+   "added_at": 1792335577.987262,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "invoice": 1
+ },
+ "version": 2,
+ "created_at": 1792335577.9579682,
+ "updated_at": 1792335577.9980237,
+ "history": [
+  {
+   "ts": 1792335577.9579718,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792335577.9872663,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_a3a0c9668348",
+    "filename": "injection.png",
+    "category": "invoice"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792335577.9881349,
+   "action": "state_changed",
+   "detail": {
+    "from": "en_preparation",
+    "to": "incomplet",
+    "pieces": 1
+   },
+   "acteur": "systeme"
+  },
+  {
+   "ts": 1792335577.9978697,
+   "action": "state_forced",
+   "detail": {
+    "from": "incomplet",
+    "to": "archive",
+    "motif": "dossier clos"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

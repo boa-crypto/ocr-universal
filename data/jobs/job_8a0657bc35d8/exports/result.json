@@ -1,0 +1,3305 @@
+{
+  "id": "job_8a0657bc35d8",
+  "created_at": 1793311525.3735209,
+  "info": {
+    "title": null,
+    "doc_type": "port_bl",
+    "doc_number": "MSCU123456789",
+    "issue_date": "2024-03-28",
+    "due_date": null,
+    "issuer": null,
+    "sender": "SARL Exemple Alger",
+    "recipient": "Global Import GmbH",
+    "languages": [
+      "en"
+    ],
+    "page_count": 1,
+    "source_format": "pdf"
+  },
+  "pages": [
+    {
+      "page_num": 1,
+      "width": 1653.543260362413,
+      "height": 2338.5826958550347,
+      "text": "BILL OF LADING\nB/L No: MSCU123456789\nBooking Number: BK-998877\nShipper: SARL Exemple Alger\nConsignee: Global Import GmbH\nNotify Party: Logistics Partner SA\nVessel: MSC AURORA\nVoyage Number: 512W\nShipping Line: MSC\nPort of Loading: ALGER\nPort of Discharge: HAMBURG\nPlace of Delivery: HAMBURG\nContainer Number: CSQU3054383\nISO Type Code: 22G1\nSeal Number: SL-445566\nDescription of Goods: MACHINERY PARTS\nPackages: 120\nGross Weight: 8500 KG\nNet Weight: 8100 KG\nVolume: 28.5 M3\nHS Code: 8471.30\nMarks and Numbers: N/M\nETA: 28/03/2024\nETD: 15/03/2024",
+      "blocks": [
+        {
+          "text": "BILL OF LADING\nB/L No: MSCU123456789\nBooking Number: BK-998877\nShipper: SARL Exemple Alger\nConsignee: Global Import GmbH\nNotify Party: Logistics Partner SA\nVessel: MSC AURORA\nVoyage Number: 512W\nShipping Line: MSC\nPort of Loading: ALGER\nPort of Discharge: HAMBURG\nPlace of Delivery: HAMBURG\nContainer Number: CSQU3054383\nISO Type Code: 22G1\nSeal Number: SL-445566\nDescription of Goods: MACHINERY PARTS\nPackages: 120\nGross Weight: 8500 KG\nNet Weight: 8100 KG\nVolume: 28.5 M3\nHS Code: 8471.30\nMarks and Numbers: N/M",
+          "bbox": {
+            "x0": 164.2,
+            "y0": 148.2,
+            "x1": 817.9,
+            "y1": 1572.5,
+            "page_width": 1653.543260362413,
+            "page_height": 2338.5826958550347
+          },
+          "order": 0,
+          "column": 0,
+          "lines": [
+            {
+              "text": "BILL OF LADING",
+              "bbox": {
+                "x0": 165.4,
+                "y0": 148.2,
+                "x1": 423.9,
+                "y1": 172.2,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "BILL OF LADING",
+                  "bbox": {
+                    "x0": 165.4,
+                    "y0": 148.2,
+                    "x1": 423.9,
+                    "y1": 172.2,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9994,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9994
+            },
+            {
+              "text": "B/L No: MSCU123456789",
+              "bbox": {
+                "x0": 169.9,
+                "y0": 214.3,
+                "x1": 551.9,
+                "y1": 239.2,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "B/L No: MSCU123456789",
+                  "bbox": {
+                    "x0": 169.9,
+                    "y0": 214.3,
+                    "x1": 551.9,
+                    "y1": 239.2,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9994,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9994
+            },
+            {
+              "text": "Booking Number: BK-998877",
+              "bbox": {
+                "x0": 164.4,
+                "y0": 281.1,
+                "x1": 603.1,
+                "y1": 311.8,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Booking Number: BK-998877",
+                  "bbox": {
+                    "x0": 164.4,
+                    "y0": 281.1,
+                    "x1": 603.1,
+                    "y1": 311.8,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9992,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9992
+            },
+            {
+              "text": "Shipper: SARL Exemple Alger",
+              "bbox": {
+                "x0": 164.3,
+                "y0": 347.6,
+                "x1": 616.9,
+                "y1": 379.1,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Shipper: SARL Exemple Alger",
+                  "bbox": {
+                    "x0": 164.3,
+                    "y0": 347.6,
+                    "x1": 616.9,
+                    "y1": 379.1,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9985,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9985
+            },
+            {
+              "text": "Consignee: Global Import GmbH",
+              "bbox": {
+                "x0": 164.2,
+                "y0": 413.6,
+                "x1": 649.0,
+                "y1": 445.7,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Consignee: Global Import GmbH",
+                  "bbox": {
+                    "x0": 164.2,
+                    "y0": 413.6,
+                    "x1": 649.0,
+                    "y1": 445.7,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9985,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9985
+            },
+            {
+              "text": "Notify Party: Logistics Partner SA",
+              "bbox": {
+                "x0": 164.2,
+                "y0": 480.6,
+                "x1": 662.7,
+                "y1": 513.1,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Notify Party: Logistics Partner SA",
+                  "bbox": {
+                    "x0": 164.2,
+                    "y0": 480.6,
+                    "x1": 662.7,
+                    "y1": 513.1,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9989,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9989
+            },
+            {
+              "text": "Vessel: MSC AURORA",
+              "bbox": {
+                "x0": 165.2,
+                "y0": 547.8,
+                "x1": 515.5,
+                "y1": 573.4,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Vessel: MSC AURORA",
+                  "bbox": {
+                    "x0": 165.2,
+                    "y0": 547.8,
+                    "x1": 515.5,
+                    "y1": 573.4,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9987,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9987
+            },
+            {
+              "text": "Voyage Number: 512W",
+              "bbox": {
+                "x0": 164.3,
+                "y0": 614.1,
+                "x1": 516.4,
+                "y1": 645.7,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Voyage Number: 512W",
+                  "bbox": {
+                    "x0": 164.3,
+                    "y0": 614.1,
+                    "x1": 516.4,
+                    "y1": 645.7,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9995,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9995
+            },
+            {
+              "text": "Shipping Line: MSC",
+              "bbox": {
+                "x0": 164.3,
+                "y0": 680.5,
+                "x1": 461.6,
+                "y1": 711.9,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Shipping Line: MSC",
+                  "bbox": {
+                    "x0": 164.3,
+                    "y0": 680.5,
+                    "x1": 461.6,
+                    "y1": 711.9,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9995,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9995
+            },
+            {
+              "text": "Port of Loading: ALGER",
+              "bbox": {
+                "x0": 164.3,
+                "y0": 747.4,
+                "x1": 525.5,
+                "y1": 779.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Port of Loading: ALGER",
+                  "bbox": {
+                    "x0": 164.3,
+                    "y0": 747.4,
+                    "x1": 525.5,
+                    "y1": 779.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9777,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9777
+            },
+            {
+              "text": "Port of Discharge: HAMBURG",
+              "bbox": {
+                "x0": 164.2,
+                "y0": 814.0,
+                "x1": 612.4,
+                "y1": 845.9,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Port of Discharge: HAMBURG",
+                  "bbox": {
+                    "x0": 164.2,
+                    "y0": 814.0,
+                    "x1": 612.4,
+                    "y1": 845.9,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9963,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9963
+            },
+            {
+              "text": "Place of Delivery: HAMBURG",
+              "bbox": {
+                "x0": 168.8,
+                "y0": 880.1,
+                "x1": 607.8,
+                "y1": 912.1,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Place of Delivery: HAMBURG",
+                  "bbox": {
+                    "x0": 168.8,
+                    "y0": 880.1,
+                    "x1": 607.8,
+                    "y1": 912.1,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9987,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9987
+            },
+            {
+              "text": "Container Number: CSQU3054383",
+              "bbox": {
+                "x0": 165.3,
+                "y0": 947.9,
+                "x1": 684.4,
+                "y1": 972.4,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Container Number: CSQU3054383",
+                  "bbox": {
+                    "x0": 165.3,
+                    "y0": 947.9,
+                    "x1": 684.4,
+                    "y1": 972.4,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9979,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9979
+            },
+            {
+              "text": "ISO Type Code: 22G1",
+              "bbox": {
+                "x0": 164.4,
+                "y0": 1013.8,
+                "x1": 493.4,
+                "y1": 1044.7,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "ISO Type Code: 22G1",
+                  "bbox": {
+                    "x0": 164.4,
+                    "y0": 1013.8,
+                    "x1": 493.4,
+                    "y1": 1044.7,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9953,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9953
+            },
+            {
+              "text": "Seal Number: SL-445566",
+              "bbox": {
+                "x0": 164.7,
+                "y0": 1079.9,
+                "x1": 543.4,
+                "y1": 1108.7,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Seal Number: SL-445566",
+                  "bbox": {
+                    "x0": 164.7,
+                    "y0": 1079.9,
+                    "x1": 543.4,
+                    "y1": 1108.7,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9997,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9997
+            },
+            {
+              "text": "Description of Goods: MACHINERY PARTS",
+              "bbox": {
+                "x0": 164.3,
+                "y0": 1147.1,
+                "x1": 817.9,
+                "y1": 1178.8,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Description of Goods: MACHINERY PARTS",
+                  "bbox": {
+                    "x0": 164.3,
+                    "y0": 1147.1,
+                    "x1": 817.9,
+                    "y1": 1178.8,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9864,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9864
+            },
+            {
+              "text": "Packages: 120",
+              "bbox": {
+                "x0": 164.4,
+                "y0": 1214.3,
+                "x1": 388.4,
+                "y1": 1245.3,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Packages: 120",
+                  "bbox": {
+                    "x0": 164.4,
+                    "y0": 1214.3,
+                    "x1": 388.4,
+                    "y1": 1245.3,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9983,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9983
+            },
+            {
+              "text": "Gross Weight: 8500 KG",
+              "bbox": {
+                "x0": 164.3,
+                "y0": 1280.7,
+                "x1": 520.9,
+                "y1": 1312.2,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Gross Weight: 8500 KG",
+                  "bbox": {
+                    "x0": 164.3,
+                    "y0": 1280.7,
+                    "x1": 520.9,
+                    "y1": 1312.2,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9873,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9873
+            },
+            {
+              "text": "Net Weight: 8100 KG",
+              "bbox": {
+                "x0": 164.3,
+                "y0": 1347.2,
+                "x1": 484.4,
+                "y1": 1378.8,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Net Weight: 8100 KG",
+                  "bbox": {
+                    "x0": 164.3,
+                    "y0": 1347.2,
+                    "x1": 484.4,
+                    "y1": 1378.8,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9993,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9993
+            },
+            {
+              "text": "Volume: 28.5 M3",
+              "bbox": {
+                "x0": 165.3,
+                "y0": 1414.9,
+                "x1": 419.5,
+                "y1": 1439.8,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Volume: 28.5 M3",
+                  "bbox": {
+                    "x0": 165.3,
+                    "y0": 1414.9,
+                    "x1": 419.5,
+                    "y1": 1439.8,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9995,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9995
+            },
+            {
+              "text": "HS Code: 8471.30",
+              "bbox": {
+                "x0": 165.3,
+                "y0": 1481.6,
+                "x1": 442.2,
+                "y1": 1506.2,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "HS Code: 8471.30",
+                  "bbox": {
+                    "x0": 165.3,
+                    "y0": 1481.6,
+                    "x1": 442.2,
+                    "y1": 1506.2,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9886,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9886
+            },
+            {
+              "text": "Marks and Numbers: N/M",
+              "bbox": {
+                "x0": 165.2,
+                "y0": 1546.8,
+                "x1": 547.5,
+                "y1": 1572.5,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Marks and Numbers: N/M",
+                  "bbox": {
+                    "x0": 165.2,
+                    "y0": 1546.8,
+                    "x1": 547.5,
+                    "y1": 1572.5,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9996,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9996
+            }
+          ],
+          "kind": "paragraph"
+        },
+        {
+          "text": "ETA: 28/03/2024\nETD: 15/03/2024",
+          "bbox": {
+            "x0": 165.4,
+            "y0": 1615.8,
+            "x1": 419.4,
+            "y1": 1706.8,
+            "page_width": 1653.543260362413,
+            "page_height": 2338.5826958550347
+          },
+          "order": 1,
+          "column": 0,
+          "lines": [
+            {
+              "text": "ETA: 28/03/2024",
+              "bbox": {
+                "x0": 165.4,
+                "y0": 1615.8,
+                "x1": 419.3,
+                "y1": 1639.8,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "ETA: 28/03/2024",
+                  "bbox": {
+                    "x0": 165.4,
+                    "y0": 1615.8,
+                    "x1": 419.3,
+                    "y1": 1639.8,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.999,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.999
+            },
+            {
+              "text": "ETD: 15/03/2024",
+              "bbox": {
+                "x0": 165.4,
+                "y0": 1682.4,
+                "x1": 419.4,
+                "y1": 1706.8,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "ETD: 15/03/2024",
+                  "bbox": {
+                    "x0": 165.4,
+                    "y0": 1682.4,
+                    "x1": 419.4,
+                    "y1": 1706.8,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9551,
+                  "engine": "indra",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9551
+            }
+          ],
+          "kind": "paragraph"
+        }
+      ],
+      "lines": [
+        {
+          "text": "BILL OF LADING",
+          "bbox": {
+            "x0": 165.4,
+            "y0": 148.2,
+            "x1": 423.9,
+            "y1": 172.2,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "BILL OF LADING",
+              "bbox": {
+                "x0": 165.4,
+                "y0": 148.2,
+                "x1": 423.9,
+                "y1": 172.2,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9994,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9994
+        },
+        {
+          "text": "B/L No: MSCU123456789",
+          "bbox": {
+            "x0": 169.9,
+            "y0": 214.3,
+            "x1": 551.9,
+            "y1": 239.2,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "B/L No: MSCU123456789",
+              "bbox": {
+                "x0": 169.9,
+                "y0": 214.3,
+                "x1": 551.9,
+                "y1": 239.2,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9994,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9994
+        },
+        {
+          "text": "Booking Number: BK-998877",
+          "bbox": {
+            "x0": 164.4,
+            "y0": 281.1,
+            "x1": 603.1,
+            "y1": 311.8,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Booking Number: BK-998877",
+              "bbox": {
+                "x0": 164.4,
+                "y0": 281.1,
+                "x1": 603.1,
+                "y1": 311.8,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9992,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9992
+        },
+        {
+          "text": "Shipper: SARL Exemple Alger",
+          "bbox": {
+            "x0": 164.3,
+            "y0": 347.6,
+            "x1": 616.9,
+            "y1": 379.1,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Shipper: SARL Exemple Alger",
+              "bbox": {
+                "x0": 164.3,
+                "y0": 347.6,
+                "x1": 616.9,
+                "y1": 379.1,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9985,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9985
+        },
+        {
+          "text": "Consignee: Global Import GmbH",
+          "bbox": {
+            "x0": 164.2,
+            "y0": 413.6,
+            "x1": 649.0,
+            "y1": 445.7,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Consignee: Global Import GmbH",
+              "bbox": {
+                "x0": 164.2,
+                "y0": 413.6,
+                "x1": 649.0,
+                "y1": 445.7,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9985,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9985
+        },
+        {
+          "text": "Notify Party: Logistics Partner SA",
+          "bbox": {
+            "x0": 164.2,
+            "y0": 480.6,
+            "x1": 662.7,
+            "y1": 513.1,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Notify Party: Logistics Partner SA",
+              "bbox": {
+                "x0": 164.2,
+                "y0": 480.6,
+                "x1": 662.7,
+                "y1": 513.1,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9989,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9989
+        },
+        {
+          "text": "Vessel: MSC AURORA",
+          "bbox": {
+            "x0": 165.2,
+            "y0": 547.8,
+            "x1": 515.5,
+            "y1": 573.4,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Vessel: MSC AURORA",
+              "bbox": {
+                "x0": 165.2,
+                "y0": 547.8,
+                "x1": 515.5,
+                "y1": 573.4,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9987,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9987
+        },
+        {
+          "text": "Voyage Number: 512W",
+          "bbox": {
+            "x0": 164.3,
+            "y0": 614.1,
+            "x1": 516.4,
+            "y1": 645.7,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Voyage Number: 512W",
+              "bbox": {
+                "x0": 164.3,
+                "y0": 614.1,
+                "x1": 516.4,
+                "y1": 645.7,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9995,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9995
+        },
+        {
+          "text": "Shipping Line: MSC",
+          "bbox": {
+            "x0": 164.3,
+            "y0": 680.5,
+            "x1": 461.6,
+            "y1": 711.9,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Shipping Line: MSC",
+              "bbox": {
+                "x0": 164.3,
+                "y0": 680.5,
+                "x1": 461.6,
+                "y1": 711.9,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9995,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9995
+        },
+        {
+          "text": "Port of Loading: ALGER",
+          "bbox": {
+            "x0": 164.3,
+            "y0": 747.4,
+            "x1": 525.5,
+            "y1": 779.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Port of Loading: ALGER",
+              "bbox": {
+                "x0": 164.3,
+                "y0": 747.4,
+                "x1": 525.5,
+                "y1": 779.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9777,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9777
+        },
+        {
+          "text": "Port of Discharge: HAMBURG",
+          "bbox": {
+            "x0": 164.2,
+            "y0": 814.0,
+            "x1": 612.4,
+            "y1": 845.9,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Port of Discharge: HAMBURG",
+              "bbox": {
+                "x0": 164.2,
+                "y0": 814.0,
+                "x1": 612.4,
+                "y1": 845.9,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9963,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9963
+        },
+        {
+          "text": "Place of Delivery: HAMBURG",
+          "bbox": {
+            "x0": 168.8,
+            "y0": 880.1,
+            "x1": 607.8,
+            "y1": 912.1,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Place of Delivery: HAMBURG",
+              "bbox": {
+                "x0": 168.8,
+                "y0": 880.1,
+                "x1": 607.8,
+                "y1": 912.1,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9987,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9987
+        },
+        {
+          "text": "Container Number: CSQU3054383",
+          "bbox": {
+            "x0": 165.3,
+            "y0": 947.9,
+            "x1": 684.4,
+            "y1": 972.4,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Container Number: CSQU3054383",
+              "bbox": {
+                "x0": 165.3,
+                "y0": 947.9,
+                "x1": 684.4,
+                "y1": 972.4,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9979,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9979
+        },
+        {
+          "text": "ISO Type Code: 22G1",
+          "bbox": {
+            "x0": 164.4,
+            "y0": 1013.8,
+            "x1": 493.4,
+            "y1": 1044.7,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "ISO Type Code: 22G1",
+              "bbox": {
+                "x0": 164.4,
+                "y0": 1013.8,
+                "x1": 493.4,
+                "y1": 1044.7,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9953,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9953
+        },
+        {
+          "text": "Seal Number: SL-445566",
+          "bbox": {
+            "x0": 164.7,
+            "y0": 1079.9,
+            "x1": 543.4,
+            "y1": 1108.7,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Seal Number: SL-445566",
+              "bbox": {
+                "x0": 164.7,
+                "y0": 1079.9,
+                "x1": 543.4,
+                "y1": 1108.7,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9997,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9997
+        },
+        {
+          "text": "Description of Goods: MACHINERY PARTS",
+          "bbox": {
+            "x0": 164.3,
+            "y0": 1147.1,
+            "x1": 817.9,
+            "y1": 1178.8,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Description of Goods: MACHINERY PARTS",
+              "bbox": {
+                "x0": 164.3,
+                "y0": 1147.1,
+                "x1": 817.9,
+                "y1": 1178.8,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9864,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9864
+        },
+        {
+          "text": "Packages: 120",
+          "bbox": {
+            "x0": 164.4,
+            "y0": 1214.3,
+            "x1": 388.4,
+            "y1": 1245.3,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Packages: 120",
+              "bbox": {
+                "x0": 164.4,
+                "y0": 1214.3,
+                "x1": 388.4,
+                "y1": 1245.3,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9983,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9983
+        },
+        {
+          "text": "Gross Weight: 8500 KG",
+          "bbox": {
+            "x0": 164.3,
+            "y0": 1280.7,
+            "x1": 520.9,
+            "y1": 1312.2,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Gross Weight: 8500 KG",
+              "bbox": {
+                "x0": 164.3,
+                "y0": 1280.7,
+                "x1": 520.9,
+                "y1": 1312.2,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9873,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9873
+        },
+        {
+          "text": "Net Weight: 8100 KG",
+          "bbox": {
+            "x0": 164.3,
+            "y0": 1347.2,
+            "x1": 484.4,
+            "y1": 1378.8,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Net Weight: 8100 KG",
+              "bbox": {
+                "x0": 164.3,
+                "y0": 1347.2,
+                "x1": 484.4,
+                "y1": 1378.8,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9993,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9993
+        },
+        {
+          "text": "Volume: 28.5 M3",
+          "bbox": {
+            "x0": 165.3,
+            "y0": 1414.9,
+            "x1": 419.5,
+            "y1": 1439.8,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Volume: 28.5 M3",
+              "bbox": {
+                "x0": 165.3,
+                "y0": 1414.9,
+                "x1": 419.5,
+                "y1": 1439.8,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9995,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9995
+        },
+        {
+          "text": "HS Code: 8471.30",
+          "bbox": {
+            "x0": 165.3,
+            "y0": 1481.6,
+            "x1": 442.2,
+            "y1": 1506.2,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "HS Code: 8471.30",
+              "bbox": {
+                "x0": 165.3,
+                "y0": 1481.6,
+                "x1": 442.2,
+                "y1": 1506.2,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9886,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9886
+        },
+        {
+          "text": "Marks and Numbers: N/M",
+          "bbox": {
+            "x0": 165.2,
+            "y0": 1546.8,
+            "x1": 547.5,
+            "y1": 1572.5,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Marks and Numbers: N/M",
+              "bbox": {
+                "x0": 165.2,
+                "y0": 1546.8,
+                "x1": 547.5,
+                "y1": 1572.5,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9996,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9996
+        },
+        {
+          "text": "ETA: 28/03/2024",
+          "bbox": {
+            "x0": 165.4,
+            "y0": 1615.8,
+            "x1": 419.3,
+            "y1": 1639.8,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "ETA: 28/03/2024",
+              "bbox": {
+                "x0": 165.4,
+                "y0": 1615.8,
+                "x1": 419.3,
+                "y1": 1639.8,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.999,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.999
+        },
+        {
+          "text": "ETD: 15/03/2024",
+          "bbox": {
+            "x0": 165.4,
+            "y0": 1682.4,
+            "x1": 419.4,
+            "y1": 1706.8,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "ETD: 15/03/2024",
+              "bbox": {
+                "x0": 165.4,
+                "y0": 1682.4,
+                "x1": 419.4,
+                "y1": 1706.8,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9551,
+              "engine": "indra",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9551
+        }
+      ],
+      "words": [
+        {
+          "text": "BILL OF LADING",
+          "bbox": {
+            "x0": 165.4,
+            "y0": 148.2,
+            "x1": 423.9,
+            "y1": 172.2,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9994,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Shipper: SARL Exemple Alger",
+          "bbox": {
+            "x0": 164.3,
+            "y0": 347.6,
+            "x1": 616.9,
+            "y1": 379.1,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9985,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Consignee: Global Import GmbH",
+          "bbox": {
+            "x0": 164.2,
+            "y0": 413.6,
+            "x1": 649.0,
+            "y1": 445.7,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9985,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Notify Party: Logistics Partner SA",
+          "bbox": {
+            "x0": 164.2,
+            "y0": 480.6,
+            "x1": 662.7,
+            "y1": 513.1,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9989,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Vessel: MSC AURORA",
+          "bbox": {
+            "x0": 165.2,
+            "y0": 547.8,
+            "x1": 515.5,
+            "y1": 573.4,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9987,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Voyage Number: 512W",
+          "bbox": {
+            "x0": 164.3,
+            "y0": 614.1,
+            "x1": 516.4,
+            "y1": 645.7,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9995,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Shipping Line: MSC",
+          "bbox": {
+            "x0": 164.3,
+            "y0": 680.5,
+            "x1": 461.6,
+            "y1": 711.9,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9995,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Port of Loading: ALGER",
+          "bbox": {
+            "x0": 164.3,
+            "y0": 747.4,
+            "x1": 525.5,
+            "y1": 779.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9777,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Port of Discharge: HAMBURG",
+          "bbox": {
+            "x0": 164.2,
+            "y0": 814.0,
+            "x1": 612.4,
+            "y1": 845.9,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9963,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Place of Delivery: HAMBURG",
+          "bbox": {
+            "x0": 168.8,
+            "y0": 880.1,
+            "x1": 607.8,
+            "y1": 912.1,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9987,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Container Number: CSQU3054383",
+          "bbox": {
+            "x0": 165.3,
+            "y0": 947.9,
+            "x1": 684.4,
+            "y1": 972.4,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9979,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "ISO Type Code: 22G1",
+          "bbox": {
+            "x0": 164.4,
+            "y0": 1013.8,
+            "x1": 493.4,
+            "y1": 1044.7,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9953,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Seal Number: SL-445566",
+          "bbox": {
+            "x0": 164.7,
+            "y0": 1079.9,
+            "x1": 543.4,
+            "y1": 1108.7,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9997,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "B/L No: MSCU123456789",
+          "bbox": {
+            "x0": 169.9,
+            "y0": 214.3,
+            "x1": 551.9,
+            "y1": 239.2,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9994,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Booking Number: BK-998877",
+          "bbox": {
+            "x0": 164.4,
+            "y0": 281.1,
+            "x1": 603.1,
+            "y1": 311.8,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9992,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Description of Goods: MACHINERY PARTS",
+          "bbox": {
+            "x0": 164.3,
+            "y0": 1147.1,
+            "x1": 817.9,
+            "y1": 1178.8,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9864,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Packages: 120",
+          "bbox": {
+            "x0": 164.4,
+            "y0": 1214.3,
+            "x1": 388.4,
+            "y1": 1245.3,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9983,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Gross Weight: 8500 KG",
+          "bbox": {
+            "x0": 164.3,
+            "y0": 1280.7,
+            "x1": 520.9,
+            "y1": 1312.2,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9873,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Net Weight: 8100 KG",
+          "bbox": {
+            "x0": 164.3,
+            "y0": 1347.2,
+            "x1": 484.4,
+            "y1": 1378.8,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9993,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Volume: 28.5 M3",
+          "bbox": {
+            "x0": 165.3,
+            "y0": 1414.9,
+            "x1": 419.5,
+            "y1": 1439.8,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9995,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "HS Code: 8471.30",
+          "bbox": {
+            "x0": 165.3,
+            "y0": 1481.6,
+            "x1": 442.2,
+            "y1": 1506.2,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9886,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "Marks and Numbers: N/M",
+          "bbox": {
+            "x0": 165.2,
+            "y0": 1546.8,
+            "x1": 547.5,
+            "y1": 1572.5,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9996,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "ETA: 28/03/2024",
+          "bbox": {
+            "x0": 165.4,
+            "y0": 1615.8,
+            "x1": 419.3,
+            "y1": 1639.8,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.999,
+          "engine": "indra",
+          "page_num": 1
+        },
+        {
+          "text": "ETD: 15/03/2024",
+          "bbox": {
+            "x0": 165.4,
+            "y0": 1682.4,
+            "x1": 419.4,
+            "y1": 1706.8,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9551,
+          "engine": "indra",
+          "page_num": 1
+        }
+      ],
+      "quality": {
+        "brightness": 250.70244572733105,
+        "contrast": 30.272066491572104,
+        "blur_score": 772.785556204064,
+        "noise_score": 0.0,
+        "estimated_skew_deg": 0.0,
+        "estimated_dpi": 200.0,
+        "ink_ratio": 0.020678748915011893,
+        "is_blank": false,
+        "issues": [
+          "overexposed",
+          "low_contrast"
+        ]
+      },
+      "preprocess_ops": [
+        {
+          "name": "shadow_removal",
+          "applied": true,
+          "params": {},
+          "reason": "éclairage inégal détecté"
+        },
+        {
+          "name": "contrast",
+          "applied": true,
+          "params": {},
+          "reason": "contraste faible (écart-type luminance bas)"
+        },
+        {
+          "name": "binarize",
+          "applied": true,
+          "params": {},
+          "reason": "contraste ET éclairage dégradés"
+        }
+      ],
+      "engine_runs": [
+        {
+          "engine": "native_pdf",
+          "page_num": 1,
+          "languages": [
+            "*"
+          ],
+          "mean_confidence": 0.9500000000000001,
+          "word_count": 82,
+          "duration_ms": 0.0,
+          "ok": true,
+          "error": null
+        },
+        {
+          "engine": "indra",
+          "page_num": 1,
+          "languages": [
+            "eng"
+          ],
+          "mean_confidence": 0.9945958333333333,
+          "word_count": 24,
+          "duration_ms": 1086.211199999525,
+          "ok": true,
+          "error": null
+        },
+        {
+          "engine": "tesseract",
+          "page_num": 1,
+          "languages": [
+            "eng"
+          ],
+          "mean_confidence": 0.9481707317073169,
+          "word_count": 82,
+          "duration_ms": 469.96929999932036,
+          "ok": true,
+          "error": null
+        },
+        {
+          "engine": "easyocr",
+          "page_num": 1,
+          "languages": [
+            "eng"
+          ],
+          "mean_confidence": 0.8755608281641106,
+          "word_count": 24,
+          "duration_ms": 0.0,
+          "ok": true,
+          "error": null
+        },
+        {
+          "engine": "paddleocr",
+          "page_num": 1,
+          "languages": [
+            "eng"
+          ],
+          "mean_confidence": 0.0,
+          "word_count": 0,
+          "duration_ms": 0.0,
+          "ok": false,
+          "error": "(Unimplemented) ConvertPirAttribute2RuntimeAttribute not support [pir::ArrayAttribute<pir::DoubleAttribute>]  (at ..\\paddle\\fluid\\framework\\new_executor\\instruction\\onednn\\onednn_instruction.cc:118)\n"
+        },
+        {
+          "engine": "indra",
+          "page_num": 1,
+          "languages": [
+            "eng"
+          ],
+          "mean_confidence": 0.99205,
+          "word_count": 24,
+          "duration_ms": 1054.710200000045,
+          "ok": true,
+          "error": null
+        },
+        {
+          "engine": "tesseract",
+          "page_num": 1,
+          "languages": [
+            "eng"
+          ],
+          "mean_confidence": 0.9486585365853658,
+          "word_count": 82,
+          "duration_ms": 452.4983000001157,
+          "ok": true,
+          "error": null
+        },
+        {
+          "engine": "easyocr",
+          "page_num": 1,
+          "languages": [
+            "eng"
+          ],
+          "mean_confidence": 0.8751191903298802,
+          "word_count": 24,
+          "duration_ms": 0.0,
+          "ok": true,
+          "error": null
+        },
+        {
+          "engine": "paddleocr",
+          "page_num": 1,
+          "languages": [
+            "eng"
+          ],
+          "mean_confidence": 0.0,
+          "word_count": 0,
+          "duration_ms": 0.0,
+          "ok": false,
+          "error": "(Unimplemented) ConvertPirAttribute2RuntimeAttribute not support [pir::ArrayAttribute<pir::DoubleAttribute>]  (at ..\\paddle\\fluid\\framework\\new_executor\\instruction\\onednn\\onednn_instruction.cc:118)\n"
+        }
+      ],
+      "orientation_deg": 0,
+      "detected_languages": [
+        "en"
+      ],
+      "has_native_text": true,
+      "native_text_ratio": 1.0,
+      "variant_selected": "preprocessed",
+      "direction": "ltr",
+      "blank": false
+    }
+  ],
+  "fields": {
+    "date": {
+      "name": "date",
+      "label": "Date",
+      "raw_value": "2024-03-28 | 2024-03-15",
+      "normalized_value": "2024-03-28 | 2024-03-15",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.868,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.995,
+      "page_num": null,
+      "bbox": null,
+      "status": "ambiguous",
+      "pattern": "date",
+      "anomalies": [],
+      "profile": null
+    },
+    "email": {
+      "name": "email",
+      "label": "E-mail",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "url": {
+      "name": "url",
+      "label": "URL",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "phone": {
+      "name": "phone",
+      "label": "Téléphone",
+      "raw_value": "998877 | 445566 | 847130",
+      "normalized_value": "998877 | 445566 | 847130",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.761,
+      "calibrated_confidence": 0.761,
+      "engine_confidence": 0.995,
+      "page_num": 1,
+      "bbox": {
+        "x0": 164.4,
+        "y0": 281.1,
+        "x1": 603.1,
+        "y1": 311.8,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "phone",
+      "anomalies": [],
+      "profile": null
+    },
+    "iban": {
+      "name": "iban",
+      "label": "IBAN",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "invoice_number": {
+      "name": "invoice_number",
+      "label": "Référence facture",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "vat_number": {
+      "name": "vat_number",
+      "label": "N° TVA",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "container_number": {
+      "name": "container_number",
+      "label": "N° de conteneur",
+      "raw_value": "CSQU3054383",
+      "normalized_value": "CSQU3054383",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 165.3,
+        "y0": 947.9,
+        "x1": 684.4,
+        "y1": 972.4,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "\\b([A-Z]{4}[\\s-]?\\d{7})\\b",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "serial_number": {
+      "name": "serial_number",
+      "label": "N° de série",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "amount": {
+      "name": "amount",
+      "label": "Montant",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "percent": {
+      "name": "percent",
+      "label": "Pourcentage",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "quantity": {
+      "name": "quantity",
+      "label": "Quantité + unité",
+      "raw_value": "8500 | 8100 | 28.5",
+      "normalized_value": "8500 | 8100 | 28.5",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.761,
+      "calibrated_confidence": 0.761,
+      "engine_confidence": 0.995,
+      "page_num": 1,
+      "bbox": {
+        "x0": 164.3,
+        "y0": 1280.7,
+        "x1": 520.9,
+        "y1": 1312.2,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "quantity",
+      "anomalies": [],
+      "profile": null
+    },
+    "bl_number": {
+      "name": "bl_number",
+      "label": "Bill of Lading (BL)",
+      "raw_value": "MSCU123456789",
+      "normalized_value": "MSCU123456789",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 169.9,
+        "y0": 214.3,
+        "x1": 551.9,
+        "y1": 239.2,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:B/?L|Bill\\s*of\\s*Lading)(?:\\s*(?:No\\.?|N[°o]|Number))?\\s*[:#]?\\s*([A-Z0-9][A-Z0-9\\-/_]{4,20})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "booking_number": {
+      "name": "booking_number",
+      "label": "Booking Number",
+      "raw_value": "BK-998877",
+      "normalized_value": "BK-998877",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 164.4,
+        "y0": 281.1,
+        "x1": 603.1,
+        "y1": 311.8,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Booking|BKG|BK\\s*No\\.?|R[ée]servation)\\s*(?:Number|N[°o]|No\\.?)?\\s*[:#]?\\s*([A-Z0-9][A-Z0-9\\-/_]{4,20})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "iso_type_code": {
+      "name": "iso_type_code",
+      "label": "ISO Container Type Code",
+      "raw_value": "22G1",
+      "normalized_value": "22G1",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 164.4,
+        "y0": 1013.8,
+        "x1": 493.4,
+        "y1": 1044.7,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:ISO|type|type\\s*code|code\\s*type)\\s*[:#]?\\s*(\\d{2}[A-Z]\\d)\\b",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "seal_number": {
+      "name": "seal_number",
+      "label": "Seal Number",
+      "raw_value": "SL-445566",
+      "normalized_value": "SL-445566",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 164.7,
+        "y0": 1079.9,
+        "x1": 543.4,
+        "y1": 1108.7,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Seal|Sceau|N°\\s*sceau)\\s*(?:Number|N[°o]|No\\.?)?\\s*[:#]?\\s*([A-Z0-9\\-]{4,20})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "vessel_name": {
+      "name": "vessel_name",
+      "label": "Vessel Name",
+      "raw_value": "MSC AURORA",
+      "normalized_value": "MSC AURORA",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 165.2,
+        "y0": 547.8,
+        "x1": 515.5,
+        "y1": 573.4,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Vessel(?:\\s*Name)?|Navire|M/V|MV|Ship)\\b\\s*[:#]?\\s*([A-Z][A-Z \\t'’\\.\\-]{2,40})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "voyage_number": {
+      "name": "voyage_number",
+      "label": "Voyage Number",
+      "raw_value": "512W",
+      "normalized_value": "512W",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 164.3,
+        "y0": 614.1,
+        "x1": 516.4,
+        "y1": 645.7,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Voyage|Voy\\.?|N°\\s*voyage)\\s*(?:Number|No\\.?|N[°o])?\\s*[:#]?\\s*([A-Z0-9\\-]{2,15})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "shipping_line": {
+      "name": "shipping_line",
+      "label": "Shipping Line",
+      "raw_value": "MSC",
+      "normalized_value": "MSC",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 165.2,
+        "y0": 547.8,
+        "x1": 515.5,
+        "y1": 573.4,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Carrier|Shipping\\s*Line|Armateur|Ligne)\\s*[:#]?\\s*([A-Z][A-Z \\t&'’\\.\\-]{2,50})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "shipper": {
+      "name": "shipper",
+      "label": "Shipper (expéditeur)",
+      "raw_value": "SARL Exemple Alger",
+      "normalized_value": "SARL Exemple Alger",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 164.3,
+        "y0": 347.6,
+        "x1": 616.9,
+        "y1": 379.1,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Shipper|Exp[ée]diteur|Exporter)\\s*[:#]?\\s*([^\\n]{3,120})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "consignee": {
+      "name": "consignee",
+      "label": "Consignee (destinataire)",
+      "raw_value": "Global Import GmbH",
+      "normalized_value": "Global Import GmbH",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 164.2,
+        "y0": 413.6,
+        "x1": 649.0,
+        "y1": 445.7,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Consignee|Destinataire|Consignataire)\\s*[:#]?\\s*([^\\n]{3,120})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "notify_party": {
+      "name": "notify_party",
+      "label": "Notify Party",
+      "raw_value": "Logistics Partner SA",
+      "normalized_value": "Logistics Partner SA",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 164.2,
+        "y0": 480.6,
+        "x1": 662.7,
+        "y1": 513.1,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Notify\\s*Party|Partie\\s*notifi[ée]e|Notifier)\\s*[:#]?\\s*([^\\n]{3,120})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "port_of_loading": {
+      "name": "port_of_loading",
+      "label": "Port of Loading",
+      "raw_value": "ALGER",
+      "normalized_value": "ALGER",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 164.3,
+        "y0": 347.6,
+        "x1": 616.9,
+        "y1": 379.1,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Port\\s*of\\s*Loading|Port\\s*d['’]embarquement|POL)\\s*[:#]?\\s*([^\\n]{2,60})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "port_of_discharge": {
+      "name": "port_of_discharge",
+      "label": "Port of Discharge",
+      "raw_value": "HAMBURG",
+      "normalized_value": "HAMBURG",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 164.2,
+        "y0": 814.0,
+        "x1": 612.4,
+        "y1": 845.9,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Port\\s*of\\s*Discharge|Port\\s*de\\s*d[ée]chargement|POD)\\s*[:#]?\\s*([^\\n]{2,60})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "place_of_receipt": {
+      "name": "place_of_receipt",
+      "label": "Place of Receipt",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "place_of_delivery": {
+      "name": "place_of_delivery",
+      "label": "Place of Delivery",
+      "raw_value": "HAMBURG",
+      "normalized_value": "HAMBURG",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 164.2,
+        "y0": 814.0,
+        "x1": 612.4,
+        "y1": 845.9,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Place\\s*of\\s*Delivery|Lieu\\s*de\\s*livraison)\\s*[:#]?\\s*([^\\n]{2,60})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "goods_description": {
+      "name": "goods_description",
+      "label": "Description des marchandises",
+      "raw_value": "MACHINERY PARTS",
+      "normalized_value": "MACHINERY PARTS",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 164.3,
+        "y0": 1147.1,
+        "x1": 817.9,
+        "y1": 1178.8,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Description\\s*of\\s*[Gg]oods|Description\\s*des\\s*marchandises|Goods|Marchandises)\\s*[:#]?\\s*([^\\n]{5,200})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "packages_count": {
+      "name": "packages_count",
+      "label": "Nombre de colis",
+      "raw_value": "120",
+      "normalized_value": "120",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 164.4,
+        "y0": 1214.3,
+        "x1": 388.4,
+        "y1": 1245.3,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Packages|Colis|Nb\\s*colis|Number\\s*of\\s*packages)\\s*[:#]?\\s*(\\d{1,6})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "gross_weight": {
+      "name": "gross_weight",
+      "label": "Poids brut",
+      "raw_value": "8500",
+      "normalized_value": "8500",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 164.3,
+        "y0": 1280.7,
+        "x1": 520.9,
+        "y1": 1312.2,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Gross\\s*[Ww]eight|Poids\\s*brut|Gross\\s*Wt\\.?)\\s*[:#]?\\s*(\\d{1,3}(?:[ .,\\u00a0\\u202f]\\d{3})+(?:[.,]\\d{1,3})?|\\d+(?:[.,]\\d{1,3})?)\\s*(KG|kg|KGS|T|MT|LB)?",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "net_weight": {
+      "name": "net_weight",
+      "label": "Poids net",
+      "raw_value": "8100",
+      "normalized_value": "8100",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 164.3,
+        "y0": 1347.2,
+        "x1": 484.4,
+        "y1": 1378.8,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Net\\s*[Ww]eight|Poids\\s*net|Net\\s*Wt\\.?)\\s*[:#]?\\s*(\\d{1,3}(?:[ .,\\u00a0\\u202f]\\d{3})+(?:[.,]\\d{1,3})?|\\d+(?:[.,]\\d{1,3})?)\\s*(KG|kg|KGS|T|MT|LB)?",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "volume": {
+      "name": "volume",
+      "label": "Volume",
+      "raw_value": "28.5",
+      "normalized_value": "28.5",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 165.3,
+        "y0": 1414.9,
+        "x1": 419.5,
+        "y1": 1439.8,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Volume|CBM|M3|m³)\\s*[:#]?\\s*(\\d+(?:[.,]\\d{1,3})?)\\s*(M3|m3|m³|CBM)?",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "hs_code": {
+      "name": "hs_code",
+      "label": "HS Code",
+      "raw_value": "8471.30",
+      "normalized_value": "847130",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 165.3,
+        "y0": 1481.6,
+        "x1": 442.2,
+        "y1": 1506.2,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:HS\\s*Code|Code\\s*SH|SH\\s*Code|Commodity\\s*code)\\s*[:#]?\\s*(\\d{4}[\\s.\\-]?\\d{2}(?:[\\s.\\-]?\\d{2})?)",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "marks_numbers": {
+      "name": "marks_numbers",
+      "label": "Marks and Numbers",
+      "raw_value": "N/M",
+      "normalized_value": "N/M",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 165.2,
+        "y0": 1546.8,
+        "x1": 547.5,
+        "y1": 1572.5,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Marks\\s*(?:&|and)\\s*Numbers|Marques\\s*et\\s*num[ée]ros|Marks)\\s*[:#]?\\s*([^\\n]{2,120})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "eta": {
+      "name": "eta",
+      "label": "ETA",
+      "raw_value": "28/03/2024",
+      "normalized_value": "2024-03-28",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 165.4,
+        "y0": 1615.8,
+        "x1": 419.3,
+        "y1": 1639.8,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:ETA|Estimated\\s*[Aa]rrival|Arriv[ée]e\\s*estim[ée]e)\\s*[:#]?\\s*(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "etd": {
+      "name": "etd",
+      "label": "ETD",
+      "raw_value": "15/03/2024",
+      "normalized_value": "2024-03-15",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 165.4,
+        "y0": 1682.4,
+        "x1": 419.4,
+        "y1": 1706.8,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:ETD|Estimated\\s*[Dd]eparture|D[ée]part\\s*estim[ée])\\s*[:#]?\\s*(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})",
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "manifest_number": {
+      "name": "manifest_number",
+      "label": "N° de manifeste",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "port_bl"
+    },
+    "customs_reference": {
+      "name": "customs_reference",
+      "label": "Référence douanière",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "port_bl"
+    }
+  },
+  "tables": [],
+  "categories": {
+    "dates": [
+      "date"
+    ],
+    "contacts": [
+      "phone"
+    ],
+    "identifiants": [
+      "invoice_number",
+      "container_number"
+    ],
+    "numeriques": [
+      "quantity"
+    ],
+    "_required": [
+      "bl_number",
+      "container_number"
+    ]
+  },
+  "barcodes": [],
+  "form_zones": [],
+  "quality": {
+    "mean_engine_confidence": 0.995,
+    "mean_global_confidence": 0.761,
+    "pages_low_confidence": [],
+    "fields_low_confidence": [],
+    "anomalies": [
+      {
+        "code": "PAGE_OVEREXPOSED",
+        "severity": "info",
+        "message": "page 1 : overexposed",
+        "page_num": 1,
+        "bbox": null,
+        "context": {
+          "blur": 772.785556204064,
+          "dpi": 200.0
+        }
+      },
+      {
+        "code": "PAGE_LOW_CONTRAST",
+        "severity": "info",
+        "message": "page 1 : low_contrast",
+        "page_num": 1,
+        "bbox": null,
+        "context": {
+          "blur": 772.785556204064,
+          "dpi": 200.0
+        }
+      },
+      {
+        "code": "AMBIGUOUS_VALUE",
+        "severity": "warning",
+        "message": "champ 'date' ambigu : 2024-03-28 | 2024-03-15",
+        "page_num": null,
+        "bbox": null,
+        "context": {}
+      }
+    ],
+    "disagreements": [],
+    "checks": []
+  },
+  "engines_used": [
+    "easyocr",
+    "indra",
+    "native_pdf",
+    "paddleocr",
+    "tesseract"
+  ],
+  "direction": "ltr",
+  "profile_used": "port_bl",
+  "classification": {
+    "category": "bill_of_lading",
+    "label": "Connaissement maritime",
+    "confidence": 0.909,
+    "evidence": [
+      {
+        "indicator": "mot BILL OF LADING",
+        "pattern": "BILL\\s*OF\\s*LADING",
+        "weight": 3.0,
+        "kind": "distinctive",
+        "matched_text": "BILL OF LADING"
+      },
+      {
+        "indicator": "numéro de BL",
+        "pattern": "\\bB/?L\\s*(?:No|N[°o]|Number)",
+        "weight": 2.0,
+        "kind": "distinctive",
+        "matched_text": "B/L No"
+      },
+      {
+        "indicator": "chargeur",
+        "pattern": "\\bSHIPPER\\b",
+        "weight": 1.5,
+        "kind": "distinctive",
+        "matched_text": "Shipper"
+      },
+      {
+        "indicator": "destinataire",
+        "pattern": "\\bCONSIGNEE\\b",
+        "weight": 1.5,
+        "kind": "distinctive",
+        "matched_text": "Consignee"
+      },
+      {
+        "indicator": "notify party",
+        "pattern": "\\bNOTIFY\\s*PARTY\\b",
+        "weight": 1.5,
+        "kind": "distinctive",
+        "matched_text": "Notify Party"
+      },
+      {
+        "indicator": "ports",
+        "pattern": "\\b(?:PORT\\s*OF\\s*LOADING|PORT\\s*OF\\s*DISCHARGE)\\b",
+        "weight": 1.5,
+        "kind": "distinctive",
+        "matched_text": "Port of Loading"
+      },
+      {
+        "indicator": "navire/voyage",
+        "pattern": "\\b(?:VOYAGE|VESSEL)\\b",
+        "weight": 1.0,
+        "kind": "distinctive",
+        "matched_text": "Vessel"
+      },
+      {
+        "indicator": "champ bl_number",
+        "pattern": "(?:B/?L|Bill\\s*of\\s*Lading)(?:\\s*(?:No\\.?|N[°o]|Number))?\\s*[:#]?\\s*([A-Z0-9][A-Z0-9\\-/_]{4,20})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "B/L No: MSCU123456789"
+      },
+      {
+        "indicator": "champ booking_number",
+        "pattern": "(?:Booking|BKG|BK\\s*No\\.?|R[ée]servation)\\s*(?:Number|N[°o]|No\\.?)?\\s*[:#]?\\s*([A-Z0-9][A-Z0-9\\-/_]{4,20})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Booking Number: BK-998877"
+      },
+      {
+        "indicator": "champ container_number",
+        "pattern": "\\b([A-Z]{4}[\\s-]?\\d{7})\\b",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "CSQU3054383"
+      },
+      {
+        "indicator": "champ iso_type_code",
+        "pattern": "(?:ISO|type|type\\s*code|code\\s*type)\\s*[:#]?\\s*(\\d{2}[A-Z]\\d)\\b",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Type Code: 22G1"
+      },
+      {
+        "indicator": "champ seal_number",
+        "pattern": "(?:Seal|Sceau|N°\\s*sceau)\\s*(?:Number|N[°o]|No\\.?)?\\s*[:#]?\\s*([A-Z0-9\\-]{4,20})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Seal Number: SL-445566"
+      },
+      {
+        "indicator": "champ vessel_name",
+        "pattern": "(?:Vessel(?:\\s*Name)?|Navire|M/V|MV|Ship)\\b\\s*[:#]?\\s*([A-Z][A-Z \\t'’\\.\\-]{2,40})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Vessel: MSC AURORA"
+      },
+      {
+        "indicator": "champ voyage_number",
+        "pattern": "(?:Voyage|Voy\\.?|N°\\s*voyage)\\s*(?:Number|No\\.?|N[°o])?\\s*[:#]?\\s*([A-Z0-9\\-]{2,15})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Voyage Number: 512W"
+      },
+      {
+        "indicator": "champ shipping_line",
+        "pattern": "(?:Carrier|Shipping\\s*Line|Armateur|Ligne)\\s*[:#]?\\s*([A-Z][A-Z \\t&'’\\.\\-]{2,50})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Shipping Line: MSC"
+      },
+      {
+        "indicator": "champ shipper",
+        "pattern": "(?:Shipper|Exp[ée]diteur|Exporter)\\s*[:#]?\\s*([^\\n]{3,120})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Shipper: SARL Exemple Alger"
+      },
+      {
+        "indicator": "champ consignee",
+        "pattern": "(?:Consignee|Destinataire|Consignataire)\\s*[:#]?\\s*([^\\n]{3,120})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Consignee: Global Import GmbH"
+      },
+      {
+        "indicator": "champ notify_party",
+        "pattern": "(?:Notify\\s*Party|Partie\\s*notifi[ée]e|Notifier)\\s*[:#]?\\s*([^\\n]{3,120})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Notify Party: Logistics Partner SA"
+      },
+      {
+        "indicator": "champ port_of_loading",
+        "pattern": "(?:Port\\s*of\\s*Loading|Port\\s*d['’]embarquement|POL)\\s*[:#]?\\s*([^\\n]{2,60})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Port of Loading: ALGER"
+      },
+      {
+        "indicator": "champ port_of_discharge",
+        "pattern": "(?:Port\\s*of\\s*Discharge|Port\\s*de\\s*d[ée]chargement|POD)\\s*[:#]?\\s*([^\\n]{2,60})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Port of Discharge: HAMBURG"
+      },
+      {
+        "indicator": "champ place_of_delivery",
+        "pattern": "(?:Place\\s*of\\s*Delivery|Lieu\\s*de\\s*livraison)\\s*[:#]?\\s*([^\\n]{2,60})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Place of Delivery: HAMBURG"
+      },
+      {
+        "indicator": "champ goods_description",
+        "pattern": "(?:Description\\s*of\\s*[Gg]oods|Description\\s*des\\s*marchandises|Goods|Marchandises)\\s*[:#]?\\s*([^\\n]{5,200})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Description of Goods: MACHINERY PARTS"
+      },
+      {
+        "indicator": "champ packages_count",
+        "pattern": "(?:Packages|Colis|Nb\\s*colis|Number\\s*of\\s*packages)\\s*[:#]?\\s*(\\d{1,6})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Packages: 120"
+      },
+      {
+        "indicator": "champ gross_weight",
+        "pattern": "(?:Gross\\s*[Ww]eight|Poids\\s*brut|Gross\\s*Wt\\.?)\\s*[:#]?\\s*(\\d{1,3}(?:[ .,\\u00a0\\u202f]\\d{3})+(?:[.,]\\d{1,3})?|\\d+(?:[.,]\\d{1,3})?)\\s*(KG|kg|KGS|T|MT|LB)?",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Gross Weight: 8500 KG"
+      },
+      {
+        "indicator": "champ net_weight",
+        "pattern": "(?:Net\\s*[Ww]eight|Poids\\s*net|Net\\s*Wt\\.?)\\s*[:#]?\\s*(\\d{1,3}(?:[ .,\\u00a0\\u202f]\\d{3})+(?:[.,]\\d{1,3})?|\\d+(?:[.,]\\d{1,3})?)\\s*(KG|kg|KGS|T|MT|LB)?",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Net Weight: 8100 KG"
+      },
+      {
+        "indicator": "champ volume",
+        "pattern": "(?:Volume|CBM|M3|m³)\\s*[:#]?\\s*(\\d+(?:[.,]\\d{1,3})?)\\s*(M3|m3|m³|CBM)?",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Volume: 28.5 M3"
+      },
+      {
+        "indicator": "champ hs_code",
+        "pattern": "(?:HS\\s*Code|Code\\s*SH|SH\\s*Code|Commodity\\s*code)\\s*[:#]?\\s*(\\d{4}[\\s.\\-]?\\d{2}(?:[\\s.\\-]?\\d{2})?)",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "HS Code: 8471.30"
+      },
+      {
+        "indicator": "champ marks_numbers",
+        "pattern": "(?:Marks\\s*(?:&|and)\\s*Numbers|Marques\\s*et\\s*num[ée]ros|Marks)\\s*[:#]?\\s*([^\\n]{2,120})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Marks and Numbers: N/M"
+      },
+      {
+        "indicator": "champ eta",
+        "pattern": "(?:ETA|Estimated\\s*[Aa]rrival|Arriv[ée]e\\s*estim[ée]e)\\s*[:#]?\\s*(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "ETA: 28/03/2024"
+      },
+      {
+        "indicator": "champ etd",
+        "pattern": "(?:ETD|Estimated\\s*[Dd]eparture|D[ée]part\\s*estim[ée])\\s*[:#]?\\s*(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "ETD: 15/03/2024"
+      },
+      {
+        "indicator": "champ bl_number",
+        "pattern": "(?:B/?L|Bill\\s*of\\s*Lading)(?:\\s*(?:No\\.?|N[°o]|Number))?\\s*[:#]?\\s*([A-Z0-9][A-Z0-9\\-/_]{4,20})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "B/L No: MSCU123456789"
+      },
+      {
+        "indicator": "champ booking_number",
+        "pattern": "(?:Booking|BKG|BK\\s*No\\.?|R[ée]servation)\\s*(?:Number|N[°o]|No\\.?)?\\s*[:#]?\\s*([A-Z0-9][A-Z0-9\\-/_]{4,20})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Booking Number: BK-998877"
+      },
+      {
+        "indicator": "champ container_number",
+        "pattern": "\\b([A-Z]{4}[\\s-]?\\d{7})\\b",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "CSQU3054383"
+      },
+      {
+        "indicator": "champ iso_type_code",
+        "pattern": "(?:ISO|type|type\\s*code|code\\s*type)\\s*[:#]?\\s*(\\d{2}[A-Z]\\d)\\b",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Type Code: 22G1"
+      },
+      {
+        "indicator": "champ seal_number",
+        "pattern": "(?:Seal|Sceau|N°\\s*sceau)\\s*(?:Number|N[°o]|No\\.?)?\\s*[:#]?\\s*([A-Z0-9\\-]{4,20})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Seal Number: SL-445566"
+      },
+      {
+        "indicator": "champ vessel_name",
+        "pattern": "(?:Vessel(?:\\s*Name)?|Navire|M/V|MV|Ship)\\b\\s*[:#]?\\s*([A-Z][A-Z \\t'’\\.\\-]{2,40})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Vessel: MSC AURORA"
+      },
+      {
+        "indicator": "champ voyage_number",
+        "pattern": "(?:Voyage|Voy\\.?|N°\\s*voyage)\\s*(?:Number|No\\.?|N[°o])?\\s*[:#]?\\s*([A-Z0-9\\-]{2,15})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Voyage Number: 512W"
+      },
+      {
+        "indicator": "champ shipping_line",
+        "pattern": "(?:Carrier|Shipping\\s*Line|Armateur|Ligne)\\s*[:#]?\\s*([A-Z][A-Z \\t&'’\\.\\-]{2,50})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Shipping Line: MSC"
+      },
+      {
+        "indicator": "champ shipper",
+        "pattern": "(?:Shipper|Exp[ée]diteur|Exporter)\\s*[:#]?\\s*([^\\n]{3,120})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Shipper: SARL Exemple Alger"
+      },
+      {
+        "indicator": "champ consignee",
+        "pattern": "(?:Consignee|Destinataire|Consignataire)\\s*[:#]?\\s*([^\\n]{3,120})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Consignee: Global Import GmbH"
+      },
+      {
+        "indicator": "champ notify_party",
+        "pattern": "(?:Notify\\s*Party|Partie\\s*notifi[ée]e|Notifier)\\s*[:#]?\\s*([^\\n]{3,120})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Notify Party: Logistics Partner SA"
+      },
+      {
+        "indicator": "champ port_of_loading",
+        "pattern": "(?:Port\\s*of\\s*Loading|Port\\s*d['’]embarquement|POL)\\s*[:#]?\\s*([^\\n]{2,60})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Port of Loading: ALGER"
+      },
+      {
+        "indicator": "champ port_of_discharge",
+        "pattern": "(?:Port\\s*of\\s*Discharge|Port\\s*de\\s*d[ée]chargement|POD)\\s*[:#]?\\s*([^\\n]{2,60})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Port of Discharge: HAMBURG"
+      },
+      {
+        "indicator": "champ place_of_delivery",
+        "pattern": "(?:Place\\s*of\\s*Delivery|Lieu\\s*de\\s*livraison)\\s*[:#]?\\s*([^\\n]{2,60})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Place of Delivery: HAMBURG"
+      },
+      {
+        "indicator": "champ goods_description",
+        "pattern": "(?:Description\\s*of\\s*[Gg]oods|Description\\s*des\\s*marchandises|Goods|Marchandises)\\s*[:#]?\\s*([^\\n]{5,200})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Description of Goods: MACHINERY PARTS"
+      },
+      {
+        "indicator": "champ packages_count",
+        "pattern": "(?:Packages|Colis|Nb\\s*colis|Number\\s*of\\s*packages)\\s*[:#]?\\s*(\\d{1,6})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Packages: 120"
+      },
+      {
+        "indicator": "champ gross_weight",
+        "pattern": "(?:Gross\\s*[Ww]eight|Poids\\s*brut|Gross\\s*Wt\\.?)\\s*[:#]?\\s*(\\d{1,3}(?:[ .,\\u00a0\\u202f]\\d{3})+(?:[.,]\\d{1,3})?|\\d+(?:[.,]\\d{1,3})?)\\s*(KG|kg|KGS|T|MT|LB)?",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Gross Weight: 8500 KG"
+      },
+      {
+        "indicator": "champ net_weight",
+        "pattern": "(?:Net\\s*[Ww]eight|Poids\\s*net|Net\\s*Wt\\.?)\\s*[:#]?\\s*(\\d{1,3}(?:[ .,\\u00a0\\u202f]\\d{3})+(?:[.,]\\d{1,3})?|\\d+(?:[.,]\\d{1,3})?)\\s*(KG|kg|KGS|T|MT|LB)?",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Net Weight: 8100 KG"
+      },
+      {
+        "indicator": "champ volume",
+        "pattern": "(?:Volume|CBM|M3|m³)\\s*[:#]?\\s*(\\d+(?:[.,]\\d{1,3})?)\\s*(M3|m3|m³|CBM)?",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Volume: 28.5 M3"
+      },
+      {
+        "indicator": "champ hs_code",
+        "pattern": "(?:HS\\s*Code|Code\\s*SH|SH\\s*Code|Commodity\\s*code)\\s*[:#]?\\s*(\\d{4}[\\s.\\-]?\\d{2}(?:[\\s.\\-]?\\d{2})?)",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "HS Code: 8471.30"
+      },
+      {
+        "indicator": "champ marks_numbers",
+        "pattern": "(?:Marks\\s*(?:&|and)\\s*Numbers|Marques\\s*et\\s*num[ée]ros|Marks)\\s*[:#]?\\s*([^\\n]{2,120})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Marks and Numbers: N/M"
+      },
+      {
+        "indicator": "champ eta",
+        "pattern": "(?:ETA|Estimated\\s*[Aa]rrival|Arriv[ée]e\\s*estim[ée]e)\\s*[:#]?\\s*(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "ETA: 28/03/2024"
+      },
+      {
+        "indicator": "champ etd",
+        "pattern": "(?:ETD|Estimated\\s*[Dd]eparture|D[ée]part\\s*estim[ée])\\s*[:#]?\\s*(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "ETD: 15/03/2024"
+      }
+    ],
+    "alternatives": [
+      {
+        "category": "packing_list",
+        "label": "Liste de colisage",
+        "confidence": 0.625
+      },
+      {
+        "category": "customs_declaration",
+        "label": "Déclaration douanière",
+        "confidence": 0.556
+      }
+    ],
+    "classifier_version": "1.0.0",
+    "needs_review": false,
+    "reason": "",
+    "manual": false,
+    "corrected_by": null
+  },
+  "timings_ms": {
+    "ingest_ms": 63.6,
+    "ocr_ms": 33315.2,
+    "ocr_workers": 1.0,
+    "tables_ms": 37.5,
+    "fields_ms": 39.3,
+    "barcodes_ms": 58.3,
+    "total_ms": 33536.2
+  },
+  "warnings": [],
+  "source_file": "bl_port.pdf",
+  "source_hash": "1460e53b8490a789c2ac6a2a47142f4ff4867fedf4cfb047d57639f830f9d592",
+  "exports": []
+}

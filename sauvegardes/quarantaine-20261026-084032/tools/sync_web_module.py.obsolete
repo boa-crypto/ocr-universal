@@ -1,0 +1,171 @@
+#!/usr/bin/env python3
+"""Injecte les modules JS de `web/` dans `web/index.html` (source unique).
+
+**Pourquoi ce script existe.** La page est un fichier unique hors ligne : les
+modules JS doivent donc vivre *dans* `web/index.html`. Les garder aussi dans
+des fichiers séparés sert à l'édition (fichier lisible, coloration syntaxique),
+mais les deux copies peuvent diverger — et une divergence silencieuse veut
+dire corriger du code qui n'est jamais exécuté.
+
+**Ce qu'il fait.** Pour chaque module déclaré dans `MODULES`, il remplace la
+région délimitée par ses marqueurs dans `web/index.html` par le contenu courant
+du fichier source. Il vérifie ensuite que chaque bloc généré compile
+(`node --check`) quand node est disponible.
+
+**Usage.**
+    python3 tools/sync_web_module.py          # injecte
+    python3 tools/sync_web_module.py --check  # vérifie sans écrire (code 1 si divergence)
+"""
+from __future__ import annotations
+
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+RACINE = Path(__file__).resolve().parent.parent
+INDEX = RACINE / "web" / "index.html"
+
+# module -> (fichier source, marqueur de début, marqueur de fin)
+MODULES = {
+    "CNXHUB": (
+        RACINE / "web" / "connectors.js",
+        "/* ═══ CNXHUB:BEGIN",
+        "/* ═══ CNXHUB:END ═══ */",
+    ),
+    "DOSSIER": (
+        RACINE / "web" / "dossier.js",
+        "/* ═══ DOSSIER:BEGIN",
+        "/* ═══ DOSSIER:END ═══ */",
+    ),
+    "FORMULAIRE": (
+        RACINE / "web" / "formulaire.js",
+        "/* ═══ FORMULAIRE:BEGIN",
+        "/* ═══ FORMULAIRE:END ═══ */",
+    ),
+    "TRACABILITE": (
+        RACINE / "web" / "tracabilite.js",
+        "/* ═══ TRACABILITE:BEGIN",
+        "/* ═══ TRACABILITE:END ═══ */",
+    ),
+    "TRANSMISSION": (
+        RACINE / "web" / "transmission.js",
+        "/* ═══ TRANSMISSION:BEGIN",
+        "/* ═══ TRANSMISSION:END ═══ */",
+    ),
+}
+
+ENTETES = {
+    "CNXHUB": (
+        "/* ═══ CNXHUB:BEGIN — généré par tools/sync_web_module.py depuis web/connectors.js.\n"
+        "   Ne pas modifier cette section à la main : éditer web/connectors.js puis lancer\n"
+        "   « python3 tools/sync_web_module.py ». Le test tests/test_web_module_sync.py\n"
+        "   échoue si les deux copies divergent.                                       */\n"
+    ),
+    "DOSSIER": (
+        "/* ═══ DOSSIER:BEGIN — généré par tools/sync_web_module.py depuis web/dossier.js.\n"
+        "   Ne pas modifier cette section à la main : éditer web/dossier.js puis lancer\n"
+        "   « python3 tools/sync_web_module.py ». Le test tests/test_web_module_sync.py\n"
+        "   échoue si les deux copies divergent.                                       */\n"
+    ),
+    "TRANSMISSION": (
+        "/* ═══ TRANSMISSION:BEGIN — généré par tools/sync_web_module.py depuis "
+        "web/transmission.js.\n"
+        "   Ne pas modifier cette section à la main : éditer "
+        "web/transmission.js puis lancer\n"
+        "   « python3 tools/sync_web_module.py ». Le test "
+        "tests/test_web_module_sync.py\n"
+        "   échoue si les deux copies divergent.                            */\n"
+    ),
+    "TRACABILITE": (
+        "/* ═══ TRACABILITE:BEGIN — généré par tools/sync_web_module.py depuis "
+        "web/tracabilite.js.\n"
+        "   Ne pas modifier cette section à la main : éditer web/tracabilite.js "
+        "puis lancer\n"
+        "   « python3 tools/sync_web_module.py ». Le test "
+        "tests/test_web_module_sync.py\n"
+        "   échoue si les deux copies divergent.                            */\n"
+    ),
+    "FORMULAIRE": (
+        "/* ═══ FORMULAIRE:BEGIN — généré par tools/sync_web_module.py depuis "
+        "web/formulaire.js.\n"
+        "   Ne pas modifier cette section à la main : éditer web/formulaire.js puis "
+        "lancer\n"
+        "   « python3 tools/sync_web_module.py ». Le test tests/test_web_module_sync.py\n"
+        "   échoue si les deux copies divergent.                                       */\n"
+    ),
+}
+
+
+def region_actuelle(html: str, debut: str, fin: str) -> str | None:
+    i = html.find(debut)
+    j = html.find(fin)
+    if i == -1 or j == -1 or j < i:
+        return None
+    return html[i:j + len(fin)]
+
+
+def verifie_syntaxe(code: str, nom: str) -> str | None:
+    """Retourne un message d'erreur si node refuse le bloc, sinon None."""
+    node = shutil.which("node")
+    if not node:
+        return None
+    tmp = RACINE / "web" / f".{nom.lower()}_syntaxe_check.js"
+    try:
+        tmp.write_text(code, encoding="utf-8")
+        r = subprocess.run([node, "--check", str(tmp)], capture_output=True, text=True)
+        if r.returncode != 0:
+            return (r.stderr or r.stdout or "").strip()[:400]
+        return None
+    finally:
+        tmp.unlink(missing_ok=True)
+
+
+def main(argv: list[str]) -> int:
+    check = "--check" in argv
+    codes = []
+    html = INDEX.read_text(encoding="utf-8")
+
+    for nom, (source, debut, fin) in MODULES.items():
+        if not source.exists():
+            print(f"ERREUR : {source} est introuvable.", file=sys.stderr)
+            return 2
+        actuelle = region_actuelle(html, debut, fin)
+        if actuelle is None:
+            print(f"ERREUR : marqueurs {nom}:BEGIN/END absents de web/index.html.",
+                  file=sys.stderr)
+            print(f"        Ajoutez-les autour du module de {source.name}.",
+                  file=sys.stderr)
+            return 2
+
+        module = source.read_text(encoding="utf-8").strip("\n")
+        voulue = ENTETES[nom] + module + "\n" + fin
+
+        if actuelle != voulue:
+            if check:
+                print(f"DIVERGENCE entre {source.name} et web/index.html.", file=sys.stderr)
+                print("  Lancez : python3 tools/sync_web_module.py", file=sys.stderr)
+                return 1
+            erreur = verifie_syntaxe(module, nom)
+            if erreur:
+                print(f"ERREUR : le module de {source.name} ne compile pas :",
+                      file=sys.stderr)
+                print(erreur, file=sys.stderr)
+                print("Injection annulée — web/index.html n'a pas été modifié.",
+                      file=sys.stderr)
+                return 1
+            html = (html[:html.find(debut)] + voulue
+                    + html[html.find(fin) + len(fin):])
+            codes.append(f"{nom} injecté ({len(voulue)} car.)")
+        else:
+            codes.append(f"{nom} synchronisé ({len(voulue)} car.)")
+
+    if not check:
+        INDEX.write_text(html, encoding="utf-8")
+    for ligne in codes:
+        print(("OK — " if check else "Injecté — ") + ligne)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

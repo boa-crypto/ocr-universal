@@ -1,0 +1,2549 @@
+{
+  "id": "job_1a7398a7fd09",
+  "created_at": 1792394052.8575583,
+  "info": {
+    "title": null,
+    "doc_type": "invoice",
+    "doc_number": "INV-2024-118",
+    "issue_date": "2024-03-12",
+    "due_date": null,
+    "issuer": null,
+    "sender": null,
+    "recipient": null,
+    "languages": [
+      "en"
+    ],
+    "page_count": 1,
+    "source_format": "pdf"
+  },
+  "pages": [
+    {
+      "page_num": 1,
+      "width": 1653.543260362413,
+      "height": 2338.5826958550347,
+      "text": "COMMERCIAL INVOICE\nInvoice No: INV-2024-118\nDate: 12/03/2024\nSeller: EXPEDITEUR TEST SARL\nBuyer: CLIENT TEST SA\nINCOterm: FOB ALGER\nCurrency: EUR\nDescription Qty Unit price Amount\nRef A 100 12,50 1 250,00\nTOTAL AMOUNT: 1 250,00 EUR",
+      "blocks": [
+        {
+          "text": "COMMERCIAL INVOICE\nInvoice No: INV-2024-118\nDate: 12/03/2024\nSeller: EXPEDITEUR TEST SARL\nBuyer: CLIENT TEST SA\nINCOterm: FOB ALGER\nCurrency: EUR",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 92.12991807725706,
+            "x1": 631.9055555555557,
+            "y1": 389.3521402994793,
+            "page_width": 1653.543260362413,
+            "page_height": 2338.5826958550347
+          },
+          "order": 0,
+          "column": 0,
+          "lines": [
+            {
+              "text": "COMMERCIAL INVOICE",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 92.12991807725706,
+                "x1": 507.91111111111115,
+                "y1": 122.68547363281262,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "COMMERCIAL",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 92.12991807725706,
+                    "x1": 373.77222222222224,
+                    "y1": 122.68547363281262,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "INVOICE",
+                  "bbox": {
+                    "x0": 382.2666666666667,
+                    "y0": 92.12991807725706,
+                    "x1": 507.91111111111115,
+                    "y1": 122.68547363281262,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Invoice No: INV-2024-118",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 136.57436252170152,
+                "x1": 518.2083333333334,
+                "y1": 167.12991807725706,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Invoice",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 136.57436252170152,
+                    "x1": 263.46666666666664,
+                    "y1": 167.12991807725706,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "No:",
+                  "bbox": {
+                    "x0": 271.9611111111111,
+                    "y0": 136.57436252170152,
+                    "x1": 319.50555555555553,
+                    "y1": 167.12991807725706,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "INV-2024-118",
+                  "bbox": {
+                    "x0": 328.0,
+                    "y0": 136.57436252170152,
+                    "x1": 518.2083333333334,
+                    "y1": 167.12991807725706,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "Date: 12/03/2024",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 181.01880696614595,
+                "x1": 401.08888888888896,
+                "y1": 211.57436252170152,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Date:",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 181.01880696614595,
+                    "x1": 239.69444444444446,
+                    "y1": 211.57436252170152,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "12/03/2024",
+                  "bbox": {
+                    "x0": 248.18888888888887,
+                    "y0": 181.01880696614595,
+                    "x1": 401.08888888888896,
+                    "y1": 211.57436252170152,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Seller: EXPEDITEUR TEST SARL",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 225.4632514105904,
+                "x1": 631.9055555555557,
+                "y1": 256.018806966146,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Seller:",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 225.4632514105904,
+                    "x1": 253.26111111111112,
+                    "y1": 256.018806966146,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "EXPEDITEUR",
+                  "bbox": {
+                    "x0": 261.75555555555553,
+                    "y0": 225.4632514105904,
+                    "x1": 457.00555555555565,
+                    "y1": 256.018806966146,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "TEST",
+                  "bbox": {
+                    "x0": 465.5000000000001,
+                    "y0": 225.4632514105904,
+                    "x1": 543.6000000000001,
+                    "y1": 256.018806966146,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "SARL",
+                  "bbox": {
+                    "x0": 552.0944444444445,
+                    "y0": 225.4632514105904,
+                    "x1": 631.9055555555557,
+                    "y1": 256.018806966146,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Buyer: CLIENT TEST SA",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 269.90769585503483,
+                "x1": 507.9722222222223,
+                "y1": 300.4632514105904,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Buyer:",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 269.90769585503483,
+                    "x1": 254.97222222222223,
+                    "y1": 300.4632514105904,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "CLIENT",
+                  "bbox": {
+                    "x0": 263.4666666666667,
+                    "y0": 269.90769585503483,
+                    "x1": 372.1222222222222,
+                    "y1": 300.4632514105904,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "TEST",
+                  "bbox": {
+                    "x0": 380.61666666666673,
+                    "y0": 269.90769585503483,
+                    "x1": 458.71666666666675,
+                    "y1": 300.4632514105904,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "SA",
+                  "bbox": {
+                    "x0": 467.21111111111117,
+                    "y0": 269.90769585503483,
+                    "x1": 507.9722222222223,
+                    "y1": 300.4632514105904,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "INCOterm: FOB ALGER",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 314.3521402994793,
+                "x1": 496.05555555555566,
+                "y1": 344.90769585503483,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "INCOterm:",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 314.3521402994793,
+                    "x1": 312.6611111111111,
+                    "y1": 344.90769585503483,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "FOB",
+                  "bbox": {
+                    "x0": 321.15555555555557,
+                    "y0": 314.3521402994793,
+                    "x1": 383.97777777777776,
+                    "y1": 344.90769585503483,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "ALGER",
+                  "bbox": {
+                    "x0": 392.4722222222223,
+                    "y0": 314.3521402994793,
+                    "x1": 496.05555555555566,
+                    "y1": 344.90769585503483,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            },
+            {
+              "text": "Currency: EUR",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 358.79658474392375,
+                "x1": 372.09166666666664,
+                "y1": 389.3521402994793,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Currency:",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 358.79658474392375,
+                    "x1": 299.09444444444443,
+                    "y1": 389.3521402994793,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "EUR",
+                  "bbox": {
+                    "x0": 307.5888888888889,
+                    "y0": 358.79658474392375,
+                    "x1": 372.09166666666664,
+                    "y1": 389.3521402994793,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            }
+          ],
+          "kind": "paragraph"
+        },
+        {
+          "text": "Description Qty Unit price Amount\nRef A 100 12,50 1 250,00",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 447.6854736328126,
+            "x1": 779.7333333333338,
+            "y1": 522.6854736328127,
+            "page_width": 1653.543260362413,
+            "page_height": 2338.5826958550347
+          },
+          "order": 1,
+          "column": 0,
+          "lines": [
+            {
+              "text": "Description Qty Unit price Amount",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 447.6854736328126,
+                "x1": 779.7333333333338,
+                "y1": 478.24102918836815,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Description",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 447.6854736328126,
+                    "x1": 319.475,
+                    "y1": 478.24102918836815,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Qty",
+                  "bbox": {
+                    "x0": 421.4083333333335,
+                    "y0": 447.6854736328126,
+                    "x1": 468.952777777778,
+                    "y1": 478.24102918836815,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Unit",
+                  "bbox": {
+                    "x0": 511.4250000000003,
+                    "y0": 447.6854736328126,
+                    "x1": 565.7527777777781,
+                    "y1": 478.24102918836815,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "price",
+                  "bbox": {
+                    "x0": 574.2472222222226,
+                    "y0": 447.6854736328126,
+                    "x1": 640.4611111111116,
+                    "y1": 478.24102918836815,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Amount",
+                  "bbox": {
+                    "x0": 674.4388888888892,
+                    "y0": 447.6854736328126,
+                    "x1": 779.7333333333338,
+                    "y1": 478.24102918836815,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "Ref A 100 12,50 1 250,00",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 492.12991807725706,
+                "x1": 761.2472222222225,
+                "y1": 522.6854736328127,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Ref",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 492.12991807725706,
+                    "x1": 214.2111111111111,
+                    "y1": 522.6854736328127,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "A",
+                  "bbox": {
+                    "x0": 222.70555555555558,
+                    "y0": 492.12991807725706,
+                    "x1": 243.08611111111114,
+                    "y1": 522.6854736328127,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "100",
+                  "bbox": {
+                    "x0": 395.98611111111126,
+                    "y0": 492.12991807725706,
+                    "x1": 446.9527777777779,
+                    "y1": 522.6854736328127,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "12,50",
+                  "bbox": {
+                    "x0": 489.42500000000024,
+                    "y0": 492.12991807725706,
+                    "x1": 565.8750000000003,
+                    "y1": 522.6854736328127,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "1",
+                  "bbox": {
+                    "x0": 642.3250000000002,
+                    "y0": 492.12991807725706,
+                    "x1": 659.3138888888891,
+                    "y1": 522.6854736328127,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "250,00",
+                  "bbox": {
+                    "x0": 667.8083333333335,
+                    "y0": 492.12991807725706,
+                    "x1": 761.2472222222225,
+                    "y1": 522.6854736328127,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9499999999999998
+            }
+          ],
+          "kind": "paragraph"
+        },
+        {
+          "text": "TOTAL AMOUNT: 1 250,00 EUR",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 581.0188069661459,
+            "x1": 614.9472222222223,
+            "y1": 611.5743625217015,
+            "page_width": 1653.543260362413,
+            "page_height": 2338.5826958550347
+          },
+          "order": 2,
+          "column": 0,
+          "lines": [
+            {
+              "text": "TOTAL AMOUNT: 1 250,00 EUR",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 581.0188069661459,
+                "x1": 614.9472222222223,
+                "y1": 611.5743625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "TOTAL",
+                  "bbox": {
+                    "x0": 166.66666666666666,
+                    "y0": 581.0188069661459,
+                    "x1": 265.14722222222224,
+                    "y1": 611.5743625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "AMOUNT:",
+                  "bbox": {
+                    "x0": 273.64166666666665,
+                    "y0": 581.0188069661459,
+                    "x1": 414.5333333333333,
+                    "y1": 611.5743625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "1",
+                  "bbox": {
+                    "x0": 423.0277777777778,
+                    "y0": 581.0188069661459,
+                    "x1": 440.01666666666677,
+                    "y1": 611.5743625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "250,00",
+                  "bbox": {
+                    "x0": 448.5111111111112,
+                    "y0": 581.0188069661459,
+                    "x1": 541.9500000000002,
+                    "y1": 611.5743625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "EUR",
+                  "bbox": {
+                    "x0": 550.4444444444446,
+                    "y0": 581.0188069661459,
+                    "x1": 614.9472222222223,
+                    "y1": 611.5743625217015,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            }
+          ],
+          "kind": "paragraph"
+        }
+      ],
+      "lines": [
+        {
+          "text": "COMMERCIAL INVOICE",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 92.12991807725706,
+            "x1": 507.91111111111115,
+            "y1": 122.68547363281262,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "COMMERCIAL",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 92.12991807725706,
+                "x1": 373.77222222222224,
+                "y1": 122.68547363281262,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "INVOICE",
+              "bbox": {
+                "x0": 382.2666666666667,
+                "y0": 92.12991807725706,
+                "x1": 507.91111111111115,
+                "y1": 122.68547363281262,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Invoice No: INV-2024-118",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 136.57436252170152,
+            "x1": 518.2083333333334,
+            "y1": 167.12991807725706,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Invoice",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 136.57436252170152,
+                "x1": 263.46666666666664,
+                "y1": 167.12991807725706,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "No:",
+              "bbox": {
+                "x0": 271.9611111111111,
+                "y0": 136.57436252170152,
+                "x1": 319.50555555555553,
+                "y1": 167.12991807725706,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "INV-2024-118",
+              "bbox": {
+                "x0": 328.0,
+                "y0": 136.57436252170152,
+                "x1": 518.2083333333334,
+                "y1": 167.12991807725706,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "Date: 12/03/2024",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 181.01880696614595,
+            "x1": 401.08888888888896,
+            "y1": 211.57436252170152,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Date:",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 181.01880696614595,
+                "x1": 239.69444444444446,
+                "y1": 211.57436252170152,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "12/03/2024",
+              "bbox": {
+                "x0": 248.18888888888887,
+                "y0": 181.01880696614595,
+                "x1": 401.08888888888896,
+                "y1": 211.57436252170152,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Seller: EXPEDITEUR TEST SARL",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 225.4632514105904,
+            "x1": 631.9055555555557,
+            "y1": 256.018806966146,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Seller:",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 225.4632514105904,
+                "x1": 253.26111111111112,
+                "y1": 256.018806966146,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "EXPEDITEUR",
+              "bbox": {
+                "x0": 261.75555555555553,
+                "y0": 225.4632514105904,
+                "x1": 457.00555555555565,
+                "y1": 256.018806966146,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "TEST",
+              "bbox": {
+                "x0": 465.5000000000001,
+                "y0": 225.4632514105904,
+                "x1": 543.6000000000001,
+                "y1": 256.018806966146,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "SARL",
+              "bbox": {
+                "x0": 552.0944444444445,
+                "y0": 225.4632514105904,
+                "x1": 631.9055555555557,
+                "y1": 256.018806966146,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Buyer: CLIENT TEST SA",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 269.90769585503483,
+            "x1": 507.9722222222223,
+            "y1": 300.4632514105904,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Buyer:",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 269.90769585503483,
+                "x1": 254.97222222222223,
+                "y1": 300.4632514105904,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "CLIENT",
+              "bbox": {
+                "x0": 263.4666666666667,
+                "y0": 269.90769585503483,
+                "x1": 372.1222222222222,
+                "y1": 300.4632514105904,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "TEST",
+              "bbox": {
+                "x0": 380.61666666666673,
+                "y0": 269.90769585503483,
+                "x1": 458.71666666666675,
+                "y1": 300.4632514105904,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "SA",
+              "bbox": {
+                "x0": 467.21111111111117,
+                "y0": 269.90769585503483,
+                "x1": 507.9722222222223,
+                "y1": 300.4632514105904,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "INCOterm: FOB ALGER",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 314.3521402994793,
+            "x1": 496.05555555555566,
+            "y1": 344.90769585503483,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "INCOterm:",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 314.3521402994793,
+                "x1": 312.6611111111111,
+                "y1": 344.90769585503483,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "FOB",
+              "bbox": {
+                "x0": 321.15555555555557,
+                "y0": 314.3521402994793,
+                "x1": 383.97777777777776,
+                "y1": 344.90769585503483,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "ALGER",
+              "bbox": {
+                "x0": 392.4722222222223,
+                "y0": 314.3521402994793,
+                "x1": 496.05555555555566,
+                "y1": 344.90769585503483,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "Currency: EUR",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 358.79658474392375,
+            "x1": 372.09166666666664,
+            "y1": 389.3521402994793,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Currency:",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 358.79658474392375,
+                "x1": 299.09444444444443,
+                "y1": 389.3521402994793,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "EUR",
+              "bbox": {
+                "x0": 307.5888888888889,
+                "y0": 358.79658474392375,
+                "x1": 372.09166666666664,
+                "y1": 389.3521402994793,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Description Qty Unit price Amount",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 447.6854736328126,
+            "x1": 779.7333333333338,
+            "y1": 478.24102918836815,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Description",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 447.6854736328126,
+                "x1": 319.475,
+                "y1": 478.24102918836815,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Qty",
+              "bbox": {
+                "x0": 421.4083333333335,
+                "y0": 447.6854736328126,
+                "x1": 468.952777777778,
+                "y1": 478.24102918836815,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Unit",
+              "bbox": {
+                "x0": 511.4250000000003,
+                "y0": 447.6854736328126,
+                "x1": 565.7527777777781,
+                "y1": 478.24102918836815,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "price",
+              "bbox": {
+                "x0": 574.2472222222226,
+                "y0": 447.6854736328126,
+                "x1": 640.4611111111116,
+                "y1": 478.24102918836815,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Amount",
+              "bbox": {
+                "x0": 674.4388888888892,
+                "y0": 447.6854736328126,
+                "x1": 779.7333333333338,
+                "y1": 478.24102918836815,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "Ref A 100 12,50 1 250,00",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 492.12991807725706,
+            "x1": 761.2472222222225,
+            "y1": 522.6854736328127,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Ref",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 492.12991807725706,
+                "x1": 214.2111111111111,
+                "y1": 522.6854736328127,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "A",
+              "bbox": {
+                "x0": 222.70555555555558,
+                "y0": 492.12991807725706,
+                "x1": 243.08611111111114,
+                "y1": 522.6854736328127,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "100",
+              "bbox": {
+                "x0": 395.98611111111126,
+                "y0": 492.12991807725706,
+                "x1": 446.9527777777779,
+                "y1": 522.6854736328127,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "12,50",
+              "bbox": {
+                "x0": 489.42500000000024,
+                "y0": 492.12991807725706,
+                "x1": 565.8750000000003,
+                "y1": 522.6854736328127,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "1",
+              "bbox": {
+                "x0": 642.3250000000002,
+                "y0": 492.12991807725706,
+                "x1": 659.3138888888891,
+                "y1": 522.6854736328127,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "250,00",
+              "bbox": {
+                "x0": 667.8083333333335,
+                "y0": 492.12991807725706,
+                "x1": 761.2472222222225,
+                "y1": 522.6854736328127,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9499999999999998
+        },
+        {
+          "text": "TOTAL AMOUNT: 1 250,00 EUR",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 581.0188069661459,
+            "x1": 614.9472222222223,
+            "y1": 611.5743625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "TOTAL",
+              "bbox": {
+                "x0": 166.66666666666666,
+                "y0": 581.0188069661459,
+                "x1": 265.14722222222224,
+                "y1": 611.5743625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "AMOUNT:",
+              "bbox": {
+                "x0": 273.64166666666665,
+                "y0": 581.0188069661459,
+                "x1": 414.5333333333333,
+                "y1": 611.5743625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "1",
+              "bbox": {
+                "x0": 423.0277777777778,
+                "y0": 581.0188069661459,
+                "x1": 440.01666666666677,
+                "y1": 611.5743625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "250,00",
+              "bbox": {
+                "x0": 448.5111111111112,
+                "y0": 581.0188069661459,
+                "x1": 541.9500000000002,
+                "y1": 611.5743625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "EUR",
+              "bbox": {
+                "x0": 550.4444444444446,
+                "y0": 581.0188069661459,
+                "x1": 614.9472222222223,
+                "y1": 611.5743625217015,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        }
+      ],
+      "words": [
+        {
+          "text": "COMMERCIAL",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 92.12991807725706,
+            "x1": 373.77222222222224,
+            "y1": 122.68547363281262,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "INVOICE",
+          "bbox": {
+            "x0": 382.2666666666667,
+            "y0": 92.12991807725706,
+            "x1": 507.91111111111115,
+            "y1": 122.68547363281262,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Invoice",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 136.57436252170152,
+            "x1": 263.46666666666664,
+            "y1": 167.12991807725706,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "No:",
+          "bbox": {
+            "x0": 271.9611111111111,
+            "y0": 136.57436252170152,
+            "x1": 319.50555555555553,
+            "y1": 167.12991807725706,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "INV-2024-118",
+          "bbox": {
+            "x0": 328.0,
+            "y0": 136.57436252170152,
+            "x1": 518.2083333333334,
+            "y1": 167.12991807725706,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Date:",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 181.01880696614595,
+            "x1": 239.69444444444446,
+            "y1": 211.57436252170152,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "12/03/2024",
+          "bbox": {
+            "x0": 248.18888888888887,
+            "y0": 181.01880696614595,
+            "x1": 401.08888888888896,
+            "y1": 211.57436252170152,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Seller:",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 225.4632514105904,
+            "x1": 253.26111111111112,
+            "y1": 256.018806966146,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "EXPEDITEUR",
+          "bbox": {
+            "x0": 261.75555555555553,
+            "y0": 225.4632514105904,
+            "x1": 457.00555555555565,
+            "y1": 256.018806966146,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "TEST",
+          "bbox": {
+            "x0": 465.5000000000001,
+            "y0": 225.4632514105904,
+            "x1": 543.6000000000001,
+            "y1": 256.018806966146,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "SARL",
+          "bbox": {
+            "x0": 552.0944444444445,
+            "y0": 225.4632514105904,
+            "x1": 631.9055555555557,
+            "y1": 256.018806966146,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Buyer:",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 269.90769585503483,
+            "x1": 254.97222222222223,
+            "y1": 300.4632514105904,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "CLIENT",
+          "bbox": {
+            "x0": 263.4666666666667,
+            "y0": 269.90769585503483,
+            "x1": 372.1222222222222,
+            "y1": 300.4632514105904,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "TEST",
+          "bbox": {
+            "x0": 380.61666666666673,
+            "y0": 269.90769585503483,
+            "x1": 458.71666666666675,
+            "y1": 300.4632514105904,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "SA",
+          "bbox": {
+            "x0": 467.21111111111117,
+            "y0": 269.90769585503483,
+            "x1": 507.9722222222223,
+            "y1": 300.4632514105904,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "INCOterm:",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 314.3521402994793,
+            "x1": 312.6611111111111,
+            "y1": 344.90769585503483,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "FOB",
+          "bbox": {
+            "x0": 321.15555555555557,
+            "y0": 314.3521402994793,
+            "x1": 383.97777777777776,
+            "y1": 344.90769585503483,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "ALGER",
+          "bbox": {
+            "x0": 392.4722222222223,
+            "y0": 314.3521402994793,
+            "x1": 496.05555555555566,
+            "y1": 344.90769585503483,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Currency:",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 358.79658474392375,
+            "x1": 299.09444444444443,
+            "y1": 389.3521402994793,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "EUR",
+          "bbox": {
+            "x0": 307.5888888888889,
+            "y0": 358.79658474392375,
+            "x1": 372.09166666666664,
+            "y1": 389.3521402994793,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Description",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 447.6854736328126,
+            "x1": 319.475,
+            "y1": 478.24102918836815,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Qty",
+          "bbox": {
+            "x0": 421.4083333333335,
+            "y0": 447.6854736328126,
+            "x1": 468.952777777778,
+            "y1": 478.24102918836815,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Unit",
+          "bbox": {
+            "x0": 511.4250000000003,
+            "y0": 447.6854736328126,
+            "x1": 565.7527777777781,
+            "y1": 478.24102918836815,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "price",
+          "bbox": {
+            "x0": 574.2472222222226,
+            "y0": 447.6854736328126,
+            "x1": 640.4611111111116,
+            "y1": 478.24102918836815,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Amount",
+          "bbox": {
+            "x0": 674.4388888888892,
+            "y0": 447.6854736328126,
+            "x1": 779.7333333333338,
+            "y1": 478.24102918836815,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Ref",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 492.12991807725706,
+            "x1": 214.2111111111111,
+            "y1": 522.6854736328127,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "A",
+          "bbox": {
+            "x0": 222.70555555555558,
+            "y0": 492.12991807725706,
+            "x1": 243.08611111111114,
+            "y1": 522.6854736328127,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "100",
+          "bbox": {
+            "x0": 395.98611111111126,
+            "y0": 492.12991807725706,
+            "x1": 446.9527777777779,
+            "y1": 522.6854736328127,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "12,50",
+          "bbox": {
+            "x0": 489.42500000000024,
+            "y0": 492.12991807725706,
+            "x1": 565.8750000000003,
+            "y1": 522.6854736328127,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "1",
+          "bbox": {
+            "x0": 642.3250000000002,
+            "y0": 492.12991807725706,
+            "x1": 659.3138888888891,
+            "y1": 522.6854736328127,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "250,00",
+          "bbox": {
+            "x0": 667.8083333333335,
+            "y0": 492.12991807725706,
+            "x1": 761.2472222222225,
+            "y1": 522.6854736328127,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "TOTAL",
+          "bbox": {
+            "x0": 166.66666666666666,
+            "y0": 581.0188069661459,
+            "x1": 265.14722222222224,
+            "y1": 611.5743625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "AMOUNT:",
+          "bbox": {
+            "x0": 273.64166666666665,
+            "y0": 581.0188069661459,
+            "x1": 414.5333333333333,
+            "y1": 611.5743625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "1",
+          "bbox": {
+            "x0": 423.0277777777778,
+            "y0": 581.0188069661459,
+            "x1": 440.01666666666677,
+            "y1": 611.5743625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "250,00",
+          "bbox": {
+            "x0": 448.5111111111112,
+            "y0": 581.0188069661459,
+            "x1": 541.9500000000002,
+            "y1": 611.5743625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "EUR",
+          "bbox": {
+            "x0": 550.4444444444446,
+            "y0": 581.0188069661459,
+            "x1": 614.9472222222223,
+            "y1": 611.5743625217015,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        }
+      ],
+      "quality": {
+        "brightness": 253.4834657893363,
+        "contrast": 17.987264988488086,
+        "blur_score": 297.68794061890463,
+        "noise_score": 0.0,
+        "estimated_skew_deg": 0.0,
+        "estimated_dpi": 200.0,
+        "ink_ratio": 0.00731148864762533,
+        "is_blank": false,
+        "issues": [
+          "overexposed",
+          "low_contrast"
+        ]
+      },
+      "preprocess_ops": [
+        {
+          "name": "shadow_removal",
+          "applied": true,
+          "params": {},
+          "reason": "éclairage inégal détecté"
+        },
+        {
+          "name": "contrast",
+          "applied": true,
+          "params": {},
+          "reason": "contraste faible (écart-type luminance bas)"
+        },
+        {
+          "name": "binarize",
+          "applied": true,
+          "params": {},
+          "reason": "contraste ET éclairage dégradés"
+        }
+      ],
+      "engine_runs": [
+        {
+          "engine": "native_pdf",
+          "page_num": 1,
+          "languages": [
+            "*"
+          ],
+          "mean_confidence": 0.9500000000000001,
+          "word_count": 36,
+          "duration_ms": 0.0,
+          "ok": true,
+          "error": null
+        }
+      ],
+      "orientation_deg": 0,
+      "detected_languages": [
+        "en"
+      ],
+      "has_native_text": true,
+      "native_text_ratio": 1.0,
+      "variant_selected": "preprocessed",
+      "direction": "ltr",
+      "blank": false
+    }
+  ],
+  "fields": {
+    "date": {
+      "name": "date",
+      "label": "Date",
+      "raw_value": "2024-03-12",
+      "normalized_value": "2024-03-12",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.727,
+      "calibrated_confidence": 0.727,
+      "engine_confidence": 0.95,
+      "page_num": 1,
+      "bbox": {
+        "x0": 642.3250000000002,
+        "y0": 492.12991807725706,
+        "x1": 659.3138888888891,
+        "y1": 522.6854736328127,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "date",
+      "anomalies": [],
+      "profile": null
+    },
+    "email": {
+      "name": "email",
+      "label": "E-mail",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "url": {
+      "name": "url",
+      "label": "URL",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "phone": {
+      "name": "phone",
+      "label": "Téléphone",
+      "raw_value": "2024118",
+      "normalized_value": "2024118",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.727,
+      "calibrated_confidence": 0.727,
+      "engine_confidence": 0.95,
+      "page_num": 1,
+      "bbox": {
+        "x0": 642.3250000000002,
+        "y0": 492.12991807725706,
+        "x1": 659.3138888888891,
+        "y1": 522.6854736328127,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "phone",
+      "anomalies": [],
+      "profile": null
+    },
+    "iban": {
+      "name": "iban",
+      "label": "IBAN",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "invoice_number": {
+      "name": "invoice_number",
+      "label": "Numéro de facture",
+      "raw_value": "INV-2024-118",
+      "normalized_value": "INV-2024-118",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 328.0,
+        "y0": 136.57436252170152,
+        "x1": 518.2083333333334,
+        "y1": 167.12991807725706,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:facture|invoice)\\s*(?:num[ée]ro|n[°o\\s]|no\\.?)?\\s*[:#]?\\s*(?!(?:invoice|facture|num[ée]ro|number|n[°o]\\b|no\\b|ref\\b|B/?L\\b)[:\\s])([A-Z0-9][A-Z0-9\\-/_]{2,30})",
+      "anomalies": [],
+      "profile": "invoice"
+    },
+    "vat_number": {
+      "name": "vat_number",
+      "label": "N° TVA",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "invoice"
+    },
+    "container_number": {
+      "name": "container_number",
+      "label": "N° conteneur",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "serial_number": {
+      "name": "serial_number",
+      "label": "N° de série",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "amount": {
+      "name": "amount",
+      "label": "Montant",
+      "raw_value": "118 | 1250.00",
+      "normalized_value": "118 | 1250.00",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.727,
+      "calibrated_confidence": 0.727,
+      "engine_confidence": 0.95,
+      "page_num": 1,
+      "bbox": {
+        "x0": 328.0,
+        "y0": 136.57436252170152,
+        "x1": 518.2083333333334,
+        "y1": 167.12991807725706,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "amount",
+      "anomalies": [],
+      "profile": null
+    },
+    "percent": {
+      "name": "percent",
+      "label": "Pourcentage",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "quantity": {
+      "name": "quantity",
+      "label": "Quantité + unité",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "issue_date": {
+      "name": "issue_date",
+      "label": "Date d'émission",
+      "raw_value": "12/03/2024",
+      "normalized_value": "2024-03-12",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 248.18888888888887,
+        "y0": 181.01880696614595,
+        "x1": 401.08888888888896,
+        "y1": 211.57436252170152,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:^|\\n)\\s*date\\s*[:#]?\\s*(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})",
+      "anomalies": [],
+      "profile": "invoice"
+    },
+    "due_date": {
+      "name": "due_date",
+      "label": "Date d'échéance",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "invoice"
+    },
+    "total_ht": {
+      "name": "total_ht",
+      "label": "Total HT",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "calibrated_confidence": null,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "invoice"
+    },
+    "total_ttc": {
+      "name": "total_ttc",
+      "label": "Total TTC",
+      "raw_value": "1 250,00",
+      "normalized_value": "1250.00",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 642.3250000000002,
+        "y0": 492.12991807725706,
+        "x1": 761.2472222222225,
+        "y1": 522.6854736328127,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:total\\s*ttc|total\\s*(?:due|amount|net\\s*to\\s*pay|g[ée]n[ée]ral))\\s*[:#]?\\s*(\\d{1,3}(?:[ .]\\d{3})*(?:,\\d{1,2})?|\\d+(?:[.,]\\d{1,2})?)",
+      "anomalies": [],
+      "profile": "invoice"
+    },
+    "currency": {
+      "name": "currency",
+      "label": "Devise",
+      "raw_value": "EUR",
+      "normalized_value": "EUR",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "calibrated_confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 261.75555555555553,
+        "y0": 225.4632514105904,
+        "x1": 457.00555555555565,
+        "y1": 256.018806966146,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "\\b(EUR|USD|DZD|GBP|DA|€|\\$)\\b",
+      "anomalies": [],
+      "profile": "invoice"
+    }
+  },
+  "tables": [],
+  "categories": {
+    "dates": [
+      "date"
+    ],
+    "contacts": [
+      "phone"
+    ],
+    "identifiants": [
+      "invoice_number"
+    ],
+    "numeriques": [
+      "amount"
+    ],
+    "_required": [
+      "invoice_number",
+      "issue_date",
+      "total_ttc"
+    ]
+  },
+  "barcodes": [],
+  "form_zones": [],
+  "quality": {
+    "mean_engine_confidence": 0.95,
+    "mean_global_confidence": 0.727,
+    "pages_low_confidence": [],
+    "fields_low_confidence": [],
+    "anomalies": [
+      {
+        "code": "PAGE_OVEREXPOSED",
+        "severity": "info",
+        "message": "page 1 : overexposed",
+        "page_num": 1,
+        "bbox": null,
+        "context": {
+          "blur": 297.68794061890463,
+          "dpi": 200.0
+        }
+      },
+      {
+        "code": "PAGE_LOW_CONTRAST",
+        "severity": "info",
+        "message": "page 1 : low_contrast",
+        "page_num": 1,
+        "bbox": null,
+        "context": {
+          "blur": 297.68794061890463,
+          "dpi": 200.0
+        }
+      },
+      {
+        "code": "AMBIGUOUS_CHARS",
+        "severity": "info",
+        "message": "champ 'phone' : caractères ambigus (O/0, I/l/1) dans 2024118",
+        "page_num": 1,
+        "bbox": {
+          "x0": 642.3250000000002,
+          "y0": 492.12991807725706,
+          "x1": 659.3138888888891,
+          "y1": 522.6854736328127,
+          "page_width": null,
+          "page_height": null
+        },
+        "context": {}
+      },
+      {
+        "code": "AMBIGUOUS_CHARS",
+        "severity": "info",
+        "message": "champ 'invoice_number' : caractères ambigus (O/0, I/l/1) dans INV-2024-118",
+        "page_num": 1,
+        "bbox": {
+          "x0": 328.0,
+          "y0": 136.57436252170152,
+          "x1": 518.2083333333334,
+          "y1": 167.12991807725706,
+          "page_width": null,
+          "page_height": null
+        },
+        "context": {}
+      },
+      {
+        "code": "AMBIGUOUS_CHARS",
+        "severity": "info",
+        "message": "champ 'amount' : caractères ambigus (O/0, I/l/1) dans 118 | 1250.00",
+        "page_num": 1,
+        "bbox": {
+          "x0": 328.0,
+          "y0": 136.57436252170152,
+          "x1": 518.2083333333334,
+          "y1": 167.12991807725706,
+          "page_width": null,
+          "page_height": null
+        },
+        "context": {}
+      }
+    ],
+    "disagreements": [],
+    "checks": []
+  },
+  "engines_used": [
+    "native_pdf"
+  ],
+  "direction": "ltr",
+  "profile_used": "invoice",
+  "classification": {
+    "category": "invoice",
+    "label": "Facture commerciale",
+    "confidence": 0.821,
+    "evidence": [
+      {
+        "indicator": "mot INVOICE",
+        "pattern": "\\bINVOICE\\b",
+        "weight": 2.0,
+        "kind": "distinctive",
+        "matched_text": "INVOICE"
+      },
+      {
+        "indicator": "numéro de facture",
+        "pattern": "(?:Invoice|Facture)\\s*(?:No|N[°o]|Number|Num[ée]ro)",
+        "weight": 1.5,
+        "kind": "distinctive",
+        "matched_text": "Invoice No"
+      },
+      {
+        "indicator": "montant total",
+        "pattern": "\\b(?:NET|GROSS|TOTAL)\\s+(?:AMOUNT|TOTAL|HT|TTC)\\b",
+        "weight": 1.0,
+        "kind": "distinctive",
+        "matched_text": "TOTAL AMOUNT"
+      },
+      {
+        "indicator": "Incoterm",
+        "pattern": "\\bINCO?TERMS?\\b",
+        "weight": 1.0,
+        "kind": "distinctive",
+        "matched_text": "INCOterm"
+      },
+      {
+        "indicator": "champ invoice_number",
+        "pattern": "(?:facture|invoice)\\s*(?:num[ée]ro|n[°o\\s]|no\\.?)?\\s*[:#]?\\s*(?!(?:invoice|facture|num[ée]ro|number|n[°o]\\b|no\\b|ref\\b|B/?L\\b)[:\\s])([A-Z0-9][A-Z0-9\\-/_]{2,30})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Invoice No: INV-2024-118"
+      },
+      {
+        "indicator": "champ issue_date",
+        "pattern": "(?:^|\\n)\\s*date\\s*[:#]?\\s*(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "\nDate: 12/03/2024"
+      },
+      {
+        "indicator": "champ total_ttc",
+        "pattern": "(?:total\\s*ttc|total\\s*(?:due|amount|net\\s*to\\s*pay|g[ée]n[ée]ral))\\s*[:#]?\\s*(\\d{1,3}(?:[ .]\\d{3})*(?:,\\d{1,2})?|\\d+(?:[.,]\\d{1,2})?)",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "TOTAL AMOUNT: 1 250,00"
+      },
+      {
+        "indicator": "champ currency",
+        "pattern": "\\b(EUR|USD|DZD|GBP|DA|€|\\$)\\b",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "EUR"
+      },
+      {
+        "indicator": "champ invoice_number",
+        "pattern": "(?:facture|invoice)\\s*(?:num[ée]ro|n[°o\\s]|no\\.?)?\\s*[:#]?\\s*(?!(?:invoice|facture|num[ée]ro|number|n[°o]\\b|no\\b|ref\\b|B/?L\\b)[:\\s])([A-Z0-9][A-Z0-9\\-/_]{2,30})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "Invoice No: INV-2024-118"
+      },
+      {
+        "indicator": "champ issue_date",
+        "pattern": "(?:^|\\n)\\s*date\\s*[:#]?\\s*(\\d{1,2}[/.\\-]\\d{1,2}[/.\\-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "\nDate: 12/03/2024"
+      },
+      {
+        "indicator": "champ total_ttc",
+        "pattern": "(?:total\\s*ttc|total\\s*(?:due|amount|net\\s*to\\s*pay|g[ée]n[ée]ral))\\s*[:#]?\\s*(\\d{1,3}(?:[ .]\\d{3})*(?:,\\d{1,2})?|\\d+(?:[.,]\\d{1,2})?)",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "TOTAL AMOUNT: 1 250,00"
+      },
+      {
+        "indicator": "champ currency",
+        "pattern": "\\b(EUR|USD|DZD|GBP|DA|€|\\$)\\b",
+        "weight": 0.5,
+        "kind": "complementary",
+        "matched_text": "EUR"
+      }
+    ],
+    "alternatives": [],
+    "classifier_version": "1.0.0",
+    "needs_review": false,
+    "reason": "",
+    "manual": false,
+    "corrected_by": null
+  },
+  "timings_ms": {
+    "ingest_ms": 64.9,
+    "ocr_ms": 751.7,
+    "ocr_workers": 1.0,
+    "tables_ms": 0.7,
+    "fields_ms": 20.3,
+    "barcodes_ms": 44.2,
+    "total_ms": 884.0
+  },
+  "warnings": [],
+  "source_file": "parcours_facture.pdf",
+  "source_hash": "f82287f52c67b4631fbe5958e32b94c2730d07c57ebef72f7a225b1df3472982",
+  "exports": [
+    {
+      "format": "json",
+      "path": "/home/user/ocr-universal/data/jobs/job_1a7398a7fd09/exports/result.json",
+      "size_bytes": 76493
+    },
+    {
+      "format": "txt",
+      "path": "/home/user/ocr-universal/data/jobs/job_1a7398a7fd09/exports/result.txt",
+      "size_bytes": 246
+    }
+  ]
+}

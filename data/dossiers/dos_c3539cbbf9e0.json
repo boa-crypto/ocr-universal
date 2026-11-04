@@ -1,0 +1,92 @@
+{
+ "id": "dos_c3539cbbf9e0",
+ "label": "Rendu avec pièces 1792335847768",
+ "profile": "importation",
+ "state": "revision_requise",
+ "state_label": "Révision requise",
+ "pieces": [
+  {
+   "job_id": "job_e3562179db16",
+   "filename": "facture.pdf",
+   "category": "unknown",
+   "added_at": 1792335847.7831829,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_0660ecb9dd32",
+   "filename": "bl_port.pdf",
+   "category": "unknown",
+   "added_at": 1792335847.7881088,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_3f3c7101b0a4",
+   "filename": "colisage.pdf",
+   "category": "unknown",
+   "added_at": 1792335847.795368,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "unknown": 3
+ },
+ "version": 1,
+ "created_at": 1792335847.7695403,
+ "updated_at": 1792335847.8133967,
+ "history": [
+  {
+   "ts": 1792335847.7695422,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792335847.7831852,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_e3562179db16",
+    "filename": "facture.pdf",
+    "category": "unknown"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792335847.7847154,
+   "action": "state_changed",
+   "detail": {
+    "from": "en_preparation",
+    "to": "revision_requise",
+    "pieces": 1
+   },
+   "acteur": "systeme"
+  },
+  {
+   "ts": 1792335847.7881107,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_0660ecb9dd32",
+    "filename": "bl_port.pdf",
+    "category": "unknown"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792335847.7953696,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_3f3c7101b0a4",
+    "filename": "colisage.pdf",
+    "category": "unknown"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

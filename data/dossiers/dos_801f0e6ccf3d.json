@@ -1,0 +1,103 @@
+{
+ "id": "dos_801f0e6ccf3d",
+ "label": "Rendu avec pièces 1792338839392",
+ "profile": "importation",
+ "state": "revision_requise",
+ "state_label": "Révision requise",
+ "pieces": [
+  {
+   "job_id": "job_f",
+   "filename": "facture.pdf",
+   "category": "unknown",
+   "added_at": 1792338839.4143596,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_b",
+   "filename": "bl.pdf",
+   "category": "unknown",
+   "added_at": 1792338839.419405,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_3f3c7101b0a4",
+   "filename": "colisage.pdf",
+   "category": "unknown",
+   "added_at": 1792338839.423885,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "unknown": 3
+ },
+ "version": 1,
+ "created_at": 1792338839.3938713,
+ "updated_at": 1792357612.9402688,
+ "history": [
+  {
+   "ts": 1792338839.3938737,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792338839.414363,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_f",
+    "filename": "facture.pdf",
+    "category": "unknown"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792338839.4153066,
+   "action": "state_changed",
+   "detail": {
+    "from": "en_preparation",
+    "to": "incomplet",
+    "pieces": 1
+   },
+   "acteur": "systeme"
+  },
+  {
+   "ts": 1792338839.4194071,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_b",
+    "filename": "bl.pdf",
+    "category": "unknown"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792338839.4238873,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_3f3c7101b0a4",
+    "filename": "colisage.pdf",
+    "category": "unknown"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792338839.4260206,
+   "action": "state_changed",
+   "detail": {
+    "from": "incomplet",
+    "to": "revision_requise",
+    "pieces": 3
+   },
+   "acteur": "systeme"
+  }
+ ],
+ "arbitrages": {}
+}

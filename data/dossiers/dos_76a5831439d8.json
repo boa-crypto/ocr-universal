@@ -1,0 +1,33 @@
+{
+ "id": "dos_76a5831439d8",
+ "label": "Archive rendu 1792391234215",
+ "profile": "importation",
+ "state": "archive",
+ "state_label": "Archivé",
+ "pieces": [],
+ "categories": {},
+ "version": 2,
+ "created_at": 1792391234.2166183,
+ "updated_at": 1792391234.219889,
+ "history": [
+  {
+   "ts": 1792391234.2166197,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792391234.2197845,
+   "action": "state_forced",
+   "detail": {
+    "from": "en_preparation",
+    "to": "archive",
+    "motif": "contrôle du harnais"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

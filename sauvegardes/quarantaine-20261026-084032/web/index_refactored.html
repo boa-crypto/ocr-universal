@@ -1,0 +1,3022 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+
+  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="/icon.svg">
+    <meta name="theme-color" content="#101A19">
+    <meta name="description" content="UniOCR — moteur OCR universel local : texte, structure, champs, tableaux, codes-barres.">
+<title>UniOCR — Poste de contrôle documentaire</title>
+<!-- Polices embarquées (SIL Open Font License 1.1) — déploiement 100 % hors ligne -->
+
+
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- ═══════ BARRE LATÉRALE ═══════ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">U</div>
+      <div class="brand-txt">
+        <div class="name">UniOCR</div>
+        <div class="tag">Local document operations</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-group">
+        <div class="nav-label">Atelier</div>
+        <button class="nav-item active" data-tab="tab-import" aria-controls="tab-import" aria-current="page">
+          <svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4m0 0l-4 4m4-4l4 4"/><path d="M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg>
+          <span class="nav-txt" data-i18n="nav.import">Importer</span><span class="nav-idx">01</span>
+        </button>
+        <button class="nav-item" data-tab="tab-docs" aria-controls="tab-docs">
+          <svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+          <span class="nav-txt" data-i18n="nav.docs">Documents</span><span class="nav-idx">02</span>
+        </button>
+        <button class="nav-item" data-tab="tab-result" aria-controls="tab-result">
+          <svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+          <span class="nav-txt" data-i18n="nav.result">Résultat</span><span class="nav-idx">03</span>
+        </button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">Maîtrise</div>
+        <button class="nav-item" data-tab="tab-quality" aria-controls="tab-quality">
+          <svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l8 4v6c0 4.5-3.2 7.5-8 9-4.8-1.5-8-4.5-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
+          <span class="nav-txt" data-i18n="nav.quality">Qualité</span><span class="nav-idx">04</span>
+        </button>
+        <button class="nav-item" data-tab="tab-config" aria-controls="tab-config">
+          <svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>
+          <span class="nav-txt" data-i18n="nav.config">Configuration</span><span class="nav-idx">05</span>
+        </button>
+        <button class="nav-item" data-tab="tab-dashboard" aria-controls="tab-dashboard">
+          <svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>
+          <span class="nav-txt" data-i18n="nav.dashboard">Tableau de bord</span><span class="nav-idx">06</span>
+        </button>
+        <button class="nav-item" data-tab="tab-review" aria-controls="tab-review">
+          <svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v5a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M8 15h8M8 19h5"/></svg>
+          <span class="nav-txt" data-i18n="nav.review">Révision</span><span class="nav-idx">07</span>
+        </button>
+        <button class="nav-item" data-tab="tab-profiles" aria-controls="tab-profiles">
+          <svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16v14H4z"/><path d="M8 5v14M4 9h4M4 13h4"/></svg>
+          <span class="nav-txt" data-i18n="nav.profiles">Profils</span><span class="nav-idx">08</span>
+        </button>
+        <button class="nav-item" data-tab="tab-connectors" aria-controls="tab-connectors">
+          <svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 7H6a3 3 0 000 6h3M15 17h3a3 3 0 000-6h-3M8 10h8"/></svg>
+          <span class="nav-txt" data-i18n="nav.connectors">Connecteurs</span><span class="nav-idx">09</span>
+        </button>
+        <button class="nav-item" data-tab="tab-dossier" aria-controls="tab-dossier">
+          <svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M9 13h6M9 16h4"/></svg>
+          <span class="nav-txt" data-i18n="nav.dossier">Dossier</span><span class="nav-idx">10</span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="sidebar-foot">
+      <button class="foot-btn" id="themeToggle" title="Basculer thème clair / sombre" aria-label="Basculer le thème">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+        <span class="foot-label">Thème</span>
+      </button>
+      <button class="foot-btn" id="sidebarCollapse" title="Réduire la barre latérale" aria-label="Réduire la barre latérale">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16m4-8h5m-3-3 3 3-3 3"/></svg>
+        <span class="foot-label">Réduire</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══════ COLONNE PRINCIPALE ═══════ -->
+  <div class="main">
+    <header class="topbar">
+      <div class="crumb">
+        <h2 id="pageTitle">Importer un document</h2>
+        <div class="sub" id="pageSub">Analyse visuelle et textuelle → données structurées</div>
+      </div>
+      <div class="lang-switch" role="group" aria-label="Langue de l'interface">
+        <button type="button" class="lang-btn" data-lang="fr" aria-pressed="true">FR</button><button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button><button type="button" class="lang-btn" data-lang="ar" aria-pressed="false">ع</button>
+      </div>
+      <div class="top-search">
+        <svg class="s-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        <input id="globalSearch" type="search" placeholder="Rechercher un document, un champ, un mot…"
+               aria-label="Recherche globale de documents" autocomplete="off" role="combobox"
+               aria-expanded="false" aria-controls="searchResults">
+        <div class="search-results hidden" id="searchResults" role="listbox" aria-label="Résultats de recherche"></div>
+      </div>
+      <div class="top-chips">
+        <div class="chip hidden" id="identChip" title="Utilisateur connecté et droits appliqués">
+          <span class="dot"></span><span id="identTxt">—</span>
+        </div>
+        <div class="chip glow" id="enginesChip" title="État des moteurs OCR">
+          <span class="dot"></span><span id="enginesTxt">connexion…</span>
+        </div>
+        <div class="chip" id="clockChip">—</div>
+      </div>
+    </header>
+
+    <div class="modal-voile hidden" id="jetonVoile" role="dialog" aria-modal="true"
+         aria-labelledby="jetonTitre">
+      <div class="modal">
+        <h3 id="jetonTitre">Connexion requise</h3>
+        <p>Ce serveur applique des rôles et un cloisonnement par dossier
+           (<span class="mono">data/rbac.json</span>). Saisissez le jeton qui
+           vous a été remis : il détermine ce que vous pouvez voir et faire.</p>
+        <div class="row">
+          <input class="edit" id="jetonInput" type="password" autocomplete="current-password"
+                 placeholder="jeton…" aria-label="Jeton d'accès">
+          <button class="btn" id="jetonBtn">Entrer</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="offline-banner" id="offlineBanner">
+      <span class="anom-ic">▲</span>
+      <span>API non jointe — saisissez l'URL du serveur UniOCR :</span>
+      <input class="mono" id="apiBaseInput" placeholder="http://localhost:8000" aria-label="URL de l'API">
+      <button class="btn sm" id="apiBaseBtn">Connecter</button>
+    </div>
+
+    <main class="workspace">
+
+      <!-- ─────────── 01 · IMPORT ─────────── -->
+      <section id="tab-import" class="page">
+        <header class="page-head">
+          <div class="page-index">01 — Atelier · Capture</div>
+          <h1 class="display" data-i18n="h.import">Importez. Vérifiez. Exportez.</h1>
+          <p class="lede">Traitez vos documents localement, examinez les valeurs extraites et gardez leur provenance à portée de main.</p>
+          <div class="hero-meta">
+            <div class="hm"><span class="k">Moteurs actifs</span><span class="val" id="homeEngines">—</span></div>
+            <div class="hm"><span class="k">Activité mesurée</span><span class="val" id="homeStats">—</span></div>
+          </div>
+        </header>
+
+        <div class="hero-grid">
+          <div class="col-main">
+            <!-- instrument d'importation -->
+            <div class="instrument">
+              <span class="corner tl"></span><span class="corner tr"></span>
+              <span class="corner bl"></span><span class="corner br"></span>
+              <span class="scanline"></span>
+                  <div class="drop" id="dropZone" role="button" tabindex="0"
+                   aria-label="Zone d'importation de documents">
+                <input type="file" id="fileInput" class="hidden" style="display:none"
+                       accept=".pdf,.png,.jpg,.jpeg,.tif,.tiff,.bmp,.webp,.docx,.odt,.txt,.rtf,.csv,.xlsx,.xls">
+                <div class="ring">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <path d="M7 18a4 4 0 01-.9-7.9 5.5 5.5 0 0110.6-1.4A4.5 4.5 0 0117.5 18H7z" stroke-linejoin="round"/>
+                    <path d="M12 13v5m0-5l-2 2m2-2l2 2" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <h4>Glissez votre document dans l'instrument</h4>
+                <p>ou cliquez pour parcourir · 50 Mo max · traitement 100 % local</p>
+                <div class="file-name" id="dropName"></div>
+              </div>
+              <div class="cam-row">
+                <button class="btn ghost sm" id="cameraBtn">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                  📷 Prendre une photo
+                </button>
+                <span class="muted" style="font-size:11px">conteneur · plaque · carte grise — via la caméra</span>
+                <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none">
+              </div>
+            </div>
+
+            <!-- actions principales -->
+            <div style="margin-top:22px;display:flex;gap:11px;align-items:center;flex-wrap:wrap">
+              <button class="btn" id="uploadBtn" disabled>
+                Lancer l'analyse
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="btn ghost sm" id="clearBtn" style="display:none">Retirer</button>
+              <span class="muted" style="font-size:11.5px" id="uploadStatus" role="status" aria-live="polite" aria-atomic="true"></span>
+            </div>
+
+            <!-- derniers documents (données réelles) -->
+            <div class="rule"></div>
+            <div class="panel-head">
+              <span class="idx">01.b</span>
+              <h3 class="sec-title">Derniers documents</h3>
+            </div>
+            <div id="homeRecent" style="border-top:1px solid var(--line-soft)">
+              <div class="empty">Aucun document traité pour l'instant — l'historique apparaîtra ici.</div>
+            </div>
+          </div>
+
+          <!-- colonne latérale : réglages -->
+          <aside class="col-side">
+            <div class="panel">
+              <div class="panel-head"><span class="idx">Profil</span>
+                <h3 class="sec-title" style="font-size:18px">Réglages d'analyse</h3>
+              </div>
+
+              <label class="lb" for="profileSelect">Profil métier</label>
+              <select class="inp" id="profileSelect"><option value="generic">Profil générique</option></select>
+              <div class="muted" id="profileHint" style="font-size:10.5px;margin-top:6px;line-height:1.6"></div>
+
+              <label class="lb">Mode qualité</label>
+              <div class="seg" id="qualitySeg">
+                <button type="button" data-qm="fast">🚀 Fast</button>
+                <button type="button" data-qm="accurate" class="on">⚡ Accurate</button>
+              </div>
+              <div class="muted" style="font-size:10.5px;margin-top:6px;line-height:1.6" id="qmHint">
+                Accurate compare les variantes et garde la meilleure.
+              </div>
+
+              <label class="lb">Langues (aucune sélection = auto-détection)</label>
+              <div id="langChips" class="fmt-chips">
+                <span class="muted" style="font-size:11px">chargement des modèles installés…</span>
+              </div>
+
+              <!-- options avancées -->
+              <div class="adv" id="advPanel" style="margin-top:18px">
+                <div class="adv-head" id="advToggle">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>
+                  Options avancées
+                  <span class="pill" id="advCount" style="margin-left:8px">11 réglages</span>
+                  <span class="chev">▾</span>
+                </div>
+                <div class="adv-body">
+                  <div class="field-row">
+                    <div>
+                      <label class="lb" for="preprocessMode">Prétraitement</label>
+                      <select class="inp" id="preprocessMode">
+                        <option value="standard">standard — qualité détectée</option>
+                        <option value="aggressive">agressif — scans dégradés</option>
+                        <option value="off">désactivé — image brute</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="lb" for="renderDpi">Résolution (PDF)</label>
+                      <select class="inp" id="renderDpi">
+                        <option value="150">150 DPI — rapide</option>
+                        <option value="200" selected>200 DPI — recommandé</option>
+                        <option value="300">300 DPI — fin</option>
+                        <option value="400">400 DPI — maximum</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="field-row">
+                    <div>
+                      <label class="lb" for="engineSelect">Moteur OCR</label>
+                      <select class="inp" id="engineSelect">
+                        <option value="auto">auto — sélection + consensus</option>
+                        <option value="tesseract">tesseract uniquement</option>
+                        <option value="native">couche texte native (PDF)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="lb" for="pageRange">Pages à traiter</label>
+                      <input class="inp" type="text" id="pageRange" placeholder="toutes — ex. 1-3, 5">
+                    </div>
+                  </div>
+
+                  <label class="lb" for="reviewRange">Seuil de revue humaine</label>
+                  <div class="range-row">
+                    <input type="range" id="reviewRange" min="50" max="95" step="5" value="70">
+                    <div class="range-val" id="reviewVal">70 %</div>
+                  </div>
+                  <div class="muted" style="font-size:10.5px;margin-top:5px">
+                    En dessous de ce score, les champs sont signalés dans l'onglet Qualité.
+                  </div>
+
+                  <label class="lb">Modules d'extraction</label>
+                  <div class="toggles">
+                    <label class="mini-switch"><input type="checkbox" id="exFields" checked><span class="track"></span><span class="lbl">Champs &amp; profils</span></label>
+                    <label class="mini-switch"><input type="checkbox" id="exTables" checked><span class="track"></span><span class="lbl">Tableaux</span></label>
+                    <label class="mini-switch"><input type="checkbox" id="exBarcodes" checked><span class="track"></span><span class="lbl">Codes-barres</span></label>
+                    <label class="mini-switch"><input type="checkbox" id="variantCmp" checked><span class="track"></span><span class="lbl">Variantes</span></label>
+                  </div>
+
+                  <label class="lb">Exports générés en fin de traitement</label>
+                  <div class="fmt-chips" id="fmtChips">
+                    <label class="langchip on"><input type="checkbox" data-fmt="json" checked hidden>🧬 JSON</label>
+                    <label class="langchip on"><input type="checkbox" data-fmt="txt" checked hidden>📄 TXT</label>
+                    <label class="langchip on"><input type="checkbox" data-fmt="csv" checked hidden>📑 CSV</label>
+                    <label class="langchip on"><input type="checkbox" data-fmt="xlsx" checked hidden>📊 XLSX</label>
+                    <label class="langchip on"><input type="checkbox" data-fmt="xml" checked hidden>🔮 XML</label>
+                    <label class="langchip on"><input type="checkbox" data-fmt="pdf" checked hidden>📕 PDF</label>
+                  </div>
+                  <div class="muted" style="font-size:10.5px;margin-top:5px">
+                    Les formats non cochés restent téléchargeables à la demande depuis l'onglet Résultat.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- pipeline -->
+            <div class="panel">
+              <div class="panel-head"><span class="idx">Live</span>
+                <h3 class="sec-title" style="font-size:18px">Pipeline en direct</h3>
+              </div>
+              <div class="progress" role="progressbar" aria-label="Progression du traitement" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="progressBar"></i></div>
+              <div class="steps" id="pipelineSteps">
+                <div class="step" data-stage="ingest"><span class="st-idx">01</span><span class="st-dot"></span><span>Ingestion &amp; sécurité</span></div>
+                <div class="step" data-stage="ocr"><span class="st-idx">02</span><span class="st-dot"></span><span>OCR &amp; langues</span></div>
+                <div class="step" data-stage="tables"><span class="st-idx">03</span><span class="st-dot"></span><span>Tableaux &amp; structure</span></div>
+                <div class="step" data-stage="fields"><span class="st-idx">04</span><span class="st-dot"></span><span>Champs métier</span></div>
+                <div class="step" data-stage="quality"><span class="st-idx">05</span><span class="st-dot"></span><span>Contrôle qualité</span></div>
+                <div class="step" data-stage="done"><span class="st-idx">06</span><span class="st-dot"></span><span>Terminé</span></div>
+              </div>
+              <div class="logbox" id="processLog" role="log" aria-live="polite" aria-label="Journal du traitement">
+                <div class="muted">En attente d'un document…</div>
+              </div>
+              <div id="exportLinks" class="export-grid" style="margin-top:16px"></div>
+            </div>
+          </aside>
+        </div>
+
+        <!-- ─── traitement par lots ─── -->
+        <div class="panel" style="margin-top:26px">
+          <div class="panel-head">
+            <span class="idx">Lots</span>
+            <h3 class="sec-title" style="font-size:18px">Traitement par lots</h3>
+          </div>
+          <p class="muted" style="font-size:12.5px;margin:0 0 16px;max-width:70ch">
+            Déposez plusieurs documents d'un coup. Un fichier déjà traité n'est pas
+            recalculé — son résultat existant est réutilisé. Les fichiers refusés
+            (format ou taille) sont écartés et signalés, sans faire échouer le lot.
+          </p>
+
+          <div class="batch-bar">
+            <button class="btn" id="batchPick">📁 Choisir des documents</button>
+            <input type="file" id="batchInput" class="hidden" style="display:none" multiple
+                   accept=".pdf,.png,.jpg,.jpeg,.tif,.tiff,.bmp,.webp,.docx,.odt,.txt,.rtf,.csv,.xlsx,.xls">
+            <span class="muted mono" id="batchCount" style="font-size:11px">aucun fichier</span>
+            <button class="btn ghost" id="batchClear" disabled>Vider</button>
+          </div>
+
+          <div id="batchFiles" class="batch-files"></div>
+
+          <div class="batch-bar" style="margin-top:16px">
+            <button class="btn" id="batchRun" disabled>Lancer le traitement</button>
+            <span class="muted mono" id="batchStatus" style="font-size:11px"></span>
+          </div>
+
+          <div id="batchResult" class="batch-result"></div>
+        </div>
+      </section>
+
+      <!-- ─────────── 02 · DOCUMENTS ─────────── -->
+      <section id="tab-docs" class="page hidden">
+        <header class="page-head">
+          <div class="page-index">02 — Atelier · Archive</div>
+          <h1 class="display" data-i18n="h.docs">Documents <em>traités</em></h1>
+          <p class="lede">Historique complet des traitements, avec état, profil et accès
+            immédiat aux résultats.</p>
+        </header>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px">
+          <div style="flex:1;min-width:220px">
+            <input class="inp" id="docSearch" type="search" placeholder="Rechercher par nom de fichier…" aria-label="Rechercher un document">
+          </div>
+          <div style="width:210px">
+            <select class="inp" id="filterStatus" aria-label="Filtrer par état">
+              <option value="">Tous les états</option>
+              <option value="done">Terminé</option>
+              <option value="processing">En cours</option>
+              <option value="error">Erreur</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="panel panel-flush">
+          <div class="table-scroll" role="region" aria-label="Liste des documents" tabindex="0">
+          <table class="tbl" id="jobsTable">
+            <thead>
+              <tr><th>Fichier</th><th>État</th><th>Progression</th><th>Profil</th><th>Créé le</th><th></th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          </div>
+          <div class="empty" id="jobsEmpty">Aucun document pour l'instant.<br>
+            <b>Lancez un premier traitement depuis l'onglet Importer.</b></div>
+        </div>
+      </section>
+
+      <!-- ─────────── 03 · RÉSULTAT ─────────── -->
+      <section id="tab-result" class="page hidden">
+        <header class="page-head">
+          <div class="page-index">03 — Analyse · Données extraites</div>
+          <h1 class="display" data-i18n="h.result">Résultat <em>d'analyse</em></h1>
+          <p class="lede">Texte, champs, tableaux — chaque valeur reliée à sa zone exacte
+            dans le document source.</p>
+        </header>
+
+        <div class="hero-grid" style="grid-template-columns:minmax(0,1.3fr) minmax(340px,1fr)">
+          <!-- A · document source -->
+          <div class="col-main">
+            <div class="viewer-toolbar">
+              <span class="idx page-index" style="margin:0">A · Source</span>
+              <button class="btn ghost sm" id="prevPage" aria-label="Page précédente">←</button>
+              <span class="pg-label" id="pageLabel">— / —</span>
+              <button class="btn ghost sm" id="nextPage" aria-label="Page suivante">→</button>
+              <span class="pill lang" id="langBadge" style="margin-left:auto">langues —</span>
+              <span class="pill" id="variantBadge">variante —</span>
+            </div>
+            <div class="viewer" id="viewer">
+              <div class="empty">Aucun résultat chargé.<br>
+                <b>Traitez un document ou ouvrez-le depuis l'onglet Documents.</b></div>
+            </div>
+            <div style="margin-top:14px">
+              <input class="inp" id="textSearch" type="search" placeholder="Rechercher dans le texte…" aria-label="Rechercher dans le texte">
+              <textarea class="inp" id="textView" readonly rows="9"
+                placeholder="Le texte reconnu, page par page, apparaîtra ici…"
+                aria-label="Texte reconnu"
+                style="margin-top:10px;font-family:var(--font-mono);font-size:11.5px;line-height:1.7;resize:vertical;min-height:170px"></textarea>
+            </div>
+          </div>
+
+          <!-- C · données extraites -->
+          <aside class="col-side">
+            <div class="panel">
+              <div class="panel-head"><span class="idx">C · Données</span>
+                <h3 class="sec-title" style="font-size:19px">Champs extraits</h3>
+              </div>
+              <div class="sel-bar">
+                <label class="ph-check" for="selAll">
+                  <input type="checkbox" id="selAll">
+                  <span>Tout sélectionner</span>
+                </label>
+                <span class="muted mono" id="selCount" style="font-size:10.5px">0 champ</span>
+                <button class="btn ghost sm" id="exportSelCsv" disabled>Exporter la sélection (CSV)</button>
+                <button class="btn ghost sm" id="exportSelJson" disabled>JSON</button>
+              </div>
+              <div style="overflow-x:auto">
+                <table class="tbl" id="fieldsTable">
+                  <thead>
+                    <tr><th>Sel.</th><th>Champ</th><th>Valeur brute</th><th>Normalisée</th><th>Confiance</th><th>Statut</th><th>Validation</th></tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="empty" id="fieldsEmpty" style="display:none"></div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head"><span class="idx">Export</span>
+                <h3 class="sec-title" style="font-size:19px">Exporter</h3>
+              </div>
+              <div class="export-grid" id="exportLinksResult"></div>
+            </div>
+          </aside>
+        </div>
+
+        <div class="rule"></div>
+
+        <div class="hero-grid" style="grid-template-columns:1fr 1fr">
+          <div>
+            <div class="panel-head"><span class="idx">B · Structure</span>
+              <h3 class="sec-title">Tableaux reconstruits</h3>
+            </div>
+            <div class="scroll" id="tablesView" style="overflow-x:auto">
+              <div class="empty">Les tableaux détectés apparaîtront ici.</div>
+            </div>
+          </div>
+          <div>
+            <div class="panel-head"><span class="idx">D · Annexes</span>
+              <h3 class="sec-title">Codes-barres &amp; moteurs</h3>
+            </div>
+            <div id="barcodesView">
+              <div class="empty">Codes-barres et QR détectés.</div>
+            </div>
+            <div id="enginesView" style="margin-top:18px"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────── 04 · QUALITÉ ─────────── -->
+      <section id="tab-quality" class="page hidden">
+        <header class="page-head">
+          <div class="page-index">04 — Maîtrise · Confiance</div>
+          <h1 class="display" data-i18n="h.quality">Contrôle <em>qualité</em></h1>
+          <p class="lede">Deux confiances (moteur et système), anomalies, cohérence métier
+            et validation humaine. Aucun score n'est simulé.</p>
+        </header>
+
+        <div class="hero-grid" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="panel"><div class="stat">
+            <span class="lbl">Confiance moteur</span>
+            <div class="gv"><div class="v grad-text" id="qEngine">—</div><div class="sub">moyenne OCR</div></div>
+          </div></div>
+          <div class="panel"><div class="stat">
+            <span class="lbl">Confiance système</span>
+            <div class="gv"><div class="v" id="qGlobal">—</div><div class="sub">qualité × moteur</div></div>
+          </div></div>
+          <div class="panel"><div class="stat">
+            <span class="lbl">Anomalies</span>
+            <div class="gv"><div class="v grad-text" id="qAnom">—</div><div class="sub" id="qAnomBreak"></div></div>
+          </div></div>
+        </div>
+
+        <div class="rule"></div>
+
+        <div class="hero-grid" style="grid-template-columns:1fr 1fr">
+          <div>
+            <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Anomalies détectées</h3></div>
+            <div id="anomaliesView"><div class="empty">Aucune anomalie — ou aucun résultat chargé.</div></div>
+          </div>
+          <div>
+            <div class="panel-head"><span class="idx">B</span><h3 class="sec-title">Désaccords moteurs &amp; cohérence</h3></div>
+            <div id="disagreementsView"><div class="empty">Aucun désaccord — ou aucun résultat chargé.</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────── 05 · CONFIGURATION ─────────── -->
+      <section id="tab-config" class="page hidden">
+        <header class="page-head">
+          <div class="page-index">05 — Maîtrise · Système</div>
+          <h1 class="display" data-i18n="h.config">Configuration <em>réelle</em></h1>
+          <p class="lede">Uniquement ce qui est réellement installé et vérifié — moteurs,
+            modèles de langues, profils métier.</p>
+        </header>
+
+        <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Moteurs OCR</h3></div>
+        <div id="enginesList" class="panel"><div class="empty">Chargement…</div></div>
+
+        <div class="rule"></div>
+
+        <div class="hero-grid" style="grid-template-columns:1fr 1fr">
+          <div>
+            <div class="panel-head"><span class="idx">B</span><h3 class="sec-title">Modèles de langues</h3></div>
+            <div id="langsView"><div class="empty">Chargement…</div></div>
+          </div>
+          <div>
+            <div class="panel-head"><span class="idx">C</span><h3 class="sec-title">Profils métier</h3></div>
+            <div id="profilesView"><div class="empty">Chargement…</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────── 06 · TABLEAU DE BORD ─────────── -->
+      <section id="tab-dashboard" class="page hidden">
+        <header class="page-head">
+          <div class="page-index">06 — Maîtrise · Mesure</div>
+          <h1 class="display" data-i18n="h.dashboard">Tableau de <em>bord</em></h1>
+          <p class="lede">Activité réelle du service et ressources système — mesurées,
+            jamais estimées.</p>
+        </header>
+
+        <div class="hero-grid" style="grid-template-columns:1fr 1fr 1fr 1fr">
+          <div class="panel"><div class="stat"><span class="lbl">Documents</span>
+            <div class="v grad-text" id="stTotal" style="font-family:var(--font-display);font-size:42px">0</div></div></div>
+          <div class="panel"><div class="stat"><span class="lbl">Terminés</span>
+            <div class="v" id="stDone" style="font-family:var(--font-display);font-size:42px">0</div></div></div>
+          <div class="panel"><div class="stat"><span class="lbl">Erreurs</span>
+            <div class="v" id="stError" style="font-family:var(--font-display);font-size:42px">0</div></div></div>
+          <div class="panel"><div class="stat"><span class="lbl">Mémoire</span>
+            <div class="v" id="stMem" style="font-family:var(--font-display);font-size:42px">—</div></div></div>
+        </div>
+
+        <div class="rule"></div>
+
+        <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Activité récente</h3></div>
+        <div class="bar-chart" id="statusChart"></div>
+
+        <div class="panel-head" style="margin-top:28px"><span class="idx">B</span><h3 class="sec-title">Sauvegarde du magasin</h3></div>
+        <div class="panel" style="padding:18px 20px">
+          <p style="margin:0 0 14px;color:var(--dim);font-size:13px;line-height:1.6">
+            Documents traités, corrections humaines et transmissions vivent dans le
+            magasin local. Rien ne le protégeait d'une suppression accidentelle :
+            une sauvegarde vérifiée est le seul moyen de récupérer ce travail.
+          </p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <button class="btn primary" id="btnBackupNow">Sauvegarder maintenant</button>
+            <button class="btn" id="btnBackupList">Lister les sauvegardes</button>
+          </div>
+          <div id="backupOut" style="margin-top:14px"></div>
+        </div>
+
+        <div class="panel-head" style="margin-top:28px"><span class="idx">C</span><h3 class="sec-title">Journal d'audit</h3></div>
+        <div class="audit-bar">
+          <select class="inp" id="auditEvent" aria-label="Filtrer par type d'événement">
+            <option value="">Tous les événements</option>
+          </select>
+          <input class="inp" id="auditQuery" type="search" placeholder="Filtrer (job, fichier, profil…)…"
+                 aria-label="Filtrer le journal d'audit">
+          <button class="btn ghost sm" id="auditRefresh">↻ Actualiser</button>
+        </div>
+        <div class="logbox" id="auditLog"><div class="muted">Activité des traitements…</div></div>
+      </section>
+
+      <section id="tab-review" class="page hidden">
+        <div class="page-head">
+          <div>
+            <div class="ph-kicker">File de validation</div>
+            <h3 class="ph-title">À réviser</h3>
+            <p class="ph-sub">Seuls les champs qu'un humain doit trancher : invalides, ambigus,
+              non détectés ou sous le seuil de confiance. Le reste ne s'affiche pas.</p>
+          </div>
+          <div class="ph-actions">
+            <label class="ph-field" for="reviewThreshold">Seuil de confiance</label>
+            <select class="inp" id="reviewThreshold" aria-label="Seuil de confiance">
+              <option value="0.9">Strict — 90 %</option>
+              <option value="0.75" selected>Normal — 75 %</option>
+              <option value="0.5">Permissif — 50 %</option>
+            </select>
+            <label class="ph-check" for="reviewUndetected">
+              <input type="checkbox" id="reviewUndetected">
+              <span>inclure les champs non détectés</span>
+            </label>
+            <button class="btn ghost sm" id="reviewRefresh">↻ Actualiser</button>
+          </div>
+        </div>
+
+        <div class="stat-row" id="reviewStats"></div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Champs en attente</div>
+            <div class="card-sub" id="reviewCount">—</div>
+          </div>
+          <div id="reviewList"></div>
+        </div>
+
+        <div class="kbd-help">
+          <b>j</b>/<b>k</b> parcourir · <b>Entrée</b> valider la valeur du champ focalisé ·
+          <b>u</b> annuler la correction (motif demandé, historique conservé) ·
+          <b>o</b> ouvrir le document source
+        </div>
+      </section>
+
+      <!-- ─────────── 08 · PROFILS ─────────── -->
+      <section id="tab-profiles" class="page hidden">
+        <header class="page-head">
+          <div class="page-index">08 — Maîtrise · Profils d'extraction</div>
+          <h1 class="display" data-i18n="h.profiles">Profils <em>métier</em></h1>
+          <p class="lede">Définissez les champs à extraire, leurs motifs et leurs
+            validateurs — puis essayez le profil sur un document réel avant de l'enregistrer.
+            Les profils que vous créez vivent dans <span class="mono">data/profiles/</span> :
+            une mise à jour du projet ne les écrasera jamais.</p>
+        </header>
+
+        <div class="prof-layout">
+          <!-- colonne gauche : liste + sélection -->
+          <aside class="prof-col">
+            <div class="panel-head"><span class="idx">Bibliothèque</span>
+              <h3 class="sec-title" style="font-size:17px">Profils disponibles</h3>
+            </div>
+            <div id="profList" class="prof-list"></div>
+            <button class="btn" id="profNew" style="width:100%;margin-top:12px">+ Nouveau profil</button>
+          </aside>
+
+          <!-- colonne droite : éditeur -->
+          <div class="prof-col prof-editor">
+            <div id="profEmpty" class="empty" style="display:none">
+              Sélectionnez un profil à gauche, ou créez-en un nouveau.
+            </div>
+
+            <div id="profForm" class="prof-form" style="display:none">
+              <div class="panel-head">
+                <span class="idx" id="profSource">—</span>
+                <h3 class="sec-title" style="font-size:19px" id="profTitle">Profil</h3>
+              </div>
+
+              <div class="prof-meta">
+                <label class="lb" for="profName">Identifiant (nom de fichier)</label>
+                <input class="inp" id="profName" placeholder="mon_profil" aria-label="Identifiant du profil">
+                <label class="lb" for="profLabel">Libellé affiché</label>
+                <input class="inp" id="profLabel" placeholder="Mon profil métier" aria-label="Libellé">
+                <label class="lb" for="profDesc">Description</label>
+                <input class="inp" id="profDesc" placeholder="À quoi sert ce profil" aria-label="Description">
+              </div>
+
+              <div class="prof-actions">
+                <button class="btn" id="profSave">Enregistrer</button>
+                <button class="btn ghost" id="profDelete">Supprimer</button>
+                <span class="muted mono" id="profMsg" style="font-size:10.5px"></span>
+              </div>
+
+              <div class="panel-head" style="margin-top:26px">
+                <span class="idx">Champs</span>
+                <h3 class="sec-title" style="font-size:17px">Champs extraits</h3>
+                <button class="btn ghost sm" id="profAddField" style="margin-left:auto">+ Ajouter un champ</button>
+              </div>
+              <div id="profFields" class="prof-fields"></div>
+
+              <div class="panel-head" style="margin-top:26px">
+                <span class="idx">Essai</span>
+                <h3 class="sec-title" style="font-size:17px">Essayer sur un document</h3>
+              </div>
+              <p class="muted" style="font-size:12px;margin:0 0 12px;max-width:70ch">
+                Collez un extrait de texte, ou indiquez l'identifiant d'un document
+                déjà traité. Rien n'est enregistré : c'est un essai à blanc.
+              </p>
+              <div class="prof-test">
+                <input class="inp" id="profTestJob" placeholder="job_id (optionnel)" aria-label="Identifiant de document">
+                <textarea class="inp" id="profTestText" rows="5"
+                  placeholder="…ou collez ici le texte du document" aria-label="Texte à essayer"></textarea>
+                <button class="btn" id="profRunTest">Essayer</button>
+              </div>
+              <div id="profTestOut" class="prof-test-out"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- ─────────── 10 · PARCOURS DOCUMENTAIRE ─────────── -->
+      <section id="tab-dossier" class="page hidden">
+        <header class="page-head">
+          <div class="page-index">10 — Parcours · Dossier documentaire</div>
+          <h1 class="display" data-i18n="h.dossier">Parcours <em>documentaire</em></h1>
+          <p class="ph-sub" data-i18n="h.dossier.sub">
+            Regrouper les documents d'un même envoi, les comparer entre eux,
+            puis produire un paquet de données. Chaque état affiché est déduit
+            de faits réels — rien n'est déclaré terminé sans l'avoir été.
+          </p>
+        </header>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Nouveau dossier</div>
+            <div class="card-sub">
+              Un profil décrit des conventions de rangement, jamais des
+              obligations réglementaires.
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+            <label class="ph-field" for="dossierLabel">Libellé</label>
+            <input class="inp" id="dossierLabel" placeholder="ex. Import 2024-118"
+                   style="flex:1;min-width:220px">
+            <label class="ph-field" for="dossierProfile">Profil</label>
+            <select class="inp" id="dossierProfile" aria-label="Profil de dossier"></select>
+            <button class="btn" id="dossierCreer">Créer le dossier</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Dossiers existants</div>
+            <div class="card-sub">Cliquez sur un libellé pour l'ouvrir</div>
+          </div>
+          <div id="dossierListe"><div class="card-sub">Chargement…</div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Types de documents reconnus</div>
+            <div class="card-sub">
+              Ce que le classifieur sait distinguer, et où il s'arrête
+            </div>
+          </div>
+          <div id="dossierTypes"><div class="card-sub">Chargement…</div></div>
+        </div>
+
+        <div id="dossierDetail">
+          <div class="card-sub">
+            Sélectionnez un dossier, ou créez-en un, pour voir ses pièces, les
+            contrôles de cohérence et générer un paquet de données.
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-connectors" class="page hidden">
+        <header class="page-head">
+          <div class="page-index">09 — Intégration · Connecteur Hub</div>
+          <h1 class="display" data-i18n="h.connectors">Connecteur <em>Hub</em></h1>
+          <p class="lede">
+            Pont entre vos documents traités et les systèmes qui doivent les recevoir.
+            Rien n'est envoyé sans validation humaine explicite, et l'état d'un
+            connecteur repose sur un <strong>test réel</strong>, jamais sur un
+            interrupteur. Le connecteur de démonstration est un
+            <strong>simulateur local</strong> : il n'est pas une intégration réelle.
+          </p>
+        </header>
+
+        <div class="cnx">
+          <!-- ═══ barre des 12 sous-menus ═══ -->
+          <nav class="cnx-subnav" id="cnxSubnav" role="tablist" aria-label="Sections du Connecteur Hub"></nav>
+
+          <!-- ══════════ 01 · VUE D'ENSEMBLE ══════════ -->
+          <div class="cnx-pane" data-cnx="overview">
+            <div class="cnx-grid" id="cnxOverview"></div>
+          </div>
+
+          <!-- ══════════ 02 · CATALOGUE ══════════ -->
+          <div class="cnx-pane hidden" data-cnx="catalog">
+            <div class="panel-head"><span class="idx">02</span>
+              <h3 class="sec-title">Adaptateurs disponibles</h3></div>
+            <p class="cnx-note">
+              Un adaptateur décrit <em>comment parler</em> à un type de système.
+              L'ajouter ne le connecte à rien : il faut encore le configurer puis
+              le tester. Aucun adaptateur réel n'est livré ici faute d'accès
+              autorisé et documenté.
+            </p>
+            <div id="cnxCatalog" class="cnx-cards"></div>
+          </div>
+
+          <!-- ══════════ 03 · CONNECTEURS ACTIFS ══════════ -->
+          <div class="cnx-pane hidden" data-cnx="active">
+            <div class="panel-head"><span class="idx">03</span>
+              <h3 class="sec-title">Connecteurs configurés</h3></div>
+            <div id="cnxActive" class="cnx-cards"></div>
+          </div>
+
+          <!-- ══════════ 04 · AJOUTER (assistant 9 étapes) ══════════ -->
+          <div class="cnx-pane hidden" data-cnx="add">
+            <div class="panel-head"><span class="idx">04</span>
+              <h3 class="sec-title">Assistant de création</h3></div>
+            <ol class="cnx-steps" id="cnxSteps"></ol>
+            <div class="cnx-wizard" id="cnxWizard"></div>
+          </div>
+
+          <!-- ══════════ 05 · CONFIGURATION ══════════ -->
+          <div class="cnx-pane hidden" data-cnx="config">
+            <div class="panel-head"><span class="idx">05</span>
+              <h3 class="sec-title">Configuration détaillée</h3></div>
+            <div class="cnx-form" id="cnxConfig"></div>
+          </div>
+
+          <!-- ══════════ 06 · CORRESPONDANCE DES CHAMPS ══════════ -->
+          <div class="cnx-pane hidden" data-cnx="mapping">
+            <div class="panel-head"><span class="idx">06</span>
+              <h3 class="sec-title">Correspondance des champs</h3></div>
+            <p class="cnx-note">
+              Le moteur propose des correspondances par similarité, mais
+              <strong>ne les applique jamais seul</strong> : chaque règle est
+              explicite, versionnée et traçable.
+            </p>
+            <div class="cnx-mapping" id="cnxMapping"></div>
+          </div>
+
+          <!-- ══════════ 07 · MODÈLES DE FORMULAIRES ══════════ -->
+          <div class="cnx-pane hidden" data-cnx="forms">
+            <div class="panel-head"><span class="idx">07</span>
+              <h3 class="sec-title">Modèles de formulaires</h3></div>
+            <p class="cnx-note">
+              Structures <strong>déclarées par vous</strong>. Elles ne prétendent
+              pas reproduire un formulaire officiel : sans documentation de
+              l'organisme, la structure reste une base de travail.
+            </p>
+            <div class="cnx-forms" id="cnxForms"></div>
+          </div>
+
+          <!-- ══════════ 08 · FLUX D'INTÉGRATION ══════════ -->
+          <div class="cnx-pane hidden" data-cnx="flow">
+            <div class="panel-head"><span class="idx">08</span>
+              <h3 class="sec-title">Flux d'intégration</h3></div>
+            <p class="cnx-note">Trois modes, du plus contrôlé au plus automatisé.
+              Le mode A n'est activable qu'avec un accès API autorisé et documenté.</p>
+            <div class="cnx-modes" id="cnxModes"></div>
+          </div>
+
+          <!-- ══════════ 09 · HISTORIQUE DES TRANSMISSIONS ══════════ -->
+          <div class="cnx-pane hidden" data-cnx="history">
+            <div class="panel-head"><span class="idx">09</span>
+              <h3 class="sec-title">Historique des transmissions</h3></div>
+            <div id="cnxHistory"></div>
+          </div>
+
+          <!-- ══════════ 10 · ERREURS ET REPRISES ══════════ -->
+          <div class="cnx-pane hidden" data-cnx="errors">
+            <div class="panel-head"><span class="idx">10</span>
+              <h3 class="sec-title">Erreurs et reprises</h3></div>
+            <p class="cnx-note">
+              Avant toute reprise, le système vérifie si la demande a déjà été
+              acceptée. Un rejet métier n'est <strong>jamais</strong> rejoué
+              automatiquement.
+            </p>
+            <div id="cnxErrors"></div>
+          </div>
+
+          <!-- ══════════ 11 · SÉCURITÉ ET AUTORISATIONS ══════════ -->
+          <div class="cnx-pane hidden" data-cnx="security">
+            <div class="panel-head"><span class="idx">11</span>
+              <h3 class="sec-title">Sécurité et autorisations</h3></div>
+            <div id="cnxSecurity"></div>
+          </div>
+
+          <!-- ══════════ 12 · JOURNAUX D'AUDIT ══════════ -->
+          <div class="cnx-pane hidden" data-cnx="audit">
+            <div class="panel-head"><span class="idx">12</span>
+              <h3 class="sec-title">Journaux d'audit</h3></div>
+            <div id="cnxAudit"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer-note">
+      UniOCR · Future Editorial Intelligence — traçabilité · sécurité · contrôle humain · 100 % local
+    </footer>
+  </div>
+</div>
+
+<!-- ═══════ AIDE RACCOURCIS ═══════ -->
+<div class="modal-bg hidden" id="helpOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <div class="modal-head">
+      <div class="card-title" id="helpTitle">Raccourcis clavier</div>
+      <button class="btn ghost sm" id="helpClose" aria-label="Fermer">✕</button>
+    </div>
+    <div class="kbd-grid">
+      <div><span class="kbd">/</span> focaliser la recherche</div>
+      <div><span class="kbd">g</span> puis <span class="kbd">1…7</span> changer d'onglet</div>
+      <div><span class="kbd">j</span> / <span class="kbd">k</span> champ suivant / précédent (révision)</div>
+      <div><span class="kbd">Entrée</span> valider le champ focalisé</div>
+      <div><span class="kbd">o</span> ouvrir le document source</div>
+      <div><span class="kbd">t</span> basculer le thème clair / sombre</div>
+      <div><span class="kbd">Échap</span> fermer recherche ou aide</div>
+      <div><span class="kbd">?</span> afficher cette aide</div>
+    </div>
+    <div class="kbd-note">Les raccourcis sont inactifs pendant la saisie dans un champ.</div>
+  </div>
+</div>
+
+<!-- ═══════ TOASTS & MODALE CAMÉRA ═══════ -->
+<div id="toasts" role="status" aria-live="polite" aria-atomic="false"></div>
+
+<div class="cam-overlay" id="camOverlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="camDialogTitle" aria-hidden="true">
+  <div class="cam-modal">
+    <h4 id="camDialogTitle">Capture photo</h4>
+    <div class="muted" style="font-size:11.5px;margin-top:4px">
+      Cadrez le document (numéro de conteneur, plaque, carte grise…) puis capturez.
+    </div>
+    <label class="lb" for="camMode">Type de capture (prépare le profil)</label>
+    <select class="inp" id="camMode">
+      <option value="">Document / photo libre</option>
+      <option value="container">📦 Conteneur (ISO 6346)</option>
+      <option value="vehicle_plate">🚗 Plaque / véhicule</option>
+      <option value="carte_grise">🪪 Carte grise</option>
+    </select>
+    <video id="camVideo" autoplay playsinline muted></video>
+    <canvas id="camCanvas" style="display:none"></canvas>
+    <div class="cam-actions">
+      <button class="cam-shot" id="camCaptureBtn">📸 Capturer</button>
+      <button class="cam-shot ghost" id="camCancelBtn">Annuler</button>
+    </div>
+    <div class="muted" style="font-size:10.5px;margin-top:10px" id="camNote"></div>
+  </div>
+</div>
+
+<script>
+/* Correctif : le code applicatif appelle api(...) mais seule fetchJson était
+   définie, ce qui faisait échouer silencieusement initLangChips() — les puces
+   de langue ne se chargeaient donc jamais. On rétablit api comme alias. */
+if (typeof api !== "function") {
+  var api = function (path, opts) { return fetchJson(path, opts); };
+}
+
+/* =================== STATE =================== */
+let API = localStorage.getItem("unocr_api") || "";
+let currentJob = null, currentResult = null, currentPage = 1, currentFile = null;
+let MOI = null;   // identite et droits renvoyés par /api/rbac/moi
+let connected = false;
+
+/* Parse d'erreur robuste : l'API renvoie du JSON, un proxy peut renvoyer du texte brut */
+async function readError(r) {
+  const text = (await r.text().catch(() => "")).trim();
+  try {
+    const j = JSON.parse(text);
+    return j.detail || j.message || text || ("HTTP " + r.status);
+  } catch {
+    return ("HTTP " + r.status + " — " + (text.slice(0, 120) || "réponse invalide"));
+  }
+}
+
+function apiUrl(path) { return (API || "") + path; }
+
+/* Jeton d'authentification. Quand data/rbac.json existe, l'API exige un
+   jeton ; il est conserve dans localStorage et envoye a chaque appel. Sans
+   RBAC actif, rien n'est envoye et l'application se comporte comme avant. */
+var JETON = null;
+try { JETON = localStorage.getItem("unocr.jeton") || null; } catch (e) { JETON = null; }
+
+function definirJeton(valeur) {
+  JETON = valeur ? String(valeur).trim() : null;
+  try {
+    if (JETON) localStorage.setItem("unocr.jeton", JETON);
+    else localStorage.removeItem("unocr.jeton");
+  } catch (e) { /* stockage indisponible : le jeton ne survit pas au rechargement */ }
+  majEnteteJeton();
+}
+function entetesJeton(opts) {
+  if (!JETON) return opts;
+  opts = opts || {};
+  opts.headers = Object.assign({}, opts.headers, { Authorization: "Bearer " + JETON });
+  return opts;
+}
+
+async function fetchAuthenticated(path, opts) {
+  const r = await fetch(apiUrl(path), entetesJeton(opts));
+  if (r.status === 401 && path.indexOf("/api/rbac/moi") !== 0) {
+    definirJeton(null);
+    demanderJeton();
+    throw new Error("Session expirée ou jeton inconnu — reconnexion demandée.");
+  }
+  return r;
+}
+
+async function fetchJson(path, opts) {
+  const r = await fetchAuthenticated(path, opts);
+  if (!r.ok) throw new Error(await readError(r));
+  try { return await r.json(); }
+  catch { throw new Error("Réponse illisible du serveur (contenu non-JSON)"); }
+}
+
+const PAGE_META = {
+  "tab-import": ["Importer un document", "Analyse visuelle et textuelle → données structurées"],
+  "tab-docs": ["Documents", "Historique des traitements et suivi des jobs"],
+  "tab-result": ["Résultat d'analyse", "Texte, champs, tableaux — reliés au document source"],
+  "tab-quality": ["Contrôle qualité", "Confiances, anomalies et cohérence métier"],
+  "tab-config": ["Configuration", "Moteurs, langues et profils réellement disponibles"],
+  "tab-dashboard": ["Tableau de bord", "Activité et ressources système"],
+  "tab-review": ["Révision humaine", "Vérification et correction avant toute transmission"],
+  "tab-profiles": ["Profils métier", "Champs, motifs et validateurs réutilisables"],
+  "tab-connectors": ["Connecteur Hub", "Transmission vers les systèmes externes, sous contrôle humain"],
+  "tab-dossier": ["Parcours documentaire", "Dossier, cohérence entre documents et paquet de données"],
+};
+
+/* =================== NAVIGATION =================== */
+document.querySelectorAll(".nav-item").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".nav-item").forEach(b => {
+      b.classList.remove("active");
+      b.removeAttribute("aria-current");
+    });
+    btn.classList.add("active");
+    btn.setAttribute("aria-current", "page");
+    const tab = btn.dataset.tab;
+    document.querySelectorAll("section.page").forEach(s => {
+      s.classList.add("hidden"); s.classList.remove("page-enter");
+    });
+    const el = document.getElementById(tab);
+    el.classList.remove("hidden");
+    void el.offsetWidth; // relance l'animation
+    el.classList.add("page-enter");
+    const meta = PAGE_META[tab];
+    document.getElementById("pageTitle").textContent = meta[0];
+    document.getElementById("pageSub").textContent = meta[1];
+    if (tab === "tab-docs") loadJobs();
+    if (tab === "tab-dashboard") loadStats();
+    if (tab === "tab-config") loadConfig();
+    if (tab === "tab-connectors") CnxHub.loadAll();
+    if (tab === "tab-dossier") DossierUI.loadAll();
+  });
+});
+
+/* =================== TOASTS =================== */
+function toast(msg, type = "info") {
+  const box = document.getElementById("toasts");
+  const t = document.createElement("div");
+  t.className = "toast " + type;
+  const icons = { success: "✓", error: "✕", info: "ℹ" };
+  t.innerHTML = `<div class="ic">${icons[type] || "ℹ"}</div><div>${esc(msg)}</div>`;
+  box.appendChild(t);
+  setTimeout(() => { t.classList.add("hide"); setTimeout(() => t.remove(), 380); }, 4200);
+}
+
+/* =================== SOURIS / FLOU CARTES =================== */
+document.addEventListener("mousemove", e => {
+  const card = e.target.closest?.(".card, .drop");
+  if (!card) return;
+  const r = card.getBoundingClientRect();
+  card.style.setProperty("--mx", (e.clientX - r.left) + "px");
+  card.style.setProperty("--my", (e.clientY - r.top) + "px");
+});
+
+/* =================== HORLOGE =================== */
+setInterval(() => {
+  const n = new Date();
+  document.getElementById("clockChip").textContent =
+    n.toLocaleDateString("fr-FR", { day: "2-digit", month: "short" }) + " · " +
+    n.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+}, 1000);
+
+/* =================== LOG =================== */
+function log(msg, cls = "") {
+  const el = document.getElementById("processLog");
+  const t = new Date().toLocaleTimeString("fr-FR");
+  el.innerHTML += `\n<span class="lt">[${t}]</span> <span class="${cls}">${esc(msg)}</span>`;
+  el.scrollTop = el.scrollHeight;
+}
+
+/* =================== UPLOAD =================== */
+const drop = document.getElementById("dropZone");
+const fileInput = document.getElementById("fileInput");
+drop.addEventListener("click", () => fileInput.click());
+drop.addEventListener("keydown", event => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    fileInput.click();
+  }
+});
+drop.addEventListener("dragover", e => { e.preventDefault(); drop.classList.add("drag"); });
+drop.addEventListener("dragleave", () => drop.classList.remove("drag"));
+drop.addEventListener("drop", e => {
+  e.preventDefault(); drop.classList.remove("drag");
+  if (e.dataTransfer.files.length) { fileInput.files = e.dataTransfer.files; onFile(); }
+});
+fileInput.addEventListener("change", onFile);
+
+function setFile(file) {
+  currentFile = file || null;
+  document.getElementById("dropName").textContent = currentFile ? "📎 " + currentFile.name : "";
+  document.getElementById("uploadBtn").disabled = !currentFile || !connected;
+  document.getElementById("clearBtn").style.display = currentFile ? "" : "none";
+  if (currentFile) toast("Fichier prêt : " + currentFile.name, "info");
+}
+
+function onFile() { setFile(fileInput.files[0] || null); }
+
+document.getElementById("clearBtn").addEventListener("click", () => {
+  currentFile = null; fileInput.value = "";
+  document.getElementById("dropName").textContent = "";
+  document.getElementById("uploadBtn").disabled = true;
+  document.getElementById("clearBtn").style.display = "none";
+});
+
+/* =================== CAPTURE CAMÉRA =================== */
+const camOverlay = document.getElementById("camOverlay");
+const camVideo = document.getElementById("camVideo");
+const camCanvas = document.getElementById("camCanvas");
+let camStream = null;
+let cameraReturnFocus = null;
+
+function closeCamera() {
+  if (camStream) { camStream.getTracks().forEach(t => t.stop()); camStream = null; }
+  camVideo.srcObject = null;
+  camOverlay.style.display = "none";
+  camOverlay.setAttribute("aria-hidden", "true");
+  if (cameraReturnFocus && cameraReturnFocus.isConnected) cameraReturnFocus.focus();
+  cameraReturnFocus = null;
+}
+
+async function openCamera() {
+  cameraReturnFocus = document.activeElement;
+  document.getElementById("camNote").textContent = "";
+  camOverlay.style.display = "flex";
+  camOverlay.setAttribute("aria-hidden", "false");
+  document.getElementById("camMode").focus();
+  try {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      throw new Error("API caméra indisponible dans ce contexte");
+    }
+    camStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 } }, audio: false });
+    camVideo.srcObject = camStream;
+  } catch (e) {
+    // pas de caméra, permission refusée, ou iframe sans autorisation caméra :
+    // repli sur l'entrée fichier native (ouvre l'appareil photo sur mobile)
+    closeCamera();
+    toast("Caméra indisponible (" + e.message + ") — sélecteur de fichier", "info");
+    document.getElementById("cameraInput").click();
+  }
+}
+
+document.getElementById("cameraBtn").addEventListener("click", openCamera);
+document.getElementById("camCancelBtn").addEventListener("click", closeCamera);
+camOverlay.addEventListener("click", event => {
+  if (event.target === camOverlay) closeCamera();
+});
+camOverlay.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeCamera();
+    return;
+  }
+  if (event.key !== "Tab") return;
+  const focusables = [...camOverlay.querySelectorAll("button:not([disabled]), select:not([disabled]), input:not([disabled]), video[tabindex]")];
+  if (!focusables.length) { event.preventDefault(); return; }
+  const first = focusables[0], last = focusables[focusables.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault(); last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault(); first.focus();
+  }
+});
+
+document.getElementById("camCaptureBtn").addEventListener("click", () => {
+  const w = camVideo.videoWidth, h = camVideo.videoHeight;
+  if (!w || !h) { toast("Caméra non prête — réessayez", "error"); return; }
+  camCanvas.width = w; camCanvas.height = h;
+  camCanvas.getContext("2d").drawImage(camVideo, 0, 0, w, h);
+  camCanvas.toBlob((blob) => {
+    if (!blob) { toast("Capture impossible", "error"); return; }
+    const file = new File([blob], "photo_" + Date.now() + ".png", { type: "image/png" });
+    applyCamMode();
+    setFile(file);
+    closeCamera();
+    toast("Photo capturée 📸", "success");
+  }, "image/png");
+});
+
+function applyCamMode() {
+  const mode = document.getElementById("camMode").value;
+  if (mode === "container" || mode === "vehicle_plate" || mode === "carte_grise") {
+    document.getElementById("profileSelect").value = mode;
+    syncProfileHint();
+  }
+}
+
+document.getElementById("cameraInput").addEventListener("change", (e) => {
+  const f = e.target.files[0];
+  if (f) { applyCamMode(); setFile(f); }
+  e.target.value = "";
+});
+
+document.getElementById("uploadBtn").addEventListener("click", async () => {
+  if (!currentFile) return;
+  if (!connected) {
+    toast("Serveur injoignable — connectez l'API via le bandeau jaune", "error");
+    log("ERREUR : serveur API injoignable (aperçu statique ?) — ouvrez l'URL du serveur live ou collez-la dans le bandeau", "err");
+    return;
+  }
+  const fd = new FormData();
+  fd.append("file", currentFile);
+  fd.append("profile", document.getElementById("profileSelect").value);
+  const langsSel = [...document.querySelectorAll("#langChips .langchip.on")]
+    .map(c => c.dataset.lang).join(",");
+  const fmtsSel = [...document.querySelectorAll("#fmtChips input:checked")]
+    .map(i => i.dataset.fmt).join(",");
+  const qmBtn = document.querySelector("#qualitySeg .on");
+  fd.append("languages", langsSel);
+  fd.append("quality_mode", qmBtn ? qmBtn.dataset.qm : "accurate");
+  fd.append("preprocess", document.getElementById("preprocessMode").value !== "off");
+  fd.append("preprocess_mode", document.getElementById("preprocessMode").value);
+  fd.append("variant_comparison", document.getElementById("variantCmp").checked);
+  fd.append("export_formats", fmtsSel || "json,txt");
+  fd.append("page_range", document.getElementById("pageRange").value.trim());
+  fd.append("render_dpi", document.getElementById("renderDpi").value);
+  fd.append("engine", document.getElementById("engineSelect").value);
+  fd.append("extract_fields", document.getElementById("exFields").checked);
+  fd.append("extract_tables", document.getElementById("exTables").checked);
+  fd.append("extract_barcodes", document.getElementById("exBarcodes").checked);
+  fd.append("min_confidence_review", (document.getElementById("reviewRange").value / 100).toFixed(2));
+  document.getElementById("uploadStatus").textContent = "Envoi en cours…";
+  resetPipeline();
+  try {
+    const r = await fetchAuthenticated("/api/documents", { method: "POST", body: fd });
+    if (!r.ok) throw new Error(await readError(r));
+    const j = await r.json();
+    currentJob = j.job_id;
+    document.getElementById("uploadStatus").textContent = "Job " + j.job_id;
+    log("Document reçu — « " + j.filename + " »", "ok");
+    toast("Analyse lancée 🚀", "success");
+    pollJob(j.job_id);
+  } catch (e) {
+    document.getElementById("uploadStatus").textContent = "Erreur";
+    log("ERREUR : " + e.message, "err");
+    toast("Échec : " + e.message, "error");
+  }
+});
+
+function resetPipeline() {
+  document.getElementById("progressBar").style.width = "0%";
+  document.querySelectorAll("#pipelineSteps .step").forEach(s => s.classList.remove("on", "done", "err"));
+}
+
+function setStage(stage, error = false) {
+  const stages = ["ingest", "ocr", "tables", "fields", "quality", "done"];
+  const idx = stages.indexOf(stage);
+  document.querySelectorAll("#pipelineSteps .step").forEach((s, i) => {
+    s.classList.remove("on", "done", "err");
+    if (idx < 0) return;
+    if (i < idx) s.classList.add("done");
+    else if (i === idx) s.classList.add(error ? "err" : "on");
+  });
+}
+
+async function pollJob(id) {
+  const tick = async () => {
+    let j;
+    try { j = await fetchJson("/api/jobs/" + id); }
+    catch { return setTimeout(tick, 1200); }
+    document.getElementById("progressBar").style.width = Math.round((j.progress || 0) * 100) + "%";
+    setStage(j.stage || "", j.status === "error");
+    if (j.status === "done") {
+      setStage("done");
+      log("Traitement terminé avec succès ✓", "ok");
+      toast("Analyse terminée ✨", "success");
+      loadResult(id); loadJobs();
+      return;
+    }
+    if (j.status === "error") {
+      log("Échec : " + (j.error || "inconnu"), "err");
+      toast("Traitement en échec", "error");
+      return;
+    }
+    setTimeout(tick, 800);
+  };
+  tick();
+}
+
+/* =================== RESULTAT =================== */
+async function loadResult(id) {
+  let res;
+  try { res = await fetchJson("/api/jobs/" + id + "/result"); }
+  catch (e) { toast(e.message, "error"); return; }
+  currentResult = res;
+  currentPage = 1;
+  renderResult();
+
+  const links = document.getElementById("exportLinks");
+  const links2 = document.getElementById("exportLinksResult");
+  [links, links2].forEach(box => { box.innerHTML = ""; });
+  const fmts = [["json", "🧬", "données complètes"], ["txt", "📄", "texte brut"],
+                ["csv", "📑", "champs + tableaux"], ["xlsx", "📊", "classeur 5 feuilles"],
+                ["xml", "🔮", "intégration tiers"], ["pdf", "📕", "PDF consultable"]];
+  fmts.forEach(([f, ic, sub]) => {
+    const b = document.createElement("button");
+    b.className = "export-item";
+    b.style.cursor = "pointer";
+    b.innerHTML = `<div class="ic">${ic}</div><div class="fmt">${f.toUpperCase()}</div><div class="sz">${sub}</div>`;
+    b.addEventListener("click", () => downloadExport(f));
+    links.appendChild(b);
+    const b2 = b.cloneNode(true);
+    b2.addEventListener("click", () => downloadExport(f));
+    links2.appendChild(b2);
+  });
+}
+
+/* Téléchargement robuste : fetch → Blob → sauvegarde, avec retour visuel */
+async function downloadExport(fmt) {
+  if (!currentJob) { toast("Aucun document sélectionné", "info"); return; }
+  toast("Préparation de l'export " + fmt.toUpperCase() + "…", "info");
+  try {
+    const r = await fetchAuthenticated("/api/jobs/" + currentJob + "/export/" + fmt);
+    if (!r.ok) throw new Error(await readError(r));
+    const blob = await r.blob();
+    const cd = r.headers.get("content-disposition") || "";
+    const m = cd.match(/filename\*?=(?:UTF-8'')?"?([^";]+)"?/i);
+    const fname = m ? decodeURIComponent(m[1]) : ("unocr_export." + (fmt === "csv" && blob.type.includes("zip") ? "zip" : fmt));
+    const a = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    a.href = url;
+    a.download = fname;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    log("Export " + fmt.toUpperCase() + " téléchargé (" + Math.round(blob.size / 1024) + " Ko)", "ok");
+    toast("Export " + fmt.toUpperCase() + " téléchargé ✓", "success");
+  } catch (e) {
+    log("ERREUR export " + fmt + " : " + e.message, "err");
+    toast("Export " + fmt.toUpperCase() + " impossible : " + e.message, "error");
+  }
+}
+
+function renderResult() {
+  if (!currentResult) return;
+  const res = currentResult;
+  renderPage();
+  document.getElementById("textView").value =
+    (res.pages || []).map(p => "───── Page " + p.page_num + " ─────\n" + p.text).join("\n\n");
+
+  // champs
+  const ft = document.querySelector("#fieldsTable tbody");
+  ft.innerHTML = "";
+  Object.entries(res.fields || {}).forEach(([name, f]) => {
+    const tr = document.createElement("tr");
+    const conf = Math.round((f.confidence || 0) * 100);
+    const cls = conf >= 75 ? "hi" : (conf >= 50 ? "md" : "lo");
+    tr.innerHTML =
+      `<td><b>${esc(f.label || name)}</b><br><span class="mono" style="font-size:10px;color:var(--muted)">${esc(name)}</span></td>` +
+      `<td>${f.raw_value ? esc(f.raw_value) : '<span class="muted">non détecté</span>'}</td>` +
+      `<td class="muted">${esc(f.normalized_value ?? "—")}</td>` +
+      `<td><span class="meter ${cls}"><i style="width:0"></i></span><b style="font-size:11.5px">${conf}%</b></td>` +
+      `<td><span class="badge ${esc(f.status)}">${esc(f.status)}</span></td>` +
+      `<td><div class="rowflex"><input class="edit" data-field="${esc(name)}" placeholder="valeur confirmée…">` +
+      `<button class="btn sm" data-confirm="${esc(name)}">Valider</button></div></td>`;
+    // Pas de gestionnaire en ligne : une valeur contrôlée par l'utilisateur
+    // (le nom d'un champ de profil) placée dans `onclick="…"` s'exécute
+    // après décodage HTML — l'échappement des caractères ne suffit pas.
+    // Le nom passe par `dataset` et l'action par `addEventListener`.
+    tr.querySelector("[data-confirm]").addEventListener("click", () => {
+      confirmField(name);
+    });
+    tr.addEventListener("click", e => {
+      if (e.target.closest("input,button")) return;
+      document.querySelectorAll("#fieldsTable tbody tr").forEach(x => x.classList.remove("sel"));
+      tr.classList.add("sel");
+      highlightField(f);
+    });
+    ft.appendChild(tr);
+    requestAnimationFrame(() => {
+      const m = tr.querySelector(".meter i");
+      if (m) m.style.width = conf + "%";
+    });
+  });
+
+  // tableaux
+  const tv = document.getElementById("tablesView");
+  if (!(res.tables || []).length) {
+    tv.innerHTML = '<div class="empty"><div class="big">📊</div>Aucun tableau détecté.</div>';
+  } else {
+    tv.innerHTML = res.tables.map((t, i) => {
+      const matrix = buildMatrix(t);
+      return `<div style="margin-bottom:16px">
+        <div class="rowflex" style="margin-bottom:8px">
+          <span class="badge info">TABLE ${i + 1}</span>
+          <span class="pill">page ${t.page_num}</span>
+          <span class="pill">${esc(t.method)}</span>
+          <span class="pill">${Math.round((t.confidence || 0) * 100)}% conf.</span>
+          ${t.multipage ? '<span class="badge validated">multipages</span>' : ""}
+        </div>
+        <div class="scroll" style="max-height:250px"><table class="tbl">` +
+        matrix.map((row, ri) => "<tr>" + row.map(c =>
+          ri < (t.header_rows || 1) ? `<th>${esc(c)}</th>` : `<td>${esc(c)}</td>`
+        ).join("") + "</tr>").join("") +
+        `</table></div></div>`;
+    }).join("");
+  }
+
+  // codes-barres
+  const bv = document.getElementById("barcodesView");
+  bv.innerHTML = (res.barcodes || []).length
+    ? res.barcodes.map(b => `<div class="anom"><div class="msg"><span class="badge info">${esc(b.format)}</span> <b class="mono">${esc(b.text)}</b></div><div class="pg pill">p.${b.page}</div></div>`).join("")
+    : '<div class="empty"><div class="big">🏷️</div>Aucun code détecté.</div>';
+
+  // moteurs
+  const ev = document.getElementById("enginesView");
+  const runs = (res.pages || []).flatMap(p => p.engine_runs || []);
+  const byEngine = {};
+  runs.forEach(r => {
+    byEngine[r.engine] = byEngine[r.engine] || { conf: [], words: 0, ms: 0 };
+    byEngine[r.engine].conf.push(r.mean_confidence);
+    byEngine[r.engine].words += r.word_count; byEngine[r.engine].ms += r.duration_ms;
+  });
+  const names = Object.keys(byEngine);
+  if (names.length > 1) {
+    ev.innerHTML = names.map(n => {
+      const v = byEngine[n];
+      const c = Math.round(v.conf.reduce((a, b) => a + b, 0) / v.conf.length * 100);
+      return `<div class="engine-row"><span class="stat up"></span><b>${esc(n)}</b>
+        <span class="meter hi"><i style="width:${c}%"></i></span>
+        <div class="meta">${v.words} mots · ${Math.round(v.ms)} ms</div></div>`;
+    }).join("");
+  } else {
+    ev.innerHTML = '<div class="empty">Comparaison indisponible : un seul moteur OCR actif dans cet environnement.<br>L\'architecture multi-moteurs s\'active dès qu\'EasyOCR/PaddleOCR est installé.</div>';
+  }
+
+  // qualité
+  const q = res.quality || {};
+  setGauge("gaugeEngine", "qEngine", q.mean_engine_confidence);
+  setGauge("gaugeGlobal", "qGlobal", q.mean_global_confidence);
+  const anoms = q.anomalies || [];
+  document.getElementById("qAnom").textContent = anoms.length;
+  const errs = anoms.filter(a => a.severity === "error").length;
+  const warns = anoms.filter(a => a.severity === "warning").length;
+  document.getElementById("qAnomBreak").textContent =
+    `${errs} erreur(s) · ${warns} avertissement(s) · ${anoms.length - errs - warns} info(s)`;
+
+  const av = document.getElementById("anomaliesView");
+  if (!anoms.length) {
+    av.innerHTML = '<div class="empty"><div class="big">✨</div>Aucune anomalie détectée.</div>';
+  } else {
+    av.innerHTML = anoms.map(a => {
+      const sev = a.severity === "error" ? "crit" : (a.severity === "warning" ? "warn" : "info");
+      return `<div class="anom"><span class="badge ${sev}">${esc(a.code)}</span>
+        <div class="msg">${esc(a.message)}</div>
+        ${a.page_num ? `<div class="pg pill">p.${a.page_num}</div>` : ""}</div>`;
+    }).join("");
+  }
+  const disag = q.disagreements || [];
+  document.getElementById("disagreementsView").innerHTML = disag.length
+    ? disag.map(d => `<div class="anom"><div class="msg mono">${esc(JSON.stringify(d.text_by_engine))}</div><div class="pg badge ${d.resolution === "best_confidence" ? "validated" : "warn"}">${esc(d.resolution)}</div></div>`).join("")
+    : '<div class="empty">Aucun désaccord entre moteurs.</div>';
+}
+
+function setGauge(gaugeId, labelId, value) {
+  const v = Math.round((value || 0) * 100);
+  const circ = document.getElementById(gaugeId);
+  if (circ) circ.style.strokeDashoffset = String(289 - (289 * v / 100));
+  document.getElementById(labelId).textContent = v + "%";
+}
+
+function buildMatrix(t) {
+  const g = Array.from({ length: t.n_rows }, () => Array(t.n_cols).fill(""));
+  (t.cells || []).forEach(c => {
+    if (c.row < t.n_rows && c.col < t.n_cols) g[c.row][c.col] = c.text;
+  });
+  return g;
+}
+
+function renderPage() {
+  const res = currentResult;
+  if (!res || !(res.pages || []).length) return;
+  const page = res.pages.find(p => p.page_num === currentPage) || res.pages[0];
+  currentPage = page.page_num;
+  document.getElementById("pageLabel").textContent =
+    `page ${page.page_num} / ${res.pages.length}`;
+  const vb = document.getElementById("variantBadge");
+  vb.style.display = ""; vb.textContent = "variante : " + (page.variant_selected || "—");
+  const lb = document.getElementById("langBadge");
+  const langs = (page.detected_languages || []).join(", ");
+  if (langs) { lb.style.display = ""; lb.textContent = "🌐 " + langs; } else lb.style.display = "none";
+
+  const viewer = document.getElementById("viewer");
+  viewer.innerHTML = "";
+  const wrap = document.createElement("div");
+  wrap.className = "wrap";
+  const img = document.createElement("img");
+  img.src = API + "/api/jobs/" + currentJob + "/page/" + page.page_num + "/image";
+  img.alt = "page " + page.page_num;
+  img.onerror = () => {
+    viewer.innerHTML = '<div class="empty" style="margin:14px"><div class="big">📃</div>Page purement numérique — pas d\'image source.<br>Le texte complet est affiché dans le panneau de droite.</div>';
+  };
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", `0 0 ${page.width} ${page.height}`);
+  svg.id = "overlaySvg";
+  wrap.appendChild(img); wrap.appendChild(svg);
+  viewer.appendChild(wrap);
+  (page.words || []).forEach(w => {
+    const r = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    r.setAttribute("x", w.bbox.x0); r.setAttribute("y", w.bbox.y0);
+    r.setAttribute("width", w.bbox.x1 - w.bbox.x0);
+    r.setAttribute("height", w.bbox.y1 - w.bbox.y0);
+    r.setAttribute("class", "zone");
+    svg.appendChild(r);
+  });
+}
+
+function highlightField(f) {
+  if (!f || !f.bbox) { toast("Champ sans géométrie localisée", "info"); return; }
+  if (f.page_num && f.page_num !== currentPage) {
+    currentPage = f.page_num;
+    renderPage();
+    setTimeout(() => highlightField(f), 350);
+    return;
+  }
+  const svg = document.getElementById("overlaySvg");
+  if (!svg) return;
+  svg.querySelectorAll("rect").forEach(r => r.classList.remove("hl"));
+  const r = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+  r.setAttribute("x", f.bbox.x0); r.setAttribute("y", f.bbox.y0);
+  r.setAttribute("width", f.bbox.x1 - f.bbox.x0);
+  r.setAttribute("height", f.bbox.y1 - f.bbox.y0);
+  r.setAttribute("class", "zone hl");
+  svg.appendChild(r);
+  r.scrollIntoView({ block: "center", behavior: "smooth" });
+  toast("Zone localisée sur le document", "info");
+}
+
+async function confirmField(name) {
+  // On retrouve le champ par parcours du DOM plutôt que par un sélecteur
+  // interpolé : un nom de champ contient librement des apostrophes ou des
+  // crochets, qui casseraient le sélecteur (et permettraient d'en injecter
+  // un autre).
+  const input = Array.from(
+    document.querySelectorAll("#fieldsTable input.edit[data-field]")
+  ).find(el => el.dataset.field === name);
+  if (!input || !input.value) { toast("Saisissez une valeur à confirmer", "info"); return; }
+  const r = await fetchAuthenticated("/api/jobs/" + currentJob + "/fields/" + encodeURIComponent(name), {
+    method: "PATCH", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ confirmed_value: input.value })
+  });
+  if (r.ok) {
+    log("Champ « " + name + " » confirmé par l'utilisateur (tracé dans l'audit)", "ok");
+    toast("Champ confirmé ✓ — valeur d'origine conservée", "success");
+    loadResult(currentJob);
+  } else toast("Échec de la validation : " + await readError(r), "error");
+}
+
+document.getElementById("prevPage").addEventListener("click", () => {
+  if (currentPage > 1) { currentPage--; renderPage(); }
+});
+document.getElementById("nextPage").addEventListener("click", () => {
+  if (currentResult && currentPage < currentResult.pages.length) { currentPage++; renderPage(); }
+});
+document.getElementById("textSearch").addEventListener("input", e => {
+  const q = e.target.value;
+  const t = document.getElementById("textView");
+  if (!q) return;
+  const idx = t.value.toLowerCase().indexOf(q.toLowerCase());
+  if (idx >= 0) { t.focus(); t.setSelectionRange(idx, idx + q.length); }
+});
+
+/* =================== JOBS =================== */
+async function loadJobs() {
+  let jobs;
+  try { jobs = await fetchJson("/api/jobs?limit=100"); }
+  catch (e) {
+    document.querySelector("#jobsTable tbody").innerHTML = "";
+    document.getElementById("jobsEmpty").style.display = "";
+    return;
+  }
+  const q = (document.getElementById("docSearch").value || "").toLowerCase();
+  const st = document.getElementById("filterStatus").value;
+  const tbody = document.querySelector("#jobsTable tbody");
+  tbody.innerHTML = "";
+  const filtered = jobs.filter(j =>
+    (!q || j.filename.toLowerCase().includes(q)) && (!st || j.status === st));
+  document.getElementById("jobsEmpty").style.display = filtered.length ? "none" : "";
+  filtered.forEach((j, i) => {
+    const tr = document.createElement("tr");
+    tr.style.animation = `riseIn .4s ${Math.min(i * 0.04, 0.5)}s both`;
+    const d = new Date(j.created_at * 1000).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" });
+    tr.innerHTML =
+      `<td><b>${esc(j.filename)}</b></td>` +
+      `<td><span class="badge ${j.status}">${j.status}</span></td>` +
+      `<td><span class="meter ${j.status === "done" ? "hi" : "md"}"><i style="width:${Math.round(j.progress * 100)}%"></i></span></td>` +
+      `<td><span class="pill">${esc(j.options?.profile || "")}</span></td>` +
+      `<td class="muted" style="font-size:11px">${d}</td>` +
+      `<td style="text-align:right;white-space:nowrap">
+        <button class="btn ghost sm" data-open-job="${esc(j.id)}">Ouvrir</button>
+        <button class="btn ghost sm" data-retry-job="${esc(j.id)}">↻</button>
+        <button class="btn ghost sm" data-del-job="${esc(j.id)}">✕</button>
+      </td>`;
+    // GestionnairesAttachés, jamais `onclick="…"` : l'identifiant du job
+    // est inséré dans l'attribut `data-*`, jamais dans du JavaScript.
+    tr.querySelector("[data-open-job]").addEventListener("click", () => openJob(j.id));
+    tr.querySelector("[data-retry-job]").addEventListener("click", () => retryJob(j.id));
+    tr.querySelector("[data-del-job]").addEventListener("click", () => delJob(j.id));
+    tbody.appendChild(tr);
+  });
+}
+document.getElementById("docSearch").addEventListener("input", loadJobs);
+document.getElementById("filterStatus").addEventListener("change", loadJobs);
+
+function openJob(id) {
+  currentJob = id;
+  loadResult(id);
+  document.querySelector('.nav-item[data-tab="tab-result"]').click();
+}
+async function retryJob(id) {
+  await fetchAuthenticated("/api/jobs/" + id + "/retry", { method: "POST" });
+  toast("Job relancé", "info");
+  loadJobs();
+}
+async function delJob(id) {
+  if (!confirm("Supprimer ce job et ses artefacts ? (opération journalisée)")) return;
+  await fetchAuthenticated("/api/jobs/" + id, { method: "DELETE" });
+  toast("Job supprimé (audit enregistré)", "info");
+  loadJobs();
+}
+
+/* =================== STATS =================== */
+/* ─────────────── sauvegarde du magasin (P0) ─────────────── */
+function backupOut(html) {
+  const box = document.getElementById("backupOut");
+  if (box) box.innerHTML = html;
+}
+
+async function lancerSauvegarde() {
+  backupOut('<div class="card-sub">Sauvegarde en cours…</div>');
+  try {
+    const r = await api("/api/backups", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ keep: 5 }),
+    });
+    backupOut(
+      '<div class="card-sub" style="color:var(--ok)">Sauvegarde créée : ' +
+      esc(r.chemin.split("/").pop()) + "</div>" +
+      '<div class="card-sub">' + r.fichiers + " fichier(s), " +
+      Math.round(r.octets / 1024) + " Ko — empreinte " +
+      esc(r.empreinte.slice(0, 16)) + "…</div>");
+    toast("Sauvegarde créée ✓", "success");
+  } catch (e) {
+    backupOut('<div class="card-sub" style="color:var(--err)">Échec : ' +
+              esc(e.message) + "</div>");
+    toast("Sauvegarde impossible : " + e.message, "error");
+  }
+}
+
+async function listerSauvegardes() {
+  backupOut('<div class="card-sub">Lecture des sauvegardes…</div>');
+  try {
+    const r = await api("/api/backups");
+    if (!r.sauvegardes.length) {
+      backupOut('<div class="card-sub">Aucune sauvegarde pour l’instant.</div>');
+      return;
+    }
+    let html = '<table class="tbl"><thead><tr><th>Sauvegarde</th>' +
+      "<th>Taille</th><th></th></tr></thead><tbody>";
+    r.sauvegardes.forEach(s => {
+      html += "<tr><td class='mono'>" + esc(s.nom) + "</td><td>" +
+        Math.round(s.taille / 1024) + " Ko</td>" +
+        '<td><button class="btn sm" data-restore="' + esc(s.chemin) +
+        '">Restaurer</button></td></tr>';
+    });
+    html += "</tbody></table>";
+    backupOut(html);
+    document.querySelectorAll("[data-restore]").forEach(b => {
+      b.addEventListener("click", () => demanderRestauration(b.dataset.restore));
+    });
+  } catch (e) {
+    backupOut('<div class="card-sub" style="color:var(--err)">Échec : ' +
+              esc(e.message) + "</div>");
+  }
+}
+
+function demanderRestauration(chemin) {
+  /* Restaurer écrase le magasin : la confirmation doit être explicite et
+     rappeler ce qui est perdu, pas un « OK » neutre. */
+  const ok = confirm(
+    "Restaurer " + chemin.split("/").pop() + " ?\n\n" +
+    "Cette opération réécrit le magasin local. Les documents et corrections " +
+    "postérieurs à la sauvegarde seront perdus.");
+  if (!ok) return;
+  const motif = prompt("Motif de la restauration (obligatoire) :");
+  if (!motif || !motif.trim()) { toast("Restauration annulée : motif requis.", "info"); return; }
+  effectuerRestauration(chemin, motif.trim());
+}
+
+async function effectuerRestauration(chemin, motif) {
+  backupOut('<div class="card-sub">Restauration en cours…</div>');
+  try {
+    const r = await api("/api/backups/restore", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chemin: chemin, force: true }),
+    });
+    backupOut('<div class="card-sub" style="color:var(--ok)">Magasin restauré : ' +
+              r.fichiers + " fichier(s) réécrits.</div>" +
+              '<div class="card-sub">Motif consigné : ' + esc(motif) + "</div>");
+    toast("Magasin restauré ✓", "success");
+    if (typeof loadStats === "function") loadStats();
+  } catch (e) {
+    backupOut('<div class="card-sub" style="color:var(--err)">Restauration refusée : ' +
+              esc(e.message) + "</div>");
+    toast("Restauration impossible : " + e.message, "error");
+  }
+}
+
+/* câblage des boutons de sauvegarde — posé ici pour rester à côté du code
+   qu'il déclenche, et parce que les éléments existent dès le chargement. */
+(function brancherSauvegarde() {
+  const maintenant = document.getElementById("btnBackupNow");
+  const liste = document.getElementById("btnBackupList");
+  if (maintenant) maintenant.addEventListener("click", lancerSauvegarde);
+  if (liste) liste.addEventListener("click", listerSauvegardes);
+})();
+
+async function loadStats() {
+  let s;
+  try { s = await fetchJson("/api/stats"); }
+  catch (e) { return; }
+  countUp("stTotal", s.jobs_total || 0);
+  countUp("stDone", s.jobs_done || 0);
+  countUp("stError", s.jobs_error || 0);
+  document.getElementById("stMem").textContent = (s.memory_percent ?? "—") + "%";
+
+  const counts = [s.jobs_processing || 0, s.jobs_processing || 0, s.jobs_done || 0, s.jobs_error || 0];
+  const max = Math.max(4, ...counts);
+  document.querySelectorAll("#statusChart .b").forEach((b, i) => {
+    const vals = [s.jobs_total - s.jobs_done - s.jobs_error - s.jobs_processing, s.jobs_processing, s.jobs_done, s.jobs_error].map(v => Math.max(0, v));
+    const v = vals[i];
+    b.style.height = Math.max(8, (v / max) * 100) + "%";
+    b.querySelector("em").textContent = v;
+  });
+}
+
+function countUp(id, target) {
+  const el = document.getElementById(id);
+  const start = parseInt(el.textContent) || 0;
+  const t0 = performance.now();
+  const dur = 700;
+  const step = now => {
+    const p = Math.min(1, (now - t0) / dur);
+    el.textContent = Math.round(start + (target - start) * (1 - Math.pow(1 - p, 3)));
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/* =================== CONFIG =================== */
+/* Repli statique : les 7 profils livrés avec le produit (si serveur injoignable) */
+const STATIC_PROFILES = [
+  { name: "generic", label: "Profil générique", description: "Dates, contacts, montants, identifiants courants." },
+  { name: "invoice", label: "Facture", description: "Numéro, dates, TVA, totaux HT/TTC, devise." },
+  { name: "port_bl", label: "Portuaire — Bill of Lading", description: "BL, conteneurs (ISO 6346 vérifiée), navire, ports, marchandises, ETA/ETD, douane." },
+  { name: "packing_list", label: "Portuaire — Liste de colisage", description: "Conteneurs, sceaux, colis, poids, volumes, marquage." },
+  { name: "container", label: "Photo conteneur (ISO 6346)", description: "Photo d'un conteneur : n° ISO 6346 avec chiffre de contrôle vérifié, type, sceau, plaque du camion." },
+  { name: "vehicle_plate", label: "Photo plaque / véhicule", description: "Plaque d'immatriculation (FR, DZ, ES, DE, IT, PT/NL, BE, UK, TR, MA, TN), n° de châssis VIN, marque/modèle." },
+  { name: "carte_grise", label: "Carte grise / certificat d'immatriculation", description: "Plaque, VIN, marque, modèle, énergie, date de 1re immatriculation, puissances, PTAC, couleur, titulaire." },
+];
+let ALL_PROFILES = STATIC_PROFILES.slice();
+
+function fillProfileSelect(profs) {
+  ALL_PROFILES = profs && profs.length ? profs : STATIC_PROFILES.slice();
+  const photo = ["container", "vehicle_plate", "carte_grise"];
+  const groups = [["Générique", p => p.name === "generic"],
+                  ["Photo / terrain 📷", p => photo.includes(p.name)],
+                  ["Métier", p => p.name !== "generic" && !photo.includes(p.name)
+                    && !p.name.startsWith("port") && p.name !== "packing_list"],
+                  ["Portuaire 🚢", p => p.name.startsWith("port") || p.name === "packing_list"]];
+  const sel = document.getElementById("profileSelect");
+  sel.innerHTML = "";
+  groups.forEach(([label, pred]) => {
+    const list = ALL_PROFILES.filter(pred);
+    if (!list.length) return;
+    const og = document.createElement("optgroup");
+    og.label = label;
+    list.forEach(p => {
+      const o = document.createElement("option");
+      o.value = p.name;
+      o.textContent = p.label || p.name;
+      og.appendChild(o);
+    });
+    sel.appendChild(og);
+  });
+  syncProfileHint();
+}
+
+function syncProfileHint() {
+  const name = document.getElementById("profileSelect").value;
+  const p = ALL_PROFILES.find(x => x.name === name);
+  document.getElementById("profileHint").textContent = p ? (p.description || "") : "";
+}
+document.getElementById("profileSelect").addEventListener("change", syncProfileHint);
+
+function setConnected(ok) {
+  connected = ok;
+  const chip = document.getElementById("enginesChip");
+  const dot = chip.querySelector(".dot");
+  const uploadBtn = document.getElementById("uploadBtn");
+  if (ok) {
+    chip.classList.add("glow");
+    dot.style.background = "var(--ok)";
+    document.getElementById("offlineBanner").style.display = "none";
+    uploadBtn.disabled = !currentFile;
+  } else {
+    chip.classList.remove("glow");
+    dot.style.background = "var(--err)";
+    document.getElementById("enginesTxt").textContent = "hors connexion";
+    document.getElementById("offlineBanner").style.display = "";
+    uploadBtn.disabled = true;
+    const inp = document.getElementById("apiBaseInput");
+    if (inp && API) inp.value = API;
+  }
+}
+
+/* Auto-détection : si l'UI tourne dans un aperçu (autre origine), devine l'URL
+   de l'API live à partir du nom d'hôte (https://{port}-{sandbox}.e2b.app). */
+async function autoProbe() {
+  const m = location.hostname.match(/^(?:\d+-)?(.+\.e2b\.app)$/);
+  if (!m) return false;
+  const cand = "https://8000-" + m[1];
+  if (cand === location.origin) return false;
+  try {
+    const r = await fetch(cand + "/api/health", { signal: AbortSignal.timeout(5000) });
+    if (r.ok) {
+      API = cand;
+      localStorage.setItem("unocr_api", cand);
+      toast("API UniOCR détectée : " + cand, "success");
+      log("API détectée automatiquement : " + cand, "ok");
+      return true;
+    }
+  } catch (e) { /* inaccessible — on garde le mode aperçu */ }
+  return false;
+}
+
+/* Connexion manuelle à une URL de serveur (aperçu cross-origin, proxy…) */
+document.getElementById("apiBaseBtn").addEventListener("click", async () => {
+  const val = (document.getElementById("apiBaseInput").value || "").trim().replace(/\/+$/, "");
+  if (!val) { toast("Saisissez l'URL du serveur UniOCR", "info"); return; }
+  try {
+    const r = await fetch(val + "/api/health", { signal: AbortSignal.timeout(6000) });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    localStorage.setItem("unocr_api", val);
+    toast("Connecté au serveur " + val + " ✓", "success");
+    setTimeout(() => location.reload(), 600);
+  } catch (e) {
+    toast("Impossible de joindre " + val + " (" + e.message + ")", "error");
+  }
+});
+
+async function loadConfig() {
+  try {
+    const [eng, langs, profs] = await Promise.all([
+      fetchJson("/api/engines"),
+      fetchJson("/api/languages"),
+      fetchJson("/api/profiles"),
+    ]);
+    setConnected(true);
+    const actives = eng.filter(e => e.available).map(e => e.name);
+    document.getElementById("enginesTxt").textContent = "moteurs actifs : " + actives.join(", ");
+
+    document.getElementById("enginesList").innerHTML = eng.map(e =>
+      `<div class="engine-row">
+        <span class="stat ${e.available ? "up" : "down"}"></span>
+        <b>${esc(e.name)}</b>
+        <span class="pill">${esc(e.kind)}</span>
+        ${e.available ? '<span class="badge done">actif</span>' : '<span class="badge not_detected">non installé</span>'}
+        <div class="meta">${e.available ? esc((e.languages || []).slice(0, 6).join(" ") || "—") : "s'active automatiquement si installé"}</div>
+      </div>`).join("");
+
+    document.getElementById("langsView").innerHTML =
+      (langs.installed_models || []).map(l => `<span class="pill lang">🌐 ${esc(l)}</span>`).join("") +
+      `<div class="muted" style="font-size:11px;margin-top:9px">Seules les langues dont le modèle est installé sont déclarées supportées.</div>`;
+
+    document.getElementById("profilesView").innerHTML = (profs || []).map(p =>
+      `<div class="anom"><div class="msg"><b>${esc(p.name)}</b> — ${esc(p.label)}
+        <div class="muted" style="margin-top:3px">${esc(p.description)}</div>
+        <div style="margin-top:6px">${(p.fields || []).slice(0, 6).map(f => `<span class="pill" style="font-size:10px">${esc(f)}</span>`).join("")}${(p.fields || []).length > 6 ? `<span class="pill" style="font-size:10px">+${p.fields.length - 6}</span>` : ""}</div>
+      </div></div>`).join("");
+
+    fillProfileSelect(profs);
+  } catch (e) {
+    setConnected(false);
+    fillProfileSelect(STATIC_PROFILES);
+    document.getElementById("enginesList").innerHTML = '<div class="empty">Serveur injoignable — lancez <b class="mono">./scripts/run_server.sh</b>.</div>';
+  }
+}
+
+/* =================== UTILS =================== */
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+/* =================== OPTIONS (panneau avancé) =================== */
+function initOptions() {
+  document.getElementById("advToggle").addEventListener("click", () => {
+    document.getElementById("advPanel").classList.toggle("open");
+  });
+  document.querySelectorAll("#qualitySeg button").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll("#qualitySeg button").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    document.getElementById("qmHint").textContent = b.dataset.qm === "accurate"
+      ? "Accurate compare les variantes et garde la meilleure."
+      : "Fast traite chaque page avec un seul passage.";
+  }));
+  document.querySelectorAll("#fmtChips .langchip").forEach(chip => chip.addEventListener("click", (e) => {
+    e.preventDefault();
+    const cb = chip.querySelector("input");
+    cb.checked = !cb.checked;
+    chip.classList.toggle("on", cb.checked);
+  }));
+  document.getElementById("reviewRange").addEventListener("input", (e) => {
+    document.getElementById("reviewVal").textContent = e.target.value + " %";
+  });
+}
+
+async function initLangChips() {
+  const box = document.getElementById("langChips");
+  try {
+    const data = await api("/api/languages");
+    const installed = data.installed_models || [];
+    const names = data.catalog || {};
+    if (!installed.length) {
+      box.innerHTML = '<span class="muted" style="font-size:11px">Aucun modèle de langue détecté — l\'auto-détection sera utilisée.</span>';
+      return;
+    }
+    box.innerHTML = installed.map(code =>
+      `<span class="langchip" data-lang="${esc(code)}">${esc(code)}${names[code] ? " · " + esc(names[code]) : ""}<span class="ok">✓</span></span>`
+    ).join("");
+    box.querySelectorAll(".langchip").forEach(chip => chip.addEventListener("click", () => {
+      chip.classList.toggle("on");
+    }));
+  } catch (e) {
+    box.innerHTML = '<span class="muted" style="font-size:11px">API non joignable — connectez l\'API puis rechargez pour choisir les langues.</span>';
+  }
+}
+
+/* =================== INIT =================== */
+(async () => {
+  initOptions();
+  await loadConfig();
+  if (!connected && await autoProbe()) {
+    await loadConfig();          // recharge avec l'API détectée
+  }
+  if (!connected) {
+    log("Aucune API jointe — si vous êtes dans l'aperçu du lecteur de fichiers, ouvrez l'URL du serveur live (port 8000) ou collez-la dans le bandeau jaune.", "err");
+  }
+  await initLangChips();
+  try { await loadJobs(); } catch (e) {}
+})();
+
+
+/* ═══════════ EXTRAS ÉDITORIAUX ═══════════
+   Ajouts uniquement : aucun code métier ci-dessus n'est modifié.
+   - bascule de thème (clair / sombre, préférence système respectée)
+   - réduction de la barre latérale
+   - recherche globale → filtre réel des documents
+   - page d'accueil : données RÉELLES (moteurs, stats, derniers jobs)
+   ═══════════════════════════════════════════ */
+(function editorialExtras() {
+  const root = document.documentElement;
+  const saved = localStorage.getItem("unocr_theme");
+  const prefersLight = window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: light)").matches;
+  if (saved === "light" || saved === "dark") root.setAttribute("data-theme", saved);
+  else if (prefersLight) root.setAttribute("data-theme", "light");
+
+  const tt = document.getElementById("themeToggle");
+  if (tt) tt.addEventListener("click", () => {
+    const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+    root.setAttribute("data-theme", next);
+    localStorage.setItem("unocr_theme", next);
+  });
+
+  const app = document.getElementById("app");
+  const sc = document.getElementById("sidebarCollapse");
+  if (sc && app) sc.addEventListener("click", () => {
+    app.classList.toggle("collapsed");
+    localStorage.setItem("unocr_sidebar",
+      app.classList.contains("collapsed") ? "1" : "0");
+  });
+  if (app && localStorage.getItem("unocr_sidebar") === "1")
+    app.classList.add("collapsed");
+
+  // recherche globale : filtre réel de la liste des documents
+  const gs = document.getElementById("globalSearch");
+  if (gs) gs.addEventListener("input", () => {
+    const ds = document.getElementById("docSearch");
+    if (ds) {
+      ds.value = gs.value;
+      ds.dispatchEvent(new Event("input"));
+    }
+  });
+
+  // ── page d'accueil : uniquement des données réelles ──
+  async function loadHome() {
+    const engEl = document.getElementById("homeEngines");
+    const stEl = document.getElementById("homeStats");
+    const recEl = document.getElementById("homeRecent");
+    if (!engEl && !stEl && !recEl) return;
+    try {
+      const [eng, st, jobs] = await Promise.all([
+        api("/api/engines"), api("/api/stats"), api("/api/jobs?limit=5"),
+      ]);
+      const avail = (eng || []).filter(e => e.available).map(e => e.name);
+      if (engEl) engEl.textContent = avail.length
+        ? avail.join(" · ")
+        : "aucun moteur disponible";
+      if (stEl) stEl.textContent =
+        (st.jobs_total || 0) + " documents · " + (st.jobs_done || 0) +
+        " terminés · mémoire " + (st.memory_percent != null ? st.memory_percent : "—") + " %";
+      if (recEl) {
+        const list = Array.isArray(jobs) ? jobs.slice(0, 5) : [];
+        if (!list.length) {
+          recEl.innerHTML = '<div class="empty">Aucun document traité pour l\'instant — l\'historique apparaîtra ici.</div>';
+        } else {
+          recEl.innerHTML = list.map(j => {
+            const d = j.created_at
+              ? new Date(j.created_at * 1000).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" })
+              : "";
+            return '<div class="recent-item" data-open-job="' + esc(j.id) + '" role="button" tabindex="0">' +
+              '<span class="badge ' + esc(j.status) + '">' + esc(j.status) + '</span>' +
+              '<span class="fn">' + esc(j.filename) + '</span>' +
+              '<span class="mono muted" style="font-size:10px">' + d + '</span></div>';
+          }).join("");
+          // Délégation d'événement : l'identifiant du job reste dans un
+          // attribut `data-*`, il n'est jamais interprété comme du code.
+          recEl.querySelectorAll("[data-open-job]").forEach(el => {
+            el.addEventListener("click", () => openJob(el.dataset.openJob));
+            el.addEventListener("keydown", (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                openJob(el.dataset.openJob);
+              }
+            });
+          });
+        }
+      }
+    } catch (e) {
+      if (engEl) engEl.textContent = "API non jointe — données indisponibles";
+      if (stEl) stEl.textContent = "—";
+      if (recEl && !recEl.querySelector(".recent-item"))
+        recEl.innerHTML = '<div class="empty">Historique indisponible — API non jointe.</div>';
+    }
+  }
+  loadHome();
+  setInterval(loadHome, 20000);
+})();
+/* ═══════════ RÉVISION, RECHERCHE, RACCOURCIS ═══════════
+   Ajouts purs : le code métier ci-dessus n'est pas modifié.
+   ═══════════════════════════════════════════════════════ */
+(function reviewSearchKeys() {
+  const PAGE = "tab-review";
+
+  /* ---- 1. entrée de navigation pour la page Révision ---- */
+  const META = window.PAGE_META || (window.PAGE_META = {});
+  META[PAGE] = ["À réviser", "File de validation humaine — champs à trancher"];
+
+  /* ---- 2. file de révision ---- */
+  let reviewData = [];
+  let focusIdx = 0;
+
+  const $ = id => document.getElementById(id);
+
+  async function loadReview() {
+    const list = $("reviewList"), count = $("reviewCount"), stats = $("reviewStats");
+    if (!list) return;
+    const threshold = $("reviewThreshold")?.value || "0.75";
+    const undet = $("reviewUndetected")?.checked ? "true" : "false";
+    list.innerHTML = '<div class="muted">Chargement de la file…</div>';
+    try {
+      const d = await api(`/api/review?threshold=${encodeURIComponent(threshold)}` +
+        `&include_undetected=${undet}`);
+      reviewData = d.items || [];
+      focusIdx = 0;
+      if (!reviewData.length) {
+        list.innerHTML = '<div class="empty">Rien à réviser — tous les champs sont ' +
+          'au-dessus du seuil, détectés et valides.</div>';
+        count.textContent = "0 champ";
+        stats.innerHTML = stat("Documents", 0) + stat("Champs", 0);
+        return;
+      }
+      const nFields = reviewData.reduce((n, i) => n + i.fields.length, 0);
+      count.textContent = `${nFields} champ${nFields > 1 ? "s" : ""} · ` +
+        `${reviewData.length} document${reviewData.length > 1 ? "s" : ""}`;
+      stats.innerHTML = stat("Documents", reviewData.length) + stat("Champs", nFields) +
+        stat("Seuil", Math.round(d.threshold * 100) + " %");
+      list.innerHTML = reviewData.map((doc, di) => `
+        <div class="review-doc">
+          <div class="review-doc-head">
+            <span class="fn">${esc(doc.filename)}</span>
+            ${doc.profile ? `<span class="pill">${esc(doc.profile)}</span>` : ""}
+            <span class="meta">${doc.created_at
+              ? new Date(doc.created_at * 1000).toLocaleString("fr-FR",
+                  { dateStyle: "short", timeStyle: "short" }) : ""}</span>
+          </div>
+          ${doc.fields.map((f, fi) => reviewRow(doc, f, di, fi)).join("")}
+        </div>`).join("");
+      markFocus();
+    } catch (e) {
+      list.innerHTML = '<div class="empty">File indisponible — API non jointe.</div>';
+      count.textContent = "—";
+    }
+  }
+
+  function stat(lbl, val) {
+    return `<div class="stat"><span class="big">${val}</span><span class="lbl">${lbl}</span></div>`;
+  }
+
+  function reviewRow(doc, f, di, fi) {
+    const conf = Math.round((f.confidence || 0) * 100);
+    const cls = conf >= 75 ? "hi" : (conf >= 50 ? "md" : "lo");
+    return `<div class="review-row" data-di="${di}" data-fi="${fi}" data-job="${esc(doc.job_id)}"
+                 data-field="${esc(f.field)}">
+      <div>
+        <span class="rr-label">${esc(f.label || f.field)}</span>
+        <span class="rr-name">${esc(f.field)}</span>
+        <div class="rr-reasons">⚠ ${f.reasons.map(esc).join(" · ")}</div>
+      </div>
+      <div>
+        <div class="rr-value">${f.value ? esc(f.value) : '<span class="muted">non détecté</span>'}</div>
+        <div class="rr-conf" style="margin-top:5px">
+          <span class="meter ${cls}" style="width:64px"><i style="width:${conf}%"></i></span>
+          <span>${conf}%</span>
+          <span class="badge ${esc(f.status)}">${esc(f.status)}</span>
+        </div>
+      </div>
+      <div class="rr-actions">
+        <input class="edit" data-confirm value="${esc(f.value || "")}"
+               placeholder="valeur confirmée…" aria-label="Valeur confirmée pour ${esc(f.label || f.field)}">
+        <div class="rr-btn-row">
+          <button class="btn sm" data-validate>Valider</button>
+          <button class="btn ghost sm" data-undo title="Restaurer l'état d'avant correction (U)">Annuler</button>
+          <button class="btn ghost sm" data-open>Ouvrir</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function markFocus() {
+    document.querySelectorAll("#reviewList .review-row").forEach(r => r.classList.remove("focused"));
+    const rows = document.querySelectorAll("#reviewList .review-row");
+    if (!rows.length) return;
+    focusIdx = Math.max(0, Math.min(focusIdx, rows.length - 1));
+    rows[focusIdx].classList.add("focused");
+    rows[focusIdx].scrollIntoView({ block: "nearest" });
+  }
+
+  function rowCourante() {
+    return document.querySelectorAll("#reviewList .review-row")[focusIdx] || null;
+  }
+
+  /* Annulation d'une correction : l'état d'avant est restitué, la trace reste.
+     Le motif est demandé car une annulation est une décision, pas un clic. */
+  async function undoRow(row) {
+    const job = row.dataset.job, field = row.dataset.field;
+    const motif = prompt(`Pourquoi annuler la correction de « ${field} » ?`);
+    if (motif === null) return;
+    if (!motif.trim()) { toast("Un motif est nécessaire pour tracer l'annulation.", "error"); return; }
+    try {
+      const r = await api(`/api/jobs/${job}/fields/${field}/undo`, {
+        method: "POST", body: JSON.stringify({ motif: motif.trim() }),
+      });
+      toast(`« ${field} » restauré à « ${r.restaure?.valeur ?? "?"} »`, "success");
+      loadReview();
+    } catch (e) {
+      toast(`Annulation impossible : ${e.message}`, "error");
+    }
+  }
+
+  async function validateRow(row) {
+    const job = row.dataset.job, field = row.dataset.field;
+    const input = row.querySelector("[data-confirm]");
+    const value = (input?.value || "").trim();
+    if (!value) { toast("Saisissez une valeur à confirmer.", "error"); input?.focus(); return; }
+    try {
+      await api(`/api/jobs/${job}/fields/${field}`, {
+        method: "PATCH", body: JSON.stringify({ confirmed_value: value }),
+      });
+      row.classList.add("done");
+      toast(`« ${value} » confirmé pour ${field}`, "success");
+      loadReview();
+    } catch (e) {
+      toast(`Validation impossible : ${e.message}`, "error");
+    }
+  }
+
+  /* Annulation d'une correction : l'état d'avant est restitué, la trace reste.
+     Le motif est demandé car une annulation est une décision, pas un clic. */
+  async function undoRow(row) {
+    const job = row.dataset.job, field = row.dataset.field;
+    const motif = prompt(`Pourquoi annuler la correction de « ${field} » ?`);
+    if (motif === null) return;
+    if (!motif.trim()) { toast("Un motif est nécessaire pour tracer l'annulation.", "error"); return; }
+    try {
+      const r = await api(`/api/jobs/${job}/fields/${field}/undo`, {
+        method: "POST", body: JSON.stringify({ motif: motif.trim() }),
+      });
+      toast(`« ${field} » restauré à « ${r.restaure?.valeur ?? "?"} »`, "success");
+      loadReview();
+    } catch (e) {
+      toast(`Annulation impossible : ${e.message}`, "error");
+    }
+  }
+
+  document.addEventListener("click", e => {
+    const row = e.target.closest?.("#reviewList .review-row");
+    if (row) {
+      focusIdx = Array.from(document.querySelectorAll("#reviewList .review-row")).indexOf(row);
+      markFocus();
+    }
+    const v = e.target.closest?.("[data-validate]");
+    if (v) { const r = v.closest(".review-row"); validateRow(r); return; }
+    const u = e.target.closest?.("[data-undo]");
+    if (u) { const r = u.closest(".review-row"); undoRow(r); return; }
+    const o = e.target.closest?.("[data-open]");
+    if (o) { openJob(o.closest(".review-row").dataset.job); return; }
+  });
+
+  $("reviewRefresh")?.addEventListener("click", loadReview);
+  $("reviewThreshold")?.addEventListener("change", loadReview);
+  $("reviewUndetected")?.addEventListener("change", loadReview);
+
+  /* ─── identité et droits ───
+     Au démarrage, on demande à l'API qui nous sommes. Si data/rbac.json est
+     actif et qu'aucun jeton valide n'est fourni, la modale s'ouvre — plutôt
+     que de découvrir un 401 au premier clic. */
+  function demanderJeton() {
+    $("jetonVoile")?.classList.remove("hidden");
+    $("jetonInput")?.focus();
+  }
+  function majEnteteJeton() {
+    const chip = $("identChip"), txt = $("identTxt");
+    if (!chip) return;
+    if (!MOI || !MOI.actif) { chip.classList.add("hidden"); return; }
+    chip.classList.remove("hidden");
+    txt.textContent = MOI.nom + " · " + (MOI.roles || []).join(", ");
+    chip.title = "Rôles : " + (MOI.roles || []).join(", ") +
+      " — périmètre : " + (MOI.dossiers || []).join(", ");
+  }
+  async function chargeIdentite() {
+    try {
+      MOI = await api("/api/rbac/moi");
+    } catch (e) { MOI = { actif: false }; }
+    majEnteteJeton();
+    if (MOI.actif && !MOI.nom) demanderJeton();
+  }
+  $("jetonBtn")?.addEventListener("click", () => {
+    definirJeton($("jetonInput")?.value);
+    chargeIdentite().then(() => { $("jetonVoile")?.classList.add("hidden"); });
+  });
+  $("jetonInput")?.addEventListener("keydown", e => {
+    if (e.key === "Enter") $("jetonBtn")?.click();
+  });
+  chargeIdentite();
+
+  /* ---- 3. recherche plein texte inter-documents ---- */
+  const gs = $("globalSearch"), sr = $("searchResults");
+  let searchTimer = null;
+
+  function closeSearch() {
+    sr?.classList.add("hidden");
+    gs?.setAttribute("aria-expanded", "false");
+  }
+
+  function highlight(text, q) {
+    const i = text.toLowerCase().indexOf(q.toLowerCase());
+    if (i < 0) return esc(text);
+    return esc(text.slice(0, i)) + "<mark>" + esc(text.slice(i, i + q.length)) +
+      "</mark>" + esc(text.slice(i + q.length));
+  }
+
+  async function runSearch() {
+    const q = (gs.value || "").trim();
+    if (q.length < 2) { closeSearch(); return; }
+    sr.classList.remove("hidden");
+    gs.setAttribute("aria-expanded", "true");
+    sr.innerHTML = '<div class="sr-head">Recherche…</div>';
+    try {
+      const d = await api(`/api/search?q=${encodeURIComponent(q)}&limit=20`);
+      if (!d.hits.length) {
+        sr.innerHTML = '<div class="sr-head">Aucun résultat</div>' +
+          '<div class="sr-item muted">Aucun document ne contient « ' + esc(q) + ' ».</div>';
+        return;
+      }
+      const seen = new Set();
+      const head = `<div class="sr-head">${d.returned} résultat${d.returned > 1 ? "s" : ""}` +
+        `${d.truncated ? " (tronqué)" : ""}</div>`;
+      sr.innerHTML = head + d.hits.map(h => {
+        const key = h.job_id + "|" + h.kind + "|" + (h.field || h.page || "") + "|" +
+          (h.value || h.snippet || "");
+        if (seen.has(key)) return "";
+        seen.add(key);
+        const label = h.kind === "field"
+          ? `Champ « ${esc(h.label || h.field)} »`
+          : `Page ${h.page ?? "?"} · texte`;
+        const detail = h.kind === "field" ? esc(h.value || "—") : highlight(h.snippet || "", q);
+        return `<button class="sr-item" data-job="${esc(h.job_id)}" role="option">
+          <span class="sr-file">${esc(h.filename)}</span>
+          <span class="sr-meta">${label}${h.status ? ` · <span class="badge ${esc(h.status)}">${esc(h.status)}</span>` : ""}</span>
+          <span class="sr-snip">${detail}</span>
+        </button>`;
+      }).join("");
+    } catch (e) {
+      sr.innerHTML = '<div class="sr-head">Recherche indisponible</div>' +
+        '<div class="sr-item muted">API non jointe.</div>';
+    }
+  }
+
+  gs?.addEventListener("input", () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(runSearch, 220);
+  });
+  sr?.addEventListener("click", e => {
+    const b = e.target.closest("[data-job]");
+    if (!b) return;
+    closeSearch();
+    openJob(b.dataset.job);
+  });
+  document.addEventListener("click", e => {
+    if (!e.target.closest?.(".top-search")) closeSearch();
+  });
+
+  /* ---- 4. raccourcis clavier ---- */
+  const TABS = ["tab-import", "tab-docs", "tab-result", "tab-review",
+                "tab-quality", "tab-config", "tab-dashboard"];
+  let gPending = false, gTimer = null;
+
+  function typing(el) {
+    return el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" ||
+      el.tagName === "SELECT" || el.isContentEditable);
+  }
+  function gotoTab(tab) {
+    document.querySelector(`.nav-item[data-tab="${tab}"]`)?.click();
+  }
+  function currentTab() {
+    const active = document.querySelector(".nav-item.active");
+    return active ? active.dataset.tab : "tab-import";
+  }
+
+  document.addEventListener("keydown", e => {
+    if (typing(e.target)) {
+      if (e.key === "Escape") { e.target.blur(); closeSearch(); }
+      return;
+    }
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+    const onReview = currentTab() === PAGE;
+    const k = e.key;
+
+    if (k === "Escape") {
+      closeSearch();
+      $("helpOverlay")?.classList.add("hidden");
+      return;
+    }
+    if (k === "/") {
+      e.preventDefault(); gs?.focus(); gs?.select(); return;
+    }
+    if (k === "?") {
+      e.preventDefault();
+      const h = $("helpOverlay");
+      h?.classList.remove("hidden");
+      $("helpClose")?.focus();
+      return;
+    }
+    if (k === "t") {
+      $("themeToggle")?.click(); return;
+    }
+    if (onReview) {
+      const rows = document.querySelectorAll("#reviewList .review-row");
+      if (k === "j" || k === "ArrowDown") {
+        e.preventDefault(); focusIdx = Math.min(focusIdx + 1, rows.length - 1); markFocus(); return;
+      }
+      if (k === "k" || k === "ArrowUp") {
+        e.preventDefault(); focusIdx = Math.max(focusIdx - 1, 0); markFocus(); return;
+      }
+      if (k === "Enter") {
+        const row = rows[focusIdx];
+        if (row) { e.preventDefault(); validateRow(row); }
+        return;
+      }
+      if (k === "o") {
+        const row = rows[focusIdx];
+        if (row) openJob(row.dataset.job);
+        return;
+      }
+      /* « u » annule la correction de la ligne focalisée. Le motif est
+         demandé par undoRow : une annulation non motivée serait une trace
+         d'audit inexpliquée. */
+      if (k === "u" || k === "U") {
+        const row = rows[focusIdx];
+        if (row) { e.preventDefault(); undoRow(row); }
+        return;
+      }
+    }
+    if (k === "g") { gPending = true; clearTimeout(gTimer);
+      gTimer = setTimeout(() => { gPending = false; }, 900); return; }
+    if (gPending && /^[1-7]$/.test(k)) {
+      gPending = false;
+      gotoTab(TABS[Number(k) - 1]);
+      return;
+    }
+    gPending = false;
+  });
+
+  $("helpClose")?.addEventListener("click", () => $("helpOverlay")?.classList.add("hidden"));
+  $("helpOverlay")?.addEventListener("click", e => {
+    if (e.target.id === "helpOverlay") e.target.classList.add("hidden");
+  });
+})();
+/* ═══════════ LOTS · AUDIT · SÉLECTION ═══════════
+   Ajouts purs : aucun code métier ci-dessus n'est modifié.
+   ══════════════════════════════════════════════ */
+(function batchAuditSelection() {
+  const $ = id => document.getElementById(id);
+  const fmtSize = n => n < 1024 ? n + " o" : (n < 1048576
+    ? (n / 1024).toFixed(0) + " Ko" : (n / 1048576).toFixed(1) + " Mo");
+
+  /* ═════════ 1. traitement par lots ═════════ */
+  const input = $("batchInput");
+  let chosen = [];   // {file, name, size}
+
+  function renderFiles() {
+    const box = $("batchFiles");
+    $("batchCount").textContent = chosen.length
+      ? chosen.length + (chosen.length > 1 ? " fichiers" : " fichier")
+      : "aucun fichier";
+    $("batchRun").disabled = !chosen.length;
+    $("batchClear").disabled = !chosen.length;
+    box.innerHTML = chosen.map((f, i) =>
+      `<div class="batch-file"><span class="bf-name">${esc(f.name)}</span>` +
+      `<span class="bf-size">${fmtSize(f.size)}</span>` +
+      `<button class="bf-rm" data-i="${i}" title="Retirer" aria-label="Retirer">✕</button></div>`
+    ).join("");
+  }
+
+  $("batchPick")?.addEventListener("click", () => input?.click());
+  input?.addEventListener("change", () => {
+    for (const f of (input.files || [])) chosen.push({ file: f, name: f.name, size: f.size });
+    input.value = "";
+    renderFiles();
+  });
+  $("batchClear")?.addEventListener("click", () => { chosen = []; renderFiles(); });
+  $("batchFiles")?.addEventListener("click", e => {
+    const b = e.target.closest("[data-i]");
+    if (!b) return;
+    chosen.splice(Number(b.dataset.i), 1);
+    renderFiles();
+  });
+
+  $("batchRun")?.addEventListener("click", async () => {
+    if (!chosen.length) return;
+    const btn = $("batchRun");
+    btn.disabled = true;
+    $("batchStatus").textContent = "envoi de " + chosen.length + " fichier(s)…";
+    $("batchResult").innerHTML = "";
+    try {
+      const fd = new FormData();
+      for (const c of chosen) fd.append("files", c.file, c.name);
+      // les réglages courants de l'onglet Import sont réutilisés tels quels
+      const prof = $("profileSelect")?.value || "generic";
+      fd.append("profile", prof);
+      fd.append("quality_mode",
+        document.querySelector("#qualitySeg .on")?.dataset.mode || "accurate");
+      const fmts = Array.from(
+        document.querySelectorAll('#fmtChips input[data-fmt]'))
+        .filter(i => i.checked).map(i => i.dataset.fmt).join(",");
+      fd.append("export_formats", fmts || "json,txt");
+
+      const d = await fetchJson("/api/batches", { method: "POST", body: fd });
+      $("batchStatus").textContent = d.accepted + " accepté(s), " +
+        d.rejected.length + " refusé(s)";
+
+      // suivi de la progression réelle
+      const ids = d.jobs.map(j => j.job_id);
+      let done = 0;
+      const poll = setInterval(async () => {
+        done = 0;
+        for (const j of d.jobs) {
+          try {
+            const st = (await fetchJson("/api/jobs/" + j.job_id)).status;
+            if (st === "done" || st === "error") done++;
+          } catch { /* job encore en vol */ }
+        }
+        $("batchStatus").textContent = `${done}/${ids.length} terminé(s)`;
+        if (done >= ids.length) {
+          clearInterval(poll);
+          renderBatch(d);
+        }
+      }, 1200);
+
+      if (!ids.length) renderBatch(d);
+    } catch (e) {
+      $("batchStatus").textContent = "";
+      toast("Lot impossible : " + e.message, "error");
+      btn.disabled = false;
+    }
+  });
+
+  function renderBatch(d) {
+    $("batchRun").disabled = !chosen.length;
+    const rows = d.jobs.map(j =>
+      `<div class="batch-row"><span class="br-file">${esc(j.filename)}</span>` +
+      `<span class="badge ${esc(j.status)}">${esc(j.status)}</span>` +
+      `${j.cached ? '<span class="pill">réutilisé</span>' : ""}` +
+      `<button class="btn ghost sm" data-open="${esc(j.job_id)}">Ouvrir</button></div>`
+    ).join("");
+    const rej = d.rejected.length
+      ? `<div class="batch-summary" style="border-color:var(--warn)">⚠ ${d.rejected.length} fichier(s) refusé(s) : ` +
+        d.rejected.map(r => esc(r.filename)).join(", ") + "</div>"
+      : "";
+    const ok = d.jobs.filter(j => j.status === "done").map(j => j.job_id);
+    const exp = ok.length ? `
+      <div class="batch-export">
+        <span class="muted mono" style="font-size:10.5px;align-self:center">Export groupé :</span>
+        ${["csv", "xlsx", "json", "txt"].map(f =>
+          `<button class="btn ghost sm" data-bexp="${f}">${f.toUpperCase()}</button>`).join("")}
+      </div>` : "";
+    $("batchResult").innerHTML =
+      `<div class="batch-summary"><span><span class="bs-n">${d.jobs.length}</span>document(s)</span>` +
+      `<span><span class="bs-n">${ok.length}</span>terminé(s)</span>` +
+      `<span><span class="bs-n">${d.rejected.length}</span>refusé(s)</span></div>` +
+      rej + `<div class="panel panel-flush" style="padding:0">${rows}</div>` + exp;
+  }
+
+  $("batchResult")?.addEventListener("click", async e => {
+    const o = e.target.closest("[data-open]");
+    if (o) { openJob(o.dataset.open); return; }
+    const x = e.target.closest("[data-bexp]");
+    if (!x) return;
+    const ids = Array.from(
+      $("batchResult").querySelectorAll("[data-open]")).map(b => b.dataset.open);
+    if (!ids.length) return;
+    const fmt = x.dataset.bexp;
+    toast("Préparation de l'export groupé " + fmt.toUpperCase() + "…", "info");
+    try {
+      const r = await fetchAuthenticated("/api/batches/export/" + fmt + "?ids=" +
+        encodeURIComponent(ids.join(",")));
+      if (!r.ok) throw new Error(await readError(r));
+      const blob = await r.blob();
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "unocr_lot." + fmt;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+      toast("Export groupé téléchargé ✓", "success");
+    } catch (err) {
+      toast("Export groupé impossible : " + err.message, "error");
+    }
+  });
+
+  /* ═════════ 2. journal d'audit filtrable ═════════ */
+  async function loadAudit() {
+    const box = $("auditLog");
+    if (!box) return;
+    const ev = $("auditEvent")?.value || "";
+    const q = $("auditQuery")?.value.trim() || "";
+    const params = new URLSearchParams({ limit: "300" });
+    if (ev) params.set("event", ev);
+    if (q) params.set("q", q);
+    box.innerHTML = '<div class="muted">Chargement du journal…</div>';
+    try {
+      const d = await fetchJson("/api/audit?" + params.toString());
+      const sel = $("auditEvent");
+      if (sel && sel.options.length <= 1) {
+        for (const name of d.events) {
+          const o = document.createElement("option");
+          o.value = name; o.textContent = name;
+          sel.appendChild(o);
+        }
+      }
+      if (!d.entries.length) {
+        box.innerHTML = '<div class="muted">Aucun événement pour ce filtre.</div>';
+        return;
+      }
+      box.innerHTML = d.entries.map(e => {
+        const ts = new Date(e.ts * 1000)
+          .toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "medium" });
+        const { ts: _t, event, ...rest } = e;
+        const det = Object.entries(rest)
+          .map(([k, v]) => `${k}=${typeof v === "object" ? JSON.stringify(v) : v}`)
+          .join(" ");
+        return `<div class="audit-entry"><span class="ae-ts">${ts}</span>` +
+          `<span class="ae-ev">${esc(event)}</span>` +
+          `<span class="ae-det">${esc(det)}</span></div>`;
+      }).join("");
+    } catch (err) {
+      box.innerHTML = '<div class="muted">Journal indisponible — API non jointe.</div>';
+    }
+  }
+  $("auditRefresh")?.addEventListener("click", loadAudit);
+  $("auditEvent")?.addEventListener("change", loadAudit);
+  let auditTimer = null;
+  $("auditQuery")?.addEventListener("input", () => {
+    clearTimeout(auditTimer);
+    auditTimer = setTimeout(loadAudit, 250);
+  });
+  // chargé quand on affiche le tableau de bord
+  document.querySelector('.nav-item[data-tab="tab-dashboard"]')
+    ?.addEventListener("click", () => setTimeout(loadAudit, 60));
+
+  /* ═════════ 3. sélection de champs → export ciblé ═════════ */
+  const tbody = document.querySelector("#fieldsTable tbody");
+  if (tbody && window.MutationObserver) {
+    new MutationObserver(() => {
+      for (const tr of tbody.querySelectorAll("tr")) {
+        if (tr.querySelector(":scope > td.sel-cell")) continue;
+        const td = document.createElement("td");
+        td.className = "sel-cell";
+        td.innerHTML = '<input type="checkbox" class="sel-cb" aria-label="Sélectionner ce champ">';
+        tr.insertBefore(td, tr.firstChild);
+      }
+      syncSel();
+    }).observe(tbody, { childList: true });
+  }
+
+  function selected() {
+    return Array.from(document.querySelectorAll("#fieldsTable .sel-cb"))
+      .filter(cb => cb.checked)
+      .map(cb => cb.closest("tr").querySelector(".mono")?.textContent?.trim())
+      .filter(Boolean);
+  }
+  function syncSel() {
+    const n = selected().length;
+    if ($("selCount")) $("selCount").textContent = n + (n > 1 ? " champs" : " champ");
+    if ($("exportSelCsv")) $("exportSelCsv").disabled = !n;
+    if ($("exportSelJson")) $("exportSelJson").disabled = !n;
+  }
+  document.addEventListener("change", e => {
+    if (e.target.classList?.contains("sel-cb")) syncSel();
+    if (e.target.id === "selAll") {
+      const on = e.target.checked;
+      document.querySelectorAll("#fieldsTable .sel-cb").forEach(cb => { cb.checked = on; });
+      syncSel();
+    }
+  });
+  async function exportSelection(fmt) {
+    const names = selected();
+    if (!names.length || !currentJob) return;
+    toast("Export de " + names.length + " champ(s)…", "info");
+    try {
+      const r = await fetchAuthenticated(`/api/jobs/${currentJob}/export/${fmt}/selected?fields=` +
+        encodeURIComponent(names.join(",")));
+      if (!r.ok) throw new Error(await readError(r));
+      const blob = await r.blob();
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "unocr_selection." + fmt;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+      toast("Sélection exportée ✓", "success");
+    } catch (err) {
+      toast("Export impossible : " + err.message, "error");
+    }
+  }
+  $("exportSelCsv")?.addEventListener("click", () => exportSelection("csv"));
+  $("exportSelJson")?.addEventListener("click", () => exportSelection("json"));
+})();
+
+/* ═══════════ ÉDITEUR DE PROFILS ═══════════
+   Ajout pur. Les profils utilisateur sont écrits dans data/profiles/ :
+   les profils livrés ne sont jamais modifiés.
+   ═══════════════════════════════════════ */
+(function profileEditor() {
+  const $ = id => document.getElementById(id);
+  const META = window.PAGE_META || (window.PAGE_META = {});
+  META["tab-profiles"] = ["Profils métier", "Champs, motifs et validateurs — avec essai à blanc"];
+
+  let all = [];            // [{name, label, description, fields, source}]
+  let current = null;      // profil en cours d'édition
+  let catalog = { normalizations: [], validators: [], aux_validators: [] };
+
+  /* ── chargement ── */
+  async function loadList() {
+    try {
+      const [list, cat] = await Promise.all([
+        fetchJson("/api/profiles"), fetchJson("/api/profiles/catalog")]);
+      catalog = cat;
+      all = list;
+      const sel = $("profName")?.value;
+      $("profList").innerHTML = list.map(p =>
+        `<button class="prof-item${current && current.name === p.name ? " on" : ""}" ` +
+        `data-name="${esc(p.name)}"><span class="pi-name">${esc(p.label || p.name)}</span>` +
+        `<span class="pi-src">${p.name}</span></button>`).join("");
+      if (sel) $("profName").value = sel;
+    } catch (e) {
+      $("profList").innerHTML = '<div class="muted">Profils indisponibles.</div>';
+    }
+  }
+
+  async function openProfile(name) {
+    try {
+      const p = await fetchJson("/api/profiles/" + encodeURIComponent(name));
+      current = p;
+      $("profEmpty").style.display = "none";
+      $("profForm").style.display = "";
+      $("profSource").textContent = p.source === "user" ? "Utilisateur" : "Livré";
+      $("profName").value = p.name;
+      $("profLabel").value = p.label || "";
+      $("profDesc").value = p.description || "";
+      $("profDelete").disabled = p.source !== "user";
+      $("profDelete").title = p.source === "user"
+        ? "Supprimer ce profil utilisateur"
+        : "Profil livré avec le projet — non supprimable";
+      renderFields(p.fields || []);
+      $("profTestOut").innerHTML = "";
+      loadList();
+    } catch (e) {
+      toast("Profil inaccessible : " + e.message, "error");
+    }
+  }
+
+  function renderFields(fields) {
+    $("profFields").innerHTML = fields.map((f, i) => `
+      <div class="prof-field" data-i="${i}">
+        <div class="prof-field-head">
+          <span class="pf-key">${esc(f.key || "(sans clé)")}</span>
+          ${f.required ? '<span class="pill">requis</span>' : ""}
+          <button class="pf-rm" data-rm="${i}" title="Retirer ce champ">✕ retirer</button>
+        </div>
+        <div class="prof-field-grid">
+          <div><label class="lb">Clé</label>
+            <input class="inp" data-f="key" value="${esc(f.key || "")}" placeholder="invoice_number"></div>
+          <div><label class="lb">Libellé</label>
+            <input class="inp" data-f="label" value="${esc(f.label || "")}" placeholder="Numéro de facture"></div>
+          <div><label class="lb">Normalisation</label>
+            <select class="inp" data-f="normalize">
+              <option value="">aucune</option>
+              ${catalog.normalizations.map(n =>
+                `<option value="${esc(n)}"${f.normalize === n ? " selected" : ""}>${esc(n)}</option>`).join("")}
+            </select></div>
+          <div><label class="lb">Validateurs</label>
+            <select class="inp" data-f="validator">
+              <option value="">aucun</option>
+              ${catalog.validators.map(v =>
+                `<option value="${esc(v)}"${(f.validators || [])[0] === v ? " selected" : ""}>${esc(v)}</option>`).join("")}
+            </select></div>
+        </div>
+        <div style="margin-top:10px">
+          <label class="lb">Motifs (regex, un par ligne — le groupe 1 est la valeur)</label>
+          <textarea class="inp" rows="2" data-f="patterns"
+            style="font-family:var(--font-mono);font-size:11px">${esc((f.patterns || []).join("\n"))}</textarea>
+        </div>
+        <label class="ph-check" style="margin-top:8px">
+          <input type="checkbox" data-f="required"${f.required ? " checked" : ""}>
+          <span>Champ requis</span>
+        </label>
+      </div>`).join("");
+  }
+
+  function collectFields() {
+    return Array.from($("profFields").querySelectorAll(".prof-field")).map(box => {
+      const get = k => box.querySelector(`[data-f="${k}"]`);
+      const validators = [];
+      const v = get("validator")?.value;
+      if (v) validators.push(v);
+      return {
+        key: (get("key")?.value || "").trim(),
+        label: get("label")?.value || "",
+        patterns: (get("patterns")?.value || "").split("\n")
+          .map(x => x.trim()).filter(Boolean),
+        normalize: get("normalize")?.value || null,
+        validators,
+        required: !!get("required")?.checked,
+        category: "general",
+      };
+    }).filter(f => f.key);
+  }
+
+  /* ── interactions ── */
+  $("profList")?.addEventListener("click", e => {
+    const b = e.target.closest("[data-name]");
+    if (b) openProfile(b.dataset.name);
+  });
+  $("profNew")?.addEventListener("click", () => {
+    current = { name: "", label: "", description: "", fields: [], source: "user" };
+    $("profEmpty").style.display = "none";
+    $("profForm").style.display = "";
+    $("profSource").textContent = "Nouveau";
+    $("profName").value = "";
+    $("profLabel").value = "";
+    $("profDesc").value = "";
+    $("profDelete").disabled = true;
+    renderFields([]);
+    $("profTestOut").innerHTML = "";
+    $("profName").focus();
+  });
+  $("profAddField")?.addEventListener("click", () => {
+    const fields = collectFields();
+    fields.push({ key: "", label: "", patterns: [], normalize: null,
+                  validators: [], required: false, category: "general" });
+    renderFields(fields);
+  });
+  $("profFields")?.addEventListener("click", e => {
+    const rm = e.target.closest("[data-rm]");
+    if (!rm) return;
+    const fields = collectFields();
+    fields.splice(Number(rm.dataset.rm), 1);
+    renderFields(fields);
+  });
+
+  $("profSave")?.addEventListener("click", async () => {
+    const name = ($("profName").value || "").trim();
+    if (!name) { toast("Donnez un identifiant au profil.", "error"); return; }
+    const body = {
+      label: $("profLabel").value || name,
+      description: $("profDesc").value || "",
+      fields: collectFields(),
+    };
+    if (!body.fields.length) {
+      toast("Un profil sans champ n'extraira rien.", "error");
+      return;
+    }
+    $("profMsg").textContent = "enregistrement…";
+    try {
+      const r = await fetchJson("/api/profiles/" + encodeURIComponent(name),
+        { method: "PUT", body: JSON.stringify(body),
+          headers: { "Content-Type": "application/json" } });
+      $("profMsg").textContent = `enregistré (${r.fields} champs)` +
+        (r.overrides_builtin ? " — remplace un profil livré" : "");
+      toast(`Profil « ${name} » enregistré`, "success");
+      openProfile(name);
+    } catch (e) {
+      $("profMsg").textContent = "";
+      toast("Enregistrement refusé : " + e.message, "error");
+    }
+  });
+
+  $("profDelete")?.addEventListener("click", async () => {
+    const name = $("profName").value;
+    if (!name || !confirm(`Supprimer le profil « ${name} » de data/profiles/ ?`)) return;
+    try {
+      await fetchJson("/api/profiles/" + encodeURIComponent(name), { method: "DELETE" });
+      toast("Profil supprimé", "info");
+      current = null;
+      $("profForm").style.display = "none";
+      $("profEmpty").style.display = "";
+      loadList();
+    } catch (e) {
+      toast("Suppression impossible : " + e.message, "error");
+    }
+  });
+
+  $("profRunTest")?.addEventListener("click", async () => {
+    const body = {
+      profile: {
+        name: $("profName").value || "essai",
+        label: $("profLabel").value || "Essai",
+        fields: collectFields(),
+      },
+      text: $("profTestText").value || "",
+      job_id: $("profTestJob").value.trim() || undefined,
+    };
+    if (!body.profile.fields.length) {
+      toast("Ajoutez au moins un champ à essayer.", "error"); return;
+    }
+    $("profTestOut").innerHTML = '<div class="muted">Essai en cours…</div>';
+    try {
+      const r = await fetchJson("/api/profiles/test",
+        { method: "POST", body: JSON.stringify(body),
+          headers: { "Content-Type": "application/json" } });
+      const rows = Object.entries(r.fields).map(([k, f]) => {
+        const conf = Math.round((f.confidence || 0) * 100);
+        return `<div class="prof-test-row">
+          <span class="ptr-key">${esc(k)}</span>
+          <span class="ptr-val">${f.raw_value ? esc(f.raw_value) : '<span class="muted">non détecté</span>'}</span>
+          <span class="badge ${esc(f.status)}">${esc(f.status)}</span>
+          <span class="muted mono" style="font-size:10px">${conf}%</span>
+        </div>`;
+      }).join("");
+      $("profTestOut").innerHTML =
+        `<div class="prof-test-summary">${r.detected}/${r.total} champ(s) détecté(s)</div>` + rows;
+    } catch (e) {
+      $("profTestOut").innerHTML =
+        '<div class="empty">Essai impossible : ' + esc(e.message) + "</div>";
+    }
+  });
+
+  document.querySelector('.nav-item[data-tab="tab-profiles"]')
+    ?.addEventListener("click", () => { if (!all.length) loadList(); });
+})();
+
+
+
+
+</script>
+<script>
+/* PWA : installe la coquille hors ligne. Silencieux si l'API n'est pas là. */
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("/sw.js").catch(function () {});
+  });
+}
+</script>
+<script>
+/* ═══════════════════ i18n de l'interface (C3) ═══════════════════
+ * Mécanisme : tout élément portant data-i18n="clé" reçoit la traduction
+ * de la langue courante. Un élément sans traduction GARDE son texte
+ * existant (repli gracieux) : aucune chaîne n'est jamais effacée.
+ * L'arabe bascule aussi document.documentElement.dir = "rtl". */
+var I18N = {
+  fr: {
+    "nav.import": "Importer", "nav.docs": "Documents", "nav.result": "Résultat",
+    "nav.quality": "Qualité", "nav.config": "Configuration",
+    "nav.dashboard": "Tableau de bord", "nav.review": "Révision",
+    "nav.profiles": "Profils", "nav.connectors": "Connecteurs",
+    "page.connectors": ["Connecteur Hub", "Transmission vers les systèmes externes, sous contrôle humain"],
+    "nav.dossier": "Dossier",
+    "page.dossier": ["Parcours documentaire", "Dossier, cohérence entre documents et paquet de données"],
+    "h.dossier": "Parcours documentaire",
+    "h.dossier.sub": "Regrouper les documents d'un même envoi, les comparer entre eux, puis produire un paquet de données. Chaque état affiché est déduit de faits réels — rien n'est déclaré terminé sans l'avoir été.",
+    "page.import": ["Importer un document", "Analyse visuelle et textuelle → données structurées"],
+    "page.docs": ["Documents", "Historique des traitements et suivi des jobs"],
+    "page.result": ["Résultat d'analyse", "Texte, champs, tableaux — reliés au document source"],
+    "page.quality": ["Contrôle qualité", "Confiances, anomalies et cohérence métier"],
+    "page.config": ["Configuration", "Moteurs, langues et profils réellement disponibles"],
+    "page.dashboard": ["Tableau de bord", "Activité et ressources système"],
+    "page.review": ["Révision humaine", "Champs sous le seuil de confiance à valider"],
+    "page.profiles": ["Profils d'extraction", "Créer, tester et ajuster vos propres profils"],
+    "search.placeholder": "Rechercher un document, un champ, un mot…",
+    "lang.label": "Langue de l'interface",
+    "h.import": "Importez. Vérifiez. Exportez.",
+    "h.docs": "Documents traités", "h.result": "Résultat d'analyse",
+    "h.quality": "Contrôle qualité", "h.config": "Configuration réelle",
+    "h.dashboard": "Tableau de bord", "h.profiles": "Profils métier", "h.connectors": "Connecteur Hub"
+  },
+  en: {
+    "nav.import": "Import", "nav.docs": "Documents", "nav.result": "Result",
+    "nav.quality": "Quality", "nav.config": "Settings",
+    "nav.dashboard": "Dashboard", "nav.review": "Review",
+    "nav.profiles": "Profiles", "nav.connectors": "Connectors",
+    "page.connectors": ["Connector Hub", "Transmission to external systems, under human control"],
+    "nav.dossier": "Folder",
+    "page.dossier": ["Documentary workflow", "Folder, cross-document consistency and data package"],
+    "h.dossier": "Documentary workflow",
+    "h.dossier.sub": "Group the documents of one shipment, compare them with each other, then produce a data package. Every state shown is derived from real facts — nothing is reported as done before it actually is.",
+    "page.import": ["Import a document", "Visual and textual analysis → structured data"],
+    "page.docs": ["Documents", "Processing history and job tracking"],
+    "page.result": ["Analysis result", "Text, fields, tables — tied to the source document"],
+    "page.quality": ["Quality control", "Confidences, anomalies and business consistency"],
+    "page.config": ["Settings", "Engines, languages and actually available profiles"],
+    "page.dashboard": ["Dashboard", "Activity and system resources"],
+    "page.review": ["Human review", "Fields below the confidence threshold to validate"],
+    "page.profiles": ["Extraction profiles", "Create, test and tune your own profiles"],
+    "search.placeholder": "Search a document, a field, a word…",
+    "lang.label": "Interface language",
+    "h.import": "Import. Verify. Export.",
+    "h.docs": "Processed documents", "h.result": "Analysis result",
+    "h.quality": "Quality control", "h.config": "Real configuration",
+    "h.dashboard": "Dashboard", "h.profiles": "Business profiles", "h.connectors": "Connector Hub"
+  },
+  ar: {
+    "nav.import": "استيراد", "nav.docs": "المستندات", "nav.result": "النتيجة",
+    "nav.quality": "الجودة", "nav.config": "الإعدادات",
+    "nav.dashboard": "لوحة القيادة", "nav.review": "المراجعة",
+    "nav.profiles": "الملفات الشخصية", "nav.connectors": "الموصّلات",
+    "page.connectors": ["مركز الموصّلات", "الإرسال إلى الأنظمة الخارجية تحت التحقق البشري"],
+    "nav.dossier": "الملف",
+    "page.dossier": ["مسار المستندات", "الملف واتساق المستندات وحزمة البيانات"],
+    "h.dossier": "مسار المستندات",
+    "h.dossier.sub": "تجميع مستندات شحنة واحدة ومقارنتها فيما بينها ثم إنتاج حزمة بيانات. كل حالة معروضة مشتقّة من وقائع فعلية — لا شيء يُعلن منتهيًا قبل أن يكون كذلك.",
+    "page.import": ["استيراد مستند", "تحليل بصري ونصي ← بيانات منظّمة"],
+    "page.docs": ["المستندات", "سجل المعالجة ومتابعة المهام"],
+    "page.result": ["نتيجة التحليل", "النص والحقول والجداول — مرتبطة بالمستند الأصلي"],
+    "page.quality": ["مراقبة الجودة", "الثقتان (المحرك والنظام) والشذوذ واتساق العمل"],
+    "page.config": ["الإعدادات", "المحركات واللغات والملفات المتاحة فعليًا"],
+    "page.dashboard": ["لوحة القيادة", "النشاط وموارد النظام"],
+    "page.review": ["المراجعة البشرية", "الحقول دون حد الثقة وتحتاج تأكيدًا"],
+    "page.profiles": ["ملفات الاستخراج", "أنشئ ملفاتك الخاصة واختبرها واضبطها"],
+    "search.placeholder": "ابحث عن مستند أو حقل أو كلمة…",
+    "lang.label": "لغة الواجهة",
+    "h.import": "استورد. تحقّق. صدّر.",
+    "h.docs": "المستندات المعالجة", "h.result": "نتيجة التحليل",
+    "h.quality": "مراقبة الجودة", "h.config": "الإعدادات الفعلية",
+    "h.dashboard": "لوحة القيادة", "h.profiles": "ملفات العمل", "h.connectors": "مركز الموصّلات"
+  }
+};
+</script>
+<script src="/modules/i18n-controls.js"></script>
+<script>
+    <script src="connectors.js" defer></script>
+
+    <script src="dossier.js" defer></script>
+
+    <script src="formulaire.js" defer></script>
+
+    <script src="tracabilite.js" defer></script>
+
+    <script src="transmission.js" defer></script>
+
+</script>
+</body>
+</html>

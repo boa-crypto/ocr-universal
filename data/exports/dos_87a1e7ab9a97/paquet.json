@@ -1,0 +1,726 @@
+{
+ "schema_version": "1.0",
+ "dossier": {
+  "id": "dos_87a1e7ab9a97",
+  "label": "Import 2024-118"
+ },
+ "genere_le": "2026-10-18 12:23:01",
+ "documents": [
+  {
+   "job_id": "job_1abd049d0738",
+   "filename": "facture.pdf",
+   "category": "invoice",
+   "category_label": "",
+   "champs": {
+    "date": {
+     "valeur": "2024-03-12",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.727,
+     "label": "Date"
+    },
+    "email": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "E-mail"
+    },
+    "url": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "URL"
+    },
+    "phone": {
+     "valeur": "2024118",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.727,
+     "label": "Téléphone"
+    },
+    "iban": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "IBAN"
+    },
+    "invoice_number": {
+     "valeur": "INV-2024-118",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Numéro de facture"
+    },
+    "vat_number": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "N° TVA"
+    },
+    "container_number": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "N° conteneur"
+    },
+    "serial_number": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "N° de série"
+    },
+    "amount": {
+     "valeur": "118 | 1250.00",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.727,
+     "label": "Montant"
+    },
+    "percent": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Pourcentage"
+    },
+    "quantity": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Quantité + unité"
+    },
+    "issue_date": {
+     "valeur": "2024-03-12",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Date d'émission"
+    },
+    "due_date": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Date d'échéance"
+    },
+    "total_ht": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Total HT"
+    },
+    "total_ttc": {
+     "valeur": "1250.00",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Total TTC"
+    },
+    "currency": {
+     "valeur": "EUR",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Devise"
+    }
+   },
+   "sha256": "",
+   "fichiers": []
+  },
+  {
+   "job_id": "job_0ea589ef62de",
+   "filename": "bl.pdf",
+   "category": "bill_of_lading",
+   "category_label": "",
+   "champs": {
+    "date": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Date"
+    },
+    "email": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "E-mail"
+    },
+    "url": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "URL"
+    },
+    "phone": {
+     "valeur": "20240456 | 2024118 | 778899 | 112233",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.727,
+     "label": "Téléphone"
+    },
+    "iban": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "IBAN"
+    },
+    "invoice_number": {
+     "valeur": "INV-2024-118",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Référence facture"
+    },
+    "vat_number": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "N° TVA"
+    },
+    "container_number": {
+     "valeur": "MSCU1234567 | TGHU7654321",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "N° de conteneur"
+    },
+    "serial_number": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "N° de série"
+    },
+    "amount": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Montant"
+    },
+    "percent": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Pourcentage"
+    },
+    "quantity": {
+     "valeur": "000",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.727,
+     "label": "Quantité + unité"
+    },
+    "bl_number": {
+     "valeur": "BL-2024-0456",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Bill of Lading (BL)"
+    },
+    "booking_number": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Booking Number"
+    },
+    "iso_type_code": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "ISO Container Type Code"
+    },
+    "seal_number": {
+     "valeur": "778899",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Seal Number"
+    },
+    "vessel_name": {
+     "valeur": "MV TEST STAR",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Vessel Name"
+    },
+    "voyage_number": {
+     "valeur": "12E",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Voyage Number"
+    },
+    "shipping_line": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Shipping Line"
+    },
+    "shipper": {
+     "valeur": "EXPEDITEUR TEST SARL",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Shipper (expéditeur)"
+    },
+    "consignee": {
+     "valeur": "CLIENT TEST SA",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Consignee (destinataire)"
+    },
+    "notify_party": {
+     "valeur": "TRANSIT TEST",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Notify Party"
+    },
+    "port_of_loading": {
+     "valeur": "DZALG",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Port of Loading"
+    },
+    "port_of_discharge": {
+     "valeur": "FRMRS",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Port of Discharge"
+    },
+    "place_of_receipt": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Place of Receipt"
+    },
+    "place_of_delivery": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Place of Delivery"
+    },
+    "goods_description": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Description des marchandises"
+    },
+    "packages_count": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Nombre de colis"
+    },
+    "gross_weight": {
+     "valeur": "12000",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Poids brut"
+    },
+    "net_weight": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Poids net"
+    },
+    "volume": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Volume"
+    },
+    "hs_code": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "HS Code"
+    },
+    "marks_numbers": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Marks and Numbers"
+    },
+    "eta": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "ETA"
+    },
+    "etd": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "ETD"
+    },
+    "manifest_number": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "N° de manifeste"
+    },
+    "customs_reference": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Référence douanière"
+    }
+   },
+   "sha256": "",
+   "fichiers": []
+  },
+  {
+   "job_id": "job_3c450cd73272",
+   "filename": "colisage.pdf",
+   "category": "packing_list",
+   "category_label": "",
+   "champs": {
+    "date": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Date"
+    },
+    "email": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "E-mail"
+    },
+    "url": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "URL"
+    },
+    "phone": {
+     "valeur": "2024118 | 20240456 | 778899",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.727,
+     "label": "Téléphone"
+    },
+    "iban": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "IBAN"
+    },
+    "invoice_number": {
+     "valeur": "INV-2024-118",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Référence facture"
+    },
+    "vat_number": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "N° TVA"
+    },
+    "container_number": {
+     "valeur": "MSCU1234567",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "N° de conteneur"
+    },
+    "serial_number": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "N° de série"
+    },
+    "amount": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Montant"
+    },
+    "percent": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Pourcentage"
+    },
+    "quantity": {
+     "valeur": "500",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.727,
+     "label": "Quantité + unité"
+    },
+    "packing_list_number": {
+     "valeur": "INVOICE",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "N° liste de colisage"
+    },
+    "seal_number": {
+     "valeur": "778899",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Seal Number"
+    },
+    "packages_count": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Nombre de colis"
+    },
+    "gross_weight": {
+     "valeur": "13500",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Poids brut"
+    },
+    "net_weight": {
+     "valeur": "11500",
+     "origine": "normalized",
+     "valide": false,
+     "page": 1,
+     "confiance": 0.765,
+     "label": "Poids net"
+    },
+    "volume": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Volume"
+    },
+    "marks_numbers": {
+     "valeur": null,
+     "origine": "raw",
+     "valide": false,
+     "page": null,
+     "confiance": 0.0,
+     "label": "Marks and Numbers"
+    }
+   },
+   "sha256": "",
+   "fichiers": []
+  }
+ ],
+ "champs_valides": 0,
+ "champs_total": 73,
+ "anomalies": [
+  {
+   "rule": "poids_divergent:gross_weight",
+   "severity": "anomalie",
+   "documents": [
+    "bl.pdf",
+    "colisage.pdf"
+   ],
+   "champs": [
+    {
+     "job_id": "job_0ea589ef62de",
+     "filename": "bl.pdf",
+     "category": "bill_of_lading",
+     "key": "gross_weight",
+     "label": "Poids brut",
+     "value": "12000"
+    },
+    {
+     "job_id": "job_3c450cd73272",
+     "filename": "colisage.pdf",
+     "category": "packing_list",
+     "key": "gross_weight",
+     "label": "Poids brut",
+     "value": "13500"
+    }
+   ],
+   "valeurs": [
+    {
+     "document": "bl.pdf",
+     "valeur": 12000.0
+    },
+    {
+     "document": "colisage.pdf",
+     "valeur": 13500.0
+    }
+   ],
+   "resultat": "divergent",
+   "explication": "écart de 1500.00 sur une moyenne de 12750.00 (11.8 %), au-delà de la tolérance de 2 %. Un arrondi de pesée est possible ; une divergence réelle doit être tranchée.",
+   "status": "a_trancher",
+   "decision_par": null
+  },
+  {
+   "rule": "conteneur_absent:container_number->packing_list",
+   "severity": "avertissement",
+   "documents": [
+    "colisage.pdf"
+   ],
+   "champs": [
+    {
+     "job_id": "job_1abd049d0738",
+     "filename": "facture.pdf",
+     "category": "invoice",
+     "key": "container_number",
+     "label": "N° conteneur",
+     "value": null
+    },
+    {
+     "job_id": "job_0ea589ef62de",
+     "filename": "bl.pdf",
+     "category": "bill_of_lading",
+     "key": "container_number",
+     "label": "N° de conteneur",
+     "value": "MSCU1234567 | TGHU7654321"
+    },
+    {
+     "job_id": "job_3c450cd73272",
+     "filename": "colisage.pdf",
+     "category": "packing_list",
+     "key": "container_number",
+     "label": "N° de conteneur",
+     "value": "MSCU1234567"
+    }
+   ],
+   "valeurs": [
+    "TGHU7654321"
+   ],
+   "resultat": "absent",
+   "explication": "1 conteneur(s) déclaré(s) ailleurs n'apparaissent pas dans « packing_list » : TGHU7654321.",
+   "status": "a_trancher",
+   "decision_par": null
+  }
+ ],
+ "pieces_manquantes": [
+  {
+   "category": "certificate_of_origin",
+   "label": "Certificat d'origine",
+   "required": false,
+   "expected": 1,
+   "present": 0,
+   "note": ""
+  },
+  {
+   "category": "customs_declaration",
+   "label": "Déclaration douanière",
+   "required": false,
+   "expected": 1,
+   "present": 0,
+   "note": ""
+  }
+ ]
+}

@@ -1,0 +1,1616 @@
+{
+  "id": "doc_d91714143ddf",
+  "created_at": 1792270061.219161,
+  "info": {
+    "title": null,
+    "doc_type": "generic",
+    "doc_number": "DESIGNATION",
+    "issue_date": null,
+    "due_date": null,
+    "issuer": null,
+    "sender": null,
+    "recipient": null,
+    "languages": [
+      "en"
+    ],
+    "page_count": 1,
+    "source_format": "pdf"
+  },
+  "pages": [
+    {
+      "page_num": 1,
+      "width": 1653.543260362413,
+      "height": 2338.5826958550347,
+      "text": "REF DESIGNATION QTE PRIX\nA1 Clavier 50 25,00\nB2 Souris 20 12,50\nC3 Ecran 10 150,00",
+      "blocks": [
+        {
+          "text": "REF DESIGNATION QTE PRIX\nA1 Clavier 50 25,00\nB2 Souris 20 12,50\nC3 Ecran 10 150,00",
+          "bbox": {
+            "x0": 216.66666666666666,
+            "y0": 626.0382514105903,
+            "x1": 1318.6000000000001,
+            "y1": 859.3715847439237,
+            "page_width": 1653.543260362413,
+            "page_height": 2338.5826958550347
+          },
+          "order": 0,
+          "column": 0,
+          "lines": [
+            {
+              "text": "REF DESIGNATION QTE PRIX",
+              "bbox": {
+                "x0": 216.66666666666666,
+                "y0": 626.0382514105903,
+                "x1": 1294.4666666666667,
+                "y1": 659.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "REF",
+                  "bbox": {
+                    "x0": 216.66666666666666,
+                    "y0": 626.0382514105903,
+                    "x1": 283.3333333333333,
+                    "y1": 659.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "DESIGNATION",
+                  "bbox": {
+                    "x0": 550.0,
+                    "y0": 626.0382514105903,
+                    "x1": 779.6666666666666,
+                    "y1": 659.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "QTE",
+                  "bbox": {
+                    "x0": 883.3333333333333,
+                    "y0": 626.0382514105903,
+                    "x1": 951.8666666666667,
+                    "y1": 659.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "PRIX",
+                  "bbox": {
+                    "x0": 1216.6666666666665,
+                    "y0": 626.0382514105903,
+                    "x1": 1294.4666666666667,
+                    "y1": 659.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "A1 Clavier 50 25,00",
+              "bbox": {
+                "x0": 216.66666666666666,
+                "y0": 692.704918077257,
+                "x1": 1300.0666666666666,
+                "y1": 726.0382514105903,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "A1",
+                  "bbox": {
+                    "x0": 216.66666666666666,
+                    "y0": 692.704918077257,
+                    "x1": 257.43333333333334,
+                    "y1": 726.0382514105903,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Clavier",
+                  "bbox": {
+                    "x0": 550.0,
+                    "y0": 692.704918077257,
+                    "x1": 653.7,
+                    "y1": 726.0382514105903,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "50",
+                  "bbox": {
+                    "x0": 883.3333333333333,
+                    "y0": 692.704918077257,
+                    "x1": 920.4000000000001,
+                    "y1": 726.0382514105903,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "25,00",
+                  "bbox": {
+                    "x0": 1216.6666666666665,
+                    "y0": 692.704918077257,
+                    "x1": 1300.0666666666666,
+                    "y1": 726.0382514105903,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "B2 Souris 20 12,50",
+              "bbox": {
+                "x0": 216.66666666666666,
+                "y0": 759.3715847439237,
+                "x1": 1300.0666666666666,
+                "y1": 792.704918077257,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "B2",
+                  "bbox": {
+                    "x0": 216.66666666666666,
+                    "y0": 759.3715847439237,
+                    "x1": 257.43333333333334,
+                    "y1": 792.704918077257,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Souris",
+                  "bbox": {
+                    "x0": 550.0,
+                    "y0": 759.3715847439237,
+                    "x1": 644.4666666666667,
+                    "y1": 792.704918077257,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "20",
+                  "bbox": {
+                    "x0": 883.3333333333333,
+                    "y0": 759.3715847439237,
+                    "x1": 920.4000000000001,
+                    "y1": 792.704918077257,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "12,50",
+                  "bbox": {
+                    "x0": 1216.6666666666665,
+                    "y0": 759.3715847439237,
+                    "x1": 1300.0666666666666,
+                    "y1": 792.704918077257,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            },
+            {
+              "text": "C3 Ecran 10 150,00",
+              "bbox": {
+                "x0": 216.66666666666666,
+                "y0": 826.0382514105903,
+                "x1": 1318.6000000000001,
+                "y1": 859.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "C3",
+                  "bbox": {
+                    "x0": 216.66666666666666,
+                    "y0": 826.0382514105903,
+                    "x1": 259.26666666666665,
+                    "y1": 859.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "Ecran",
+                  "bbox": {
+                    "x0": 550.0,
+                    "y0": 826.0382514105903,
+                    "x1": 637.0666666666666,
+                    "y1": 859.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "10",
+                  "bbox": {
+                    "x0": 883.3333333333333,
+                    "y0": 826.0382514105903,
+                    "x1": 920.4000000000001,
+                    "y1": 859.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                },
+                {
+                  "text": "150,00",
+                  "bbox": {
+                    "x0": 1216.6666666666665,
+                    "y0": 826.0382514105903,
+                    "x1": 1318.6000000000001,
+                    "y1": 859.3715847439237,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "native_pdf",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.95
+            }
+          ],
+          "kind": "paragraph"
+        }
+      ],
+      "lines": [
+        {
+          "text": "REF DESIGNATION QTE PRIX",
+          "bbox": {
+            "x0": 216.66666666666666,
+            "y0": 626.0382514105903,
+            "x1": 1294.4666666666667,
+            "y1": 659.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "REF",
+              "bbox": {
+                "x0": 216.66666666666666,
+                "y0": 626.0382514105903,
+                "x1": 283.3333333333333,
+                "y1": 659.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "DESIGNATION",
+              "bbox": {
+                "x0": 550.0,
+                "y0": 626.0382514105903,
+                "x1": 779.6666666666666,
+                "y1": 659.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "QTE",
+              "bbox": {
+                "x0": 883.3333333333333,
+                "y0": 626.0382514105903,
+                "x1": 951.8666666666667,
+                "y1": 659.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "PRIX",
+              "bbox": {
+                "x0": 1216.6666666666665,
+                "y0": 626.0382514105903,
+                "x1": 1294.4666666666667,
+                "y1": 659.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "A1 Clavier 50 25,00",
+          "bbox": {
+            "x0": 216.66666666666666,
+            "y0": 692.704918077257,
+            "x1": 1300.0666666666666,
+            "y1": 726.0382514105903,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "A1",
+              "bbox": {
+                "x0": 216.66666666666666,
+                "y0": 692.704918077257,
+                "x1": 257.43333333333334,
+                "y1": 726.0382514105903,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Clavier",
+              "bbox": {
+                "x0": 550.0,
+                "y0": 692.704918077257,
+                "x1": 653.7,
+                "y1": 726.0382514105903,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "50",
+              "bbox": {
+                "x0": 883.3333333333333,
+                "y0": 692.704918077257,
+                "x1": 920.4000000000001,
+                "y1": 726.0382514105903,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "25,00",
+              "bbox": {
+                "x0": 1216.6666666666665,
+                "y0": 692.704918077257,
+                "x1": 1300.0666666666666,
+                "y1": 726.0382514105903,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "B2 Souris 20 12,50",
+          "bbox": {
+            "x0": 216.66666666666666,
+            "y0": 759.3715847439237,
+            "x1": 1300.0666666666666,
+            "y1": 792.704918077257,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "B2",
+              "bbox": {
+                "x0": 216.66666666666666,
+                "y0": 759.3715847439237,
+                "x1": 257.43333333333334,
+                "y1": 792.704918077257,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Souris",
+              "bbox": {
+                "x0": 550.0,
+                "y0": 759.3715847439237,
+                "x1": 644.4666666666667,
+                "y1": 792.704918077257,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "20",
+              "bbox": {
+                "x0": 883.3333333333333,
+                "y0": 759.3715847439237,
+                "x1": 920.4000000000001,
+                "y1": 792.704918077257,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "12,50",
+              "bbox": {
+                "x0": 1216.6666666666665,
+                "y0": 759.3715847439237,
+                "x1": 1300.0666666666666,
+                "y1": 792.704918077257,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        },
+        {
+          "text": "C3 Ecran 10 150,00",
+          "bbox": {
+            "x0": 216.66666666666666,
+            "y0": 826.0382514105903,
+            "x1": 1318.6000000000001,
+            "y1": 859.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "C3",
+              "bbox": {
+                "x0": 216.66666666666666,
+                "y0": 826.0382514105903,
+                "x1": 259.26666666666665,
+                "y1": 859.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "Ecran",
+              "bbox": {
+                "x0": 550.0,
+                "y0": 826.0382514105903,
+                "x1": 637.0666666666666,
+                "y1": 859.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "10",
+              "bbox": {
+                "x0": 883.3333333333333,
+                "y0": 826.0382514105903,
+                "x1": 920.4000000000001,
+                "y1": 859.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            },
+            {
+              "text": "150,00",
+              "bbox": {
+                "x0": 1216.6666666666665,
+                "y0": 826.0382514105903,
+                "x1": 1318.6000000000001,
+                "y1": 859.3715847439237,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "native_pdf",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.95
+        }
+      ],
+      "words": [
+        {
+          "text": "REF",
+          "bbox": {
+            "x0": 216.66666666666666,
+            "y0": 626.0382514105903,
+            "x1": 283.3333333333333,
+            "y1": 659.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "A1",
+          "bbox": {
+            "x0": 216.66666666666666,
+            "y0": 692.704918077257,
+            "x1": 257.43333333333334,
+            "y1": 726.0382514105903,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "B2",
+          "bbox": {
+            "x0": 216.66666666666666,
+            "y0": 759.3715847439237,
+            "x1": 257.43333333333334,
+            "y1": 792.704918077257,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "C3",
+          "bbox": {
+            "x0": 216.66666666666666,
+            "y0": 826.0382514105903,
+            "x1": 259.26666666666665,
+            "y1": 859.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "DESIGNATION",
+          "bbox": {
+            "x0": 550.0,
+            "y0": 626.0382514105903,
+            "x1": 779.6666666666666,
+            "y1": 659.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "QTE",
+          "bbox": {
+            "x0": 883.3333333333333,
+            "y0": 626.0382514105903,
+            "x1": 951.8666666666667,
+            "y1": 659.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Clavier",
+          "bbox": {
+            "x0": 550.0,
+            "y0": 692.704918077257,
+            "x1": 653.7,
+            "y1": 726.0382514105903,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Souris",
+          "bbox": {
+            "x0": 550.0,
+            "y0": 759.3715847439237,
+            "x1": 644.4666666666667,
+            "y1": 792.704918077257,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "Ecran",
+          "bbox": {
+            "x0": 550.0,
+            "y0": 826.0382514105903,
+            "x1": 637.0666666666666,
+            "y1": 859.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "50",
+          "bbox": {
+            "x0": 883.3333333333333,
+            "y0": 692.704918077257,
+            "x1": 920.4000000000001,
+            "y1": 726.0382514105903,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "20",
+          "bbox": {
+            "x0": 883.3333333333333,
+            "y0": 759.3715847439237,
+            "x1": 920.4000000000001,
+            "y1": 792.704918077257,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "10",
+          "bbox": {
+            "x0": 883.3333333333333,
+            "y0": 826.0382514105903,
+            "x1": 920.4000000000001,
+            "y1": 859.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "PRIX",
+          "bbox": {
+            "x0": 1216.6666666666665,
+            "y0": 626.0382514105903,
+            "x1": 1294.4666666666667,
+            "y1": 659.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "25,00",
+          "bbox": {
+            "x0": 1216.6666666666665,
+            "y0": 692.704918077257,
+            "x1": 1300.0666666666666,
+            "y1": 726.0382514105903,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "12,50",
+          "bbox": {
+            "x0": 1216.6666666666665,
+            "y0": 759.3715847439237,
+            "x1": 1300.0666666666666,
+            "y1": 792.704918077257,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        },
+        {
+          "text": "150,00",
+          "bbox": {
+            "x0": 1216.6666666666665,
+            "y0": 826.0382514105903,
+            "x1": 1318.6000000000001,
+            "y1": 859.3715847439237,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "native_pdf",
+          "page_num": 1
+        }
+      ],
+      "quality": {
+        "brightness": 252.81177298042292,
+        "contrast": 22.183008000617075,
+        "blur_score": 418.1283798768891,
+        "noise_score": 0.0,
+        "estimated_skew_deg": 0.0,
+        "estimated_dpi": 200.0,
+        "ink_ratio": 0.00998163210127624,
+        "is_blank": false,
+        "issues": [
+          "overexposed",
+          "low_contrast"
+        ]
+      },
+      "preprocess_ops": [
+        {
+          "name": "shadow_removal",
+          "applied": true,
+          "params": {},
+          "reason": "éclairage inégal détecté"
+        },
+        {
+          "name": "contrast",
+          "applied": true,
+          "params": {},
+          "reason": "contraste faible (écart-type luminance bas)"
+        },
+        {
+          "name": "binarize",
+          "applied": true,
+          "params": {},
+          "reason": "contraste ET éclairage dégradés"
+        }
+      ],
+      "engine_runs": [
+        {
+          "engine": "native_pdf",
+          "page_num": 1,
+          "languages": [
+            "*"
+          ],
+          "mean_confidence": 0.95,
+          "word_count": 16,
+          "duration_ms": 0.0,
+          "ok": true,
+          "error": null
+        },
+        {
+          "engine": "tesseract",
+          "page_num": 1,
+          "languages": [
+            "eng"
+          ],
+          "mean_confidence": 0.0,
+          "word_count": 0,
+          "duration_ms": 374.61463499948877,
+          "ok": true,
+          "error": null
+        },
+        {
+          "engine": "tesseract",
+          "page_num": 1,
+          "languages": [
+            "eng"
+          ],
+          "mean_confidence": 0.0,
+          "word_count": 0,
+          "duration_ms": 391.10640600029,
+          "ok": true,
+          "error": null
+        }
+      ],
+      "orientation_deg": 0,
+      "detected_languages": [
+        "en"
+      ],
+      "has_native_text": true,
+      "native_text_ratio": 0.41,
+      "variant_selected": "preprocessed",
+      "blank": false
+    }
+  ],
+  "fields": {
+    "date": {
+      "name": "date",
+      "label": "Date d'émission",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "generic"
+    },
+    "email": {
+      "name": "email",
+      "label": "E-mail",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "generic"
+    },
+    "url": {
+      "name": "url",
+      "label": "URL",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "phone": {
+      "name": "phone",
+      "label": "Téléphone",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "generic"
+    },
+    "iban": {
+      "name": "iban",
+      "label": "IBAN",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "invoice_number": {
+      "name": "invoice_number",
+      "label": "Numéro de facture",
+      "raw_value": "DESIGNATION",
+      "normalized_value": "DESIGNATION",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.727,
+      "engine_confidence": 0.95,
+      "page_num": 1,
+      "bbox": {
+        "x0": 550.0,
+        "y0": 626.0382514105903,
+        "x1": 779.6666666666666,
+        "y1": 659.3715847439237,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "invoice_number",
+      "anomalies": [],
+      "profile": null
+    },
+    "vat_number": {
+      "name": "vat_number",
+      "label": "N° TVA",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "container_number": {
+      "name": "container_number",
+      "label": "N° conteneur",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "serial_number": {
+      "name": "serial_number",
+      "label": "N° de série",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "amount": {
+      "name": "amount",
+      "label": "Montant",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "percent": {
+      "name": "percent",
+      "label": "Pourcentage",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "quantity": {
+      "name": "quantity",
+      "label": "Quantité + unité",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "title": {
+      "name": "title",
+      "label": "Titre",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "generic"
+    },
+    "document_number": {
+      "name": "document_number",
+      "label": "Numéro de document",
+      "raw_value": "DESIGNATION",
+      "normalized_value": "DESIGNATION",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 0.765,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 550.0,
+        "y0": 626.0382514105903,
+        "x1": 779.6666666666666,
+        "y1": 659.3715847439237,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:facture|invoice|r[ée]f[érence]*\\.?|ref\\.?|BL|B/L|n[°o\\s]|no\\.?)\\s*[:#]?\\s*([A-Z0-9][A-Z0-9\\-/_]{3,30})",
+      "anomalies": [],
+      "profile": "generic"
+    },
+    "total_amount": {
+      "name": "total_amount",
+      "label": "Montant total",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "generic"
+    }
+  },
+  "tables": [
+    {
+      "id": "tbl_83ab90ca5cfe",
+      "page_num": 1,
+      "bbox": {
+        "x0": 198.0,
+        "y0": 604.0,
+        "x1": 1532.0,
+        "y1": 870.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "n_rows": 4,
+      "n_cols": 4,
+      "cells": [
+        {
+          "row": 0,
+          "col": 0,
+          "row_span": 1,
+          "col_span": 1,
+          "text": "REF",
+          "bbox": {
+            "x0": 198.0,
+            "y0": 604.0,
+            "x1": 532.0,
+            "y1": 670.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "unknown",
+          "is_header": true
+        },
+        {
+          "row": 0,
+          "col": 1,
+          "row_span": 1,
+          "col_span": 1,
+          "text": "DESIGNATION",
+          "bbox": {
+            "x0": 532.0,
+            "y0": 604.0,
+            "x1": 865.0,
+            "y1": 670.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "unknown",
+          "is_header": true
+        },
+        {
+          "row": 0,
+          "col": 2,
+          "row_span": 1,
+          "col_span": 1,
+          "text": "QTE",
+          "bbox": {
+            "x0": 865.0,
+            "y0": 604.0,
+            "x1": 1199.0,
+            "y1": 670.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "unknown",
+          "is_header": true
+        },
+        {
+          "row": 0,
+          "col": 3,
+          "row_span": 1,
+          "col_span": 1,
+          "text": "PRIX",
+          "bbox": {
+            "x0": 1199.0,
+            "y0": 604.0,
+            "x1": 1532.0,
+            "y1": 670.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "unknown",
+          "is_header": true
+        },
+        {
+          "row": 1,
+          "col": 0,
+          "row_span": 1,
+          "col_span": 1,
+          "text": "A1",
+          "bbox": {
+            "x0": 198.0,
+            "y0": 670.0,
+            "x1": 532.0,
+            "y1": 737.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "unknown",
+          "is_header": false
+        },
+        {
+          "row": 1,
+          "col": 1,
+          "row_span": 1,
+          "col_span": 1,
+          "text": "Clavier",
+          "bbox": {
+            "x0": 532.0,
+            "y0": 670.0,
+            "x1": 865.0,
+            "y1": 737.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "unknown",
+          "is_header": false
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "row_span": 1,
+          "col_span": 1,
+          "text": "50",
+          "bbox": {
+            "x0": 865.0,
+            "y0": 670.0,
+            "x1": 1199.0,
+            "y1": 737.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "unknown",
+          "is_header": false
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "row_span": 1,
+          "col_span": 1,
+          "text": "25,00",
+          "bbox": {
+            "x0": 1199.0,
+            "y0": 670.0,
+            "x1": 1532.0,
+            "y1": 737.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "unknown",
+          "is_header": false
+        },
+        {
+          "row": 2,
+          "col": 0,
+          "row_span": 1,
+          "col_span": 1,
+          "text": "B2",
+          "bbox": {
+            "x0": 198.0,
+            "y0": 737.0,
+            "x1": 532.0,
+            "y1": 804.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "unknown",
+          "is_header": false
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "row_span": 1,
+          "col_span": 1,
+          "text": "Souris",
+          "bbox": {
+            "x0": 532.0,
+            "y0": 737.0,
+            "x1": 865.0,
+            "y1": 804.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "unknown",
+          "is_header": false
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "row_span": 1,
+          "col_span": 1,
+          "text": "20",
+          "bbox": {
+            "x0": 865.0,
+            "y0": 737.0,
+            "x1": 1199.0,
+            "y1": 804.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "unknown",
+          "is_header": false
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "row_span": 1,
+          "col_span": 1,
+          "text": "12,50",
+          "bbox": {
+            "x0": 1199.0,
+            "y0": 737.0,
+            "x1": 1532.0,
+            "y1": 804.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "unknown",
+          "is_header": false
+        },
+        {
+          "row": 3,
+          "col": 0,
+          "row_span": 1,
+          "col_span": 1,
+          "text": "C3",
+          "bbox": {
+            "x0": 198.0,
+            "y0": 804.0,
+            "x1": 532.0,
+            "y1": 870.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "unknown",
+          "is_header": false
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "row_span": 1,
+          "col_span": 1,
+          "text": "Ecran",
+          "bbox": {
+            "x0": 532.0,
+            "y0": 804.0,
+            "x1": 865.0,
+            "y1": 870.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "unknown",
+          "is_header": false
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "row_span": 1,
+          "col_span": 1,
+          "text": "10",
+          "bbox": {
+            "x0": 865.0,
+            "y0": 804.0,
+            "x1": 1199.0,
+            "y1": 870.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "unknown",
+          "is_header": false
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "row_span": 1,
+          "col_span": 1,
+          "text": "150,00",
+          "bbox": {
+            "x0": 1199.0,
+            "y0": 804.0,
+            "x1": 1532.0,
+            "y1": 870.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "unknown",
+          "is_header": false
+        }
+      ],
+      "method": "ruled",
+      "confidence": 0.95,
+      "multipage": false,
+      "page_nums": [
+        1
+      ],
+      "header_rows": 1
+    }
+  ],
+  "categories": {
+    "dates": [],
+    "contacts": [],
+    "identifiants": [
+      "invoice_number"
+    ],
+    "numeriques": [],
+    "_required": []
+  },
+  "barcodes": [],
+  "form_zones": [],
+  "quality": {
+    "mean_engine_confidence": 0.95,
+    "mean_global_confidence": 0.727,
+    "pages_low_confidence": [],
+    "fields_low_confidence": [],
+    "anomalies": [
+      {
+        "code": "PAGE_OVEREXPOSED",
+        "severity": "info",
+        "message": "page 1 : overexposed",
+        "page_num": 1,
+        "bbox": null,
+        "context": {
+          "blur": 418.1283798768891,
+          "dpi": 200.0
+        }
+      },
+      {
+        "code": "PAGE_LOW_CONTRAST",
+        "severity": "info",
+        "message": "page 1 : low_contrast",
+        "page_num": 1,
+        "bbox": null,
+        "context": {
+          "blur": 418.1283798768891,
+          "dpi": 200.0
+        }
+      }
+    ],
+    "disagreements": [],
+    "checks": []
+  },
+  "engines_used": [
+    "native_pdf",
+    "tesseract"
+  ],
+  "profile_used": "generic",
+  "timings_ms": {
+    "ingest_ms": 19.4,
+    "ocr_ms": 1370.4,
+    "tables_ms": 69.3,
+    "fields_ms": 1.5,
+    "barcodes_ms": 78.6,
+    "total_ms": 1542.4
+  },
+  "warnings": [],
+  "source_file": "table_pdf.pdf",
+  "source_hash": "3a311c1082088901648b6987e6cc2ab4083f8578b2a8c0effc4cb646868a168f",
+  "exports": [
+    {
+      "format": "json",
+      "path": "/home/user/ocr-universal/data/jobs/job_ec067ae4b029/exports/result.json",
+      "size_bytes": 43371
+    },
+    {
+      "format": "txt",
+      "path": "/home/user/ocr-universal/data/jobs/job_ec067ae4b029/exports/result.txt",
+      "size_bytes": 97
+    },
+    {
+      "format": "csv",
+      "path": "/home/user/ocr-universal/data/jobs/job_ec067ae4b029/exports/fields.csv",
+      "size_bytes": 957
+    },
+    {
+      "format": "csv",
+      "path": "/home/user/ocr-universal/data/jobs/job_ec067ae4b029/exports/table_1_p1.csv",
+      "size_bytes": 96
+    },
+    {
+      "format": "xlsx",
+      "path": "/home/user/ocr-universal/data/jobs/job_ec067ae4b029/exports/result.xlsx",
+      "size_bytes": 8220
+    },
+    {
+      "format": "xml",
+      "path": "/home/user/ocr-universal/data/jobs/job_ec067ae4b029/exports/result.xml",
+      "size_bytes": 3632
+    },
+    {
+      "format": "pdf",
+      "path": "/home/user/ocr-universal/data/jobs/job_ec067ae4b029/exports/searchable.pdf",
+      "size_bytes": 44234
+    }
+  ]
+}

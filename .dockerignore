@@ -1,0 +1,32 @@
+# Fichiers exclus de l'image Docker.
+# Objectif : ne jamais emballer de données utilisateur ni d'artefacts de build.
+
+.git
+.github
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.ruff_cache
+.mypy_cache
+.venv
+venv
+
+# données utilisateur : elles vont dans le volume /data, pas dans l'image
+data
+benchmarks/results
+benchmarks/field
+benchmarks/corpus
+benchmarks/field_samples
+
+# documentation et tests : inutiles à l'exécution
+docs
+tests
+*.md
+!README.md
+
+# scripts de déploppement locaux
+scripts
+Dockerfile
+docker-compose.yml
+.dockerignore

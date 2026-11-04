@@ -1,0 +1,45 @@
+{
+ "id": "dos_7e5ebe3efb54",
+ "label": "D-MARIE",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [
+  {
+   "job_id": "job1",
+   "filename": "facture.pdf",
+   "category": "facture",
+   "added_at": 1792394642.4155157,
+   "added_by": "marie",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "facture": 1
+ },
+ "version": 1,
+ "created_at": 1792394642.4129827,
+ "updated_at": 1792394648.1413722,
+ "history": [
+  {
+   "ts": 1792394642.4129841,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "marie"
+  },
+  {
+   "ts": 1792394642.4155173,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job1",
+    "filename": "facture.pdf",
+    "category": "facture"
+   },
+   "acteur": "marie"
+  }
+ ],
+ "arbitrages": {}
+}

@@ -1,0 +1,23 @@
+{
+ "id": "dos_2ec89a07d640",
+ "label": "de l'admin",
+ "profile": "personnalise",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1793404122.6267862,
+ "updated_at": 1793404122.6277845,
+ "history": [
+  {
+   "ts": 1793404122.6267862,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

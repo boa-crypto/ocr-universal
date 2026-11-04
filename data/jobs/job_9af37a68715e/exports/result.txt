@@ -1,0 +1,29 @@
+--- Page 1 ---
+CERTIFICAT D'IMMATRICULATION
+Plaque : AB-123-CD
+N° d'identification : 1HGBH41JXMN109186
+Marque : RENAULT
+Désignation : CLIO IV 1.5 DCI
+Énergie : DIESEL
+lère immatriculation : 12/03/2019
+Puissance fiscale : 7 CV
+Puissance DIN : 55 kW
+PTAC : 1640 kg
+Poids à vide : 1145 kg
+Places : 5
+Genre : TOURISME
+Cylindrée : 1461 cm3
+N° moteur : K9K742
+N° de la carte : 1612345670
+Couleur : GRIS
+CO2 : 98 g/km
+Titulaire : DUPONT JEAN
+
+--- Page 2 ---
+CSQU 3054383
+
+--- Page 3 ---
+AB-123-CD
+
+--- Page 4 ---
+1HGBH41JXMN109186

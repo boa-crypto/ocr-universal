@@ -1,0 +1,55 @@
+{
+ "id": "dos_ad3c80eb06a2",
+ "label": "dossier de marie",
+ "profile": "personnalise",
+ "state": "revision_requise",
+ "state_label": "Révision requise",
+ "pieces": [
+  {
+   "job_id": "job_6fdafd69a172",
+   "filename": "parcours_colisage.pdf",
+   "category": "packing_list",
+   "added_at": 1792394518.4067981,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "packing_list": 1
+ },
+ "version": 1,
+ "created_at": 1792394518.3882277,
+ "updated_at": 1792394518.407803,
+ "history": [
+  {
+   "ts": 1792394518.3882291,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792394518.4068003,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_6fdafd69a172",
+    "filename": "parcours_colisage.pdf",
+    "category": "packing_list"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792394518.4077408,
+   "action": "state_changed",
+   "detail": {
+    "from": "en_preparation",
+    "to": "revision_requise",
+    "pieces": 1
+   },
+   "acteur": "systeme"
+  }
+ ],
+ "arbitrages": {}
+}

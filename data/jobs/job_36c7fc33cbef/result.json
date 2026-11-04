@@ -1,0 +1,4680 @@
+{
+  "id": "doc_74b186096761",
+  "created_at": 1792276135.8326612,
+  "info": {
+    "title": null,
+    "doc_type": "carte_grise",
+    "doc_number": "Plaque",
+    "issue_date": "2019-03-12",
+    "due_date": null,
+    "issuer": null,
+    "sender": null,
+    "recipient": null,
+    "languages": [
+      "fr"
+    ],
+    "page_count": 1,
+    "source_format": "png"
+  },
+  "pages": [
+    {
+      "page_num": 1,
+      "width": 1500.0,
+      "height": 1428.0,
+      "text": "CERTIFICAT D'IMMATRICULATION\nPlaque : AB-123-CD\nN° d'identification : 1HGBH41JXMN109186\nMarque : RENAULT\nDésignation : CLIO IV 1.5 DCI\nÉnergie : DIESEL\nlère immatriculation : 12/03/2019\nPuissance fiscale : 7 CV\nPuissance DIN : 55 kW\nPTAC : 1640 kg\nPoids à vide : 1145 kg\nPlaces : 5\nGenre : TOURISME\nCylindrée : 1461 cm3\nN° moteur : K9K742\nN° de la carte : 1612345670\nCouleur : GRIS\nCO2 : 98 g/km\nTitulaire : DUPONT JEAN",
+      "blocks": [
+        {
+          "text": "CERTIFICAT D'IMMATRICULATION\nPlaque : AB-123-CD\nN° d'identification : 1HGBH41JXMN109186\nMarque : RENAULT\nDésignation : CLIO IV 1.5 DCI\nÉnergie : DIESEL\nlère immatriculation : 12/03/2019\nPuissance fiscale : 7 CV\nPuissance DIN : 55 kW\nPTAC : 1640 kg\nPoids à vide : 1145 kg\nPlaces : 5\nGenre : TOURISME\nCylindrée : 1461 cm3\nN° moteur : K9K742\nN° de la carte : 1612345670\nCouleur : GRIS\nCO2 : 98 g/km\nTitulaire : DUPONT JEAN",
+          "bbox": {
+            "x0": 15.0,
+            "y0": 15.0,
+            "x1": 999.0,
+            "y1": 1353.0,
+            "page_width": 1500.0,
+            "page_height": 1428.0
+          },
+          "order": 0,
+          "column": 0,
+          "lines": [
+            {
+              "text": "CERTIFICAT D'IMMATRICULATION",
+              "bbox": {
+                "x0": 17.0,
+                "y0": 15.0,
+                "x1": 663.0,
+                "y1": 45.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "CERTIFICAT",
+                  "bbox": {
+                    "x0": 17.0,
+                    "y0": 15.0,
+                    "x1": 241.0,
+                    "y1": 45.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.92,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "D'IMMATRICULATION",
+                  "bbox": {
+                    "x0": 258.0,
+                    "y0": 15.0,
+                    "x1": 663.0,
+                    "y1": 45.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.89,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.905
+            },
+            {
+              "text": "Plaque : AB-123-CD",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 87.0,
+                "x1": 405.0,
+                "y1": 125.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Plaque",
+                  "bbox": {
+                    "x0": 19.0,
+                    "y0": 87.0,
+                    "x1": 149.0,
+                    "y1": 125.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 168.0,
+                    "y0": 96.0,
+                    "x1": 172.0,
+                    "y1": 117.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.92,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "AB-123-CD",
+                  "bbox": {
+                    "x0": 189.0,
+                    "y0": 87.0,
+                    "x1": 405.0,
+                    "y1": 117.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.91,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.92
+            },
+            {
+              "text": "N° d'identification : 1HGBH41JXMN109186",
+              "bbox": {
+                "x0": 17.0,
+                "y0": 156.0,
+                "x1": 999.0,
+                "y1": 190.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "N°",
+                  "bbox": {
+                    "x0": 17.0,
+                    "y0": 158.0,
+                    "x1": 59.0,
+                    "y1": 190.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "d'identification",
+                  "bbox": {
+                    "x0": 93.0,
+                    "y0": 156.0,
+                    "x1": 492.0,
+                    "y1": 190.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 530.0,
+                    "y0": 168.0,
+                    "x1": 537.0,
+                    "y1": 190.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.91,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "1HGBH41JXMN109186",
+                  "bbox": {
+                    "x0": 575.0,
+                    "y0": 158.0,
+                    "x1": 999.0,
+                    "y1": 190.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.82,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9025
+            },
+            {
+              "text": "Marque : RENAULT",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 232.0,
+                "x1": 385.0,
+                "y1": 269.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Marque",
+                  "bbox": {
+                    "x0": 19.0,
+                    "y0": 232.0,
+                    "x1": 164.0,
+                    "y1": 269.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 183.0,
+                    "y0": 240.0,
+                    "x1": 187.0,
+                    "y1": 261.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "RENAULT",
+                  "bbox": {
+                    "x0": 208.0,
+                    "y0": 232.0,
+                    "x1": 385.0,
+                    "y1": 261.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9400000000000001
+            },
+            {
+              "text": "Désignation : CLIO IV 1.5 DCI",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 301.0,
+                "x1": 594.0,
+                "y1": 341.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Désignation",
+                  "bbox": {
+                    "x0": 19.0,
+                    "y0": 301.0,
+                    "x1": 251.0,
+                    "y1": 341.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 272.0,
+                    "y0": 312.0,
+                    "x1": 276.0,
+                    "y1": 333.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.91,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "CLIO",
+                  "bbox": {
+                    "x0": 295.0,
+                    "y0": 303.0,
+                    "x1": 384.0,
+                    "y1": 333.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.92,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "IV",
+                  "bbox": {
+                    "x0": 403.0,
+                    "y0": 304.0,
+                    "x1": 438.0,
+                    "y1": 333.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "1.5",
+                  "bbox": {
+                    "x0": 455.0,
+                    "y0": 304.0,
+                    "x1": 511.0,
+                    "y1": 333.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "DCI",
+                  "bbox": {
+                    "x0": 532.0,
+                    "y0": 303.0,
+                    "x1": 594.0,
+                    "y1": 333.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.935
+            },
+            {
+              "text": "Énergie : DIESEL",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 368.0,
+                "x1": 347.0,
+                "y1": 413.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Énergie",
+                  "bbox": {
+                    "x0": 19.0,
+                    "y0": 368.0,
+                    "x1": 166.0,
+                    "y1": 413.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 185.0,
+                    "y0": 384.0,
+                    "x1": 189.0,
+                    "y1": 405.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "DIESEL",
+                  "bbox": {
+                    "x0": 210.0,
+                    "y0": 375.0,
+                    "x1": 347.0,
+                    "y1": 405.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9400000000000001
+            },
+            {
+              "text": "lère immatriculation : 12/03/2019",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 444.0,
+                "x1": 847.0,
+                "y1": 482.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "lère",
+                  "bbox": {
+                    "x0": 19.0,
+                    "y0": 444.0,
+                    "x1": 115.0,
+                    "y1": 478.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "immatriculation",
+                  "bbox": {
+                    "x0": 144.0,
+                    "y0": 444.0,
+                    "x1": 517.0,
+                    "y1": 478.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.92,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 555.0,
+                    "y0": 456.0,
+                    "x1": 562.0,
+                    "y1": 478.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.92,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "12/03/2019",
+                  "bbox": {
+                    "x0": 600.0,
+                    "y0": 446.0,
+                    "x1": 847.0,
+                    "y1": 482.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.925
+            },
+            {
+              "text": "Puissance fiscale : 7 CV",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 519.0,
+                "x1": 486.0,
+                "y1": 549.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Puissance",
+                  "bbox": {
+                    "x0": 19.0,
+                    "y0": 519.0,
+                    "x1": 211.0,
+                    "y1": 549.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "fiscale",
+                  "bbox": {
+                    "x0": 227.0,
+                    "y0": 519.0,
+                    "x1": 352.0,
+                    "y1": 549.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 372.0,
+                    "y0": 528.0,
+                    "x1": 376.0,
+                    "y1": 549.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.92,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "7",
+                  "bbox": {
+                    "x0": 396.0,
+                    "y0": 520.0,
+                    "x1": 415.0,
+                    "y1": 549.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "CV",
+                  "bbox": {
+                    "x0": 433.0,
+                    "y0": 519.0,
+                    "x1": 486.0,
+                    "y1": 549.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.942
+            },
+            {
+              "text": "Puissance DIN : 55 kW",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 591.0,
+                "x1": 462.0,
+                "y1": 621.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Puissance",
+                  "bbox": {
+                    "x0": 19.0,
+                    "y0": 591.0,
+                    "x1": 211.0,
+                    "y1": 621.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "DIN",
+                  "bbox": {
+                    "x0": 230.0,
+                    "y0": 592.0,
+                    "x1": 294.0,
+                    "y1": 621.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 316.0,
+                    "y0": 600.0,
+                    "x1": 320.0,
+                    "y1": 621.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.91,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "55",
+                  "bbox": {
+                    "x0": 340.0,
+                    "y0": 592.0,
+                    "x1": 385.0,
+                    "y1": 621.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "kW",
+                  "bbox": {
+                    "x0": 405.0,
+                    "y0": 591.0,
+                    "x1": 462.0,
+                    "y1": 621.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9400000000000001
+            },
+            {
+              "text": "PTAC : 1640 kg",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 663.0,
+                "x1": 314.0,
+                "y1": 701.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "PTAC",
+                  "bbox": {
+                    "x0": 19.0,
+                    "y0": 663.0,
+                    "x1": 113.0,
+                    "y1": 693.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.92,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 133.0,
+                    "y0": 672.0,
+                    "x1": 137.0,
+                    "y1": 693.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.92,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "1640",
+                  "bbox": {
+                    "x0": 158.0,
+                    "y0": 663.0,
+                    "x1": 253.0,
+                    "y1": 693.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "kg",
+                  "bbox": {
+                    "x0": 273.0,
+                    "y0": 663.0,
+                    "x1": 314.0,
+                    "y1": 701.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.94
+            },
+            {
+              "text": "Poids à vide : 1145 kg",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 733.0,
+                "x1": 453.0,
+                "y1": 773.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Poids",
+                  "bbox": {
+                    "x0": 19.0,
+                    "y0": 735.0,
+                    "x1": 118.0,
+                    "y1": 765.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "à",
+                  "bbox": {
+                    "x0": 134.0,
+                    "y0": 733.0,
+                    "x1": 153.0,
+                    "y1": 765.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "vide",
+                  "bbox": {
+                    "x0": 170.0,
+                    "y0": 735.0,
+                    "x1": 253.0,
+                    "y1": 765.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.91,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 272.0,
+                    "y0": 744.0,
+                    "x1": 276.0,
+                    "y1": 765.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.91,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "1145",
+                  "bbox": {
+                    "x0": 297.0,
+                    "y0": 736.0,
+                    "x1": 392.0,
+                    "y1": 765.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "kg",
+                  "bbox": {
+                    "x0": 412.0,
+                    "y0": 735.0,
+                    "x1": 453.0,
+                    "y1": 773.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9416666666666668
+            },
+            {
+              "text": "Places : 5",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 807.0,
+                "x1": 203.0,
+                "y1": 837.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Places",
+                  "bbox": {
+                    "x0": 19.0,
+                    "y0": 807.0,
+                    "x1": 140.0,
+                    "y1": 837.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 160.0,
+                    "y0": 816.0,
+                    "x1": 164.0,
+                    "y1": 837.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.92,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "5",
+                  "bbox": {
+                    "x0": 184.0,
+                    "y0": 808.0,
+                    "x1": 203.0,
+                    "y1": 837.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9366666666666666
+            },
+            {
+              "text": "Genre : TOURISME",
+              "bbox": {
+                "x0": 17.0,
+                "y0": 879.0,
+                "x1": 383.0,
+                "y1": 909.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Genre",
+                  "bbox": {
+                    "x0": 17.0,
+                    "y0": 879.0,
+                    "x1": 135.0,
+                    "y1": 909.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 154.0,
+                    "y0": 888.0,
+                    "x1": 158.0,
+                    "y1": 909.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.92,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "TOURISME",
+                  "bbox": {
+                    "x0": 175.0,
+                    "y0": 879.0,
+                    "x1": 383.0,
+                    "y1": 909.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9333333333333332
+            },
+            {
+              "text": "Cylindrée : 1461 cm3",
+              "bbox": {
+                "x0": 17.0,
+                "y0": 949.0,
+                "x1": 441.0,
+                "y1": 989.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Cylindrée",
+                  "bbox": {
+                    "x0": 17.0,
+                    "y0": 949.0,
+                    "x1": 203.0,
+                    "y1": 989.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 222.0,
+                    "y0": 960.0,
+                    "x1": 226.0,
+                    "y1": 981.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.92,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "1461",
+                  "bbox": {
+                    "x0": 247.0,
+                    "y0": 951.0,
+                    "x1": 342.0,
+                    "y1": 981.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "cm3",
+                  "bbox": {
+                    "x0": 360.0,
+                    "y0": 951.0,
+                    "x1": 441.0,
+                    "y1": 981.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9425
+            },
+            {
+              "text": "N° moteur : K9K742",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 1023.0,
+                "x1": 412.0,
+                "y1": 1053.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "N°",
+                  "bbox": {
+                    "x0": 19.0,
+                    "y0": 1023.0,
+                    "x1": 61.0,
+                    "y1": 1053.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "moteur",
+                  "bbox": {
+                    "x0": 82.0,
+                    "y0": 1025.0,
+                    "x1": 223.0,
+                    "y1": 1053.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 241.0,
+                    "y0": 1032.0,
+                    "x1": 245.0,
+                    "y1": 1053.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.91,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "K9K742",
+                  "bbox": {
+                    "x0": 266.0,
+                    "y0": 1023.0,
+                    "x1": 412.0,
+                    "y1": 1053.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.9,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9225
+            },
+            {
+              "text": "N° de la carte : 1612345670",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 1095.0,
+                "x1": 583.0,
+                "y1": 1125.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "N°",
+                  "bbox": {
+                    "x0": 19.0,
+                    "y0": 1095.0,
+                    "x1": 61.0,
+                    "y1": 1125.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "de",
+                  "bbox": {
+                    "x0": 80.0,
+                    "y0": 1095.0,
+                    "x1": 126.0,
+                    "y1": 1125.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "la",
+                  "bbox": {
+                    "x0": 144.0,
+                    "y0": 1095.0,
+                    "x1": 172.0,
+                    "y1": 1125.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "carte",
+                  "bbox": {
+                    "x0": 191.0,
+                    "y0": 1097.0,
+                    "x1": 290.0,
+                    "y1": 1125.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 310.0,
+                    "y0": 1104.0,
+                    "x1": 314.0,
+                    "y1": 1125.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.92,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "1612345670",
+                  "bbox": {
+                    "x0": 335.0,
+                    "y0": 1095.0,
+                    "x1": 583.0,
+                    "y1": 1125.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.945
+            },
+            {
+              "text": "Couleur : GRIS",
+              "bbox": {
+                "x0": 17.0,
+                "y0": 1167.0,
+                "x1": 303.0,
+                "y1": 1197.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Couleur",
+                  "bbox": {
+                    "x0": 17.0,
+                    "y0": 1167.0,
+                    "x1": 170.0,
+                    "y1": 1197.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 188.0,
+                    "y0": 1176.0,
+                    "x1": 192.0,
+                    "y1": 1197.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.93,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "GRIS",
+                  "bbox": {
+                    "x0": 211.0,
+                    "y0": 1167.0,
+                    "x1": 303.0,
+                    "y1": 1197.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9366666666666666
+            },
+            {
+              "text": "CO2 : 98 g/km",
+              "bbox": {
+                "x0": 17.0,
+                "y0": 1239.0,
+                "x1": 300.0,
+                "y1": 1277.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "CO2",
+                  "bbox": {
+                    "x0": 17.0,
+                    "y0": 1239.0,
+                    "x1": 95.0,
+                    "y1": 1269.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.86,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 118.0,
+                    "y0": 1248.0,
+                    "x1": 122.0,
+                    "y1": 1269.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.92,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "98",
+                  "bbox": {
+                    "x0": 142.0,
+                    "y0": 1239.0,
+                    "x1": 187.0,
+                    "y1": 1269.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "g/km",
+                  "bbox": {
+                    "x0": 204.0,
+                    "y0": 1239.0,
+                    "x1": 300.0,
+                    "y1": 1277.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9225
+            },
+            {
+              "text": "Titulaire : DUPONT JEAN",
+              "bbox": {
+                "x0": 15.0,
+                "y0": 1307.0,
+                "x1": 489.0,
+                "y1": 1353.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "words": [
+                {
+                  "text": "Titulaire",
+                  "bbox": {
+                    "x0": 15.0,
+                    "y0": 1311.0,
+                    "x1": 176.0,
+                    "y1": 1341.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.92,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": ":",
+                  "bbox": {
+                    "x0": 195.0,
+                    "y0": 1320.0,
+                    "x1": 199.0,
+                    "y1": 1341.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.92,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "DUPONT",
+                  "bbox": {
+                    "x0": 233.0,
+                    "y0": 1307.0,
+                    "x1": 372.0,
+                    "y1": 1353.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.96,
+                  "engine": "tesseract",
+                  "page_num": 1
+                },
+                {
+                  "text": "JEAN",
+                  "bbox": {
+                    "x0": 394.0,
+                    "y0": 1312.0,
+                    "x1": 489.0,
+                    "y1": 1349.0,
+                    "page_width": null,
+                    "page_height": null
+                  },
+                  "confidence": 0.95,
+                  "engine": "tesseract",
+                  "page_num": 1
+                }
+              ],
+              "direction": "ltr",
+              "confidence": 0.9375
+            }
+          ],
+          "kind": "paragraph"
+        }
+      ],
+      "lines": [
+        {
+          "text": "CERTIFICAT D'IMMATRICULATION",
+          "bbox": {
+            "x0": 17.0,
+            "y0": 15.0,
+            "x1": 663.0,
+            "y1": 45.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "CERTIFICAT",
+              "bbox": {
+                "x0": 17.0,
+                "y0": 15.0,
+                "x1": 241.0,
+                "y1": 45.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.92,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "D'IMMATRICULATION",
+              "bbox": {
+                "x0": 258.0,
+                "y0": 15.0,
+                "x1": 663.0,
+                "y1": 45.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.89,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.905
+        },
+        {
+          "text": "Plaque : AB-123-CD",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 87.0,
+            "x1": 405.0,
+            "y1": 125.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Plaque",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 87.0,
+                "x1": 149.0,
+                "y1": 125.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 168.0,
+                "y0": 96.0,
+                "x1": 172.0,
+                "y1": 117.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.92,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "AB-123-CD",
+              "bbox": {
+                "x0": 189.0,
+                "y0": 87.0,
+                "x1": 405.0,
+                "y1": 117.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.91,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.92
+        },
+        {
+          "text": "N° d'identification : 1HGBH41JXMN109186",
+          "bbox": {
+            "x0": 17.0,
+            "y0": 156.0,
+            "x1": 999.0,
+            "y1": 190.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "N°",
+              "bbox": {
+                "x0": 17.0,
+                "y0": 158.0,
+                "x1": 59.0,
+                "y1": 190.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "d'identification",
+              "bbox": {
+                "x0": 93.0,
+                "y0": 156.0,
+                "x1": 492.0,
+                "y1": 190.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 530.0,
+                "y0": 168.0,
+                "x1": 537.0,
+                "y1": 190.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.91,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "1HGBH41JXMN109186",
+              "bbox": {
+                "x0": 575.0,
+                "y0": 158.0,
+                "x1": 999.0,
+                "y1": 190.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.82,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9025
+        },
+        {
+          "text": "Marque : RENAULT",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 232.0,
+            "x1": 385.0,
+            "y1": 269.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Marque",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 232.0,
+                "x1": 164.0,
+                "y1": 269.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 183.0,
+                "y0": 240.0,
+                "x1": 187.0,
+                "y1": 261.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "RENAULT",
+              "bbox": {
+                "x0": 208.0,
+                "y0": 232.0,
+                "x1": 385.0,
+                "y1": 261.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9400000000000001
+        },
+        {
+          "text": "Désignation : CLIO IV 1.5 DCI",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 301.0,
+            "x1": 594.0,
+            "y1": 341.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Désignation",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 301.0,
+                "x1": 251.0,
+                "y1": 341.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 272.0,
+                "y0": 312.0,
+                "x1": 276.0,
+                "y1": 333.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.91,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "CLIO",
+              "bbox": {
+                "x0": 295.0,
+                "y0": 303.0,
+                "x1": 384.0,
+                "y1": 333.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.92,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "IV",
+              "bbox": {
+                "x0": 403.0,
+                "y0": 304.0,
+                "x1": 438.0,
+                "y1": 333.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "1.5",
+              "bbox": {
+                "x0": 455.0,
+                "y0": 304.0,
+                "x1": 511.0,
+                "y1": 333.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "DCI",
+              "bbox": {
+                "x0": 532.0,
+                "y0": 303.0,
+                "x1": 594.0,
+                "y1": 333.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.935
+        },
+        {
+          "text": "Énergie : DIESEL",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 368.0,
+            "x1": 347.0,
+            "y1": 413.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Énergie",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 368.0,
+                "x1": 166.0,
+                "y1": 413.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 185.0,
+                "y0": 384.0,
+                "x1": 189.0,
+                "y1": 405.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "DIESEL",
+              "bbox": {
+                "x0": 210.0,
+                "y0": 375.0,
+                "x1": 347.0,
+                "y1": 405.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9400000000000001
+        },
+        {
+          "text": "lère immatriculation : 12/03/2019",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 444.0,
+            "x1": 847.0,
+            "y1": 482.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "lère",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 444.0,
+                "x1": 115.0,
+                "y1": 478.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "immatriculation",
+              "bbox": {
+                "x0": 144.0,
+                "y0": 444.0,
+                "x1": 517.0,
+                "y1": 478.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.92,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 555.0,
+                "y0": 456.0,
+                "x1": 562.0,
+                "y1": 478.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.92,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "12/03/2019",
+              "bbox": {
+                "x0": 600.0,
+                "y0": 446.0,
+                "x1": 847.0,
+                "y1": 482.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.925
+        },
+        {
+          "text": "Puissance fiscale : 7 CV",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 519.0,
+            "x1": 486.0,
+            "y1": 549.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Puissance",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 519.0,
+                "x1": 211.0,
+                "y1": 549.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "fiscale",
+              "bbox": {
+                "x0": 227.0,
+                "y0": 519.0,
+                "x1": 352.0,
+                "y1": 549.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 372.0,
+                "y0": 528.0,
+                "x1": 376.0,
+                "y1": 549.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.92,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "7",
+              "bbox": {
+                "x0": 396.0,
+                "y0": 520.0,
+                "x1": 415.0,
+                "y1": 549.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "CV",
+              "bbox": {
+                "x0": 433.0,
+                "y0": 519.0,
+                "x1": 486.0,
+                "y1": 549.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.942
+        },
+        {
+          "text": "Puissance DIN : 55 kW",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 591.0,
+            "x1": 462.0,
+            "y1": 621.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Puissance",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 591.0,
+                "x1": 211.0,
+                "y1": 621.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "DIN",
+              "bbox": {
+                "x0": 230.0,
+                "y0": 592.0,
+                "x1": 294.0,
+                "y1": 621.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 316.0,
+                "y0": 600.0,
+                "x1": 320.0,
+                "y1": 621.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.91,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "55",
+              "bbox": {
+                "x0": 340.0,
+                "y0": 592.0,
+                "x1": 385.0,
+                "y1": 621.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "kW",
+              "bbox": {
+                "x0": 405.0,
+                "y0": 591.0,
+                "x1": 462.0,
+                "y1": 621.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9400000000000001
+        },
+        {
+          "text": "PTAC : 1640 kg",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 663.0,
+            "x1": 314.0,
+            "y1": 701.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "PTAC",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 663.0,
+                "x1": 113.0,
+                "y1": 693.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.92,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 133.0,
+                "y0": 672.0,
+                "x1": 137.0,
+                "y1": 693.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.92,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "1640",
+              "bbox": {
+                "x0": 158.0,
+                "y0": 663.0,
+                "x1": 253.0,
+                "y1": 693.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "kg",
+              "bbox": {
+                "x0": 273.0,
+                "y0": 663.0,
+                "x1": 314.0,
+                "y1": 701.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.94
+        },
+        {
+          "text": "Poids à vide : 1145 kg",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 733.0,
+            "x1": 453.0,
+            "y1": 773.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Poids",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 735.0,
+                "x1": 118.0,
+                "y1": 765.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "à",
+              "bbox": {
+                "x0": 134.0,
+                "y0": 733.0,
+                "x1": 153.0,
+                "y1": 765.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "vide",
+              "bbox": {
+                "x0": 170.0,
+                "y0": 735.0,
+                "x1": 253.0,
+                "y1": 765.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.91,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 272.0,
+                "y0": 744.0,
+                "x1": 276.0,
+                "y1": 765.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.91,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "1145",
+              "bbox": {
+                "x0": 297.0,
+                "y0": 736.0,
+                "x1": 392.0,
+                "y1": 765.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "kg",
+              "bbox": {
+                "x0": 412.0,
+                "y0": 735.0,
+                "x1": 453.0,
+                "y1": 773.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9416666666666668
+        },
+        {
+          "text": "Places : 5",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 807.0,
+            "x1": 203.0,
+            "y1": 837.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Places",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 807.0,
+                "x1": 140.0,
+                "y1": 837.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 160.0,
+                "y0": 816.0,
+                "x1": 164.0,
+                "y1": 837.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.92,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "5",
+              "bbox": {
+                "x0": 184.0,
+                "y0": 808.0,
+                "x1": 203.0,
+                "y1": 837.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9366666666666666
+        },
+        {
+          "text": "Genre : TOURISME",
+          "bbox": {
+            "x0": 17.0,
+            "y0": 879.0,
+            "x1": 383.0,
+            "y1": 909.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Genre",
+              "bbox": {
+                "x0": 17.0,
+                "y0": 879.0,
+                "x1": 135.0,
+                "y1": 909.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 154.0,
+                "y0": 888.0,
+                "x1": 158.0,
+                "y1": 909.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.92,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "TOURISME",
+              "bbox": {
+                "x0": 175.0,
+                "y0": 879.0,
+                "x1": 383.0,
+                "y1": 909.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9333333333333332
+        },
+        {
+          "text": "Cylindrée : 1461 cm3",
+          "bbox": {
+            "x0": 17.0,
+            "y0": 949.0,
+            "x1": 441.0,
+            "y1": 989.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Cylindrée",
+              "bbox": {
+                "x0": 17.0,
+                "y0": 949.0,
+                "x1": 203.0,
+                "y1": 989.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 222.0,
+                "y0": 960.0,
+                "x1": 226.0,
+                "y1": 981.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.92,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "1461",
+              "bbox": {
+                "x0": 247.0,
+                "y0": 951.0,
+                "x1": 342.0,
+                "y1": 981.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "cm3",
+              "bbox": {
+                "x0": 360.0,
+                "y0": 951.0,
+                "x1": 441.0,
+                "y1": 981.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9425
+        },
+        {
+          "text": "N° moteur : K9K742",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 1023.0,
+            "x1": 412.0,
+            "y1": 1053.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "N°",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 1023.0,
+                "x1": 61.0,
+                "y1": 1053.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "moteur",
+              "bbox": {
+                "x0": 82.0,
+                "y0": 1025.0,
+                "x1": 223.0,
+                "y1": 1053.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 241.0,
+                "y0": 1032.0,
+                "x1": 245.0,
+                "y1": 1053.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.91,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "K9K742",
+              "bbox": {
+                "x0": 266.0,
+                "y0": 1023.0,
+                "x1": 412.0,
+                "y1": 1053.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.9,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9225
+        },
+        {
+          "text": "N° de la carte : 1612345670",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 1095.0,
+            "x1": 583.0,
+            "y1": 1125.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "N°",
+              "bbox": {
+                "x0": 19.0,
+                "y0": 1095.0,
+                "x1": 61.0,
+                "y1": 1125.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "de",
+              "bbox": {
+                "x0": 80.0,
+                "y0": 1095.0,
+                "x1": 126.0,
+                "y1": 1125.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "la",
+              "bbox": {
+                "x0": 144.0,
+                "y0": 1095.0,
+                "x1": 172.0,
+                "y1": 1125.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "carte",
+              "bbox": {
+                "x0": 191.0,
+                "y0": 1097.0,
+                "x1": 290.0,
+                "y1": 1125.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 310.0,
+                "y0": 1104.0,
+                "x1": 314.0,
+                "y1": 1125.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.92,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "1612345670",
+              "bbox": {
+                "x0": 335.0,
+                "y0": 1095.0,
+                "x1": 583.0,
+                "y1": 1125.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.945
+        },
+        {
+          "text": "Couleur : GRIS",
+          "bbox": {
+            "x0": 17.0,
+            "y0": 1167.0,
+            "x1": 303.0,
+            "y1": 1197.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Couleur",
+              "bbox": {
+                "x0": 17.0,
+                "y0": 1167.0,
+                "x1": 170.0,
+                "y1": 1197.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 188.0,
+                "y0": 1176.0,
+                "x1": 192.0,
+                "y1": 1197.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.93,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "GRIS",
+              "bbox": {
+                "x0": 211.0,
+                "y0": 1167.0,
+                "x1": 303.0,
+                "y1": 1197.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9366666666666666
+        },
+        {
+          "text": "CO2 : 98 g/km",
+          "bbox": {
+            "x0": 17.0,
+            "y0": 1239.0,
+            "x1": 300.0,
+            "y1": 1277.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "CO2",
+              "bbox": {
+                "x0": 17.0,
+                "y0": 1239.0,
+                "x1": 95.0,
+                "y1": 1269.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.86,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 118.0,
+                "y0": 1248.0,
+                "x1": 122.0,
+                "y1": 1269.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.92,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "98",
+              "bbox": {
+                "x0": 142.0,
+                "y0": 1239.0,
+                "x1": 187.0,
+                "y1": 1269.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "g/km",
+              "bbox": {
+                "x0": 204.0,
+                "y0": 1239.0,
+                "x1": 300.0,
+                "y1": 1277.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9225
+        },
+        {
+          "text": "Titulaire : DUPONT JEAN",
+          "bbox": {
+            "x0": 15.0,
+            "y0": 1307.0,
+            "x1": 489.0,
+            "y1": 1353.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "words": [
+            {
+              "text": "Titulaire",
+              "bbox": {
+                "x0": 15.0,
+                "y0": 1311.0,
+                "x1": 176.0,
+                "y1": 1341.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.92,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": ":",
+              "bbox": {
+                "x0": 195.0,
+                "y0": 1320.0,
+                "x1": 199.0,
+                "y1": 1341.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.92,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "DUPONT",
+              "bbox": {
+                "x0": 233.0,
+                "y0": 1307.0,
+                "x1": 372.0,
+                "y1": 1353.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.96,
+              "engine": "tesseract",
+              "page_num": 1
+            },
+            {
+              "text": "JEAN",
+              "bbox": {
+                "x0": 394.0,
+                "y0": 1312.0,
+                "x1": 489.0,
+                "y1": 1349.0,
+                "page_width": null,
+                "page_height": null
+              },
+              "confidence": 0.95,
+              "engine": "tesseract",
+              "page_num": 1
+            }
+          ],
+          "direction": "ltr",
+          "confidence": 0.9375
+        }
+      ],
+      "words": [
+        {
+          "text": "CERTIFICAT",
+          "bbox": {
+            "x0": 17.0,
+            "y0": 15.0,
+            "x1": 241.0,
+            "y1": 45.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.92,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "D'IMMATRICULATION",
+          "bbox": {
+            "x0": 258.0,
+            "y0": 15.0,
+            "x1": 663.0,
+            "y1": 45.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.89,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "Plaque",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 87.0,
+            "x1": 149.0,
+            "y1": 125.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 168.0,
+            "y0": 96.0,
+            "x1": 172.0,
+            "y1": 117.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.92,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "AB-123-CD",
+          "bbox": {
+            "x0": 189.0,
+            "y0": 87.0,
+            "x1": 405.0,
+            "y1": 117.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.91,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "N°",
+          "bbox": {
+            "x0": 17.0,
+            "y0": 158.0,
+            "x1": 59.0,
+            "y1": 190.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "d'identification",
+          "bbox": {
+            "x0": 93.0,
+            "y0": 156.0,
+            "x1": 492.0,
+            "y1": 190.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 530.0,
+            "y0": 168.0,
+            "x1": 537.0,
+            "y1": 190.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.91,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "1HGBH41JXMN109186",
+          "bbox": {
+            "x0": 575.0,
+            "y0": 158.0,
+            "x1": 999.0,
+            "y1": 190.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.82,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "Marque",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 232.0,
+            "x1": 164.0,
+            "y1": 269.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 183.0,
+            "y0": 240.0,
+            "x1": 187.0,
+            "y1": 261.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "RENAULT",
+          "bbox": {
+            "x0": 208.0,
+            "y0": 232.0,
+            "x1": 385.0,
+            "y1": 261.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "Désignation",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 301.0,
+            "x1": 251.0,
+            "y1": 341.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 272.0,
+            "y0": 312.0,
+            "x1": 276.0,
+            "y1": 333.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.91,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "CLIO",
+          "bbox": {
+            "x0": 295.0,
+            "y0": 303.0,
+            "x1": 384.0,
+            "y1": 333.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.92,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "IV",
+          "bbox": {
+            "x0": 403.0,
+            "y0": 304.0,
+            "x1": 438.0,
+            "y1": 333.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "1.5",
+          "bbox": {
+            "x0": 455.0,
+            "y0": 304.0,
+            "x1": 511.0,
+            "y1": 333.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "DCI",
+          "bbox": {
+            "x0": 532.0,
+            "y0": 303.0,
+            "x1": 594.0,
+            "y1": 333.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "Énergie",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 368.0,
+            "x1": 166.0,
+            "y1": 413.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 185.0,
+            "y0": 384.0,
+            "x1": 189.0,
+            "y1": 405.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "DIESEL",
+          "bbox": {
+            "x0": 210.0,
+            "y0": 375.0,
+            "x1": 347.0,
+            "y1": 405.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "lère",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 444.0,
+            "x1": 115.0,
+            "y1": 478.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "immatriculation",
+          "bbox": {
+            "x0": 144.0,
+            "y0": 444.0,
+            "x1": 517.0,
+            "y1": 478.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.92,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 555.0,
+            "y0": 456.0,
+            "x1": 562.0,
+            "y1": 478.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.92,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "12/03/2019",
+          "bbox": {
+            "x0": 600.0,
+            "y0": 446.0,
+            "x1": 847.0,
+            "y1": 482.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "Puissance",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 519.0,
+            "x1": 211.0,
+            "y1": 549.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "fiscale",
+          "bbox": {
+            "x0": 227.0,
+            "y0": 519.0,
+            "x1": 352.0,
+            "y1": 549.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 372.0,
+            "y0": 528.0,
+            "x1": 376.0,
+            "y1": 549.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.92,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "7",
+          "bbox": {
+            "x0": 396.0,
+            "y0": 520.0,
+            "x1": 415.0,
+            "y1": 549.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "CV",
+          "bbox": {
+            "x0": 433.0,
+            "y0": 519.0,
+            "x1": 486.0,
+            "y1": 549.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "Puissance",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 591.0,
+            "x1": 211.0,
+            "y1": 621.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "DIN",
+          "bbox": {
+            "x0": 230.0,
+            "y0": 592.0,
+            "x1": 294.0,
+            "y1": 621.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 316.0,
+            "y0": 600.0,
+            "x1": 320.0,
+            "y1": 621.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.91,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "55",
+          "bbox": {
+            "x0": 340.0,
+            "y0": 592.0,
+            "x1": 385.0,
+            "y1": 621.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "kW",
+          "bbox": {
+            "x0": 405.0,
+            "y0": 591.0,
+            "x1": 462.0,
+            "y1": 621.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "PTAC",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 663.0,
+            "x1": 113.0,
+            "y1": 693.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.92,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 133.0,
+            "y0": 672.0,
+            "x1": 137.0,
+            "y1": 693.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.92,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "1640",
+          "bbox": {
+            "x0": 158.0,
+            "y0": 663.0,
+            "x1": 253.0,
+            "y1": 693.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "kg",
+          "bbox": {
+            "x0": 273.0,
+            "y0": 663.0,
+            "x1": 314.0,
+            "y1": 701.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "Poids",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 735.0,
+            "x1": 118.0,
+            "y1": 765.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "à",
+          "bbox": {
+            "x0": 134.0,
+            "y0": 733.0,
+            "x1": 153.0,
+            "y1": 765.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "vide",
+          "bbox": {
+            "x0": 170.0,
+            "y0": 735.0,
+            "x1": 253.0,
+            "y1": 765.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.91,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 272.0,
+            "y0": 744.0,
+            "x1": 276.0,
+            "y1": 765.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.91,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "1145",
+          "bbox": {
+            "x0": 297.0,
+            "y0": 736.0,
+            "x1": 392.0,
+            "y1": 765.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "kg",
+          "bbox": {
+            "x0": 412.0,
+            "y0": 735.0,
+            "x1": 453.0,
+            "y1": 773.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "Places",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 807.0,
+            "x1": 140.0,
+            "y1": 837.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 160.0,
+            "y0": 816.0,
+            "x1": 164.0,
+            "y1": 837.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.92,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "5",
+          "bbox": {
+            "x0": 184.0,
+            "y0": 808.0,
+            "x1": 203.0,
+            "y1": 837.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "Genre",
+          "bbox": {
+            "x0": 17.0,
+            "y0": 879.0,
+            "x1": 135.0,
+            "y1": 909.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 154.0,
+            "y0": 888.0,
+            "x1": 158.0,
+            "y1": 909.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.92,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "TOURISME",
+          "bbox": {
+            "x0": 175.0,
+            "y0": 879.0,
+            "x1": 383.0,
+            "y1": 909.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "Cylindrée",
+          "bbox": {
+            "x0": 17.0,
+            "y0": 949.0,
+            "x1": 203.0,
+            "y1": 989.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 222.0,
+            "y0": 960.0,
+            "x1": 226.0,
+            "y1": 981.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.92,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "1461",
+          "bbox": {
+            "x0": 247.0,
+            "y0": 951.0,
+            "x1": 342.0,
+            "y1": 981.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "cm3",
+          "bbox": {
+            "x0": 360.0,
+            "y0": 951.0,
+            "x1": 441.0,
+            "y1": 981.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "N°",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 1023.0,
+            "x1": 61.0,
+            "y1": 1053.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "moteur",
+          "bbox": {
+            "x0": 82.0,
+            "y0": 1025.0,
+            "x1": 223.0,
+            "y1": 1053.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 241.0,
+            "y0": 1032.0,
+            "x1": 245.0,
+            "y1": 1053.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.91,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "K9K742",
+          "bbox": {
+            "x0": 266.0,
+            "y0": 1023.0,
+            "x1": 412.0,
+            "y1": 1053.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.9,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "N°",
+          "bbox": {
+            "x0": 19.0,
+            "y0": 1095.0,
+            "x1": 61.0,
+            "y1": 1125.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "de",
+          "bbox": {
+            "x0": 80.0,
+            "y0": 1095.0,
+            "x1": 126.0,
+            "y1": 1125.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "la",
+          "bbox": {
+            "x0": 144.0,
+            "y0": 1095.0,
+            "x1": 172.0,
+            "y1": 1125.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "carte",
+          "bbox": {
+            "x0": 191.0,
+            "y0": 1097.0,
+            "x1": 290.0,
+            "y1": 1125.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 310.0,
+            "y0": 1104.0,
+            "x1": 314.0,
+            "y1": 1125.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.92,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "1612345670",
+          "bbox": {
+            "x0": 335.0,
+            "y0": 1095.0,
+            "x1": 583.0,
+            "y1": 1125.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "Couleur",
+          "bbox": {
+            "x0": 17.0,
+            "y0": 1167.0,
+            "x1": 170.0,
+            "y1": 1197.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 188.0,
+            "y0": 1176.0,
+            "x1": 192.0,
+            "y1": 1197.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.93,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "GRIS",
+          "bbox": {
+            "x0": 211.0,
+            "y0": 1167.0,
+            "x1": 303.0,
+            "y1": 1197.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "CO2",
+          "bbox": {
+            "x0": 17.0,
+            "y0": 1239.0,
+            "x1": 95.0,
+            "y1": 1269.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.86,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 118.0,
+            "y0": 1248.0,
+            "x1": 122.0,
+            "y1": 1269.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.92,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "98",
+          "bbox": {
+            "x0": 142.0,
+            "y0": 1239.0,
+            "x1": 187.0,
+            "y1": 1269.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "g/km",
+          "bbox": {
+            "x0": 204.0,
+            "y0": 1239.0,
+            "x1": 300.0,
+            "y1": 1277.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "Titulaire",
+          "bbox": {
+            "x0": 15.0,
+            "y0": 1311.0,
+            "x1": 176.0,
+            "y1": 1341.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.92,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": ":",
+          "bbox": {
+            "x0": 195.0,
+            "y0": 1320.0,
+            "x1": 199.0,
+            "y1": 1341.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.92,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "DUPONT",
+          "bbox": {
+            "x0": 233.0,
+            "y0": 1307.0,
+            "x1": 372.0,
+            "y1": 1353.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.96,
+          "engine": "tesseract",
+          "page_num": 1
+        },
+        {
+          "text": "JEAN",
+          "bbox": {
+            "x0": 394.0,
+            "y0": 1312.0,
+            "x1": 489.0,
+            "y1": 1349.0,
+            "page_width": null,
+            "page_height": null
+          },
+          "confidence": 0.95,
+          "engine": "tesseract",
+          "page_num": 1
+        }
+      ],
+      "quality": {
+        "brightness": 234.44383846872083,
+        "contrast": 38.278576833373435,
+        "blur_score": 1323.3106218487394,
+        "noise_score": 0.0,
+        "estimated_skew_deg": 0.0,
+        "estimated_dpi": 200.0,
+        "ink_ratio": 0.0392063492063492,
+        "is_blank": false,
+        "issues": []
+      },
+      "preprocess_ops": [
+        {
+          "name": "crop",
+          "applied": true,
+          "params": {},
+          "reason": "bordures vides détectées"
+        }
+      ],
+      "engine_runs": [
+        {
+          "engine": "tesseract",
+          "page_num": 1,
+          "languages": [
+            "fra",
+            "eng"
+          ],
+          "mean_confidence": 0.9334210526315789,
+          "word_count": 76,
+          "duration_ms": 2408.687009999994,
+          "ok": true,
+          "error": null
+        }
+      ],
+      "orientation_deg": 0,
+      "detected_languages": [
+        "fr"
+      ],
+      "has_native_text": false,
+      "native_text_ratio": 0.0,
+      "variant_selected": "preprocessed",
+      "blank": false
+    }
+  ],
+  "fields": {
+    "date": {
+      "name": "date",
+      "label": "Date",
+      "raw_value": "2019-03-12",
+      "normalized_value": "2019-03-12",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.825,
+      "engine_confidence": 0.933,
+      "page_num": null,
+      "bbox": null,
+      "status": "ambiguous",
+      "pattern": "date",
+      "anomalies": [],
+      "profile": null
+    },
+    "email": {
+      "name": "email",
+      "label": "E-mail",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "url": {
+      "name": "url",
+      "label": "URL",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "phone": {
+      "name": "phone",
+      "label": "Téléphone",
+      "raw_value": "1612345670",
+      "normalized_value": "1612345670",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.933,
+      "engine_confidence": 0.933,
+      "page_num": 1,
+      "bbox": {
+        "x0": 335.0,
+        "y0": 1095.0,
+        "x1": 583.0,
+        "y1": 1125.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "phone",
+      "anomalies": [],
+      "profile": null
+    },
+    "iban": {
+      "name": "iban",
+      "label": "IBAN",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "invoice_number": {
+      "name": "invoice_number",
+      "label": "Numéro de facture",
+      "raw_value": "Plaque | 1HGBH41JXMN109186 | CLIO | 12/03/2019 | moteur",
+      "normalized_value": "Plaque | 1HGBH41JXMN109186 | CLIO | 12/03/2019 | moteur",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.933,
+      "engine_confidence": 0.933,
+      "page_num": 1,
+      "bbox": {
+        "x0": 19.0,
+        "y0": 87.0,
+        "x1": 149.0,
+        "y1": 125.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "invoice_number",
+      "anomalies": [],
+      "profile": null
+    },
+    "vat_number": {
+      "name": "vat_number",
+      "label": "N° TVA",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "container_number": {
+      "name": "container_number",
+      "label": "N° conteneur",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "serial_number": {
+      "name": "serial_number",
+      "label": "N° de série",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "amount": {
+      "name": "amount",
+      "label": "Montant",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "percent": {
+      "name": "percent",
+      "label": "Pourcentage",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "ocr",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": null
+    },
+    "quantity": {
+      "name": "quantity",
+      "label": "Quantité + unité",
+      "raw_value": "1640 | 1145 | 98",
+      "normalized_value": "1640 | 1145 | 98",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "ocr",
+      "confidence": 0.933,
+      "engine_confidence": 0.933,
+      "page_num": 1,
+      "bbox": {
+        "x0": 158.0,
+        "y0": 663.0,
+        "x1": 253.0,
+        "y1": 693.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "quantity",
+      "anomalies": [],
+      "profile": null
+    },
+    "plate_number": {
+      "name": "plate_number",
+      "label": "Plaque d'immatriculation",
+      "raw_value": "AB-123-CD",
+      "normalized_value": "AB-123-CD",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 189.0,
+        "y0": 87.0,
+        "x1": 405.0,
+        "y1": 117.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Plaque|Immat(?:riculation)?|Registration|Num[ée]ro\\s*de\\s*plaqu|الرقم التسجيلي?)\\s*[:#]\\s*([A-Z0-9][A-Z0-9 \\t\\-.]{3,15})",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "vin": {
+      "name": "vin",
+      "label": "N° d'identification (VIN / châssis)",
+      "raw_value": "1HGBH41JXMN109186",
+      "normalized_value": "1HGBH41JXMN109186",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 575.0,
+        "y0": 158.0,
+        "x1": 999.0,
+        "y1": 190.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:N[°o]\\s*d['’]identification|Num[ée]ro\\s*d['’]identification|VIN|Ch[âa]ssis|الهيكل)\\s*[:#]\\s*([A-HJ-NPR-Z0-9]{15,17})",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "make": {
+      "name": "make",
+      "label": "Marque",
+      "raw_value": "RENAULT",
+      "normalized_value": "RENAULT",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 208.0,
+        "y0": 232.0,
+        "x1": 385.0,
+        "y1": 261.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Marque|Make|Brand|الماركة)\\s*[:#]\\s*([A-Za-z0-9][A-Za-z0-9 \\t\\-.]{1,25})",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "model": {
+      "name": "model",
+      "label": "Désignation / modèle",
+      "raw_value": "CLIO IV 1.5 DCI",
+      "normalized_value": "CLIO IV 1.5 DCI",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 295.0,
+        "y0": 303.0,
+        "x1": 594.0,
+        "y1": 333.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:D[ée]signation(?:\\s*commerciale)?|Mod[èe]le|Model|Type\\s*commercial)\\s*[:#]\\s*([^\\n]{2,40})",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "fuel": {
+      "name": "fuel",
+      "label": "Énergie / carburant",
+      "raw_value": "DIESEL",
+      "normalized_value": "DIESEL",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 210.0,
+        "y0": 375.0,
+        "x1": 347.0,
+        "y1": 405.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Énergie|Energie|Energy|Carburant|Fuel|الطاقة|الوقود)\\s*[:#]\\s*([A-Za-zÀ-ÿ0-9 \\-/]{2,24})",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "first_reg_date": {
+      "name": "first_reg_date",
+      "label": "Date de 1re immatriculation (mise en circulation)",
+      "raw_value": "12/03/2019",
+      "normalized_value": "2019-03-12",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 600.0,
+        "y0": 446.0,
+        "x1": 847.0,
+        "y1": 482.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:[1lI]\\s*è?re?\\s*immat(?:riculation)?|Premi[èe]re\\s*immat(?:riculation)?|Date\\s*de\\s*mise\\s*en\\s*circulation|Mise\\s*en\\s*circulation|In\\s*service|تاريخ الاستغلال)[^\\n]{0,14}?(\\d{1,2}[/.-]\\d{1,2}[/.-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2}|\\d{1,2}[/.-]\\d{4})",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "certif_date": {
+      "name": "certif_date",
+      "label": "Date du certificat",
+      "raw_value": null,
+      "normalized_value": null,
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "raw",
+      "source": "rule",
+      "confidence": 0.0,
+      "engine_confidence": 0.0,
+      "page_num": null,
+      "bbox": null,
+      "status": "not_detected",
+      "pattern": null,
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "fiscal_power": {
+      "name": "fiscal_power",
+      "label": "Puissance fiscale (CV)",
+      "raw_value": "7",
+      "normalized_value": "7",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 396.0,
+        "y0": 520.0,
+        "x1": 415.0,
+        "y1": 549.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Puissance\\s*fiscale|P\\.?\\s*F\\.?|Fiscal\\s*power)\\s*[:#]\\s*(\\d{1,3})\\s*(?:CV|ch|HP)?",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "power_kw": {
+      "name": "power_kw",
+      "label": "Puissance DIN (kW)",
+      "raw_value": "55",
+      "normalized_value": "55",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 340.0,
+        "y0": 592.0,
+        "x1": 385.0,
+        "y1": 621.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Puissance\\s*DIN|P\\.?\\s*DIN)\\s*[:#]\\s*(\\d{1,4})\\s*(?:kW)?",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "ptac": {
+      "name": "ptac",
+      "label": "PTAC (poids total autorisé en charge)",
+      "raw_value": "1640",
+      "normalized_value": "1640",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 158.0,
+        "y0": 663.0,
+        "x1": 253.0,
+        "y1": 693.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:PTAC|P\\.?T\\.?A\\.?C\\.?|Poids\\s*total\\s*autoris[ée]\\s*en\\s*charge)\\s*[:#]\\s*(\\d{2,5})\\s*(?:kg|KG|kgs)?",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "seats": {
+      "name": "seats",
+      "label": "Nombre de places",
+      "raw_value": "5",
+      "normalized_value": "5",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 455.0,
+        "y0": 304.0,
+        "x1": 511.0,
+        "y1": 333.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Places|Nombre\\s*de\\s*places|Nb\\s*places|Seats)\\s*[:#]\\s*(\\d{1,2})",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "color": {
+      "name": "color",
+      "label": "Couleur",
+      "raw_value": "GRIS",
+      "normalized_value": "GRIS",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 211.0,
+        "y0": 1167.0,
+        "x1": 303.0,
+        "y1": 1197.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Couleur|Color|اللون)\\s*[:#]\\s*([A-Za-zÀ-ÿ]{3,15})",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "co2": {
+      "name": "co2",
+      "label": "Émissions de CO2",
+      "raw_value": "98",
+      "normalized_value": "98",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 142.0,
+        "y0": 1239.0,
+        "x1": 187.0,
+        "y1": 1269.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:CO2|CO₂|[ÉE]missions?\\s*de\\s*CO2)\\s*[:#]\\s*(\\d{1,3})\\s*(?:g/km|g)?",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "holder": {
+      "name": "holder",
+      "label": "Titulaire",
+      "raw_value": "DUPONT JEAN",
+      "normalized_value": "DUPONT JEAN",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 233.0,
+        "y0": 1307.0,
+        "x1": 489.0,
+        "y1": 1353.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Titulaire|Propri[ée]taire|Owner|Holder|Donneur\\s*d['’]ordre)\\s*[:#]\\s*([^\\n]{3,60})",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "engine_number": {
+      "name": "engine_number",
+      "label": "N° moteur",
+      "raw_value": "K9K742",
+      "normalized_value": "K9K742",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 266.0,
+        "y0": 1023.0,
+        "x1": 412.0,
+        "y1": 1053.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:N[°o]\\s*(?:du?\\s*)?moteur|Engine|Motor|رقم المحرك)\\s*[:#]\\s*([A-Z0-9]{4,20})",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "cylinder": {
+      "name": "cylinder",
+      "label": "Cylindrée (cm3)",
+      "raw_value": "1461",
+      "normalized_value": "1461",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 247.0,
+        "y0": 951.0,
+        "x1": 342.0,
+        "y1": 981.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Cylindr[ée]e|السعة)\\s*[:#]\\s*(\\d{2,5})\\s*(?:cm3|cm³|CC)?",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "empty_weight": {
+      "name": "empty_weight",
+      "label": "Poids à vide (kg)",
+      "raw_value": "1145",
+      "normalized_value": "1145",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 297.0,
+        "y0": 736.0,
+        "x1": 392.0,
+        "y1": 765.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Poids\\s*[àa]\\s*vide|PV|الوزن الفارغ)\\s*[:#]\\s*(\\d{2,5})\\s*(?:kg|KG)?",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "genre": {
+      "name": "genre",
+      "label": "Genre (usage)",
+      "raw_value": "TOURISME",
+      "normalized_value": "TOURISME",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 175.0,
+        "y0": 879.0,
+        "x1": 383.0,
+        "y1": 909.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:Genre|Usage|الصنف)\\s*[:#]\\s*([A-Za-zÀ-ÿ]{3,20})",
+      "anomalies": [],
+      "profile": "carte_grise"
+    },
+    "doc_number": {
+      "name": "doc_number",
+      "label": "N° de la carte / de série",
+      "raw_value": "1612345670",
+      "normalized_value": "1612345670",
+      "corrected_value": null,
+      "confirmed_value": null,
+      "value_origin": "normalized",
+      "source": "rule",
+      "confidence": 1.0,
+      "engine_confidence": 1.0,
+      "page_num": 1,
+      "bbox": {
+        "x0": 335.0,
+        "y0": 1095.0,
+        "x1": 583.0,
+        "y1": 1125.0,
+        "page_width": null,
+        "page_height": null
+      },
+      "status": "detected",
+      "pattern": "(?:N[°o]\\s*de\\s*(?:la\\s*)?carte|N[°o]\\s*de\\s*s[ée]rie|Card\\s*(?:No|Number)|رقم البطاقة)\\s*[:#]\\s*([A-Z0-9\\-]{4,20})",
+      "anomalies": [],
+      "profile": "carte_grise"
+    }
+  },
+  "tables": [],
+  "categories": {
+    "dates": [
+      "date"
+    ],
+    "contacts": [
+      "phone"
+    ],
+    "identifiants": [
+      "invoice_number"
+    ],
+    "numeriques": [
+      "quantity"
+    ],
+    "_required": [
+      "plate_number"
+    ]
+  },
+  "barcodes": [],
+  "form_zones": [],
+  "quality": {
+    "mean_engine_confidence": 0.933,
+    "mean_global_confidence": 0.933,
+    "pages_low_confidence": [],
+    "fields_low_confidence": [],
+    "anomalies": [
+      {
+        "code": "AMBIGUOUS_VALUE",
+        "severity": "warning",
+        "message": "champ 'date' ambigu : 2019-03-12",
+        "page_num": null,
+        "bbox": null,
+        "context": {}
+      },
+      {
+        "code": "AMBIGUOUS_CHARS",
+        "severity": "info",
+        "message": "champ 'invoice_number' : caractères ambigus (O/0, I/l/1) dans Plaque | 1HGBH41JXMN109186 | CLIO | 12/03/2019 | moteur",
+        "page_num": 1,
+        "bbox": {
+          "x0": 19.0,
+          "y0": 87.0,
+          "x1": 149.0,
+          "y1": 125.0,
+          "page_width": null,
+          "page_height": null
+        },
+        "context": {}
+      },
+      {
+        "code": "AMBIGUOUS_CHARS",
+        "severity": "info",
+        "message": "champ 'quantity' : caractères ambigus (O/0, I/l/1) dans 1640 | 1145 | 98",
+        "page_num": 1,
+        "bbox": {
+          "x0": 158.0,
+          "y0": 663.0,
+          "x1": 253.0,
+          "y1": 693.0,
+          "page_width": null,
+          "page_height": null
+        },
+        "context": {}
+      },
+      {
+        "code": "AMBIGUOUS_CHARS",
+        "severity": "info",
+        "message": "champ 'model' : caractères ambigus (O/0, I/l/1) dans CLIO IV 1.5 DCI",
+        "page_num": 1,
+        "bbox": {
+          "x0": 295.0,
+          "y0": 303.0,
+          "x1": 594.0,
+          "y1": 333.0,
+          "page_width": null,
+          "page_height": null
+        },
+        "context": {}
+      },
+      {
+        "code": "AMBIGUOUS_CHARS",
+        "severity": "info",
+        "message": "champ 'empty_weight' : caractères ambigus (O/0, I/l/1) dans 1145",
+        "page_num": 1,
+        "bbox": {
+          "x0": 297.0,
+          "y0": 736.0,
+          "x1": 392.0,
+          "y1": 765.0,
+          "page_width": null,
+          "page_height": null
+        },
+        "context": {}
+      }
+    ],
+    "disagreements": [],
+    "checks": []
+  },
+  "engines_used": [
+    "tesseract"
+  ],
+  "profile_used": "carte_grise",
+  "timings_ms": {
+    "ingest_ms": 43.5,
+    "ocr_ms": 4155.2,
+    "tables_ms": 42.5,
+    "fields_ms": 10.8,
+    "barcodes_ms": 47.8,
+    "total_ms": 4305.3
+  },
+  "warnings": [],
+  "source_file": "photo_carte_grise.png",
+  "source_hash": "a71fc0594056104ae80b0c4d190c5c533a0e241f0e845298c5834dfaa48cefbb",
+  "exports": [
+    {
+      "format": "json",
+      "path": "/home/user/ocr-universal/data/jobs/job_36c7fc33cbef/exports/result.json",
+      "size_bytes": 128489
+    }
+  ]
+}

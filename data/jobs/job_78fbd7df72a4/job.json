@@ -1,0 +1,35 @@
+{
+  "id": "job_78fbd7df72a4",
+  "filename": "transport-routier-conteneur.jpg",
+  "status": "done",
+  "created_at": 1792274297.4875588,
+  "updated_at": 1792274298.3899434,
+  "error": null,
+  "options": {
+    "languages": [],
+    "profile": "generic",
+    "quality_mode": "accurate",
+    "preprocess": true,
+    "preprocess_mode": "standard",
+    "variant_comparison": true,
+    "export_formats": [
+      "json",
+      "txt",
+      "csv",
+      "xlsx",
+      "xml",
+      "pdf"
+    ],
+    "page_range": "",
+    "render_dpi": 200,
+    "engine": "auto",
+    "extract_fields": true,
+    "extract_tables": true,
+    "extract_barcodes": true,
+    "min_confidence_review": 0.7
+  },
+  "result_id": "doc_36d625531342",
+  "progress": 1.0,
+  "stage": "done",
+  "attempts": 1
+}

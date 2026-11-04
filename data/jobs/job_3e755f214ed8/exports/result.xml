@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='utf-8'?>
+<document id="doc_3727eaf85d0c" source="bl_port.pdf" hash="c3993851719c45d17ce3daca1a1a78be098e530a45414488abfb3cab155422e0" profile="port_bl">
+  <meta>
+    <engines>native_pdf,tesseract</engines>
+    <mean_engine_confidence>0.95</mean_engine_confidence>
+    <mean_global_confidence>0.727</mean_global_confidence>
+  </meta>
+  <pages>
+    <page num="1" width="1653" height="2338">
+      <text>BILL OF LADING
+B/L No: MSCU123456789
+Booking Number: BK-998877
+Shipper: SARL Exemple Alger
+Consignee: Global Import GmbH
+Notify Party: Logistics Partner SA
+Vessel: MSC AURORA
+Voyage Number: 512W
+Shipping Line: MSC
+Port of Loading: ALGER
+Port of Discharge: HAMBURG
+Place of Delivery: HAMBURG
+Container Number: CSQU3054383
+ISO Type Code: 22G1
+Seal Number: SL-445566
+Description of Goods: MACHINERY PARTS
+Packages: 120
+Gross Weight: 8500 KG
+Net Weight: 8100 KG
+Volume: 28.5 M3
+HS Code: 8471.30
+Marks and Numbers: N/M
+ETA: 28/03/2024
+ETD: 15/03/2024</text>
+    </page>
+  </pages>
+  <fields>
+    <field name="date" label="Date" status="detected" confidence="0.727" page="1" raw="2024-03-28 | 2024-03-15" normalized="2024-03-28 | 2024-03-15" corrected="" confirmed="" />
+    <field name="email" label="E-mail" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="url" label="URL" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="phone" label="Téléphone" status="detected" confidence="0.727" page="1" raw="998877 | 445566 | 847130" normalized="998877 | 445566 | 847130" corrected="" confirmed="" />
+    <field name="iban" label="IBAN" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="invoice_number" label="Numéro de facture" status="detected" confidence="0.727" page="1" raw="MSCU123456789 | tify" normalized="MSCU123456789 | tify" corrected="" confirmed="" />
+    <field name="vat_number" label="N° TVA" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="container_number" label="N° de conteneur" status="detected" confidence="0.765" page="1" raw="CSQU3054383" normalized="CSQU3054383" corrected="" confirmed="" />
+    <field name="serial_number" label="N° de série" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="amount" label="Montant" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="percent" label="Pourcentage" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="quantity" label="Quantité + unité" status="detected" confidence="0.727" page="1" raw="8500 | 8100 | 28.5" normalized="8500 | 8100 | 28.5" corrected="" confirmed="" />
+    <field name="bl_number" label="Bill of Lading (BL)" status="detected" confidence="0.765" page="1" raw="MSCU123456789" normalized="MSCU123456789" corrected="" confirmed="" />
+    <field name="booking_number" label="Booking Number" status="detected" confidence="0.765" page="1" raw="BK-998877" normalized="BK-998877" corrected="" confirmed="" />
+    <field name="iso_type_code" label="ISO Container Type Code" status="detected" confidence="0.765" page="1" raw="22G1" normalized="22G1" corrected="" confirmed="" />
+    <field name="seal_number" label="Seal Number" status="detected" confidence="0.765" page="1" raw="SL-445566" normalized="SL-445566" corrected="" confirmed="" />
+    <field name="vessel_name" label="Vessel Name" status="detected" confidence="0.765" page="1" raw="MSC AURORA" normalized="MSC AURORA" corrected="" confirmed="" />
+    <field name="voyage_number" label="Voyage Number" status="detected" confidence="0.765" page="1" raw="512W" normalized="512W" corrected="" confirmed="" />
+    <field name="shipping_line" label="Shipping Line" status="detected" confidence="0.765" page="1" raw="MSC" normalized="MSC" corrected="" confirmed="" />
+    <field name="shipper" label="Shipper (expéditeur)" status="detected" confidence="0.765" page="1" raw="SARL Exemple Alger" normalized="SARL Exemple Alger" corrected="" confirmed="" />
+    <field name="consignee" label="Consignee (destinataire)" status="detected" confidence="0.765" page="1" raw="Global Import GmbH" normalized="Global Import GmbH" corrected="" confirmed="" />
+    <field name="notify_party" label="Notify Party" status="detected" confidence="0.765" page="1" raw="Logistics Partner SA" normalized="Logistics Partner SA" corrected="" confirmed="" />
+    <field name="port_of_loading" label="Port of Loading" status="detected" confidence="0.765" page="1" raw="ALGER" normalized="ALGER" corrected="" confirmed="" />
+    <field name="port_of_discharge" label="Port of Discharge" status="detected" confidence="0.765" page="1" raw="HAMBURG" normalized="HAMBURG" corrected="" confirmed="" />
+    <field name="place_of_receipt" label="Place of Receipt" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="place_of_delivery" label="Place of Delivery" status="detected" confidence="0.765" page="1" raw="HAMBURG" normalized="HAMBURG" corrected="" confirmed="" />
+    <field name="goods_description" label="Description des marchandises" status="detected" confidence="0.765" page="1" raw="MACHINERY PARTS" normalized="MACHINERY PARTS" corrected="" confirmed="" />
+    <field name="packages_count" label="Nombre de colis" status="detected" confidence="0.765" page="1" raw="120" normalized="120" corrected="" confirmed="" />
+    <field name="gross_weight" label="Poids brut" status="detected" confidence="0.765" page="1" raw="8500" normalized="8500" corrected="" confirmed="" />
+    <field name="net_weight" label="Poids net" status="detected" confidence="0.765" page="1" raw="8100" normalized="8100" corrected="" confirmed="" />
+    <field name="volume" label="Volume" status="detected" confidence="0.765" page="1" raw="28.5" normalized="28.5" corrected="" confirmed="" />
+    <field name="hs_code" label="HS Code" status="detected" confidence="0.765" page="1" raw="8471.30" normalized="847130" corrected="" confirmed="" />
+    <field name="marks_numbers" label="Marks and Numbers" status="detected" confidence="0.765" page="1" raw="N/M" normalized="N/M" corrected="" confirmed="" />
+    <field name="eta" label="ETA" status="detected" confidence="0.765" page="1" raw="28/03/2024" normalized="2024-03-28" corrected="" confirmed="" />
+    <field name="etd" label="ETD" status="detected" confidence="0.765" page="1" raw="15/03/2024" normalized="2024-03-15" corrected="" confirmed="" />
+    <field name="manifest_number" label="N° de manifeste" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+    <field name="customs_reference" label="Référence douanière" status="not_detected" confidence="0.0" page="" raw="" normalized="" corrected="" confirmed="" />
+  </fields>
+  <tables />
+  <anomalies>
+    <anomaly code="PAGE_OVEREXPOSED" severity="info" page="1">page 1 : overexposed</anomaly>
+    <anomaly code="PAGE_LOW_CONTRAST" severity="info" page="1">page 1 : low_contrast</anomaly>
+  </anomalies>
+</document>

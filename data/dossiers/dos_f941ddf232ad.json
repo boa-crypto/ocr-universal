@@ -1,0 +1,115 @@
+{
+ "id": "dos_f941ddf232ad",
+ "label": "arbitrage persistant",
+ "profile": "personnalise",
+ "state": "revision_requise",
+ "state_label": "Révision requise",
+ "pieces": [
+  {
+   "job_id": "job_db4df0c5a3a8",
+   "filename": "parcours_facture.pdf",
+   "category": "invoice",
+   "added_at": 1792391311.1544404,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_53da9199bb32",
+   "filename": "parcours_bl.pdf",
+   "category": "bill_of_lading",
+   "added_at": 1792391311.161462,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_e2a6f9e5a4b7",
+   "filename": "parcours_colisage.pdf",
+   "category": "packing_list",
+   "added_at": 1792391311.1702285,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "invoice": 1,
+  "bill_of_lading": 1,
+  "packing_list": 1
+ },
+ "version": 2,
+ "created_at": 1792391311.1496315,
+ "updated_at": 1792391311.199922,
+ "history": [
+  {
+   "ts": 1792391311.149634,
+   "action": "created",
+   "detail": {
+    "profile": "personnalise"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792391311.1544437,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_db4df0c5a3a8",
+    "filename": "parcours_facture.pdf",
+    "category": "invoice"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792391311.1560686,
+   "action": "state_changed",
+   "detail": {
+    "from": "en_preparation",
+    "to": "revision_requise",
+    "pieces": 1
+   },
+   "acteur": "systeme"
+  },
+  {
+   "ts": 1792391311.1614642,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_53da9199bb32",
+    "filename": "parcours_bl.pdf",
+    "category": "bill_of_lading"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792391311.1702306,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_e2a6f9e5a4b7",
+    "filename": "parcours_colisage.pdf",
+    "category": "packing_list"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792391311.1856325,
+   "action": "constat_tranche",
+   "detail": {
+    "rule": "poids_divergent:gross_weight",
+    "status": "corrige",
+    "motif": "poids reel confirme par le transitaire",
+    "precedent": null
+   },
+   "acteur": "amina"
+  }
+ ],
+ "arbitrages": {
+  "poids_divergent:gross_weight": {
+   "rule": "poids_divergent:gross_weight",
+   "status": "corrige",
+   "acteur": "amina",
+   "motif": "poids reel confirme par le transitaire",
+   "ts": 1792391311.1856287,
+   "remplace": null
+  }
+ }
+}

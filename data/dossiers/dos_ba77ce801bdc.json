@@ -1,0 +1,22 @@
+{
+ "id": "dos_ba77ce801bdc",
+ "label": "Dossier rendu 1792336334380",
+ "profile": "importation",
+ "state": "en_preparation",
+ "state_label": "En préparation",
+ "pieces": [],
+ "categories": {},
+ "version": 1,
+ "created_at": 1792336334.3848245,
+ "updated_at": 1792336334.3953085,
+ "history": [
+  {
+   "ts": 1792336334.3848271,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  }
+ ]
+}

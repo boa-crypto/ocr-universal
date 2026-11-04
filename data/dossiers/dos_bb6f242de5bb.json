@@ -1,0 +1,95 @@
+{
+ "id": "dos_bb6f242de5bb",
+ "label": "Rendu avec pièces 1792396009087",
+ "profile": "importation",
+ "state": "revision_requise",
+ "state_label": "Révision requise",
+ "pieces": [
+  {
+   "job_id": "job_5e05ff0b512b",
+   "filename": "parcours_facture.pdf",
+   "category": "invoice",
+   "added_at": 1792396009.0998847,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_56131b1266b1",
+   "filename": "parcours_bl.pdf",
+   "category": "bill_of_lading",
+   "added_at": 1792396009.1045287,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  },
+  {
+   "job_id": "job_55e7583d6c2b",
+   "filename": "parcours_colisage.pdf",
+   "category": "packing_list",
+   "added_at": 1792396009.110079,
+   "added_by": "utilisateur",
+   "sha256": "",
+   "note": ""
+  }
+ ],
+ "categories": {
+  "invoice": 1,
+  "bill_of_lading": 1,
+  "packing_list": 1
+ },
+ "version": 1,
+ "created_at": 1792396009.0882852,
+ "updated_at": 1792396009.1216662,
+ "history": [
+  {
+   "ts": 1792396009.0882878,
+   "action": "created",
+   "detail": {
+    "profile": "importation"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792396009.099887,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_5e05ff0b512b",
+    "filename": "parcours_facture.pdf",
+    "category": "invoice"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792396009.1009626,
+   "action": "state_changed",
+   "detail": {
+    "from": "en_preparation",
+    "to": "revision_requise",
+    "pieces": 1
+   },
+   "acteur": "systeme"
+  },
+  {
+   "ts": 1792396009.1045306,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_56131b1266b1",
+    "filename": "parcours_bl.pdf",
+    "category": "bill_of_lading"
+   },
+   "acteur": "utilisateur"
+  },
+  {
+   "ts": 1792396009.1100807,
+   "action": "piece_added",
+   "detail": {
+    "job_id": "job_55e7583d6c2b",
+    "filename": "parcours_colisage.pdf",
+    "category": "packing_list"
+   },
+   "acteur": "utilisateur"
+  }
+ ],
+ "arbitrages": {}
+}

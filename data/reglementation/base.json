@@ -1,0 +1,150 @@
+{
+ "version": "1.0.0",
+ "mise_a_jour": "2026-10-30T22:03:08.824403",
+ "codes_sh_algerie": {
+  "0101": {
+   "libelle": "Bovins vivants",
+   "chapitre": "1"
+  },
+  "0102": {
+   "libelle": "Autres animaux terrestres vivants",
+   "chapitre": "1"
+  },
+  "0103": {
+   "libelle": "Porcs vivants",
+   "chapitre": "1"
+  },
+  "0104": {
+   "libelle": "Moutons et chèvres vivants",
+   "chapitre": "1"
+  },
+  "0105": {
+   "libelle": "Animaux de laine",
+   "chapitre": "1"
+  },
+  "0201": {
+   "libelle": "Viande bovine fraîche ou réfrigérée",
+   "chapitre": "2"
+  },
+  "0202": {
+   "libelle": "Viande bovine congelée",
+   "chapitre": "2"
+  },
+  "0203": {
+   "libelle": "Viande porcine fraîche, réfrigérée ou congelée",
+   "chapitre": "2"
+  },
+  "0204": {
+   "libelle": "Viande ovine et caprine fraîche, réfrigérée ou congelée",
+   "chapitre": "2"
+  }
+ },
+ "regles_reglementaires": {
+  "certificat_phytosanitaire": {
+   "obligatoire": true,
+   "source": "Ministère de l'Agriculture Algérie",
+   "documents_requis": [
+    "certificat_phytosanitaire"
+   ],
+   "description": "Certificat phytosanitaire pour les produits végétaux"
+  },
+  "certificat_veterinaire": {
+   "obligatoire": true,
+   "source": "Ministère de l'Agriculture Algérie",
+   "documents_requis": [
+    "certificat_veterinaire"
+   ],
+   "description": "Certificat vétérinaire pour les produits animaux"
+  },
+  "certificat_origine": {
+   "obligatoire": true,
+   "source": "Ministère du Commerce Algérie",
+   "documents_requis": [
+    "certificat_origine"
+   ],
+   "description": "Certificat d'origine préférentielle ou non préférentielle"
+  },
+  "declaration_douanière": {
+   "obligatoire": true,
+   "source": "Douane Algérie (SAD)",
+   "documents_requis": [
+    "declaration_douanière"
+   ],
+   "description": "Déclaration en douane (SAD - Single Administrative Document)"
+  },
+  "autorisation_import": {
+   "obligatoire": false,
+   "source": "Ministère du Commerce Algérie",
+   "documents_requis": [
+    "autorisation_import"
+   ],
+   "description": "Autorisation d'importation spéciale"
+  },
+  "interdiction_export": {
+   "obligatoire": false,
+   "source": "Douane Algérie",
+   "documents_requis": [],
+   "description": "Produits interdits d'importation"
+  },
+  "quantite_maximale": {
+   "obligatoire": false,
+   "source": "Douane Algérie",
+   "documents_requis": [],
+   "description": "Quantité maximale autorisée par dossier"
+  },
+  "droits_douanieres": {
+   "obligatoire": true,
+   "source": "Tarif douanier Algérie",
+   "documents_requis": [],
+   "description": "Taux de droits de douane selon classification SH"
+  },
+  "tva": {
+   "obligatoire": true,
+   "source": "Fiscalité Algérie",
+   "documents_requis": [],
+   "description": "Taux de TVA applicable"
+  }
+ },
+ "types_certificats": {
+  "certificat_phytosanitaire": {
+   "libelle": "Certificat phytosanitaire",
+   "auteur": "Ministère de l'Agriculture",
+   "delai_validite_mois": 12,
+   "exigences": [
+    "produit_végétal",
+    "origine",
+    "traite"
+   ]
+  },
+  "certificat_veterinaire": {
+   "libelle": "Certificat vétérinaire",
+   "auteur": "Ministry of Agriculture Algérie",
+   "delai_validite_mois": 6,
+   "exigences": [
+    "produit_animaux",
+    "sante_animale",
+    "origine"
+   ]
+  },
+  "certificat_origine": {
+   "libelle": "Certificat d'origine",
+   "auteur": "Ministry of Commerce Algérie",
+   "delai_validite_mois": 12,
+   "exigences": [
+    "produit",
+    "origine",
+    "destination"
+   ]
+  },
+  "certificat_conformite": {
+   "libelle": "Certificat de conformité",
+   "auteur": "Laboratoire agréé Algérie",
+   "delai_validite_mois": 6,
+   "exigences": [
+    "produit",
+    "normes",
+    "tests"
+   ]
+  }
+ }
+}

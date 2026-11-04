@@ -1,0 +1,16 @@
+﻿name,label,raw_value,normalized_value,corrected_value,confirmed_value,confidence,engine_confidence,status,page,source
+date,Date d'émission,,,,,0.0,0.0,not_detected,,rule
+email,E-mail,,,,,0.0,0.0,not_detected,,rule
+url,URL,,,,,0.0,0.0,not_detected,,ocr
+phone,Téléphone,,,,,0.0,0.0,not_detected,,rule
+iban,IBAN,,,,,0.0,0.0,not_detected,,ocr
+invoice_number,Numéro de facture,MSCU123456789 | tify,MSCU123456789 | tify,,,0.727,0.95,detected,1,ocr
+vat_number,N° TVA,,,,,0.0,0.0,not_detected,,ocr
+container_number,N° conteneur,CSQU3054383,CSQU3054383,,,0.727,0.95,detected,1,ocr
+serial_number,N° de série,,,,,0.0,0.0,not_detected,,ocr
+amount,Montant,,,,,0.0,0.0,not_detected,,ocr
+percent,Pourcentage,,,,,0.0,0.0,not_detected,,ocr
+quantity,Quantité + unité,8500 | 8100 | 28.5,8500 | 8100 | 28.5,,,0.727,0.95,detected,1,ocr
+title,Titre,BILL OF LADING,BILL OF LADING,,,0.765,1.0,detected,1,rule
+document_number,Numéro de document,MSCU123456789,MSCU123456789,,,0.765,1.0,detected,1,rule
+total_amount,Montant total,,,,,0.0,0.0,not_detected,,rule
