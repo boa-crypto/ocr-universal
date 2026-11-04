@@ -179,3 +179,53 @@ def test_ecritures_courtes_completees(cas, monkeypatch):
     assert relayer_suppression(racine, "just_test", journal, True)["etat"] == "reporte"
     assert json.loads(journal.read_text())["cible"] == "just_test"
     assert relayer_suppression(racine, "just_test", journal, True)["etat"] == "deja_present"
+
+
+@pytest.mark.parametrize("phase", ["avant_ecriture", "ecriture_partielle", "apres_ecriture", "apres_fsync"])
+def test_sigkill_relais_reprise_sans_faux_succes(cas, tmp_path_factory, phase):
+    from tests._crash_isole import tuer_a_barriere
+    from unocr.pieces_receipts import consulter_suppression
+
+    fcntl = pytest.importorskip("fcntl")
+    racine, journal = cas
+    prefixe = b'{"event":"autre","cible":"ancienne"}\n'
+    journal.write_bytes(prefixe)
+    base_avant = instantane(racine)
+    recu_avant = consulter_suppression(racine, "just_test")
+    marqueur = tmp_path_factory.mktemp("barriere_relais") / "pret"
+    tuer_a_barriere("_pieces_audit_crash_worker.py", racine, marqueur, phase, str(journal))
+    assert instantane(racine) == base_avant
+    assert consulter_suppression(racine, "just_test") == recu_avant
+    apres_crash = journal.read_bytes()
+    assert apres_crash.startswith(prefixe)
+    # Le noyau doit avoir libéré flock malgré l'absence de finally dans l'enfant.
+    with journal.open("rb") as fichier:
+        fcntl.flock(fichier.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        fcntl.flock(fichier.fileno(), fcntl.LOCK_UN)
+
+    if phase == "avant_ecriture":
+        assert apres_crash == prefixe
+        etat_plan, etat_reprise = "pret", "reporte"
+    elif phase == "ecriture_partielle":
+        assert len(apres_crash) == len(prefixe) + 5
+        assert not apres_crash.endswith(b"\n")
+        etat_plan = etat_reprise = "refuse"
+    else:
+        lignes = apres_crash.splitlines()
+        assert len(lignes) == 2 and apres_crash.endswith(b"\n")
+        objet = json.loads(lignes[1])
+        assert objet["recu_id"] == "suppression_justificatif:just_test"
+        assert objet["hash_sha256"] == recu_avant["recu"]["hash_sha256"]
+        assert objet["frais"] == recu_avant["recu"]["frais_id"]
+        etat_plan = etat_reprise = "deja_present"
+    avant_plan = instantane(racine.parent)
+    assert relayer_suppression(racine, "just_test", journal)["etat"] == etat_plan
+    assert instantane(racine.parent) == avant_plan
+    assert relayer_suppression(racine, "just_test", journal, True)["etat"] == etat_reprise
+    if phase == "avant_ecriture":
+        assert len(journal.read_bytes().splitlines()) == 2
+        assert relayer_suppression(racine, "just_test", journal, True)["etat"] == "deja_present"
+    else:
+        assert journal.read_bytes() == apres_crash
+    assert instantane(racine) == base_avant
+    assert consulter_suppression(racine, "just_test") == recu_avant

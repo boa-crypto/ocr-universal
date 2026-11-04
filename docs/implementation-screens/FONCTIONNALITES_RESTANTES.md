@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 42. Ce document est la liste de travail
+État au 2026-11-04, après la passe 43. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -285,3 +285,15 @@ Restent tests SIGKILL du relais, coordination avec tous les écrivains/rotations
 traces transactionnelles des autres opérations, coupures électriques,
 interruptions upload/backup, collecte contrôlée des résidus et antivirus.
 Toujours sauvegarder et suspendre écritures/rotations avant application.
+
+
+### Passe 43 — arrêts brutaux du relais couverts à quatre points
+
+✅ Vrais SIGKILL avant écriture, après cinq octets, après ligne complète et après
+fsync : base/reçu préservés, verrou libéré, reprise sans doublon ou refus de ligne
+tronquée sans modification. 32 tests de relais ; 110 tests ciblés réussis.
+La limite SIGKILL du relais est levée pour ces quatre points sur journal existant,
+pas pour tous les scénarios. Restent création durable du journal, coupures
+électriques, coordination de tous les écrivains/rotations, interruptions
+upload/backup, traces des autres opérations, collecte contrôlée et antivirus.
+Toujours suspendre les écritures/rotations ; aucune purge automatique ajoutée.

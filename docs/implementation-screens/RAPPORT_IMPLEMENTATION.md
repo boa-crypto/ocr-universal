@@ -1627,3 +1627,43 @@ reprise, héritage, conflits, JSONL invalide, chemins/FIFO, verrou occupé, limi
 Ruff OK. Suite complète **1223 passed / 23 failed / 11 skipped**, mêmes échecs OCR
 connus. Aucune application aux journaux utilisateur. Pas encore de test SIGKILL
 spécifique au relais. Aperçu/backend passe 41 inchangé (ajout CLI seulement).
+
+
+## 2.46 Passe 43 — vrais SIGKILL du relais audit
+
+Quatre tests POSIX tuent un processus Python exécutant le CLI `pieces-audit
+--apply --json` sur un reçu SQLite et un journal entièrement temporaires. Ils
+partagent le harnais borné de la passe 40 : barrière publiée atomiquement, SIGKILL
+vérifié par code retour, aucune sortie de faux succès, enfant toujours récolté.
+Les barrières entourent de vrais appels write/fsync, sans exécuter le finally du
+processus tué. L'écriture partielle est injectée de manière contrôlée : cinq
+octets réels sont ajoutés avant la mise en attente et le SIGKILL.
+
+| Point d'arrêt | État observé | Plan et reprise |
+|---|---|---|
+| Avant write | Préfixe antérieur intact, aucun nouvel octet | `pret`, puis `reporte`, puis `deja_present` |
+| Après 5 octets | Préfixe intact suivi d'une ligne tronquée | `refuse`, aucun ajout ni réparation |
+| Après ligne complète, avant fsync | Événement JSONL complet, reçu identifié | `deja_present`, aucun nouvel ajout |
+| Après fsync, avant retour | Même événement complet, sans réponse de succès | `deja_present`, aucun nouvel ajout |
+
+Chaque test vérifie explicitement la libération du verrou flock par le noyau,
+la conservation des octets/mtime de SQLite et du reçu consulté, les champs de
+l'événement lorsqu'il est complet, ainsi que l'absence de mutation par le plan.
+Le journal préexiste avec un événement ancien : cette preuve ne couvre pas la
+durabilité de la création d'un nouveau journal ou une rotation simultanée.
+
+Validation : **32 tests de relais**, dont quatre nouveaux SIGKILL ; relais et
+consultation seuls **42 passed** ; ciblés complets **110 passed**. Ruff OK.
+Suite complète **1227 passed / 23 failed / 11 skipped** ; liste des échecs OCR
+inchangée depuis la passe 42. Commande ciblée complète :
+
+```sh
+.venv/bin/python -m pytest tests/test_pieces_audit.py tests/test_pieces_receipts.py tests/test_justificatifs_persistence.py tests/test_justificatifs_recovery.py tests/test_justificatifs_diagnostic.py tests/test_justificatifs_e2e.py -q
+```
+
+Aucun code métier modifié, aucun relais appliqué aux journaux utilisateur ; aperçu
+passe 41 inchangé. Tests sautés hors POSIX. Il s'agit d'une mort de processus,
+le noyau et ses caches restant actifs : pas une preuve de coupure électrique,
+pas d'exactly-once distribué, pas de test de concurrence avec audit() historique.
+La coordination de tous les écrivains et rotations, la durabilité répertoire et
+les interruptions upload/backup restent ouvertes ; aucune purge automatique.

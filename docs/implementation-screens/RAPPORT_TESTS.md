@@ -1,6 +1,6 @@
 # Rapport de tests — écrans UniOCR
 
-Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 42.
+Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 43.
 
 Ce document liste **uniquement des résultats obtenus**, avec la commande qui
 les produit. Les sections de passes ci-dessous conservent les résultats historiques.
@@ -12,7 +12,7 @@ les produit. Les sections de passes ci-dessous conservent les résultats histori
 | Commande | Résultat | Commentaire |
 |---|---|---|
 | `ruff check src tests` | **All checks passed** | 0 erreur de style |
-| `python -m pytest -q` | **1223 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
+| `python -m pytest -q` | **1227 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
 | `python -m pytest tests/test_ui_premium.py -q` | **56 passed** | tests de contrat et intégrité UI |
 | `python -m pytest tests/test_historique.py -q` | **5 passed** 🆕 | ordre, filtrage par document, événements inconnus, journal illisible |
 | `python -m pytest tests/test_rbac_ecritures.py -q` | **18 passed** | 14 familles d'écriture refusées à un lecteur, refus tracés |
@@ -396,3 +396,20 @@ python3 docs/implementation-screens/outils/generer_matrice.py /tmp/ui.json
   reprise refusée si tronqué ou sans nouvel ajout si une ligne complète existe.
 - Tests isolés uniquement ; aucun relais appliqué au journal utilisateur. Pas de
   preuve SIGKILL/power-loss du relais ni d'exactly-once entre anciens écrivains.
+
+
+### Passe 43 — quatre SIGKILL du relais d'audit
+
+- Relais + consultation : `pytest tests/test_pieces_audit.py tests/test_pieces_receipts.py -q`
+  → **42 passed** (32 relais, 10 consultation).
+- Relais/consultation/persistance/récupération/diagnostic/UI-API réelle :
+  **110 passed** avec la commande complète de la section implémentation §2.46.
+- `ruff check src tests` : **All checks passed**.
+- Suite complète : **1227 passed, 23 failed, 11 skipped**, un avertissement ;
+  liste des 23 échecs OCR identique à celle de la passe 42.
+- Vrai SIGKILL du CLI avant write, après cinq octets injectés, après ligne complète
+  avant fsync et après fsync avant retour ; pas d'exécution des finally de l'enfant.
+- Verrou libéré, base/reçu conservés, plan lecture seule, absence de nouvel ajout
+  après ligne complète ; refus du journal tronqué sans réparation automatique.
+- Journal temporaire préexistant ; pas de preuve de création durable, coupure
+  électrique, rotation ou concurrence avec les anciens écrivains. POSIX seulement.
