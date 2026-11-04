@@ -58,6 +58,7 @@ ACTIONS_TESTEES: dict[str, set[str]] = {
     "finance/reconciliation": {"Lancer le rapprochement"},
     "enlevissement/sortie-port": {"Autoriser la sortie", "Enregistrer la sortie"},
     "enlevissement/livraison": {"Démarrer", "Arrivée", "Confirmer"},
+    "rapports/exports": {"Télécharger (JSON)", "Télécharger (CSV)"},
 }
 #: Limitations externes connues, affichées dans la colonne « Action requise ».
 LIMITES: dict[str, str] = {
@@ -78,6 +79,10 @@ HISTORIQUES_VERIFIES: dict[str, str] = {
     "admin/journal": "jsdom : état vide explicite (aucune entrée d'audit) ; contrôles morts retirés",
     "admin/sauvegardes": "jsdom : 8 sauvegardes réelles (nom, taille, date)",
     "admin/workflows": "jsdom : création exercée → POST 200, ligne affichée (auparavant bouton mort)",
+    "rapports": "jsdom : 7 graphiques SVG alimentés par le serveur (715 dossiers, 46 anomalies)",
+    "rapports/graphes": "jsdom : 7 graphiques SVG réels ; boutons inertes retirés",
+    "documents/profils": "jsdom : 11 profils, création PUT 200, essai à blanc 1/1 détecté, suppression DELETE 200",
+    "referentiels/profiles": "jsdom : même éditeur de profils, création/essai/suppression exercés",
 }
 
 PREUVE_PAR_DEFAUT = "rendu jsdom + GET 200 sans erreur JS"

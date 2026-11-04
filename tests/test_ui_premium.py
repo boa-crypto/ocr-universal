@@ -781,3 +781,24 @@ def test_administration_sans_controle_mort() -> None:
     # La route des moteurs OCR doit exister pour les deux libellés.
     assert "'admin/moteurs': 'tab-moteurs'" in nav
     assert "'admin/moteurs-ocr': 'tab-moteurs'" in nav
+
+
+def test_rapports_sans_bouton_inerte() -> None:
+    """La page Rapports ne doit plus afficher de boutons sans effet.
+
+    Trois boutons (« Voir les statistiques », « Voir les graphiques »,
+    « Exporter les données ») n'avaient aucun gestionnaire ; les graphiques
+    réels, eux, sont produits par `web/rapports.js`.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    html = (racine / "web" / "index.html").read_text(encoding="utf-8")
+    rapports = (racine / "web" / "rapports.js").read_text(encoding="utf-8")
+
+    for mort in ("Voir les statistiques", "Voir les graphiques", "Exporter les données"):
+        assert mort not in html
+    # La navigation de la page pointe vers des écrans existants.
+    assert 'href="#rapports/statistiques"' in html
+    assert 'href="#rapports/exports"' in html
+    # L'attribut cassé `classpage-header__meta` est corrigé.
+    assert "classpage-header__meta" not in html
+    assert 'data-rapports' in rapports

@@ -232,6 +232,36 @@ enregistrements ont été supprimés. Rien n'est simulé côté écran.
 | Sauvegardes | 8 sauvegardes réelles (nom, taille, date) | liste vérifiée ; **création non exercée** : l'API purge au-delà de 5 et les 8 archives sont suivies par git — le risque de perte est réel |
 | Utilisateurs | `actif: false`, liste vide → état vide honnête | reste PARTIEL : aucun écran de création/modification d'utilisateur |
 
+## 2.11 Passe 8 — profils d'extraction et rapports
+
+### Profils d'extraction (`#documents/profils`, `#referentiels/profiles`)
+
+L'éditeur existait de bout en bout mais n'avait jamais été exercé. Parcours
+réel, mesuré :
+
+| Étape | Requête | Résultat |
+|---|---|---|
+| Liste | `GET /api/profiles` + `/api/profiles/catalog` | **11 profils** réels (carte grise, facture…) |
+| Création | `PUT /api/profiles/profil_essai_ui` (1 champ, motif `FACTURE\s*(\S+)`) | **200** — « enregistré (1 champ) » |
+| Essai à blanc | `POST /api/profiles/test` sur « FACTURE 2026-0421… » | **1/1 champ détecté**, valeur extraite `2026-0421` |
+| Suppression | `DELETE /api/profiles/profil_essai_ui` | **200** — retour à 11 profils |
+
+Correctif mineur : le message affichait « 1 champs ».
+
+### Rapports (`#rapports`, `#rapports/graphes`)
+
+Les **7 graphiques** sont réels (dossiers par état 715, anomalies 46, série
+financière…), rendus en SVG par `web/rapports.js`. Mais la page conservait
+**trois boutons sans aucun gestionnaire** (« Voir les statistiques », « Voir les
+graphiques », « Exporter les données ») et un attribut HTML cassé
+(`<div classpage-header__meta>`). Remplacés par deux liens vers des écrans
+réellement existants ; le balisage est corrigé.
+
+### Exports (`#rapports/exports`)
+
+Actions de téléchargement exercées : `GET /api/jobs/{id}/export/csv` → **200**
+(toast « Export téléchargé »), `export/json` → **200** (96 Ko vérifiés).
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
@@ -268,7 +298,7 @@ directement ne voit que les routes déclarées dans `api.py` — d'où le helper
 
 ## 5. Ce que ces passes ne font pas
 
-- Les **42 écrans partiels** restent à re-certifier un par un (contenu, actions,
+- Les **37 écrans partiels** restent à re-certifier un par un (contenu, actions,
   permissions, états vides) : voir `FONCTIONNALITES_RESTANTES.md`.
 - Certains écrans **réutilisent une page historique** (`#dossiers/tous`,
   `#tab-clients`, `#tab-profiles`…) : plus de bandeau, mais le contenu et les

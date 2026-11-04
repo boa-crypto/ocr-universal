@@ -39,24 +39,24 @@ explicite », jamais meublée de données fictives.
 | Tableau de bord | 1 | 0 | 1 | 0 | 0 | 0 |
 | Mon espace de travail | 6 | 4 | 2 | 0 | 0 | 0 |
 | Gestion des dossiers | 7 | 3 | 4 | 0 | 0 | 0 |
-| Documents & OCR | 14 | 8 | 6 | 0 | 0 | 0 |
+| Documents & OCR | 14 | 9 | 5 | 0 | 0 | 0 |
 | Contrôle & conformité | 7 | 4 | 3 | 0 | 0 | 0 |
 | Opérations maritimes | 8 | 3 | 5 | 0 | 0 | 0 |
 | Douane & réglementation | 9 | 4 | 5 | 0 | 0 | 0 |
 | Enlèvement & livraison | 8 | 4 | 4 | 0 | 0 | 0 |
 | Finance & facturation | 8 | 6 | 2 | 0 | 0 | 0 |
-| Rapports & statistiques | 4 | 1 | 3 | 0 | 0 | 0 |
-| Référentiels & paramètres | 15 | 12 | 3 | 0 | 0 | 0 |
+| Rapports & statistiques | 4 | 4 | 0 | 0 | 0 | 0 |
+| Référentiels & paramètres | 15 | 13 | 2 | 0 | 0 | 0 |
 | Administration & sécurité | 13 | 9 | 4 | 0 | 0 | 0 |
-| **Total** | **100** | **58** | **42** | **0** | **0** | **0** |
+| **Total** | **100** | **63** | **37** | **0** | **0** | **0** |
 
 - **Entrées de menu recensées** : 100
-- **Écrans conformes** : 58
-- **Écrans partiels** : 42
+- **Écrans conformes** : 63
+- **Écrans partiels** : 37
 - **Écrans absents** : 0
 - **Écrans non connectés** : 0
 
-Lecture honnête de ces chiffres : les 58 écrans conformes sont
+Lecture honnête de ces chiffres : les 63 écrans conformes sont
 ceux dont la source a répondu et dont les écritures éventuelles sont branchées ;
 les écrans « hérités » (mis en page lors des missions précédentes) restent
 marqués **PARTIEL** tant qu'ils n'ont pas été re-testés un par un dans cette
@@ -107,7 +107,7 @@ terminé.
 | Documents & OCR | Contrôle qualité | `#documents/qualite` | écran existant `#tab-quality` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Documents & OCR | Révision humaine | `#documents/revue` | écran existant `#tab-review` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Vérification | `#documents/verification` | écran existant `#tab-validation` | `(module historique)` | 25 lignes affichées | Oui | **CONFORME** | consultation et interactions vérifiées ; écritures non expérimentées |
-| Documents & OCR | Profils d'extraction | `#documents/profils` | écran existant `#tab-profiles` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
+| Documents & OCR | Profils d'extraction | `#documents/profils` | écran existant `#tab-profiles` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Connecteur Hub | `#documents/connecteurs` | écran existant `#tab-connectors` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Documents & OCR | Configuration | `#documents/configuration` | écran existant `#tab-config` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Documents & OCR | Archives | `#documents/archives` | écran existant `#tab-ged` | `(module historique)` | 25 lignes affichées | Oui | **CONFORME** | consultation et interactions vérifiées ; écritures non expérimentées |
@@ -182,17 +182,17 @@ terminé.
 
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Action requise |
 |---|---|---|---|---|---|---|---|---|
-| Rapports & statistiques | Vue d'ensemble | `#rapports` | écran existant `#tab-reports` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
+| Rapports & statistiques | Vue d'ensemble | `#rapports` | écran existant `#tab-reports` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | consultation et interactions vérifiées ; écritures non expérimentées |
 | Rapports & statistiques | Statistiques | `#rapports/statistiques` | Statistiques (`web/ecrans.js`) | `/api/stats` | 0 ligne | Oui | **CONFORME** | lecture seule assumée (données serveur) |
-| Rapports & statistiques | Graphiques | `#rapports/graphes` | écran existant `#tab-reports` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
-| Rapports & statistiques | Exports | `#rapports/exports` | Exports (`web/ecrans.js`) | `/api/jobs?limit=200` | 200 lignes | Partiel | **PARTIEL** | tester et durcir les actions (Télécharger (JSON), Télécharger (CSV)) |
+| Rapports & statistiques | Graphiques | `#rapports/graphes` | écran existant `#tab-reports` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | consultation et interactions vérifiées ; écritures non expérimentées |
+| Rapports & statistiques | Exports | `#rapports/exports` | Exports (`web/ecrans.js`) | `/api/jobs?limit=200` | 200 lignes | Oui | **CONFORME** | actions exercées par test (Télécharger (JSON), Télécharger (CSV)) |
 
 ### 11. Référentiels & paramètres
 
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Action requise |
 |---|---|---|---|---|---|---|---|---|
 | Référentiels & paramètres | Vue d'ensemble | `#referentiels` | écran existant `#tab-referentiels` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
-| Référentiels & paramètres | Profils | `#referentiels/profiles` | écran existant `#tab-profiles` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
+| Référentiels & paramètres | Profils | `#referentiels/profiles` | écran existant `#tab-profiles` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | consultation et interactions vérifiées ; écritures non expérimentées |
 | Référentiels & paramètres | Types de documents | `#referentiels/types-documents` | Types de documents (`web/ecrans.js`) | `/api/referentiels/types-documents` | 0 ligne | Oui | **CONFORME** | maintenir ; étendre les champs métier si besoin |
 | Référentiels & paramètres | Clients | `#referentiels/clients` | Clients (`web/ecrans.js`) | `/api/clients` | 0 ligne | Oui | **CONFORME** | maintenir ; étendre les champs métier si besoin |
 | Référentiels & paramètres | Fournisseurs | `#referentiels/fournisseurs` | Fournisseurs (`web/ecrans.js`) | `/api/fournisseurs` | 0 ligne | Oui | **CONFORME** | maintenir ; étendre les champs métier si besoin |

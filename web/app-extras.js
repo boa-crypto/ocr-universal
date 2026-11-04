@@ -2180,7 +2180,7 @@ async function initLangChips() {
       const r = await fetchJson("/api/profiles/" + encodeURIComponent(name),
         { method: "PUT", body: JSON.stringify(body),
           headers: { "Content-Type": "application/json" } });
-      $("profMsg").textContent = `enregistré (${r.fields} champs)` +
+      $("profMsg").textContent = `enregistré (${r.fields} champ${r.fields > 1 ? "s" : ""})` +
         (r.overrides_builtin ? " — remplace un profil livré" : "");
       toast(`Profil « ${name} » enregistré`, "success");
       openProfile(name);
