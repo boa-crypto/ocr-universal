@@ -75,7 +75,11 @@ def test_palette_imposee_centralisee_dans_le_design_system() -> None:
     import re
 
     css = (WEB / "uniocr-ds.css").read_text(encoding="utf-8")
-    jetons = dict(re.findall(r"(--ds-[a-z0-9-]+)\s*:\s*([^;]+);", css))
+    # Le premier bloc `:root` porte la palette de référence ; les blocs de
+    # thème clair qui suivent redéfinissent volontairement certaines valeurs.
+    debut = css.index(":root {")
+    racine = css[debut:css.index("}", debut)]
+    jetons = dict(re.findall(r"(--ds-[a-z0-9-]+)\s*:\s*([^;]+);", racine))
     jetons = {cle: valeur.strip().upper() for cle, valeur in jetons.items()}
 
     palette = {

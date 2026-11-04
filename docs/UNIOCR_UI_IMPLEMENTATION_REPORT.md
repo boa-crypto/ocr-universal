@@ -131,7 +131,20 @@ affiche « — » et explique pourquoi :
 - *Arrivées prévues* : « aucune ETA saisie dans les dossiers » ;
 - *Livraisons en attente* : « statut d'enlèvement non renseigné ».
 
-### 3.4 Espace dossier — 11 onglets
+### 3.4 Mon espace de travail
+
+- Cinq onglets alimentés par les données réelles : **Mes tâches**, **À valider**,
+  **En attente**, **Mes alertes**, **Dossiers récents**.
+- **Barre d'outils** : recherche plein texte (dossier, client, référence, navire,
+  B/L), filtre **priorité**, filtre **statut** (à valider / à risque / en attente /
+  clôturés), **tri** (activité récente, plus ancien, référence) et **pagination**
+  (20 lignes/page, compteur « 1–20 sur N »).
+- Chaque ligne est **directement exploitable** : clic ou touche Entrée ouvre le
+  dossier dans son espace complet ; les alertes ouvrent le dossier concerné.
+- Les filtres sont purement côté interface : aucune requête supplémentaire,
+  aucune donnée inventée, le serveur reste seul juge des permissions.
+
+### 3.5 Espace dossier — 11 onglets
 
 En-tête : référence, client, fournisseur, navire, B/L, conteneurs, responsable,
 priorité, statut. Onglets (navigation clavier ← →) :
@@ -154,7 +167,7 @@ priorité, statut. Onglets (navigation clavier ← →) :
 Chaque panneau se charge **à la demande** avec un squelette, et affiche une
 erreur explicite si la source est indisponible — jamais de valeur de secours.
 
-### 3.5 Animations
+### 3.6 Animations
 
 Transitions de page, ouverture des groupes de navigation, apparition des cartes,
 infobulles, menus, panneaux latéraux, skeletons, tracé progressif des courbes
@@ -163,7 +176,7 @@ Durées 120–720 ms, courbe `cubic-bezier(.22,1,.36,1)`.
 `prefers-reduced-motion: reduce` neutralise animations et tracés ; les
 transitions restent fonctionnelles sans mouvement.
 
-### 3.6 Bibliothèques
+### 3.7 Bibliothèques
 
 **Aucune dépendance ajoutée.** Framer Motion n'est pas applicable (front vanilla) :
 les animations sont en CSS et les graphiques en SVG natif (`web/charts.js`,
@@ -216,6 +229,7 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 | Recherche globale | `dos_3c04` → 1 résultat cliquable |
 | Repli de la barre latérale | classe `collapsed` appliquée, état persisté |
 | Espace dossier | 11 onglets, tous rendus sans erreur, bandeau d'identité complet |
+| Espace de travail | barre d'outils, filtre, tri et pagination opérants (186 tâches, « 1–20 sur 186 ») |
 
 ---
 
