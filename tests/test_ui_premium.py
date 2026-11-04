@@ -960,3 +960,24 @@ def test_formulaires_proposent_les_referentiels_et_disent_quand_ils_sont_vides()
     assert 'id="dos-ports-aide"' in html
     assert 'fetch("/api/referentiels/ports"' in dossiers
     assert "Référentiel des ports vide : saisie libre" in dossiers
+
+
+def test_ecran_extraction_ocr_affiche_l_historique_du_document() -> None:
+    """L'écran OCR expose l'historique du document, en chronologie.
+
+    Le journal d'audit enregistre chaque étape ; l'action « Historique » la
+    relit pour un document donné. Le rendu doit être une chronologie lisible,
+    pas un bloc JSON.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    moteur = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+    css = (racine / "web" / "uniocr-ds.css").read_text(encoding="utf-8")
+
+    assert 'url: "/api/jobs/{id}/historique"' in moteur
+    assert "timeline: true" in moteur
+    assert "function afficherChronologie(titre, donnees)" in moteur
+    assert 'elt("ol", "chrono-liste")' in moteur
+    assert 'elt("span", "chrono-quand"' in moteur
+    # une chronologie vide dit pourquoi
+    assert "Aucun événement journalisé pour ce document." in moteur
+    assert ".chrono-item" in css and ".chrono-quand" in css

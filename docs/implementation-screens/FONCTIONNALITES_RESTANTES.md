@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 15. Ce document est la liste de travail
+État au 2026-11-04, après la passe 16. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -32,7 +32,7 @@ validation nommant le champ, effet immédiat et persistant.
 | ✅ P1-3a | ~~Vue d'ensemble + Extraction OCR~~ | **fait en passe 3** : deux écrans dédiés sur `/api/jobs` ; actions Texte / Résultat / Relancer exercées par test |
 | ✅ P1-3b | ~~Re-certifier les écrans Documents hérités~~ | **fait en passes 5 et 13** : boîte de réception, classification, archives, vérification, révision, résultat, qualité, profils, connecteurs, configuration — tous mesurés (lignes réelles ou état vide explicite) |
 | ✅ P1-4 | ~~Tester les actions de contrôle documentaire~~ | **fait en passe 4** : *Contrôler* et *Verdict* exécutés (200) ; résolution d'anomalie avec justification couverte aussi |
-| P1-5 | Historiser la validation OCR dans l'écran de révision | la file de révision (`#documents/revue`) est chargée et re-certifiée, mais l'historique de validation par document n'est pas encore affiché dans la page |
+| ✅ P1-5 | ~~Historiser la validation OCR dans l'écran de révision~~ | **fait en passe 16** : `GET /api/jobs/{id}/historique` relit le journal d'audit, affiché en chronologie depuis `#documents/ocr` (7 événements réels sur `bl_port.pdf`, validations de champ visibles immédiatement) |
 
 ## P2 — Maritime, douane, enlèvement, finance
 

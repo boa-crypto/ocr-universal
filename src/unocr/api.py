@@ -64,6 +64,7 @@ from .routes.documents_ocr import router as documents_ocr_router
 from .routes.expeditions import router as expeditions_router
 from .routes.fournisseurs import router as fournisseurs_router
 from .routes.frais import router as frais_router
+from .routes.historique import router as historique_router
 from .routes.navires import router as navires_router
 from .routes.parametres import router as parametres_router
 from .routes.profiles import router as profiles_router
@@ -129,6 +130,7 @@ app.include_router(terminal_router)
 app.include_router(transport_router)
 app.include_router(rbac_roles_router)
 app.include_router(parametres_router)
+app.include_router(historique_router)
 app.include_router(documents_ocr_router)
 app.include_router(controle_doc_router)
 app.include_router(dashboard_router)

@@ -552,6 +552,54 @@ frappe.
   `DZORAN` ; sans entrée : message explicite, zéro option ;
 - aucune erreur réseau dans les deux cas ; entrées d'essai supprimées.
 
+## 2.19 Passe 16 — l'historique d'un document, tiré du journal d'audit
+
+Le journal d'audit enregistrait déjà chaque étape (document reçu, classé,
+analysé, champs validés, rattachement à un dossier) mais **rien ne le lisait
+par document**. L'écran de révision montrait un état sans son passé : qui a
+corrigé ce champ, quand, et pourquoi le document est-il dans cet état ?
+
+### Une route qui lit, pas qui invente
+
+`GET /api/jobs/{job_id}/historique` parcourt `logs/audit.log`, ne garde que
+les lignes de ce document et les présente dans l'ordre chronologique, avec un
+vocabulaire lisible :
+
+| Événement du journal | Ce que l'écran affiche |
+|---|---|
+| `job_created` | **Document reçu** — fichier, taille, profil |
+| `document_classified` | **Document classé** — catégorie et confiance |
+| `job_done` | **Analyse terminée** — pages, confiance moyenne |
+| `field_validated` | **Champ validé** (ou **corrigé**) — champ et valeur |
+| `dossier_piece_added` | **Rattaché à un dossier** — dossier concerné |
+
+Trois détails qui comptent :
+
+- un événement **inconnu n'est pas masqué** : il apparaît avec son nom brut,
+  parce qu'un historique troué est pire qu'un historique technique ;
+- les **lignes illisibles** du journal sont comptées et signalées, pas passées
+  sous silence ;
+- un document **sans événement** répond 200 avec un message qui explique
+  pourquoi (document antérieur au journal, ou identifiant inconnu) — un 404
+  aurait seulement dit « perdu ».
+
+### Une chronologie, pas du JSON
+
+L'action « Historique » de `#documents/ocr` affiche une frise : horodatage,
+libellé, détail, acteur. Le moteur sait maintenant deux rendus d'action —
+`afficher` (JSON brut, pour les charges techniques) et `timeline` (frise).
+Le premier jet tombait dans le panneau JSON : corrigé, et couvert par un test.
+
+### Mesures
+
+- document `bl_port.pdf` : **7 événements** dans l'ordre, du 29/10 (réception,
+  classification à 91 %, analyse à 76 %) à la validation de champ du jour ;
+- validation d'un champ par l'API → l'événement **apparaît immédiatement** dans
+  la frise (« Champ validé — date confirmé, par utilisateur ») ;
+- document inconnu : 200, message explicite, zéro ligne ;
+- `tests/test_historique.py` : 5 tests (ordre, filtrage par job, valeurs,
+  événement inconnu, lignes illisibles).
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

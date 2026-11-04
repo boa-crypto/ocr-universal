@@ -1629,6 +1629,15 @@
         afficher: true
       },
       {
+        /* Le journal d'audit, filtré sur ce document : d'où vient son état. */
+        libelle: "Historique",
+        url: "/api/jobs/{id}/historique",
+        methode: "GET",
+        afficher: true,
+        timeline: true,
+        enCours: "Lecture de l'historique…"
+      },
+      {
         libelle: "Relancer",
         url: "/api/jobs/{id}/retry",
         methode: "POST",
@@ -2360,6 +2369,16 @@
 
     ecrire(url, methode, corps).then(function (reponse) {
       toast(action.succes || "Action exécutée", "success");
+      if (action.afficher && action.timeline) {
+        var dire = action.enCours || "Lecture…";
+        toast(dire, "info");
+        lire(url).then(function (reponse) {
+          setTimeout(function () { afficherChronologie(action.libelle, reponse); }, 350);
+        }).catch(function (erreur) {
+          toast(erreur.message || "Lecture impossible", "error");
+        });
+        return;
+      }
       if (action.afficher) {
         /* Action de lecture (texte, résultat, détail) : on affiche la réponse
            et on ne recharge pas la liste, sinon le panneau serait effacé. */
@@ -2533,6 +2552,40 @@
     var methode = action.methode || "POST";
     var corps = action.corps ? action.corps(ligne || {}) : undefined;
     envoyerAction(ecran, action, url, methode, corps);
+  }
+
+  /* Chronologie : un historique se lit dans l'ordre, pas en JSON. */
+  function afficherChronologie(titre, donnees) {
+    var zone = hote();
+    if (!zone) return;
+    var ancien = zone.querySelector(".ecran__resultat");
+    if (ancien) ancien.remove();
+    var bloc = elt("div", "ecran__resultat");
+    bloc.appendChild(elt("h3", "ecran__resultat-titre",
+      titre + (donnees && donnees.total !== undefined ? " — " + donnees.total +
+        " événement" + (donnees.total > 1 ? "s" : "") : "")));
+    var evenements = (donnees && donnees.evenements) || [];
+    if (!evenements.length) {
+      bloc.appendChild(elt("p", "chrono-vide",
+        (donnees && donnees.vide) ||
+        "Aucun événement journalisé pour ce document."));
+    } else {
+      var liste = elt("ol", "chrono-liste");
+      evenements.forEach(function (e) {
+        var item = elt("li", "chrono-item");
+        item.appendChild(elt("span", "chrono-quand", e.horodatage || ""));
+        item.appendChild(elt("span", "chrono-quoi", e.libelle || e.evenement || ""));
+        if (e.detail) item.appendChild(elt("span", "chrono-detail", e.detail));
+        if (e.acteur) item.appendChild(elt("span", "chrono-detail", "par " + e.acteur));
+        liste.appendChild(item);
+      });
+      bloc.appendChild(liste);
+    }
+    var fermer = elt("button", "btn ghost sm", "Fermer");
+    fermer.type = "button";
+    fermer.addEventListener("click", function () { bloc.remove(); });
+    bloc.appendChild(fermer);
+    zone.insertBefore(bloc, zone.firstChild);
   }
 
   function afficherResultat(titre, donnees) {

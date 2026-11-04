@@ -67,7 +67,7 @@ PREUVES: dict[str, str] = {
 }
 #: Actions d'écriture réellement exercées par un test (libellé → preuve).
 ACTIONS_TESTEES: dict[str, set[str]] = {
-    "documents/ocr": {"Texte", "Résultat", "Relancer"},
+    "documents/ocr": {"Texte", "Résultat", "Relancer", "Historique"},
     "controle/documentaire": {"Contrôler", "Verdict"},
     "finance/reconciliation": {"Lancer le rapprochement"},
     "enlevissement/sortie-port": {"Autoriser la sortie", "Enregistrer la sortie"},
