@@ -19,6 +19,8 @@ const SHELL = [
   "./transmission.js",
   "/web/refresh.css",
   "/web/cockpit.js",
+  "/web/app-legacy.js",
+  "/web/app-extras.js",
   "/web/dossiers.js",
   "/web/workspace.js",
 ];

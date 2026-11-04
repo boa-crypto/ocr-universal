@@ -687,3 +687,28 @@
 }
 .ws-list__meta { font-size: 11px; color: var(--faint); }
 .ws-list__vide { padding: 18px 16px; margin: 0; color: var(--muted); font-size: 12.5px; }
+
+/* ---------- 13 · Variantes de boutons utilisées par les nouveaux écrans ---------- */
+.btn-ghost {
+  background: var(--surface-2, var(--surface));
+  color: var(--text);
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+.btn-ghost:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  background: color-mix(in srgb, var(--accent) 7%, var(--surface));
+}
+.btn-sm { padding: 6px 10px; font-size: 12px; line-height: 1.2; }
+
+
+/* ---------- 14 · Miroir droite-à-gauche (arabe) ---------- */
+[dir="rtl"] .app { direction: rtl; }
+[dir="rtl"] .nav-item,
+[dir="rtl"] .nav-subitem,
+[dir="rtl"] .dos-row,
+[dir="rtl"] .ws-list__row { text-align: right; }
+[dir="rtl"] .dos-row { border-left: 0; border-right: 3px solid transparent; }
+[dir="rtl"] .dos-row.is-selected { border-right-color: var(--accent); }
+[dir="rtl"] .dos-search svg { order: 2; }
+[dir="rtl"] .dos-kv__val { text-align: left; }

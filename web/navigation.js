@@ -419,6 +419,7 @@
       'enlevissement': 'tab-enlevissement',
       'finance': 'tab-finance',
       'reports': 'tab-reports',
+      'rapports': 'tab-reports',
       'referentiels': 'tab-referentiels',
       'admin': 'tab-admin'
     };

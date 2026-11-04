@@ -12,7 +12,9 @@ WEB = RACINE / "web"
 def test_index_html_charge_css_externe() -> None:
     """index.html doit charger styles.css en externe."""
     index = (WEB / "index.html").read_text(encoding="utf-8")
-    assert '<link rel="stylesheet" href="styles.css">' in index, \
+    # Les ressources statiques sont servies depuis /web (voir MODULES_WEB_RACINE).
+    assert 'rel="stylesheet" href="/web/styles.css"' in index or \
+        '<link rel="stylesheet" href="styles.css">' in index, \
         "index.html doit charger styles.css en externe"
     assert "<style>" not in index, \
         "index.html ne doit plus contenir de CSS inline"
@@ -28,7 +30,11 @@ def test_index_html_charge_modules_externes() -> None:
         "transmission.js",
     ]
     for module in modules_attendus:
-        assert f'<script src="{module}" defer></script>' in index, \
+        # Les modules racine sont aussi servis en chemin absolu (/connectors.js),
+        # ce qui évite toute ambiguïté quand la page est ouverte depuis une
+        # sous-route. Les deux formes désignent le même fichier de même origine.
+        assert (f'<script src="{module}" defer></script>' in index
+                or f'<script src="/{module}" defer></script>' in index), \
             f"index.html doit charger {module} en externe avec defer"
 
 def test_pas_de_duplication_js() -> None:

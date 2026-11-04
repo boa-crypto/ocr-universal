@@ -72,12 +72,18 @@ def test_le_nom_de_champ_ne_rentre_plus_dans_un_gestionnaire() -> None:
     C'était la faille exacte : `onclick="confirmField('${esc(name)}')"`.
     Le nom passe désormais par un attribut `data-*`.
     """
-    index = (WEB / "index.html").read_text(encoding="utf-8")
-    assert "confirmField('" not in index, (
-        "le nom de champ est de nouveau injecté dans un gestionnaire en ligne"
-    )
+    # Le code concerné a été extrait dans web/app-extras.js : on controle
+    # l'ensemble des sources servie par l'application, pas seulement le shell.
+    sources = list(WEB.glob("*.html")) + list(WEB.glob("*.js")) + \
+        list((WEB / "modules").glob("**/*.js"))
+    textes = {chemin.name: chemin.read_text(encoding="utf-8") for chemin in sources}
+    for nom, texte in textes.items():
+        assert "confirmField('" not in texte, (
+            f"le nom de champ est de nouveau injecté dans un gestionnaire "
+            f"en ligne ({nom})"
+        )
     # le nom de champ transite bien par un attribut de données
-    assert "data-confirm=" in index, (
+    assert any("data-confirm=" in texte for texte in textes.values()), (
         "le bouton de validation devrait porter l'identifiant du champ "
         "dans un attribut data-*"
     )
