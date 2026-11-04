@@ -1084,3 +1084,14 @@ def test_ecran_comparaison_de_periodes() -> None:
     assert "aucun équivalent avant" in serveur
     assert "aucune activité sur les deux périodes" in serveur
     assert "avertissement" in serveur
+
+
+def test_registres_proposent_les_identifiants_metier() -> None:
+    racine = Path(__file__).resolve().parent.parent
+    moteur = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+    assert moteur.count("registre: REGISTRE_DOSSIERS") == 4
+    assert moteur.count("registre: REGISTRE_DECLARATIONS") == 1
+    assert "function brancherRegistre(" in moteur
+    assert "Object.prototype.hasOwnProperty.call(controle.__valeurs, valeur)" in moteur
+    assert "Impossible de charger les choix" in moteur
+    assert "choisir dans la liste" in moteur

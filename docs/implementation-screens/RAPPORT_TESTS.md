@@ -167,3 +167,12 @@ npm run ui:smoke                  # 15 vérifications, aucune écriture
 node docs/implementation-screens/outils/dump_interface.js http://127.0.0.1:8000 > /tmp/ui.json
 python3 docs/implementation-screens/outils/generer_matrice.py /tmp/ui.json
 ```
+
+### Passe 23 — choix des objets existants
+
+- `pytest tests/test_ui_premium.py -q` : **55 passed**.
+- `npm run ui:registres` : 715 dossiers proposés, identifiant inconnu refusé,
+  aucune requête d'écriture ; exige un serveur et un dossier existant.
+- `npm run ui:smoke` : **15/15**.
+- `ruff check src tests` : aucune erreur.
+- Suite complète : **1028 passed, 23 failed, 11 skipped** (les 23 échecs environnementaux OCR déjà connus persistent).

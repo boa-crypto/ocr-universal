@@ -170,6 +170,19 @@
     { valeur: "archive", libelle: "Archivé" }
   ];
 
+  /* Champs « Dossier » et « Déclaration » : on choisit un élément existant,
+     jamais un identifiant interne recopié à la main. */
+  var REGISTRE_DOSSIERS = {
+    url: "/api/dossiers", valeur: "id",
+    apercu: ["label", "reference", "state_label"], nom: "dossier",
+    vide: "Aucun dossier enregistré : créez d'abord un dossier, il sera proposé ici."
+  };
+  var REGISTRE_DECLARATIONS = {
+    url: "/api/declarations", valeur: "declaration_id",
+    apercu: ["numero_declaration", "dossier_id", "statut"], nom: "déclaration",
+    vide: "Aucune déclaration enregistrée : créez une déclaration dans Douane → Contrôles."
+  };
+
   var ECRANS = {
     /* ---------------- Contrôle & conformité ---------------- */
     "controle/documentaire": {
@@ -344,7 +357,7 @@
       creation: {
         url: "/api/expeditions",
         champs: [
-          { cle: "dossier_id", libelle: "Dossier", requis: true, aide: "Identifiant du dossier concerné" },
+          { cle: "dossier_id", libelle: "Dossier", requis: true, registre: REGISTRE_DOSSIERS },
           { cle: "navire", libelle: "Navire" },
           { cle: "porte_chargement", libelle: "Port de chargement" },
           { cle: "porte_destination", libelle: "Port de destination" },
@@ -404,7 +417,7 @@
       creation: {
         url: "/api/declarations",
         champs: [
-          { cle: "dossier_id", libelle: "Dossier", requis: true },
+          { cle: "dossier_id", libelle: "Dossier", requis: true, registre: REGISTRE_DOSSIERS },
           { cle: "numero_declaration", libelle: "Numéro de déclaration" },
           { cle: "bureau_douane", libelle: "Bureau de douane" },
           { cle: "date_depot", libelle: "Date de dépôt", type: "date" },
@@ -450,8 +463,8 @@
       creation: {
         url: "/api/declarations/liquidation",
         champs: [
-          { cle: "dossier_id", libelle: "Dossier", requis: true },
-          { cle: "declaration_id", libelle: "Déclaration", requis: true },
+          { cle: "dossier_id", libelle: "Dossier", requis: true, registre: REGISTRE_DOSSIERS },
+          { cle: "declaration_id", libelle: "Déclaration", requis: true, registre: REGISTRE_DECLARATIONS },
           { cle: "date_liquidation", libelle: "Date de liquidation", type: "date" },
           { cle: "droits_importation", libelle: "Droits d'importation", type: "number" },
           { cle: "tva", libelle: "TVA", type: "number" },
@@ -729,7 +742,7 @@
       creation: {
         url: "/api/frais",
         champs: [
-          { cle: "dossier_id", libelle: "Dossier", requis: true },
+          { cle: "dossier_id", libelle: "Dossier", requis: true, registre: REGISTRE_DOSSIERS },
           { cle: "categorie", libelle: "Catégorie" },
           { cle: "fournisseur", libelle: "Fournisseur" },
           { cle: "montant", libelle: "Montant", type: "number", requis: true },
@@ -2521,6 +2534,7 @@
         bloc.appendChild(aide);
       }
       if (champ.referentiel) brancherSuggestions(controle, bloc, champ);
+      else if (champ.registre) brancherRegistre(controle, bloc, champ);
       form.appendChild(bloc);
       entrees[champ.cle] = { controle: controle, definition: champ, bloc: bloc };
     });
@@ -2700,6 +2714,65 @@
      l'exploitation a déjà référencé, et le dit quand la liste est vide. */
   var referentielsCache = {};
 
+  /* Un « registre » est une liste d'objets existants (dossiers, déclarations)
+     dont on choisit un élément : l'utilisateur tape un nom, le champ porte
+     l'identifiant. Avant, il fallait coller « dos_bc3ee32380d9 » à la main. */
+  var registresCache = {};
+
+  function chargerRegistre(registre) {
+    var url = registre.url;
+    if (registresCache[url]) return registresCache[url];
+    registresCache[url] = lire(url).then(function (corps) {
+      var lignes = Array.isArray(corps) ? corps
+        : ((corps && (corps.items || corps.entrees || corps.dossiers)) || []);
+      return lignes.map(function (ligne) {
+        var valeur = ligne[registre.valeur];
+        var morceaux = (registre.apercu || [registre.valeur]).map(function (cle) {
+          var v = ligne[cle];
+          return v === null || v === undefined || v === "" ? "" : String(v);
+        }).filter(function (v) { return v.length > 0; });
+        return { valeur: valeur, texte: morceaux.join(" · ") };
+      }).filter(function (o) { return o.valeur; });
+    });
+    return registresCache[url];
+  }
+
+  function brancherRegistre(controle, bloc, champ) {
+    var registre = champ.registre;
+    var liste = elt("datalist");
+    var identifiant = "rg-" + champ.cle.replace(/\./g, "-") + "-" +
+      Math.random().toString(36).slice(2, 7);
+    liste.id = identifiant;
+    controle.setAttribute("list", identifiant);
+    controle.setAttribute("autocomplete", "off");
+    bloc.appendChild(liste);
+    var note = elt("p", "ecran__aide ecran__aide--ref", "Chargement des choix…");
+    bloc.appendChild(note);
+
+    chargerRegistre(registre).then(function (options) {
+      controle.__valeurs = {};
+      options.forEach(function (option) {
+        var o = elt("option");
+        o.value = option.valeur;
+        if (option.texte && option.texte !== option.valeur) o.label = option.texte;
+        liste.appendChild(o);
+        controle.__valeurs[option.valeur] = option.texte || option.valeur;
+      });
+      delete registresCache[registre.url];
+      if (!options.length) {
+        note.textContent = (registre.vide ||
+          "Aucun élément disponible pour l'instant.");
+      } else {
+        note.textContent = options.length + " " + (registre.nom || "élément") +
+          (options.length > 1 ? "s" : "") + " proposé" +
+          (options.length > 1 ? "s" : "") + " — choisissez dans les suggestions (nom ou référence).";
+      }
+    }).catch(function () {
+      delete registresCache[registre.url];
+      note.textContent = "Impossible de charger les choix. Fermez puis rouvrez le formulaire pour réessayer.";
+    });
+  }
+
   function suggestionsReferentiel(nom) {
     if (referentielsCache[nom]) return referentielsCache[nom];
     referentielsCache[nom] = lire("/api/referentiels/" + encodeURIComponent(nom))
@@ -2832,6 +2905,7 @@
         bloc.appendChild(aide);
       }
       if (champ.referentiel) brancherSuggestions(controle, bloc, champ);
+      else if (champ.registre) brancherRegistre(controle, bloc, champ);
       form.appendChild(bloc);
       entrees[champ.cle] = { controle: controle, definition: champ, bloc: bloc };
     });
@@ -2867,6 +2941,12 @@
 
         if (entree.definition.requis && (valeur === "" || valeur === null)) {
           manquants.push(entree.definition.libelle);
+          entree.bloc.classList.add("is-invalide");
+          return;
+        }
+        if (entree.definition.registre && valeur &&
+            (!controle.__valeurs || !Object.prototype.hasOwnProperty.call(controle.__valeurs, valeur))) {
+          manquants.push(entree.definition.libelle + " (choisir dans la liste)");
           entree.bloc.classList.add("is-invalide");
           return;
         }

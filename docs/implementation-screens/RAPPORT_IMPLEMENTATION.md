@@ -864,6 +864,26 @@ fenêtres consécutives).
 
 Matrice : **101 entrées, 101 conformes**.
 
+## 2.26 Passe 23 — choisir un dossier plutôt que recopier son identifiant
+
+Les formulaires génériques d'expédition, déclaration (Contrôles), liquidation
+et frais demandaient un `dossier_id` brut. Ils proposent désormais un datalist
+alimenté par `/api/dossiers`, avec le libellé, la référence et l'état du dossier.
+La valeur envoyée reste l'identifiant : les libellés ne remplacent jamais les clés.
+La liquidation propose également les déclarations de `/api/declarations`.
+
+Le chargement est partagé entre champs simultanés puis invalidé à la résolution ;
+une réouverture recharge les choix. Un échec réseau est expliqué et la saisie
+inconnue est refusée avant l'envoi, y compris pendant le chargement. Une liste
+vide indique où créer l'objet manquant. La validation serveur reste nécessaire :
+ces suggestions ne sont pas une garantie d'intégrité référentielle côté API.
+
+Mesure en lecture seule : 715 dossiers proposés, libellé « arbitrage persistant ·
+Révision requise », `dos_inconnu` refusé. Harnais versionné :
+`npm run ui:registres [URL]` (serveur actif et au moins un dossier requis).
+Aucune donnée d'exploitation ajoutée : cette passe facilite la saisie, elle ne
+constitue ni une importation automatique ni l'alimentation du terminal.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
