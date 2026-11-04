@@ -7,6 +7,7 @@ Ces tests verrouillent trois choses :
 3. les routes ajoutées pour alimenter l'interface répondent avec des données
    réelles et des bornes explicites.
 """
+import re
 from pathlib import Path
 
 import pytest
@@ -66,6 +67,40 @@ def test_cockpit_expose_les_cinq_kpi_et_les_panneaux() -> None:
                         "kpi-livraisons", "cockpit-tasks", "cockpit-chart", "cockpit-donut",
                         "cockpit-progression", "cockpit-arrivals", "cockpit-alerts"):
         assert f'id="{identifiant}"' in index, f"#{identifiant} manque au cockpit"
+
+
+def test_modules_affichent_des_indicateurs_reels() -> None:
+    """Chaque page de module reçoit un bandeau de compteurs branché sur l'API."""
+    index = (WEB / "index.html").read_text(encoding="utf-8")
+    js = (WEB / "modules.js").read_text(encoding="utf-8")
+    assert '/web/modules.js' in index, "modules.js doit être chargé par la coque"
+
+    sections = re.findall(r'"(tab-[a-z]+)": \{', js)
+    assert len(sections) >= 7, "les principaux modules doivent exposer des indicateurs"
+    for section in sections:
+        assert f'id="{section}"' in index, f"la section {section} doit exister dans index.html"
+
+    # Chaque indicateur pointe vers une route interne réelle (« #module/sous-page »).
+    routes = re.findall(r'route: "#([a-z-]+)', js)
+    assert routes, "chaque indicateur doit être un lien"
+    for route in routes:
+        assert route.split("/")[0] in index, f"la route #{route} doit correspondre à une rubrique"
+
+
+def test_aucune_grille_inline_pour_le_responsive() -> None:
+    """Les grilles multi-colonnes passent par des classes (elles se replient)."""
+    index = (WEB / "index.html").read_text(encoding="utf-8")
+    assert "grid-template-columns" not in index, (
+        "les grilles doivent utiliser .cols-half/.cols-third/.cols-source "
+        "pour bénéficier des points de rupture"
+    )
+
+
+def test_atelier_ocr_rappelle_la_portee_des_extractions() -> None:
+    index = (WEB / "index.html").read_text(encoding="utf-8")
+    assert index.count("note-reglementaire") >= 2
+    assert "ne constituent pas une validation" in index
+    assert "Validation humaine" in index
 
 
 # ── Design system ─────────────────────────────────────────────────────────

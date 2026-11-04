@@ -1983,10 +1983,10 @@ section id="tab-docs" class="page">
         </header>
 
         <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px">
-          <div style="flex:1;min-width:220px">
+          <div class="grow-min">
             <input class="inp" id="docSearch" type="search" placeholder="Rechercher par nom de fichier…" aria-label="Rechercher un document">
           </div>
-          <div style="width:210px">
+          <div class="w-210">
             <select class="inp" id="filterStatus" aria-label="Filtrer par état">
               <option value="">Tous les états</option>
               <option value="done">Terminé</option>
@@ -2021,7 +2021,7 @@ section id="tab-docs" class="page">
             dans le document source.</p>
         </header>
 
-        <div class="hero-grid" style="grid-template-columns:minmax(0,1.3fr) minmax(340px,1fr)">
+        <div class="hero-grid cols-source">
           <!-- A · document source -->
           <div class="col-main">
             <div class="viewer-toolbar">
@@ -2051,6 +2051,11 @@ section id="tab-docs" class="page">
               <div class="panel-head"><span class="idx">C · Données</span>
                 <h3 class="sec-title" style="font-size:19px">Champs extraits</h3>
               </div>
+              <p class="note-reglementaire" role="note">
+                <b>Extraction automatique.</b> Ces valeurs ne constituent pas une validation
+                réglementaire : elles doivent être contrôlées et validées par un opérateur
+                habilité avant toute transmission à la douane ou au client.
+              </p>
               <div class="sel-bar">
                 <label class="ph-check" for="selAll">
                   <input type="checkbox" id="selAll">
@@ -2082,7 +2087,7 @@ section id="tab-docs" class="page">
 
         <div class="rule"></div>
 
-        <div class="hero-grid" style="grid-template-columns:1fr 1fr">
+        <div class="hero-grid cols-half">
           <div>
             <div class="panel-head"><span class="idx">B · Structure</span>
               <h3 class="sec-title">Tableaux reconstruits</h3>
@@ -2114,7 +2119,7 @@ section id="tab-docs" class="page">
             et validation humaine. Aucun score n'est simulé.</p>
         </header>
 
-        <div class="hero-grid" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="hero-grid cols-third">
           <div class="panel"><div class="stat">
             <span class="lbl">Confiance moteur</span>
             <div class="gv"><div class="v grad-text" id="qEngine">—</div><div class="sub">moyenne OCR</div></div>
@@ -2131,7 +2136,7 @@ section id="tab-docs" class="page">
 
         <div class="rule"></div>
 
-        <div class="hero-grid" style="grid-template-columns:1fr 1fr">
+        <div class="hero-grid cols-half">
           <div>
             <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Anomalies détectées</h3></div>
             <div id="anomaliesView"><div class="empty">Aucune anomalie — ou aucun résultat chargé.</div></div>
@@ -2159,7 +2164,7 @@ section id="tab-docs" class="page">
 
         <div class="rule"></div>
 
-        <div class="hero-grid" style="grid-template-columns:1fr 1fr">
+        <div class="hero-grid cols-half">
           <div>
             <div class="panel-head"><span class="idx">B</span><h3 class="sec-title">Modèles de langues</h3></div>
             <div id="langsView"><div class="empty">Chargement…</div></div>
@@ -2182,6 +2187,10 @@ section id="tab-docs" class="page">
             <h3 class="ph-title">À réviser</h3>
             <p class="ph-sub">Seuls les champs qu'un humain doit trancher : invalides, ambigus,
               non détectés ou sous le seuil de confiance. Le reste ne s'affiche pas.</p>
+            <p class="note-reglementaire" role="note">
+              <b>Validation humaine.</b> Valider un champ engage l'opérateur : la décision est
+              journalisée avec son auteur et ne remplace pas un contrôle douanier.
+            </p>
           </div>
           <div class="ph-actions">
             <label class="ph-field" for="reviewThreshold">Seuil de confiance</label>
@@ -2714,7 +2723,7 @@ section id="tab-docs" class="page">
           <h1 class="display">Rôles et <em>permissions</em></h1>
           <p class="lede">Configuration fine des droits d'accès par rôle — lecture, écriture, admin par périmètre.</p>
         </header>
-        <div class="hero-grid" style="grid-template-columns:1fr 1fr">
+        <div class="hero-grid cols-half">
           <div>
             <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Rôles définis</h3></div>
             <div id="rolesList" class="panel panel-flush"></div>
@@ -2748,7 +2757,7 @@ section id="tab-docs" class="page">
           <h1 class="display">Paramètres <em>généraux</em></h1>
           <p class="lede">Configuration globale de l'application : nom, fuseau, langue par défaut, limites.</p>
         </header>
-        <div class="hero-grid" style="grid-template-columns:1fr 1fr">
+        <div class="hero-grid cols-half">
           <div>
             <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Identité</h3></div>
             <div class="panel">
@@ -2790,7 +2799,7 @@ section id="tab-docs" class="page">
           <h1 class="display">Paramètres <em>OCR</em></h1>
           <p class="lede">Réglages globaux des moteurs OCR, prétraitement et qualité par défaut.</p>
         </header>
-        <div class="hero-grid" style="grid-template-columns:1fr 1fr">
+        <div class="hero-grid cols-half">
           <div>
             <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Moteurs & qualité</h3></div>
             <div class="panel">
@@ -2916,7 +2925,7 @@ section id="tab-docs" class="page">
           <h1 class="display">Configuration <em>système</em></h1>
           <p class="lede">Variables d'environnement, chemins, feature flags, maintenance et diagnostics.</p>
         </header>
-        <div class="hero-grid" style="grid-template-columns:1fr 1fr">
+        <div class="hero-grid cols-half">
           <div>
             <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Variables d'environnement</h3></div>
             <div id="envVars" class="panel panel-flush"></div>
@@ -3321,7 +3330,7 @@ section id="tab-docs" class="page">
           <h1 class="display">Reconnaissance <em>OCR</em></h1>
           <p class="lede">Paramètres et aperçu de la reconnaissance OCR avec comparaison de moteurs.</p>
         </header>
-        <div class="hero-grid" style="grid-template-columns:1fr 1fr">
+        <div class="hero-grid cols-half">
           <div>
             <div class="panel-head"><span class="idx">A</span><h3 class="sec-title">Moteurs actifs</h3></div>
             <div id="moteursOcr" class="panel panel-flush"></div>
@@ -4172,12 +4181,15 @@ section id="tab-docs" class="page">
       <div><span class="kbd">5</span>→ Configuration · <span class="kbd">6</span>→ Dashboard · <span class="kbd">7</span>→ Révision · <span class="kbd">8</span>→ Profils</div>
       <div><span class="kbd">9</span>→ Connecteur Hub · <span class="kbd">10</span>→ Dossier · <span class="kbd">11</span>→ Transit maritime · <span class="kbd">12</span>→ (paramètres avancés)</div>
   </div>
-  <div class="walkthrough-step hidden" id="walkthroughOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:1000;display:flex;align-items:center;justify-content:center;">
-    <div style="background:white;padding:24px;border-radius:8px;max-width:500px;text-align:center;color:#333;">
-      <div style="font-size:48px;margin-bottom:16px;">⚓</div>
-      <h3 style="margin:0 0 12px;">Bienvenue dans UniOCR</h3>
-      <p style="margin:0 0 24px;">Cliquez sur les onglets du menu latéral (01-12) pour explorer les fonctionnalités.</p>
-      <button class="btn" id="walkthroughSkip" style="margin-top:16px;">Skip</button>
+  <div class="walkthrough-step hidden" id="walkthroughOverlay" role="dialog" aria-modal="true" aria-labelledby="walkthroughTitre">
+    <div class="walkthrough-card">
+      <div class="walkthrough-card__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v10"/><circle cx="12" cy="16.5" r="3.5"/><path d="M6 8l6-5 6 5"/></svg>
+      </div>
+      <h3 id="walkthroughTitre">Bienvenue dans UniOCR</h3>
+      <p>Le menu latéral regroupe les douze modules du transit maritime. Utilisez la recherche
+         globale (Ctrl K) pour retrouver un dossier, un client, un connaissement ou un conteneur.</p>
+      <button class="btn primary" id="walkthroughSkip" type="button">Commencer</button>
     </div>
   </div>
 </div>
@@ -4321,6 +4333,7 @@ var I18N = {
 <script src="/tracabilite.js" defer></script>
 <script src="/transmission.js" defer></script>
 <script src="/web/charts.js" defer></script>
+<script src="/web/modules.js" defer></script>
 <script src="/web/shell.js" defer></script>
 <script src="/web/cockpit.js" defer></script>
   <script src="/web/dossiers.js" defer></script>

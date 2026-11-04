@@ -167,7 +167,34 @@ priorité, statut. Onglets (navigation clavier ← →) :
 Chaque panneau se charge **à la demande** avec un squelette, et affiche une
 erreur explicite si la source est indisponible — jamais de valeur de secours.
 
-### 3.6 Animations
+L'atelier d'analyse (vue « source / données extraites ») et la file de
+validation humaine portent désormais un **avertissement de portée** explicite :
+une extraction OCR n'est pas une validation réglementaire, et valider un champ
+engage l'opérateur (décision journalisée avec son auteur).
+
+### 3.6 Bandeaux d'indicateurs des modules
+
+Chaque page « Vue d'ensemble » d'un module affiche désormais **quatre
+compteurs réels** (liens vers la sous-page qui les détaille), rechargés à
+chaque visite :
+
+| Module | Indicateurs |
+|---|---|
+| Contrôle & conformité | dossiers à valider, alertes actives, pièces manquantes, règles de contrôle |
+| Opérations maritimes | conteneurs, navires, connaissements B/L, arrivées sous 30 jours |
+| Douane & réglementation | déclarations, codes SH disponibles, dossiers classés, dossiers ouverts |
+| Enlèvement & livraison | ordres d'enlèvement, expéditions, enlèvements à renseigner |
+| Finance & facturation | frais enregistrés, dossiers concernés, dossiers clôturés |
+| Rapports & statistiques | documents traités, en erreur, en cours, progression moyenne |
+| Référentiels & paramètres | clients, fournisseurs, transporteurs |
+| Administration & sécurité | utilisateurs, rôles disponibles, entrées d'audit, notifications non lues |
+
+Les sources sont les endpoints existants (`/api/conteneurs`, `/api/navires`,
+`/api/declarations`, `/api/reglementation/codes-sh`, `/api/frais`,
+`/api/stats`, `/api/transport/transporteurs`, `/api/rbac/*`…). Une source
+indisponible affiche « — », jamais un zéro trompeur.
+
+### 3.7 Animations
 
 Transitions de page, ouverture des groupes de navigation, apparition des cartes,
 infobulles, menus, panneaux latéraux, skeletons, tracé progressif des courbes
@@ -176,7 +203,7 @@ Durées 120–720 ms, courbe `cubic-bezier(.22,1,.36,1)`.
 `prefers-reduced-motion: reduce` neutralise animations et tracés ; les
 transitions restent fonctionnelles sans mouvement.
 
-### 3.7 Bibliothèques
+### 3.8 Bibliothèques
 
 **Aucune dépendance ajoutée.** Framer Motion n'est pas applicable (front vanilla) :
 les animations sont en CSS et les graphiques en SVG natif (`web/charts.js`,
@@ -205,11 +232,12 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 .venv/bin/python -m pytest -q              → 924 passed, 24 failed, 11 skipped (71 s)
 ```
 
-- **Nouveau fichier** `tests/test_ui_premium.py` : **14 tests**, tous verts
+- **Nouveau fichier** `tests/test_ui_premium.py` : **17 tests**, tous verts
   (ordre de cascade CSS, absence de `<style>`, présence des modules et des
   identifiants de coque, 5 KPI, palette centralisée, jetons hérités conservés,
   `prefers-reduced-motion` + `@media print`, 12 rubriques, repli + infobulles,
-  contrats des trois routes).
+  contrats des trois routes, bandeaux d'indicateurs des modules, absence de
+  grille inline, avertissements de portée de l'OCR).
 - Les **23 échecs préexistants** sont inchangés et **environnementaux**
   (Tesseract/Indra absents, connecteur `customs_api`, routage flou) ; ils ne
   sont pas masqués.
@@ -230,6 +258,7 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 | Repli de la barre latérale | classe `collapsed` appliquée, état persisté |
 | Espace dossier | 11 onglets, tous rendus sans erreur, bandeau d'identité complet |
 | Espace de travail | barre d'outils, filtre, tri et pagination opérants (186 tâches, « 1–20 sur 186 ») |
+| Modules | 8 bandeaux de 4 indicateurs, valeurs réelles, 0 erreur |
 
 ---
 
@@ -246,6 +275,9 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 | Routes ajoutées en 404 dans l'aperçu | serveur relancé après modification du code Python |
 | Thème clair redevenu sombre (ordre de cascade) | section 20 de `uniocr-ds.css` : thème clair complet par jetons |
 | Taille d'`index.html` au-delà du plafond de test | plafond ajusté et justifié (voir §5) |
+| Grilles multi-colonnes figées en style inline : pas de repliement sous 1120 px | remplacées par `.cols-half`, `.cols-third`, `.cols-source` (les 10 occurrences) |
+| Modale de première visite en blanc sur fond sombre | restylée (`.walkthrough-card`) avec la palette du design system |
+| Champs de filtre à largeur fixe (210 px) débordant sur mobile | classes `.grow-min` / `.w-210` repliées sous 640 px |
 
 ---
 
@@ -257,11 +289,12 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 2. **Validation visuelle sur navigateur** : aucune capture n'a pu être produite
    dans cet environnement (pas de Chromium). Le rendu a été vérifié par DOM et
    cascade CSS, pas à l'œil.
-3. **Sous-pages de modules** : `controle/anomalies`, `maritime/eta-etd`,
-   `douane/declarations`, `finance/frais`, `reports/center`… retombent
-   aujourd'hui sur la page de leur module. Les 92 sections `tab-*` existent mais
-   restent des squelettes ; les relier à leurs endpoints dédiés est le prochain
-   chantier (les onglets de l'espace dossier en donnent déjà l'exemple).
+3. **Sous-pages de modules** : chaque module affiche maintenant ses compteurs
+   réels, mais ses sous-pages (`controle/anomalies`, `maritime/eta-etd`,
+   `douane/declarations`, `finance/frais`, `reports/center`…) retombent encore
+   sur la vue d'ensemble. Les 92 sections `tab-*` existent ; les relier une à une
+   à leur endpoint dédié est le prochain chantier (les onglets de l'espace
+   dossier et les bandeaux de module en donnent le patron).
 4. **Vue OCR en deux colonnes** : l'atelier existant (`#tab-result`) fournit la
    prévisualisation et les champs ; une vue côte à côte « document / données »
    avec comparaison inter-documents reste à construire.
