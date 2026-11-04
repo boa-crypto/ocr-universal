@@ -105,6 +105,29 @@ def test_sous_pages_branchees_sur_des_endpoints_existants() -> None:
         assert url in chemins, f"{url} doit exister dans le contrat OpenAPI"
 
 
+def test_pages_historiques_toujours_accessibles() -> None:
+    """La nouvelle coque ne doit pas rendre inaccessibles les pages livrées.
+
+    L'ancienne barre latérale exposait des entrées `data-tab` ; les pages de
+    l'atelier (résultat, qualité, révision, profils, connecteurs, configuration)
+    doivent conserver une route et un pont côté JS.
+    """
+    js = (WEB / "app-extras.js").read_text(encoding="utf-8")
+    nav = (WEB / "navigation.js").read_text(encoding="utf-8")
+    index = (WEB / "index.html").read_text(encoding="utf-8")
+
+    # Plus aucune dépendance à un élément de navigation disparu.
+    assert 'data-tab="tab-result"' not in js
+    assert ".nav-item[data-tab=" not in js
+
+    routes = dict(re.findall(r'"(tab-[a-z]+)": "([a-z/-]+)"', js))
+    assert len(routes) >= 9, "les pages historiques doivent avoir une route"
+    for page, route in routes.items():
+        assert f'id="{page}"' in index, f"la page {page} doit exister"
+        assert f"'{route}': '{page}'" in nav, \
+            f"la route #{route} doit afficher {page}"
+
+
 def test_comparaison_inter_documents_dans_l_espace_dossier() -> None:
     """L'onglet OCR compare les mêmes champs entre documents et signale les écarts."""
     js = (WEB / "dossiers.js").read_text(encoding="utf-8")

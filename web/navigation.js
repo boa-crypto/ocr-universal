@@ -56,7 +56,13 @@
         { key: 'inbox', title: 'Boîte de réception', route: '#documents/inbox', icon: 'inbox' },
         { key: 'classification', title: 'Classification', route: '#documents/classif', icon: 'tag' },
         { key: 'extraction', title: 'Extraction OCR', route: '#documents/ocr', icon: 'scan' },
+        { key: 'result', title: "Résultat d'analyse", route: '#documents/resultat', icon: 'file-search' },
+        { key: 'quality', title: 'Contrôle qualité', route: '#documents/qualite', icon: 'gauge' },
+        { key: 'human-review', title: 'Révision humaine', route: '#documents/revue', icon: 'user-check' },
         { key: 'verification', title: 'Vérification', route: '#documents/verification', icon: 'check-circle' },
+        { key: 'profiles', title: 'Profils d\'extraction', route: '#documents/profils', icon: 'sliders' },
+        { key: 'connectors', title: 'Connecteur Hub', route: '#documents/connecteurs', icon: 'plug' },
+        { key: 'settings', title: 'Configuration', route: '#documents/configuration', icon: 'settings' },
         { key: 'archives', title: 'Archives', route: '#documents/archives', icon: 'archive' }
       ]
     },
@@ -499,8 +505,18 @@
     // Certaines sous-rubriques disposent de leur propre page : on y va
     // directement plutôt que de retomber sur la vue d'ensemble du module.
     const routePages = {
+      'documents/import': 'tab-import',
+      'documents/ocr': 'tab-dashboard',
       'documents/inbox': 'tab-center',
       'documents/classif': 'tab-classif',
+      'documents/resultat': 'tab-result',
+      'documents/qualite': 'tab-quality',
+      'documents/revue': 'tab-review',
+      'documents/profils': 'tab-profiles',
+      'documents/connecteurs': 'tab-connectors',
+      'documents/configuration': 'tab-config',
+      'dossiers/parcours': 'tab-dossier',
+      'maritime/transit': 'tab-transit',
       'documents/verification': 'tab-validation',
       'documents/archives': 'tab-ged',
       'controle/anomalies': 'tab-anomalies',

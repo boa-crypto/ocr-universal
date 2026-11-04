@@ -181,6 +181,25 @@ validation humaine portent désormais un **avertissement de portée** explicite 
 une extraction OCR n'est pas une validation réglementaire, et valider un champ
 engage l'opérateur (décision journalisée avec son auteur).
 
+Chaque champ extrait dispose des mêmes actions que dans la file de validation :
+**Valider** (valeur confirmée), **Rejeter** (statut `rejected` + motif facultatif,
+tracé dans l'audit) et **Relancer** le traitement depuis la liste des documents
+(`POST /api/jobs/{id}/retry`). Le rejet ne supprime rien : le document source et
+la valeur d'origine restent intacts.
+
+#### Pages historiques préservées
+
+Les pages de l'atelier (import, résultat d'analyse, contrôle qualité, révision
+humaine, profils d'extraction, connecteur Hub, configuration, parcours
+documentaire, transit maritime) ne sont plus des entrées de la barre latérale —
+elles ont maintenant une **route** (`#documents/resultat`, `#documents/qualite`,
+`#documents/revue`, `#documents/profils`, `#documents/connecteurs`,
+`#documents/configuration`, `#dossiers/parcours`, `#maritime/transit`) et
+figurent dans le sous-menu « Documents & OCR ». Les raccourcis clavier et
+l'ouverture d'un document passent par ce routage : plus aucune page livrée n'est
+inaccessible, et aucun code ne dépend plus d'un élément de navigation supprimé
+(`data-tab`).
+
 ### 3.6 Bandeaux d'indicateurs des modules
 
 Chaque page « Vue d'ensemble » d'un module affiche désormais **quatre
@@ -299,14 +318,15 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 .venv/bin/python -m pytest -q              → 933 passed, 23 failed, 11 skipped (70 s)
 ```
 
-- **Nouveau fichier** `tests/test_ui_premium.py` : **22 tests**, tous verts
+- **Nouveau fichier** `tests/test_ui_premium.py` : **23 tests**, tous verts
   (ordre de cascade CSS, absence de `<style>`, présence des modules et des
   identifiants de coque, 5 KPI, palette centralisée, jetons hérités conservés,
   `prefers-reduced-motion` + `@media print`, 12 rubriques, repli + infobulles,
   contrats des trois routes, bandeaux d'indicateurs des modules, absence de
   grille inline, avertissements de portée de l'OCR, sous-pages branchées sur
   des endpoints existants, routage fin des sous-rubriques, graphiques de la
-  page Rapports, accessibilité de base et comparaison inter-documents).
+  page Rapports, accessibilité de base, comparaison inter-documents et
+  accessibilité des pages historiques après la refonte de la barre latérale).
 - Les **23 échecs préexistants** sont inchangés et **environnementaux**
   (Tesseract/Indra absents, connecteur `customs_api`, routage flou) ; ils ne
   sont pas masqués.
@@ -347,6 +367,7 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 | Routes ajoutées en 404 dans l'aperçu | serveur relancé après modification du code Python |
 | Thème clair redevenu sombre (ordre de cascade) | section 20 de `uniocr-ds.css` : thème clair complet par jetons |
 | Taille d'`index.html` au-delà du plafond de test | plafond ajusté et justifié (voir §5) |
+| **Régression** : après le remplacement de la barre latérale, les pages de l'atelier (résultat, qualité, révision, profils, connecteurs, configuration, parcours, transit) n'étaient plus atteignables et `openJob()` levait une erreur | routes dédiées + pont `PAGE_ROUTES` dans `app-extras.js` ; sous-menu « Documents & OCR » complété ; test de non-régression ajouté |
 | Grilles multi-colonnes figées en style inline : pas de repliement sous 1120 px | remplacées par `.cols-half`, `.cols-third`, `.cols-source` (les 10 occurrences) |
 | Modale de première visite en blanc sur fond sombre | restylée (`.walkthrough-card`) avec la palette du design system |
 | Champs de filtre à largeur fixe (210 px) débordant sur mobile | classes `.grow-min` / `.w-210` repliées sous 640 px |

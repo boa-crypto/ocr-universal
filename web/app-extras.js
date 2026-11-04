@@ -325,13 +325,17 @@ function renderResult() {
       `<td><span class="meter ${cls}"><i style="width:0"></i></span><b style="font-size:11.5px">${conf}%</b></td>` +
       `<td><span class="badge ${esc(f.status)}">${esc(f.status)}</span></td>` +
       `<td><div class="rowflex"><input class="edit" data-field="${esc(name)}" placeholder="valeur confirmée…">` +
-      `<button class="btn sm" data-confirm="${esc(name)}">Valider</button></div></td>`;
+      `<button class="btn sm" data-confirm="${esc(name)}">Valider</button>` +
+      `<button class="btn ghost sm" data-reject="${esc(name)}">Rejeter</button></div></td>`;
     // Pas de gestionnaire en ligne : une valeur contrôlée par l'utilisateur
     // (le nom d'un champ de profil) placée dans `onclick="…"` s'exécute
     // après décodage HTML — l'échappement des caractères ne suffit pas.
     // Le nom passe par `dataset` et l'action par `addEventListener`.
     tr.querySelector("[data-confirm]").addEventListener("click", () => {
       confirmField(name);
+    });
+    tr.querySelector("[data-reject]").addEventListener("click", () => {
+      rejectField(name);
     });
     tr.addEventListener("click", e => {
       if (e.target.closest("input,button")) return;
@@ -519,6 +523,32 @@ async function confirmField(name) {
   } else toast("Échec de la validation : " + await readError(r), "error");
 }
 
+/**
+ * Rejeter un champ : le moteur a produit une valeur inacceptable et l'opérateur
+ * le dit explicitement. Le motif est facultatif mais recommandé ; le rejet est
+ * tracé dans le journal d'audit avec son auteur, comme la validation.
+ * La valeur d'origine reste dans le document : rien n'est effacé.
+ */
+async function rejectField(name) {
+  const motif = prompt(`Motif du rejet du champ « ${name} » (facultatif) :`, "");
+  if (motif === null) return; // l'opérateur a annulé
+  const r = await fetchAuthenticated(
+    "/api/jobs/" + currentJob + "/fields/" + encodeURIComponent(name),
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: "rejected", reason: motif })
+    }
+  );
+  if (r.ok) {
+    log(`Champ « ${name} » rejeté${motif ? " (motif : " + motif + ")" : ""} — tracé dans l'audit`, "warn");
+    toast("Champ rejeté — le document source reste intact", "info");
+    loadResult(currentJob);
+  } else {
+    toast("Échec du rejet : " + await readError(r), "error");
+  }
+}
+
 document.getElementById("prevPage").addEventListener("click", () => {
   if (currentPage > 1) { currentPage--; renderPage(); }
 });
@@ -575,10 +605,42 @@ async function loadJobs() {
 document.getElementById("docSearch").addEventListener("input", loadJobs);
 document.getElementById("filterStatus").addEventListener("change", loadJobs);
 
+/* Les pages historiques de l'atelier ne sont plus des entrées de barre
+   latérale : elles ont une route. Ce tableau fait le pont pour les raccourcis
+   clavier et l'ouverture d'un job. */
+const PAGE_ROUTES = {
+  "tab-import": "documents/import",
+  "tab-dashboard": "documents/ocr",
+  "tab-result": "documents/resultat",
+  "tab-quality": "documents/qualite",
+  "tab-review": "documents/revue",
+  "tab-profiles": "documents/profils",
+  "tab-connectors": "documents/connecteurs",
+  "tab-config": "documents/configuration",
+  "tab-dossier": "dossiers/parcours",
+  "tab-transit": "maritime/transit"
+};
+
+function routeDePage(tab) {
+  return PAGE_ROUTES[tab] || "";
+}
+
+function afficherPage(tab) {
+  const route = routeDePage(tab);
+  if (!route) return false;
+  if ((window.location.hash || "") === "#" + route) {
+    // Même route : on force un rendu, le hash ne changera pas.
+    window.dispatchEvent(new Event("hashchange"));
+  } else {
+    window.location.hash = "#" + route;
+  }
+  return true;
+}
+
 function openJob(id) {
   currentJob = id;
   loadResult(id);
-  document.querySelector('.nav-item[data-tab="tab-result"]').click();
+  afficherPage("tab-result");
 }
 async function retryJob(id) {
   await fetchAuthenticated("/api/jobs/" + id + "/retry", { method: "POST" });
@@ -1323,11 +1385,12 @@ async function initLangChips() {
       el.tagName === "SELECT" || el.isContentEditable);
   }
   function gotoTab(tab) {
-    document.querySelector(`.nav-item[data-tab="${tab}"]`)?.click();
+    afficherPage(tab);
   }
   function currentTab() {
-    const active = document.querySelector(".nav-item.active");
-    return active ? active.dataset.tab : "tab-import";
+    const route = (window.location.hash || "").replace(/^#/, "");
+    const trouve = Object.keys(PAGE_ROUTES).find(t => PAGE_ROUTES[t] === route);
+    return trouve || "";
   }
 
   document.addEventListener("keydown", e => {
@@ -1602,9 +1665,10 @@ async function initLangChips() {
     clearTimeout(auditTimer);
     auditTimer = setTimeout(loadAudit, 250);
   });
-  // chargé quand on affiche le tableau de bord
-  document.querySelector('.nav-item[data-tab="tab-dashboard"]')
-    ?.addEventListener("click", () => setTimeout(loadAudit, 60));
+  // chargé quand on affiche l'atelier documents
+  window.addEventListener("hashchange", () => {
+    if ((window.location.hash || "") === "#documents/ocr") setTimeout(loadAudit, 60);
+  });
 
   /* ═════════ 3. sélection de champs → export ciblé ═════════ */
   const tbody = document.querySelector("#fieldsTable tbody");
@@ -1883,8 +1947,9 @@ async function initLangChips() {
     }
   });
 
-  document.querySelector('.nav-item[data-tab="tab-profiles"]')
-    ?.addEventListener("click", () => { if (!all.length) loadList(); });
+  window.addEventListener("hashchange", () => {
+    if ((window.location.hash || "") === "#documents/profils" && !all.length) loadList();
+  });
 })();
 
 
