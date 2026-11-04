@@ -12,15 +12,15 @@ les produit. Les tests ajoutés dans cette passe sont marqués 🆕.
 | Commande | Résultat | Commentaire |
 |---|---|---|
 | `ruff check src tests` | **All checks passed** | 0 erreur de style |
-| `python -m pytest -q` | **1007 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
-| `python -m pytest tests/test_ui_premium.py -q` | **51 passed** | +1 par passe depuis la 14 |
+| `python -m pytest -q` | **1008 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
+| `python -m pytest tests/test_ui_premium.py -q` | **52 passed** | +1 par passe depuis la 14 |
 | `python -m pytest tests/test_historique.py -q` | **5 passed** 🆕 | ordre, filtrage par document, événements inconnus, journal illisible |
 | `python -m pytest tests/test_rbac_ecritures.py -q` | **18 passed** 🆕 | 14 familles d'écriture refusées à un lecteur, refus tracés |
 | `python -m pytest tests/test_parametres.py -q` | **10 passed** 🆕 | écriture, bornes, persistance, effet réel sur l'import |
 | `python -m pytest tests/test_referentiels.py -q` | **7 passed** 🆕 | CRUD, persistance, doublons, audit |
 | `python -m pytest tests/test_route_ordering.py -q` | **4 passed** 🆕 | détection des routes masquées |
 
-Comparaison avec le début du cycle : 945 → **1007 tests passants**
+Comparaison avec le début du cycle : 945 → **1008 tests passants**
 (+7 référentiels, +4 ordre des routes, +10 écrans rôles/utilisateurs, +4
 intégrité UI, moins un test de service worker réécrit pour être
 version-agnostique).
@@ -41,7 +41,9 @@ jetables) a parcouru les 99 routes :
   muette) ;
 - `#referentiels/parametres` supprimée puis rétablie en passe 14 sur une API réelle ;
 - formulaires : pays/ports alimentés par les référentiels, état vide expliqué ;
-- `#rapports/graphes` : 6 cartes, 3 séries SVG réelles, 3 états vides expliqués.
+- `#rapports/graphes` : 6 cartes, 3 séries SVG réelles, 3 états vides expliqués ;
+- `#finance/cloture` : archivage exercé sur un dossier jetable (POST 200),
+  dossier supprimé ensuite — 715 dossiers de démonstration intacts.
 
 ## 2. Tests serveur ajoutés
 

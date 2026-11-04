@@ -1015,3 +1015,22 @@ def test_ecran_graphiques_dedie_dessine_les_series_du_serveur() -> None:
     assert "UniOCRCharts.donut" in module
     assert "Aucun frais imputé" in module          # pas de cadre vide
     assert ".graph__grille" in css
+
+
+def test_ecran_cloture_archive_avec_confirmation() -> None:
+    """« Clôture financière » archive un dossier — après confirmation.
+
+    L'archivage est irréversible (le dossier reste consultable mais sort des
+    listes). L'action doit donc demander confirmation, viser la bonne route et
+    n'être proposée que sur les dossiers non archivés.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    moteur = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+
+    debut = moteur.index('"finance/cloture"')
+    bloc = moteur[debut:debut + 2200]
+    assert 'url: "/api/dossiers/{id}/archiver"' in bloc
+    assert 'methode: "POST"' in bloc
+    assert "confirmation:" in bloc and "Archiver ce dossier" in bloc
+    assert 'ligne.state || "") !== "archive"' in bloc      # jamais sur un archivé
+    assert "succes:" in bloc

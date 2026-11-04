@@ -1,11 +1,11 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 18. Ce document est la liste de travail
+État au 2026-11-04, après la passe 19. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
 **Chiffres du jour, sans arrondi complaisant** : 100 entrées de menu,
-**99 conformes**, **1 partiel**, 0 absent, 0 non connecté.
+**100 conformes**, **0 partiel**, 0 absent, 0 non connecté.
 
 La page « Paramètres généraux » a été retirée en passe 13 (son formulaire
 n'enregistrait rien) puis **rétablie en passe 14 sur une vraie API** :
@@ -20,7 +20,7 @@ validation nommant le champ, effet immédiat et persistant.
 |---|---|---|---|
 | ✅ P0-1 | ~~Figer par un test automatisé le comportement d'un rôle lecteur~~ | **fait en passe 17** : registre RBAC en répertoire temporaire, lecture autorisée (200), écriture refusée (403) et refus tracé (`acces_refuse_role`) | `tests/test_rbac_ecritures.py` |
 | ✅ P0-2 | ~~Étendre le test d'écriture refusée à chaque famille d'écran~~ | **fait en passe 17** : 14 écritures couvertes (clients, fournisseurs, référentiels, paramètres, dossiers, frais, documents, rôles, nettoyage, connecteurs, sauvegardes) + distinction opérateur/administrateur | `tests/test_rbac_ecritures.py` |
-| P0-3 | Exercer l'**archivage** d'un dossier depuis l'écran de clôture | action destructive et irréversible : elle n'a pas été testée pour ne pas altérer un dossier de démonstration suivi par git | `#finance/cloture`, `POST /api/dossiers/{id}/archiver` |
+| ✅ P0-3 | ~~Exercer l'archivage d'un dossier depuis l'écran de clôture~~ | **fait en passe 19** : dossier d'essai `ARCH-UI-1` créé par l'API, archivé depuis l'écran (POST 200, `state: archive`), puis supprimé — zéro dossier de démonstration modifié | `#finance/cloture` |
 | ✅ P0-4 | ~~Vraie sauvegarde des paramètres généraux (API + formulaire)~~ | **fait en passe 14** : `GET/PUT/DELETE /api/parametres`, persistance dans `data/parametres.json`, 422 nommant le champ, effet prouvé (limite 1 Mo → import 413, limite 50 Mo → 200) |
 
 ## P1 — Dossiers, documents, OCR, contrôle, workflow
@@ -72,9 +72,10 @@ validation nommant le champ, effet immédiat et persistant.
 3. **Base de démonstration** : 715 dossiers, ~200 jobs, 49 dossiers archivés,
    0 client, 0 fournisseur, 11 profils. Les volumes affichés par les écrans
    reflètent ce jeu de données, jamais des valeurs simulées.
-4. **Archivage non exercé** : l'action « Archiver » de `#finance/cloture` est
-   branchée et rendue, mais l'archivage est irréversible et les dossiers de
-   démonstration sont suivis par git — la matrice le déclare PARTIEL.
+4. **Archivage irréversible** : l'action « Archiver » de `#finance/cloture`
+   demande confirmation et n'est proposée que sur des dossiers non archivés ;
+   elle a été exercée sur un dossier jetable, jamais sur les données de
+   démonstration.
 
 ## Méthode de travail pour la suite
 

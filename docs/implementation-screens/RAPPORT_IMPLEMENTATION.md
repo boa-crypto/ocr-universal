@@ -689,6 +689,40 @@ dessinées** (8, 98 et 10 éléments SVG) et **3 états vides expliqués**,
 `web/index.html` : 196 → **198 Ko** (plafond 220 Ko). Matrice : 100 entrées,
 la ligne « Graphiques » passe de « page historique » à **écran dédié**.
 
+## 2.22 Passe 19 — la matrice passe à 100 conformes (et le mérite)
+
+Depuis la passe 13, un écran restait **PARTIEL** : `#finance/cloture`. Son
+action « Archiver » était branchée, mais jamais exercée. La raison invoquée
+était prudente et juste : l'archivage est **irréversible**, et les dossiers de
+démonstration sont suivis par git. Archiver l'un d'eux, c'est modifier une
+donnée de référence pour toute l'équipe.
+
+### La façon de le prouver sans rien abîmer
+
+Un dossier **jetable** résout le problème : la suite crée
+`Dossier archivage UI` (`ARCH-UI-1`) par l'API, l'archive depuis l'écran, puis
+le supprime. Aucun dossier de démonstration n'est touché.
+
+Mesure jsdom :
+
+1. `#finance/cloture` → recherche `ARCH-UI-1` → **1 ligne** ;
+2. clic sur « Archiver » → confirmation ;
+3. `POST /api/dossiers/{id}/archiver` → **200** ;
+4. relecture serveur : `state: archive`, libellé intact ;
+5. `DELETE` du dossier d'essai → **200**, base de démonstration inchangée
+   (715 dossiers).
+
+### Pourquoi la ligne reste honnête
+
+La déclaration dans la matrice n'est pas devenue « conforme » parce qu'un test
+suffisait : la colonne « Action requise » porte désormais la contrainte réelle —
+*« Archiver » est irréversible : confirmation demandée ; exercée depuis l'écran
+sur un dossier d'essai, supprimé ensuite*. Le garde-fou est aussi dans l'écran :
+le filtre exclut les dossiers déjà archivés, et l'action demande confirmation
+(les deux sont vérifiés par `tests/test_ui_premium.py`).
+
+**Matrice : 100 entrées, 100 conformes, 0 partiel, 0 absent, 0 non connecté.**
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
@@ -725,9 +759,8 @@ directement ne voit que les routes déclarées dans `api.py` — d'où le helper
 
 ## 5. Ce que ces passes ne font pas
 
-- Un **seul écran reste PARTIEL** : `#finance/cloture`, dont l'action
-  « Archiver » n'a pas été exercée sur des données de démonstration suivies par
-  git. Voir `FONCTIONNALITES_RESTANTES.md`.
+- **Aucun écran n'est laissé PARTIEL** : `#finance/cloture` a été exercé en
+  passe 19 sur un dossier jetable, sans toucher aux données de démonstration.
 - Certains écrans **réutilisent une page historique** (`#dossiers/tous`,
   `#tab-profiles`, `#documents/configuration`…) : mesurés et documentés, mais
   leur contenu reste celui de la page héritée.

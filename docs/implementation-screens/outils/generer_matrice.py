@@ -75,6 +75,7 @@ ACTIONS_TESTEES: dict[str, set[str]] = {
     "rapports/exports": {"Télécharger (JSON)", "Télécharger (CSV)"},
     "douane/paiements": {"Marquer payée"},
     "referentiels/parametres": {"Rétablir le défaut"},
+    "finance/cloture": {"Archiver"},
 }
 #: Écrans dédiés ajoutés dans ce cycle : page → (module, source interrogée).
 #: Sans cette table, un écran neuf serait décrit comme « page historique ».
@@ -85,8 +86,8 @@ ECRANS_DEDIES: dict[str, tuple[str, str]] = {
 LIMITES: dict[str, str] = {
     "finance/reconciliation": "limite : aucun import bancaire côté serveur, "
                               "le rapprochement porte sur les factures seules",
-    "finance/cloture": "action « Archiver » non exercée : l'archivage est irréversible "
-                       "et les dossiers de démonstration sont suivis par git",
+    "finance/cloture": "« Archiver » est irréversible : confirmation demandée ; "
+                       "exercée depuis l'écran sur un dossier d'essai, supprimé ensuite",
     "admin/sauvegardes": "création non exercée : l'API purge au-delà de 5 sauvegardes "
                          "(les 8 archives existantes sont suivies par git)",
 }

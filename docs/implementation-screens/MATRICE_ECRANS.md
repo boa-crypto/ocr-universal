@@ -48,19 +48,19 @@ peut pas être « CONFORME » pour un écran à écritures.
 | Opérations maritimes | 8 | 8 | 0 | 0 | 0 | 0 |
 | Douane & réglementation | 9 | 9 | 0 | 0 | 0 | 0 |
 | Enlèvement & livraison | 8 | 8 | 0 | 0 | 0 | 0 |
-| Finance & facturation | 8 | 7 | 1 | 0 | 0 | 0 |
+| Finance & facturation | 8 | 8 | 0 | 0 | 0 | 0 |
 | Rapports & statistiques | 4 | 4 | 0 | 0 | 0 | 0 |
 | Référentiels & paramètres | 15 | 15 | 0 | 0 | 0 | 0 |
 | Administration & sécurité | 13 | 13 | 0 | 0 | 0 | 0 |
-| **Total** | **100** | **99** | **1** | **0** | **0** | **0** |
+| **Total** | **100** | **100** | **0** | **0** | **0** | **0** |
 
 - **Entrées de menu recensées** : 100
-- **Écrans conformes** : 99
-- **Écrans partiels** : 1
+- **Écrans conformes** : 100
+- **Écrans partiels** : 0
 - **Écrans absents** : 0
 - **Écrans non connectés** : 0
 
-Lecture honnête de ces chiffres : les 99 écrans conformes sont
+Lecture honnête de ces chiffres : les 100 écrans conformes sont
 ceux dont la source a répondu et dont les écritures éventuelles sont branchées ;
 les écrans « hérités » (mis en page lors des missions précédentes) restent
 marqués **PARTIEL** tant qu'ils n'ont pas été re-testés un par un dans cette
@@ -180,7 +180,7 @@ terminé.
 | Finance & facturation | Facturation client | `#finance/facturation` | Facturation client (`web/ecrans.js`) | `/api/frais/facture` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200, édition PUT 200, suppression DELETE 200 | maintenir ; étendre les champs métier si besoin |
 | Finance & facturation | Paiements | `#finance/paiements` | Paiements (`web/ecrans.js`) | `/api/declarations/liquidation, /api/frais/facture` | 0 ligne | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | consultation connectée ; écritures non requises |
 | Finance & facturation | Rapprochement | `#finance/reconciliation` | Rapprochement financier (`web/ecrans.js`) | `/api/frais` | 0 ligne | Oui | **CONFORME** | jsdom : Lancer le rapprochement → 200 | actions exercées par test (Lancer le rapprochement) — limite : aucun import bancaire côté serveur, le rapprochement porte sur les factures seules |
-| Finance & facturation | Clôture financière | `#finance/cloture` | Clôture financière (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Partiel | **PARTIEL** | rendu jsdom + GET 200 sans erreur JS | tester et durcir les actions (Archiver) — action « Archiver » non exercée : l'archivage est irréversible et les dossiers de démonstration sont suivis par git |
+| Finance & facturation | Clôture financière | `#finance/cloture` | Clôture financière (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | jsdom : Archiver → 200 | actions exercées par test (Archiver) — « Archiver » est irréversible : confirmation demandée ; exercée depuis l'écran sur un dossier d'essai, supprimé ensuite |
 
 ### 10. Rapports & statistiques
 
