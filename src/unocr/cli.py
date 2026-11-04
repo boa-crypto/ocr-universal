@@ -176,6 +176,14 @@ def main(argv=None) -> int:
     pe.add_argument("--json", action="store_true", dest="json_output", help="rapport structuré")
     pe.set_defaults(func=cmd_pieces_receipt)
 
+    pa = sub.add_parser("pieces-audit", help="préparer le relais ciblé d'un reçu vers audit.log")
+    pa.add_argument("id", help="identifiant du justificatif supprimé")
+    pa.add_argument("--data-dir", default="", help="magasin source")
+    pa.add_argument("--audit-file", required=True, help="journal JSONL cible, parent existant")
+    pa.add_argument("--apply", action="store_true", help="ajouter explicitement après arrêt des écritures")
+    pa.add_argument("--json", action="store_true", dest="json_output", help="rapport structuré")
+    pa.set_defaults(func=cmd_pieces_audit)
+
     args = parser.parse_args(argv)
     return args.func(args)
 
@@ -206,6 +214,20 @@ def cmd_pieces_check(args) -> int:
         for anomalie in resultat["anomalies"]:
             print(f"  {anomalie['categorie']} : {anomalie['cible']} — {anomalie['detail']}")
     return {"conforme": 0, "anomalies": 1, "indisponible": 2}[resultat["etat"]]
+
+
+def cmd_pieces_audit(args) -> int:
+    from .pieces_audit import relayer_suppression
+
+    resultat = relayer_suppression(_racine_pieces(args.data_dir), args.id, Path(args.audit_file), args.apply)
+    if args.json_output:
+        print(json.dumps(resultat, ensure_ascii=False, indent=2))
+    else:
+        print(f"Relais {args.id} : {resultat['etat']}.")
+        print(resultat["limite"])
+        if resultat.get("detail"):
+            print(resultat["detail"], file=sys.stderr)
+    return 2 if resultat["etat"] in {"refuse", "indetermine"} else 0
 
 
 def cmd_pieces_receipt(args) -> int:

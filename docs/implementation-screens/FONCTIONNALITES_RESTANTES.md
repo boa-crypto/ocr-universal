@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 41. Ce document est la liste de travail
+État au 2026-11-04, après la passe 42. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -272,3 +272,16 @@ Restent relais/réconciliation audit.log, traces transactionnelles des autres
 opérations, durabilité après coupure électrique, interruptions upload/backup,
 collecte contrôlée des résidus et antivirus. Le reçu n'est ni infalsifiable ni
 une attribution vérifiée ; son absence ne prouve jamais une annulation.
+
+
+### Passe 42 — relais ciblé audit disponible
+
+✅ `pieces-audit ID --data-dir <magasin> --audit-file <journal> [--json]` prépare ;
+`--apply` ajoute explicitement si le journal reste valide et l'événement absent.
+Reçu SQLite inchangé, refus des incohérences/troncatures, résultat indéterminé
+explicite en cas de panne après tentative. 28 nouveaux tests, 106 ciblés réussis.
+Le besoin de relais manuel est couvert, pas une livraison distribuée exactly-once.
+Restent tests SIGKILL du relais, coordination avec tous les écrivains/rotations,
+traces transactionnelles des autres opérations, coupures électriques,
+interruptions upload/backup, collecte contrôlée des résidus et antivirus.
+Toujours sauvegarder et suspendre écritures/rotations avant application.

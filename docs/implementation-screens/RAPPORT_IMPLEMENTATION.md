@@ -1572,3 +1572,58 @@ La mention 29 tests de persistance de la passe 40 était une erreur de décompte
 il y en avait 30, désormais 35. Aucune nouvelle mesure de matrice/navigateur visuel.
 
 Aperçu redémarré sur le backend passe 41, port 8000, hôte distant vérifié HTTP 200.
+
+
+## 2.45 Passe 42 — relais ciblé du reçu vers audit JSONL
+
+Nouvelle commande opérateur, plan sans écriture par défaut :
+
+```sh
+PYTHONPATH=src python -m unocr.cli pieces-audit just_ID --data-dir <magasin> --audit-file <logs>/audit.log --json
+# Sauvegarder le journal et suspendre écritures/rotations avant l'application :
+PYTHONPATH=src python -m unocr.cli pieces-audit just_ID --data-dir <magasin> --audit-file <logs>/audit.log --apply --json
+```
+
+Le reçu SQLite doit exister et être exploitable. Le journal cible est explicite,
+son parent doit exister ; aucun répertoire n'est créé. Le plan ne crée pas le
+journal absent. L'application POSIX peut le créer en mode 0600, sans tronquer un
+journal existant. Un journal/base identique, un lien symbolique final/parent,
+un répertoire ou FIFO sont refusés. Les ancêtres doivent rester stables : pas de
+garantie contre un opérateur hostile modifiant les chemins simultanément.
+
+Avant ajout, l'intégralité du journal est relue : maximum 64 Mio, lignes de 1 Mio.
+JSON non objet, clé dupliquée, constante non standard, encodage invalide ou dernière
+ligne sans saut de ligne entraînent un refus, sans réparation ni troncature.
+Les contradictions portant sur le reçu demandé sont aussi refusées.
+
+Le relais ajoute l'événement `justificatif_supprime` avec cible, frais, date du
+reçu, empreinte/taille déclarées et `recu_id=suppression_justificatif:<ID>`. Le
+préfixe existant est conservé ; les écritures courtes sont complétées, puis fsync.
+Une répétition reconnaît ce reçu et n'ajoute rien. Un événement historique de même
+type/cible sans recu_id est également considéré déjà présent : aucun doublon ni
+complément des champs, sans prétendre authentifier cet ancien événement.
+
+| État | Code | Sens |
+|---|---|---|
+| `pret` | 0 | Plan uniquement, ajout possible à l'instant examiné |
+| `deja_present` | 0 | Aucun ajout ; événement identifié ou historique trouvé |
+| `reporte` | 0 | Ajout terminé et fsync du fichier effectué |
+| `refuse` | 2 | Conditions insuffisantes avant tentative d'ajout |
+| `indetermine` | 2 | Écriture tentée, résultat incertain ; `applique=null`, relire avant reprise |
+
+L'application relit le journal sous verrou flock exclusif non bloquant. Ce verrou
+coordonne uniquement les relais coopérants : `audit()` historique ne le prend pas.
+**Suspendre les écritures serveur et rotations** ; pas d'exactly-once avec d'autres
+écrivains, pas de transaction distribuée, de marqueur de livraison en base ou de
+relance automatique. Une rotation/restauration peut retirer l'événement connu ;
+le recu_id stable aide un consommateur à dédupliquer mais ne supprime pas ce risque.
+Après erreur d'écriture/fsync, le journal potentiellement partiel est conservé,
+jamais réparé automatiquement. Aucune garantie de coupure électrique ni de fsync
+du répertoire. SQLite et ses reçus ne sont pas modifiés par le relais.
+
+Validation : **28 nouveaux tests** (plan lecture seule, préfixe/base conservés,
+reprise, héritage, conflits, JSONL invalide, chemins/FIFO, verrou occupé, limites,
+écritures courtes, panne partielle/fsync et CLI). **106 tests ciblés réussis** ;
+Ruff OK. Suite complète **1223 passed / 23 failed / 11 skipped**, mêmes échecs OCR
+connus. Aucune application aux journaux utilisateur. Pas encore de test SIGKILL
+spécifique au relais. Aperçu/backend passe 41 inchangé (ajout CLI seulement).

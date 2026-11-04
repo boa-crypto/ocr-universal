@@ -1,6 +1,6 @@
 # Rapport de tests — écrans UniOCR
 
-Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 41.
+Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 42.
 
 Ce document liste **uniquement des résultats obtenus**, avec la commande qui
 les produit. Les sections de passes ci-dessous conservent les résultats historiques.
@@ -12,7 +12,7 @@ les produit. Les sections de passes ci-dessous conservent les résultats histori
 | Commande | Résultat | Commentaire |
 |---|---|---|
 | `ruff check src tests` | **All checks passed** | 0 erreur de style |
-| `python -m pytest -q` | **1195 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
+| `python -m pytest -q` | **1223 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
 | `python -m pytest tests/test_ui_premium.py -q` | **56 passed** | tests de contrat et intégrité UI |
 | `python -m pytest tests/test_historique.py -q` | **5 passed** 🆕 | ordre, filtrage par document, événements inconnus, journal illisible |
 | `python -m pytest tests/test_rbac_ecritures.py -q` | **18 passed** | 14 familles d'écriture refusées à un lecteur, refus tracés |
@@ -379,3 +379,20 @@ python3 docs/implementation-screens/outils/generer_matrice.py /tmp/ui.json
   23 échecs OCR environnementaux que la passe 40.
 - Pas de migration des suppressions historiques, pas d'audit infalsifiable, pas de
   relais exactly-once vers audit.log ni de preuve de coupure électrique.
+
+
+### Passe 42 — relais opt-in vers le journal d'audit
+
+- `pytest tests/test_pieces_audit.py -q` : **28 passed** au dernier état inclus
+  dans les ciblés ci-dessous (24 cas initiaux puis 4 cas supplémentaires).
+- `pytest tests/test_pieces_audit.py tests/test_pieces_receipts.py tests/test_justificatifs_persistence.py tests/test_justificatifs_recovery.py tests/test_justificatifs_diagnostic.py tests/test_justificatifs_e2e.py -q` : **106 passed**.
+- `ruff check src tests` : **All checks passed**.
+- Suite complète : **1223 passed, 23 failed, 11 skipped**, un avertissement ;
+  liste des 23 échecs identique à celle de la passe 41.
+- Plan sans création, source/prefixe conservés, répétition sans ajout, historique
+  sans doublon, contradictions, JSONL tronqué/invalide/dupliqué/non standard,
+  chemins non sûrs/FIFO, bornes, verrou occupé, écritures courtes et pannes testés.
+- Une écriture partielle ou un fsync échoué donne `indetermine`, pas un succès ;
+  reprise refusée si tronqué ou sans nouvel ajout si une ligne complète existe.
+- Tests isolés uniquement ; aucun relais appliqué au journal utilisateur. Pas de
+  preuve SIGKILL/power-loss du relais ni d'exactly-once entre anciens écrivains.
