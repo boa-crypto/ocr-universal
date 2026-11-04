@@ -69,7 +69,10 @@ en chargeant `index.html` comme un navigateur (scripts actifs, `fetch` réel) :
 | Harnais | Mesure | Résultat |
 |---|---|---|
 | parcours des 99 routes de menu | page vide ? erreur JS ? | **99 routes, 0 page vide, 0 erreur JS** |
-| parcours des 43 écrans déclaratifs | en-tête, liste ou état vide, erreurs HTTP | **43/43 rendus, 0 erreur, 0 réponse non-200** |
+| parcours des 50 écrans déclaratifs | en-tête, liste ou état vide, erreurs HTTP | **50/50 rendus, 0 erreur, 0 réponse non-200** |
+| écrans de dossiers et d'espace de travail (passe 2) | lignes réelles, bandeau d'absence, navigation « Ouvrir » | **7/7 rendus avec données (25 lignes/page), compteurs réels : 164 bloqués, 186 tâches, 435 en attente de pièces, 30 récents** |
+| redirections corrigées (passe 2) | bandeau supprimé, page réellement affichée | **6/6 sans bandeau** (`dossiers/tous`, `dossiers/nouveau`, `dossiers/clients`, `workspace/valider`, `referentiels/profiles`, `referentiels/parametres`) ; le dialogue de création `#dos-create` s'ouvre bien sur `#dossiers/nouveau` |
+| action « Ouvrir » d'une liste de dossiers | navigation vers l'espace dossier | **hash → `#dossiers/tous`, section dossiers affichée, 0 erreur JS** |
 | CRUD complet sur `#referentiels/ports` | création, recherche, tri, export | **formulaire → POST 201 → liste rafraîchie (1 → 2 lignes), recherche « zzz » → état vide, tri OK, export OK** |
 
 Ces harnais ne sont pas dans la suite pytest (ils exigent `jsdom`, qui n'est

@@ -37,26 +37,26 @@ explicite », jamais meublée de données fictives.
 | Rubrique | Entrées | Conformes | Partiels | Absents | Non connectés | Autres |
 |---|---|---|---|---|---|---|
 | Tableau de bord | 1 | 0 | 1 | 0 | 0 | 0 |
-| Mon espace de travail | 6 | 0 | 6 | 0 | 0 | 0 |
-| Gestion des dossiers | 7 | 0 | 7 | 0 | 0 | 0 |
-| Documents & OCR | 14 | 0 | 14 | 0 | 0 | 0 |
-| Contrôle & conformité | 7 | 2 | 5 | 0 | 0 | 0 |
-| Opérations maritimes | 8 | 1 | 7 | 0 | 0 | 0 |
+| Mon espace de travail | 6 | 4 | 2 | 0 | 0 | 0 |
+| Gestion des dossiers | 7 | 3 | 4 | 0 | 0 | 0 |
+| Documents & OCR | 14 | 1 | 13 | 0 | 0 | 0 |
+| Contrôle & conformité | 7 | 3 | 4 | 0 | 0 | 0 |
+| Opérations maritimes | 8 | 3 | 5 | 0 | 0 | 0 |
 | Douane & réglementation | 9 | 4 | 5 | 0 | 0 | 0 |
 | Enlèvement & livraison | 8 | 2 | 6 | 0 | 0 | 0 |
-| Finance & facturation | 8 | 4 | 4 | 0 | 0 | 0 |
+| Finance & facturation | 8 | 5 | 3 | 0 | 0 | 0 |
 | Rapports & statistiques | 4 | 1 | 3 | 0 | 0 | 0 |
 | Référentiels & paramètres | 15 | 12 | 3 | 0 | 0 | 0 |
-| Administration & sécurité | 13 | 4 | 9 | 0 | 0 | 0 |
-| **Total** | **100** | **30** | **70** | **0** | **0** | **0** |
+| Administration & sécurité | 13 | 5 | 8 | 0 | 0 | 0 |
+| **Total** | **100** | **43** | **57** | **0** | **0** | **0** |
 
 - **Entrées de menu recensées** : 100
-- **Écrans conformes** : 30
-- **Écrans partiels** : 70
+- **Écrans conformes** : 43
+- **Écrans partiels** : 57
 - **Écrans absents** : 0
 - **Écrans non connectés** : 0
 
-Lecture honnête de ces chiffres : les 30 écrans conformes sont
+Lecture honnête de ces chiffres : les 43 écrans conformes sont
 ceux dont la source a répondu et dont les écritures éventuelles sont branchées ;
 les écrans « hérités » (mis en page lors des missions précédentes) restent
 marqués **PARTIEL** tant qu'ils n'ont pas été re-testés un par un dans cette
@@ -76,23 +76,23 @@ terminé.
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Action requise |
 |---|---|---|---|---|---|---|---|---|
 | Mon espace de travail | Vue d'ensemble | `#workspace` | écran existant `#tab-workspace` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
-| Mon espace de travail | Mes tâches | `#workspace/taches` | redirection vers `#tab-workspace` | `(module historique)` | contenu rendu (5 blocs) | Partiel | **PARTIEL** | remplacer la redirection par un écran dédié (filtre propre, actions) |
-| Mon espace de travail | À valider | `#workspace/valider` | redirection vers `#tab-workspace` | `(module historique)` | contenu rendu (5 blocs) | Partiel | **PARTIEL** | remplacer la redirection par un écran dédié (filtre propre, actions) |
-| Mon espace de travail | En attente | `#workspace/en-attente` | redirection vers `#tab-workspace` | `(module historique)` | contenu rendu (5 blocs) | Partiel | **PARTIEL** | remplacer la redirection par un écran dédié (filtre propre, actions) |
-| Mon espace de travail | Mes alertes | `#workspace/alertes` | redirection vers `#tab-workspace` | `(module historique)` | contenu rendu (5 blocs) | Partiel | **PARTIEL** | remplacer la redirection par un écran dédié (filtre propre, actions) |
-| Mon espace de travail | Dossiers récents | `#workspace/recents` | redirection vers `#tab-workspace` | `(module historique)` | contenu rendu (5 blocs) | Partiel | **PARTIEL** | remplacer la redirection par un écran dédié (filtre propre, actions) |
+| Mon espace de travail | Mes tâches | `#workspace/taches` | Mes tâches (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | lecture seule assumée (données serveur) |
+| Mon espace de travail | À valider | `#workspace/valider` | écran existant `#tab-validation` | `(module historique)` | 25 lignes affichées | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
+| Mon espace de travail | En attente | `#workspace/en-attente` | En attente de pièces (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | lecture seule assumée (données serveur) |
+| Mon espace de travail | Mes alertes | `#workspace/alertes` | Mes alertes (`web/ecrans.js`) | `/api/dashboard/alertes` | 0 ligne | Oui | **CONFORME** | lecture seule assumée (données serveur) |
+| Mon espace de travail | Dossiers récents | `#workspace/recents` | Dossiers récents (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | lecture seule assumée (données serveur) |
 
 ### 3. Gestion des dossiers
 
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Action requise |
 |---|---|---|---|---|---|---|---|---|
 | Gestion des dossiers | Vue d'ensemble | `#dossiers` | écran existant `#tab-dossiers` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
-| Gestion des dossiers | Nouveau dossier | `#dossiers/nouveau` | redirection vers `#tab-dossiers` | `(module historique)` | contenu rendu (0 blocs) | Partiel | **PARTIEL** | remplacer la redirection par un écran dédié (filtre propre, actions) |
-| Gestion des dossiers | Tous les dossiers | `#dossiers/tous` | redirection vers `#tab-dossiers` | `(module historique)` | contenu rendu (0 blocs) | Partiel | **PARTIEL** | remplacer la redirection par un écran dédié (filtre propre, actions) |
-| Gestion des dossiers | Dossiers en cours | `#dossiers/en-cours` | redirection vers `#tab-dossiers` | `(module historique)` | contenu rendu (0 blocs) | Partiel | **PARTIEL** | remplacer la redirection par un écran dédié (filtre propre, actions) |
-| Gestion des dossiers | Dossiers bloqués | `#dossiers/bloques` | redirection vers `#tab-dossiers` | `(module historique)` | contenu rendu (0 blocs) | Partiel | **PARTIEL** | remplacer la redirection par un écran dédié (filtre propre, actions) |
-| Gestion des dossiers | Dossiers clôturés | `#dossiers/clotures` | redirection vers `#tab-dossiers` | `(module historique)` | contenu rendu (0 blocs) | Partiel | **PARTIEL** | remplacer la redirection par un écran dédié (filtre propre, actions) |
-| Gestion des dossiers | Clients | `#dossiers/clients` | redirection vers `#tab-dossiers` | `(module historique)` | contenu rendu (0 blocs) | Partiel | **PARTIEL** | remplacer la redirection par un écran dédié (filtre propre, actions) |
+| Gestion des dossiers | Nouveau dossier | `#dossiers/nouveau` | écran existant `#tab-dossiers` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
+| Gestion des dossiers | Tous les dossiers | `#dossiers/tous` | écran existant `#tab-dossiers` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
+| Gestion des dossiers | Dossiers en cours | `#dossiers/en-cours` | Dossiers en cours (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | lecture seule assumée (données serveur) |
+| Gestion des dossiers | Dossiers bloqués | `#dossiers/bloques` | Dossiers bloqués (`web/ecrans.js`) | `/api/dossiers, /api/dashboard/alertes` | 715 lignes | Oui | **CONFORME** | lecture seule assumée (données serveur) |
+| Gestion des dossiers | Dossiers clôturés | `#dossiers/clotures` | Dossiers clôturés (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | lecture seule assumée (données serveur) |
+| Gestion des dossiers | Clients | `#dossiers/clients` | écran existant `#tab-clients` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 
 ### 4. Documents & OCR
 
@@ -111,7 +111,7 @@ terminé.
 | Documents & OCR | Connecteur Hub | `#documents/connecteurs` | écran existant `#tab-connectors` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Documents & OCR | Configuration | `#documents/configuration` | écran existant `#tab-config` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Documents & OCR | Archives | `#documents/archives` | écran existant `#tab-ged` | `(module historique)` | 25 lignes affichées | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
-| Documents & OCR | Gestion des versions | `#documents/versions` | Gestion des versions (`web/ecrans.js`) | `/api/jobs?limit=300` | 200 lignes | Partiel | **PARTIEL** | tester et durcir les actions (Ouvrir) |
+| Documents & OCR | Gestion des versions | `#documents/versions` | Gestion des versions (`web/ecrans.js`) | `/api/jobs?limit=300` | 200 lignes | Oui | **CONFORME** | lecture seule assumée (données serveur) |
 
 ### 5. Contrôle & conformité
 
@@ -119,7 +119,7 @@ terminé.
 |---|---|---|---|---|---|---|---|---|
 | Contrôle & conformité | Vue d'ensemble | `#controle` | écran existant `#tab-controle` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Contrôle & conformité | Contrôle documentaire | `#controle/documentaire` | Contrôle documentaire (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Partiel | **PARTIEL** | tester et durcir les actions (Contrôler, Verdict) |
-| Contrôle & conformité | Comparaison documents | `#controle/comparaison` | Comparaison des documents (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Partiel | **PARTIEL** | tester et durcir les actions (Comparer) |
+| Contrôle & conformité | Comparaison documents | `#controle/comparaison` | Comparaison des documents (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | consultation connectée ; écritures non requises |
 | Contrôle & conformité | Documents manquants | `#controle/manquants` | écran existant `#tab-manquants` | `(module historique)` | 25 lignes affichées | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Contrôle & conformité | Anomalies | `#controle/anomalies` | écran existant `#tab-anomalies` | `(module historique)` | 25 lignes affichées | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Contrôle & conformité | Historique contrôles | `#controle/historique` | Historique des contrôles (`web/ecrans.js`) | `/api/rbac/audit` | 0 ligne | Oui | **CONFORME** | lecture seule assumée (données serveur) |
@@ -130,13 +130,13 @@ terminé.
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Action requise |
 |---|---|---|---|---|---|---|---|---|
 | Opérations maritimes | Vue d'ensemble | `#maritime` | écran existant `#tab-maritime` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
-| Opérations maritimes | Escales | `#maritime/escales` | Escales (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Partiel | **PARTIEL** | tester et durcir les actions (Ouvrir) |
+| Opérations maritimes | Escales | `#maritime/escales` | Escales (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | consultation connectée ; écritures non requises |
 | Opérations maritimes | Navires | `#maritime/navires` | écran existant `#tab-navires` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Opérations maritimes | Voyages | `#maritime/voyages` | Voyages (`web/ecrans.js`) | `/api/expeditions` | 0 ligne | Oui | **CONFORME** | maintenir ; étendre les champs métier si besoin |
 | Opérations maritimes | Connaissances B/L | `#maritime/bl` | écran existant `#tab-bl` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Opérations maritimes | Conteneurs | `#maritime/conteneurs` | écran existant `#tab-conteneurs` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Opérations maritimes | Suivi arrivées | `#maritime/arrivees` | écran existant `#tab-eta-etd` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
-| Opérations maritimes | Échéances maritimes | `#maritime/echeances` | Échéances maritimes (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Partiel | **PARTIEL** | tester et durcir les actions (Ouvrir) |
+| Opérations maritimes | Échéances maritimes | `#maritime/echeances` | Échéances maritimes (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | consultation connectée ; écritures non requises |
 
 ### 7. Douane & réglementation
 
@@ -174,7 +174,7 @@ terminé.
 | Finance & facturation | Débours | `#finance/debours` | Débours (`web/ecrans.js`) | `/api/frais` | 0 ligne | Oui | **CONFORME** | consultation connectée ; écritures non requises |
 | Finance & facturation | Factures fournisseurs | `#finance/factures-fournisseurs` | Factures fournisseurs (`web/ecrans.js`) | `/api/frais/facture` | 0 ligne | Oui | **CONFORME** | maintenir ; étendre les champs métier si besoin |
 | Finance & facturation | Facturation client | `#finance/facturation` | Facturation client (`web/ecrans.js`) | `/api/frais/facture` | 0 ligne | Oui | **CONFORME** | maintenir ; étendre les champs métier si besoin |
-| Finance & facturation | Paiements | `#finance/paiements` | Paiements (`web/ecrans.js`) | `/api/declarations/liquidation, /api/frais/facture` | 0 ligne | Partiel | **PARTIEL** | tester et durcir les actions (Marquer payé) |
+| Finance & facturation | Paiements | `#finance/paiements` | Paiements (`web/ecrans.js`) | `/api/declarations/liquidation, /api/frais/facture` | 0 ligne | Oui | **CONFORME** | consultation connectée ; écritures non requises |
 | Finance & facturation | Rapprochement | `#finance/reconciliation` | Rapprochement financier (`web/ecrans.js`) | `/api/frais` | 0 ligne | Partiel | **PARTIEL** | tester et durcir les actions (Lancer le rapprochement) |
 | Finance & facturation | Clôture financière | `#finance/cloture` | Clôture financière (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Partiel | **PARTIEL** | tester et durcir les actions (Archiver) |
 
@@ -184,7 +184,7 @@ terminé.
 |---|---|---|---|---|---|---|---|---|
 | Rapports & statistiques | Vue d'ensemble | `#rapports` | écran existant `#tab-reports` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Rapports & statistiques | Statistiques | `#rapports/statistiques` | Statistiques (`web/ecrans.js`) | `/api/stats` | 0 ligne | Oui | **CONFORME** | lecture seule assumée (données serveur) |
-| Rapports & statistiques | Graphiques | `#rapports/graphes` | redirection vers `#tab-reports` | `(module historique)` | contenu rendu (3 blocs) | Partiel | **PARTIEL** | remplacer la redirection par un écran dédié (filtre propre, actions) |
+| Rapports & statistiques | Graphiques | `#rapports/graphes` | écran existant `#tab-reports` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Rapports & statistiques | Exports | `#rapports/exports` | Exports (`web/ecrans.js`) | `/api/jobs?limit=200` | 200 lignes | Partiel | **PARTIEL** | tester et durcir les actions (Télécharger (JSON), Télécharger (CSV)) |
 
 ### 11. Référentiels & paramètres
@@ -192,7 +192,7 @@ terminé.
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Action requise |
 |---|---|---|---|---|---|---|---|---|
 | Référentiels & paramètres | Vue d'ensemble | `#referentiels` | écran existant `#tab-referentiels` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
-| Référentiels & paramètres | Profils | `#referentiels/profiles` | redirection vers `#tab-referentiels` | `(module historique)` | contenu rendu (3 blocs) | Partiel | **PARTIEL** | remplacer la redirection par un écran dédié (filtre propre, actions) |
+| Référentiels & paramètres | Profils | `#referentiels/profiles` | écran existant `#tab-profiles` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Référentiels & paramètres | Types de documents | `#referentiels/types-documents` | Types de documents (`web/ecrans.js`) | `/api/referentiels/types-documents` | 0 ligne | Oui | **CONFORME** | maintenir ; étendre les champs métier si besoin |
 | Référentiels & paramètres | Clients | `#referentiels/clients` | Clients (`web/ecrans.js`) | `/api/clients` | 0 ligne | Oui | **CONFORME** | maintenir ; étendre les champs métier si besoin |
 | Référentiels & paramètres | Fournisseurs | `#referentiels/fournisseurs` | Fournisseurs (`web/ecrans.js`) | `/api/fournisseurs` | 0 ligne | Oui | **CONFORME** | maintenir ; étendre les champs métier si besoin |
@@ -205,7 +205,7 @@ terminé.
 | Référentiels & paramètres | Référentiels tarifaires | `#referentiels/tarifs` | Référentiels tarifaires (`web/ecrans.js`) | `/api/referentiels/tarifs` | 0 ligne | Oui | **CONFORME** | maintenir ; étendre les champs métier si besoin |
 | Référentiels & paramètres | Règles documentaires | `#referentiels/regles-documentaires` | Règles documentaires (`web/ecrans.js`) | `/api/referentiels/regles-documentaires` | 0 ligne | Oui | **CONFORME** | maintenir ; étendre les champs métier si besoin |
 | Référentiels & paramètres | Paramètres métier | `#referentiels/parametres-metier` | Paramètres métier (`web/ecrans.js`) | `/api/referentiels/parametres` | 0 ligne | Oui | **CONFORME** | maintenir ; étendre les champs métier si besoin |
-| Référentiels & paramètres | Paramètres | `#referentiels/parametres` | redirection vers `#tab-referentiels` | `(module historique)` | contenu rendu (3 blocs) | Partiel | **PARTIEL** | remplacer la redirection par un écran dédié (filtre propre, actions) |
+| Référentiels & paramètres | Paramètres | `#referentiels/parametres` | écran existant `#tab-params-gen` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 
 ### 12. Administration & sécurité
 
@@ -221,7 +221,7 @@ terminé.
 | Administration & sécurité | Moteurs OCR | `#admin/moteurs-ocr` | écran existant `#tab-moteurs` | `(module historique)` | 6 lignes affichées | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Administration & sécurité | Connecteurs API | `#admin/connecteurs-api` | écran existant `#tab-connecteurs-api` | `(module historique)` | 3 lignes affichées | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Administration & sécurité | Workflows | `#admin/workflows` | écran existant `#tab-workflows` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
-| Administration & sécurité | Référentiels | `#admin/referentiels` | Catalogue des référentiels (`web/ecrans.js`) | `/api/referentiels` | 11 lignes | Partiel | **PARTIEL** | tester et durcir les actions (Ouvrir) |
+| Administration & sécurité | Référentiels | `#admin/referentiels` | Catalogue des référentiels (`web/ecrans.js`) | `/api/referentiels` | 11 lignes | Oui | **CONFORME** | lecture seule assumée (données serveur) |
 | Administration & sécurité | Journal d'audit | `#admin/journal` | écran existant `#tab-journal` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Administration & sécurité | Sauvegardes | `#admin/sauvegardes` | écran existant `#tab-sauvegardes` | `(module historique)` | 8 lignes affichées | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 

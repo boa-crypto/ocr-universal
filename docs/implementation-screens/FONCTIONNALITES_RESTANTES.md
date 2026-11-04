@@ -1,13 +1,15 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04 (commit `929766cb`). Ce document est la liste de travail
+État au 2026-11-04, après la passe 2. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
-**Chiffres de départ, sans arrondi complaisant** : 100 entrées de menu,
-43 écrans dédiés livrés, **30 conformes**, **70 partiels**, 0 absent,
-0 non connecté — mais 14 de ces « partiels » sont encore des **redirections**
-vers un écran générique (l'application l'annonce elle-même par un bandeau).
+**Chiffres du jour, sans arrondi complaisant** : 100 entrées de menu,
+**43 conformes**, **57 partiels**, 0 absent, 0 non connecté, et
+**plus aucun bandeau « pas encore d'écran dédié »** (contre 14 en début de
+passe 2). Les 57 partiels sont désormais des écrans qui lisent des données
+réelles mais n'ont pas encore été re-certifiés, ou dont les actions d'écriture
+ne sont pas couvertes par un test.
 
 ---
 
@@ -23,9 +25,9 @@ vers un écran générique (l'application l'annonce elle-même par un bandeau).
 
 | # | Tâche | Constat |
 |---|---|---|
-| P1-1 | Remplacer les 6 redirections « Gestion des dossiers » par des écrans dédiés (tous / en cours / bloqués / clôturés / clients / nouveau) | le menu ouvre `#tab-dossiers` avec un bandeau « pas encore d'écran dédié » |
-| P1-2 | Idem pour les 5 redirections « Mon espace de travail » (mes tâches, à valider, en attente, mes alertes, dossiers récents) | chaque entrée devrait filtrer sa propre liste |
-| P1-3 | Re-certifier les 14 écrans Documents & OCR (contenu, actions, permissions, états vides) | tous marqués PARTIEL faute de re-test dans cette passe |
+| ✅ P1-1 | ~~Remplacer les 6 redirections « Gestion des dossiers »~~ | **fait en passe 2** : en cours / bloqués / clôturés = écrans dédiés (`web/ecrans.js`) ; tous / nouveau / clients = pages réellement existantes désormais reliées (fin du bandeau) |
+| ✅ P1-2 | ~~Idem pour les 5 redirections « Mon espace de travail »~~ | **fait en passe 2** : mes tâches, en attente, mes alertes, dossiers récents = écrans dédiés ; à valider = page `#tab-validation` reliée |
+| P1-3 | Re-certifier les 14 écrans Documents & OCR (contenu, actions, permissions, états vides) | **prochaine priorité** : ils lisent déjà des données réelles (`#tab-center` 25 lignes, `#tab-classif` 21 lignes) mais n'ont pas été re-testés |
 | P1-4 | Brancher et tester les actions de contrôle documentaire (analyse, résolution d'anomalie, statut) | actions branchées, aucun test automatisé |
 | P1-5 | Historiser la validation OCR dans l'écran de révision | la route existe, l'écran hérité n'a pas été re-testé |
 
@@ -36,7 +38,8 @@ vers un écran générique (l'application l'annonce elle-même par un bandeau).
 | P2-1 | Alimenter `terminal` et `declarations` : sur ce poste les deux collections sont **vides**, donc sortie portuaire, contrôles et liquidation n'affichent que l'état vide | aucune donnée à afficher, comportement correct mais non démontrable en conditions réelles |
 | P2-2 | Tester les parcours de livraison (démarrer → arriver → confirmer) de bout en bout | routes existantes, aucun test d'écran |
 | P2-3 | Tester le rapprochement automatique (`POST /api/frais/rapprochement/auto`) depuis l'écran | action globale branchée, non testée |
-| P2-4 | Remplacer les 2 redirections « Rapports » (graphiques) et « Référentiels » (profils, paramètres) | bandeau encore affiché |
+| ✅ P2-4 | ~~Remplacer les redirections « Rapports » (graphiques), « Référentiels » (profils, paramètres)~~ | **fait en passe 2** : graphiques → `#tab-reports`, profils → `#tab-profiles`, paramètres → `#tab-params-gen` ; plus aucun bandeau dans l'application |
+| P2-5 | Découpler les écrans de référence des pages historiques : `#dossiers/tous` ouvre encore la page héritée `#tab-dossiers` | fonctionne, mais le contenu et les actions restent ceux de la page historique |
 
 ## P3 — Référentiels, administration, statistiques avancées
 
@@ -46,6 +49,7 @@ vers un écran générique (l'application l'annonce elle-même par un bandeau).
 | P3-2 | Relier les référentiels aux formulaires métier (listes déroulantes alimentées par `/api/referentiels`) | aujourd'hui les champs référentiels sont saisis en texte libre |
 | P3-3 | Couvrir les écrans d'administration (utilisateurs, rôles, sécurité, intégrations) | 13 entrées, majoritairement PARTIEL |
 | P3-4 | Statistiques avancées (séries, comparaisons, export planifié) | l'écran actuel affiche les indicateurs réels de `/api/stats`, rien de plus |
+| P3-5 | Écran « Graphiques » dédié | aujourd'hui rattaché à la page rapports ; aucun écran de graphiques autonome |
 
 ## Dépendances externes et limitations
 

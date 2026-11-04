@@ -611,8 +611,6 @@
       'enlevissement/ordres': 'tab-enlevement',
       'enlevissement/planning': 'tab-planification',
       'enlevissement/transporteurs': 'tab-transporteurs',
-      'referentiels/clients': 'tab-clients',
-      'referentiels/fournisseurs': 'tab-fournisseurs',
       'admin/journal': 'tab-journal',
       'admin/utilisateurs': 'tab-utilisateurs',
       'admin/roles': 'tab-roles',
@@ -623,6 +621,22 @@
 
       /* Écrans métier déclaratifs (`web/ecrans.js`) : une section hôte,
          un rendu par route, alimenté par les routes réelles de l'API. */
+      /* Sous-rubriques qui ouvrent une page réellement existante de la coquille :
+         on les relie pour supprimer le bandeau « pas encore d'écran dédié ». */
+      'dossiers/en-cours': 'tab-ecran',
+      'dossiers/clotures': 'tab-ecran',
+      'dossiers/bloques': 'tab-ecran',
+      'workspace/taches': 'tab-ecran',
+      'workspace/en-attente': 'tab-ecran',
+      'workspace/alertes': 'tab-ecran',
+      'workspace/recents': 'tab-ecran',
+      'dossiers/tous': 'tab-dossiers',
+      'dossiers/nouveau': 'tab-dossiers',
+      'dossiers/clients': 'tab-clients',
+      'workspace/valider': 'tab-validation',
+      'referentiels/profiles': 'tab-profiles',
+      'referentiels/parametres': 'tab-params-gen',
+
       'controle/documentaire': 'tab-ecran',
       'controle/comparaison': 'tab-ecran',
       'controle/historique': 'tab-ecran',
@@ -646,6 +660,7 @@
       'finance/paiements': 'tab-ecran',
       'finance/reconciliation': 'tab-ecran',
       'finance/cloture': 'tab-ecran',
+      'rapports/graphes': 'tab-reports',
       'rapports/statistiques': 'tab-ecran',
       'rapports/exports': 'tab-ecran',
       'referentiels/clients': 'tab-ecran',

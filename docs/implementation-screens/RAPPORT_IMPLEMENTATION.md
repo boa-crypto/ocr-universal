@@ -1,7 +1,7 @@
 # Rapport d'implémentation — écrans UniOCR
 
-**Passe 1 — socle des écrans manquants.** Date : 2026-11-04.
-Branche : `arena/2cd4c91a-ocr-universal`. Commit de référence : `929766cb`.
+**Passes 1 et 2 — socle des écrans manquants, puis rubriques dossiers et espace de travail.**
+Date : 2026-11-04. Branche : `arena/2cd4c91a-ocr-universal`.
 
 Ce rapport décrit **ce qui a réellement été livré et vérifié**, pas ce qui est
 prévu. La référence de l'état écran par écran reste
@@ -84,6 +84,36 @@ tableau triable, pagination, squelettes, états vides, surcouche de formulaire.
 Thème sombre par défaut, **thème clair** complet, responsive sous 720 px,
 animations supprimées sous `prefers-reduced-motion`.
 
+## 2.5 Passe 2 — dossiers et espace de travail (même journée)
+
+La matrice de la passe 1 laissait 14 entrées de menu en simple redirection :
+elles ouvraient la vue d'ensemble du module avec un bandeau « pas encore
+d'écran dédié ». Elles sont traitées, sans dupliquer ce qui existait déjà :
+
+| Entrée | Traitement |
+|---|---|
+| Dossiers en cours / bloqués / clôturés | **écrans dédiés** (`web/ecrans.js`) filtrant `GET /api/dossiers` sur les états réellement présents : `en_preparation`, `archive`, et pour « bloqués » les dossiers **signalés par le contrôle** (croisement avec `/api/dashboard/alertes`, aucune notion inventée) |
+| Mes tâches | écran dédié : dossiers en révision ou incomplets (file de travail) |
+| En attente de pièces | écran dédié : dossiers ouverts sans aucune pièce reçue |
+| Mes alertes | écran dédié sur `/api/dashboard/alertes`, chaque alerte ouvrant son dossier |
+| Dossiers récents | écran dédié : 30 derniers dossiers par date d'ouverture |
+| Tous les dossiers / Nouveau dossier | reliés à l'espace dossier existant (`#tab-dossiers`) : la création utilise le dialogue `#dos-create`, qui s'ouvre automatiquement |
+| Clients (vue dossiers) | relié à la page clients existante `#tab-clients` |
+| À valider | relié à la page existante `#tab-validation` |
+| Profils / Paramètres / Graphiques | reliés aux pages existantes `#tab-profiles`, `#tab-params-gen`, `#tab-reports` |
+
+Résultat mesuré : **plus aucune entrée de menu n'affiche le bandeau**. Les
+compteurs affichés viennent tous du serveur (164 dossiers bloqués, 186 tâches,
+435 dossiers en attente de pièces, 30 dossiers récents au moment de la mesure).
+
+Deux ajustements d'ergonomie de données ont été faits au passage :
+
+- les écrans **rechargent leur source à chaque entrée** (le cache ne sert plus
+  qu'au tri, au filtre et à la pagination) : une création faite dans un autre
+  écran est visible immédiatement, ce qui répond à l'exigence de cohérence ;
+- une action de ligne peut désormais être une **navigation** (« Ouvrir » un
+  dossier) sans passer par une requête d'écriture.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
@@ -118,12 +148,13 @@ directement ne voit que les routes déclarées dans `api.py` — d'où le helper
 4. **Statuts honnêtes.** Un écran hérité non re-testé reste **PARTIEL**, même
    s'il « a l'air » fini. La matrice le dit explicitement.
 
-## 5. Ce que cette passe ne fait pas
+## 5. Ce que ces passes ne font pas
 
-- Les **70 écrans hérités** restent à re-certifier un par un (contenu, actions,
+- Les **57 écrans partiels** restent à re-certifier un par un (contenu, actions,
   permissions, états vides) : voir `FONCTIONNALITES_RESTANTES.md`.
-- Les **14 routes en redirection** (mes tâches, tous les dossiers, etc.) ouvrent
-  un écran générique avec bandeau : elles ne sont pas encore des écrans dédiés.
+- Certains écrans **réutilisent une page historique** (`#dossiers/tous`,
+  `#tab-clients`, `#tab-profiles`…) : plus de bandeau, mais le contenu et les
+  actions restent ceux de la page héritée, non re-testés.
 - Les **actions contextuelles** (analyse de contrôle, rapprochement, sortie
   portuaire) sont branchées mais pas encore couvertes par un test automatisé.
 - **Aucune comparaison** avec un ERP externe : aucun connecteur métier réel

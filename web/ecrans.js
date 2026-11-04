@@ -1328,7 +1328,197 @@
     }
   };
 
-  /* Référentiels génériques : une entrée par collection exposée par
+  /* ==================== Dossiers et espace de travail ==================== */
+  /* Ces écrans remplacent les entrées de menu qui retombaient sur la vue
+     d'ensemble de leur module. Ils lisent `GET /api/dossiers` (et les alertes
+     du tableau de bord) et filtrent sur les états **réellement présents** dans
+     les données : aucune notion de « bloqué » n'est inventée ici, un dossier
+     bloqué est un dossier signalé par le contrôle. */
+
+  var COLONNES_DOSSIER = [
+    { cle: "reference", libelle: "Référence" },
+    { cle: "label", libelle: "Dossier" },
+    { cle: "client_importateur", libelle: "Client" },
+    { cle: "state_label", libelle: "État" },
+    { cle: "gestionnaire", libelle: "Gestionnaire" },
+    { cle: "date_ouverture", libelle: "Ouvert le", format: "date" },
+    { cle: "priorite", libelle: "Priorité" }
+  ];
+
+  function actionOuvrirDossier() {
+    return {
+      libelle: "Ouvrir",
+      executer: function (ligne) {
+        if (!ligne.id) return;
+        if (window.UniOCRShell && typeof window.UniOCRShell.ouvrirDossier === "function") {
+          window.UniOCRShell.ouvrirDossier(ligne.id);
+          return;
+        }
+        window.location.hash = "#dossiers";
+      }
+    };
+  }
+
+  function ecranDossiers(route, options) {
+    ECRANS[route] = {
+      section: options.section,
+      titre: options.titre,
+      desc: options.desc,
+      source: options.source || { url: "/api/dossiers" },
+      filtreLocal: options.filtreLocal,
+      id: "id",
+      colonnes: (options.colonnes || COLONNES_DOSSIER).concat(options.colonnesSup || []),
+      filtres: options.filtres || [],
+      actions: options.actions || [actionOuvrirDossier()],
+      lectureSeule: true,
+      vide: options.vide
+    };
+    return ECRANS[route];
+  }
+
+  function etatDe(ligne) {
+    return String((ligne && ligne.state) || "");
+  }
+
+  ecranDossiers("dossiers/en-cours", {
+    section: "Gestion des dossiers",
+    titre: "Dossiers en cours",
+    desc: "Dossiers ouverts et en cours de traitement : état, gestionnaire, " +
+          "date d'ouverture et priorité. Cliquez sur « Ouvrir » pour travailler " +
+          "le dossier dans son espace.",
+    filtreLocal: function (ligne) { return etatDe(ligne) === "en_preparation"; },
+    vide: {
+      message: "Aucun dossier en cours de préparation. Les dossiers créés " +
+               "apparaissent ici dès leur ouverture.",
+      action: { libelle: "Créer un dossier", route: "#dossiers/nouveau" }
+    }
+  });
+
+  ecranDossiers("dossiers/bloques", {
+    section: "Gestion des dossiers",
+    titre: "Dossiers bloqués",
+    desc: "Dossiers sur lesquels le contrôle a signalé une anomalie : " +
+          "pièces manquantes, incohérence de champs. La liste vient du " +
+          "croisement entre les dossiers et les alertes du tableau de bord.",
+    source: {
+      sources: ["/api/dossiers", "/api/dashboard/alertes"],
+      charger: function (lire) {
+        return Promise.all([
+          lire("/api/dossiers"),
+          lire("/api/dashboard/alertes").catch(function () { return { alertes: [] }; })
+        ]).then(function (resultats) {
+          var dossiers = resultats[0] || [];
+          var alertes = (resultats[1] && resultats[1].alertes) || [];
+          var parDossier = {};
+          alertes.forEach(function (alerte) {
+            if (!alerte || !alerte.dossier_id) return;
+            parDossier[alerte.dossier_id] = parDossier[alerte.dossier_id] || [];
+            parDossier[alerte.dossier_id].push(alerte.titre || alerte.type || "Alerte");
+          });
+          return dossiers.filter(function (dossier) {
+            return Boolean(parDossier[dossier.id]);
+          }).map(function (dossier) {
+            var copie = Object.assign({}, dossier);
+            copie.alertes = parDossier[dossier.id];
+            return copie;
+          });
+        });
+      }
+    },
+    colonnesSup: [{ cle: "alertes", libelle: "Anomalies" }],
+    vide: {
+      message: "Aucun dossier bloqué : le contrôle n'a signalé aucune anomalie " +
+               "sur les dossiers enregistrés."
+    }
+  });
+
+  ecranDossiers("dossiers/clotures", {
+    section: "Gestion des dossiers",
+    titre: "Dossiers clôturés",
+    desc: "Dossiers archivés après traitement complet. Ils restent " +
+          "consultables et exportables.",
+    filtreLocal: function (ligne) { return etatDe(ligne) === "archive"; },
+    vide: { message: "Aucun dossier clôturé pour le moment." }
+  });
+
+  ecranDossiers("workspace/taches", {
+    section: "Mon espace de travail",
+    titre: "Mes tâches",
+    desc: "File de travail : dossiers en révision ou incomplets, c'est-à-dire " +
+          "ceux sur lesquels une action est attendue.",
+    filtreLocal: function (ligne) {
+      var etat = etatDe(ligne);
+      return etat === "revision_requise" || etat === "incomplet";
+    },
+    vide: { message: "Aucune tâche en attente : tous les dossiers sont à jour." }
+  });
+
+  ecranDossiers("workspace/en-attente", {
+    section: "Mon espace de travail",
+    titre: "En attente de pièces",
+    desc: "Dossiers ouverts pour lesquels aucune pièce n'a encore été reçue : " +
+          "ils attendent les documents du client ou du transitaire.",
+    filtreLocal: function (ligne) {
+      return etatDe(ligne) === "en_preparation" &&
+        (!ligne.pieces || ligne.pieces.length === 0);
+    },
+    vide: { message: "Aucun dossier en attente de pièces : toutes les pièces " +
+                     "attendues ont été reçues." }
+  });
+
+  ECRANS["workspace/alertes"] = {
+    section: "Mon espace de travail",
+    titre: "Mes alertes",
+    desc: "Alertes produites par le contrôle des dossiers : pièces manquantes, " +
+          "incohérences détectées. Chaque alerte renvoie au dossier concerné.",
+    source: { url: "/api/dashboard/alertes" },
+    sourceCle: "alertes",
+    id: "dossier_id",
+    idAlt: ["dossier_id"],
+    colonnes: [
+      { cle: "niveau", libelle: "Niveau" },
+      { cle: "titre", libelle: "Alerte" },
+      { cle: "message", libelle: "Détail" },
+      { cle: "dossier_id", libelle: "Dossier" }
+    ],
+    filtres: [{ cle: "niveau", libelle: "Niveau" }],
+    actions: [{
+      libelle: "Ouvrir le dossier",
+      executer: function (ligne) {
+        if (window.UniOCRShell && typeof window.UniOCRShell.ouvrirDossier === "function") {
+          window.UniOCRShell.ouvrirDossier(ligne.dossier_id);
+        }
+      }
+    }],
+    lectureSeule: true,
+    vide: { message: "Aucune alerte active : le contrôle n'a rien signalé." }
+  };
+
+  ECRANS["workspace/recents"] = {
+    section: "Mon espace de travail",
+    titre: "Dossiers récents",
+    desc: "Les trente derniers dossiers ouverts, du plus récent au plus ancien.",
+    source: {
+      sources: ["/api/dossiers"],
+      charger: function (lire) {
+        return lire("/api/dossiers").then(function (dossiers) {
+          return (dossiers || []).slice().sort(function (a, b) {
+            return Number(b.date_ouverture || 0) - Number(a.date_ouverture || 0);
+          }).slice(0, 30);
+        });
+      }
+    },
+    id: "id",
+    colonnes: COLONNES_DOSSIER,
+    actions: [actionOuvrirDossier()],
+    lectureSeule: true,
+    vide: {
+      message: "Aucun dossier ouvert pour le moment.",
+      action: { libelle: "Créer un dossier", route: "#dossiers/nouveau" }
+    }
+  };
+
+    /* Référentiels génériques : une entrée par collection exposée par
      `GET /api/referentiels`. Les champs libres sont saisis dans `attributs`. */
   [
     { route: "referentiels/ports", collection: "ports", titre: "Ports",
@@ -1777,6 +1967,10 @@
 
   function executerAction(ecran, action, ligne) {
     if (action.confirmation && !window.confirm(action.confirmation)) return;
+    if (typeof action.executer === "function") {
+      action.executer(ligne || {});
+      return;
+    }
     if (action.route) {
       window.location.hash = action.route(ligne || {});
       return;
@@ -2064,7 +2258,10 @@
     if (!definition(route)) return;
     var section = $("tab-ecran");
     if (section) section.classList.remove("hidden");
-    charger(route, false);
+    /* Rechargement systématique à l'entrée de l'écran : une création faite
+       ailleurs (dossier, frais, référentiel) doit être visible sans recharger
+       la page. Le cache ne sert qu'au rendu interne (tri, filtre, page). */
+    charger(route, true);
   }
 
   function demarrer() {

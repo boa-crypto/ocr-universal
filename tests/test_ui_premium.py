@@ -617,6 +617,9 @@ def _routes_ecrans() -> set[str]:
     source = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
     routes = set(re.findall(r'^\s{4}"([a-z-]+/[a-z-]+)":\s*\{', source, re.M))
     routes |= set(re.findall(r'route:\s*"([a-z-]+/[a-z-]+)"', source))
+    # Écrans construits par fabrique ou affectés après le littéral.
+    routes |= set(re.findall(r'ecranDossiers\("([a-z-]+/[a-z-]+)"', source))
+    routes |= set(re.findall(r'ECRANS\["([a-z-]+/[a-z-]+)"\]', source))
     return routes
 
 
@@ -691,3 +694,28 @@ def test_le_moteur_d_ecrans_a_son_stylesheet() -> None:
     assert manquantes == []
     for classe in sorted(classes):
         assert f".{classe}" in css, classe
+
+
+def test_aucune_entree_de_menu_ne_retombe_sur_un_bandeau() -> None:
+    """Chaque route du menu ouvre un écran : plus aucune redirection annoncée.
+
+    Le bandeau « pas encore d'écran dédié » apparaît quand une route n'est ni
+    mappée dans `routePages` ni servie par un écran de `web/ecrans.js`. Ce test
+    échoue si une entrée de menu revient dans cet état.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    navigation = (racine / "web" / "navigation.js").read_text(encoding="utf-8")
+
+    debut = navigation.index("const NAV_CONFIG")
+    # Les routes de section (`#dossiers`, `#finance`…) ouvrent leur propre page
+    # de module : seules les sous-rubriques peuvent retomber sur un bandeau.
+    menu = {
+        route.lstrip("#")
+        for route in re.findall(r"route:\s*'(#[a-z-]+(?:/[a-z-]+)?)'", navigation[debut:])
+        if "/" in route
+    }
+    couvertes = set(_route_pages()) | _routes_ecrans()
+
+    orphelines = sorted(menu - couvertes)
+
+    assert orphelines == [], f"entrées de menu sans écran : {orphelines}"

@@ -67,7 +67,8 @@ JSDOM.fromURL(base + '/', {
       desc: valeur.desc,
       source: (valeur.source && valeur.source.url) || null,
       composite: Boolean(valeur.source && typeof valeur.source.charger === 'function'),
-      sources: valeur.sources || ((valeur.source && valeur.source.url) ? [valeur.source.url] : []),
+            sources: valeur.sources || (valeur.source && valeur.source.sources) ||
+        ((valeur.source && valeur.source.url) ? [valeur.source.url] : []),
       creation: (valeur.creation && valeur.creation.url) || null,
       edition: Boolean(valeur.edition),
       suppression: Boolean(valeur.suppression),

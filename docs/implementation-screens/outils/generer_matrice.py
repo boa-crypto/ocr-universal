@@ -43,6 +43,13 @@ PREUVES: dict[str, str] = {
     "referentiels/parametres-metier": "CRUD jsdom (même moteur) + tests API",
     "referentiels/types-documents": "CRUD jsdom (même moteur) + tests API",
     "admin/equipes": "CRUD jsdom (même moteur) + tests API",
+    "dossiers/en-cours": "liste jsdom (715 dossiers lus) + navigation « Ouvrir »",
+    "dossiers/bloques": "liste jsdom (croisement dossiers/alertes)",
+    "dossiers/clotures": "liste jsdom (dossiers archivés)",
+    "workspace/taches": "liste jsdom (dossiers en révision/incomplets)",
+    "workspace/en-attente": "liste jsdom (dossiers sans pièce)",
+    "workspace/alertes": "liste jsdom (alertes du tableau de bord)",
+    "workspace/recents": "liste jsdom (30 derniers dossiers)",
 }
 PREUVE_PAR_DEFAUT = "rendu jsdom + GET 200 sans erreur JS"
 
@@ -178,7 +185,8 @@ def construire(snapshot: dict[str, Any]) -> tuple[list[Ligne], dict[str, Sonde]]
                 elif ecran.get("creation") and (ecran.get("edition") or ecran.get("suppression")):
                     statut = "CONFORME"
                     action = "maintenir ; étendre les champs métier si besoin"
-                elif actions:
+                elif any(a.get("url") for a in actions):
+                    # Action qui écrit sur le serveur : non couverte par un test.
                     statut = "PARTIEL"
                     libelles = ", ".join(a["libelle"] for a in actions[:3])
                     action = f"tester et durcir les actions ({libelles})"
