@@ -823,6 +823,47 @@ lignes**, puis le dialogue de création de dossier propose **10 ports** — la
 liaison de la passe 15 trouve enfin sa matière. Les données de démonstration du
 dépôt n'ont pas été modifiées : c'est l'opérateur qui décide de l'amorçage.
 
+## 2.25 Passe 22 — comparer deux périodes sans mentir
+
+L'écran Statistiques donne un état : *715 dossiers, 185 à valider*. Il ne
+répond pas à la question qu'on se pose vraiment — **est-ce plus ou moins
+qu'avant ?** — et c'est celle qui décide d'un renfort ou d'un délai.
+
+### Deux fenêtres, six indicateurs
+
+`GET /api/stats/comparaison?jours=30` compare `[J-30, aujourd'hui)` à
+`[J-60, J-30)` sur les dates réelles : création du dossier, archivage, fin de
+traitement du job, dernière modification. Indicateurs exposés : dossiers
+ouverts, archivés, à revoir, mis à jour, documents traités, documents en
+erreur. La fenêtre est bornée côté serveur (1 à 365 jours).
+
+### Les trois pièges évités
+
+| Piège | Traitement |
+|---|---|
+| période précédente vide → « +∞ % » | variation **non calculable**, la ligne dit *« 49 sur la période, aucun équivalent avant »* |
+| date absente → comptée « ancienne » | ces dossiers ne sont comptés nulle part et `sans_date` les déclare |
+| état énuméré (`DossierState.ARCHIVE`) | normalisé : les 49 archivés sont bien comptés (ils étaient à 0 avant la normalisation) |
+
+Un `avertissement` explicite est renvoyé quand la période précédente est
+entièrement vide : sur cette base de démonstration, tout se situe dans les
+trente derniers jours, et l'écran le dit plutôt que de suggérer un bond
+d'activité.
+
+### Écran
+
+Nouvelle entrée **« Comparaison de périodes »** (`#rapports/comparaison`,
+lecture seule) : six lignes, colonnes *30 derniers jours* / *30 jours
+précédents* / *tendance* / *lecture* / *date utilisée*, filtre par tendance.
+
+Mesure jsdom : 6 lignes rendues avec leurs valeurs réelles (715 / 49 / 200 / 5 /
+186 / 715), filtre « hausse » opérationnel, zéro erreur réseau.
+`tests/test_stats_comparaison.py` : 10 tests sur la fonction pure (hausse,
+baisse, stabilité, périodes vides, dates manquantes, énumérations, bornes API,
+fenêtres consécutives).
+
+Matrice : **101 entrées, 101 conformes**.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

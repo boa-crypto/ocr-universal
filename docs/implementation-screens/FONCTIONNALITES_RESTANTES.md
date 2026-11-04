@@ -1,11 +1,11 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 21. Ce document est la liste de travail
+État au 2026-11-04, après la passe 22. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
-**Chiffres du jour, sans arrondi complaisant** : 100 entrées de menu,
-**100 conformes**, **0 partiel**, 0 absent, 0 non connecté.
+**Chiffres du jour, sans arrondi complaisant** : 101 entrées de menu,
+**101 conformes**, **0 partiel**, 0 absent, 0 non connecté.
 
 La page « Paramètres généraux » a été retirée en passe 13 (son formulaire
 n'enregistrait rien) puis **rétablie en passe 14 sur une vraie API** :
@@ -57,7 +57,8 @@ validation nommant le champ, effet immédiat et persistant.
 | P3-1b | Remplir le **contenu d'exploitation** (tarifs, règles documentaires, équipes, paramètres métier, natures de marchandise) | ces collections n'ont pas de jeu de référence public : elles relèvent d'une saisie métier, pas d'un code |
 | ✅ P3-2 | ~~Relier les référentiels aux formulaires métier~~ | **fait en passe 15** : `datalist` alimentée par `/api/referentiels/{nom}` sur Clients (pays), Fournisseurs (pays), Navires (pavillon) et le dialogue de création de dossier (ports) ; un référentiel vide le dit et laisse la saisie libre |
 | ✅ P3-3 | ~~Couvrir les écrans d'administration (utilisateurs, rôles, sécurité, intégrations)~~ | **fait en passes 11 à 13** : 13 entrées mesurées (16 liens, 23 cartes, 3 sources API sur le hub ; utilisateurs et rôles CRUD ; connecteurs API 3 lignes) |
-| P3-4 | Statistiques avancées (séries, comparaisons, export planifié) | l'écran actuel affiche les indicateurs réels de `/api/stats`, rien de plus |
+| ✅ P3-4a | ~~Comparer deux périodes~~ | **fait en passe 22** : `GET /api/stats/comparaison?jours=N`, écran `#rapports/comparaison` (6 indicateurs, tendances, aucune variation inventée) |
+| P3-4b | Export planifié et séries historiques longues | la comparaison couvre deux fenêtres ; il n'y a ni planification d'export ni archive de séries |
 | ✅ P3-5 | ~~Écran « Graphiques » dédié~~ | **fait en passe 18** : `#rapports/graphes` = 6 cartes alimentées par `/api/dashboard/graphique/*`, 3 séries réelles dessinées et 3 états vides expliqués |
 | P3-6 | Connecteur Hub : transmettre vers un service distant | dépend d'un service externe non disponible sur ce poste ; l'écran expose l'état réel des connecteurs (3 configurés) et le dit |
 

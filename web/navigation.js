@@ -155,6 +155,7 @@
       requiredRole: 'lecteur',
       subitems: [
         { key: 'statistics', title: 'Statistiques', route: '#rapports/statistiques', icon: 'bar-chart' },
+        { key: 'compare', title: 'Comparaison de périodes', route: '#rapports/comparaison', icon: 'line-chart' },
         { key: 'charts', title: 'Graphiques', route: '#rapports/graphes', icon: 'line-chart' },
         { key: 'exports', title: 'Exports', route: '#rapports/exports', icon: 'download' }
       ]
@@ -662,6 +663,7 @@
       'finance/cloture': 'tab-ecran',
       'rapports/graphes': 'tab-graphiques',
       'rapports/statistiques': 'tab-ecran',
+      'rapports/comparaison': 'tab-ecran',
       'rapports/exports': 'tab-ecran',
       'referentiels/clients': 'tab-ecran',
       'referentiels/fournisseurs': 'tab-ecran',

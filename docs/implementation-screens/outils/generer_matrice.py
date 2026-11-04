@@ -119,6 +119,7 @@ HISTORIQUES_VERIFIES: dict[str, str] = {
     "referentiels": "jsdom : 16 liens, 16 cartes, 3 sources API",
     "admin": "jsdom : 16 liens, 23 cartes, 3 sources API",
     "admin/connecteurs-api": "jsdom : 3 connecteurs configurés (source 200)",
+    "rapports/comparaison": "jsdom : 6 indicateurs comparés sur deux fenêtres de 30 jours, filtre par tendance, aucune variation inventée",
     "douane/paiements": "jsdom : liquidations listées, bouton « Marquer payée » → PUT /api/declarations/liquidation/{id} 200",
     "finance/cloture": "jsdom : 25 dossiers clos affichés, source 200",
     "documents/configuration": "jsdom : moteurs réels (tesseract indisponible, native_pdf actif), langues et profils depuis l'API",
@@ -142,6 +143,7 @@ HISTORIQUES_VERIFIES: dict[str, str] = {
     "admin/sauvegardes": "jsdom : 8 sauvegardes réelles (nom, taille, date)",
     "admin/workflows": "jsdom : création exercée → POST 200, ligne affichée (auparavant bouton mort)",
     "rapports": "jsdom : 7 graphiques SVG alimentés par le serveur (715 dossiers, 46 anomalies)",
+    "rapports/comparaison": "jsdom : 6 indicateurs comparés (courant / 30 j précédents), filtre par tendance",
     "rapports/graphes": "jsdom : 6 cartes, 3 séries dessinées (états, activité 30 j, anomalies) et 3 états vides expliqués",
     "documents/profils": "jsdom : 11 profils, création PUT 200, essai à blanc 1/1 détecté, suppression DELETE 200",
     "referentiels/profiles": "jsdom : même éditeur de profils, création/essai/suppression exercés",
@@ -214,7 +216,7 @@ def compter(donnees: Any) -> int | None:
         return len(donnees)
     if isinstance(donnees, dict):
         for cle in ("entrees", "items", "lignes", "collections", "dossiers",
-                    "jobs", "parametres"):
+                    "jobs", "parametres", "indicateurs", "evenements"):
             if isinstance(donnees.get(cle), list):
                 return len(donnees[cle])
     return None

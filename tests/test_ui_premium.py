@@ -1060,3 +1060,27 @@ def test_referentiels_proposent_le_jeu_de_base() -> None:
     assert "JEU_DE_BASE" in serveur
     assert '"origine": "jeu de base"' in serveur
     assert "referentiel_amorce" in serveur
+
+
+def test_ecran_comparaison_de_periodes() -> None:
+    """La comparaison affiche deux fenêtres et dit quand elle ne peut pas comparer."""
+    racine = Path(__file__).resolve().parent.parent
+    moteur = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+    nav = (racine / "web" / "navigation.js").read_text(encoding="utf-8")
+    serveur = (racine / "src" / "unocr" / "routes" / "statistiques.py").read_text(
+        encoding="utf-8")
+
+    assert "{ key: 'compare', title: 'Comparaison de périodes'" in nav
+    assert "'rapports/comparaison': 'tab-ecran'" in nav
+
+    debut = moteur.index('ECRANS["rapports/comparaison"]')
+    bloc = moteur[debut:debut + 1600]
+    assert 'source: { url: "/api/stats/comparaison?jours=30" }' in bloc
+    assert 'sourceCle: "indicateurs"' in bloc
+    assert "30 jours précédents" in bloc          # la seconde fenêtre est nommée
+    assert "lectureSeule: true" in bloc
+
+    # pas de « +∞ % » : la période précédente vide est dite
+    assert "aucun équivalent avant" in serveur
+    assert "aucune activité sur les deux périodes" in serveur
+    assert "avertissement" in serveur

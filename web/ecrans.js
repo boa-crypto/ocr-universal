@@ -1972,6 +1972,36 @@
     }
   };
 
+
+  /* Comparaison de périodes : la question n'est pas « combien ? » mais
+     « est-ce plus ou moins qu'avant ? ». Chaque ligne porte sa lecture, et une
+     période précédente vide est dite — jamais traduite en « +∞ % ». */
+  ECRANS["rapports/comparaison"] = {
+    section: "Rapports & statistiques",
+    titre: "Comparaison de périodes",
+    desc: "Deux fenêtres de 30 jours sur les données réelles. Quand la période " +
+          "précédente est vide, la ligne le dit au lieu d'afficher une variation " +
+          "trompeuse.",
+    source: { url: "/api/stats/comparaison?jours=30" },
+    sourceCle: "indicateurs",
+    id: "id",
+    colonnes: [
+      { cle: "indicateur", libelle: "Indicateur" },
+      { cle: "courant", libelle: "30 derniers jours", format: "nombre" },
+      { cle: "precedent", libelle: "30 jours précédents", format: "nombre" },
+      { cle: "tendance", libelle: "Tendance" },
+      { cle: "lecture", libelle: "Lecture" },
+      { cle: "base", libelle: "Date utilisée" }
+    ],
+    filtres: [{ cle: "tendance", libelle: "Tendance" }],
+    lectureSeule: true,
+    vide: {
+      message: "Aucune activité datée sur les deux périodes : il n'y a rien à " +
+               "comparer pour l'instant.",
+      action: { libelle: "Voir les statistiques", route: "#rapports/statistiques" }
+    }
+  };
+
   /* Le module Dossiers ouvre le même écran Clients que les référentiels
      (création, édition, suppression) au lieu d'une liste vide sans action. */
   if (ECRANS["referentiels/clients"] && !ECRANS["dossiers/clients"]) {

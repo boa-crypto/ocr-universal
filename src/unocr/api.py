@@ -71,6 +71,7 @@ from .routes.profiles import router as profiles_router
 from .routes.rbac_roles import router as rbac_roles_router
 from .routes.referentiels import router as referentiels_router
 from .routes.reglementation import router as reglementation_router
+from .routes.statistiques import router as statistiques_router
 from .routes.system import router as system_router
 from .routes.terminal import router as terminal_router
 from .routes.transit import router as transit_router
@@ -131,6 +132,7 @@ app.include_router(transport_router)
 app.include_router(rbac_roles_router)
 app.include_router(parametres_router)
 app.include_router(historique_router)
+app.include_router(statistiques_router)
 app.include_router(documents_ocr_router)
 app.include_router(controle_doc_router)
 app.include_router(dashboard_router)

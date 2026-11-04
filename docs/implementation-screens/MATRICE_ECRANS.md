@@ -49,18 +49,18 @@ peut pas être « CONFORME » pour un écran à écritures.
 | Douane & réglementation | 9 | 9 | 0 | 0 | 0 | 0 |
 | Enlèvement & livraison | 8 | 8 | 0 | 0 | 0 | 0 |
 | Finance & facturation | 8 | 8 | 0 | 0 | 0 | 0 |
-| Rapports & statistiques | 4 | 4 | 0 | 0 | 0 | 0 |
+| Rapports & statistiques | 5 | 5 | 0 | 0 | 0 | 0 |
 | Référentiels & paramètres | 15 | 15 | 0 | 0 | 0 | 0 |
 | Administration & sécurité | 13 | 13 | 0 | 0 | 0 | 0 |
-| **Total** | **100** | **100** | **0** | **0** | **0** | **0** |
+| **Total** | **101** | **101** | **0** | **0** | **0** | **0** |
 
-- **Entrées de menu recensées** : 100
-- **Écrans conformes** : 100
+- **Entrées de menu recensées** : 101
+- **Écrans conformes** : 101
 - **Écrans partiels** : 0
 - **Écrans absents** : 0
 - **Écrans non connectés** : 0
 
-Lecture honnête de ces chiffres : les 100 écrans conformes sont
+Lecture honnête de ces chiffres : les 101 écrans conformes sont
 ceux dont la source a répondu et dont les écritures éventuelles sont branchées ;
 les écrans « hérités » (mis en page lors des missions précédentes) restent
 marqués **PARTIEL** tant qu'ils n'ont pas été re-testés un par un dans cette
@@ -188,6 +188,7 @@ terminé.
 |---|---|---|---|---|---|---|---|---|---|
 | Rapports & statistiques | Vue d'ensemble | `#rapports` | écran existant `#tab-reports` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 7 graphiques SVG alimentés par le serveur (715 dossiers, 46 anomalies) | consultation et interactions vérifiées ; écritures non expérimentées |
 | Rapports & statistiques | Statistiques | `#rapports/statistiques` | Statistiques (`web/ecrans.js`) | `/api/stats` | 0 ligne | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
+| Rapports & statistiques | Comparaison de périodes | `#rapports/comparaison` | Comparaison de périodes (`web/ecrans.js`) | `/api/stats/comparaison?jours=30` | 6 lignes | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
 | Rapports & statistiques | Graphiques | `#rapports/graphes` | écran dédié `web/graphiques.js` | `/api/dashboard/graphique/*, serie-dossiers` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 6 cartes, 3 séries dessinées (états, activité 30 j, anomalies) et 3 états vides expliqués | consultation et interactions vérifiées ; écritures non expérimentées |
 | Rapports & statistiques | Exports | `#rapports/exports` | Exports (`web/ecrans.js`) | `/api/jobs?limit=200` | 200 lignes | Oui | **CONFORME** | jsdom : Télécharger (JSON), Télécharger (CSV) → 200 | actions exercées par test (Télécharger (JSON), Télécharger (CSV)) |
 
