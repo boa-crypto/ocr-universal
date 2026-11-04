@@ -374,3 +374,252 @@
   border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
 }
 .label-badge-brand { color: var(--accent); }
+
+/* ---------- 09 · Espace dossiers (liste + panneau de détail) ---------- */
+.dos-toolbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+  margin: 18px 0 14px;
+}
+.dos-search {
+  position: relative; flex: 1 1 260px; min-width: 220px;
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.dos-search svg { color: var(--faint); flex: none; }
+.dos-search input {
+  flex: 1; min-width: 0; border: 0; outline: none;
+  background: transparent; color: var(--text);
+  font: inherit; font-size: 12.5px;
+  padding: 10px 0;
+}
+.dos-search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
+
+.dos-filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.dos-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  background: transparent; color: var(--muted);
+  font: inherit; font-size: 12px; font-weight: var(--font-weight-medium);
+  cursor: pointer; transition: var(--transition-fast);
+}
+.dos-chip span {
+  font-size: 10.5px; font-variant-numeric: tabular-nums;
+  padding: 1px 6px; border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--muted) 14%, transparent);
+}
+.dos-chip:hover { color: var(--text); border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); }
+.dos-chip.is-active {
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent);
+}
+.dos-chip.is-active span { background: color-mix(in srgb, var(--accent) 22%, transparent); }
+
+.dos-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(340px, .88fr);
+  gap: 16px; align-items: start;
+}
+.dos-list-panel, .dos-detail {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+}
+.dos-list { display: grid; }
+.dos-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  width: 100%; text-align: left;
+  padding: 12px 16px;
+  background: transparent; border: 0;
+  border-bottom: 1px solid var(--line-soft);
+  border-left: 3px solid transparent;
+  color: var(--text); font: inherit; cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+.dos-row:last-child { border-bottom: 0; }
+.dos-row:hover { background: color-mix(in srgb, var(--accent) 5%, transparent); }
+.dos-row.is-selected {
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+  border-left-color: var(--accent);
+}
+.dos-row__main { display: grid; gap: 3px; min-width: 0; }
+.dos-row__ref {
+  font-size: 13px; font-weight: var(--font-weight-semibold);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.dos-row__sub {
+  font-size: 11.5px; color: var(--muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.dos-row__side { display: flex; align-items: center; gap: 10px; flex: none; }
+.dos-row__meta { font-size: 11px; color: var(--faint); white-space: nowrap; }
+
+.dos-empty { padding: 18px 16px; color: var(--muted); font-size: 12.5px; margin: 0; }
+.dos-list-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 16px; border-top: 1px solid var(--line-soft);
+  background: color-mix(in srgb, var(--surface) 70%, var(--bg));
+}
+.dos-list-meta { font-size: 11px; color: var(--faint); }
+
+.dos-detail { min-height: 260px; }
+.dos-detail__placeholder {
+  display: grid; justify-items: center; gap: 10px;
+  padding: 46px 26px; text-align: center; color: var(--muted);
+}
+.dos-detail__placeholder svg { color: var(--faint); }
+.dos-detail__placeholder p { margin: 0; font-size: 12.5px; max-width: 30ch; }
+
+.dos-detail__body { padding: 16px 18px 18px; }
+.dos-detail__head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+.dos-detail__eyebrow {
+  font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--faint);
+}
+.dos-detail__title { margin: 4px 0 2px; font-size: 17px; font-weight: var(--font-weight-semibold); }
+.dos-detail__sub { margin: 0; font-size: 12px; color: var(--muted); }
+.dos-detail__actions { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.dos-detail__note { margin: 10px 0 0; font-size: 11.5px; color: var(--muted); min-height: 0; }
+.dos-detail__note:empty { display: none; }
+.dos-detail__empty-txt { margin: 8px 0; font-size: 12.5px; color: var(--muted); }
+
+.dos-tabs { margin-top: 14px; }
+.dos-tabs__bar {
+  display: flex; gap: 4px;
+  border-bottom: 1px solid var(--line-soft);
+  margin-bottom: 12px;
+}
+.dos-tab {
+  position: relative;
+  padding: 8px 4px 10px; margin-right: 12px;
+  border: 0; background: transparent;
+  color: var(--muted); font: inherit; font-size: 12.5px;
+  font-weight: var(--font-weight-medium); cursor: pointer;
+}
+.dos-tab:hover { color: var(--text); }
+.dos-tab.is-active { color: var(--text); font-weight: var(--font-weight-semibold); }
+.dos-tab.is-active::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px;
+  height: 2px; background: var(--accent); border-radius: 2px;
+}
+
+.dos-docs { display: grid; gap: 8px; }
+.dos-doc {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px;
+  border: 1px solid var(--line-soft); border-radius: 12px;
+  background: color-mix(in srgb, var(--surface) 82%, var(--bg));
+}
+.dos-doc__icon {
+  flex: none; width: 34px; height: 34px; border-radius: 9px;
+  display: grid; place-items: center;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent); font-size: 9.5px; font-weight: var(--font-weight-bold);
+  letter-spacing: .04em;
+}
+.dos-doc__infos { display: grid; gap: 2px; min-width: 0; flex: 1; }
+.dos-doc__name {
+  font-size: 12.5px; font-weight: var(--font-weight-medium);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.dos-doc__meta { font-size: 11px; color: var(--faint); }
+.dos-doc__link {
+  flex: none; font-size: 11px; font-weight: var(--font-weight-semibold);
+  color: var(--accent); text-decoration: none;
+}
+.dos-doc__link:hover { text-decoration: underline; }
+
+.dos-kv { display: grid; gap: 1px; }
+.dos-kv__row {
+  display: grid; grid-template-columns: 140px minmax(0, 1fr);
+  gap: 10px; padding: 6px 0;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 12px;
+}
+.dos-kv__row:last-child { border-bottom: 0; }
+.dos-kv__key { color: var(--faint); }
+.dos-kv__val { color: var(--text); text-align: right; overflow-wrap: anywhere; }
+
+.dos-suivi__titre {
+  margin: 16px 0 6px; font-size: 11px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--faint);
+}
+.dos-echeances { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.dos-echeances li {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 8px 10px; border-radius: 10px;
+  background: color-mix(in srgb, var(--surface) 82%, var(--bg));
+  border: 1px solid var(--line-soft);
+  font-size: 12px;
+}
+.dos-echeances__date { color: var(--faint); font-size: 11px; }
+.dos-observations {
+  margin: 0; padding: 10px 12px; border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  font-size: 12px; color: var(--text); white-space: pre-wrap;
+}
+
+@media (max-width: 1080px) {
+  .dos-layout { grid-template-columns: minmax(0, 1fr); }
+  .dos-detail { position: static; }
+}
+@media (max-width: 720px) {
+  .dos-kv__row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .dos-kv__val { text-align: left; }
+  .dos-row__side .dos-row__meta { display: none; }
+}
+
+/* ---------- 10 · Boîte de dialogue de création ---------- */
+.dos-dialog {
+  width: min(560px, calc(100vw - 32px));
+  padding: 0; border: 1px solid var(--line); border-radius: 18px;
+  background: var(--surface); color: var(--text);
+  box-shadow: var(--elevation-2);
+}
+.dos-dialog::backdrop { background: rgba(3, 7, 18, .55); backdrop-filter: blur(2px); }
+.dos-dialog__head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 16px 18px; border-bottom: 1px solid var(--line-soft);
+}
+.dos-dialog__head h2 { margin: 0; font-size: 15px; font-weight: var(--font-weight-semibold); }
+.dos-dialog__close {
+  border: 0; background: transparent; color: var(--muted);
+  font-size: 20px; line-height: 1; padding: 2px 6px;
+  border-radius: 8px; cursor: pointer;
+}
+.dos-dialog__close:hover { color: var(--text); background: color-mix(in srgb, var(--muted) 12%, transparent); }
+.dos-dialog__body {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  padding: 16px 18px;
+}
+.dos-field { display: grid; gap: 5px; font-size: 11.5px; color: var(--muted); }
+.dos-field em { color: var(--accent); font-style: normal; }
+.dos-field input, .dos-field select {
+  width: 100%; box-sizing: border-box;
+  padding: 9px 10px; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--bg);
+  color: var(--text); font: inherit; font-size: 12.5px;
+}
+.dos-field input:focus, .dos-field select:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+.dos-dialog__erreur {
+  grid-column: 1 / -1; margin: 0; font-size: 12px; color: #EF4444;
+}
+.dos-dialog__foot {
+  display: flex; justify-content: flex-end; gap: 8px;
+  padding: 14px 18px; border-top: 1px solid var(--line-soft);
+}
+@media (max-width: 560px) {
+  .dos-dialog__body { grid-template-columns: minmax(0, 1fr); }
+}

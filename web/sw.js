@@ -19,6 +19,7 @@ const SHELL = [
   "./transmission.js",
   "/web/refresh.css",
   "/web/cockpit.js",
+  "/web/dossiers.js",
 ];
 
 self.addEventListener("install", (event) => {

@@ -231,6 +231,9 @@
     const config = NAV_CONFIG.find(s => s.key === sectionKey);
     if (!config) return true;
 
+    // RBAC inactif (aucun rôle fourni) : on n'enferme pas l'utilisateur.
+    if (!roles.length) return true;
+
     // Administrateur a toujours accès
     if (roles.includes('administrateur')) return true;
 
@@ -239,7 +242,7 @@
       ROLE_HIERARCHY.indexOf(r)
     ));
 
-    const requiredIndex = ROLE_HIERARCHY.indexOf(config.requiredRole[0]);
+    const requiredIndex = ROLE_HIERARCHY.indexOf(config.requiredRole);
 
     return userHighestIndex >= requiredIndex;
   }
@@ -299,6 +302,13 @@
     return html;
   }
 
+  // Les entrées du menu sont des liens d'ancre (`href="#…"`) : le routage
+  // natif du navigateur suffit. Ce point d'accroche reste explicite pour que
+  // l'initialisation ne dépende pas d'un écouteur par lien.
+  function attachNavListeners() {
+    /* aucune écoute supplémentaire nécessaire */
+  }
+
   // Délégation : tout élément portant `data-nav="section/…"` navigue, sans
   // gestionnaire en ligne (une valeur d'API ne doit jamais finir dans du JS).
   document.addEventListener('click', function (ev) {
@@ -311,25 +321,32 @@
   /**
    * Initialiser la navigation
    */
+  let initialise = false;
+
   function initNavigation() {
-    // Charger les permissions
-    loadUserPermissions().then(permissions => {
-      const roles = permissions.roles || [];
-      const container = document.getElementById('mainNav');
+    if (initialise) return;
+    initialise = true;
 
-      if (container) {
-        container.innerHTML = generateNavHTML(roles);
-        attachNavListeners();
-      }
-    });
-
-    // Gérer le changement de hash
     window.addEventListener('hashchange', handleHashChange);
 
-    // Gérer le hash initial
-    if (window.location.hash) {
-      handleHashChange();
+    // Afficher immédiatement le cockpit : sans cela, toutes les sections
+    // resteraient visibles les unes sous les autres tant que le hash est vide.
+    if (!window.location.hash) {
+      history.replaceState(null, '', '#cockpit');
     }
+    handleHashChange();
+
+    // Charger les permissions puis (re)construire le menu latéral.
+    const rendreMenu = roles => {
+      const container = document.getElementById('mainNav');
+      if (!container) return;
+      container.innerHTML = generateNavHTML(roles || []);
+      attachNavListeners();
+      updateActiveLinks(window.location.hash || '#cockpit');
+    };
+
+    rendreMenu([]);
+    loadUserPermissions().then(p => rendreMenu(p.roles || []));
   }
 
   /**
@@ -408,7 +425,10 @@
 
     const pageId = pageMapping[sectionKey];
     if (pageId) {
-      const page = document.getElementById(pageId);
+      // Les sections héritées peuvent être dupliquées : la dernière est la
+      // version courante.
+      const candidats = document.querySelectorAll(`section.page[id="${pageId}"]`);
+      const page = candidats.length ? candidats[candidats.length - 1] : null;
       if (page) {
         page.classList.remove('hidden');
         // Trigger reflow for animation
@@ -429,12 +449,9 @@
     }
   }
 
-  // Initialiser la navigation (appelé par index.html après chargement)
-  // Ne plus appeler initNavigation ici pour éviter la double navigation
-  // L'initialisation est faite dans index.html après le chargement du DOM
-
-  // Exposer les fonctions publiques
+  // Exposer les fonctions publiques (index.html appelle Navigation.init()).
   window.Navigation = {
+    init: initNavigation,
     hasSectionAccess,
     navigateToSection,
     getConfig: () => NAV_CONFIG

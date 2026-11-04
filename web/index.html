@@ -307,68 +307,100 @@
 
       <!-- ══════¤ GESTION DES DOSSIERS ¤══════ -->
       <section id="tab-dossiers" class="page" role="region" aria-labelledby="dossiers-page-title">
-        <header class="page-header">
-          <div class="page-header__meta">
-            <span class="label label-badge label-badge-brand">GESTION</span>
+        <header class="ws-head">
+          <div>
+            <span class="label label-badge label-badge-brand">DOSSIERS</span>
+            <h1 id="dossiers-page-title" class="ws-head-title">Dossiers de transit</h1>
+            <p class="ws-head-sub">Suivez vos dossiers, leurs pièces et leurs échéances.</p>
           </div>
-          <h1 id="dossiers-page-title" class="display-2">Gestion des dossiers</h1>
-          <p class="lead">Organisation et suivi des dossiers de transit</p>
+          <div class="ws-head-actions">
+            <button class="btn btn-ghost" type="button" id="dos-refresh">Actualiser</button>
+            <button class="btn" type="button" data-nav="dossiers/nouveau">Nouveau dossier</button>
+          </div>
         </header>
 
-        <div class="grid grid-cols-2 gap-4 mb-6">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Nouveau dossier</h3>
-            </div>
-            <div class="card-body">
-              <button class="btn btn-block" type="button" data-nav="dossiers/nouveau">Créer un nouveau dossier</button>
-            </div>
+        <div class="dos-toolbar">
+          <div class="dos-search">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle><path d="M16.5 16.5 21 21"></path>
+            </svg>
+            <input id="dos-search" type="search" autocomplete="off"
+                   placeholder="Rechercher un dossier, un client, une référence…"
+                   aria-label="Rechercher un dossier">
           </div>
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Tous les dossiers</h3>
-            </div>
-            <div class="card-body">
-              <button class="btn btn-block" type="button" data-nav="dossiers/tous">Voir tous les dossiers</button>
-            </div>
+          <div class="dos-filters" id="dos-filters" role="group" aria-label="Filtrer les dossiers">
+            <button class="dos-chip is-active" type="button" data-filter="tous" aria-pressed="true">Tous <span id="dos-count-tous">0</span></button>
+            <button class="dos-chip" type="button" data-filter="en-cours" aria-pressed="false">En cours <span id="dos-count-en-cours">0</span></button>
+            <button class="dos-chip" type="button" data-filter="a-valider" aria-pressed="false">À valider <span id="dos-count-a-valider">0</span></button>
+            <button class="dos-chip" type="button" data-filter="clos" aria-pressed="false">Clôturés <span id="dos-count-clos">0</span></button>
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-4 mb-6">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Dossiers en cours</h3>
-            </div>
-            <div class="card-body">
-              <button class="btn btn-block">Voir en cours</button>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Dossiers bloqués</h3>
-            </div>
-            <div class="card-body">
-              <button class="btn btn-block">Voir bloqués</button>
+        <div class="dos-layout">
+          <div class="panel dos-list-panel">
+            <div class="dos-list" id="dos-list" role="list" aria-label="Liste des dossiers"></div>
+            <p class="dos-empty" id="dos-empty" hidden></p>
+            <div class="dos-list-foot">
+              <span class="dos-list-meta" id="dos-meta"></span>
+              <button class="btn btn-ghost btn-sm" type="button" id="dos-more" hidden>Afficher plus</button>
             </div>
           </div>
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Dossiers clôturés</h3>
+
+          <aside class="panel dos-detail" id="dos-detail" aria-label="Détail du dossier">
+            <div class="dos-detail__placeholder" id="dos-detail-empty">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                <path d="M4 7h6l2 2h8v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path>
+              </svg>
+              <p>Sélectionnez un dossier pour afficher ses documents et ses informations.</p>
             </div>
-            <div class="card-body">
-              <button class="btn btn-block">Voir clôturés</button>
-            </div>
-          </div>
+            <div class="dos-detail__body" id="dos-detail-body" hidden></div>
+          </aside>
         </div>
 
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Clients</h3>
-          </div>
-          <div class="card-body">
-            <button class="btn btn-block">Voir les clients</button>
-          </div>
-        </div>
+        <dialog id="dos-create" class="dos-dialog" aria-labelledby="dos-create-title">
+          <form id="dos-create-form" method="dialog">
+            <header class="dos-dialog__head">
+              <h2 id="dos-create-title">Nouveau dossier</h2>
+              <button class="dos-dialog__close" type="button" id="dos-create-cancel" aria-label="Fermer">×</button>
+            </header>
+            <div class="dos-dialog__body">
+              <label class="dos-field">
+                <span>Libellé <em aria-hidden="true">*</em></span>
+                <input name="label" type="text" required maxlength="120" autocomplete="off"
+                       placeholder="Ex. Import conteneur MSCU-4412">
+              </label>
+              <label class="dos-field">
+                <span>Client importateur</span>
+                <input name="client_importateur" type="text" maxlength="120" autocomplete="off">
+              </label>
+              <label class="dos-field">
+                <span>Référence</span>
+                <input name="reference" type="text" maxlength="120" autocomplete="off">
+              </label>
+              <label class="dos-field">
+                <span>Priorité</span>
+                <select name="priorite">
+                  <option value="normale">Normale</option>
+                  <option value="haute">Haute</option>
+                  <option value="basse">Basse</option>
+                </select>
+              </label>
+              <label class="dos-field">
+                <span>Port de chargement</span>
+                <input name="port_chargement" type="text" maxlength="80" autocomplete="off">
+              </label>
+              <label class="dos-field">
+                <span>Port de destination</span>
+                <input name="port_destination" type="text" maxlength="80" autocomplete="off">
+              </label>
+              <p class="dos-dialog__erreur" id="dos-create-erreur" hidden></p>
+            </div>
+            <footer class="dos-dialog__foot">
+              <button class="btn btn-ghost" type="button" id="dos-create-annuler">Annuler</button>
+              <button class="btn" type="submit" id="dos-create-envoyer">Créer le dossier</button>
+            </footer>
+          </form>
+        </dialog>
       </section>
 
       <!-- ══════¤ DOCUMENTS & OCR ¤═══════ -->
@@ -4383,8 +4415,16 @@ function showSubtabPage(subtabKey) {
     });
   });
 
-  const pageId = pageMap[subtabKey] || "tab-dashboard";
-  const pageEl = document.getElementById(pageId);
+  // Repli par convention : la clé de sous-onglet est aussi l'identifiant de
+  // section (tab-dossiers, tab-maritime, tab-admin…). Certaines sections
+  // héritées apparaissent plusieurs fois : on retient la dernière occurrence,
+  // qui est la version courante.
+  const pageId = pageMap[subtabKey] || (subtabKey.startsWith("tab-") ? subtabKey : null);
+  let pageEl = null;
+  if (pageId) {
+    const candidats = document.querySelectorAll(`section.page[id="${pageId}"]`);
+    pageEl = candidats.length ? candidats[candidats.length - 1] : null;
+  }
   if (pageEl) {
     pageEl.classList.remove("hidden");
     void pageEl.offsetWidth; // relance l'animation
@@ -4442,13 +4482,11 @@ function toggleNavGroup(groupIndex) {
 
 /* =================== INITIALIZE =================== */
 document.addEventListener("DOMContentLoaded", () => {
-  renderNavigation();
-
-  // Initialize with first category active
-  const firstSubtab = document.querySelector(".nav-subitem.active");
-  if (firstSubtab) {
-    showSubtabPage(firstSubtab.dataset.subtab);
+  // Le menu et l'affichage des sections sont gérés par web/navigation.js.
+  if (window.Navigation && typeof window.Navigation.init === "function") {
+    window.Navigation.init();
   } else if (NAVIGATION[0] && NAVIGATION[0].subtabs[0]) {
+    // Repli si le module de navigation n'a pas pu être chargé.
     showSubtabPage(NAVIGATION[0].subtabs[0].key);
   }
 });
@@ -6430,7 +6468,7 @@ var I18N = {
 <script src="tracabilite.js" defer></script>
 <script src="transmission.js" defer></script>
 <script src="/web/cockpit.js" defer></script>
+  <script src="/web/dossiers.js" defer></script>
 <script src="/web/transit.js" defer></script>
-<script src="/web/navigation.js" defer></script>
 </body>
 </html>
