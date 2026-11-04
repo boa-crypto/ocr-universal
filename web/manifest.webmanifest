@@ -1,5 +1,5 @@
 {
-  "name": "UniOCR — Future Editorial Intelligence",
+  "name": "UniOCR — Poste de contrôle documentaire",
   "short_name": "UniOCR",
   "description": "Moteur OCR universel local : texte, structure, champs, tableaux, codes-barres. 100 % hors ligne.",
   "lang": "fr",
@@ -8,8 +8,8 @@
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#080A0D",
-  "theme_color": "#080A0D",
+  "background_color": "#0B1211",
+  "theme_color": "#0B1211",
   "categories": ["productivity", "utilities"],
   "icons": [
     {
