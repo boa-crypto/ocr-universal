@@ -235,6 +235,8 @@
       section: "Contrôle & conformité",
       titre: "Règles de contrôle",
       desc: "Règles appliquées au contrôle documentaire et à la cohérence des dossiers.",
+      /* Sources interrogées : documentées pour la matrice et les tests. */
+      sources: ["/api/controle/regles", "/api/coherence/regles"],
       source: {
         charger: function () {
           return Promise.all([
@@ -493,6 +495,8 @@
       section: "Douane & réglementation",
       titre: "Référentiel réglementaire",
       desc: "Règles réglementaires et nomenclatures appliquées aux déclarations.",
+      /* Sources interrogées : documentées pour la matrice et les tests. */
+      sources: ["/api/reglementation/chapitres", "/api/reglementation/regles"],
       source: {
         charger: function () {
           return Promise.all([
@@ -802,6 +806,8 @@
       section: "Finance & facturation",
       titre: "Paiements",
       desc: "Factures et liquidations restant à régler.",
+      /* Sources interrogées : documentées pour la matrice et les tests. */
+      sources: ["/api/declarations/liquidation", "/api/frais/facture"],
       source: {
         charger: function () {
           return Promise.all([
@@ -923,6 +929,8 @@
       section: "Rapports & statistiques",
       titre: "Statistiques",
       desc: "Volumes réels du poste : dossiers, documents, extractions et contrôle.",
+      /* Sources interrogées : documentées pour la matrice et les tests. */
+      sources: ["/api/stats"],
       source: {
         charger: function () {
           return lire("/api/stats").then(function (stats) {
@@ -1211,6 +1219,8 @@
       section: "Administration & sécurité",
       titre: "Configuration générale",
       desc: "État réel du chiffrement, de la sécurité et de la traçabilité du poste.",
+      /* Sources interrogées : documentées pour la matrice et les tests. */
+      sources: ["/api/auth/status", "/api/encryption", "/api/security", "/api/tracabilite/avertissement"],
       source: {
         charger: function () {
           return Promise.all([
@@ -1254,6 +1264,8 @@
       section: "Administration & sécurité",
       titre: "Paramètres OCR",
       desc: "Surveillance des dossiers scannés et profils d'extraction disponibles.",
+      /* Sources interrogées : documentées pour la matrice et les tests. */
+      sources: ["/api/profiles/catalog", "/api/watch"],
       source: {
         charger: function () {
           return Promise.all([
