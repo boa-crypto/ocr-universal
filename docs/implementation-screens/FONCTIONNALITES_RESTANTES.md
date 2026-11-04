@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 17. Ce document est la liste de travail
+État au 2026-11-04, après la passe 18. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -57,7 +57,7 @@ validation nommant le champ, effet immédiat et persistant.
 | ✅ P3-2 | ~~Relier les référentiels aux formulaires métier~~ | **fait en passe 15** : `datalist` alimentée par `/api/referentiels/{nom}` sur Clients (pays), Fournisseurs (pays), Navires (pavillon) et le dialogue de création de dossier (ports) ; un référentiel vide le dit et laisse la saisie libre |
 | ✅ P3-3 | ~~Couvrir les écrans d'administration (utilisateurs, rôles, sécurité, intégrations)~~ | **fait en passes 11 à 13** : 13 entrées mesurées (16 liens, 23 cartes, 3 sources API sur le hub ; utilisateurs et rôles CRUD ; connecteurs API 3 lignes) |
 | P3-4 | Statistiques avancées (séries, comparaisons, export planifié) | l'écran actuel affiche les indicateurs réels de `/api/stats`, rien de plus |
-| P3-5 | Écran « Graphiques » dédié | aujourd'hui rattaché à la page rapports ; aucun écran de graphiques autonome |
+| ✅ P3-5 | ~~Écran « Graphiques » dédié~~ | **fait en passe 18** : `#rapports/graphes` = 6 cartes alimentées par `/api/dashboard/graphique/*`, 3 séries réelles dessinées et 3 états vides expliqués |
 | P3-6 | Connecteur Hub : transmettre vers un service distant | dépend d'un service externe non disponible sur ce poste ; l'écran expose l'état réel des connecteurs (3 configurés) et le dit |
 
 ## Dépendances externes et limitations

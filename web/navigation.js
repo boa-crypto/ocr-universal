@@ -660,7 +660,7 @@
       'finance/paiements': 'tab-ecran',
       'finance/reconciliation': 'tab-ecran',
       'finance/cloture': 'tab-ecran',
-      'rapports/graphes': 'tab-reports',
+      'rapports/graphes': 'tab-graphiques',
       'rapports/statistiques': 'tab-ecran',
       'rapports/exports': 'tab-ecran',
       'referentiels/clients': 'tab-ecran',

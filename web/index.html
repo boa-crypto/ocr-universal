@@ -955,6 +955,55 @@
       <!-- ══════¤ RÉFÉRENCIELS & PARAMÈTRES ¤═══════ -->
       
 </section>
+
+<section id="tab-graphiques" class="page" role="region" aria-labelledby="graphiques-page-title">
+        <header class="page-header">
+          <div class="page-header__meta">
+            <span class="label label-badge label-badge-brand">GRAPHIQUES</span>
+          </div>
+          <h1 id="graphiques-page-title" class="display-2">Graphiques</h1>
+          <p class="lead">Les mêmes chiffres que les rapports, en visuel — sur vos données, jamais sur des valeurs d'exemple.</p>
+        </header>
+
+        <div class="graph__barre">
+          <span class="chip" id="graph-sync">Chargement…</span>
+          <button class="btn ghost sm" id="graph-refresh" type="button">Actualiser</button>
+          <a class="btn ghost sm" href="#rapports/statistiques">Statistiques détaillées</a>
+        </div>
+
+        <div class="graph__grille">
+          <article class="card graph__carte">
+            <h3 class="card-title">Dossiers par état</h3>
+            <div class="graph__canvas" id="graph-etats"></div>
+            <p class="graph__vide" id="graph-etats-vide" hidden></p>
+          </article>
+          <article class="card graph__carte">
+            <h3 class="card-title">Activité (30 derniers jours)</h3>
+            <div class="graph__canvas" id="graph-serie"></div>
+            <p class="graph__vide" id="graph-serie-vide" hidden></p>
+          </article>
+          <article class="card graph__carte">
+            <h3 class="card-title">Répartition par port</h3>
+            <div class="graph__canvas" id="graph-ports"></div>
+            <p class="graph__vide" id="graph-ports-vide" hidden></p>
+          </article>
+          <article class="card graph__carte">
+            <h3 class="card-title">Principaux clients</h3>
+            <div class="graph__canvas" id="graph-clients"></div>
+            <p class="graph__vide" id="graph-clients-vide" hidden></p>
+          </article>
+          <article class="card graph__carte">
+            <h3 class="card-title">Anomalies par type</h3>
+            <div class="graph__canvas" id="graph-anomalies"></div>
+            <p class="graph__vide" id="graph-anomalies-vide" hidden></p>
+          </article>
+          <article class="card graph__carte">
+            <h3 class="card-title">Frais par gestionnaire</h3>
+            <div class="graph__canvas" id="graph-frais"></div>
+            <p class="graph__vide" id="graph-frais-vide" hidden></p>
+          </article>
+        </div>
+      </section>
 <section id="tab-referentiels" class="page" role="region" aria-labelledby="referentiels-page-title">
         <header class="page-header">
           <div class="page-header__meta">
@@ -4224,6 +4273,7 @@ var I18N = {
 <script src="/web/charts.js" defer></script>
 <script src="/web/modules.js" defer></script>
 <script src="/web/rapports.js" defer></script>
+<script src="/web/graphiques.js" defer></script>
 <script src="/web/souspages.js" defer></script>
 <script src="/web/shell.js" defer></script>
 <script src="/web/cockpit.js" defer></script>

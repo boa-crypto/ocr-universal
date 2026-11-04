@@ -76,6 +76,11 @@ ACTIONS_TESTEES: dict[str, set[str]] = {
     "douane/paiements": {"Marquer payée"},
     "referentiels/parametres": {"Rétablir le défaut"},
 }
+#: Écrans dédiés ajoutés dans ce cycle : page → (module, source interrogée).
+#: Sans cette table, un écran neuf serait décrit comme « page historique ».
+ECRANS_DEDIES: dict[str, tuple[str, str]] = {
+    "tab-graphiques": ("`web/graphiques.js`", "/api/dashboard/graphique/*, serie-dossiers"),
+}
 #: Limitations externes connues, affichées dans la colonne « Action requise ».
 LIMITES: dict[str, str] = {
     "finance/reconciliation": "limite : aucun import bancaire côté serveur, "
@@ -136,7 +141,7 @@ HISTORIQUES_VERIFIES: dict[str, str] = {
     "admin/sauvegardes": "jsdom : 8 sauvegardes réelles (nom, taille, date)",
     "admin/workflows": "jsdom : création exercée → POST 200, ligne affichée (auparavant bouton mort)",
     "rapports": "jsdom : 7 graphiques SVG alimentés par le serveur (715 dossiers, 46 anomalies)",
-    "rapports/graphes": "jsdom : 7 graphiques SVG réels ; boutons inertes retirés",
+    "rapports/graphes": "jsdom : 6 cartes, 3 séries dessinées (états, activité 30 j, anomalies) et 3 états vides expliqués",
     "documents/profils": "jsdom : 11 profils, création PUT 200, essai à blanc 1/1 détecté, suppression DELETE 200",
     "referentiels/profiles": "jsdom : même éditeur de profils, création/essai/suppression exercés",
 }
@@ -355,12 +360,14 @@ def construire(snapshot: dict[str, Any]) -> tuple[list[Ligne], dict[str, Sonde]]
                     ))
             elif hote:
                 verifie = HISTORIQUES_VERIFIES.get(route)
+                dedie = ECRANS_DEDIES.get(hote)
                 lignes.append(Ligne(
                     rubrique=section["section"],
                     sous_menu=item["titre"],
                     route="#" + route,
-                    ecran=f"écran existant `#{hote}`",
-                    source="(module historique)",
+                    ecran=(f"écran dédié {dedie[0]}" if dedie
+                           else f"écran existant `#{hote}`"),
+                    source=(dedie[1] if dedie else "(module historique)"),
                     donnees=(f"{mesure.lignes} ligne" + ("s" if mesure.lignes > 1 else "")
                              + " affichée" + ("s" if mesure.lignes > 1 else "")
                              if mesure.lignes else "présent, 0 ligne affichée"),

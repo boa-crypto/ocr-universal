@@ -643,6 +643,52 @@ Résultat : **18 tests verts**, dont 14 refus attendus, la lecture autorisée
 (`/api/health`, `/api/stats`, `/api/clients`, `/api/parametres` en 200), et la
 distinction opérateur/administrateur.
 
+## 2.21 Passe 18 — « Graphiques » devient un écran
+
+L'entrée de menu « Graphiques » ouvrait la page « Rapports » : un titre, deux
+boutons, aucune courbe. Six routes de graphiques existaient pourtant côté
+serveur, calculées sur les vraies données et jamais appelées par l'interface.
+
+### Ce que l'écran dessine
+
+`#rapports/graphes` ouvre désormais une page dédiée (`web/graphiques.js`,
+séries lues dans `/api/dashboard/graphique/*` et `serie-dossiers`) :
+
+| Carte | Source | Rendu |
+|---|---|---|
+| Dossiers par état | `graphique/etat-dossiers` | barres horizontales |
+| Activité (30 jours) | `serie-dossiers?jours=30` | courbes Créés / Traités / Clôturés |
+| Répartition par port | `graphique/repartition-par-port` | anneau + légende |
+| Principaux clients | `graphique/top-clients` | anneau + légende |
+| Anomalies par type | `graphique/anomalies-par-type` | barres |
+| Frais par gestionnaire | `graphique/fret-par-gestionnaire` | barres |
+
+Un bandeau indique l'heure de lecture (« Séries à jour — 18:12 ») et
+`Actualiser` relit les six séries ; les appels sont groupés, pas rejoués à
+chaque navigation.
+
+### Une série vide n'est pas un cadre muet
+
+C'est le point qui distingue un graphique honnête d'une décoration. Sur cette
+base de démonstration, trois cartes n'ont **rien** à tracer ; elles le disent :
+
+- *« Tous les dossiers sont sans port renseigné : il n'y a rien à répartir
+  (715 dossiers) »* ;
+- *« Aucun client rattaché : renseignez le client importateur des dossiers »* ;
+- *« Aucun frais imputé : les montants par gestionnaire restent à zéro »*.
+
+Le module reconnaît aussi les valeurs de repli du serveur (`non défini`,
+`inconnu`) : un anneau à une seule part « non défini » n'apprend rien, il est
+remplacé par la phrase qui dit combien de dossiers sont concernés.
+
+### Mesures
+
+jsdom sur `#rapports/graphes` : page `tab-graphiques` visible, **3 séries
+dessinées** (8, 98 et 10 éléments SVG) et **3 états vides expliqués**,
+**6 appels API en 200**, aucune erreur réseau, bandeau à l'heure locale.
+`web/index.html` : 196 → **198 Ko** (plafond 220 Ko). Matrice : 100 entrées,
+la ligne « Graphiques » passe de « page historique » à **écran dédié**.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
@@ -667,7 +713,7 @@ directement ne voit que les routes déclarées dans `api.py` — d'où le helper
 ## 4. Décisions assumées
 
 1. **Un moteur déclaratif plutôt que 43 pages HTML.** L'index est déjà à
-   191 Ko (plafond 220 Ko) : dupliquer un gabarit par écran n'était pas
+   198 Ko (plafond 220 Ko) : dupliquer un gabarit par écran n'était pas
    tenable. Le moteur rend chaque écran par données, ce qui garantit que les
    états vide/erreur/chargement et les permissions sont identiques partout.
 2. **Aucune donnée fictive.** Les collections vides le restent ; les écrans

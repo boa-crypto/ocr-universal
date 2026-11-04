@@ -188,7 +188,7 @@ terminé.
 |---|---|---|---|---|---|---|---|---|---|
 | Rapports & statistiques | Vue d'ensemble | `#rapports` | écran existant `#tab-reports` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 7 graphiques SVG alimentés par le serveur (715 dossiers, 46 anomalies) | consultation et interactions vérifiées ; écritures non expérimentées |
 | Rapports & statistiques | Statistiques | `#rapports/statistiques` | Statistiques (`web/ecrans.js`) | `/api/stats` | 0 ligne | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
-| Rapports & statistiques | Graphiques | `#rapports/graphes` | écran existant `#tab-reports` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 7 graphiques SVG réels ; boutons inertes retirés | consultation et interactions vérifiées ; écritures non expérimentées |
+| Rapports & statistiques | Graphiques | `#rapports/graphes` | écran dédié `web/graphiques.js` | `/api/dashboard/graphique/*, serie-dossiers` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 6 cartes, 3 séries dessinées (états, activité 30 j, anomalies) et 3 états vides expliqués | consultation et interactions vérifiées ; écritures non expérimentées |
 | Rapports & statistiques | Exports | `#rapports/exports` | Exports (`web/ecrans.js`) | `/api/jobs?limit=200` | 200 lignes | Oui | **CONFORME** | jsdom : Télécharger (JSON), Télécharger (CSV) → 200 | actions exercées par test (Télécharger (JSON), Télécharger (CSV)) |
 
 ### 11. Référentiels & paramètres

@@ -981,3 +981,37 @@ def test_ecran_extraction_ocr_affiche_l_historique_du_document() -> None:
     # une chronologie vide dit pourquoi
     assert "Aucun événement journalisé pour ce document." in moteur
     assert ".chrono-item" in css and ".chrono-quand" in css
+
+
+def test_ecran_graphiques_dedie_dessine_les_series_du_serveur() -> None:
+    """« Graphiques » est un écran, plus un renvoi vers la page Rapports.
+
+    Les séries viennent des routes dédiées du tableau de bord ; une série vide
+    doit être expliquée, pas dessinée comme un cadre muet.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    html = (racine / "web" / "index.html").read_text(encoding="utf-8")
+    nav = (racine / "web" / "navigation.js").read_text(encoding="utf-8")
+    module = (racine / "web" / "graphiques.js").read_text(encoding="utf-8")
+    css = (racine / "web" / "uniocr-ds.css").read_text(encoding="utf-8")
+
+    assert 'id="tab-graphiques"' in html
+    assert 'src="/web/graphiques.js"' in html
+    assert "'rapports/graphes': 'tab-graphiques'" in nav
+    assert "'rapports/graphes': 'tab-reports'" not in nav
+
+    for route in ("etat-dossiers", "serie-dossiers?jours=30", "repartition-par-port",
+                  "top-clients", "anomalies-par-type", "fret-par-gestionnaire"):
+        assert route in module, route
+
+    # les six cartes existent, et chacune sait dire pourquoi elle est vide
+    for identifiant in ("graph-etats", "graph-serie", "graph-ports",
+                        "graph-clients", "graph-anomalies", "graph-frais"):
+        assert f'id="{identifiant}"' in html
+        assert f'id="{identifiant}-vide"' in html
+
+    assert "UniOCRCharts.bars" in module
+    assert "UniOCRCharts.line" in module
+    assert "UniOCRCharts.donut" in module
+    assert "Aucun frais imputé" in module          # pas de cadre vide
+    assert ".graph__grille" in css
