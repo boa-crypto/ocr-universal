@@ -470,7 +470,10 @@ def test_service_worker_ne_sert_jamais_une_interface_perimee() -> None:
     racine = Path(__file__).resolve().parent.parent
     sw = (racine / "web" / "sw.js").read_text(encoding="utf-8")
 
-    assert "unocr-shell-v10-menu" in sw
+    # Le nom du cache est versionné : toute refonte de la coquille l'incrémente,
+    # ce qui purge les anciennes copies installées chez les postes.
+    assert re.search(r'const CACHE = "unocr-shell-v\d+-', sw)
+    assert '"/web/ecrans.js"' in sw
     assert "function reseauDAbord" in sw and "function estCoquille" in sw
     assert "reseauDAbord(req)" in sw
     # Les API ne passent jamais par le cache.
@@ -602,3 +605,89 @@ def test_sous_rubrique_sans_ecran_est_annoncee() -> None:
     assert ".avis-route" in css
     # L'avis est retiré avant d'en poser un autre : jamais deux bandeaux.
     assert "document.querySelectorAll('[data-avis-route]').forEach" in nav
+
+
+# ──────────────────────────────────────────────────────────────────────────
+# Écrans métier déclaratifs (web/ecrans.js)
+# ──────────────────────────────────────────────────────────────────────────
+
+def _routes_ecrans() -> set[str]:
+    """Routes d'écran déclarées dans le moteur (`#section/sous-ecran`)."""
+    racine = Path(__file__).resolve().parent.parent
+    source = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+    routes = set(re.findall(r'^\s{4}"([a-z-]+/[a-z-]+)":\s*\{', source, re.M))
+    routes |= set(re.findall(r'route:\s*"([a-z-]+/[a-z-]+)"', source))
+    return routes
+
+
+def _route_pages() -> dict[str, str]:
+    """Table `routePages` de navigation.js : route d'écran → section hôte."""
+    racine = Path(__file__).resolve().parent.parent
+    source = (racine / "web" / "navigation.js").read_text(encoding="utf-8")
+    return dict(re.findall(r"'([a-z-]+/[a-z-]+)':\s*'(tab-[a-z-]+)'", source))
+
+
+def test_chaque_ecran_declaratif_est_relie_a_une_section_reelle() -> None:
+    """Aucun écran du catalogue ne doit être orphelin dans le routeur."""
+    racine = Path(__file__).resolve().parent.parent
+    html = (racine / "web" / "index.html").read_text(encoding="utf-8")
+    pages = _route_pages()
+
+    assert '<section id="tab-ecran" class="page">' in html
+    assert "/web/ecrans.js" in html
+
+    orphelins = sorted(r for r in _routes_ecrans() if pages.get(r) != "tab-ecran")
+    assert orphelins == [], f"écrans sans section hôte : {orphelins}"
+
+
+def test_chaque_ecran_est_atteignable_depuis_le_menu() -> None:
+    """Un écran qui existe mais qu'aucun menu n'ouvre n'est pas livré."""
+    racine = Path(__file__).resolve().parent.parent
+    navigation = (racine / "web" / "navigation.js").read_text(encoding="utf-8")
+    menu = set(re.findall(r"route:\s*'(#[a-z-]+/[a-z-]+)'", navigation))
+    menu = {route.lstrip("#") for route in menu}
+
+    inaccessibles = sorted(_routes_ecrans() - menu)
+
+    assert inaccessibles == [], f"écrans sans entrée de menu : {inaccessibles}"
+
+
+def test_les_urls_appelees_par_les_ecrans_existent_cote_serveur() -> None:
+    """Toute URL `/api/…` du moteur d'écrans doit correspondre à une route réelle."""
+    from tests._routes import iterer_routes, signature
+    from unocr.api import app as application
+
+    racine = Path(__file__).resolve().parent.parent
+    source = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+    urls = set(re.findall(r'["\'](/api/[A-Za-z0-9_\-/{}.]*)["\']', source))
+
+    existantes = [(methode, signature(chemin)) for chemin, methode in iterer_routes(application)]
+
+    inconnues: list[str] = []
+    for url in sorted(urls):
+        segments = signature(url)
+        if url.endswith("/"):
+            segments = segments + ["*"]
+        if not any(
+            len(candidat) == len(segments)
+            and all(a == "*" or a == b for a, b in zip(candidat, segments))
+            for _, candidat in existantes
+        ):
+            inconnues.append(url)
+
+    assert inconnues == [], f"URL sans route serveur : {inconnues}"
+
+
+def test_le_moteur_d_ecrans_a_son_stylesheet() -> None:
+    """Les classes produites par le moteur existent réellement dans le design system."""
+    racine = Path(__file__).resolve().parent.parent
+    source = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+    css = (racine / "web" / "uniocr-ds.css").read_text(encoding="utf-8")
+
+    classes = {"ecran", "ecran__titre", "ecran__card", "ecran__voile", "ecran__boite",
+               "ecran__form", "ecran__etat", "ecran__tableau", "ecran__skeleton"}
+    produites = set(re.findall(r'elt\("[a-z]+",\s*"([a-z][a-z-]*)"', source))
+    manquantes = sorted(c for c in classes if c not in produites and c not in css)
+    assert manquantes == []
+    for classe in sorted(classes):
+        assert f".{classe}" in css, classe

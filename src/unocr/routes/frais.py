@@ -159,6 +159,19 @@ def list_frais(
     return [f.model_dump() for f in frais_list]
 
 
+@router.get("/facture")
+def list_factures(
+    request: Request,
+    dossier_id: Optional[str] = None,
+) -> list[dict]:
+    """Lister toutes les factures."""
+    store = _get_facture_store(request)
+    factures = list(store.values())
+    if dossier_id:
+        factures = [f for f in factures if f.dossier_id == dossier_id]
+    return [f.model_dump() for f in factures]
+
+
 @router.get("/{frais_id}")
 def get_frais(
     frais_id: str,
@@ -237,19 +250,6 @@ def create_facture(
     store[facture_obj.id] = facture_obj
     audit(cfg.log_dir, "facture_creee", dossier=facture.dossier_id, numero=facture.numero_facture)
     return facture_obj.model_dump()
-
-
-@router.get("/facture")
-def list_factures(
-    request: Request,
-    dossier_id: Optional[str] = None,
-) -> list[dict]:
-    """Lister toutes les factures."""
-    store = _get_facture_store(request)
-    factures = list(store.values())
-    if dossier_id:
-        factures = [f for f in factures if f.dossier_id == dossier_id]
-    return [f.model_dump() for f in factures]
 
 
 @router.get("/facture/{facture_id}")

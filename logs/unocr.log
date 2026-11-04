@@ -39217,3 +39217,401 @@ json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 2026-11-04 13:52:22 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
 2026-11-04 13:52:22 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
 2026-11-04 13:52:22 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:17:12 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:17:12 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:17:12 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:17:12 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:18:22 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:18:22 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:18:22 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:18:22 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:22:10 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:22:10 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:22:10 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:22:10 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:22:30 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:22:30 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:22:30 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:22:30 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:24:20 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:24:20 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:24:20 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:24:20 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:24:26 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:24:26 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:24:26 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:24:26 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:24:33 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:24:33 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:24:33 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:24:33 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:31:00 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:31:00 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:31:00 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:31:00 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:31:01 INFO [unocr.api] jobs concurrents bornés à 2
+2026-11-04 15:31:03 INFO [unocr.api] jobs concurrents bornés à 2
+2026-11-04 15:31:04 INFO [unocr.api] jobs concurrents bornés à 2
+2026-11-04 15:31:05 INFO [unocr.api] jobs concurrents bornés à 2
+2026-11-04 15:31:05 INFO [unocr.api] jobs concurrents bornés à 2
+2026-11-04 15:31:06 INFO [unocr.api] jobs concurrents bornés à 2
+2026-11-04 15:31:07 INFO [unocr.api] jobs concurrents bornés à 2
+2026-11-04 15:31:08 INFO [unocr.api] jobs concurrents bornés à 2
+2026-11-04 15:31:08 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/tmpmpk56zmp/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:08 INFO [unocr.connectors.secrets] secret enregistré : connecteur=demo clé=api_key
+2026-11-04 15:31:08 INFO [unocr.crypto_store] clé de chiffrement chargée (/tmp/tmpmpk56zmp/secret.key)
+2026-11-04 15:31:08 INFO [unocr.crypto_store] clé de chiffrement chargée (/tmp/tmpmpk56zmp/secret.key)
+2026-11-04 15:31:08 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/tmpi_bydd_p/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:08 INFO [unocr.connectors.secrets] secret enregistré : connecteur=demo clé=api_key
+2026-11-04 15:31:08 INFO [unocr.crypto_store] clé de chiffrement chargée (/tmp/tmpi_bydd_p/secret.key)
+2026-11-04 15:31:08 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/tmpvyat29fe/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:08 INFO [unocr.connectors.secrets] secret enregistré : connecteur=demo clé=api_key
+2026-11-04 15:31:08 INFO [unocr.crypto_store] clé de chiffrement chargée (/tmp/tmpvyat29fe/secret.key)
+2026-11-04 15:31:08 INFO [unocr.crypto_store] clé de chiffrement chargée (/tmp/tmpvyat29fe/secret.key)
+2026-11-04 15:31:08 INFO [unocr.connectors.secrets] secret enregistré : connecteur=demo clé=autre
+2026-11-04 15:31:08 WARNING [unocr.api] écoute sur 0.0.0.0 SANS jeton : toute machine du réseau peut lire les documents traités et piloter les transmissions. Pour restreindre, définir UNIOCR_TOKEN ou api.host=127.0.0.1 dans config/default.json.
+2026-11-04 15:31:08 WARNING [unocr.api] écoute sur 192.168.1.5 SANS jeton : toute machine du réseau peut lire les documents traités et piloter les transmissions. Pour restreindre, définir UNIOCR_TOKEN ou api.host=127.0.0.1 dans config/default.json.
+2026-11-04 15:31:13 WARNING [unocr.calibration] calibration ignorée : 3 échantillon(s) étiqueté(s) : insuffisant (minimum 8) — calibration non appliquée
+2026-11-04 15:31:13 WARNING [unocr.calibration] calibration synthétique non activée : Platt sur 20 échantillons (10 corrects) — ajusté sur données SYNTHÉTIQUES : désactivé par prudence (relancer avec force=True ou fournir des photos réelles)
+2026-11-04 15:31:13 ERROR [unocr.calibration] calibration illisible (/tmp/pytest-of-user/pytest-64/test_load_corrupt_file_is_iden0/calibration.json) : identité utilisée
+Traceback (most recent call last):
+  File "/home/user/ocr-universal/src/unocr/calibration.py", line 210, in load
+    data = json.loads(p.read_text(encoding="utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+2026-11-04 15:31:16 WARNING [unocr.calibration] calibration synthétique non activée : Platt sur 32 échantillons (0 corrects) — ajusté sur données SYNTHÉTIQUES : désactivé par prudence (relancer avec force=True ou fournir des photos réelles)
+2026-11-04 15:31:19 WARNING [unocr.classification] profil illisible pour la classification (casse.json) : Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+2026-11-04 15:31:23 WARNING [unocr.ingest] images de page indisponibles pour absent.pdf : fichier introuvable: absent.pdf
+2026-11-04 15:31:23 ERROR [unocr.ingest] échec de chargement de corrupt.pdf
+Traceback (most recent call last):
+  File "/home/user/ocr-universal/src/unocr/ingest.py", line 357, in load_document
+    doc = _load_pdf(p, dpi, max_pages=max_pages)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/src/unocr/ingest.py", line 150, in _load_pdf
+    pdf = pdfium.PdfDocument(str(path))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/.venv/lib/python3.11/site-packages/pypdfium2/_helpers/document.py", line 76, in __init__
+    self.raw, to_hold, to_close = _open_pdf(self._input, self._password, self._autoclose)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/.venv/lib/python3.11/site-packages/pypdfium2/_helpers/document.py", line 591, in _open_pdf
+    raise PdfiumError(f"Failed to load document (PDFium: {pdfium_i.ErrorToStr.get(err_code)}).", err_code=err_code)
+pypdfium2._helpers.misc.PdfiumError: Failed to load document (PDFium: Data format error).
+2026-11-04 15:31:23 WARNING [unocr.ingest] images de page indisponibles pour corrupt.pdf : document illisible ou corrompu: Failed to load document (PDFium: Data format error).
+2026-11-04 15:31:23 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_secret_roundtrip_never_ex0/connectors/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_delete_removes_config_and0/connectors/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_catalog_reports_state_and0/connectors/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.connectors.forms] formulaires illisibles (Expecting property name enclosed in double quotes: line 1 column 2 (char 1)) : magasin réinitialisé
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_secrets_are_encrypted_at_0/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_secret_keys_are_exposed_v0/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_secret_key_file_is_restri0/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_secret_delete0/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_secret_delete_connector0/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_corrupt_vault_returns_emp0/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 ERROR [unocr.connectors.secrets] coffre de secrets illisible (/tmp/pytest-of-user/pytest-64/test_corrupt_vault_returns_emp0/secrets/secrets.enc)
+Traceback (most recent call last):
+  File "/home/user/ocr-universal/src/unocr/connectors/secrets.py", line 48, in _load_all
+    return json.loads(data.decode("utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_roundtrip_file0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_roundtrip_bytes0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_roundtrip_empty_and_binar0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_nonce_is_unique_per_file0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_tampered_ciphertext_is_re0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_wrong_key_is_rejected0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_wrong_key_is_rejected0/autre.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_encrypted_file_without_ke0/k.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_unknown_version_is_reject0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_plain_file_passes_through0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_key_file_created_with_str0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:25 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_key_file_reused_when_pres0/k.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:26 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_status_never_reveals_key0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:31:33 ERROR [unocr.ingest] échec de chargement de corrupt.pdf
+Traceback (most recent call last):
+  File "/home/user/ocr-universal/src/unocr/ingest.py", line 357, in load_document
+    doc = _load_pdf(p, dpi, max_pages=max_pages)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/src/unocr/ingest.py", line 150, in _load_pdf
+    pdf = pdfium.PdfDocument(str(path))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/.venv/lib/python3.11/site-packages/pypdfium2/_helpers/document.py", line 76, in __init__
+    self.raw, to_hold, to_close = _open_pdf(self._input, self._password, self._autoclose)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/.venv/lib/python3.11/site-packages/pypdfium2/_helpers/document.py", line 591, in _open_pdf
+    raise PdfiumError(f"Failed to load document (PDFium: {pdfium_i.ErrorToStr.get(err_code)}).", err_code=err_code)
+pypdfium2._helpers.misc.PdfiumError: Failed to load document (PDFium: Data format error).
+2026-11-04 15:31:34 WARNING [unocr.api] débit dépassé pour testclient sur /api/dossiers (attente 12.0s)
+2026-11-04 15:31:45 ERROR [unocr.ingest] échec de chargement de corrupt.pdf
+Traceback (most recent call last):
+  File "/home/user/ocr-universal/src/unocr/ingest.py", line 357, in load_document
+    doc = _load_pdf(p, dpi, max_pages=max_pages)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/src/unocr/ingest.py", line 150, in _load_pdf
+    pdf = pdfium.PdfDocument(str(path))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/.venv/lib/python3.11/site-packages/pypdfium2/_helpers/document.py", line 76, in __init__
+    self.raw, to_hold, to_close = _open_pdf(self._input, self._password, self._autoclose)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/.venv/lib/python3.11/site-packages/pypdfium2/_helpers/document.py", line 591, in _open_pdf
+    raise PdfiumError(f"Failed to load document (PDFium: {pdfium_i.ErrorToStr.get(err_code)}).", err_code=err_code)
+pypdfium2._helpers.misc.PdfiumError: Failed to load document (PDFium: Data format error).
+2026-11-04 15:31:47 WARNING [unocr.rbac] jeton en double entre a et b
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : audit sur /api/jobs/j1/fields/invoice_number (rôle operateur requis, a ['lecteur'])
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : paul sur le dossier dos_cfcc717b3264 (hors périmètre)
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : audit sur /api/jobs/j1/fields/invoice_number (rôle operateur requis, a ['lecteur'])
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : audit sur /api/dossiers (rôle operateur requis, a ['lecteur'])
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : marie sur /api/rbac/utilisateurs (rôle administrateur requis, a ['operateur'])
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : chef sur /api/backups/restore (rôle administrateur requis, a ['superviseur'])
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : audit sur /api/admin/cleanup (rôle administrateur requis, a ['lecteur'])
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : audit sur /api/jobs/ghost/classification (rôle operateur requis, a ['lecteur'])
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : audit sur /api/connectors/transmit (rôle administrateur requis, a ['lecteur'])
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : audit sur /api/connectors/demo_simulated/secrets (rôle administrateur requis, a ['lecteur'])
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : audit sur /api/profiles/custom (rôle administrateur requis, a ['lecteur'])
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : audit sur /api/watch (rôle administrateur requis, a ['lecteur'])
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : audit sur /api/dossiers/D1/transmission (rôle superviseur requis, a ['lecteur'])
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : audit sur /api/dossiers/D1/coherence (rôle superviseur requis, a ['lecteur'])
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : marie sur /api/dossiers/dos_0475d72e88d5/coherence (rôle superviseur requis, a ['operateur'])
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : chef sur /api/rbac/utilisateurs (rôle administrateur requis, a ['superviseur'])
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : paul sur le document job_e8c99c4dfe55 (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : paul sur le document job_e8c99c4dfe55 (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : paul sur le document job_e8c99c4dfe55 (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : paul sur le document job_e8c99c4dfe55 (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : paul sur le document job_e8c99c4dfe55 (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : paul sur le document job_e8c99c4dfe55 (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : paul sur le document job_6dd97eeb8b16 (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : paul sur le document job_7d1a74822c3c (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : paul sur le document job_634d90178b5c (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : paul sur le document job_53451d583cbc (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : paul sur le dossier dos_9693b8da8402 (hors périmètre)
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : paul sur le document job_7bec9419fe9a (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:31:47 WARNING [unocr.api] accès refusé : paul sur le document job_4fdd473ffb05 (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:31:47 WARNING [unocr.ocr] moteur easyocr désactivé : mémoire insuffisante pour « easyocr » : 1400 Mo disponibles, 2750 Mo requis (dont marge de 25 %)
+2026-11-04 15:31:47 WARNING [unocr.ocr] moteur paddleocr désactivé : mémoire insuffisante pour « paddleocr » : 1400 Mo disponibles, 2250 Mo requis (dont marge de 25 %)
+2026-11-04 15:31:47 WARNING [unocr.ocr] moteur easyocr désactivé : mémoire insuffisante pour « easyocr » : 1400 Mo disponibles, 2750 Mo requis (dont marge de 25 %)
+2026-11-04 15:31:47 WARNING [unocr.ocr] moteur paddleocr désactivé : mémoire insuffisante pour « paddleocr » : 1400 Mo disponibles, 2250 Mo requis (dont marge de 25 %)
+2026-11-04 15:32:10 WARNING [unocr.api] chiffrement activé mais aucune clé valide : désactivé
+2026-11-04 15:32:10 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-64/test_encryption_roundtrip_thro0/k.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:32:26 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:32:26 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:32:26 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:32:26 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:33:07 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:33:07 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:33:07 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:33:07 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:33:21 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:33:21 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:33:21 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:33:21 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:33:26 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:33:26 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:33:26 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:33:26 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:33:29 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:33:29 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:33:29 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:33:29 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:33:51 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:33:51 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:33:51 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:33:51 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:34:10 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:34:10 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:34:10 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:34:10 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:34:14 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:34:14 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:34:14 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:34:14 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:34:31 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:34:31 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:34:31 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:34:31 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:34:44 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:34:44 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:34:44 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:34:44 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:34:48 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:34:48 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:34:48 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:34:48 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 15:34:50 INFO [unocr.api] jobs concurrents bornés à 2
+2026-11-04 15:34:51 INFO [unocr.api] jobs concurrents bornés à 2
+2026-11-04 15:34:52 INFO [unocr.api] jobs concurrents bornés à 2
+2026-11-04 15:34:53 INFO [unocr.api] jobs concurrents bornés à 2
+2026-11-04 15:34:53 INFO [unocr.api] jobs concurrents bornés à 2
+2026-11-04 15:34:54 INFO [unocr.api] jobs concurrents bornés à 2
+2026-11-04 15:34:55 INFO [unocr.api] jobs concurrents bornés à 2
+2026-11-04 15:34:56 INFO [unocr.api] jobs concurrents bornés à 2
+2026-11-04 15:34:56 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/tmpt09b9igp/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:34:56 INFO [unocr.connectors.secrets] secret enregistré : connecteur=demo clé=api_key
+2026-11-04 15:34:56 INFO [unocr.crypto_store] clé de chiffrement chargée (/tmp/tmpt09b9igp/secret.key)
+2026-11-04 15:34:56 INFO [unocr.crypto_store] clé de chiffrement chargée (/tmp/tmpt09b9igp/secret.key)
+2026-11-04 15:34:56 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/tmpifxueitb/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:34:56 INFO [unocr.connectors.secrets] secret enregistré : connecteur=demo clé=api_key
+2026-11-04 15:34:56 INFO [unocr.crypto_store] clé de chiffrement chargée (/tmp/tmpifxueitb/secret.key)
+2026-11-04 15:34:56 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/tmp6bbl5t0y/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:34:56 INFO [unocr.connectors.secrets] secret enregistré : connecteur=demo clé=api_key
+2026-11-04 15:34:56 INFO [unocr.crypto_store] clé de chiffrement chargée (/tmp/tmp6bbl5t0y/secret.key)
+2026-11-04 15:34:56 INFO [unocr.crypto_store] clé de chiffrement chargée (/tmp/tmp6bbl5t0y/secret.key)
+2026-11-04 15:34:56 INFO [unocr.connectors.secrets] secret enregistré : connecteur=demo clé=autre
+2026-11-04 15:34:56 WARNING [unocr.api] écoute sur 0.0.0.0 SANS jeton : toute machine du réseau peut lire les documents traités et piloter les transmissions. Pour restreindre, définir UNIOCR_TOKEN ou api.host=127.0.0.1 dans config/default.json.
+2026-11-04 15:34:56 WARNING [unocr.api] écoute sur 192.168.1.5 SANS jeton : toute machine du réseau peut lire les documents traités et piloter les transmissions. Pour restreindre, définir UNIOCR_TOKEN ou api.host=127.0.0.1 dans config/default.json.
+2026-11-04 15:35:01 WARNING [unocr.calibration] calibration ignorée : 3 échantillon(s) étiqueté(s) : insuffisant (minimum 8) — calibration non appliquée
+2026-11-04 15:35:01 WARNING [unocr.calibration] calibration synthétique non activée : Platt sur 20 échantillons (10 corrects) — ajusté sur données SYNTHÉTIQUES : désactivé par prudence (relancer avec force=True ou fournir des photos réelles)
+2026-11-04 15:35:01 ERROR [unocr.calibration] calibration illisible (/tmp/pytest-of-user/pytest-69/test_load_corrupt_file_is_iden0/calibration.json) : identité utilisée
+Traceback (most recent call last):
+  File "/home/user/ocr-universal/src/unocr/calibration.py", line 210, in load
+    data = json.loads(p.read_text(encoding="utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+2026-11-04 15:35:04 WARNING [unocr.calibration] calibration synthétique non activée : Platt sur 32 échantillons (0 corrects) — ajusté sur données SYNTHÉTIQUES : désactivé par prudence (relancer avec force=True ou fournir des photos réelles)
+2026-11-04 15:35:07 WARNING [unocr.classification] profil illisible pour la classification (casse.json) : Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+2026-11-04 15:35:10 WARNING [unocr.ingest] images de page indisponibles pour absent.pdf : fichier introuvable: absent.pdf
+2026-11-04 15:35:10 ERROR [unocr.ingest] échec de chargement de corrupt.pdf
+Traceback (most recent call last):
+  File "/home/user/ocr-universal/src/unocr/ingest.py", line 357, in load_document
+    doc = _load_pdf(p, dpi, max_pages=max_pages)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/src/unocr/ingest.py", line 150, in _load_pdf
+    pdf = pdfium.PdfDocument(str(path))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/.venv/lib/python3.11/site-packages/pypdfium2/_helpers/document.py", line 76, in __init__
+    self.raw, to_hold, to_close = _open_pdf(self._input, self._password, self._autoclose)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/.venv/lib/python3.11/site-packages/pypdfium2/_helpers/document.py", line 591, in _open_pdf
+    raise PdfiumError(f"Failed to load document (PDFium: {pdfium_i.ErrorToStr.get(err_code)}).", err_code=err_code)
+pypdfium2._helpers.misc.PdfiumError: Failed to load document (PDFium: Data format error).
+2026-11-04 15:35:10 WARNING [unocr.ingest] images de page indisponibles pour corrupt.pdf : document illisible ou corrompu: Failed to load document (PDFium: Data format error).
+2026-11-04 15:35:11 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_secret_roundtrip_never_ex0/connectors/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_delete_removes_config_and0/connectors/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_catalog_reports_state_and0/connectors/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.connectors.forms] formulaires illisibles (Expecting property name enclosed in double quotes: line 1 column 2 (char 1)) : magasin réinitialisé
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_secrets_are_encrypted_at_0/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_secret_keys_are_exposed_v0/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_secret_key_file_is_restri0/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_secret_delete0/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_secret_delete_connector0/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_corrupt_vault_returns_emp0/secrets/secret.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 ERROR [unocr.connectors.secrets] coffre de secrets illisible (/tmp/pytest-of-user/pytest-69/test_corrupt_vault_returns_emp0/secrets/secrets.enc)
+Traceback (most recent call last):
+  File "/home/user/ocr-universal/src/unocr/connectors/secrets.py", line 48, in _load_all
+    return json.loads(data.decode("utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_roundtrip_file0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_roundtrip_bytes0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_roundtrip_empty_and_binar0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_nonce_is_unique_per_file0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_tampered_ciphertext_is_re0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_wrong_key_is_rejected0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_wrong_key_is_rejected0/autre.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_encrypted_file_without_ke0/k.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_unknown_version_is_reject0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_plain_file_passes_through0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_key_file_created_with_str0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:12 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_key_file_reused_when_pres0/k.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:13 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_status_never_reveals_key0/keys/master.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:35:20 ERROR [unocr.ingest] échec de chargement de corrupt.pdf
+Traceback (most recent call last):
+  File "/home/user/ocr-universal/src/unocr/ingest.py", line 357, in load_document
+    doc = _load_pdf(p, dpi, max_pages=max_pages)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/src/unocr/ingest.py", line 150, in _load_pdf
+    pdf = pdfium.PdfDocument(str(path))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/.venv/lib/python3.11/site-packages/pypdfium2/_helpers/document.py", line 76, in __init__
+    self.raw, to_hold, to_close = _open_pdf(self._input, self._password, self._autoclose)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/.venv/lib/python3.11/site-packages/pypdfium2/_helpers/document.py", line 591, in _open_pdf
+    raise PdfiumError(f"Failed to load document (PDFium: {pdfium_i.ErrorToStr.get(err_code)}).", err_code=err_code)
+pypdfium2._helpers.misc.PdfiumError: Failed to load document (PDFium: Data format error).
+2026-11-04 15:35:21 WARNING [unocr.api] débit dépassé pour testclient sur /api/dossiers (attente 12.0s)
+2026-11-04 15:35:33 ERROR [unocr.ingest] échec de chargement de corrupt.pdf
+Traceback (most recent call last):
+  File "/home/user/ocr-universal/src/unocr/ingest.py", line 357, in load_document
+    doc = _load_pdf(p, dpi, max_pages=max_pages)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/src/unocr/ingest.py", line 150, in _load_pdf
+    pdf = pdfium.PdfDocument(str(path))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/.venv/lib/python3.11/site-packages/pypdfium2/_helpers/document.py", line 76, in __init__
+    self.raw, to_hold, to_close = _open_pdf(self._input, self._password, self._autoclose)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/ocr-universal/.venv/lib/python3.11/site-packages/pypdfium2/_helpers/document.py", line 591, in _open_pdf
+    raise PdfiumError(f"Failed to load document (PDFium: {pdfium_i.ErrorToStr.get(err_code)}).", err_code=err_code)
+pypdfium2._helpers.misc.PdfiumError: Failed to load document (PDFium: Data format error).
+2026-11-04 15:35:34 WARNING [unocr.rbac] jeton en double entre a et b
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : audit sur /api/jobs/j1/fields/invoice_number (rôle operateur requis, a ['lecteur'])
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : paul sur le dossier dos_e83d685b34d0 (hors périmètre)
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : audit sur /api/jobs/j1/fields/invoice_number (rôle operateur requis, a ['lecteur'])
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : audit sur /api/dossiers (rôle operateur requis, a ['lecteur'])
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : marie sur /api/rbac/utilisateurs (rôle administrateur requis, a ['operateur'])
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : chef sur /api/backups/restore (rôle administrateur requis, a ['superviseur'])
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : audit sur /api/admin/cleanup (rôle administrateur requis, a ['lecteur'])
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : audit sur /api/jobs/ghost/classification (rôle operateur requis, a ['lecteur'])
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : audit sur /api/connectors/transmit (rôle administrateur requis, a ['lecteur'])
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : audit sur /api/connectors/demo_simulated/secrets (rôle administrateur requis, a ['lecteur'])
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : audit sur /api/profiles/custom (rôle administrateur requis, a ['lecteur'])
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : audit sur /api/watch (rôle administrateur requis, a ['lecteur'])
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : audit sur /api/dossiers/D1/transmission (rôle superviseur requis, a ['lecteur'])
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : audit sur /api/dossiers/D1/coherence (rôle superviseur requis, a ['lecteur'])
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : marie sur /api/dossiers/dos_e1e55fffcebb/coherence (rôle superviseur requis, a ['operateur'])
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : chef sur /api/rbac/utilisateurs (rôle administrateur requis, a ['superviseur'])
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : paul sur le document job_d378db5c34bb (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : paul sur le document job_d378db5c34bb (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : paul sur le document job_d378db5c34bb (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : paul sur le document job_d378db5c34bb (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : paul sur le document job_d378db5c34bb (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : paul sur le document job_d378db5c34bb (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : paul sur le document job_dc5d1cb3fb31 (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : paul sur le document job_a41448070018 (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : paul sur le document job_d7086c0d91a5 (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : paul sur le document job_68e063ba7ab6 (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:35:34 WARNING [unocr.api] accès refusé : paul sur le dossier dos_8fb01e7dde47 (hors périmètre)
+2026-11-04 15:35:35 WARNING [unocr.api] accès refusé : paul sur le document job_ba298ca27a4b (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:35:35 WARNING [unocr.api] accès refusé : paul sur le document job_5dc37c3d7a48 (classé dans 2 dossier(s) hors périmètre)
+2026-11-04 15:35:35 WARNING [unocr.ocr] moteur easyocr désactivé : mémoire insuffisante pour « easyocr » : 1400 Mo disponibles, 2750 Mo requis (dont marge de 25 %)
+2026-11-04 15:35:35 WARNING [unocr.ocr] moteur paddleocr désactivé : mémoire insuffisante pour « paddleocr » : 1400 Mo disponibles, 2250 Mo requis (dont marge de 25 %)
+2026-11-04 15:35:35 WARNING [unocr.ocr] moteur easyocr désactivé : mémoire insuffisante pour « easyocr » : 1400 Mo disponibles, 2750 Mo requis (dont marge de 25 %)
+2026-11-04 15:35:35 WARNING [unocr.ocr] moteur paddleocr désactivé : mémoire insuffisante pour « paddleocr » : 1400 Mo disponibles, 2250 Mo requis (dont marge de 25 %)
+2026-11-04 15:35:58 WARNING [unocr.api] chiffrement activé mais aucune clé valide : désactivé
+2026-11-04 15:35:58 WARNING [unocr.crypto_store] NOUVELLE clé de chiffrement créée (/tmp/pytest-of-user/pytest-69/test_encryption_roundtrip_thro0/k.key) — la perdre rend les données définitivement illisibles
+2026-11-04 15:36:04 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 15:36:04 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 15:36:04 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 15:36:04 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)

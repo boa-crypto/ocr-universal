@@ -176,6 +176,19 @@ def list_declarations(
     return [d.model_dump() for d in decls]
 
 
+@router.get("/liquidation")
+def list_liquidations(
+    request: Request,
+    dossier_id: Optional[str] = None,
+) -> list[dict]:
+    """Lister toutes les liquidations."""
+    store = _get_liquidation_store(request)
+    liqs = list(store.values())
+    if dossier_id:
+        liqs = [liq for liq in liqs if liq.dossier_id == dossier_id]
+    return [liq.model_dump() for liq in liqs]
+
+
 @router.get("/{declaration_id}")
 def get_declaration(
     declaration_id: str,
@@ -254,19 +267,6 @@ def create_liquidation(
     store[liq_obj.id] = liq_obj
     audit(cfg.log_dir, "liquidation_creee", dossier=liquidation.dossier_id, declaration=liquidation.declaration_id)
     return liq_obj.model_dump()
-
-
-@router.get("/liquidation")
-def list_liquidations(
-    request: Request,
-    dossier_id: Optional[str] = None,
-) -> list[dict]:
-    """Lister toutes les liquidations."""
-    store = _get_liquidation_store(request)
-    liqs = list(store.values())
-    if dossier_id:
-        liqs = [liq for liq in liqs if liq.dossier_id == dossier_id]
-    return [liq.model_dump() for liq in liqs]
 
 
 @router.get("/liquidation/{liquidation_id}")

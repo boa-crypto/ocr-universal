@@ -63,7 +63,8 @@
         { key: 'profiles', title: 'Profils d\'extraction', route: '#documents/profils', icon: 'sliders' },
         { key: 'connectors', title: 'Connecteur Hub', route: '#documents/connecteurs', icon: 'plug' },
         { key: 'settings', title: 'Configuration', route: '#documents/configuration', icon: 'settings' },
-        { key: 'archives', title: 'Archives', route: '#documents/archives', icon: 'archive' }
+        { key: 'archives', title: 'Archives', route: '#documents/archives', icon: 'archive' },
+        { key: 'versions', title: 'Gestion des versions', route: '#documents/versions', icon: 'history' }
       ]
     },
     {
@@ -77,7 +78,8 @@
         { key: 'comparison', title: 'Comparaison documents', route: '#controle/comparaison', icon: 'compare' },
         { key: 'missing', title: 'Documents manquants', route: '#controle/manquants', icon: 'minus' },
         { key: 'anomalies', title: 'Anomalies', route: '#controle/anomalies', icon: 'alert-triangle' },
-        { key: 'history', title: 'Historique contrôles', route: '#controle/historique', icon: 'history' }
+        { key: 'history', title: 'Historique contrôles', route: '#controle/historique', icon: 'history' },
+        { key: 'rules', title: 'Règles de contrôle', route: '#controle/regles', icon: 'list-checks' }
       ]
     },
     {
@@ -92,7 +94,8 @@
         { key: 'voyages', title: 'Voyages', route: '#maritime/voyages', icon: 'route' },
         { key: 'bl', title: 'Connaissances B/L', route: '#maritime/bl', icon: 'file-text' },
         { key: 'containers', title: 'Conteneurs', route: '#maritime/conteneurs', icon: 'package' },
-        { key: 'arrivals', title: 'Suivi arrivées', route: '#maritime/arrivees', icon: 'trending-up' }
+        { key: 'arrivals', title: 'Suivi arrivées', route: '#maritime/arrivees', icon: 'trending-up' },
+        { key: 'deadlines', title: 'Échéances maritimes', route: '#maritime/echeances', icon: 'calendar-clock' }
       ]
     },
     {
@@ -107,7 +110,9 @@
         { key: 'controls', title: 'Contrôles douaniers', route: '#douane/controles', icon: 'search-check' },
         { key: 'liquidation', title: 'Liquidation', route: '#douane/liquidation', icon: 'calculator' },
         { key: 'payments', title: 'Paiements', route: '#douane/paiements', icon: 'dollar' },
-        { key: 'mainlevee', title: 'Mainlevées', route: '#douane/mainlevee', icon: 'unlock' }
+        { key: 'mainlevee', title: 'Mainlevées', route: '#douane/mainlevee', icon: 'unlock' },
+        { key: 'authorizations', title: 'Autorisations', route: '#douane/autorisations', icon: 'badge-check' },
+        { key: 'repository', title: 'Référentiel réglementaire', route: '#douane/referentiel', icon: 'book-open' }
       ]
     },
     {
@@ -122,7 +127,8 @@
         { key: 'carriers', title: 'Transporteurs', route: '#enlevissement/transporteurs', icon: 'truck' },
         { key: 'exit-port', title: 'Sortie portuaire', route: '#enlevissement/sortie-port', icon: 'arrow-right' },
         { key: 'delivery', title: 'Livraison', route: '#enlevissement/livraison', icon: 'map-pin' },
-        { key: 'proofs', title: 'Preuves de livraison', route: '#enlevissement/preuves', icon: 'check-circle' }
+        { key: 'proofs', title: 'Preuves de livraison', route: '#enlevissement/preuves', icon: 'check-circle' },
+        { key: 'tracking', title: 'Suivi des opérations', route: '#enlevissement/suivi', icon: 'activity' }
       ]
     },
     {
@@ -162,6 +168,17 @@
       subitems: [
         { key: 'profiles', title: 'Profils', route: '#referentiels/profiles', icon: 'layers' },
         { key: 'doc-types', title: 'Types de documents', route: '#referentiels/types-documents', icon: 'file-text' },
+        { key: 'clients', title: 'Clients', route: '#referentiels/clients', icon: 'users' },
+        { key: 'suppliers', title: 'Fournisseurs', route: '#referentiels/fournisseurs', icon: 'factory' },
+        { key: 'carriers', title: 'Transporteurs', route: '#referentiels/transporteurs', icon: 'truck' },
+        { key: 'vessels', title: 'Navires', route: '#referentiels/navires', icon: 'ship' },
+        { key: 'ports', title: 'Ports', route: '#referentiels/ports', icon: 'anchor' },
+        { key: 'countries', title: 'Pays', route: '#referentiels/pays', icon: 'globe' },
+        { key: 'currencies', title: 'Devises', route: '#referentiels/devises', icon: 'coins' },
+        { key: 'goods', title: 'Types de marchandises', route: '#referentiels/types-marchandises', icon: 'package' },
+        { key: 'tariffs', title: 'Référentiels tarifaires', route: '#referentiels/tarifs', icon: 'receipt' },
+        { key: 'doc-rules', title: 'Règles documentaires', route: '#referentiels/regles-documentaires', icon: 'file-check' },
+        { key: 'business', title: 'Paramètres métier', route: '#referentiels/parametres-metier', icon: 'sliders' },
         { key: 'settings', title: 'Paramètres', route: '#referentiels/parametres', icon: 'settings' }
       ]
     },
@@ -174,6 +191,7 @@
       subitems: [
         { key: 'users', title: 'Utilisateurs', route: '#admin/utilisateurs', icon: 'users' },
         { key: 'roles', title: 'Rôles', route: '#admin/roles', icon: 'shield' },
+        { key: 'permissions', title: 'Permissions', route: '#admin/permissions', icon: 'key-round' },
         { key: 'teams', title: 'Équipes', route: '#admin/equipes', icon: 'user-group' },
         { key: 'settings', title: 'Paramètres généraux', route: '#admin/parametres', icon: 'sliders' },
         { key: 'ocr-settings', title: 'Paramètres OCR', route: '#admin/parametres-ocr', icon: 'cpu' },
@@ -601,7 +619,53 @@
       'admin/moteurs-ocr': 'tab-moteurs',
       'admin/connecteurs-api': 'tab-connecteurs-api',
       'admin/workflows': 'tab-workflows',
-      'admin/sauvegardes': 'tab-sauvegardes'
+      'admin/sauvegardes': 'tab-sauvegardes',
+
+      /* Écrans métier déclaratifs (`web/ecrans.js`) : une section hôte,
+         un rendu par route, alimenté par les routes réelles de l'API. */
+      'controle/documentaire': 'tab-ecran',
+      'controle/comparaison': 'tab-ecran',
+      'controle/historique': 'tab-ecran',
+      'controle/regles': 'tab-ecran',
+      'maritime/escales': 'tab-ecran',
+      'maritime/voyages': 'tab-ecran',
+      'maritime/echeances': 'tab-ecran',
+      'douane/controles': 'tab-ecran',
+      'douane/liquidation': 'tab-ecran',
+      'douane/paiements': 'tab-ecran',
+      'douane/autorisations': 'tab-ecran',
+      'douane/referentiel': 'tab-ecran',
+      'enlevissement/sortie-port': 'tab-ecran',
+      'enlevissement/livraison': 'tab-ecran',
+      'enlevissement/preuves': 'tab-ecran',
+      'enlevissement/suivi': 'tab-ecran',
+      'finance/frais-dossier': 'tab-ecran',
+      'finance/debours': 'tab-ecran',
+      'finance/factures-fournisseurs': 'tab-ecran',
+      'finance/facturation': 'tab-ecran',
+      'finance/paiements': 'tab-ecran',
+      'finance/reconciliation': 'tab-ecran',
+      'finance/cloture': 'tab-ecran',
+      'rapports/statistiques': 'tab-ecran',
+      'rapports/exports': 'tab-ecran',
+      'referentiels/clients': 'tab-ecran',
+      'referentiels/fournisseurs': 'tab-ecran',
+      'referentiels/transporteurs': 'tab-ecran',
+      'referentiels/navires': 'tab-ecran',
+      'referentiels/ports': 'tab-ecran',
+      'referentiels/pays': 'tab-ecran',
+      'referentiels/devises': 'tab-ecran',
+      'referentiels/types-marchandises': 'tab-ecran',
+      'referentiels/tarifs': 'tab-ecran',
+      'referentiels/regles-documentaires': 'tab-ecran',
+      'referentiels/parametres-metier': 'tab-ecran',
+      'referentiels/types-documents': 'tab-ecran',
+      'admin/permissions': 'tab-ecran',
+      'admin/equipes': 'tab-ecran',
+      'admin/referentiels': 'tab-ecran',
+      'admin/parametres': 'tab-ecran',
+      'admin/parametres-ocr': 'tab-ecran',
+      'documents/versions': 'tab-ecran'
     };
 
     const pageId = routePages[hash.replace('#', '')] || pageMapping[sectionKey];

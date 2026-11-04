@@ -200,6 +200,29 @@ async def create_workflow(
     }
 
 
+@router.get("/workflow/template")
+async def get_workflow_template(
+    request: Request,
+    current_user: str = Depends(_exige(LECTEUR)),
+) -> dict:
+    """Récupère le template de workflow par défaut."""
+    return {
+        "id": "default",
+        "nom": "Workflow Maritime Standard",
+        "description": "Workflow standard pour dossier transit maritime",
+        "etapes": [
+            {"id": "creation", "nom": "Création dossier", "ordre": 1},
+            {"id": "scan", "nom": "Numérisation", "ordre": 2},
+            {"id": "ocr", "nom": "OCR & Extraction", "ordre": 3},
+            {"id": "verification", "nom": "Vérification", "ordre": 4},
+            {"id": "douane", "nom": "Douane & Déclaration", "ordre": 5},
+            {"id": "port", "nom": "Port & Manutention", "ordre": 6},
+            {"id": "transport", "nom": "Transport & Livraison", "ordre": 7},
+            {"id": "cloture", "nom": "Clôture & Archivage", "ordre": 8},
+        ],
+    }
+
+
 @router.get("/workflow/{dossier_id}")
 async def get_workflow_status(
     dossier_id: str,
@@ -252,26 +275,3 @@ async def get_workflow_history(
 ) -> list:
     """Récupère l'historique des transitions d'un workflow."""
     return []
-
-
-@router.get("/workflow/template")
-async def get_workflow_template(
-    request: Request,
-    current_user: str = Depends(_exige(LECTEUR)),
-) -> dict:
-    """Récupère le template de workflow par défaut."""
-    return {
-        "id": "default",
-        "nom": "Workflow Maritime Standard",
-        "description": "Workflow standard pour dossier transit maritime",
-        "etapes": [
-            {"id": "creation", "nom": "Création dossier", "ordre": 1},
-            {"id": "scan", "nom": "Numérisation", "ordre": 2},
-            {"id": "ocr", "nom": "OCR & Extraction", "ordre": 3},
-            {"id": "verification", "nom": "Vérification", "ordre": 4},
-            {"id": "douane", "nom": "Douane & Déclaration", "ordre": 5},
-            {"id": "port", "nom": "Port & Manutention", "ordre": 6},
-            {"id": "transport", "nom": "Transport & Livraison", "ordre": 7},
-            {"id": "cloture", "nom": "Clôture & Archivage", "ordre": 8},
-        ],
-    }

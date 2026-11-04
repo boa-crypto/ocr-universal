@@ -67,6 +67,7 @@ from .routes.frais import router as frais_router
 from .routes.navires import router as navires_router
 from .routes.profiles import router as profiles_router
 from .routes.rbac_roles import router as rbac_roles_router
+from .routes.referentiels import router as referentiels_router
 from .routes.reglementation import router as reglementation_router
 from .routes.system import router as system_router
 from .routes.terminal import router as terminal_router
@@ -130,6 +131,7 @@ app.include_router(documents_ocr_router)
 app.include_router(controle_doc_router)
 app.include_router(dashboard_router)
 app.include_router(reglementation_router)
+app.include_router(referentiels_router)
 app.mount("/web", StaticFiles(directory=str(cfg.web_dir)), name="static")
 
 
