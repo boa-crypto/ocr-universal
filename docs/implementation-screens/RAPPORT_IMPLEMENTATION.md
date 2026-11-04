@@ -929,6 +929,40 @@ un serveur simulé, mais le CRUD complet de cette entrée n'est pas re-certifié
 Bilan honnête : **101 routes, 100 conformes, 1 partielle**. Le total précédent à
 101 conformes ne détectait pas le bouton inerte de cet écran historique.
 
+## 2.29 Passe 26 — persistance locale des trois modules métier
+
+Déclarations, liquidations et enlèvements utilisaient des dictionnaires attachés
+à l'application. Ils utilisent désormais `BusinessStore`, un magasin SQLite dans
+`cfg.data_dir/metier.sqlite3` (exclu de Git). Trois collections séparées, documents
+JSON validés par Pydantic, écritures transactionnelles, connexions fermées après
+chaque opération et copies à la lecture. Les mises à jour et chaque étape du
+workflow terminal enregistrent explicitement la nouvelle version avant succès.
+
+Neuf tests isolés dans `tmp_path` couvrent :
+- création, modification et suppression de chacune des trois collections relues
+  après construction d'une **nouvelle application FastAPI** ;
+- planification, autorisation puis sortie terminal relues entre applications ;
+- lecture dans un **autre processus Python** ;
+- absence de mutation implicite et refus de persister un objet invalide ;
+- sauvegarde SQLite cohérente via `Connection.backup`, restauration et refus
+  d'écraser une base existante sans confirmation.
+
+Le contrat API expose `id`, pas `declaration_id`/`liquidation_id` comme identifiant
+primaire. Le moteur d'écrans et le registre de déclarations sont corrigés, ainsi
+que la fixture navigateur qui reproduisait la mauvaise clé. Les champs du modèle
+`date_depôt` et `agent_declarat` perdaient les valeurs canoniques du formulaire :
+ils sont renommés `date_depot` et `agent_declarant`, avec alias de lecture des
+anciens noms. Un test vérifie leur conservation après réouverture.
+
+L'écran indique maintenant la conservation locale après redémarrage. L'ancien
+stockage volatil ne laisse aucun fichier à migrer : cette passe ne récupère pas
+des objets perdus lors d'un ancien arrêt. Aucun jeu de données métier n'est ajouté.
+La base ne remplace pas le contrôle des transitions métier et n'offre pas de
+transaction entre collections ; les mises à jour concurrentes d'un même objet
+restent en dernière écriture gagnante. Restaurer les sauvegardes serveur arrêté.
+La matrice reste à **100 conformes / 1 partielle** : la persistance API ne certifie
+pas à elle seule toutes les interactions navigateur de l'entrée Déclarations.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

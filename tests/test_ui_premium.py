@@ -1105,4 +1105,4 @@ def test_preparation_declarations_utilise_le_formulaire_connecte() -> None:
     assert 'ECRANS["douane/declarations"] = Object.assign({}, ECRANS["douane/controles"]' in moteur
     assert "'douane/declarations': 'tab-ecran'" in nav
     assert 'id="declCreer"' not in html
-    assert "elles ne survivent pas à son redémarrage" in moteur
+    assert "y compris après son redémarrage" in moteur

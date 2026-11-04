@@ -11,7 +11,7 @@ from enum import Enum
 from typing import Any, Optional
 
 from fastapi import Body
-from pydantic import BaseModel, Field
+from pydantic import AliasChoices, BaseModel, Field
 
 
 def new_id(prefix: str = "") -> str:
@@ -1017,10 +1017,10 @@ class DeclarationDouaniere(BaseModel):
     dossier_id: str = ""
     numero_declaration: str = ""
     bureau_douane: str = ""
-    date_depôt: Optional[str] = None
+    date_depot: Optional[str] = Field(default=None, validation_alias=AliasChoices("date_depot", "date_depôt"))
     date_validation: Optional[str] = None
     statut: str = "en_preparation"  # en_preparation, prete, validée, déposée, en_controle, en_visite, en_regularisation, liquidée, payée, mainlevee
-    agent_declarat: str = ""
+    agent_declarant: str = Field(default="", validation_alias=AliasChoices("agent_declarant", "agent_declarat"))
     regime_douanier: str = ""
     origines: list[str] = Field(default_factory=list)
     provenances: list[str] = Field(default_factory=list)

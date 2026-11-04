@@ -15,3 +15,6 @@ data/parametres.json
 
 # Dépendances de vérification navigateur (jsdom), jamais versionnées
 node_modules/
+
+# Stockage métier local (données utilisateur, pas une fixture)
+data/metier.sqlite3*

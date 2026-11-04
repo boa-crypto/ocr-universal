@@ -108,3 +108,13 @@ Déclarations utilise enfin le formulaire connecté, mais son CRUD complet reste
 re-certifier. Le parcours de création est vérifié avec POST simulé via
 `npm run ui:declarations`. Le stockage des déclarations, liquidations et enlèvements
 est encore en mémoire : leur persistance doit être traitée avant usage durable.
+
+### Passe 26 — stockage métier durable
+
+✅ Déclarations, liquidations et enlèvements sont maintenant conservés dans
+`data/metier.sqlite3` et inclus dans les sauvegardes (instantané SQLite).
+La limite « en mémoire » indiquée en passe 25 est levée pour les nouvelles
+écritures. Les anciennes données volatiles déjà perdues ne sont pas récupérables.
+Restent : re-certification CRUD navigateur complète de Déclarations, contrôles
+métier des transitions et intégrité référentielle côté serveur. Matrice inchangée :
+**100 conformes, 1 partielle**. Ce stockage n'est pas une alimentation automatique.

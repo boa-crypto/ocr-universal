@@ -178,7 +178,7 @@
     vide: "Aucun dossier enregistré : créez d'abord un dossier, il sera proposé ici."
   };
   var REGISTRE_DECLARATIONS = {
-    url: "/api/declarations", valeur: "declaration_id",
+    url: "/api/declarations", valeur: "id",
     apercu: ["numero_declaration", "dossier_id", "statut"], nom: "déclaration",
     vide: "Aucune déclaration enregistrée : créez une déclaration dans Douane → Contrôles."
   };
@@ -402,7 +402,7 @@
       titre: "Contrôles douaniers",
       desc: "Déclarations déposées et leur avancement : contrôle, validation, mainlevée.",
       source: { url: "/api/declarations" },
-      id: "declaration_id",
+      id: "id",
       colonnes: [
         { cle: "numero_declaration", libelle: "Déclaration" },
         { cle: "dossier_id", libelle: "Dossier" },
@@ -448,7 +448,7 @@
       titre: "Liquidation",
       desc: "Liquidations douanières : droits, TVA, taxes et total à payer.",
       source: { url: "/api/declarations/liquidation" },
-      id: "liquidation_id",
+      id: "id",
       colonnes: [
         { cle: "dossier_id", libelle: "Dossier" },
         { cle: "declaration_id", libelle: "Déclaration" },
@@ -489,7 +489,7 @@
       titre: "Paiements douaniers",
       desc: "Liquidations restant à régler et leur état de paiement.",
       source: { url: "/api/declarations/liquidation" },
-      id: "liquidation_id",
+      id: "id",
       colonnes: [
         { cle: "dossier_id", libelle: "Dossier" },
         { cle: "date_liquidation", libelle: "Liquidation", format: "date" },
@@ -2025,8 +2025,8 @@
   ECRANS["douane/declarations"] = Object.assign({}, ECRANS["douane/controles"], {
     titre: "Préparation des déclarations",
     desc: "Choisissez un dossier puis créez sa déclaration. Aucun dépôt officiel " +
-      "n'est effectué. Attention : ce module conserve actuellement les déclarations " +
-      "en mémoire du serveur ; elles ne survivent pas à son redémarrage.",
+      "n'est effectué. Les déclarations sont conservées dans le stockage local " +
+      "du serveur, y compris après son redémarrage.",
     vide: { message: "Aucune déclaration préparée. Utilisez Nouveau et choisissez un dossier existant." }
   });
 

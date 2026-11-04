@@ -193,3 +193,12 @@ python3 docs/implementation-screens/outils/generer_matrice.py /tmp/ui.json
 - Smoke UI : **15/15** ; Ruff : aucune erreur.
 - Matrice régénérée : **100 conformes, 1 partielle** sur 101 entrées (CRUD de
   l'entrée Déclarations non entièrement re-certifié ; ne pas annoncer 101 conformes).
+
+### Passe 26 — persistance métier
+
+- `pytest tests/test_business_persistence.py -q` : **9 passed**, répertoires
+  temporaires uniquement (CRUD trois collections, workflow, autre processus,
+  champs conservés, sauvegarde/restauration et validation avant écriture).
+- Suite complète : **1046 passed, 23 failed, 11 skipped** ; échecs OCR connus.
+- Le test navigateur Déclarations utilise maintenant la vraie clé `id`.
+- Harnais Déclarations : succès avec clé `id` et message de stockage local ; smoke UI **15/15** ; Ruff sans erreur.

@@ -19,6 +19,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sqlite3
+import tempfile
 import time
 import zipfile
 from dataclasses import dataclass, field
@@ -38,7 +40,7 @@ REPERTOIRES = ("jobs", "dossiers", "exports", "connectors", "formulaires",
 #: restauration rendrait le registre inactif, donc l'API ouverte à tous — et
 #: l'opérateur croirait ses rôles toujours en place. Un cloisonnement perdu en
 #: silence est pire qu'un cloisonnement jamais mis en place.
-FICHIERS = ("audit.log", "calibration.json", "rbac.json")
+FICHIERS = ("audit.log", "calibration.json", "rbac.json", "metier.sqlite3")
 
 MANIFESTE = "manifeste.json"
 #: préfixes d'archive : le magasin et les journaux ne sont pas au
@@ -134,9 +136,25 @@ def creer_sauvegarde(cfg, destination: Path | None = None,
         for src, rel in list(_fichiers_utiles(racine)) + list(
                 _fichiers_journal(cfg)):
             nom_archive = rel.as_posix()
-            zf.write(src, nom_archive)
-            fichiers.append({"nom": nom_archive, "octets": src.stat().st_size,
-                             "empreinte": _empreinte(src)})
+            if src.name == "metier.sqlite3":
+                # L'API backup de SQLite fournit un instantané cohérent même
+                # lorsqu'une requête écrit dans la base pendant l'archivage.
+                with tempfile.TemporaryDirectory() as temporaire:
+                    copie = Path(temporaire) / "metier.sqlite3"
+                    origine = sqlite3.connect(src.resolve().as_uri() + "?mode=ro", uri=True)
+                    destination_db = sqlite3.connect(copie)
+                    try:
+                        origine.backup(destination_db)
+                    finally:
+                        destination_db.close()
+                        origine.close()
+                    zf.write(copie, nom_archive)
+                    fichiers.append({"nom": nom_archive, "octets": copie.stat().st_size,
+                                     "empreinte": _empreinte(copie)})
+            else:
+                zf.write(src, nom_archive)
+                fichiers.append({"nom": nom_archive, "octets": src.stat().st_size,
+                                 "empreinte": _empreinte(src)})
         manifeste = {
             "version": 1,
             "cree_le": time.strftime("%Y-%m-%d %H:%M:%S"),
@@ -240,7 +258,7 @@ def restaurer_sauvegarde(cfg, chemin: Path, force: bool = False) -> dict:
     """
     verifier_sauvegarde(chemin)
     racine = cfg.data_dir
-    existants = [p for p in racine.iterdir() if p.is_dir()] if racine.is_dir() else []
+    existants = [p for p in racine.iterdir() if p.is_dir() or p.name == "metier.sqlite3"] if racine.is_dir() else []
     if existants and not force:
         raise BackupError(
             "magasin non vide (%d répertoires) : confirmer avec force=True, "

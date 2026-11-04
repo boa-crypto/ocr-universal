@@ -7,6 +7,7 @@ from typing import List, Optional
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 
+from ..business_store import BusinessStore
 from ..config import get_config
 from ..logging_setup import audit, get_logger
 from ..models import DeclarationDouaniere, Liquidation, new_id
@@ -19,23 +20,15 @@ cfg = get_config()
 
 
 # ───────────────────────────────────────────────────────────────
-# Stores en mémoire
+# Stockage local transactionnel (aucun cache en mémoire faisant autorité).
 # ───────────────────────────────────────────────────────────────
 
-_declaration_store: dict[str, DeclarationDouaniere] = {}
-_liquidation_store: dict[str, Liquidation] = {}
+def _get_declaration_store(request: Request) -> BusinessStore[DeclarationDouaniere]:
+    return BusinessStore(cfg.data_dir / "metier.sqlite3", "declaration", DeclarationDouaniere)
 
 
-def _get_declaration_store(request: Request) -> dict:
-    if not hasattr(request.app.state, 'declaration_store'):
-        request.app.state.declaration_store = {}
-    return request.app.state.declaration_store
-
-
-def _get_liquidation_store(request: Request) -> dict:
-    if not hasattr(request.app.state, 'liquidation_store'):
-        request.app.state.liquidation_store = {}
-    return request.app.state.liquidation_store
+def _get_liquidation_store(request: Request) -> BusinessStore[Liquidation]:
+    return BusinessStore(cfg.data_dir / "metier.sqlite3", "liquidation", Liquidation)
 
 
 # ───────────────────────────────────────────────────────────────
@@ -218,6 +211,7 @@ def update_declaration(
     for key, value in update_data.items():
         setattr(decl, key, value)
 
+    store[declaration_id] = decl
     audit(cfg.log_dir, "declaration_modifiee", cible=declaration_id)
     return decl.model_dump()
 
@@ -298,6 +292,7 @@ def update_liquidation(
     for key, value in update_data.items():
         setattr(liq, key, value)
 
+    store[liquidation_id] = liq
     audit(cfg.log_dir, "liquidation_modifiee", cible=liquidation_id)
     return liq.model_dump()
 

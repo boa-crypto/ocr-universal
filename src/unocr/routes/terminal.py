@@ -7,6 +7,7 @@ from typing import Optional
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 
+from ..business_store import BusinessStore
 from ..config import get_config
 from ..logging_setup import audit, get_logger
 from ..models import TerminalEnlevement, new_id
@@ -19,16 +20,11 @@ cfg = get_config()
 
 
 # ───────────────────────────────────────────────────────────────
-# Store en mémoire
+# Stockage local transactionnel (aucun cache en mémoire faisant autorité).
 # ───────────────────────────────────────────────────────────────
 
-_terminal_store: dict[str, TerminalEnlevement] = {}
-
-
-def _get_terminal_store(request: Request) -> dict:
-    if not hasattr(request.app.state, 'terminal_store'):
-        request.app.state.terminal_store = {}
-    return request.app.state.terminal_store
+def _get_terminal_store(request: Request) -> BusinessStore[TerminalEnlevement]:
+    return BusinessStore(cfg.data_dir / "metier.sqlite3", "terminal", TerminalEnlevement)
 
 
 # ───────────────────────────────────────────────────────────────
@@ -152,6 +148,7 @@ def update_enlevement(
     for key, value in update_data.items():
         setattr(enlevement, key, value)
 
+    store[enlevement_id] = enlevement
     audit(cfg.log_dir, "enlevement_modifie", cible=enlevement_id)
     return enlevement.model_dump()
 
@@ -201,6 +198,7 @@ def planifier_enlevement(
     enlevement.chauffeur_nom = chauffeur_nom
     enlevement.chauffeur_permis = chauffeur_permis
     enlevement.statut = "planifie"
+    store[enlevement_id] = enlevement
     audit(cfg.log_dir, "enlevement_planifie", conteneur=enlevement.numero_conteneur, date=date_planifiee)
     return enlevement.model_dump()
 
@@ -228,6 +226,7 @@ def autoriser_sortie(
     enlevement.frais_portuaires_payes = frais_portuaires_payes
     enlevement.statut = "sortie_autorisee"
     enlevement.justificatif_sortie = justificatif_sortie
+    store[enlevement_id] = enlevement
     audit(cfg.log_dir, "sortie_autorisee", conteneur=enlevement.numero_conteneur)
     return enlevement.model_dump()
 
@@ -246,5 +245,6 @@ def enregistrer_sortie(
 
     enlevement.date_sortie = date_sortie
     enlevement.statut = "sortis"
+    store[enlevement_id] = enlevement
     audit(cfg.log_dir, "sortie_terminal", conteneur=enlevement.numero_conteneur, date=date_sortie)
     return enlevement.model_dump()

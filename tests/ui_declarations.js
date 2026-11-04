@@ -26,7 +26,7 @@ const attendre = ms => new Promise(r => setTimeout(r, ms));
           if (methode === 'POST') {
             const corps = JSON.parse(options.body);
             envois.push(corps);
-            const ligne = { ...corps, declaration_id: 'decl_contrat', statut: 'en_preparation' };
+            const ligne = { ...corps, id: 'decl_contrat', statut: 'en_preparation' };
             lignes.push(ligne);
             return reponse(ligne);
           }
@@ -43,7 +43,8 @@ const attendre = ms => new Promise(r => setTimeout(r, ms));
     await attendre(1800);
     const page = doc.querySelector('#tab-ecran');
     assert.match(page.textContent, /Préparation des déclarations/);
-    assert.match(page.textContent, /redémarrage/);
+    assert.match(page.textContent, /stockage local/);
+    assert.match(page.textContent, /y compris après son redémarrage/);
     const nouveau = [...page.querySelectorAll('button')].find(b => b.textContent === 'Nouveau');
     assert.ok(nouveau, 'Bouton Nouveau');
     nouveau.click();
@@ -66,6 +67,6 @@ const attendre = ms => new Promise(r => setTimeout(r, ms));
     assert.equal(doc.querySelector('.ecran__boite'), null);
     assert.match(page.textContent, /DECL-CONTRAT/);
     assert.deepEqual(erreurs, []);
-    console.log('OK : route, avertissement mémoire, choix dossier, refus inconnu, POST simulé, fermeture et liste actualisée.');
+    console.log('OK : route, stockage local, choix dossier, refus inconnu, POST simulé, fermeture et liste actualisée.');
   } finally { dom.window.close(); }
 })().catch(e => { console.error(e); process.exitCode = 1; });
