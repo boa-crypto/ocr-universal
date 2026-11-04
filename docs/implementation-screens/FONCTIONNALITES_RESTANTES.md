@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 34. Ce document est la liste de travail
+État au 2026-11-04, après la passe 35. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -194,3 +194,12 @@ erreurs/reprises et mode lecteur sans mutation. Harnais `npm run ui:justificatif
 La limite d'interface de la passe 33 est levée pour ce dialogue. Restent un test
 navigateur contre l'API réelle pour ce parcours, la collecte de blobs/quarantaines,
 l'antivirus et les tests d'arrêt brutal. Aucun nouvel écran de menu.
+
+### Passe 35 — justificatifs : preuve UI/API réelle obtenue
+
+✅ Le parcours du dialogue est testé contre une API uvicorn réelle isolée,
+avec multipart, téléchargement et trois démarrages. Commande :
+`pytest tests/test_justificatifs_e2e.py -q` après `npm install`.
+La limite de preuve avec API simulée de la passe 34 est levée pour ce parcours.
+Il reste une preuve jsdom, pas une validation graphique/native Chromium.
+Antivirus, collecte des blobs/quarantaines et scénarios d'arrêt brutal restent ouverts.

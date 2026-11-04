@@ -1,6 +1,6 @@
 # Rapport de tests — écrans UniOCR
 
-Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 34.
+Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 35.
 
 Ce document liste **uniquement des résultats obtenus**, avec la commande qui
 les produit. Les sections de passes ci-dessous conservent les résultats historiques.
@@ -12,7 +12,7 @@ les produit. Les sections de passes ci-dessous conservent les résultats histori
 | Commande | Résultat | Commentaire |
 |---|---|---|
 | `ruff check src tests` | **All checks passed** | 0 erreur de style |
-| `python -m pytest -q` | **1134 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
+| `python -m pytest -q` | **1135 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
 | `python -m pytest tests/test_ui_premium.py -q` | **56 passed** | tests de contrat et intégrité UI |
 | `python -m pytest tests/test_historique.py -q` | **5 passed** 🆕 | ordre, filtrage par document, événements inconnus, journal illisible |
 | `python -m pytest tests/test_rbac_ecritures.py -q` | **18 passed** | 14 familles d'écriture refusées à un lecteur, refus tracés |
@@ -279,3 +279,15 @@ python3 docs/implementation-screens/outils/generer_matrice.py /tmp/ui.json
 - `pytest tests/test_justificatifs_persistence.py -q` : **17 passed** (API réelle).
 - Suite complète : **1134 passed, 23 failed, 11 skipped** ; échecs OCR connus.
 - Aucun nouveau menu, matrice inchangée. Cache v39.
+
+### Passe 35 — parcours UI justificatifs contre la vraie API
+
+- `pytest tests/test_justificatifs_e2e.py tests/test_declarations_e2e.py -q` :
+  **2 passed**. Serveurs uvicorn réels temporaires avec identité vérifiée.
+- Formulaire multipart réel, octets et empreinte conservés après redémarrage,
+  téléchargement UI, suppression annulée/confirmée et suppression durable.
+- Node convertit le File/FormData de jsdom pour le transport, sans mock de réponse.
+  Sélecteur de fichier et téléchargement système non testés comme dans Chromium.
+- Suite complète : **1135 passed, 23 failed, 11 skipped** ; échecs OCR connus.
+- Ruff sans erreur ; aucun serveur préalable pour ces deux tests, saut explicite
+  sans node/jsdom. Pas de modification de production ni de nouveau menu.

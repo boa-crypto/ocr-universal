@@ -1242,6 +1242,44 @@ matrice inchangée. Cache v39. Cette preuve jsdom n'est pas un test graphique
 Chromium ni un téléversement navigateur end-to-end contre la vraie API.
 Restent la gestion des blobs résiduels, l'antivirus et les frontières d'arrêt brutal.
 
+## 2.38 Passe 35 — justificatifs UI contre API réelle et redémarrages
+
+La preuve UI de la passe 34 simulait l'API. Le test
+`tests/test_justificatifs_e2e.py` utilise maintenant un vrai serveur uvicorn isolé,
+les fichiers UI réels et le vrai magasin SQLite/fichiers temporaires.
+
+1. Préparation d'un dossier et d'un frais par API dans le magasin temporaire.
+2. Ouverture du dialogue depuis Frais dossier et sélection d'un fichier de test.
+3. Soumission du formulaire vers le vrai endpoint multipart, pièce visible.
+4. Arrêt réel du serveur et redémarrage : nom, taille UTF-8, empreinte SHA-256,
+   métadonnées, lien au frais et présence physique relus.
+5. Ouverture du dialogue après redémarrage, téléchargement via l'UI et comparaison
+   des octets, annulation puis confirmation de suppression.
+6. Nouvel arrêt/redémarrage : métadonnées, lien et répertoire de fichiers vides.
+
+Le pont fetch du harnais convertit File/FormData de jsdom en Blob/FormData natifs
+Node pour le transport HTTP ; il ne simule aucun endpoint ni aucune réponse métier.
+Le sélecteur natif et le gestionnaire de téléchargements du navigateur ne sont pas
+émulés : le fichier est injecté dans le champ de test, le Blob reçu est vérifié.
+La preuve porte sur les interactions DOM et HTTP réelles, pas sur un rendu Chromium.
+
+`tests/_api_isolee.py` mutualise lancement, arrêt garanti, répertoires temporaires,
+port libre et appels jsdom. `tests/_api_isolee_app.py` charge l'application réelle
+et ajoute seulement un marqueur d'identité de test. Le harnais vérifie ce marqueur
+avant d'écrire, pour ne pas confondre son serveur avec un autre occupant du port.
+Le test Déclarations utilise désormais ce même harnais et passe toujours.
+
+Commandes : `npm install`, puis
+`python -m pytest tests/test_justificatifs_e2e.py tests/test_declarations_e2e.py -q`.
+**2 passed** ; aucun serveur préalable requis, saut explicite sans node/jsdom.
+Les processus sont arrêtés à la sortie ; données et logs restent dans les
+répertoires temporaires gérés par pytest.
+
+Suite complète : **1135 passed / 23 failed / 11 skipped** ; Ruff sans erreur.
+Pas de modification de production, aucun nouveau menu, matrice/cache inchangés.
+Restent l'antivirus, la collecte des résidus et les tests d'arrêt brutal, non
+couverts par un redémarrage normal.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
