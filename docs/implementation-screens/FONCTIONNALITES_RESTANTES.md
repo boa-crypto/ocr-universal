@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 36. Ce document est la liste de travail
+État au 2026-11-04, après la passe 37. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -213,3 +213,14 @@ Codes 0/1/2 ; pas de faux classement orphelin quand la base est absente/inexploi
 Restent la réparation/restauration explicitement contrôlée et la collecte des
 résidus, les tests de véritable arrêt brutal et l'antivirus. Ne pas convertir ce
 diagnostic en purge automatique ; suspendre les écritures pour une mesure stable.
+
+
+### Passe 37 — récupération contrôlée disponible pour une pièce référencée
+
+✅ `pieces-recover ID --data-dir <magasin> [--json]` prépare sans écriture ;
+`--apply` copie une quarantaine vérifiée sans écraser la destination, sans modifier
+les métadonnées ni supprimer la source. 15 tests isolés réussis. Sauvegarde,
+copie séparée des `.tmp`, arrêt des écritures et conservation du rapport requis.
+Restent la récupération des métadonnées/liens absents (non automatisée), la
+collecte explicite des résidus, l'antivirus et les tests d'arrêt brutal.
+La quarantaine conservée reste visible au diagnostic ; aucune purge automatique.

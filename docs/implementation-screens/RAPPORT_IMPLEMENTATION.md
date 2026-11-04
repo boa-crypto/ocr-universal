@@ -1367,3 +1367,42 @@ directement ne voit que les routes déclarées dans `api.py` — d'où le helper
 - **Aucune comparaison** avec un ERP externe : aucun connecteur métier réel
   n'est disponible sur ce poste (voir limitations dans
   `FONCTIONNALITES_RESTANTES.md`).
+
+
+## 2.40 Passe 37 — récupération ciblée d'une quarantaine référencée
+
+Nouvelle commande, en lecture seule par défaut :
+
+```sh
+PYTHONPATH=src python -m unocr.cli pieces-recover just_ID --data-dir <magasin> --json
+# Après sauvegarde, copie séparée de la quarantaine et suspension des écritures :
+PYTHONPATH=src python -m unocr.cli pieces-recover just_ID --data-dir <magasin> --apply --json
+```
+
+Le plan renvoie `pret`, l'application `restaure` (code 0), un refus `refuse`
+(code 2). L'application recalcule toutes les conditions : le plan ne réserve rien.
+Elle exige les métadonnées valides, un frais référent unique, un chemin canonique,
+une destination absente et une quarantaine régulière de taille/empreinte conformes
+(maximum 20 Mio). Base absente, symbolique ou WAL : refus sans création du magasin.
+
+L'application prend `BEGIN IMMEDIATE` sans modifier les métadonnées ni les liens.
+Les octets vérifiés sont copiés vers un temporaire synchronisé, puis publiés par
+lien dur exclusif : aucun remplacement de destination, même apparue entre-temps.
+Un système ne supportant pas cette publication entraîne un refus, sans fallback
+écrasant. La quarantaine reste intacte ; la copie finale en est indépendante.
+Un temporaire non nettoyable après succès est signalé dans `residu_temporaire`.
+
+Précautions : sauvegarder et copier la quarantaine séparément (les `.tmp` sont
+exclus des archives ordinaires), suspendre les écritures et conserver le rapport
+JSON de l'opération. Aucun journal d'audit immuable n'est créé par cette commande.
+Relancer `pieces-check` après application : la quarantaine conservée peut encore
+être signalée ; ce n'est pas une purge. Pas de réparation des métadonnées absentes,
+pas de garantie face à une modification hostile concurrente des répertoires,
+pas de preuve d'arrêt brutal ni de garantie de synchronisation du répertoire.
+
+Validation isolée : **15 tests dédiés réussis**, notamment lecture seule,
+application, refus taille/hash/liens/symlinks, course sans écrasement, panne de
+publication et résidu de nettoyage signalé. Aucune application sur les données
+utilisateur. Suite complète : **1165 passed / 23 failed / 11 skipped** ; Ruff OK.
+Les 23 échecs OCR environnementaux connus demeurent. Aucun changement d'interface
+ni nouvelle mesure de la matrice des écrans.

@@ -163,15 +163,20 @@ def main(argv=None) -> int:
     pc.add_argument("--json", action="store_true", dest="json_output", help="rapport structuré")
     pc.set_defaults(func=cmd_pieces_check)
 
+    pr = sub.add_parser("pieces-recover", help="préparer la copie vérifiée d'une quarantaine référencée")
+    pr.add_argument("id", help="identifiant du justificatif")
+    pr.add_argument("--data-dir", default="", help="magasin à examiner")
+    pr.add_argument("--apply", action="store_true", help="appliquer explicitement le plan, sans écrasement")
+    pr.add_argument("--json", action="store_true", dest="json_output", help="rapport structuré")
+    pr.set_defaults(func=cmd_pieces_recover)
+
     args = parser.parse_args(argv)
     return args.func(args)
 
 
-def cmd_pieces_check(args) -> int:
-    from .justificatifs_diagnostic import diagnostiquer_pieces
-
-    if args.data_dir:
-        racine = Path(args.data_dir)
+def _racine_pieces(data_dir: str) -> Path:
+    if data_dir:
+        return Path(data_dir)
     else:
         import os
 
@@ -179,7 +184,13 @@ def cmd_pieces_check(args) -> int:
         cfg = get_config()
         # Ne pas utiliser cfg.data_dir : cette propriété crée le répertoire.
         chemin_env = os.environ.get("UNOCR_DATA_DIR")
-        racine = Path(chemin_env).resolve() if chemin_env else cfg.root / cfg.get("jobs.data_dir", "data")
+        return Path(chemin_env).resolve() if chemin_env else cfg.root / cfg.get("jobs.data_dir", "data")
+
+
+def cmd_pieces_check(args) -> int:
+    from .justificatifs_diagnostic import diagnostiquer_pieces
+
+    racine = _racine_pieces(args.data_dir)
     resultat = diagnostiquer_pieces(racine)
     if args.json_output:
         print(json.dumps(resultat, ensure_ascii=False, indent=2))
@@ -189,6 +200,28 @@ def cmd_pieces_check(args) -> int:
         for anomalie in resultat["anomalies"]:
             print(f"  {anomalie['categorie']} : {anomalie['cible']} — {anomalie['detail']}")
     return {"conforme": 0, "anomalies": 1, "indisponible": 2}[resultat["etat"]]
+
+
+def cmd_pieces_recover(args) -> int:
+    from .justificatifs_recovery import RecuperationRefusee, recuperer_piece
+
+    try:
+        resultat = recuperer_piece(_racine_pieces(args.data_dir), args.id, appliquer=args.apply)
+        code = 0
+    except RecuperationRefusee as exc:
+        resultat = {"etat": "refuse", "applique": False, "detail": str(exc)}
+        code = 2
+    if args.json_output:
+        print(json.dumps(resultat, ensure_ascii=False, indent=2))
+    elif code:
+        print("Récupération refusée : " + resultat["detail"], file=sys.stderr)
+    else:
+        print(f"Justificatif {args.id} : {resultat['etat']}. Quarantaine conservée.")
+        if not args.apply:
+            print("Plan uniquement. Sauvegarder, copier la quarantaine à part et suspendre les écritures avant --apply.")
+        if resultat.get("residu_temporaire"):
+            print("Nettoyage manuel à examiner : " + resultat["residu_temporaire"])
+    return code
 
 
 def cmd_backup(args) -> int:
