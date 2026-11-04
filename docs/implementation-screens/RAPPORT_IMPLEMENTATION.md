@@ -1098,6 +1098,39 @@ ancien lien invalide n'est réécrit automatiquement. Les autres modules métier
 Les permissions existantes du dossier restent contrôlées avant sa suppression.
 Matrice inchangée : 101 entrées, pas de nouvel écran.
 
+## 2.34 Passe 31 — expéditions persistantes et dossiers protégés
+
+Les expéditions maritimes utilisaient encore un dictionnaire en mémoire. La route
+`/api/expeditions` utilise maintenant la collection `expedition` du magasin
+`metier.sqlite3`, déjà sauvegardé par instantané SQLite. Création et modification
+sont transactionnelles, avec validation du modèle et dossier existant exigé.
+Les valeurs nulles incompatibles renvoient 422 avant écriture.
+
+La protection de suppression du dossier inclut désormais les expéditions.
+Les tests de références absentes, réaffectation invalide, dossier protégé/libéré
+et courses création/suppression sont étendus à cette quatrième collection.
+Le paramètre de persistance CRUD est lui aussi étendu aux expéditions : création,
+réouverture d'application, modification, nouvelle réouverture, suppression et
+relecture 404/liste vide.
+
+Le modèle portait `date_émission`, alors que l'API envoie `date_emission` : la
+valeur était ignorée. Le champ canonique est corrigé, avec alias acceptant l'ancien
+nom. Le test dédié vérifie conservation et refus d'un navire null sans mutation.
+La sauvegarde/restauration vérifie désormais aussi une expédition avec son navire.
+
+L'écran Voyages utilise directement `id` au lieu d'une clé primaire inexistante
+avec repli `idAlt`. Aucune nouvelle opération de saisie n'est ajoutée à l'écran :
+la modification est vérifiée côté API, pas certifiée par un nouveau CRUD navigateur.
+
+Mesures : **11 tests de persistance**, **21 tests de liens dossier**, suite complète
+**1098 passed / 23 failed / 11 skipped**, smoke UI **15/15**, Ruff sans erreur.
+Avant redémarrage, la liste d'expéditions du serveur observée était vide. Aucun
+jeu de données métier n'a été créé ; les anciens objets volatils déjà perdus ne
+peuvent pas être récupérés. Matrice inchangée, aucun nouvel écran.
+
+Limites restantes : frais/factures encore hors de cette protection et persistance ;
+pas de contrôle sémantique complet des dates maritimes, ports ou numéros de B/L.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

@@ -341,8 +341,7 @@
       titre: "Voyages",
       desc: "Expéditions maritimes : navire, ports, ETA, arrivée effective et B/L.",
       source: { url: "/api/expeditions" },
-      id: "expedition_id",
-      idAlt: ["id"],
+      id: "id",
       colonnes: [
         { cle: "navire", libelle: "Navire" },
         { cle: "porte_chargement", libelle: "Chargement" },

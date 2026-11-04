@@ -7,14 +7,15 @@ from fastapi.testclient import TestClient
 
 from unocr import api
 from unocr.business_store import BusinessStore
-from unocr.models import DeclarationDouaniere, Liquidation, TerminalEnlevement
-from unocr.routes import declarations, terminal
+from unocr.models import DeclarationDouaniere, Expeditions, Liquidation, TerminalEnlevement
+from unocr.routes import declarations, expeditions, terminal
 
 
 @pytest.fixture
 def contexte(tmp_cfg, monkeypatch):
     monkeypatch.setattr(declarations, "cfg", tmp_cfg)
     monkeypatch.setattr(terminal, "cfg", tmp_cfg)
+    monkeypatch.setattr(expeditions, "cfg", tmp_cfg)
     api._recharge_rbac()
     dossier = api._dossiers.creer("Dossier temporaire")
     with TestClient(api.app) as client:
@@ -28,7 +29,7 @@ def corps(route, dossier_id):
     return data
 
 
-@pytest.mark.parametrize("route", ["/api/declarations", "/api/terminal"])
+@pytest.mark.parametrize("route", ["/api/declarations", "/api/terminal", "/api/expeditions"])
 @pytest.mark.parametrize("identifiant", ["dos_inconnu", "../dossier", ""])
 def test_reference_inexistante_refusee(contexte, route, identifiant):
     client, _, _ = contexte
@@ -37,7 +38,7 @@ def test_reference_inexistante_refusee(contexte, route, identifiant):
     assert client.get(route).json() == []
 
 
-@pytest.mark.parametrize("route", ["/api/declarations", "/api/terminal"])
+@pytest.mark.parametrize("route", ["/api/declarations", "/api/terminal", "/api/expeditions"])
 def test_reaffectation_invalide_preserve_objet(contexte, route):
     client, _, identifiant = contexte
     creation = client.post(route, json=corps(route, identifiant))
@@ -50,7 +51,7 @@ def test_reaffectation_invalide_preserve_objet(contexte, route):
 
 @pytest.mark.parametrize("collection,modele", [
     ("declaration", DeclarationDouaniere), ("liquidation", Liquidation),
-    ("terminal", TerminalEnlevement),
+    ("terminal", TerminalEnlevement), ("expedition", Expeditions),
 ])
 def test_dossier_reference_protege_meme_par_ancienne_liquidation(contexte, collection, modele):
     client, cfg, identifiant = contexte
@@ -80,7 +81,7 @@ def test_dossier_illisible_ne_produit_pas_de_reference(contexte):
     assert client.get("/api/declarations").json() == []
 
 
-@pytest.mark.parametrize("route", ["/api/declarations", "/api/terminal"])
+@pytest.mark.parametrize("route", ["/api/declarations", "/api/terminal", "/api/expeditions"])
 def test_course_creation_reference_et_suppression_dossier(contexte, route):
     client, cfg, _ = contexte
     for _ in range(5):

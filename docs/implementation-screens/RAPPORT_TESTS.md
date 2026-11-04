@@ -1,6 +1,6 @@
 # Rapport de tests — écrans UniOCR
 
-Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 30.
+Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 31.
 
 Ce document liste **uniquement des résultats obtenus**, avec la commande qui
 les produit. Les sections de passes ci-dessous conservent les résultats historiques.
@@ -12,7 +12,7 @@ les produit. Les sections de passes ci-dessous conservent les résultats histori
 | Commande | Résultat | Commentaire |
 |---|---|---|
 | `ruff check src tests` | **All checks passed** | 0 erreur de style |
-| `python -m pytest -q` | **1090 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
+| `python -m pytest -q` | **1098 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
 | `python -m pytest tests/test_ui_premium.py -q` | **56 passed** | tests de contrat et intégrité UI |
 | `python -m pytest tests/test_historique.py -q` | **5 passed** 🆕 | ordre, filtrage par document, événements inconnus, journal illisible |
 | `python -m pytest tests/test_rbac_ecritures.py -q` | **18 passed** | 14 familles d'écriture refusées à un lecteur, refus tracés |
@@ -241,3 +241,11 @@ python3 docs/implementation-screens/outils/generer_matrice.py /tmp/ui.json
 - Suite complète : **1090 passed, 23 failed, 11 skipped** ; échecs OCR connus.
 - Smoke UI : **15/15** ; Ruff sans erreur. Aucun nouvel écran, matrice inchangée.
 - Les fixtures de persistance et d'intégrité créent des fichiers dossiers réels.
+
+### Passe 31 — expéditions persistantes
+
+- `pytest tests/test_business_persistence.py tests/test_dossier_business_links.py -q` :
+  **32 passed** (11 persistance et 21 liens dossier), dont expéditions CRUD après
+  réouverture, date d'émission, sauvegarde/restauration et courses concurrentes.
+- Suite complète : **1098 passed, 23 failed, 11 skipped** ; échecs OCR connus.
+- Smoke UI **15/15**, Ruff sans erreur. Matrice inchangée, pas de nouvel écran.

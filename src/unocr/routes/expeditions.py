@@ -5,8 +5,10 @@ from __future__ import annotations
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Request
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
+from ..business_links import exiger_dossier
+from ..business_store import BusinessStore
 from ..config import get_config
 from ..logging_setup import audit, get_logger
 from ..models import Expeditions, new_id
@@ -19,16 +21,12 @@ cfg = get_config()
 
 
 # ───────────────────────────────────────────────────────────────
-# Store en mémoire
+# Stockage SQLite local, partagé avec les autres modules métier.
 # ───────────────────────────────────────────────────────────────
 
-_expedition_store: dict[str, Expeditions] = {}
 
-
-def _get_expedition_store(request: Request) -> dict:
-    if not hasattr(request.app.state, 'expedition_store'):
-        request.app.state.expedition_store = {}
-    return request.app.state.expedition_store
+def _get_expedition_store(request: Request) -> BusinessStore[Expeditions]:
+    return BusinessStore(cfg.data_dir / "metier.sqlite3", "expedition", Expeditions)
 
 
 # ───────────────────────────────────────────────────────────────
@@ -91,7 +89,9 @@ def create_expedition(
         priorite=expedition.priorite,
         observations=expedition.observations,
     )
-    store[expedition_obj.id] = expedition_obj
+    with store.transaction() as transaction:
+        exiger_dossier(cfg, expedition_obj.dossier_id)
+        transaction[expedition_obj.id] = expedition_obj
     audit(cfg.log_dir, "expedition_cree", dossier=expedition.dossier_id, navire=expedition.navire)
     return expedition_obj.model_dump()
 
@@ -130,13 +130,17 @@ def update_expedition(
 ) -> dict:
     """Mettre à jour une expédition."""
     store = _get_expedition_store(request)
-    expedition = store.get(expedition_id)
-    if not expedition:
-        raise HTTPException(404, "Expédition introuvable")
-
-    update_data = expedition_update.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(expedition, key, value)
+    with store.transaction() as transaction:
+        expedition = transaction.get(expedition_id)
+        if not expedition:
+            raise HTTPException(404, "Expédition introuvable")
+        update_data = expedition_update.model_dump(exclude_unset=True)
+        try:
+            expedition = Expeditions.model_validate({**expedition.model_dump(), **update_data})
+        except ValidationError as exc:
+            raise HTTPException(422, exc.errors(include_context=False)) from exc
+        exiger_dossier(cfg, expedition.dossier_id)
+        transaction[expedition_id] = expedition
 
     audit(cfg.log_dir, "expedition_modifie", cible=expedition_id)
     return expedition.model_dump()

@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 30. Ce document est la liste de travail
+État au 2026-11-04, après la passe 31. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -156,3 +156,11 @@ Les constats des passes précédentes sur ces références sont donc levés pour
 modules. Restent les autres modules liés au dossier, la réparation explicite des
 anciens liens invalides et les interventions hors API (restauration serveur arrêté).
 Cette coordination n'est pas une transaction distribuée entre JSON et SQLite.
+
+### Passe 31 — expéditions intégrées au stockage métier
+
+✅ Les expéditions survivent au redémarrage et sont incluses dans les sauvegardes.
+✅ Leur dossier doit exister ; sa suppression est bloquée tant qu'il est référencé.
+Les limites de la passe 30 sur les expéditions sont levées. Restent notamment
+frais/factures et justificatifs, règles sémantiques maritimes et interventions
+hors API. Aucun nouveau CRUD navigateur complet Voyages n'est revendiqué.

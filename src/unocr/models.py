@@ -525,7 +525,7 @@ class Expeditions(BaseModel):
     arrivee_effective: Optional[str] = None
     numero_bl: str = ""
     type_bl: str = ""
-    date_émission: Optional[str] = None
+    date_emission: Optional[str] = Field(default=None, validation_alias=AliasChoices("date_emission", "date_émission"))
     nom_gestionnaire: str = ""
     priorite: str = "normale"
     observations: str = ""

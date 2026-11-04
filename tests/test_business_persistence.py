@@ -5,7 +5,7 @@ from types import SimpleNamespace
 import pytest
 
 from unocr.business_store import BusinessStore
-from unocr.models import DeclarationDouaniere
+from unocr.models import DeclarationDouaniere, Expeditions
 
 
 @pytest.mark.parametrize("route,corps,champ_id,modification", [
@@ -13,6 +13,8 @@ from unocr.models import DeclarationDouaniere
      "id", {"statut": "deposee"}),
     ("/api/declarations/liquidation", {"dossier_id": "dos_test", "declaration_id": "decl_test"},
      "id", {"tva": 120.5}),
+    ("/api/expeditions", {"dossier_id": "dos_test", "navire": "NAVIRE"},
+     "id", {"navire": "NAVIRE MODIFIE", "date_emission": "2026-11-04"}),
     ("/api/terminal", {"dossier_id": "dos_test", "numero_bl": "BL-1", "numero_conteneur": "CONT-1"},
      "id", {"observations": "mise à jour"}),
 ])
@@ -101,11 +103,15 @@ def test_sauvegarde_restauration_metier(tmp_path):
     cfg = SimpleNamespace(data_dir=tmp_path / "data", log_dir=tmp_path / "logs")
     store = BusinessStore(cfg.data_dir / "metier.sqlite3", "declaration", DeclarationDouaniere)
     store["decl_test"] = DeclarationDouaniere(id="decl_test", dossier_id="dos_test")
+    expeditions = BusinessStore(cfg.data_dir / "metier.sqlite3", "expedition", Expeditions)
+    expeditions["exp_test"] = Expeditions(id="exp_test", dossier_id="dos_test", navire="NAVIRE")
     sauvegarde = creer_sauvegarde(cfg)
     autre = SimpleNamespace(data_dir=tmp_path / "restaure", log_dir=tmp_path / "autres_logs")
     restaurer_sauvegarde(autre, sauvegarde.chemin)
     nouveau = BusinessStore(autre.data_dir / "metier.sqlite3", "declaration", DeclarationDouaniere)
     assert nouveau["decl_test"].dossier_id == "dos_test"
+    expeditions_restaurees = BusinessStore(autre.data_dir / "metier.sqlite3", "expedition", Expeditions)
+    assert expeditions_restaurees["exp_test"].navire == "NAVIRE"
     with pytest.raises(BackupError, match="magasin non vide"):
         restaurer_sauvegarde(autre, sauvegarde.chemin)
 
@@ -139,3 +145,21 @@ def test_objet_invalide_ne_remplace_pas_la_version_persistante(tmp_path):
     with pytest.raises(ValidationError):
         store[original.id] = copie
     assert store[original.id].statut == "en_preparation"
+
+
+def test_expedition_date_emission_et_validation(client_factory):
+    from unocr.models import Expeditions
+
+    with client_factory() as client:
+        rep = client.post("/api/expeditions", json={
+            "dossier_id": "dos_test", "date_emission": "2026-11-04", "navire": "NAVIRE"})
+        assert rep.status_code == 200, rep.text
+        avant = rep.json()
+        url = "/api/expeditions/" + avant["id"]
+    with client_factory() as client:
+        assert client.get(url).json() == avant
+        assert avant["date_emission"] == "2026-11-04"
+        assert client.put(url, json={"navire": None}).status_code == 422
+        assert client.get(url).json() == avant
+    ancien = Expeditions.model_validate({"dossier_id": "dos_test", "date_émission": "2026-01-01"})
+    assert ancien.date_emission == "2026-01-01"
