@@ -102,7 +102,8 @@ def test_sous_pages_branchees_sur_des_endpoints_existants() -> None:
     urls = re.findall(r'url: "([^"]+)"', js)
     assert urls, "au moins une source doit être déclarée"
     for url in urls:
-        assert url in chemins, f"{url} doit exister dans le contrat OpenAPI"
+        chemin = url.split("?", 1)[0]  # les paramètres de requête ne font pas partie du contrat
+        assert chemin in chemins, f"{url} doit exister dans le contrat OpenAPI"
 
 
 def test_pages_historiques_toujours_accessibles() -> None:
@@ -518,3 +519,86 @@ def test_comparaison_inter_documents_dans_l_atelier() -> None:
     assert ".ocr-matrix tr.is-divergent" in css
     assert ".ocr-compare__liste" in css
     assert ".ocr-matrix__type" in css
+
+
+def test_chaque_liste_de_sous_page_appelle_une_route_reelle() -> None:
+    """Aucune sous-page ne doit interroger un endpoint inexistant.
+
+    Une URL fantôme produirait une liste vide impossible à distinguer d'un
+    « aucune donnée » — exactement ce que la mission interdit.
+    """
+    chemins = set(app.openapi()["paths"])
+    racine = Path(__file__).resolve().parent.parent
+    fichiers = ["souspages.js", "modules.js", "rapports.js", "workspace.js"]
+
+    fautifs: list[str] = []
+    total = 0
+    for nom in fichiers:
+        source = (racine / "web" / nom).read_text(encoding="utf-8")
+        for url in set(re.findall(r'"(/api/[^"?#]*)[^"]*"', source)):
+            total += 1
+            if url in chemins:
+                continue
+            # Un chemin paramétré côté client peut n'être qu'un préfixe.
+            if any(chemin.startswith(url.rstrip("/") + "/") for chemin in chemins):
+                continue
+            fautifs.append(f"{nom} → {url}")
+    assert total > 15
+    assert not fautifs, "endpoints inexistants appelés par l'interface : " + ", ".join(fautifs)
+
+
+def test_vues_d_ensemble_de_module_menent_a_des_ecrans_reels() -> None:
+    """Les anciennes cartes « en préparation » sont remplacées par de vrais liens."""
+    racine = Path(__file__).resolve().parent.parent
+    modules = (racine / "web" / "modules.js").read_text(encoding="utf-8")
+    css = (racine / "web" / "uniocr-ds.css").read_text(encoding="utf-8")
+
+    assert "function construireHubs" in modules
+    assert "window.Navigation.getConfig" in modules
+    assert 'button.btn-block:not([id]):not([data-nav])' in modules
+    assert "carte.hidden = true" in modules
+    assert ".hub-link" in css and ".hub-links__grid" in css
+    # Chaque vue d'ensemble déclarée correspond à une section qui existe.
+    index = (racine / "web" / "index.html").read_text(encoding="utf-8")
+    blocs = re.findall(r'"(tab-[a-z-]+)":\s*"[a-z-]+"', modules[modules.index("var HUBS"):])
+    assert len(blocs) >= 8
+    for identifiant in blocs:
+        assert f'id="{identifiant}"' in index, f"page de module absente : {identifiant}"
+
+
+def test_pages_sorties_de_la_zone_morte_sont_branchees() -> None:
+    """Centre documentaire, GED, classification, ETA, mainlevées, planning."""
+    racine = Path(__file__).resolve().parent.parent
+    sous = (racine / "web" / "souspages.js").read_text(encoding="utf-8")
+
+    attendus = {
+        "tab-center": "/api/jobs",
+        "tab-ged": "/api/dossiers",
+        "tab-classif": "/api/document-types",
+        "tab-eta-etd": "/api/dossiers",
+        "tab-mainleves": "/api/terminal",
+        "tab-planification": "/api/terminal",
+    }
+    for page, endpoint in attendus.items():
+        assert f'"{page}": {{' in sous, f"page non branchée : {page}"
+        bloc = sous[sous.index(f'"{page}": {{'):]
+        bloc = bloc[:bloc.index("\n    },")]
+        assert endpoint in bloc, f"{page} n'appelle pas {endpoint}"
+        assert "vide:" in bloc, f"{page} n'a pas d'état vide explicite"
+
+
+def test_sous_rubrique_sans_ecran_est_annoncee() -> None:
+    """Retomber sur la vue d'ensemble du module doit être expliqué, pas subi."""
+    racine = Path(__file__).resolve().parent.parent
+    nav = (racine / "web" / "navigation.js").read_text(encoding="utf-8")
+    css = (racine / "web" / "uniocr-ds.css").read_text(encoding="utf-8")
+
+    assert "const SOUS_ROUTES = {}" in nav
+    assert "replace(/^#/, '')" in nav, "les routes sont mémorisées sans dièse"
+    assert "function signalerEcranAbsent" in nav
+    assert "aSaProprePage" in nav, "un écran dédié ne doit pas déclencher l'avis"
+    assert "n\\'a pas encore d\\'écran dédié" in nav
+    assert "data-avis-route" in nav
+    assert ".avis-route" in css
+    # L'avis est retiré avant d'en poser un autre : jamais deux bandeaux.
+    assert "document.querySelectorAll('[data-avis-route]').forEach" in nav

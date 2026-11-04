@@ -330,10 +330,10 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 
 ```
 .venv/bin/python -m ruff check src tests   → All checks passed!
-.venv/bin/python -m pytest -q              → 940 passed, 23 failed, 11 skipped (76 s)
+.venv/bin/python -m pytest -q              → 944 passed, 23 failed, 11 skipped (71 s)
 ```
 
-- **Nouveau fichier** `tests/test_ui_premium.py` : **29 tests**, tous verts
+- **Nouveau fichier** `tests/test_ui_premium.py` : **33 tests**, tous verts
   (ordre de cascade CSS, absence de `<style>`, présence des modules et des
   identifiants de coque, 5 KPI, palette centralisée, jetons hérités conservés,
   `prefers-reduced-motion` + `@media print`, 12 rubriques, repli + infobulles,
@@ -344,7 +344,9 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
   accessibilité des pages historiques après la refonte de la barre latérale,
   absence de couleur codée en dur dans les modules de rendu, intégrité du
   balisage, barre latérale utilisable en mode rail, stratégie du service
-  worker, thème sombre par défaut, comparaison inter-documents de l'atelier).
+  worker, thème sombre par défaut, comparaison inter-documents de l'atelier,
+  routes des listes confrontées au contrat OpenAPI, accès directs des vues
+  d'ensemble, avis sur les sous-rubriques sans écran dédié).
 - Les **23 échecs préexistants** sont inchangés et **environnementaux**
   (Tesseract/Indra absents, connecteur `customs_api`, routage flou) ; ils ne
   sont pas masqués.
@@ -365,6 +367,9 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 | Repli de la barre latérale | classe `collapsed` appliquée, état persisté |
 | Espace dossier | 11 onglets, tous rendus sans erreur, bandeau d'identité complet |
 | Comparaison OCR (dossier) | matrice 2 documents × 3 champs, 1 divergence détectée et signalée |
+| Vues d'ensemble des modules | 8 pages : accès directs générés depuis la navigation (6, 6, 7, 11, 5, 6, 3, 3 liens), cartes à bouton mort toutes masquées (0 visible), lien testé → page cible affichée |
+| Sous-pages autrefois vides | Centre documentaire 198 lignes, dossiers archivés 49, catégories 21 ; ETA, mainlevées et planning affichent leur état vide explicite (aucune donnée correspondante dans la base) |
+| Avis de sous-rubrique | `#maritime/escales`, `#maritime/voyages`, `#douane/liquidation` → bandeau « n'a pas encore d'écran dédié » ; aucun bandeau sur `#admin/utilisateurs`, `#maritime/conteneurs`, `#documents/import` |
 | Comparaison OCR (atelier) | 40 documents proposés, 2 sélectionnés → matrice 3 colonnes (`bl_port.pdf · courant`, `parcours_colisage.pdf`, `parcours_bl.pdf`), 38 champs, 14 divergences signalées, 0 erreur |
 | Espace de travail | barre d'outils, filtre, tri et pagination opérants (186 tâches, « 1–20 sur 186 ») |
 | Modules | 8 bandeaux de 4 indicateurs, valeurs réelles, 0 erreur |
@@ -412,14 +417,18 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 2. **Validation visuelle sur navigateur** : aucune capture n'a pu être produite
    dans cet environnement (pas de Chromium). Le rendu a été vérifié par DOM et
    cascade CSS, pas à l'œil.
-3. **Sous-pages restantes** : 21 sous-rubriques sont désormais branchées.
-   Les autres (`maritime/escales`, `maritime/voyages`, `douane/controles`,
-   `douane/liquidation`, `douane/paiements`, `enlevissement/livraison`,
-   `finance/facturation`, `referentiels/parametres`,
-   `admin/*` hors utilisateurs/rôles/journal) n'ont pas encore d'endpoint
-   dédié : elles retombent sur la vue d'ensemble de leur module. Les 92
-   sections `tab-*` existent ; y brancher un endpoint est un ajout de quelques
-   lignes dans `web/souspages.js` quand la route existe côté serveur.
+3. **Sous-pages** : **27 listes** sont branchées sur des endpoints réels
+   (les 21 précédentes + centre documentaire, dossiers archivés, catégories,
+   arrivées annoncées, mainlevées, enlèvements planifiés). Un test confronte
+   chaque URL appelée par l'interface au contrat OpenAPI : plus aucune route
+   fantôme. Les **vues d'ensemble** de module n'exposent plus de boutons sans
+   écran : elles listent des accès directs vers les sous-rubriques réelles.
+   Les sous-rubriques qui n'ont pas encore d'écran (`maritime/escales`,
+   `maritime/voyages`, `douane/controles`, `douane/liquidation`,
+   `douane/paiements`, `enlevissement/livraison`, `finance/facturation`,
+   `referentiels/parametres`) l'annoncent explicitement en arrivant sur la vue
+   d'ensemble du module ; il reste à leur écrire un écran et, si besoin, une
+   route serveur.
 4. **Atelier OCR** : la vue « document / données extraites » (`#tab-result`)
    affiche la page réelle du document à gauche (image servie par
    `/api/jobs/{id}/page/{n}/image`, zones de mots superposées, champ cliquable

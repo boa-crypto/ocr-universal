@@ -136,6 +136,47 @@
       cle: "utilisateurs",
       vide: "Aucun utilisateur RBAC : le cloisonnement est inactif sur ce poste."
     },
+    "tab-center": {
+      titre: "Centre documentaire",
+      url: "/api/jobs?limit=200",
+      colonnes: ["filename", "status", "stage", "progress", "created_at"],
+      vide: "Aucun document traité : le centre documentaire se remplit dès le premier import."
+    },
+    "tab-ged": {
+      titre: "Dossiers archivés",
+      url: "/api/dossiers",
+      filtre: function (d) { return d.state === "archive"; },
+      colonnes: ["reference", "label", "client_importateur", "state_label", "updated_at"],
+      vide: "Aucun dossier archivé. L'archivage se fait depuis l'espace dossier, une fois le dossier clos."
+    },
+    "tab-classif": {
+      titre: "Catégories de documents reconnues",
+      url: "/api/document-types",
+      cle: "categories",
+      colonnes: ["label", "profile", "indicators", "active"],
+      vide: "Le serveur n'annonce aucune catégorie de document."
+    },
+    "tab-eta-etd": {
+      titre: "Arrivées annoncées",
+      url: "/api/dossiers",
+      filtre: function (d) { return Boolean(d.eta || d.eta_effective); },
+      colonnes: ["reference", "navire", "numero_voyage", "eta_effective", "port_destination", "state_label"],
+      vide: "Aucune arrivée annoncée : renseignez l'ETA dans l'espace dossier (onglet Transport maritime)."
+    },
+    "tab-mainleves": {
+      titre: "Mainlevées obtenues",
+      url: "/api/terminal",
+      filtre: function (t) { return t.mainlevee_obtenue === true; },
+      colonnes: ["numero_bl", "numero_conteneur", "date_demande", "statut"],
+      vide: "Aucune mainlevée enregistrée. Elle se constate sur la demande d'enlèvement du conteneur."
+    },
+    "tab-planification": {
+      titre: "Enlèvements planifiés",
+      url: "/api/terminal",
+      filtre: function (t) { return Boolean(t.date_planifiee); },
+      colonnes: ["numero_conteneur", "date_planifiee", "statut", "transporteur_id", "chauffeur_nom"],
+      vide: "Aucun enlèvement planifié : la date se pose sur la demande d'enlèvement."
+    },
     "tab-roles": {
       titre: "Rôles disponibles",
       url: "/api/rbac/utilisateurs",
@@ -206,7 +247,22 @@
     kind: "Type",
     ram_required_mb: "RAM requise (Mo)",
     externe: "Externe",
-    cree_le: "Créé le"
+    cree_le: "Créé le",
+    filename: "Fichier",
+    stage: "Étape",
+    progress: "Progression",
+    indicators: "Indicateurs",
+    numero_bl: "Connaissement",
+    numero_conteneur: "Conteneur",
+    numero_voyage: "Voyage",
+    navire: "Navire",
+    eta_effective: "ETA effective",
+    port_destination: "Port de destination",
+    date_planifiee: "Date planifiée",
+    date_demande: "Date de demande",
+    mainlevee_obtenue: "Mainlevée",
+    transporteur_id: "Transporteur",
+    chauffeur_nom: "Chauffeur"
   };
 
   function libelle(cle) {

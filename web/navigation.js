@@ -280,6 +280,16 @@
     return html;
   }
 
+  /* Sous-rubriques déclarées : sert à dire honnêtement quand un écran dédié
+     n'existe pas encore, plutôt que d'afficher une page qui n'a rien à voir. */
+  const SOUS_ROUTES = {};
+  NAV_CONFIG.forEach(function (section) {
+    (section.subitems || []).forEach(function (sub) {
+      SOUS_ROUTES[String(sub.route).replace(/^#/, '')] =
+        { titre: sub.title, section: section.title };
+    });
+  });
+
   function escAttr(valeur) {
     return String(valeur == null ? "" : valeur)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
@@ -605,8 +615,33 @@
         // Trigger reflow for animation
         void page.offsetWidth;
         page.classList.add('page-enter');
+        signalerEcranAbsent(page, hash.replace('#', ''), Boolean(routePages[hash.replace('#', '')]));
       }
     }
+  }
+
+  /**
+   * Une sous-rubrique sans écran dédié retombe sur la vue d'ensemble de son
+   * module : on l'annonce, sans quoi l'utilisateur croit s'être trompé de page.
+   */
+  function signalerEcranAbsent(page, aiguille, aSaProprePage) {
+    document.querySelectorAll('[data-avis-route]').forEach(function (avis) {
+      avis.remove();
+    });
+    if (aSaProprePage) return;
+    const sous = SOUS_ROUTES[aiguille];
+    if (!sous) return;
+
+    const avis = document.createElement('p');
+    avis.className = 'avis-route';
+    avis.setAttribute('data-avis-route', aiguille);
+    avis.setAttribute('role', 'note');
+    avis.textContent = '« ' + sous.titre + ' » n\'a pas encore d\'écran dédié sur ce ' +
+      'poste. Les accès ci-dessous mènent aux écrans réellement disponibles pour « ' +
+      sous.section + ' ».';
+    const entete = page.querySelector('header');
+    if (entete) entete.parentNode.insertBefore(avis, entete.nextSibling);
+    else page.insertBefore(avis, page.firstChild);
   }
 
   /**

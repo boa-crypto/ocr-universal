@@ -257,9 +257,79 @@
     });
       }
 
+  /* ── Accès directs des pages « Vue d'ensemble » ──────────────────────
+     Les cartes héritées de ces pages proposaient des boutons sans écran
+     derrière (un clic n'affichait qu'un message). Chaque module expose
+     désormais les sous-rubriques qui mènent réellement quelque part, y
+     compris les modules sans bandeau d'indicateurs. */
+  var HUBS = {
+    "tab-documents": "documents",
+    "tab-controle": "controle",
+    "tab-maritime": "maritime",
+    "tab-douane": "douane",
+    "tab-enlevissement": "enlevissement",
+    "tab-finance": "finance",
+    "tab-reports": "reports",
+    "tab-referentiels": "referentiels",
+    "tab-admin": "admin"
+  };
+
+  function construireHubs(section) {
+    var cle = HUBS[section.id];
+    if (!cle || section.querySelector("[data-hub]")) return;
+    var nav = window.Navigation && window.Navigation.getConfig
+      ? window.Navigation.getConfig()
+      : null;
+    if (!nav) return;
+    var config = null;
+    nav.forEach(function (entree) { if (entree.key === cle) config = entree; });
+    if (!config || !(config.subitems || []).length) return;
+
+    var hote = document.createElement("div");
+    hote.className = "hub-links";
+    hote.setAttribute("data-hub", cle);
+
+    var titre = document.createElement("p");
+    titre.className = "hub-links__titre";
+    titre.textContent = "Accès directs";
+    hote.appendChild(titre);
+
+    var grille = document.createElement("div");
+    grille.className = "hub-links__grid";
+    config.subitems.forEach(function (sub) {
+      var lien = document.createElement("a");
+      lien.className = "hub-link";
+      lien.href = sub.route;
+      var nom = document.createElement("span");
+      nom.className = "hub-link__title";
+      nom.textContent = sub.title;
+      var route = document.createElement("span");
+      route.className = "hub-link__route";
+      route.textContent = sub.route;
+      lien.appendChild(nom);
+      lien.appendChild(route);
+      grille.appendChild(lien);
+    });
+    hote.appendChild(grille);
+
+    var entete = section.querySelector("header");
+    if (entete) entete.parentNode.insertBefore(hote, entete.nextSibling);
+    else section.insertBefore(hote, section.firstChild);
+
+    // Les cartes qui ne contenaient qu'un bouton sans écran sont retirées :
+    // mieux vaut un lien réel qu'un bouton qui ne mène nulle part.
+    Array.prototype.slice.call(section.querySelectorAll(".card")).forEach(function (carte) {
+      if (carte.closest("[data-hub]")) return;
+      if (carte.querySelector("button.btn-block:not([id]):not([data-nav])")) {
+        carte.hidden = true;
+      }
+    });
+  }
+
   function chargerSectionVisible() {
     var section = document.querySelector("section.page:not(.hidden)");
     if (!section) return;
+    construireHubs(section);
     var definition = MODULES[section.id];
     if (!definition) return;
     construire(section, definition);
