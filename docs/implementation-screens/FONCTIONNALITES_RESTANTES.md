@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 29. Ce document est la liste de travail
+État au 2026-11-04, après la passe 30. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -146,3 +146,13 @@ une transaction SQLite, y compris face à création et suppression concurrentes.
 Restent les références vers le magasin JSON des dossiers, la protection de leur
 suppression, les règles de montants et états douaniers et la correction explicite
 d'éventuels anciens liens invalides. Aucune migration destructive automatique.
+
+### Passe 30 — références dossier contrôlées
+
+✅ Déclarations/enlèvements : dossier existant exigé à la création et réaffectation.
+✅ Suppression du dossier refusée s'il est utilisé par une déclaration, liquidation
+ou un enlèvement ; contrôle coordonné aux écritures concernées par SQLite.
+Les constats des passes précédentes sur ces références sont donc levés pour ces
+modules. Restent les autres modules liés au dossier, la réparation explicite des
+anciens liens invalides et les interventions hors API (restauration serveur arrêté).
+Cette coordination n'est pas une transaction distribuée entre JSON et SQLite.

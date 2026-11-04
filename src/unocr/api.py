@@ -3156,8 +3156,16 @@ def get_dossier(dossier_id: str, request: Request) -> dict:
 def supprimer_dossier(dossier_id: str, request: Request) -> dict:
     """Supprime le dossier — les documents, eux, restent en place."""
     _exige_dossier(dossier_id, request)
-    if not _dossiers.supprimer(dossier_id, acteur="utilisateur"):
-        raise HTTPException(404, "dossier introuvable")
+    from .business_links import exiger_dossier, exiger_dossier_sans_liens
+    from .business_store import BusinessStore
+    from .models import DeclarationDouaniere
+
+    magasin = BusinessStore(cfg.data_dir / "metier.sqlite3", "declaration", DeclarationDouaniere)
+    with magasin.transaction() as transaction:
+        exiger_dossier(cfg, dossier_id, absent=404)
+        exiger_dossier_sans_liens(transaction, dossier_id)
+        if not _dossiers.supprimer(dossier_id, acteur="utilisateur"):
+            raise HTTPException(404, "dossier introuvable")
     return {"deleted": True}
 
 

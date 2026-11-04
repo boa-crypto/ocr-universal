@@ -1063,6 +1063,41 @@ pas encore de contrôle de l'existence du dossier dans son magasin JSON, ni de
 protection de la suppression du dossier parent. Les états métier et les montants
 ne sont pas validés par cette seule intégrité de lien. Matrice inchangée (101 routes).
 
+## 2.33 Passe 30 — protéger les dossiers référencés
+
+Les nouvelles déclarations et les enlèvements exigent désormais un dossier JSON
+présent sur disque. Le contrôle est refait à chaque création/réaffectation sous
+la transaction métier : un cache `DossierStore` ne peut pas valider un fichier
+supprimé par une autre instance. La liquidation vérifie aussi le dossier référencé.
+Identifiant invalide ou dossier absent : 422 ; fichier illisible/incohérent : 503.
+Les identifiants ne peuvent pas contenir de séparateurs de chemins.
+
+La suppression API du dossier prend le même verrou SQLite, vérifie le fichier
+sans cache et refuse (409) si une déclaration, liquidation ou un enlèvement le
+référence. Cela inclut une ancienne liquidation dont la déclaration aurait disparu.
+Aucune suppression en cascade : l'opérateur doit traiter les objets liés avant
+le dossier. Une absence réelle reste une 404 pour la suppression.
+
+Lecture/contrôle/écriture des mises à jour et actions terminal sont également
+transactionnels : une action concurrente ne peut pas relire un objet, attendre sa
+suppression puis le réinsérer après disparition du dossier. Les fixtures métier
+créent maintenant de vrais fichiers dossiers dans leur répertoire temporaire.
+
+`tests/test_dossier_business_links.py` : **15 passed**, vraie API isolée, dont
+références absentes, chemin hostile, réaffectation invalide sans mutation,
+protection par chacune des trois collections, cache périmé, fichier illisible et
+cinq courses pour chaque famille (création déclaration/enlèvement contre suppression
+dossier). Résultat autorisé : création 200/suppression 409 ou création 422/suppression
+200 ; aucun lien orphelin après ces courses.
+
+Limites : les fichiers JSON et SQLite ne forment pas une transaction distribuée.
+Le verrou coordonne les routes API concernées ; il ne protège pas des suppressions
+manuelles de fichiers, d'une restauration à chaud ou d'outils externes. Aucun
+ancien lien invalide n'est réécrit automatiquement. Les autres modules métier
+(frais, expéditions, etc.) ne sont pas couverts par cette protection à ce stade.
+Les permissions existantes du dossier restent contrôlées avant sa suppression.
+Matrice inchangée : 101 entrées, pas de nouvel écran.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

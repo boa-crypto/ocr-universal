@@ -83,6 +83,12 @@ def client_factory(tmp_path, monkeypatch):
     cfg = SimpleNamespace(data_dir=tmp_path, log_dir=tmp_path / "logs")
     monkeypatch.setattr(declarations, "cfg", cfg)
     monkeypatch.setattr(terminal, "cfg", cfg)
+    # Dossiers réellement présents sur disque, pas des identifiants fictifs.
+    import json
+    (tmp_path / "dossiers").mkdir(exist_ok=True)
+    for identifiant in ("dos_test", "dos_autre"):
+        (tmp_path / "dossiers" / f"{identifiant}.json").write_text(
+            json.dumps({"id": identifiant, "label": identifiant}), encoding="utf-8")
 
     def nouveau():
         app = FastAPI()

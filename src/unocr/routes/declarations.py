@@ -7,6 +7,7 @@ from typing import List, Optional
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, ValidationError
 
+from ..business_links import exiger_dossier
 from ..business_store import BusinessStore
 from ..config import get_config
 from ..logging_setup import audit, get_logger
@@ -32,6 +33,7 @@ def _get_liquidation_store(request: Request) -> BusinessStore[Liquidation]:
 
 
 def _verifier_lien(store: BusinessStore[Liquidation], liquidation: Liquidation) -> None:
+    exiger_dossier(cfg, liquidation.dossier_id)
     declarations = store.related("declaration", DeclarationDouaniere)
     declaration = declarations.get(liquidation.declaration_id)
     if declaration is None:
@@ -165,7 +167,9 @@ def create_declaration(
         mainlevee_obtenue=declaration.mainlevee_obtenue,
         date_mainlevee=declaration.date_mainlevee,
     )
-    store[decl_obj.id] = decl_obj
+    with store.transaction() as transaction:
+        exiger_dossier(cfg, decl_obj.dossier_id)
+        transaction[decl_obj.id] = decl_obj
     audit(cfg.log_dir, "declaration_creee", dossier=declaration.dossier_id, numero=declaration.numero_declaration)
     return decl_obj.model_dump()
 
@@ -226,6 +230,7 @@ def update_declaration(
             candidate = DeclarationDouaniere.model_validate({**decl.model_dump(), **update_data})
         except ValidationError as exc:
             raise HTTPException(422, exc.errors(include_context=False)) from exc
+        exiger_dossier(cfg, candidate.dossier_id)
         if candidate.dossier_id != decl.dossier_id and _liquidations_liees(transaction, declaration_id):
             raise HTTPException(409, "Impossible de changer le dossier : des liquidations utilisent cette déclaration")
         transaction[declaration_id] = candidate
