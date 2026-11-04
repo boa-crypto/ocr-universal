@@ -39,7 +39,7 @@ explicite », jamais meublée de données fictives.
 | Tableau de bord | 1 | 0 | 1 | 0 | 0 | 0 |
 | Mon espace de travail | 6 | 4 | 2 | 0 | 0 | 0 |
 | Gestion des dossiers | 7 | 3 | 4 | 0 | 0 | 0 |
-| Documents & OCR | 14 | 1 | 13 | 0 | 0 | 0 |
+| Documents & OCR | 14 | 3 | 11 | 0 | 0 | 0 |
 | Contrôle & conformité | 7 | 3 | 4 | 0 | 0 | 0 |
 | Opérations maritimes | 8 | 3 | 5 | 0 | 0 | 0 |
 | Douane & réglementation | 9 | 4 | 5 | 0 | 0 | 0 |
@@ -48,15 +48,15 @@ explicite », jamais meublée de données fictives.
 | Rapports & statistiques | 4 | 1 | 3 | 0 | 0 | 0 |
 | Référentiels & paramètres | 15 | 12 | 3 | 0 | 0 | 0 |
 | Administration & sécurité | 13 | 5 | 8 | 0 | 0 | 0 |
-| **Total** | **100** | **43** | **57** | **0** | **0** | **0** |
+| **Total** | **100** | **45** | **55** | **0** | **0** | **0** |
 
 - **Entrées de menu recensées** : 100
-- **Écrans conformes** : 43
-- **Écrans partiels** : 57
+- **Écrans conformes** : 45
+- **Écrans partiels** : 55
 - **Écrans absents** : 0
 - **Écrans non connectés** : 0
 
-Lecture honnête de ces chiffres : les 43 écrans conformes sont
+Lecture honnête de ces chiffres : les 45 écrans conformes sont
 ceux dont la source a répondu et dont les écritures éventuelles sont branchées ;
 les écrans « hérités » (mis en page lors des missions précédentes) restent
 marqués **PARTIEL** tant qu'ils n'ont pas été re-testés un par un dans cette
@@ -98,11 +98,11 @@ terminé.
 
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Action requise |
 |---|---|---|---|---|---|---|---|---|
-| Documents & OCR | Vue d'ensemble | `#documents` | écran existant `#tab-dashboard` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
-| Documents & OCR | Scanner / Importer | `#documents/import` | écran existant `#tab-import` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
+| Documents & OCR | Vue d'ensemble | `#documents` | Vue d'ensemble (`web/ecrans.js`) | `/api/jobs?limit=300` | 200 lignes | Oui | **CONFORME** | lecture seule assumée (données serveur) |
+| Documents & OCR | Scanner / Importer | `#documents/import` | écran existant `#tab-dashboard` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Documents & OCR | Boîte de réception | `#documents/inbox` | écran existant `#tab-center` | `(module historique)` | 25 lignes affichées | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Documents & OCR | Classification | `#documents/classif` | écran existant `#tab-classif` | `(module historique)` | 21 lignes affichées | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
-| Documents & OCR | Extraction OCR | `#documents/ocr` | écran existant `#tab-dashboard` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
+| Documents & OCR | Extraction OCR | `#documents/ocr` | Extraction OCR (`web/ecrans.js`) | `/api/jobs?limit=300` | 200 lignes | Oui | **CONFORME** | actions exercées par test (Texte, Résultat, Relancer) |
 | Documents & OCR | Résultat d'analyse | `#documents/resultat` | écran existant `#tab-result` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Documents & OCR | Contrôle qualité | `#documents/qualite` | écran existant `#tab-quality` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Documents & OCR | Révision humaine | `#documents/revue` | écran existant `#tab-review` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |

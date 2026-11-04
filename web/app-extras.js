@@ -889,8 +889,7 @@ document.getElementById("filterStatus").addEventListener("change", loadJobs);
    latérale : elles ont une route. Ce tableau fait le pont pour les raccourcis
    clavier et l'ouverture d'un job. */
 const PAGE_ROUTES = {
-  "tab-import": "documents/import",
-  "tab-dashboard": "documents/ocr",
+  "tab-dashboard": "documents/import",
   "tab-result": "documents/resultat",
   "tab-quality": "documents/qualite",
   "tab-review": "documents/revue",
@@ -1654,7 +1653,7 @@ async function initLangChips() {
   });
 
   /* ---- 4. raccourcis clavier ---- */
-  const TABS = ["tab-import", "tab-docs", "tab-result", "tab-review",
+  const TABS = ["tab-docs", "tab-result", "tab-review",
                 "tab-quality", "tab-config", "tab-dashboard",
                 "tab-profiles", "tab-connectors", "tab-dossier", "tab-transit"];
   let gPending = false, gTimer = null;

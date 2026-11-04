@@ -51,6 +51,10 @@ PREUVES: dict[str, str] = {
     "workspace/alertes": "liste jsdom (alertes du tableau de bord)",
     "workspace/recents": "liste jsdom (30 derniers dossiers)",
 }
+#: Actions d'écriture réellement exercées par un test (libellé → preuve).
+ACTIONS_TESTEES: dict[str, set[str]] = {
+    "documents/ocr": {"Texte", "Résultat", "Relancer"},
+}
 PREUVE_PAR_DEFAUT = "rendu jsdom + GET 200 sans erreur JS"
 
 #: Traduction du statut en réponse binaire pour la colonne « Fonctionnel ».
@@ -186,10 +190,19 @@ def construire(snapshot: dict[str, Any]) -> tuple[list[Ligne], dict[str, Sonde]]
                     statut = "CONFORME"
                     action = "maintenir ; étendre les champs métier si besoin"
                 elif any(a.get("url") for a in actions):
-                    # Action qui écrit sur le serveur : non couverte par un test.
-                    statut = "PARTIEL"
-                    libelles = ", ".join(a["libelle"] for a in actions[:3])
-                    action = f"tester et durcir les actions ({libelles})"
+                    ecritures = [a for a in actions if a.get("url")]
+                    testees = ACTIONS_TESTEES.get(route, set())
+                    if all(a["libelle"] in testees for a in ecritures):
+                        statut = "CONFORME"
+                        action = ("actions exercées par test ("
+                                  + ", ".join(a["libelle"] for a in ecritures) + ")")
+                        preuve = ("jsdom : " + ", ".join(a["libelle"] for a in ecritures)
+                                  + " → 200")
+                    else:
+                        # Action qui écrit sur le serveur : non couverte par un test.
+                        statut = "PARTIEL"
+                        libelles = ", ".join(a["libelle"] for a in actions[:3])
+                        action = f"tester et durcir les actions ({libelles})"
                 elif ecran.get("lectureSeule"):
                     statut = "CONFORME"
                     action = "lecture seule assumée (données serveur)"

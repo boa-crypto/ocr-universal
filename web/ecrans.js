@@ -105,12 +105,32 @@
     return devises ? texte + " " + devises : texte;
   }
 
+  /* Lecture d'une clé, y compris imbriquée (`options.engine`). */
+  function valeurDe(ligne, cle) {
+    if (!ligne || !cle) return undefined;
+    if (cle.indexOf(".") === -1) return ligne[cle];
+    var morceaux = cle.split(".");
+    var courant = ligne;
+    for (var i = 0; i < morceaux.length; i += 1) {
+      if (courant === null || courant === undefined) return undefined;
+      courant = courant[morceaux[i]];
+    }
+    return courant;
+  }
+
   function texteCellule(ligne, colonne) {
-    var valeur = ligne ? ligne[colonne.cle] : undefined;
+    var valeur = valeurDe(ligne, colonne.cle);
     if (colonne.format === "date") return horodatage(valeur);
     if (colonne.format === "montant") {
       var devise = colonne.devise ? ligne[colonne.devise] : "";
       return valeur === null || valeur === undefined || valeur === "" ? "—" : nombre(valeur, devise);
+    }
+    if (colonne.format === "progression") {
+      if (valeur === null || valeur === undefined || valeur === "") return "—";
+      var part = Number(valeur);
+      if (!isFinite(part)) return String(valeur);
+      if (part > 0 && part <= 1) part *= 100;
+      return Math.round(part) + " %";
     }
     if (colonne.format === "nombre") {
       return valeur === null || valeur === undefined || valeur === "" ? "—"
@@ -1328,7 +1348,89 @@
     }
   };
 
-  /* ==================== Dossiers et espace de travail ==================== */
+  /* ==================== Documents & OCR ==================== */
+  /* L'atelier de capture reste la page historique (`#tab-dashboard`) : on ne
+     duplique pas l'import. En revanche la vue d'ensemble et l'extraction
+     n'avaient aucun écran — elles retombaient sur le tableau de bord général.
+     Ces deux écrans lisent la file de traitement réelle (`GET /api/jobs`). */
+
+  ECRANS["documents"] = {
+    section: "Documents & OCR",
+    titre: "Vue d'ensemble",
+    desc: "Activité réelle du poste : file de traitement, états, moteurs et " +
+          "progression. Chaque ligne est un document traité ou en attente.",
+    source: { url: "/api/jobs?limit=300" },
+    id: "id",
+    colonnes: [
+      { cle: "filename", libelle: "Fichier" },
+      { cle: "status", libelle: "État" },
+      { cle: "progress", libelle: "Progression", format: "progression" },
+      { cle: "options.engine", libelle: "Moteur" },
+      { cle: "created_at", libelle: "Reçu le", format: "date" }
+    ],
+    filtres: [{ cle: "status", libelle: "État" }],
+    actions: [{
+      libelle: "Ouvrir dans l'atelier",
+      executer: function (ligne) {
+        window.location.hash = "#documents/resultat";
+        if (window.UniOCRShell && typeof window.UniOCRShell.ouvrirJob === "function") {
+          window.UniOCRShell.ouvrirJob(ligne.id);
+        }
+      }
+    }],
+    lectureSeule: true,
+    vide: {
+      message: "Aucun document traité pour l'instant. Importez un document " +
+               "depuis l'atelier pour alimenter la file.",
+      action: { libelle: "Importer un document", route: "#documents/import" }
+    }
+  };
+
+  ECRANS["documents/ocr"] = {
+    section: "Documents & OCR",
+    titre: "Extraction OCR",
+    desc: "Documents passés à l'OCR : état, tentatives et moteur utilisé. " +
+          "Chaque action interroge le serveur — aucun texte n'est simulé.",
+    source: { url: "/api/jobs?limit=300" },
+    id: "id",
+    colonnes: [
+      { cle: "filename", libelle: "Fichier" },
+      { cle: "status", libelle: "État" },
+      { cle: "attempts", libelle: "Tentatives", format: "nombre" },
+      { cle: "options.engine", libelle: "Moteur" },
+      { cle: "updated_at", libelle: "Mis à jour", format: "date" }
+    ],
+    filtres: [{ cle: "status", libelle: "État" }],
+    actions: [
+      {
+        libelle: "Texte",
+        url: "/api/jobs/{id}/text",
+        methode: "GET",
+        afficher: true
+      },
+      {
+        libelle: "Résultat",
+        url: "/api/jobs/{id}/result",
+        methode: "GET",
+        afficher: true
+      },
+      {
+        libelle: "Relancer",
+        url: "/api/jobs/{id}/retry",
+        methode: "POST",
+        confirmation: "Relancer le traitement de ce document ?",
+        succes: "Traitement relancé"
+      }
+    ],
+    lectureSeule: false,
+    vide: {
+      message: "Aucun document à extraire. Les fichiers importés apparaissent " +
+               "ici dès leur mise en file.",
+      action: { libelle: "Importer un document", route: "#documents/import" }
+    }
+  };
+
+    /* ==================== Dossiers et espace de travail ==================== */
   /* Ces écrans remplacent les entrées de menu qui retombaient sur la vue
      d'ensemble de leur module. Ils lisent `GET /api/dossiers` (et les alertes
      du tableau de bord) et filtrent sur les états **réellement présents** dans
@@ -1722,7 +1824,8 @@
       var voulu = etat.filtres[cle];
       if (!voulu) return;
       resultat = resultat.filter(function (ligne) {
-        return String(ligne[cle] === undefined || ligne[cle] === null ? "" : ligne[cle]) === voulu;
+        var valeur = valeurDe(ligne, cle);
+        return String(valeur === undefined || valeur === null ? "" : valeur) === voulu;
       });
     });
     var terme = (etat.recherche || "").trim().toLowerCase();
@@ -1748,7 +1851,7 @@
   function valeursFiltre(lignes, cle) {
     var vues = [];
     lignes.forEach(function (ligne) {
-      var valeur = ligne[cle];
+      var valeur = valeurDe(ligne, cle);
       if (valeur === undefined || valeur === null || valeur === "") return;
       var texte = String(valeur);
       if (vues.indexOf(texte) === -1) vues.push(texte);
@@ -1999,12 +2102,17 @@
     ecrire(url, methode, corps).then(function (reponse) {
       toast(action.succes || "Action exécutée", "success");
       if (action.afficher) {
+        /* Action de lecture (texte, résultat, détail) : on affiche la réponse
+           et on ne recharge pas la liste, sinon le panneau serait effacé. */
         afficherResultat(action.libelle, reponse);
-      }
-      if (action.resultat) {
-        afficherResultat(action.libelle, reponse);
+        return;
       }
       charger(ecran.__route, true);
+      if (action.resultat) {
+        /* Action d'écriture qui renvoie un verdict : on l'affiche après le
+           rechargement de la liste, sinon le rendu le remplacerait. */
+        setTimeout(function () { afficherResultat(action.libelle, reponse); }, 450);
+      }
     }).catch(function (erreur) {
       toast((action.libelle || "Action") + " : " + erreur.message, "error");
     });

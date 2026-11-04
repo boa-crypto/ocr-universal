@@ -570,7 +570,7 @@
       'cockpit': 'tab-cockpit',
       'workspace': 'tab-workspace',
       'dossiers': 'tab-dossiers',
-      'documents': 'tab-dashboard',
+      'documents': 'tab-ecran',
       'controle': 'tab-controle',
       'maritime': 'tab-maritime',
       'douane': 'tab-douane',
@@ -585,8 +585,8 @@
     // Certaines sous-rubriques disposent de leur propre page : on y va
     // directement plutôt que de retomber sur la vue d'ensemble du module.
     const routePages = {
-      'documents/import': 'tab-import',
-      'documents/ocr': 'tab-dashboard',
+      'documents/import': 'tab-dashboard',
+      'documents/ocr': 'tab-ecran',
       'documents/inbox': 'tab-center',
       'documents/classif': 'tab-classif',
       'documents/resultat': 'tab-result',

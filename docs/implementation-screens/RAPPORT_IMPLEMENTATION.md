@@ -114,6 +114,30 @@ Deux ajustements d'ergonomie de données ont été faits au passage :
 - une action de ligne peut désormais être une **navigation** (« Ouvrir » un
   dossier) sans passer par une requête d'écriture.
 
+## 2.6 Passe 3 — Documents & OCR
+
+Audit des 14 sous-rubriques du module. Trois n'avaient aucun écran propre :
+
+| Entrée | Avant | Maintenant |
+|---|---|---|
+| Vue d'ensemble | retombait sur l'atelier (`#tab-dashboard`) | **écran dédié** : file de traitement réelle (`GET /api/jobs`, 200 documents), filtres par état, moteur, progression |
+| Extraction OCR | même repli | **écran dédié** avec trois actions serveur exercées par test : *Texte* (`GET /api/jobs/{id}/text`), *Résultat* (`…/result`), *Relancer* (`POST …/retry`) |
+| Scanner / Importer | page d'accueil quasi vide (`#tab-import`, 1 Ko, aucun contrôle) | relié à l'atelier de capture réel (`#tab-dashboard` : import fichier, caméra, lot, options) |
+
+La page `#tab-import` — coquille d'accueil sans aucun contrôle — a été retirée
+de la coque HTML et de la table de routes ; sa fonction est portée par l'atelier.
+L'index passe de 202 à 201 Ko pour un plafond de 220 Ko.
+
+Deux défauts d'ergonomie corrigés au passage :
+
+- **le panneau de résultat était effacé** : une action de lecture affichait la
+  réponse puis rechargeait la liste, ce qui remplaçait le panneau. Les actions
+  de lecture ne rechargent plus ; les actions d'écriture affichent leur verdict
+  *après* le rechargement ;
+- **les clés imbriquées** (`options.engine`) n'étaient pas lisibles par les
+  colonnes, les filtres ni le tri : un accesseur de clé pointée a été ajouté,
+  ainsi qu'un format « progression » (pourcentage).
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
@@ -150,7 +174,7 @@ directement ne voit que les routes déclarées dans `api.py` — d'où le helper
 
 ## 5. Ce que ces passes ne font pas
 
-- Les **57 écrans partiels** restent à re-certifier un par un (contenu, actions,
+- Les **55 écrans partiels** restent à re-certifier un par un (contenu, actions,
   permissions, états vides) : voir `FONCTIONNALITES_RESTANTES.md`.
 - Certains écrans **réutilisent une page historique** (`#dossiers/tous`,
   `#tab-clients`, `#tab-profiles`…) : plus de bandeau, mais le contenu et les
