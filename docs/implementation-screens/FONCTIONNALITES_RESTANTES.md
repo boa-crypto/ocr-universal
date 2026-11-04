@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 37. Ce document est la liste de travail
+État au 2026-11-04, après la passe 38. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -224,3 +224,14 @@ copie séparée des `.tmp`, arrêt des écritures et conservation du rapport req
 Restent la récupération des métadonnées/liens absents (non automatisée), la
 collecte explicite des résidus, l'antivirus et les tests d'arrêt brutal.
 La quarantaine conservée reste visible au diagnostic ; aucune purge automatique.
+
+
+### Passe 38 — arrêts brutaux de récupération couverts à deux points
+
+✅ Vrai SIGKILL du processus de récupération avant/après publication : données
+préservées, résidus inventoriés, reprise ou refus d'écrasement vérifiés. Cette
+preuve ciblée lève la limite d'absence de test d'arrêt brutal pour ces deux points
+seulement, pas pour l'ensemble des flux fichiers.
+Restent les coupures électriques/durabilité répertoire, les interruptions pendant
+upload/suppression/backup, la collecte contrôlée des résidus et l'antivirus.
+Aucune purge ou collecte automatique ajoutée.

@@ -1406,3 +1406,38 @@ publication et résidu de nettoyage signalé. Aucune application sur les donnée
 utilisateur. Suite complète : **1165 passed / 23 failed / 11 skipped** ; Ruff OK.
 Les 23 échecs OCR environnementaux connus demeurent. Aucun changement d'interface
 ni nouvelle mesure de la matrice des écrans.
+
+
+## 2.41 Passe 38 — preuve d'arrêt brutal de la récupération
+
+Deux tests POSIX tuent un vrai processus Python par `SIGKILL`, sans exécuter ses
+`finally`. Le processus appelle le CLI `pieces-recover --apply` contre un magasin
+SQLite entièrement temporaire. Une barrière publiée atomiquement borne le point
+d'arrêt, soit juste avant `os.link`, soit juste après sa réussite réelle. Le
+parent attend au maximum 15 secondes et termine/récolte toujours son enfant.
+
+Résultats vérifiés après mort effective (code retour `-SIGKILL`) :
+
+- avant publication : destination absente, temporaire complet encore présent,
+  quarantaine et octets de la base inchangés ; plan sans mutation puis reprise
+  réussie avec un nouveau temporaire ; l'ancien résidu n'est pas collecté ;
+- après publication : destination complète, temporaire résiduel et quarantaine
+  conservés ; nouvelle application refusée sans changer l'inode de destination ;
+- dans les deux cas : aucune sortie de faux succès de l'enfant, verrou SQLite
+  libéré, références toujours lisibles, diagnostic sans mutation signalant
+  temporaire/quarantaine et signalant le fichier absent seulement avant publication.
+
+Commandes :
+
+```sh
+.venv/bin/python -m pytest tests/test_justificatifs_recovery.py -q
+.venv/bin/python -m pytest tests/test_justificatifs_recovery.py tests/test_justificatifs_diagnostic.py tests/test_justificatifs_persistence.py -q
+```
+
+Résultats : **17 passed** et **49 passed**. Ruff OK. Suite complète :
+**1167 passed / 23 failed / 11 skipped** (échecs OCR environnementaux connus).
+Aucune mutation sur les données utilisateur, aucune modification du code métier.
+Tests SIGKILL sautés hors POSIX. Ceci n'est pas une coupure électrique : le noyau
+et les caches du système de fichiers survivent. La durabilité de l'entrée de
+répertoire et les arrêts brutaux pendant upload/suppression/restauration complète
+restent hors de cette preuve. Pas de nouvelle mesure de matrice ni de navigateur.

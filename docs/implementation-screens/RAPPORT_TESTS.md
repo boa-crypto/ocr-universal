@@ -1,6 +1,6 @@
 # Rapport de tests — écrans UniOCR
 
-Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 37.
+Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 38.
 
 Ce document liste **uniquement des résultats obtenus**, avec la commande qui
 les produit. Les sections de passes ci-dessous conservent les résultats historiques.
@@ -12,7 +12,7 @@ les produit. Les sections de passes ci-dessous conservent les résultats histori
 | Commande | Résultat | Commentaire |
 |---|---|---|
 | `ruff check src tests` | **All checks passed** | 0 erreur de style |
-| `python -m pytest -q` | **1165 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
+| `python -m pytest -q` | **1167 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
 | `python -m pytest tests/test_ui_premium.py -q` | **56 passed** | tests de contrat et intégrité UI |
 | `python -m pytest tests/test_historique.py -q` | **5 passed** 🆕 | ordre, filtrage par document, événements inconnus, journal illisible |
 | `python -m pytest tests/test_rbac_ecritures.py -q` | **18 passed** | 14 familles d'écriture refusées à un lecteur, refus tracés |
@@ -314,3 +314,18 @@ python3 docs/implementation-screens/outils/generer_matrice.py /tmp/ui.json
   temporaire refusé et signalé, CLI plan/application/refus, magasin absent.
 - Aucun `--apply` exécuté sur les données utilisateur ; pas de test de véritable
   coupure électrique ni de validation de résistance aux mutations hostiles du FS.
+
+
+### Passe 38 — vrais arrêts brutaux pendant la récupération
+
+- `pytest tests/test_justificatifs_recovery.py -q` : **17 passed**, dont deux
+  processus réellement terminés par SIGKILL avant/après publication.
+- Récupération + diagnostic + persistance : **49 passed**.
+- `ruff check src tests` : **All checks passed**.
+- Suite complète : **1167 passed, 23 failed, 11 skipped** ; deux avertissements
+  de dépendances, les 23 échecs OCR environnementaux habituels demeurent.
+- Source/base conservées, diagnostic lecture seule, absence de faux succès,
+  résidus détectés, reprise avant publication et refus d'écrasement après.
+- Tests entièrement temporaires ; enfant borné et récolté. Tests SIGKILL sautés
+  hors POSIX. Ce résultat ne prouve pas la résistance à une coupure électrique
+  ni les autres points d'arrêt des routes upload/suppression ou du backup.

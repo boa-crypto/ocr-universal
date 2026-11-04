@@ -161,3 +161,78 @@ def test_residu_de_nettoyage_signale(cas, monkeypatch):
     assert rapport["etat"] == "restaure"
     assert rapport["residu_temporaire"].startswith("justificatifs/.restore-")
     assert cible.read_bytes() == b"preuve"
+
+
+@pytest.mark.parametrize("phase", ["avant_publication", "apres_publication"])
+def test_arret_brutal_reprise_sans_perte(cas, tmp_path_factory, phase):
+    """Vrai SIGKILL d'un enfant, pas une exception exécutant les finally."""
+    import os
+    import signal
+    import subprocess
+    import sys
+    import time
+    from pathlib import Path
+
+    if os.name != "posix":
+        pytest.skip("Preuve SIGKILL réservée aux systèmes POSIX")
+    racine, cible, quarantaine, _, pieces = cas
+    base = racine / "metier.sqlite3"
+    base_avant = base.read_bytes()
+    source_avant = quarantaine.read_bytes()
+    marqueur = tmp_path_factory.mktemp("barriere_crash") / "pret"
+    repo = Path(__file__).resolve().parents[1]
+    env = os.environ.copy()
+    env["PYTHONPATH"] = str(repo / "src") + os.pathsep + env.get("PYTHONPATH", "")
+    enfant = subprocess.Popen(
+        [sys.executable, str(repo / "tests/_pieces_crash_worker.py"),
+         str(racine), str(marqueur), phase],
+        cwd=repo, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+    )
+    try:
+        echeance = time.monotonic() + 15
+        while not marqueur.exists() and enfant.poll() is None and time.monotonic() < echeance:
+            time.sleep(0.02)
+        assert marqueur.exists(), "L'enfant n'a pas atteint la barrière de publication"
+        assert marqueur.read_text(encoding="utf-8") == phase
+        assert enfant.poll() is None
+        enfant.kill()
+        sortie, erreurs = enfant.communicate(timeout=10)
+        assert enfant.returncode == -signal.SIGKILL, (sortie, erreurs)
+        assert sortie == ""  # Aucun faux rapport de réussite n'a été émis.
+    finally:
+        if enfant.poll() is None:
+            enfant.kill()
+        enfant.communicate(timeout=10)
+
+    assert base.read_bytes() == base_avant
+    assert quarantaine.read_bytes() == source_avant
+    residus = list(cible.parent.glob(".restore-*.tmp"))
+    assert len(residus) == 1  # SIGKILL a bien empêché le finally de nettoyer.
+    assert residus[0].read_bytes() == source_avant
+    assert cible.exists() == (phase == "apres_publication")
+    avant_diagnostic = instantane(racine)
+    diagnostic = diagnostiquer_pieces(racine)
+    assert instantane(racine) == avant_diagnostic
+    categories = {a["categorie"] for a in diagnostic["anomalies"]}
+    assert {"temporaire", "quarantaine"} <= categories
+    assert ("fichier_absent" in categories) == (phase == "avant_publication")
+    assert diagnostic["references_completes"] is True
+
+    if phase == "avant_publication":
+        # Le verrou SQLite a été libéré par la mort du processus ; la reprise
+        # crée son propre temporaire et ne collecte pas celui du processus mort.
+        avant_plan = instantane(racine)
+        assert recuperer_piece(racine, "just_test")["etat"] == "pret"
+        assert instantane(racine) == avant_plan
+        assert recuperer_piece(racine, "just_test", appliquer=True)["etat"] == "restaure"
+    else:
+        inode = cible.stat().st_ino
+        with pytest.raises(RecuperationRefusee, match="déjà présente"):
+            recuperer_piece(racine, "just_test", appliquer=True)
+        assert cible.stat().st_ino == inode
+    assert cible.read_bytes() == source_avant
+    assert quarantaine.read_bytes() == source_avant
+    assert cible.stat().st_ino != quarantaine.stat().st_ino
+    assert base.read_bytes() == base_avant
+    assert pieces["just_test"].frais_id == "frais_test"
+    assert list(cible.parent.glob(".restore-*.tmp")) == residus
