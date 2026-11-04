@@ -43,6 +43,11 @@ def tmp_cfg(tmp_path):
     api.store = JobStore(cfg)
     api.cfg = cfg
     api.app.state.cfg = cfg
+    # Le store de dossiers est construit à l'import de `api` : sans ce
+    # remplacement, les tests d'API écriraient dans `data/dossiers` réel.
+    from unocr.dossier import DossierStore
+    original_dossiers = api._dossiers
+    api._dossiers = DossierStore(cfg.data_dir / "dossiers", log_dir=cfg.log_dir)
     # La limitation de débit est volontairement globale au processus (c'est sa
     # fonction côté serveur). Sans cette remise à zéro, les requêtes d'un test
     # s'ajouteraient à celles du précédent et les tests suivants recevraient
@@ -61,4 +66,5 @@ def tmp_cfg(tmp_path):
     api.store = original_store
     api.cfg = original_cfg
     api.app.state.cfg = original_app_cfg
+    api._dossiers = original_dossiers
     set_config(original)

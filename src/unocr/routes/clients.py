@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 
 from ..config import get_config
@@ -77,13 +77,12 @@ def _get_client_store(request: Request) -> dict:
 def create_client(
     request: Request,
     client: ClientCreate,
-    current_user: Any = Depends(lambda r: None),
 ) -> dict:
     """Créer un nouveau client."""
     from ..models import Client, ClientStatus
 
     store = _get_client_store(request)
-    client_id = f"client_{new_id().hex[:12]}"
+    client_id = new_id("client_")
     client_obj = Client(
         id=client_id,
         name=client.name,
@@ -108,7 +107,7 @@ def create_client(
         mandant_representant=client.mandant_representant,
     )
     store[client_id] = client_obj
-    audit(cfg.log_dir, "client_cree", acteur="admin", nom=client.name)
+    audit(request.app.state.cfg.log_dir, "client_cree", acteur="admin", nom=client.name)
     return client_obj.as_dict()
 
 
@@ -162,11 +161,15 @@ def update_client(
     if not client:
         raise HTTPException(404, "Client introuvable")
 
+    from ..models import ClientStatus
+
     update_data = client_update.model_dump(exclude_unset=True)
+    if "status" in update_data and not isinstance(update_data["status"], ClientStatus):
+        update_data["status"] = ClientStatus(update_data["status"])
     for key, value in update_data.items():
         setattr(client, key, value)
 
-    audit(cfg.log_dir, "client_modifie", cible=client_id)
+    audit(request.app.state.cfg.log_dir, "client_modifie", cible=client_id)
     return client.as_dict()
 
 
@@ -181,7 +184,7 @@ def delete_client(
         raise HTTPException(404, "Client introuvable")
 
     del store[client_id]
-    audit(cfg.log_dir, "client_supprime", cible=client_id)
+    audit(request.app.state.cfg.log_dir, "client_supprime", cible=client_id)
     return {"deleted": True, "id": client_id}
 
 
@@ -195,7 +198,10 @@ def list_client_dossiers(
     if not client:
         raise HTTPException(404, "Client introuvable")
 
-    store = request.app.state.store
+    from ..dossier import DossierStore
+
+    cfg = request.app.state.cfg
+    store = DossierStore(cfg.data_dir / "dossiers", log_dir=cfg.log_dir)
     # Le dossier peut référencer le client par son identifiant ou par son nom
     # selon qu'il vient de l'API transit ou de l'atelier documentaire.
     cibles = {client.id, client.name, client.legal_name}
