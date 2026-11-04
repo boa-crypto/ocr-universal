@@ -85,6 +85,8 @@ HISTORIQUES_VERIFIES: dict[str, str] = {
     "documents/classif": "jsdom : 21 catégories réelles, recherche 21→0",
     "documents/archives": "jsdom : 25 lignes, recherche, pagination, « Ouvrir » → dossier",
     "documents/verification": "jsdom : 25 lignes, recherche, pagination, « Ouvrir » → dossier",
+    "documents/resultat": "jsdom : « Ouvrir le résultat » sur un document traité → GET /result 200, texte et pages affichés ; état vide expliqué sinon",
+    "documents/qualite": "jsdom : jauges alimentées par le document ouvert (moteur 100 %, 3 anomalies) ; état vide expliqué sinon",
     "documents/revue": "jsdom : file chargée automatiquement, champs réels, « Actualiser » → GET 200",
     "admin/moteurs-ocr": "jsdom : 6 moteurs réels (disponibilité, actif, RAM) ; routage réparé",
     "admin/journal": "jsdom : état vide explicite (aucune entrée d'audit) ; contrôles morts retirés",

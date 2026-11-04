@@ -312,6 +312,29 @@ exercer, puis sont revenus en « conforme » avec leur mesure. Le total reste
 63 conformes / 37 partiels, mais chaque « conforme » de type CRUD a maintenant
 une ligne de test derrière lui.
 
+## 2.13 Passe 10 — résultat d'analyse et contrôle qualité reliés
+
+Ces deux écrans affichent **le document courant**, mais aucun chemin de la
+nouvelle coque ne le désignait : atteints par le routage au hash, ils
+restaient vides (viewer « — », jauges « — »), sans explication.
+
+Mise en place d'un point d'entrée unique :
+
+| Élément | Comportement |
+|---|---|
+| Action « Ouvrir le résultat » sur la liste des documents | refusée si le document n'est pas `done` (message « Document non traité »), sinon charge `/api/jobs/{id}/result` et bascule sur l'écran |
+| Écran « Résultat d'analyse » | texte réel du document, pagination, badges langue/variante, recherche dans le texte |
+| Écran « Contrôle qualité » | jauges alimentées par le même document (moteur, global, anomalies) |
+| Aucun document ouvert | message explicite orientant vers « Vue d'ensemble » / « Extraction OCR », au lieu de tirets |
+
+Mesures jsdom :
+
+- document `bl_port.pdf` (`done`) → `GET /result` **200**, texte « BILL OF
+  LADING / B/L No: MSCU123456789… » affiché ;
+- page qualité ensuite → moteur **100 %**, **3 anomalies** ;
+- document `queued` → action refusée, **aucune requête** émise ;
+- aucun document → message d'état vide sur les deux écrans.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
@@ -348,7 +371,7 @@ directement ne voit que les routes déclarées dans `api.py` — d'où le helper
 
 ## 5. Ce que ces passes ne font pas
 
-- Les **37 écrans partiels** restent à re-certifier un par un (contenu, actions,
+- Les **35 écrans partiels** restent à re-certifier un par un (contenu, actions,
   permissions, états vides) : voir `FONCTIONNALITES_RESTANTES.md`.
 - Certains écrans **réutilisent une page historique** (`#dossiers/tous`,
   `#tab-clients`, `#tab-profiles`…) : plus de bandeau, mais le contenu et les

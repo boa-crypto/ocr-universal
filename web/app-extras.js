@@ -2384,3 +2384,96 @@ async function initLangChips() {
   }
   window.addEventListener("hashchange", () => setTimeout(brancher, 400));
 })();
+
+/* ═══════════ RÉSULTAT & QUALITÉ : ouverture depuis la liste ═══════════
+   Les pages « Résultat d'analyse » et « Contrôle qualité » affichent le
+   document courant. Atteintes par le routage au hash, elles restaient vides
+   faute de sélection. Ce module fournit le point d'entrée (`ouvrir`) et
+   explique l'état vide au lieu de laisser des tirets.
+   ═══════════════════════════════════════════════════════════════════════ */
+(function resultatSelonRoute() {
+  "use strict";
+
+  const PAGES = {
+    "documents/resultat": { section: "tab-result", titre: "Résultat d'analyse" },
+    "documents/qualite": { section: "tab-quality", titre: "Contrôle qualité" },
+  };
+
+  function routeCourante() {
+    return (window.location.hash || "").replace(/^#/, "");
+  }
+
+  function retirerMessage(section) {
+    const ancien = section.querySelector("[data-vide-resultat]");
+    if (ancien) ancien.remove();
+  }
+
+  function poserMessage(section, texte) {
+    retirerMessage(section);
+    const entete = section.querySelector("header, .page-head");
+    const para = document.createElement("p");
+    para.className = "dos-detail__empty-txt";
+    para.setAttribute("data-vide-resultat", "1");
+    para.textContent = texte;
+    if (entete && entete.nextSibling) {
+      entete.parentNode.insertBefore(para, entete.nextSibling);
+    } else {
+      section.insertBefore(para, section.firstChild);
+    }
+  }
+
+  /* `currentJob`, `currentResult`, `renderResult` et `loadResult` vivent dans
+     l'environnement lexical global des scripts classiques : accessibles ici. */
+  function appliquer() {
+    const route = routeCourante();
+    const page = PAGES[route];
+    if (!page) return;
+    const section = document.getElementById(page.section);
+    if (!section) return;
+
+    if (typeof currentJob !== "undefined" && currentJob && typeof currentResult !== "undefined" && currentResult) {
+      retirerMessage(section);
+      if (route === "documents/resultat" && typeof renderResult === "function") {
+        renderResult();
+      }
+      return;
+    }
+    if (typeof currentJob !== "undefined" && currentJob && typeof loadResult === "function") {
+      retirerMessage(section);
+      loadResult(currentJob);
+      /* Si le document n'a pas de résultat (traitement en cours ou en échec),
+         `loadResult` s'arrête : on explique plutôt que d'afficher des tirets. */
+      setTimeout(function () {
+        if (typeof currentResult === "undefined" || !currentResult) {
+          poserMessage(section,
+            page.titre + " : le document " + currentJob + " n'a pas encore de " +
+            "résultat exploitable. Relancez son traitement depuis « Extraction OCR ».");
+        }
+      }, 1200);
+      return;
+    }
+    poserMessage(section,
+      page.titre + " : aucun document ouvert. Choisissez un document dans " +
+      "« Vue d'ensemble » ou « Extraction OCR », puis « Ouvrir le résultat ».");
+  }
+
+  window.UniOCRResultats = {
+    ouvrir: function (id) {
+      if (!id) {
+        if (typeof toast === "function") toast("Aucun document à ouvrir", "info");
+        return;
+      }
+      currentJob = id;
+      if (routeCourante() === "documents/resultat") {
+        loadResult(id);
+        appliquer();
+      } else {
+        window.location.hash = "#documents/resultat";
+        setTimeout(function () { loadResult(id); }, 80);
+      }
+    },
+  };
+
+  window.addEventListener("hashchange", function () { setTimeout(appliquer, 120); });
+  setTimeout(appliquer, 900);
+})();

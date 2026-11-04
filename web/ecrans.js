@@ -1472,6 +1472,21 @@
     filtres: [{ cle: "status", libelle: "État" }],
     actions: [
       {
+        libelle: "Ouvrir le résultat",
+        executer: function (ligne) {
+          var id = ligne.id || ligne.job_id;
+          if (String(ligne.status || "") !== "done") {
+            toast("Document non traité : aucun résultat à ouvrir", "info");
+            return;
+          }
+          if (window.UniOCRResultats && window.UniOCRResultats.ouvrir) {
+            window.UniOCRResultats.ouvrir(id);
+          } else {
+            toast("Résultat indisponible", "error");
+          }
+        }
+      },
+      {
         libelle: "Texte",
         url: "/api/jobs/{id}/text",
         methode: "GET",

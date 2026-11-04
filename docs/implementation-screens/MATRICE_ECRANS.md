@@ -43,7 +43,7 @@ peut pas être « CONFORME » pour un écran à écritures.
 | Tableau de bord | 1 | 0 | 1 | 0 | 0 | 0 |
 | Mon espace de travail | 6 | 4 | 2 | 0 | 0 | 0 |
 | Gestion des dossiers | 7 | 3 | 4 | 0 | 0 | 0 |
-| Documents & OCR | 14 | 9 | 5 | 0 | 0 | 0 |
+| Documents & OCR | 14 | 11 | 3 | 0 | 0 | 0 |
 | Contrôle & conformité | 7 | 4 | 3 | 0 | 0 | 0 |
 | Opérations maritimes | 8 | 3 | 5 | 0 | 0 | 0 |
 | Douane & réglementation | 9 | 4 | 5 | 0 | 0 | 0 |
@@ -52,15 +52,15 @@ peut pas être « CONFORME » pour un écran à écritures.
 | Rapports & statistiques | 4 | 4 | 0 | 0 | 0 | 0 |
 | Référentiels & paramètres | 15 | 13 | 2 | 0 | 0 | 0 |
 | Administration & sécurité | 13 | 9 | 4 | 0 | 0 | 0 |
-| **Total** | **100** | **63** | **37** | **0** | **0** | **0** |
+| **Total** | **100** | **65** | **35** | **0** | **0** | **0** |
 
 - **Entrées de menu recensées** : 100
-- **Écrans conformes** : 63
-- **Écrans partiels** : 37
+- **Écrans conformes** : 65
+- **Écrans partiels** : 35
 - **Écrans absents** : 0
 - **Écrans non connectés** : 0
 
-Lecture honnête de ces chiffres : les 63 écrans conformes sont
+Lecture honnête de ces chiffres : les 65 écrans conformes sont
 ceux dont la source a répondu et dont les écritures éventuelles sont branchées ;
 les écrans « hérités » (mis en page lors des missions précédentes) restent
 marqués **PARTIEL** tant qu'ils n'ont pas été re-testés un par un dans cette
@@ -107,8 +107,8 @@ terminé.
 | Documents & OCR | Boîte de réception | `#documents/inbox` | écran existant `#tab-center` | `(module historique)` | 25 lignes affichées | Oui | **CONFORME** | jsdom : 25 lignes, recherche 25→0, pagination opérationnelle | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Classification | `#documents/classif` | écran existant `#tab-classif` | `(module historique)` | 21 lignes affichées | Oui | **CONFORME** | jsdom : 21 catégories réelles, recherche 21→0 | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Extraction OCR | `#documents/ocr` | Extraction OCR (`web/ecrans.js`) | `/api/jobs?limit=300` | 200 lignes | Oui | **CONFORME** | jsdom : Texte, Résultat, Relancer → 200 | actions exercées par test (Texte, Résultat, Relancer) |
-| Documents & OCR | Résultat d'analyse | `#documents/resultat` | écran existant `#tab-result` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
-| Documents & OCR | Contrôle qualité | `#documents/qualite` | écran existant `#tab-quality` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Documents & OCR | Résultat d'analyse | `#documents/resultat` | écran existant `#tab-result` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : « Ouvrir le résultat » sur un document traité → GET /result 200, texte et pages affichés ; état vide expliqué sinon | consultation et interactions vérifiées ; écritures non expérimentées |
+| Documents & OCR | Contrôle qualité | `#documents/qualite` | écran existant `#tab-quality` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : jauges alimentées par le document ouvert (moteur 100 %, 3 anomalies) ; état vide expliqué sinon | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Révision humaine | `#documents/revue` | écran existant `#tab-review` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : file chargée automatiquement, champs réels, « Actualiser » → GET 200 | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Vérification | `#documents/verification` | écran existant `#tab-validation` | `(module historique)` | 25 lignes affichées | Oui | **CONFORME** | jsdom : 25 lignes, recherche, pagination, « Ouvrir » → dossier | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Profils d'extraction | `#documents/profils` | écran existant `#tab-profiles` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 11 profils, création PUT 200, essai à blanc 1/1 détecté, suppression DELETE 200 | consultation et interactions vérifiées ; écritures non expérimentées |

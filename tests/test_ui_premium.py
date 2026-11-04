@@ -828,3 +828,23 @@ def test_champ_pays_limite_a_deux_caracteres() -> None:
 
     assert "longueurMax" in moteur
     assert "controle.maxLength = champ.longueurMax" in moteur
+
+
+def test_resultat_et_qualite_ont_un_point_d_entree() -> None:
+    """« Résultat d'analyse » et « Contrôle qualité » affichent le document courant.
+
+    Atteintes par le routage au hash, elles restaient vides faute de sélection.
+    L'ouverture se fait désormais depuis la liste des documents traités, et
+    l'absence de document est expliquée au lieu d'afficher des tirets.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    extras = (racine / "web" / "app-extras.js").read_text(encoding="utf-8")
+    moteur = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+
+    assert "window.UniOCRResultats" in extras
+    assert "ouvrir: function (id)" in extras
+    assert "documents/resultat" in extras and "documents/qualite" in extras
+    assert "data-vide-resultat" in extras
+    # L'action n'est proposée que pour un document réellement traité.
+    assert 'libelle: "Ouvrir le résultat"' in moteur
+    assert 'String(ligne.status || "") !== "done"' in moteur

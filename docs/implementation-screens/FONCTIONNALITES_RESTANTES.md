@@ -5,7 +5,7 @@ priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui rest
 la référence ligne à ligne.
 
 **Chiffres du jour, sans arrondi complaisant** : 100 entrées de menu,
-**63 conformes**, **37 partiels**, 0 absent, 0 non connecté, et
+**65 conformes**, **35 partiels**, 0 absent, 0 non connecté, et
 **plus aucun bandeau « pas encore d'écran dédié »** (contre 14 en début de
 passe 2). Les 57 partiels sont désormais des écrans qui lisent des données
 réelles mais n'ont pas encore été re-certifiés, ou dont les actions d'écriture
@@ -41,6 +41,7 @@ ne sont pas couvertes par un test.
 | ✅ P2-3 | ~~Tester le rapprochement automatique~~ | **fait en passe 4** : dialogue de paramètres (dossier + période), `POST` 200, verdict affiché. **Reste à faire** : l'import bancaire côté serveur (`frais.py` : `operations_bancaires = []`, TODO explicite) — sans lui le rapprochement ne peut rien rapprocher |
 | ✅ P2-4 | ~~Remplacer les redirections « Rapports » (graphiques), « Référentiels » (profils, paramètres)~~ | **fait en passe 2** : graphiques → `#tab-reports`, profils → `#tab-profiles`, paramètres → `#tab-params-gen` ; plus aucun bandeau dans l'application |
 | ✅ P2-6 | ~~Exercer les CRUD des référentiels et des modules métier~~ | **fait en passe 9** : 11 écrans créés / édités / supprimés depuis l'interface (200 partout). Deux défauts serveur corrigés : pays trop long → **500** devenu **422** ; écran Fournisseurs qui envoyait `name`/`country`/`status` au lieu de `nom`/`nom_commercial`/`pays` (toute création échouait) |
+| ✅ P2-7 | ~~Relier « Résultat d'analyse » et « Contrôle qualité » à un document~~ | **fait en passe 10** : action « Ouvrir le résultat » depuis la liste (refusée si le document n'est pas traité), résultat réel affiché (GET 200), jauges qualité alimentées ; état vide expliqué |
 | P2-5 | Découpler les écrans de référence des pages historiques : `#dossiers/tous` ouvre encore la page héritée `#tab-dossiers` | fonctionne, mais le contenu et les actions restent ceux de la page historique |
 
 ## P3 — Référentiels, administration, statistiques avancées

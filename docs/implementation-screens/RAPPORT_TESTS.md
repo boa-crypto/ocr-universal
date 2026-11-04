@@ -73,6 +73,7 @@ en chargeant `index.html` comme un navigateur (scripts actifs, `fetch` réel) :
 | écrans de dossiers et d'espace de travail (passe 2) | lignes réelles, bandeau d'absence, navigation « Ouvrir » | **7/7 rendus avec données (25 lignes/page), compteurs réels : 164 bloqués, 186 tâches, 435 en attente de pièces, 30 récents** |
 | redirections corrigées (passe 2) | bandeau supprimé, page réellement affichée | **6/6 sans bandeau** (`dossiers/tous`, `dossiers/nouveau`, `dossiers/clients`, `workspace/valider`, `referentiels/profiles`, `referentiels/parametres`) ; le dialogue de création `#dos-create` s'ouvre bien sur `#dossiers/nouveau` |
 | action « Ouvrir » d'une liste de dossiers | navigation vers l'espace dossier | **hash → `#dossiers/tous`, section dossiers affichée, 0 erreur JS** |
+| résultat et qualité (passe 10) | point d'entrée depuis la liste | **document `done` → GET /result 200, texte affiché, jauges 100 % / 3 anomalies ; document `queued` → action refusée, 0 requête ; aucun document → message d'état vide** |
 | référentiels et CRUD (passe 9) | 11 écrans créés/édités/supprimés | **création 200 partout ; édition PUT 200 sur 6 écrans ; suppression 200 partout** ; pays invalide → **422** (auparavant 500) ; test unitaire ajouté |
 | profils d'extraction (passe 8) | CRUD complet | **11 profils listés ; création PUT 200 ; essai à blanc 1/1 détecté ; suppression DELETE 200** |
 | rapports et exports (passe 8) | graphiques et téléchargements | **7 graphiques SVG alimentés ; export CSV/JSON → 200 avec toast** ; boutons inertes supprimés |
