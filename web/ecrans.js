@@ -887,8 +887,11 @@
     "finance/reconciliation": {
       section: "Finance & facturation",
       titre: "Rapprochement financier",
-      desc: "Rapprochez les frais engagés des factures enregistrées. Le calcul est " +
-            "fait par le serveur ; l'écran présente le résultat.",
+      desc: "Rapprochez les frais engagés des factures enregistrées sur une " +
+            "période. Le calcul est fait par le serveur. Limite connue : aucun " +
+            "flux bancaire n'est importé sur ce poste, le rapprochement porte " +
+            "donc sur les factures et retournera zéro opération tant que " +
+            "l'import bancaire n'est pas branché.",
       source: { url: "/api/frais" },
       id: "frais_id",
       colonnes: [
@@ -906,7 +909,15 @@
         global: true,
         confirmation: "Lancer le rapprochement automatique des frais et factures ?",
         succes: "Rapprochement exécuté",
-        resultat: true
+        resultat: true,
+        /* L'API exige le dossier et la période : l'écran les demande au lieu
+           d'envoyer une requête incomplète (422). */
+        champs: [
+          { cle: "dossier_id", libelle: "Dossier", requis: true,
+            aide: "Identifiant du dossier concerné (dos_…)." },
+          { cle: "date_debut", libelle: "Début de période", type: "date", requis: true },
+          { cle: "date_fin", libelle: "Fin de période", type: "date", requis: true }
+        ]
       }],
       vide: {
         message: "Aucun frais à rapprocher pour le moment.",
@@ -2068,20 +2079,11 @@
 
   /* ==================== 4. Actions ==================== */
 
-  function executerAction(ecran, action, ligne) {
-    if (action.confirmation && !window.confirm(action.confirmation)) return;
-    if (typeof action.executer === "function") {
-      action.executer(ligne || {});
-      return;
-    }
-    if (action.route) {
-      window.location.hash = action.route(ligne || {});
-      return;
-    }
-    var url = urlRemplie(action.url, ligne || {}, ecran);
-    var methode = action.methode || "POST";
-    var corps = action.corps ? action.corps(ligne || {}) : undefined;
-
+  /* Envoi d'une action au serveur et traitement de la réponse :
+     - lecture (`afficher`) → panneau de résultat, sans rechargement ;
+     - écriture → rechargement de la liste, puis verdict si demandé ;
+     - téléchargement → fichier. */
+  function envoyerAction(ecran, action, url, methode, corps) {
     if (action.telecharger) {
       fetch(url, { headers: entetes(), credentials: "same-origin" }).then(function (r) {
         if (!r.ok) throw new Error("HTTP " + r.status);
@@ -2116,6 +2118,131 @@
     }).catch(function (erreur) {
       toast((action.libelle || "Action") + " : " + erreur.message, "error");
     });
+  }
+
+  /* Action paramétrée : l'écran demande les valeurs attendues par l'API
+     (par exemple le rapprochement financier, qui exige un dossier et une
+     période) avant d'envoyer la requête. */
+  function ouvrirDialogueAction(ecran, action, ligne) {
+    var voile = elt("div", "ecran__voile");
+    var boite = elt("div", "ecran__boite");
+    boite.setAttribute("role", "dialog");
+    boite.setAttribute("aria-modal", "true");
+    boite.setAttribute("aria-label", action.libelle);
+
+    var entete = elt("div", "ecran__boite-head");
+    entete.appendChild(elt("h2", "ecran__boite-titre", action.libelle));
+    var fermer = elt("button", "icon-btn", "✕");
+    fermer.type = "button";
+    fermer.setAttribute("aria-label", "Fermer");
+    fermer.addEventListener("click", function () { voile.remove(); });
+    entete.appendChild(fermer);
+    boite.appendChild(entete);
+
+    var form = elt("form", "ecran__form");
+    var entrees = {};
+    (action.champs || []).forEach(function (champ) {
+      var bloc = elt("div", "ecran__champ");
+      var label = elt("label", "ecran__label", champ.libelle + (champ.requis ? " *" : ""));
+      label.setAttribute("for", "action-" + champ.cle);
+      bloc.appendChild(label);
+
+      var controle;
+      if (champ.type === "select") {
+        controle = elt("select", "inp");
+        var vide = elt("option", null, "—");
+        vide.value = "";
+        controle.appendChild(vide);
+        (champ.options || []).forEach(function (option) {
+          var o = elt("option", null, option);
+          o.value = option;
+          controle.appendChild(o);
+        });
+      } else {
+        controle = elt("input", "inp");
+        controle.type = champ.type === "date" ? "date"
+          : (champ.type === "number" ? "number" : "text");
+      }
+      controle.id = "action-" + champ.cle;
+      controle.name = champ.cle;
+      controle.value = champ.valeur || (ligne && ligne[champ.cle]) || "";
+      if (champ.requis) controle.setAttribute("aria-required", "true");
+      bloc.appendChild(controle);
+      if (champ.aide) bloc.appendChild(elt("p", "ecran__aide", champ.aide));
+      form.appendChild(bloc);
+      entrees[champ.cle] = { controle: controle, definition: champ, bloc: bloc };
+    });
+
+    var erreurs = elt("p", "ecran__erreur");
+    erreurs.setAttribute("role", "alert");
+    form.appendChild(erreurs);
+
+    var pied = elt("div", "ecran__boite-pied");
+    var annuler = elt("button", "btn ghost", "Annuler");
+    annuler.type = "button";
+    annuler.addEventListener("click", function () { voile.remove(); });
+    var valider = elt("button", "btn btn--primaire", action.libelle);
+    valider.type = "submit";
+    pied.appendChild(annuler);
+    pied.appendChild(valider);
+    form.appendChild(pied);
+
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      erreurs.textContent = "";
+      var valeurs = {};
+      var manquants = [];
+      Object.keys(entrees).forEach(function (cle) {
+        var entree = entrees[cle];
+        var valeur = entree.controle.value.trim();
+        if (entree.definition.requis && !valeur) {
+          manquants.push(entree.definition.libelle);
+          entree.bloc.classList.add("is-invalide");
+          return;
+        }
+        entree.bloc.classList.remove("is-invalide");
+        if (entree.definition.type === "number") valeur = Number(valeur);
+        valeurs[cle] = valeur;
+      });
+      if (manquants.length) {
+        erreurs.textContent = "Champs obligatoires : " + manquants.join(", ");
+        return;
+      }
+      var corps = action.corps ? action.corps(ligne || {}, valeurs) : valeurs;
+      voile.remove();
+      envoyerAction(ecran, action,
+        urlRemplie(action.url, ligne || {}, ecran),
+        action.methode || "POST", corps);
+    });
+
+    boite.appendChild(form);
+    voile.appendChild(boite);
+    voile.addEventListener("click", function (ev) {
+      if (ev.target === voile) voile.remove();
+    });
+    document.body.appendChild(voile);
+    var premier = boite.querySelector("input, select");
+    if (premier) premier.focus();
+  }
+
+  function executerAction(ecran, action, ligne) {
+    if (action.confirmation && !window.confirm(action.confirmation)) return;
+    if (typeof action.executer === "function") {
+      action.executer(ligne || {});
+      return;
+    }
+    if (action.route) {
+      window.location.hash = action.route(ligne || {});
+      return;
+    }
+    if (action.champs && action.champs.length) {
+      ouvrirDialogueAction(ecran, action, ligne);
+      return;
+    }
+    var url = urlRemplie(action.url, ligne || {}, ecran);
+    var methode = action.methode || "POST";
+    var corps = action.corps ? action.corps(ligne || {}) : undefined;
+    envoyerAction(ecran, action, url, methode, corps);
   }
 
   function afficherResultat(titre, donnees) {

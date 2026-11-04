@@ -5,7 +5,7 @@ priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui rest
 la référence ligne à ligne.
 
 **Chiffres du jour, sans arrondi complaisant** : 100 entrées de menu,
-**45 conformes**, **55 partiels**, 0 absent, 0 non connecté, et
+**47 conformes**, **53 partiels**, 0 absent, 0 non connecté, et
 **plus aucun bandeau « pas encore d'écran dédié »** (contre 14 en début de
 passe 2). Les 57 partiels sont désormais des écrans qui lisent des données
 réelles mais n'ont pas encore été re-certifiés, ou dont les actions d'écriture
@@ -29,7 +29,7 @@ ne sont pas couvertes par un test.
 | ✅ P1-2 | ~~Idem pour les 5 redirections « Mon espace de travail »~~ | **fait en passe 2** : mes tâches, en attente, mes alertes, dossiers récents = écrans dédiés ; à valider = page `#tab-validation` reliée |
 | ✅ P1-3a | ~~Vue d'ensemble + Extraction OCR~~ | **fait en passe 3** : deux écrans dédiés sur `/api/jobs` ; actions Texte / Résultat / Relancer exercées par test |
 | P1-3b | Re-certifier les 9 écrans Documents hérités restants (boîte de réception, classification, résultat, qualité, révision, vérification, profils, connecteurs, configuration) | ils lisent des données réelles (`#tab-center` 25 lignes, `#tab-classif` 21 lignes) mais leurs actions n'ont pas été testées |
-| P1-4 | Brancher et tester les actions de contrôle documentaire (analyse, résolution d'anomalie, statut) | actions branchées, aucun test automatisé |
+| ✅ P1-4 | ~~Tester les actions de contrôle documentaire~~ | **fait en passe 4** : *Contrôler* et *Verdict* exécutés (200) ; reste la **résolution d'anomalie** avec justification, qui demande un motif |
 | P1-5 | Historiser la validation OCR dans l'écran de révision | la route existe, l'écran hérité n'a pas été re-testé |
 
 ## P2 — Maritime, douane, enlèvement, finance
@@ -38,7 +38,7 @@ ne sont pas couvertes par un test.
 |---|---|---|
 | P2-1 | Alimenter `terminal` et `declarations` : sur ce poste les deux collections sont **vides**, donc sortie portuaire, contrôles et liquidation n'affichent que l'état vide | aucune donnée à afficher, comportement correct mais non démontrable en conditions réelles |
 | P2-2 | Tester les parcours de livraison (démarrer → arriver → confirmer) de bout en bout | routes existantes, aucun test d'écran |
-| P2-3 | Tester le rapprochement automatique (`POST /api/frais/rapprochement/auto`) depuis l'écran | action globale branchée, non testée |
+| ✅ P2-3 | ~~Tester le rapprochement automatique~~ | **fait en passe 4** : dialogue de paramètres (dossier + période), `POST` 200, verdict affiché. **Reste à faire** : l'import bancaire côté serveur (`frais.py` : `operations_bancaires = []`, TODO explicite) — sans lui le rapprochement ne peut rien rapprocher |
 | ✅ P2-4 | ~~Remplacer les redirections « Rapports » (graphiques), « Référentiels » (profils, paramètres)~~ | **fait en passe 2** : graphiques → `#tab-reports`, profils → `#tab-profiles`, paramètres → `#tab-params-gen` ; plus aucun bandeau dans l'application |
 | P2-5 | Découpler les écrans de référence des pages historiques : `#dossiers/tous` ouvre encore la page héritée `#tab-dossiers` | fonctionne, mais le contenu et les actions restent ceux de la page historique |
 

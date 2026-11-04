@@ -54,7 +54,15 @@ PREUVES: dict[str, str] = {
 #: Actions d'écriture réellement exercées par un test (libellé → preuve).
 ACTIONS_TESTEES: dict[str, set[str]] = {
     "documents/ocr": {"Texte", "Résultat", "Relancer"},
+    "controle/documentaire": {"Contrôler", "Verdict"},
+    "finance/reconciliation": {"Lancer le rapprochement"},
 }
+#: Limitations externes connues, affichées dans la colonne « Action requise ».
+LIMITES: dict[str, str] = {
+    "finance/reconciliation": "limite : aucun import bancaire côté serveur, "
+                              "le rapprochement porte sur les factures seules",
+}
+
 PREUVE_PAR_DEFAUT = "rendu jsdom + GET 200 sans erreur JS"
 
 #: Traduction du statut en réponse binaire pour la colonne « Fonctionnel ».
@@ -209,6 +217,8 @@ def construire(snapshot: dict[str, Any]) -> tuple[list[Ligne], dict[str, Sonde]]
                 else:
                     statut = "CONFORME"
                     action = "consultation connectée ; écritures non requises"
+                if route in LIMITES:
+                    action = action + " — " + LIMITES[route]
                 lignes.append(Ligne(
                     rubrique=section["section"],
                     sous_menu=item["titre"],

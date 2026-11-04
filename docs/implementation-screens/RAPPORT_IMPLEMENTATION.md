@@ -138,6 +138,28 @@ Deux défauts d'ergonomie corrigés au passage :
   colonnes, les filtres ni le tri : un accesseur de clé pointée a été ajouté,
   ainsi qu'un format « progression » (pourcentage).
 
+## 2.7 Passe 4 — actions réellement exercées
+
+Trois écrans à actions sont passés du statut « partiel » à « conforme » parce
+que leurs actions ont été **exécutées contre le serveur**, pas seulement
+inspectées :
+
+| Écran | Actions exercées | Résultat |
+|---|---|---|
+| Contrôle documentaire | *Contrôler* (`POST /api/controle/analyser`), *Verdict* (`GET /api/controle/{dossier}/statut`) | 200 + panneau de verdict |
+| Extraction OCR | *Texte*, *Résultat*, *Relancer* | 200 ; 409 correctement affiché sur un document non terminé |
+| Rapprochement financier | *Lancer le rapprochement* (`POST /api/frais/rapprochement/auto`) | 200 + verdict serveur |
+
+Ce dernier a révélé un **vrai défaut** : l'action envoyait une requête vide et
+le serveur répondait 422 (le rapprochement exige un dossier et une période).
+Le moteur dispose maintenant d'un **dialogue d'action paramétrée** : l'écran
+demande les champs requis par l'API, les valide, puis envoie la requête. Le
+même mécanisme servira aux actions qui exigeront un motif ou un commentaire.
+
+Limite signalée dans l'écran et dans la matrice : le rapprochement bancaire
+n'a **aucun flux bancaire** côté serveur (l'import est un TODO explicite dans
+`frais.py`). L'écran le dit et n'invente aucun rapprochement.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
@@ -174,7 +196,7 @@ directement ne voit que les routes déclarées dans `api.py` — d'où le helper
 
 ## 5. Ce que ces passes ne font pas
 
-- Les **55 écrans partiels** restent à re-certifier un par un (contenu, actions,
+- Les **53 écrans partiels** restent à re-certifier un par un (contenu, actions,
   permissions, états vides) : voir `FONCTIONNALITES_RESTANTES.md`.
 - Certains écrans **réutilisent une page historique** (`#dossiers/tous`,
   `#tab-clients`, `#tab-profiles`…) : plus de bandeau, mais le contenu et les

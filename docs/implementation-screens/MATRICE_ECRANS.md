@@ -40,23 +40,23 @@ explicite », jamais meublée de données fictives.
 | Mon espace de travail | 6 | 4 | 2 | 0 | 0 | 0 |
 | Gestion des dossiers | 7 | 3 | 4 | 0 | 0 | 0 |
 | Documents & OCR | 14 | 3 | 11 | 0 | 0 | 0 |
-| Contrôle & conformité | 7 | 3 | 4 | 0 | 0 | 0 |
+| Contrôle & conformité | 7 | 4 | 3 | 0 | 0 | 0 |
 | Opérations maritimes | 8 | 3 | 5 | 0 | 0 | 0 |
 | Douane & réglementation | 9 | 4 | 5 | 0 | 0 | 0 |
 | Enlèvement & livraison | 8 | 2 | 6 | 0 | 0 | 0 |
-| Finance & facturation | 8 | 5 | 3 | 0 | 0 | 0 |
+| Finance & facturation | 8 | 6 | 2 | 0 | 0 | 0 |
 | Rapports & statistiques | 4 | 1 | 3 | 0 | 0 | 0 |
 | Référentiels & paramètres | 15 | 12 | 3 | 0 | 0 | 0 |
 | Administration & sécurité | 13 | 5 | 8 | 0 | 0 | 0 |
-| **Total** | **100** | **45** | **55** | **0** | **0** | **0** |
+| **Total** | **100** | **47** | **53** | **0** | **0** | **0** |
 
 - **Entrées de menu recensées** : 100
-- **Écrans conformes** : 45
-- **Écrans partiels** : 55
+- **Écrans conformes** : 47
+- **Écrans partiels** : 53
 - **Écrans absents** : 0
 - **Écrans non connectés** : 0
 
-Lecture honnête de ces chiffres : les 45 écrans conformes sont
+Lecture honnête de ces chiffres : les 47 écrans conformes sont
 ceux dont la source a répondu et dont les écritures éventuelles sont branchées ;
 les écrans « hérités » (mis en page lors des missions précédentes) restent
 marqués **PARTIEL** tant qu'ils n'ont pas été re-testés un par un dans cette
@@ -118,7 +118,7 @@ terminé.
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Action requise |
 |---|---|---|---|---|---|---|---|---|
 | Contrôle & conformité | Vue d'ensemble | `#controle` | écran existant `#tab-controle` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
-| Contrôle & conformité | Contrôle documentaire | `#controle/documentaire` | Contrôle documentaire (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Partiel | **PARTIEL** | tester et durcir les actions (Contrôler, Verdict) |
+| Contrôle & conformité | Contrôle documentaire | `#controle/documentaire` | Contrôle documentaire (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | actions exercées par test (Contrôler, Verdict) |
 | Contrôle & conformité | Comparaison documents | `#controle/comparaison` | Comparaison des documents (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | consultation connectée ; écritures non requises |
 | Contrôle & conformité | Documents manquants | `#controle/manquants` | écran existant `#tab-manquants` | `(module historique)` | 25 lignes affichées | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Contrôle & conformité | Anomalies | `#controle/anomalies` | écran existant `#tab-anomalies` | `(module historique)` | 25 lignes affichées | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
@@ -175,7 +175,7 @@ terminé.
 | Finance & facturation | Factures fournisseurs | `#finance/factures-fournisseurs` | Factures fournisseurs (`web/ecrans.js`) | `/api/frais/facture` | 0 ligne | Oui | **CONFORME** | maintenir ; étendre les champs métier si besoin |
 | Finance & facturation | Facturation client | `#finance/facturation` | Facturation client (`web/ecrans.js`) | `/api/frais/facture` | 0 ligne | Oui | **CONFORME** | maintenir ; étendre les champs métier si besoin |
 | Finance & facturation | Paiements | `#finance/paiements` | Paiements (`web/ecrans.js`) | `/api/declarations/liquidation, /api/frais/facture` | 0 ligne | Oui | **CONFORME** | consultation connectée ; écritures non requises |
-| Finance & facturation | Rapprochement | `#finance/reconciliation` | Rapprochement financier (`web/ecrans.js`) | `/api/frais` | 0 ligne | Partiel | **PARTIEL** | tester et durcir les actions (Lancer le rapprochement) |
+| Finance & facturation | Rapprochement | `#finance/reconciliation` | Rapprochement financier (`web/ecrans.js`) | `/api/frais` | 0 ligne | Oui | **CONFORME** | actions exercées par test (Lancer le rapprochement) — limite : aucun import bancaire côté serveur, le rapprochement porte sur les factures seules |
 | Finance & facturation | Clôture financière | `#finance/cloture` | Clôture financière (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Partiel | **PARTIEL** | tester et durcir les actions (Archiver) |
 
 ### 10. Rapports & statistiques

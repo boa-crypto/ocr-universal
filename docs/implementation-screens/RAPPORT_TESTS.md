@@ -73,6 +73,8 @@ en chargeant `index.html` comme un navigateur (scripts actifs, `fetch` réel) :
 | écrans de dossiers et d'espace de travail (passe 2) | lignes réelles, bandeau d'absence, navigation « Ouvrir » | **7/7 rendus avec données (25 lignes/page), compteurs réels : 164 bloqués, 186 tâches, 435 en attente de pièces, 30 récents** |
 | redirections corrigées (passe 2) | bandeau supprimé, page réellement affichée | **6/6 sans bandeau** (`dossiers/tous`, `dossiers/nouveau`, `dossiers/clients`, `workspace/valider`, `referentiels/profiles`, `referentiels/parametres`) ; le dialogue de création `#dos-create` s'ouvre bien sur `#dossiers/nouveau` |
 | action « Ouvrir » d'une liste de dossiers | navigation vers l'espace dossier | **hash → `#dossiers/tous`, section dossiers affichée, 0 erreur JS** |
+| actions de contrôle documentaire (passe 4) | écriture et verdict serveur | **Contrôler → POST 200, Verdict → GET 200 + panneau** |
+| action de rapprochement financier (passe 4) | dialogue paramétré | **formulaire (dossier, période) → POST 200 (avant correction : 422), verdict affiché** |
 | actions de l'écran Extraction OCR (passe 3) | lecture et écriture réelles | **Texte → GET 200 + panneau de texte, Résultat → GET 200, Relancer → POST 200 + liste rechargée** ; sur un document non terminé, Texte renvoie 409 et l'interface affiche l'erreur |
 | CRUD complet sur `#referentiels/ports` | création, recherche, tri, export | **formulaire → POST 201 → liste rafraîchie (1 → 2 lignes), recherche « zzz » → état vide, tri OK, export OK** |
 
