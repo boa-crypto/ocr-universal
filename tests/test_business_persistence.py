@@ -18,6 +18,9 @@ from unocr.models import DeclarationDouaniere
 ])
 def test_crud_apres_nouvelle_application(client_factory, route, corps, champ_id, modification):
     client = client_factory()
+    if route == "/api/declarations/liquidation":
+        parent = client.post("/api/declarations", json={"dossier_id": "dos_test"}).json()
+        corps = {**corps, "declaration_id": parent["id"]}
     creation = client.post(route, json=corps)
     assert creation.status_code == 200, creation.text
     identifiant = creation.json()[champ_id]

@@ -1,6 +1,6 @@
 # Rapport de tests — écrans UniOCR
 
-Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 28.
+Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 29.
 
 Ce document liste **uniquement des résultats obtenus**, avec la commande qui
 les produit. Les sections de passes ci-dessous conservent les résultats historiques.
@@ -12,7 +12,7 @@ les produit. Les sections de passes ci-dessous conservent les résultats histori
 | Commande | Résultat | Commentaire |
 |---|---|---|
 | `ruff check src tests` | **All checks passed** | 0 erreur de style |
-| `python -m pytest -q` | **1063 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
+| `python -m pytest -q` | **1075 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
 | `python -m pytest tests/test_ui_premium.py -q` | **56 passed** | tests de contrat et intégrité UI |
 | `python -m pytest tests/test_historique.py -q` | **5 passed** 🆕 | ordre, filtrage par document, événements inconnus, journal illisible |
 | `python -m pytest tests/test_rbac_ecritures.py -q` | **18 passed** | 14 familles d'écriture refusées à un lecteur, refus tracés |
@@ -224,3 +224,12 @@ python3 docs/implementation-screens/outils/generer_matrice.py /tmp/ui.json
   aucune écriture (réponses terminal simulées, fichiers UI réels).
 - Suite complète : **1063 passed, 23 failed, 11 skipped** ; échecs OCR connus.
 - Ruff : aucune erreur. Pas de nouvel écran ; matrice inchangée.
+
+### Passe 29 — intégrité des liens liquidation/déclaration
+
+- `pytest tests/test_liquidation_integrity.py -q` : **12 passed**, API et SQLite
+  temporaires : parents inexistants, dossiers incohérents, modifications invalides,
+  suppression/déplacement protégés, réaffectation cohérente, rollback multi-collection
+  et cinq courses création/suppression sans orphelin.
+- Suite complète : **1075 passed, 23 failed, 11 skipped** ; échecs OCR connus.
+- Smoke UI : **15/15** ; Ruff sans erreur. Matrice inchangée, aucun nouvel écran.

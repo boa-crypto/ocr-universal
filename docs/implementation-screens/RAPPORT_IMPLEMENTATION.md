@@ -1029,6 +1029,40 @@ Le parcours complet de création/planification terminal dans l'UI n'est pas cert
 par ce test de visibilité. Le contrôle de l'existence des dossiers reste à faire.
 Matrice inchangée : 101 entrées, aucun nouvel écran ajouté.
 
+## 2.32 Passe 29 — liens liquidation/déclaration transactionnels
+
+Les suggestions UI n'empêchaient pas un appel API de créer une liquidation pour
+une déclaration inexistante ou un autre dossier. Désormais, création et modification
+d'une liquidation exigent une déclaration existante portant le même `dossier_id`.
+Parent absent : 422 ; dossier incohérent : 409. Une modification invalide (y compris
+null sur un champ non nullable) est validée avant écriture et laisse l'objet intact.
+
+Une déclaration utilisée par au moins une liquidation ne peut plus être supprimée
+ni déplacée dans un autre dossier (409). Ses autres champs restent modifiables.
+Après suppression ou réaffectation cohérente de ses liquidations, le parent est
+libéré. Aucun effacement en cascade n'est introduit.
+
+`BusinessStore.transaction()` réserve l'écriture par `BEGIN IMMEDIATE` ; `related()`
+ouvre une autre collection sur la même connexion. Vérification du lien, sauvegarde,
+contrôle avant déplacement et suppression du parent sont donc sérialisés dans la
+même base. Une exception annule la transaction complète. Le magasin ne devient
+pas pour autant une base relationnelle avec contraintes SQL : ces règles sont
+appliquées par les routes concernées, pas aux écritures directes hors API.
+
+`tests/test_liquidation_integrity.py` : **12 passed**, incluant valeurs invalides,
+refus sans changement après réouverture, parent protégé/libéré, réaffectation
+cohérente, rollback de deux collections et cinq courses création/suppression
+sur deux applications distinctes. Dans chaque course, soit la liquidation est
+créée et la suppression refusée, soit le parent est supprimé et la création refusée.
+
+Les fixtures de persistance créent maintenant un vrai parent avant leur liquidation.
+Le formulaire indique que la déclaration doit appartenir au dossier choisi.
+
+Limites : pas de migration/correction automatique des anciens liens invalides ;
+pas encore de contrôle de l'existence du dossier dans son magasin JSON, ni de
+protection de la suppression du dossier parent. Les états métier et les montants
+ne sont pas validés par cette seule intégrité de lien. Matrice inchangée (101 routes).
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

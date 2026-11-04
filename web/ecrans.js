@@ -464,7 +464,8 @@
         url: "/api/declarations/liquidation",
         champs: [
           { cle: "dossier_id", libelle: "Dossier", requis: true, registre: REGISTRE_DOSSIERS },
-          { cle: "declaration_id", libelle: "Déclaration", requis: true, registre: REGISTRE_DECLARATIONS },
+          { cle: "declaration_id", libelle: "Déclaration", requis: true, registre: REGISTRE_DECLARATIONS,
+            aide: "La déclaration doit appartenir au dossier choisi. Le serveur refuse un lien incohérent." },
           { cle: "date_liquidation", libelle: "Date de liquidation", type: "date" },
           { cle: "droits_importation", libelle: "Droits d'importation", type: "number" },
           { cle: "tva", libelle: "TVA", type: "number" },

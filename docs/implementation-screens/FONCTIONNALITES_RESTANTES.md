@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 28. Ce document est la liste de travail
+État au 2026-11-04, après la passe 29. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -137,3 +137,12 @@ Tests : `pytest tests/test_terminal_workflow.py -q` (16 cas) et
 `npm run ui:terminal` (visibilité par état, données simulées).
 Restent l'intégrité référentielle, les écritures concurrentes d'un même objet,
 une procédure de révocation/correction et le parcours terminal UI complet.
+
+### Passe 29 — intégrité du lien liquidation/déclaration
+
+✅ Une liquidation référence une déclaration existante du même dossier ; parent
+utilisé protégé contre suppression et déplacement. Contrôles/écritures sont dans
+une transaction SQLite, y compris face à création et suppression concurrentes.
+Restent les références vers le magasin JSON des dossiers, la protection de leur
+suppression, les règles de montants et états douaniers et la correction explicite
+d'éventuels anciens liens invalides. Aucune migration destructive automatique.
