@@ -158,8 +158,37 @@ def main(argv=None) -> int:
     lb.add_argument("--dir", default="", help="répertoire des sauvegardes")
     lb.set_defaults(func=cmd_backups)
 
+    pc = sub.add_parser("pieces-check", help="diagnostiquer les justificatifs sans rien modifier")
+    pc.add_argument("--data-dir", default="", help="répertoire du magasin à inspecter")
+    pc.add_argument("--json", action="store_true", dest="json_output", help="rapport structuré")
+    pc.set_defaults(func=cmd_pieces_check)
+
     args = parser.parse_args(argv)
     return args.func(args)
+
+
+def cmd_pieces_check(args) -> int:
+    from .justificatifs_diagnostic import diagnostiquer_pieces
+
+    if args.data_dir:
+        racine = Path(args.data_dir)
+    else:
+        import os
+
+        from .config import get_config
+        cfg = get_config()
+        # Ne pas utiliser cfg.data_dir : cette propriété crée le répertoire.
+        chemin_env = os.environ.get("UNOCR_DATA_DIR")
+        racine = Path(chemin_env).resolve() if chemin_env else cfg.root / cfg.get("jobs.data_dir", "data")
+    resultat = diagnostiquer_pieces(racine)
+    if args.json_output:
+        print(json.dumps(resultat, ensure_ascii=False, indent=2))
+    else:
+        print(f"Justificatifs — {resultat['etat']} — {resultat['pieces_referencees']} pièce(s) référencée(s)")
+        print(resultat["limite"])
+        for anomalie in resultat["anomalies"]:
+            print(f"  {anomalie['categorie']} : {anomalie['cible']} — {anomalie['detail']}")
+    return {"conforme": 0, "anomalies": 1, "indisponible": 2}[resultat["etat"]]
 
 
 def cmd_backup(args) -> int:

@@ -1280,6 +1280,47 @@ Pas de modification de production, aucun nouveau menu, matrice/cache inchangés.
 Restent l'antivirus, la collecte des résidus et les tests d'arrêt brutal, non
 couverts par un redémarrage normal.
 
+## 2.39 Passe 36 — diagnostiquer les résidus sans purge
+
+Nouvelle commande en lecture seule :
+
+```bash
+PYTHONPATH=src python -m unocr.cli pieces-check --data-dir data --json
+```
+
+Sans `--data-dir`, elle respecte la configuration et `UNOCR_DATA_DIR`, sans appeler
+la propriété créatrice du répertoire. Elle ne crée ni magasin absent, ni schéma,
+ni fichier temporaire. Le module ouvre SQLite en `mode=ro`, `query_only=ON`.
+Une base WAL externe est refusée avant ouverture (la lecture SQLite pourrait
+créer des sidecars). Le magasin actuel utilise le journal rollback classique.
+
+Rapport : nombre de pièces référencées, complétude des références, état et anomalies
+catégorisées. Sont contrôlés : métadonnées/identifiants, lien dans les deux sens avec
+le frais, doublons, fichiers absents, tailles et SHA-256, chemins canoniques, symlinks,
+blobs sans référence, temporaires et quarantaines. Une quarantaine est rapprochée
+du chemin attendu quand les métadonnées le permettent, sans déplacement de fichier.
+
+Si la base est absente, illisible ou les références incomplètes, les blobs sont
+**non classés**, pas déclarés orphelins. Les anciens noms inconnus sont signalés
+pour examen. Aucun fichier n'est supprimé, déplacé ou réécrit ; aucun lien réparé.
+Les erreurs d'accès disque produisent un diagnostic indisponible, pas un succès.
+
+Codes CLI : **0** aucune anomalie, **1** anomalies à examiner, **2** inventaire
+indisponible/incomplet pour accès ou base. `--json` convient à l'automatisation ;
+la sortie texte donne les mêmes catégories. Suspendre les écritures du serveur
+pour une mesure stable : le diagnostic ne prend pas de verrou d'écriture et ne
+constitue pas un instantané distribué SQLite/fichiers.
+
+`tests/test_justificatifs_diagnostic.py` : **15 passed**, avec comparaison des
+contenus/noms/mtimes avant et après, base absente/corrompue, WAL, chemins hostiles,
+symlinks, résidus de phases interrompues et codes CLI. Relevé du magasin du poste :
+base présente, zéro pièce référencée, aucune anomalie, aucune réparation effectuée.
+Suite complète : **1150 passed / 23 failed / 11 skipped** ; Ruff sans erreur.
+
+La collecte automatique et la restauration des quarantaines restent délibérément
+absentes : ce rapport donne d'abord les faits nécessaires pour une décision sûre.
+Aucun nouvel écran ni modification du serveur de production.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

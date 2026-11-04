@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 35. Ce document est la liste de travail
+État au 2026-11-04, après la passe 36. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -203,3 +203,13 @@ avec multipart, téléchargement et trois démarrages. Commande :
 La limite de preuve avec API simulée de la passe 34 est levée pour ce parcours.
 Il reste une preuve jsdom, pas une validation graphique/native Chromium.
 Antivirus, collecte des blobs/quarantaines et scénarios d'arrêt brutal restent ouverts.
+
+### Passe 36 — diagnostic des pièces disponible
+
+✅ `pieces-check --data-dir <magasin> [--json]` inventorie fichiers, liens et
+quarantaines sans modification. En checkout :
+`PYTHONPATH=src python -m unocr.cli pieces-check --data-dir data --json`.
+Codes 0/1/2 ; pas de faux classement orphelin quand la base est absente/inexploitable.
+Restent la réparation/restauration explicitement contrôlée et la collecte des
+résidus, les tests de véritable arrêt brutal et l'antivirus. Ne pas convertir ce
+diagnostic en purge automatique ; suspendre les écritures pour une mesure stable.

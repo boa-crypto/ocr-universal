@@ -1,6 +1,6 @@
 # Rapport de tests — écrans UniOCR
 
-Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 35.
+Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 36.
 
 Ce document liste **uniquement des résultats obtenus**, avec la commande qui
 les produit. Les sections de passes ci-dessous conservent les résultats historiques.
@@ -12,7 +12,7 @@ les produit. Les sections de passes ci-dessous conservent les résultats histori
 | Commande | Résultat | Commentaire |
 |---|---|---|
 | `ruff check src tests` | **All checks passed** | 0 erreur de style |
-| `python -m pytest -q` | **1135 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
+| `python -m pytest -q` | **1150 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
 | `python -m pytest tests/test_ui_premium.py -q` | **56 passed** | tests de contrat et intégrité UI |
 | `python -m pytest tests/test_historique.py -q` | **5 passed** 🆕 | ordre, filtrage par document, événements inconnus, journal illisible |
 | `python -m pytest tests/test_rbac_ecritures.py -q` | **18 passed** | 14 familles d'écriture refusées à un lecteur, refus tracés |
@@ -291,3 +291,13 @@ python3 docs/implementation-screens/outils/generer_matrice.py /tmp/ui.json
 - Suite complète : **1135 passed, 23 failed, 11 skipped** ; échecs OCR connus.
 - Ruff sans erreur ; aucun serveur préalable pour ces deux tests, saut explicite
   sans node/jsdom. Pas de modification de production ni de nouveau menu.
+
+### Passe 36 — diagnostic justificatifs en lecture seule
+
+- `pytest tests/test_justificatifs_diagnostic.py -q` : **15 passed** : fichiers et
+  base inchangés, résidus/quarantaines, références incomplètes sans faux orphelin,
+  chemins/symlinks, base WAL refusée, codes 0/1/2 et JSON.
+- `PYTHONPATH=src python -m unocr.cli pieces-check --data-dir data --json` :
+  zéro pièce référencée, aucune anomalie dans le magasin observé, aucune mutation.
+- Suite complète : **1150 passed, 23 failed, 11 skipped** ; échecs OCR connus.
+- Ruff sans erreur ; aucun nouveau menu. Suspendre les écritures pour une mesure stable.
