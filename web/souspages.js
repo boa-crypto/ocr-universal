@@ -130,12 +130,6 @@
       colonnes: ["nom", "taille", "cree_le"],
       vide: "Aucune sauvegarde dans le répertoire de l'application."
     },
-    "tab-utilisateurs": {
-      titre: "Utilisateurs",
-      url: "/api/rbac/utilisateurs",
-      cle: "utilisateurs",
-      vide: "Aucun utilisateur RBAC : le cloisonnement est inactif sur ce poste."
-    },
     "tab-center": {
       titre: "Centre documentaire",
       url: "/api/jobs?limit=200",

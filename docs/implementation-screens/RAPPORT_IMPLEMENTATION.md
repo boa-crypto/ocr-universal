@@ -335,6 +335,33 @@ Mesures jsdom :
 - document `queued` → action refusée, **aucune requête** émise ;
 - aucun document → message d'état vide sur les deux écrans.
 
+## 2.14 Passe 11 — créer le premier utilisateur (RBAC)
+
+La page « Gestion des utilisateurs » affichait « Aucun utilisateur pour
+l'instant » et ne proposait **aucun moyen d'en créer un** : le cloisonnement
+RBAC ne pouvait donc jamais s'activer depuis l'interface.
+
+L'écran déclaratif `#admin/utilisateurs` remplace la page héritée :
+
+| Élément | Détail |
+|---|---|
+| Source | `/api/rbac/utilisateurs` (clé `utilisateurs`), colonnes utilisateur, rôles, dossiers, jeton d'environnement |
+| Création | identifiant + **rôles** et **dossiers** saisis en listes (nouveau type de champ `liste` : « a, b » → `["a","b"]`) |
+| Jeton | le serveur ne le renvoie **qu'une fois** : il est affiché dans un panneau aussitôt après la création, avec l'avertissement qu'il n'est plus relisible |
+| Édition / suppression | rôles et périmètre modifiables, révocation immédiate à la suppression |
+| État vide | explique que le cloisonnement est inactif et propose « Créer un utilisateur » |
+
+Mesures (serveur isolé, jeu de données temporaire, jamais le poste de travail) :
+
+- état vide explicite + bouton de création ;
+- création `karim.b` avec `superviseur, agent_de_transit` → **POST 200**, ligne
+  affichée avec les deux rôles, jeton affiché une seule fois ;
+- édition des rôles → **PUT 200**, ligne mise à jour ;
+- suppression → **DELETE 200**, retour à l'état vide.
+
+La page héritée `#tab-utilisateurs` a été retirée (section, définition de
+sous-page, table de correspondance) : une seule page, un seul comportement.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
@@ -371,7 +398,7 @@ directement ne voit que les routes déclarées dans `api.py` — d'où le helper
 
 ## 5. Ce que ces passes ne font pas
 
-- Les **35 écrans partiels** restent à re-certifier un par un (contenu, actions,
+- Les **34 écrans partiels** restent à re-certifier un par un (contenu, actions,
   permissions, états vides) : voir `FONCTIONNALITES_RESTANTES.md`.
 - Certains écrans **réutilisent une page historique** (`#dossiers/tous`,
   `#tab-clients`, `#tab-profiles`…) : plus de bandeau, mais le contenu et les

@@ -51,16 +51,16 @@ peut pas être « CONFORME » pour un écran à écritures.
 | Finance & facturation | 8 | 6 | 2 | 0 | 0 | 0 |
 | Rapports & statistiques | 4 | 4 | 0 | 0 | 0 | 0 |
 | Référentiels & paramètres | 15 | 13 | 2 | 0 | 0 | 0 |
-| Administration & sécurité | 13 | 9 | 4 | 0 | 0 | 0 |
-| **Total** | **100** | **65** | **35** | **0** | **0** | **0** |
+| Administration & sécurité | 13 | 10 | 3 | 0 | 0 | 0 |
+| **Total** | **100** | **66** | **34** | **0** | **0** | **0** |
 
 - **Entrées de menu recensées** : 100
-- **Écrans conformes** : 65
-- **Écrans partiels** : 35
+- **Écrans conformes** : 66
+- **Écrans partiels** : 34
 - **Écrans absents** : 0
 - **Écrans non connectés** : 0
 
-Lecture honnête de ces chiffres : les 65 écrans conformes sont
+Lecture honnête de ces chiffres : les 66 écrans conformes sont
 ceux dont la source a répondu et dont les écritures éventuelles sont branchées ;
 les écrans « hérités » (mis en page lors des missions précédentes) restent
 marqués **PARTIEL** tant qu'ils n'ont pas été re-testés un par un dans cette
@@ -216,7 +216,7 @@ terminé.
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Preuve | Action requise |
 |---|---|---|---|---|---|---|---|---|---|
 | Administration & sécurité | Vue d'ensemble | `#admin` | écran existant `#tab-admin` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
-| Administration & sécurité | Utilisateurs | `#admin/utilisateurs` | écran existant `#tab-utilisateurs` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Administration & sécurité | Utilisateurs | `#admin/utilisateurs` | Utilisateurs (`web/ecrans.js`) | `/api/rbac/utilisateurs` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200 (jeton affiché une fois), édition PUT 200, suppression DELETE 200 | maintenir ; étendre les champs métier si besoin |
 | Administration & sécurité | Rôles | `#admin/roles` | écran existant `#tab-roles` | `(module historique)` | 9 lignes affichées | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
 | Administration & sécurité | Permissions | `#admin/permissions` | Permissions (`web/ecrans.js`) | `/api/rbac/permissions` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200, suppression DELETE 200 | maintenir ; étendre les champs métier si besoin |
 | Administration & sécurité | Équipes | `#admin/equipes` | Équipes (`web/ecrans.js`) | `/api/referentiels/equipes` | 0 ligne | Oui | **CONFORME** | CRUD jsdom (même moteur) + tests API | maintenir ; étendre les champs métier si besoin |

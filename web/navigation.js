@@ -612,7 +612,7 @@
       'enlevissement/planning': 'tab-planification',
       'enlevissement/transporteurs': 'tab-transporteurs',
       'admin/journal': 'tab-journal',
-      'admin/utilisateurs': 'tab-utilisateurs',
+      'admin/utilisateurs': 'tab-ecran',
       'admin/roles': 'tab-roles',
       'admin/moteurs': 'tab-moteurs',
       'admin/moteurs-ocr': 'tab-moteurs',

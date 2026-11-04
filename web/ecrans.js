@@ -132,6 +132,13 @@
       if (part > 0 && part <= 1) part *= 100;
       return Math.round(part) + " %";
     }
+    if (colonne.format === "liste") {
+      if (valeur === null || valeur === undefined) return "—";
+      if (Array.isArray(valeur)) {
+        return valeur.length ? valeur.join(", ") : "—";
+      }
+      return String(valeur) || "—";
+    }
     if (colonne.format === "nombre") {
       return valeur === null || valeur === undefined || valeur === "" ? "—"
         : Number(valeur).toLocaleString("fr-FR");
@@ -1227,6 +1234,54 @@
     },
 
     /* ---------------- Administration & sécurité ---------------- */
+    "admin/utilisateurs": {
+      section: "Administration & sécurité",
+      titre: "Utilisateurs",
+      desc: "Comptes d'accès : rôles, périmètre de dossiers et jeton personnel. " +
+            "Le jeton n'est affiché qu'à la création ou à sa régénération.",
+      source: { url: "/api/rbac/utilisateurs" },
+      sourceCle: "utilisateurs",
+      id: "nom",
+      colonnes: [
+        { cle: "nom", libelle: "Utilisateur" },
+        { cle: "roles", libelle: "Rôles", format: "liste" },
+        { cle: "dossiers", libelle: "Dossiers autorisés", format: "liste" },
+        { cle: "environnement", libelle: "Jeton d'environnement", format: "booleen" }
+      ],
+      creation: {
+        url: "/api/rbac/utilisateurs",
+        champs: [
+          { cle: "nom", libelle: "Identifiant", requis: true,
+            aide: "Nom unique du compte, par exemple « karim.b »." },
+          { cle: "roles", libelle: "Rôles", type: "liste", requis: true,
+            aide: "Séparés par des virgules : superviseur, agent_de_transit…" },
+          { cle: "dossiers", libelle: "Dossiers autorisés", type: "liste",
+            aide: "Vide = aucun cloisonnement par dossier." }
+        ],
+        succes: function (reponse) {
+          if (!reponse || !reponse.jeton) return;
+          afficherResultat("Jeton d'accès — affiché une seule fois",
+            { utilisateur: reponse.utilisateur && reponse.utilisateur.nom,
+              jeton: reponse.jeton,
+              note: "Notez-le maintenant : il n'est plus relisible. " +
+                    "Perdu, il se régénère mais l'ancien cesse aussitôt de fonctionner." });
+        }
+      },
+      edition: {
+        url: "/api/rbac/utilisateurs/{id}",
+        champs: [
+          { cle: "roles", libelle: "Rôles", type: "liste" },
+          { cle: "dossiers", libelle: "Dossiers autorisés", type: "liste" }
+        ]
+      },
+      suppression: { url: "/api/rbac/utilisateurs/{id}" },
+      vide: {
+        message: "Aucun compte déclaré : le cloisonnement RBAC est inactif sur ce poste. " +
+                 "Créez le premier utilisateur pour l'activer.",
+        action: { libelle: "Créer un utilisateur", actionCreation: true }
+      }
+    },
+
     "admin/permissions": {
       section: "Administration & sécurité",
       titre: "Permissions",
@@ -2462,6 +2517,7 @@
       if (champ.requis) controle.setAttribute("aria-required", "true");
 
       var valeur = champValeur(ligne, champ.cle);
+      if (Array.isArray(valeur)) valeur = valeur.join(", ");
       if (champ.type === "checkbox") controle.checked = Boolean(valeur);
       else controle.value = valeur === null || valeur === undefined ? "" : valeur;
 
@@ -2506,6 +2562,18 @@
           return;
         }
         entree.bloc.classList.remove("is-invalide");
+        if (entree.definition.type === "liste") {
+          /* Le serveur attend un tableau (rôles, permissions, dossiers) :
+             on découpe la saisie sur les virgules en retirant les vides. */
+          valeur = String(valeur).split(",").map(function (v) {
+            return v.trim();
+          }).filter(function (v) { return v.length > 0; });
+          if (entree.definition.requis && !valeur.length) {
+            manquants.push(entree.definition.libelle);
+            entree.bloc.classList.add("is-invalide");
+            return;
+          }
+        }
 
         if (cle.indexOf("attributs.") === 0) {
           corps.attributs = corps.attributs || {};
@@ -2522,10 +2590,15 @@
       var url = mode === "edition" ? urlRemplie(modele.url, ligne, ecran) : modele.url;
       var methode = mode === "edition" ? "PUT" : "POST";
       valider.disabled = true;
-      ecrire(url, methode, corps).then(function () {
+      ecrire(url, methode, corps).then(function (reponse) {
         toast(mode === "creation" ? "Enregistrement créé" : "Modifications enregistrées", "success");
         voile.remove();
         charger(ecran.__route, true);
+        /* Certaines créations renvoient une valeur unique (jeton d'accès) :
+           elle n'est plus relisible ensuite, il faut l'afficher tout de suite. */
+        if (typeof modele.succes === "function") {
+          setTimeout(function () { modele.succes(reponse); }, 500);
+        }
       }).catch(function (erreur) {
         valider.disabled = false;
         erreurs.textContent = erreur.message;

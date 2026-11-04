@@ -848,3 +848,30 @@ def test_resultat_et_qualite_ont_un_point_d_entree() -> None:
     # L'action n'est proposée que pour un document réellement traité.
     assert 'libelle: "Ouvrir le résultat"' in moteur
     assert 'String(ligne.status || "") !== "done"' in moteur
+
+
+def test_ecran_utilisateurs_permet_de_creer_le_premier_compte() -> None:
+    """La page « Utilisateurs » doit permettre de créer un compte.
+
+    Le cloisonnement RBAC est inactif tant qu'aucun utilisateur n'existe ; la
+    page ne proposait aucun moyen d'en créer un. Elle expose maintenant un
+    écran déclaratif avec création (rôles et dossiers saisis en listes), édition
+    et suppression, et affiche le jeton **une seule fois** à la création.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    moteur = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+    nav = (racine / "web" / "navigation.js").read_text(encoding="utf-8")
+    html = (racine / "web" / "index.html").read_text(encoding="utf-8")
+
+    debut = moteur.index('"admin/utilisateurs"')
+    bloc = moteur[debut:debut + 2600]
+    assert 'url: "/api/rbac/utilisateurs"' in bloc
+    assert 'sourceCle: "utilisateurs"' in bloc
+    assert 'type: "liste"' in bloc
+    assert "afficherResultat(\"Jeton d'accès" in bloc
+
+    # La liste ne dépend plus de la page historique retirée.
+    assert "'admin/utilisateurs': 'tab-ecran'" in nav
+    assert 'id="tab-utilisateurs"' not in html
+    # Le type « liste » convertit la saisie en tableau pour l'API.
+    assert 'entree.definition.type === "liste"' in moteur
