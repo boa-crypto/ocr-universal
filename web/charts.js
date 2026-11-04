@@ -153,6 +153,87 @@
     return svg;
   }
 
+  /* ── Barres verticales ───────────────────────────────────────────── */
+  function bars(hote, options) {
+    if (!hote) return null;
+    var opts = options || {};
+    var labels = opts.labels || [];
+    var valeurs = (opts.values || []).map(nombre);
+    if (!labels.length || !valeurs.length) {
+      hote.textContent = "";
+      return null;
+    }
+    var largeur = opts.width || Math.max(320, hote.clientWidth || 520);
+    var hauteur = opts.height || 210;
+    var marge = { haut: 12, droite: 10, bas: 30, gauche: 34 };
+    var zoneL = largeur - marge.gauche - marge.droite;
+    var zoneH = hauteur - marge.haut - marge.bas;
+    var maxi = Math.max.apply(null, valeurs.concat([1]));
+    var pas = zoneL / valeurs.length;
+    var largeurBarre = Math.max(6, Math.min(38, pas * 0.55));
+
+    var svg = el("svg", {
+      class: "chart-svg",
+      viewBox: "0 0 " + largeur + " " + hauteur,
+      role: "img",
+      "aria-label": opts.label || "Histogramme"
+    });
+
+    var grille = el("g", { class: "chart-grid" });
+    for (var i = 0; i <= 3; i += 1) {
+      var y = marge.haut + (zoneH * i) / 3;
+      grille.appendChild(el("line", { x1: marge.gauche, y1: y, x2: largeur - marge.droite, y2: y }));
+    }
+    svg.appendChild(grille);
+
+    var axe = el("g", { class: "chart-axis" });
+    for (var j = 0; j <= 3; j += 1) {
+      var yy = marge.haut + (zoneH * j) / 3;
+      var txt = el("text", { x: marge.gauche - 8, y: yy + 3.5, "text-anchor": "end" });
+      txt.textContent = formatCourt(maxi - (maxi * j) / 3);
+      axe.appendChild(txt);
+    }
+    svg.appendChild(axe);
+
+    valeurs.forEach(function (valeur, index) {
+      var h = (valeur / maxi) * zoneH;
+      var x = marge.gauche + pas * index + (pas - largeurBarre) / 2;
+      var rect = el("rect", {
+        x: x, y: marge.haut + zoneH - h, width: largeurBarre, height: Math.max(2, h),
+        rx: 4, class: "chart-bar"
+      });
+      if (opts.colors && opts.colors[index]) rect.style.fill = opts.colors[index];
+      var titre = el("title");
+      titre.textContent = labels[index] + " : " + formatCourt(valeur);
+      rect.appendChild(titre);
+      if (!reduit()) {
+        rect.style.transformOrigin = (x + largeurBarre / 2) + "px " + (marge.haut + zoneH) + "px";
+        rect.style.transform = "scaleY(0.02)";
+        rect.style.transition = "transform 620ms cubic-bezier(.22,1,.36,1) " + (index * 40) + "ms";
+        requestAnimationFrame(function () { rect.style.transform = "scaleY(1)"; });
+      }
+      svg.appendChild(rect);
+    });
+
+    var labelsG = el("g", { class: "chart-axis" });
+    var saut = Math.max(1, Math.ceil(labels.length / 7));
+    labels.forEach(function (libelle, index) {
+      if (index % saut !== 0 && index !== labels.length - 1) return;
+      var t = el("text", {
+        x: marge.gauche + pas * index + pas / 2,
+        y: hauteur - 9,
+        "text-anchor": "middle"
+      });
+      t.textContent = String(libelle).length > 14 ? String(libelle).slice(0, 13) + "…" : String(libelle);
+      labelsG.appendChild(t);
+    });
+    svg.appendChild(labelsG);
+
+    hote.textContent = "";
+    hote.appendChild(svg);
+    return svg;
+  }
+
   /* ── Étincelle (KPI) ──────────────────────────────────────────────── */
   function sparkline(hote, valeurs, options) {
     if (!hote) return null;
@@ -264,5 +345,5 @@
     return svg;
   }
 
-  window.UniOCRCharts = { line: line, donut: donut, sparkline: sparkline, reduit: reduit };
+  window.UniOCRCharts = { line: line, donut: donut, bars: bars, sparkline: sparkline, reduit: reduit };
 })();

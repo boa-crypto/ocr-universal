@@ -105,6 +105,23 @@ def test_sous_pages_branchees_sur_des_endpoints_existants() -> None:
         assert url in chemins, f"{url} doit exister dans le contrat OpenAPI"
 
 
+def test_rapports_utilisent_les_graphiques_du_serveur() -> None:
+    index = (WEB / "index.html").read_text(encoding="utf-8")
+    js = (WEB / "rapports.js").read_text(encoding="utf-8")
+    charts = (WEB / "charts.js").read_text(encoding="utf-8")
+    assert '/web/rapports.js' in index
+    for primitive in ("line", "donut", "bars", "sparkline"):
+        assert primitive + ":" in charts or primitive + ": function" in charts or f"function {primitive}" in charts, \
+            f"charts.js doit exposer {primitive}"
+
+    graphiques = re.findall(r'cle: "([a-z-]+)"', js)
+    assert len(graphiques) >= 6
+    chemins = set(app.openapi()["paths"])
+    for graphique in graphiques:
+        assert f"/api/dashboard/graphique/{graphique}" in chemins, \
+            f"le graphique {graphique} doit exister côté serveur"
+
+
 def test_routage_des_sous_pages_vers_leurs_pages() -> None:
     js = (WEB / "navigation.js").read_text(encoding="utf-8")
     index = (WEB / "index.html").read_text(encoding="utf-8")

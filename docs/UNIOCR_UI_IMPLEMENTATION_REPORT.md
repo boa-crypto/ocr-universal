@@ -222,7 +222,21 @@ n'est déclenchée depuis ces pages.
 Deux tests verrouillent le contrat : chaque page déclarée existe dans
 `index.html`, et chaque URL utilisée existe dans le schéma OpenAPI.
 
-### 3.8 Animations
+### 3.8 Rapports & statistiques
+
+La page Rapports agrège les **sept graphiques calculés par le serveur**
+(`/api/dashboard/graphique/{etat-dossiers, anomalies-par-type,
+taux-reussite-par-mois, financier-mensuel, top-clients, repartition-par-port,
+fret-par-gestionnaire}`) et les compteurs `/api/stats` :
+
+- rendu piloté par le champ `type` renvoyé par l'API (`bar` → histogramme,
+  `line` → courbe, `pie`/`doughnut` → anneau) ;
+- chaque carte affiche le nombre de séries et le total réel ;
+- une série vide affiche « Aucune donnée à représenter » au lieu d'un
+  graphique trompeur ;
+- libellés, valeurs et agrégats viennent exclusivement du serveur.
+
+### 3.9 Animations
 
 Transitions de page, ouverture des groupes de navigation, apparition des cartes,
 infobulles, menus, panneaux latéraux, skeletons, tracé progressif des courbes
@@ -231,7 +245,7 @@ Durées 120–720 ms, courbe `cubic-bezier(.22,1,.36,1)`.
 `prefers-reduced-motion: reduce` neutralise animations et tracés ; les
 transitions restent fonctionnelles sans mouvement.
 
-### 3.9 Bibliothèques
+### 3.10 Bibliothèques
 
 **Aucune dépendance ajoutée.** Framer Motion n'est pas applicable (front vanilla) :
 les animations sont en CSS et les graphiques en SVG natif (`web/charts.js`,
@@ -260,7 +274,7 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 .venv/bin/python -m pytest -q              → 924 passed, 24 failed, 11 skipped (71 s)
 ```
 
-- **Nouveau fichier** `tests/test_ui_premium.py` : **19 tests**, tous verts
+- **Nouveau fichier** `tests/test_ui_premium.py` : **20 tests**, tous verts
   (ordre de cascade CSS, absence de `<style>`, présence des modules et des
   identifiants de coque, 5 KPI, palette centralisée, jetons hérités conservés,
   `prefers-reduced-motion` + `@media print`, 12 rubriques, repli + infobulles,
@@ -289,6 +303,7 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 | Espace de travail | barre d'outils, filtre, tri et pagination opérants (186 tâches, « 1–20 sur 186 ») |
 | Modules | 8 bandeaux de 4 indicateurs, valeurs réelles, 0 erreur |
 | Sous-pages | 10 routes testées : bonne page affichée, listes et colonnes réelles |
+| Rapports | 7 graphiques rendus sur données réelles, 0 erreur |
 
 ---
 
@@ -322,7 +337,7 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 3. **Sous-pages restantes** : 17 sous-rubriques sont désormais branchées.
    Les autres (`maritime/escales`, `maritime/voyages`, `douane/controles`,
    `douane/liquidation`, `douane/paiements`, `enlevissement/livraison`,
-   `finance/facturation`, `reports/*`, `referentiels/parametres`,
+   `finance/facturation`, `referentiels/parametres`,
    `admin/*` hors utilisateurs/rôles/journal) n'ont pas encore d'endpoint
    dédié : elles retombent sur la vue d'ensemble de leur module. Les 92
    sections `tab-*` existent ; y brancher un endpoint est un ajout de quelques
