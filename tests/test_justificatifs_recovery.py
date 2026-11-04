@@ -166,43 +166,14 @@ def test_residu_de_nettoyage_signale(cas, monkeypatch):
 @pytest.mark.parametrize("phase", ["avant_publication", "apres_publication"])
 def test_arret_brutal_reprise_sans_perte(cas, tmp_path_factory, phase):
     """Vrai SIGKILL d'un enfant, pas une exception exécutant les finally."""
-    import os
-    import signal
-    import subprocess
-    import sys
-    import time
-    from pathlib import Path
+    from tests._crash_isole import tuer_a_barriere
 
-    if os.name != "posix":
-        pytest.skip("Preuve SIGKILL réservée aux systèmes POSIX")
     racine, cible, quarantaine, _, pieces = cas
     base = racine / "metier.sqlite3"
     base_avant = base.read_bytes()
     source_avant = quarantaine.read_bytes()
     marqueur = tmp_path_factory.mktemp("barriere_crash") / "pret"
-    repo = Path(__file__).resolve().parents[1]
-    env = os.environ.copy()
-    env["PYTHONPATH"] = str(repo / "src") + os.pathsep + env.get("PYTHONPATH", "")
-    enfant = subprocess.Popen(
-        [sys.executable, str(repo / "tests/_pieces_crash_worker.py"),
-         str(racine), str(marqueur), phase],
-        cwd=repo, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
-    )
-    try:
-        echeance = time.monotonic() + 15
-        while not marqueur.exists() and enfant.poll() is None and time.monotonic() < echeance:
-            time.sleep(0.02)
-        assert marqueur.exists(), "L'enfant n'a pas atteint la barrière de publication"
-        assert marqueur.read_text(encoding="utf-8") == phase
-        assert enfant.poll() is None
-        enfant.kill()
-        sortie, erreurs = enfant.communicate(timeout=10)
-        assert enfant.returncode == -signal.SIGKILL, (sortie, erreurs)
-        assert sortie == ""  # Aucun faux rapport de réussite n'a été émis.
-    finally:
-        if enfant.poll() is None:
-            enfant.kill()
-        enfant.communicate(timeout=10)
+    tuer_a_barriere("_pieces_crash_worker.py", racine, marqueur, phase)
 
     assert base.read_bytes() == base_avant
     assert quarantaine.read_bytes() == source_avant

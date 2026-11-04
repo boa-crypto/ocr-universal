@@ -1481,3 +1481,43 @@ Dans un tel état interrompu, source et quarantaine peuvent coexister : examiner
 ne pas forcer la suppression et ne pas effacer la quarantaine automatiquement.
 
 Aperçu redémarré avec le backend corrigé, `UNOCR_PREVIEW=1`, port 8000.
+
+
+## 2.43 Passe 40 — vrais SIGKILL pendant la suppression
+
+Quatre tests POSIX exercent la route HTTP DELETE réelle via TestClient dans un
+processus Python jetable. Les fichiers, dossiers, base et journaux sont temporaires.
+Des barrières atomiques bornent les arrêts : après création effective du lien de
+quarantaine, après retrait effectif du nom original, après écritures SQL mais avant
+commit, puis après commit avant nettoyage. Le parent tue l'enfant par SIGKILL,
+vérifie son code de retour et le récolte ; aucun finally du processus tué ne nettoie.
+Le harnais borné est désormais partagé avec les deux tests de récupération.
+
+| Point d'arrêt | État après réouverture normale de SQLite | Suite contrôlée |
+|---|---|---|
+| Après lien | Original et quarantaine coexistent, références conservées | DELETE 409 ; récupération refusée car destination présente ; téléchargement OK |
+| Après retrait | Quarantaine seule, références conservées | DELETE 409 ; plan puis récupération explicite ; téléchargement OK |
+| Avant commit | Écritures SQL non validées annulées, références conservées | Réouverture SQLite puis diagnostic et récupération explicite ; téléchargement OK |
+| Après commit | Liens/métadonnée supprimés, quarantaine conservée | DELETE/download 404 ; récupération refusée sans métadonnée ; aucune résurrection automatique |
+
+Dans les quatre cas : `PRAGMA integrity_check` retourne `ok`, la quarantaine garde
+ses octets, aucune réponse de faux succès n'a été émise avant le SIGKILL, et le
+diagnostic décrit les références connues et le fichier manquant lorsqu'il est
+encore référencé. Une réouverture normale en écriture de la base précède le
+diagnostic : SQLite peut devoir traiter un journal chaud ; le diagnostic lecture
+seule n'est pas un outil de réparation de SQLite.
+
+**Limite importante d'audit :** au dernier point, le commit est déjà effectif,
+mais ni réponse HTTP ni événement `justificatif_supprime` ne sont encore émis.
+L'absence de réponse/audit n'est donc pas une preuve d'absence de commit. Après
+interruption, relire l'état via API et `pieces-check`, sans relancer ni purger
+aveuglément. L'audit fichier n'est pas transactionnel avec SQLite ; une outbox
+transactionnelle/reconciliation reste à concevoir.
+
+Validation : **29 tests de persistance**, dont les quatre nouveaux SIGKILL ;
+ciblés persistance/récupération/diagnostic/UI-API réelle **63 passed**. Ruff OK.
+Suite complète : **1180 passed / 23 failed / 11 skipped** (échecs OCR connus).
+Aucun changement de code métier ni de données utilisateur ; aperçu passe 39
+inchangé. Les tests sont sautés hors POSIX. La preuve concerne la mort d'un
+processus aux points choisis, pas une coupure électrique ni tous les points
+possibles, et ne couvre pas les interruptions upload/backup ni l'antivirus.

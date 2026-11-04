@@ -1,6 +1,6 @@
 # Rapport de tests — écrans UniOCR
 
-Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 39.
+Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 40.
 
 Ce document liste **uniquement des résultats obtenus**, avec la commande qui
 les produit. Les sections de passes ci-dessous conservent les résultats historiques.
@@ -12,7 +12,7 @@ les produit. Les sections de passes ci-dessous conservent les résultats histori
 | Commande | Résultat | Commentaire |
 |---|---|---|
 | `ruff check src tests` | **All checks passed** | 0 erreur de style |
-| `python -m pytest -q` | **1176 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
+| `python -m pytest -q` | **1180 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
 | `python -m pytest tests/test_ui_premium.py -q` | **56 passed** | tests de contrat et intégrité UI |
 | `python -m pytest tests/test_historique.py -q` | **5 passed** 🆕 | ordre, filtrage par document, événements inconnus, journal illisible |
 | `python -m pytest tests/test_rbac_ecritures.py -q` | **18 passed** | 14 familles d'écriture refusées à un lecteur, refus tracés |
@@ -344,3 +344,21 @@ python3 docs/implementation-screens/outils/generer_matrice.py /tmp/ui.json
   nettoyage impossible après commit sans annuler faussement la suppression métier.
 - Fixtures isolées uniquement. Aucune nouvelle preuve SIGKILL des routes de
   suppression ni résistance à une coupure électrique revendiquée.
+
+
+### Passe 40 — quatre vrais arrêts brutaux pendant la suppression
+
+- `pytest tests/test_justificatifs_persistence.py tests/test_justificatifs_recovery.py tests/test_justificatifs_diagnostic.py tests/test_justificatifs_e2e.py -q` : **63 passed**.
+- Persistance : **29 cas**, dont SIGKILL après lien, après retrait, avant commit
+  SQL et après commit avant nettoyage ; récupération : **17 cas** inchangés.
+- Harnais SIGKILL partagé : délai de barrière 15 s, communication/récolte 10 s,
+  nettoyage de l'enfant même en cas d'échec ; données/journaux isolés.
+- `ruff check src tests` : **All checks passed**.
+- Suite complète : **1180 passed, 23 failed, 11 skipped**, un avertissement ;
+  les 23 échecs OCR connus demeurent.
+- Intégrité SQLite après réouverture, références conservées avant commit et
+  effectivement supprimées après commit, quarantaine conservée dans les quatre
+  cas ; refus de reprise destructive et téléchargement après récupération.
+- Le cas après commit prouve aussi le trou d'audit : suppression validée sans
+  réponse ni événement fichier avant la mort de l'enfant. Pas de garantie
+  d'audit transactionnel. Pas de coupure électrique ; tests sautés hors POSIX.

@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 39. Ce document est la liste de travail
+État au 2026-11-04, après la passe 40. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -246,3 +246,15 @@ réussis avec le parcours UI/API réel. Pas de purge automatique.
 Restent le vrai SIGKILL pendant cette séquence de suppression (notamment entre
 création du lien et retrait du blob), la durabilité après coupure électrique,
 la collecte contrôlée des preuves/résidus et l'antivirus.
+
+
+### Passe 40 — suppression : quatre points SIGKILL couverts
+
+✅ Tests réels après lien, après retrait, avant et après commit : intégrité,
+quarantaine, références et suites opérateur vérifiées. La limite SIGKILL de la
+passe 39 est levée pour ces quatre points, pas pour tout arrêt possible.
+**À traiter :** audit transactionnel/reconciliation. Un commit peut précéder la
+réponse HTTP et l'événement d'audit ; une absence de réponse/audit ne signifie pas
+que la suppression a été annulée. Relire l'état, ne pas forcer une purge.
+Restent aussi les coupures électriques, interruptions upload/backup, collecte
+contrôlée des résidus et antivirus. Aucune purge automatique ajoutée.

@@ -313,3 +313,61 @@ def test_nettoyage_quarantaine_echoue_apres_commit(client_factory, piece, tmp_pa
         assert client.get(f"/api/frais/justificatif/{identifiant}/download").status_code == 404
     diagnostic = diagnostiquer_pieces(tmp_path)
     assert {a["categorie"] for a in diagnostic["anomalies"]} == {"quarantaine"}
+
+
+@pytest.mark.parametrize("phase", ["apres_lien", "apres_retrait", "avant_commit", "apres_commit"])
+def test_suppression_sigkill_preserve_preuve_et_references(client_factory, piece, tmp_path, tmp_path_factory, phase):
+    from tests._crash_isole import tuer_a_barriere
+    from unocr.justificatifs_diagnostic import diagnostiquer_pieces
+    from unocr.justificatifs_recovery import RecuperationRefusee, recuperer_piece
+
+    with client_factory() as client:
+        identifiant = upload(client, piece).json()["id"]
+        frais_avant = client.get(f"/api/frais/{piece}").json()
+        pieces_avant = client.get(f"/api/frais/{piece}/justificatifs").json()
+    fichier = next((tmp_path / "justificatifs").glob("*.bin"))
+    quarantaine = fichier.with_name("." + fichier.name + ".deleted.tmp")
+    audit_avant = (tmp_path / "logs/audit.log").read_bytes()
+    marqueur = tmp_path_factory.mktemp("barriere_suppression") / "pret"
+    tuer_a_barriere("_pieces_delete_crash_worker.py", tmp_path, marqueur, phase, identifiant)
+    assert quarantaine.read_bytes() == b"piece test"
+    assert fichier.exists() == (phase == "apres_lien")
+    if phase == "apres_lien":
+        assert fichier.stat().st_ino == quarantaine.stat().st_ino
+    # Réouverture en écriture normale : SQLite peut devoir rejouer son journal
+    # chaud. Le diagnostic lecture seule n'est pas un outil de crash recovery DB.
+    frais_attendus = {**frais_avant, "justificatifs": []} if phase == "apres_commit" else frais_avant
+    pieces_attendues = [] if phase == "apres_commit" else pieces_avant
+    with client_factory() as client:
+        assert client.get(f"/api/frais/{piece}").json() == frais_attendus
+        assert client.get(f"/api/frais/{piece}/justificatifs").json() == pieces_attendues
+        with sqlite3.connect(tmp_path / "metier.sqlite3") as db:
+            assert db.execute("PRAGMA integrity_check").fetchone() == ("ok",)
+        diagnostic = diagnostiquer_pieces(tmp_path)
+        categories = {a["categorie"] for a in diagnostic["anomalies"]}
+        assert "quarantaine" in categories
+        assert diagnostic["references_completes"] is True
+        assert ("fichier_absent" in categories) == (phase in {"apres_retrait", "avant_commit"})
+        assert client.delete(f"/api/frais/justificatif/{identifiant}").status_code == (404 if phase == "apres_commit" else 409)
+        # La barrière précède toujours audit(), même après commit.
+        # Son absence ne prouve donc pas l'absence de suppression en base.
+        assert (tmp_path / "logs/audit.log").read_bytes() == audit_avant
+        if phase == "apres_commit":
+            with pytest.raises(RecuperationRefusee, match="Métadonnée justificatif absente"):
+                recuperer_piece(tmp_path, identifiant, appliquer=True)
+        elif phase == "apres_lien":
+            with pytest.raises(RecuperationRefusee, match="déjà présente"):
+                recuperer_piece(tmp_path, identifiant, appliquer=True)
+        else:
+            assert recuperer_piece(tmp_path, identifiant)["etat"] == "pret"
+            assert recuperer_piece(tmp_path, identifiant, appliquer=True)["etat"] == "restaure"
+            assert fichier.stat().st_ino != quarantaine.stat().st_ino
+        rep = client.get(f"/api/frais/justificatif/{identifiant}/download")
+        if phase == "apres_commit":
+            assert rep.status_code == 404 and not fichier.exists()
+        else:
+            assert rep.status_code == 200 and rep.content == b"piece test"
+        assert client.get(f"/api/frais/{piece}").json() == frais_attendus
+        assert client.get(f"/api/frais/{piece}/justificatifs").json() == pieces_attendues
+    assert quarantaine.read_bytes() == b"piece test"
+    assert (tmp_path / "logs/audit.log").read_bytes() == audit_avant
