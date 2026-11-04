@@ -194,7 +194,35 @@ Les sources sont les endpoints existants (`/api/conteneurs`, `/api/navires`,
 `/api/stats`, `/api/transport/transporteurs`, `/api/rbac/*`…). Une source
 indisponible affiche « — », jamais un zéro trompeur.
 
-### 3.7 Animations
+### 3.7 Sous-pages de modules (listes réelles)
+
+Dix-sept sous-rubriques du menu ouvrent désormais **leur propre page** au lieu
+de retomber sur la vue d'ensemble du module, et affichent une liste alimentée
+par l'API :
+
+| Page | Source | Colonnes |
+|---|---|---|
+| Extractions à valider | `/api/dossiers` (états à valider) | référence, libellé, client, état, dernière activité |
+| Anomalies / Pièces manquantes | `/api/dashboard/alertes` | gravité, titre, message, dossier, pièces |
+| Nomenclature tarifaire | `/api/reglementation/codes-sh` | code SH, libellé, chapitre |
+| Clients / Fournisseurs / Transporteurs | `/api/clients`, `/api/fournisseurs`, `/api/transport/transporteurs` | nom, raison sociale, ville, pays, statut |
+| Conteneurs, B/L, Navires, Expéditions | `/api/conteneurs`, `/api/connaissements/bl`, `/api/navires`, `/api/expeditions` | déduites des enregistrements |
+| Déclarations | `/api/declarations` | déduites |
+| Ordres d'enlèvement | `/api/terminal` | déduites |
+| Frais | `/api/frais` | dossier, catégorie, montant, devise, statut |
+| Journal d'audit | `/api/rbac/audit` | horodatage, action, acteur, détails |
+| Utilisateurs / Rôles | `/api/rbac/utilisateurs` | utilisateurs, rôles disponibles |
+
+Chaque liste offre un **filtre plein texte**, un **compteur**, une **pagination**
+(25 lignes) et un bouton **Ouvrir** quand un dossier est concerné. Les colonnes
+sont soit choisies (libellés métier), soit déduites des données ; une liste vide
+explique où créer l'enregistrement. **Lecture seule** : aucune action métier
+n'est déclenchée depuis ces pages.
+
+Deux tests verrouillent le contrat : chaque page déclarée existe dans
+`index.html`, et chaque URL utilisée existe dans le schéma OpenAPI.
+
+### 3.8 Animations
 
 Transitions de page, ouverture des groupes de navigation, apparition des cartes,
 infobulles, menus, panneaux latéraux, skeletons, tracé progressif des courbes
@@ -203,7 +231,7 @@ Durées 120–720 ms, courbe `cubic-bezier(.22,1,.36,1)`.
 `prefers-reduced-motion: reduce` neutralise animations et tracés ; les
 transitions restent fonctionnelles sans mouvement.
 
-### 3.8 Bibliothèques
+### 3.9 Bibliothèques
 
 **Aucune dépendance ajoutée.** Framer Motion n'est pas applicable (front vanilla) :
 les animations sont en CSS et les graphiques en SVG natif (`web/charts.js`,
@@ -232,12 +260,13 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 .venv/bin/python -m pytest -q              → 924 passed, 24 failed, 11 skipped (71 s)
 ```
 
-- **Nouveau fichier** `tests/test_ui_premium.py` : **17 tests**, tous verts
+- **Nouveau fichier** `tests/test_ui_premium.py` : **19 tests**, tous verts
   (ordre de cascade CSS, absence de `<style>`, présence des modules et des
   identifiants de coque, 5 KPI, palette centralisée, jetons hérités conservés,
   `prefers-reduced-motion` + `@media print`, 12 rubriques, repli + infobulles,
   contrats des trois routes, bandeaux d'indicateurs des modules, absence de
-  grille inline, avertissements de portée de l'OCR).
+  grille inline, avertissements de portée de l'OCR, sous-pages branchées sur
+  des endpoints existants et routage fin des sous-rubriques).
 - Les **23 échecs préexistants** sont inchangés et **environnementaux**
   (Tesseract/Indra absents, connecteur `customs_api`, routage flou) ; ils ne
   sont pas masqués.
@@ -259,6 +288,7 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 | Espace dossier | 11 onglets, tous rendus sans erreur, bandeau d'identité complet |
 | Espace de travail | barre d'outils, filtre, tri et pagination opérants (186 tâches, « 1–20 sur 186 ») |
 | Modules | 8 bandeaux de 4 indicateurs, valeurs réelles, 0 erreur |
+| Sous-pages | 10 routes testées : bonne page affichée, listes et colonnes réelles |
 
 ---
 
@@ -289,12 +319,14 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 2. **Validation visuelle sur navigateur** : aucune capture n'a pu être produite
    dans cet environnement (pas de Chromium). Le rendu a été vérifié par DOM et
    cascade CSS, pas à l'œil.
-3. **Sous-pages de modules** : chaque module affiche maintenant ses compteurs
-   réels, mais ses sous-pages (`controle/anomalies`, `maritime/eta-etd`,
-   `douane/declarations`, `finance/frais`, `reports/center`…) retombent encore
-   sur la vue d'ensemble. Les 92 sections `tab-*` existent ; les relier une à une
-   à leur endpoint dédié est le prochain chantier (les onglets de l'espace
-   dossier et les bandeaux de module en donnent le patron).
+3. **Sous-pages restantes** : 17 sous-rubriques sont désormais branchées.
+   Les autres (`maritime/escales`, `maritime/voyages`, `douane/controles`,
+   `douane/liquidation`, `douane/paiements`, `enlevissement/livraison`,
+   `finance/facturation`, `reports/*`, `referentiels/parametres`,
+   `admin/*` hors utilisateurs/rôles/journal) n'ont pas encore d'endpoint
+   dédié : elles retombent sur la vue d'ensemble de leur module. Les 92
+   sections `tab-*` existent ; y brancher un endpoint est un ajout de quelques
+   lignes dans `web/souspages.js` quand la route existe côté serveur.
 4. **Vue OCR en deux colonnes** : l'atelier existant (`#tab-result`) fournit la
    prévisualisation et les champs ; une vue côte à côte « document / données »
    avec comparaison inter-documents reste à construire.

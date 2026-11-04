@@ -491,7 +491,33 @@
       'admin': 'tab-admin'
     };
 
-    const pageId = pageMapping[sectionKey];
+    // Certaines sous-rubriques disposent de leur propre page : on y va
+    // directement plutôt que de retomber sur la vue d'ensemble du module.
+    const routePages = {
+      'documents/inbox': 'tab-center',
+      'documents/classif': 'tab-classif',
+      'documents/verification': 'tab-validation',
+      'documents/archives': 'tab-ged',
+      'controle/anomalies': 'tab-anomalies',
+      'controle/manquants': 'tab-manquants',
+      'maritime/conteneurs': 'tab-conteneurs',
+      'maritime/bl': 'tab-bl',
+      'maritime/navires': 'tab-navires',
+      'maritime/arrivees': 'tab-eta-etd',
+      'douane/declarations': 'tab-declarations',
+      'douane/tarif': 'tab-nomenclature',
+      'douane/mainlevee': 'tab-mainleves',
+      'enlevissement/ordres': 'tab-enlevement',
+      'enlevissement/planning': 'tab-planification',
+      'enlevissement/transporteurs': 'tab-transporteurs',
+      'referentiels/clients': 'tab-clients',
+      'referentiels/fournisseurs': 'tab-fournisseurs',
+      'admin/journal': 'tab-journal',
+      'admin/utilisateurs': 'tab-utilisateurs',
+      'admin/roles': 'tab-roles'
+    };
+
+    const pageId = routePages[hash.replace('#', '')] || pageMapping[sectionKey];
     if (pageId) {
       // Les sections héritées peuvent être dupliquées : la dernière est la
       // version courante.

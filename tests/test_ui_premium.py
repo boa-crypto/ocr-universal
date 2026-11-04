@@ -87,6 +87,33 @@ def test_modules_affichent_des_indicateurs_reels() -> None:
         assert route.split("/")[0] in index, f"la route #{route} doit correspondre à une rubrique"
 
 
+def test_sous_pages_branchees_sur_des_endpoints_existants() -> None:
+    """Chaque sous-page lit un endpoint réellement exposé par l'API."""
+    index = (WEB / "index.html").read_text(encoding="utf-8")
+    js = (WEB / "souspages.js").read_text(encoding="utf-8")
+    assert '/web/souspages.js' in index, "souspages.js doit être chargé"
+
+    pages = re.findall(r'"(tab-[a-z-]+)": \{', js)
+    assert len(pages) >= 12, "les sous-pages principales doivent être couvertes"
+    for page in pages:
+        assert f'id="{page}"' in index, f"la page {page} doit exister dans index.html"
+
+    chemins = set(app.openapi()["paths"])
+    urls = re.findall(r'url: "([^"]+)"', js)
+    assert urls, "au moins une source doit être déclarée"
+    for url in urls:
+        assert url in chemins, f"{url} doit exister dans le contrat OpenAPI"
+
+
+def test_routage_des_sous_pages_vers_leurs_pages() -> None:
+    js = (WEB / "navigation.js").read_text(encoding="utf-8")
+    index = (WEB / "index.html").read_text(encoding="utf-8")
+    correspondances = re.findall(r"'([a-z-]+/[a-z-]+)': '(tab-[a-z-]+)'", js)
+    assert len(correspondances) >= 15, "le routage fin des sous-rubriques doit être déclaré"
+    for route, page in correspondances:
+        assert f'id="{page}"' in index, f"{route} pointe vers {page} qui doit exister"
+
+
 def test_aucune_grille_inline_pour_le_responsive() -> None:
     """Les grilles multi-colonnes passent par des classes (elles se replient)."""
     index = (WEB / "index.html").read_text(encoding="utf-8")
