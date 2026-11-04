@@ -15,7 +15,9 @@ les produit. Les tests ajoutés dans cette passe sont marqués 🆕.
 | `python -m pytest -q` | **1008 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
 | `python -m pytest tests/test_ui_premium.py -q` | **52 passed** | +1 par passe depuis la 14 |
 | `python -m pytest tests/test_historique.py -q` | **5 passed** 🆕 | ordre, filtrage par document, événements inconnus, journal illisible |
-| `python -m pytest tests/test_rbac_ecritures.py -q` | **18 passed** 🆕 | 14 familles d'écriture refusées à un lecteur, refus tracés |
+| `python -m pytest tests/test_rbac_ecritures.py -q` | **18 passed** | 14 familles d'écriture refusées à un lecteur, refus tracés |
+| `npm run ui:smoke` | **15/15 vérifications** 🆕 | 8 écrans, 4 interactions, 0 écriture, 0 erreur JS ou 5xx |
+| `python -m pytest tests/test_interface_jsdom.py -q` | **1 passed** (ou sauté sans jsdom/serveur) 🆕 | rejoue le harnais depuis pytest |
 | `python -m pytest tests/test_parametres.py -q` | **10 passed** 🆕 | écriture, bornes, persistance, effet réel sur l'import |
 | `python -m pytest tests/test_referentiels.py -q` | **7 passed** 🆕 | CRUD, persistance, doublons, audit |
 | `python -m pytest tests/test_route_ordering.py -q` | **4 passed** 🆕 | détection des routes masquées |
@@ -155,7 +157,11 @@ cd /home/user/ocr-universal
 .venv/bin/python -m pytest -q
 
 # vérifications navigateur (serveur démarré sur :8000)
-npm install --no-save jsdom
+npm install                       # jsdom, une fois
+npm run ui:smoke                  # 15 vérifications, aucune écriture
+.venv/bin/python -m pytest tests/test_interface_jsdom.py -q
+
+# régénération de la matrice (serveur démarré sur :8000)
 node docs/implementation-screens/outils/dump_interface.js http://127.0.0.1:8000 > /tmp/ui.json
 python3 docs/implementation-screens/outils/generer_matrice.py /tmp/ui.json
 ```

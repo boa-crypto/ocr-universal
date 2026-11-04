@@ -1,0 +1,13 @@
+{
+  "name": "uniocr-verifications-interface",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vérifications navigateur de l'interface UniOCR (jsdom) : les écrans s'ouvrent-ils, affichent-ils des données réelles, et répondent-ils aux clics ?",
+  "scripts": {
+    "ui:smoke": "node tests/ui_smoke.js",
+    "ui:dump": "node docs/implementation-screens/outils/dump_interface.js"
+  },
+  "devDependencies": {
+    "jsdom": "^24.1.3"
+  }
+}

@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 19. Ce document est la liste de travail
+État au 2026-11-04, après la passe 20. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -76,6 +76,20 @@ validation nommant le champ, effet immédiat et persistant.
    demande confirmation et n'est proposée que sur des dossiers non archivés ;
    elle a été exercée sur un dossier jetable, jamais sur les données de
    démonstration.
+
+## Vérifications rejouables
+
+Les 100 preuves de `MATRICE_ECRANS.md` ne dépendent plus de scripts jetables :
+
+```bash
+npm install && npm run ui:smoke      # 15 vérifications navigateur, lecture seule
+```
+
+Le harnais échoue si un écran critique est vide, si une action ne répond pas,
+si une requête tombe en 5xx ou si une erreur JavaScript est émise — et il
+**échoue aussi s'il émet une écriture**, pour ne jamais abîmer les données de
+l'utilisateur. `tests/test_interface_jsdom.py` le rejoue depuis `pytest`, en
+sautant explicitement quand jsdom ou le serveur manquent.
 
 ## Méthode de travail pour la suite
 

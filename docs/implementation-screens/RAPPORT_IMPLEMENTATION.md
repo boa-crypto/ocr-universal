@@ -723,6 +723,64 @@ le filtre exclut les dossiers déjà archivés, et l'action demande confirmation
 
 **Matrice : 100 entrées, 100 conformes, 0 partiel, 0 absent, 0 non connecté.**
 
+## 2.23 Passe 20 — les preuves deviennent rejouables
+
+Les passes 13 à 19 ont mesuré chaque écran dans un navigateur simulé. Mais les
+harnais vivaient dans `/tmp` : les preuves étaient vraies le jour où elles ont
+été prises, et personne ne pouvait les rejouer. Une preuve qu'on ne peut pas
+refaire n'est pas une preuve, c'est une anecdote.
+
+### `tests/ui_smoke.js` — quinze vérifications, aucune écriture
+
+Le harnais est désormais **dans le dépôt** (`npm install` puis
+`npm run ui:smoke`), et il tient trois promesses :
+
+| Vérification | Ce que cela attrape |
+|---|---|
+| 8 écrans critiques s'ouvrent avec leur section attendue | une route qui ne mène plus nulle part |
+| `#documents/ocr` : clic « Historique » → chronologie | une action branchée mais muette |
+| `#rapports/graphes` : 6 cartes, chacune dessinée **ou** expliquée | un graphique vide sans message |
+| `#referentiels/parametres` : le formulaire s'ouvre avec son champ | un écran de réglages décoratif |
+| `#dossiers/nouveau` : dialogue et champs présents | un bouton « Créer » sans formulaire |
+| **aucune requête non-GET** | un test qui modifierait les données de l'utilisateur |
+| **aucun 5xx** | une erreur serveur masquée par un état vide |
+| **aucune erreur JavaScript** | une exception avalée par un `catch` |
+
+Sortie réelle sur ce poste :
+
+```
+Écrans :
+  ✓ #cockpit (tab-cockpit) — 2380 caractères
+  ✓ #dossiers/tous (tab-dossiers) — 2587 caractères
+  ✓ #documents/ocr (tab-ecran) — 2426 caractères
+  ✓ #referentiels/parametres (tab-ecran) — 964 caractères
+  ✓ #admin/utilisateurs (tab-ecran) — 403 caractères
+  ✓ #rapports/graphes (tab-graphiques) — 1023 caractères
+  ✓ #finance/cloture (tab-ecran) — 1567 caractères
+  ✓ #douane/paiements (tab-ecran) — 316 caractères
+Interactions :
+  ✓ Historique d'un document — 1 événement(s)
+  ✓ Graphiques — 6 cartes : 3 dessinée(s), 3 expliquée(s)
+  ✓ Paramètres : formulaire — 7 réglage(s), champ valeur
+  ✓ Création de dossier — 6 champ(s), 0 port(s) proposé(s)
+  ✓ Aucune écriture émise — lecture seule
+  ✓ Aucune erreur serveur — 0 × 5xx
+  ✓ Aucune erreur JavaScript — 0 erreur
+
+15/15 vérifications passées
+```
+
+### Un test qui dit quand il ne peut pas tourner
+
+`tests/test_interface_jsdom.py` lance ce script depuis `pytest`. Il dépend de
+deux choses extérieures (jsdom, un serveur en marche) : plutôt que de faire
+semblant, il **saute explicitement** en nommant ce qui manque
+(`jsdom absent : lancer npm install`, `aucun serveur sur …`). Quand les deux
+sont là, il échoue franchement et affiche la sortie complète du harnais.
+
+Les codes de sortie sont utilisables en CI : `0` tout passe, `1` une
+vérification tombe, `2` environnement (serveur injoignable).
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

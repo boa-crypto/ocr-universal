@@ -12,3 +12,6 @@ tests/_hub_render.js
 
 # Réglages écrits depuis l'interface (état local, pas une source)
 data/parametres.json
+
+# Dépendances de vérification navigateur (jsdom), jamais versionnées
+node_modules/
