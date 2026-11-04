@@ -5,7 +5,7 @@ priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui rest
 la référence ligne à ligne.
 
 **Chiffres du jour, sans arrondi complaisant** : 100 entrées de menu,
-**47 conformes**, **53 partiels**, 0 absent, 0 non connecté, et
+**52 conformes**, **48 partiels**, 0 absent, 0 non connecté, et
 **plus aucun bandeau « pas encore d'écran dédié »** (contre 14 en début de
 passe 2). Les 57 partiels sont désormais des écrans qui lisent des données
 réelles mais n'ont pas encore été re-certifiés, ou dont les actions d'écriture
@@ -28,7 +28,7 @@ ne sont pas couvertes par un test.
 | ✅ P1-1 | ~~Remplacer les 6 redirections « Gestion des dossiers »~~ | **fait en passe 2** : en cours / bloqués / clôturés = écrans dédiés (`web/ecrans.js`) ; tous / nouveau / clients = pages réellement existantes désormais reliées (fin du bandeau) |
 | ✅ P1-2 | ~~Idem pour les 5 redirections « Mon espace de travail »~~ | **fait en passe 2** : mes tâches, en attente, mes alertes, dossiers récents = écrans dédiés ; à valider = page `#tab-validation` reliée |
 | ✅ P1-3a | ~~Vue d'ensemble + Extraction OCR~~ | **fait en passe 3** : deux écrans dédiés sur `/api/jobs` ; actions Texte / Résultat / Relancer exercées par test |
-| P1-3b | Re-certifier les 9 écrans Documents hérités restants (boîte de réception, classification, résultat, qualité, révision, vérification, profils, connecteurs, configuration) | ils lisent des données réelles (`#tab-center` 25 lignes, `#tab-classif` 21 lignes) mais leurs actions n'ont pas été testées |
+| ✅ P1-3b | ~~Re-certifier les écrans Documents hérités~~ | **fait en passe 5** pour 5 écrans (boîte de réception, classification, archives, vérification, révision) : données + recherche + pagination + ouverture de dossier vérifiées ; **reste** résultat, qualité, profils, connecteurs, configuration (dépendent d'un document sélectionné ou exposent des écritures) |
 | ✅ P1-4 | ~~Tester les actions de contrôle documentaire~~ | **fait en passe 4** : *Contrôler* et *Verdict* exécutés (200) ; reste la **résolution d'anomalie** avec justification, qui demande un motif |
 | P1-5 | Historiser la validation OCR dans l'écran de révision | la route existe, l'écran hérité n'a pas été re-testé |
 

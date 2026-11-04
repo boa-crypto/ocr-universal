@@ -1426,7 +1426,9 @@ async function initLangChips() {
         </div>`).join("");
       markFocus();
     } catch (e) {
-      list.innerHTML = '<div class="empty">File indisponible — API non jointe.</div>';
+      // Sans trace, une erreur de rendu ressemble à une API absente.
+      console.error("file de révision :", e);
+      list.innerHTML = '<div class="empty">File indisponible — ' + esc(e.message) + '</div>';
       count.textContent = "—";
     }
   }
@@ -1471,7 +1473,11 @@ async function initLangChips() {
     if (!rows.length) return;
     focusIdx = Math.max(0, Math.min(focusIdx, rows.length - 1));
     rows[focusIdx].classList.add("focused");
-    rows[focusIdx].scrollIntoView({ block: "nearest" });
+    // `scrollIntoView` n'existe pas partout (navigateurs anciens, tests) :
+    // son absence ne doit pas casser le rendu de la file.
+    if (typeof rows[focusIdx].scrollIntoView === "function") {
+      rows[focusIdx].scrollIntoView({ block: "nearest" });
+    }
   }
 
   function rowCourante() {
@@ -1548,6 +1554,15 @@ async function initLangChips() {
   $("reviewRefresh")?.addEventListener("click", loadReview);
   $("reviewThreshold")?.addEventListener("change", loadReview);
   $("reviewUndetected")?.addEventListener("change", loadReview);
+
+  /* La page est atteinte par le routage de la coque (hash), pas par un clic
+     d'onglet : sans ce déclencheur la file resterait vide à l'ouverture. */
+  function chargerRevueSiAffichee() {
+    const route = (window.location.hash || "").replace(/^#/, "");
+    if (route === "documents/revue") loadReview();
+  }
+  window.addEventListener("hashchange", () => setTimeout(chargerRevueSiAffichee, 120));
+  setTimeout(chargerRevueSiAffichee, 800);
 
   /* ─── identité et droits ───
      Au démarrage, on demande à l'API qui nous sommes. Si data/rbac.json est

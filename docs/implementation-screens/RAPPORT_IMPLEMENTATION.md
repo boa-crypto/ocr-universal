@@ -160,6 +160,34 @@ Limite signalée dans l'écran et dans la matrice : le rapprochement bancaire
 n'a **aucun flux bancaire** côté serveur (l'import est un TODO explicite dans
 `frais.py`). L'écran le dit et n'invente aucun rapprochement.
 
+## 2.8 Passe 5 — re-certification des écrans Documents hérités
+
+Cinq écrans historiques ont été **exercés** dans un navigateur simulé, pas
+seulement regardés :
+
+| Écran | Ce qui a été vérifié | Statut |
+|---|---|---|
+| Boîte de réception (`#tab-center`) | 25 lignes réelles, recherche 25 → 0, pagination | CONFORME |
+| Classification (`#tab-classif`) | 21 catégories réelles (`/api/document-types`), recherche | CONFORME |
+| Archives / GED (`#tab-ged`) | 25 lignes filtrées sur `archive`, recherche, pagination, « Ouvrir » → dossier | CONFORME |
+| Vérification (`#tab-validation`) | 25 lignes, recherche, pagination, « Ouvrir » → dossier | CONFORME |
+| Révision humaine (`#tab-review`) | file chargée automatiquement, champs réels, « Actualiser » → 200 | CONFORME |
+
+Deux vrais défauts trouvés au passage :
+
+1. **La file de révision ne se chargeait jamais à l'ouverture.** La page était
+   conçue pour être ouverte par un clic d'onglet (ancienne coque) ; atteinte
+   par le routage au hash, elle restait vide jusqu'à « Actualiser ». Elle
+   s'auto-charge désormais quand la route devient `documents/revue`.
+2. **Une erreur de rendu était présentée comme « API non jointe ».** Le
+   `catch` masquait la cause ; il journalise maintenant l'erreur réelle et
+   l'affiche. C'est ce qui a permis d'identifier un `scrollIntoView` absent
+   (navigateurs anciens et tests), désormais appelé seulement s'il existe.
+
+Les écrans **résultat, qualité, profils, connecteurs, configuration** restent
+PARTIEL : ils dépendent d'un document sélectionné ou exposent des écritures
+(profils, connecteurs) qui n'ont pas encore été exercées.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
@@ -196,7 +224,7 @@ directement ne voit que les routes déclarées dans `api.py` — d'où le helper
 
 ## 5. Ce que ces passes ne font pas
 
-- Les **53 écrans partiels** restent à re-certifier un par un (contenu, actions,
+- Les **48 écrans partiels** restent à re-certifier un par un (contenu, actions,
   permissions, états vides) : voir `FONCTIONNALITES_RESTANTES.md`.
 - Certains écrans **réutilisent une page historique** (`#dossiers/tous`,
   `#tab-clients`, `#tab-profiles`…) : plus de bandeau, mais le contenu et les

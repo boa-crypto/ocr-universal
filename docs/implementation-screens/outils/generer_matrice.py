@@ -63,6 +63,15 @@ LIMITES: dict[str, str] = {
                               "le rapprochement porte sur les factures seules",
 }
 
+#: Écrans historiques re-testés dans cette passe : données réelles + interactions.
+HISTORIQUES_VERIFIES: dict[str, str] = {
+    "documents/inbox": "jsdom : 25 lignes, recherche 25→0, pagination opérationnelle",
+    "documents/classif": "jsdom : 21 catégories réelles, recherche 21→0",
+    "documents/archives": "jsdom : 25 lignes, recherche, pagination, « Ouvrir » → dossier",
+    "documents/verification": "jsdom : 25 lignes, recherche, pagination, « Ouvrir » → dossier",
+    "documents/revue": "jsdom : file chargée automatiquement, champs réels, « Actualiser » → GET 200",
+}
+
 PREUVE_PAR_DEFAUT = "rendu jsdom + GET 200 sans erreur JS"
 
 #: Traduction du statut en réponse binaire pour la colonne « Fonctionnel ».
@@ -269,6 +278,7 @@ def construire(snapshot: dict[str, Any]) -> tuple[list[Ligne], dict[str, Sonde]]
                         avis=mesure.avis,
                     ))
             elif hote:
+                verifie = HISTORIQUES_VERIFIES.get(route)
                 lignes.append(Ligne(
                     rubrique=section["section"],
                     sous_menu=item["titre"],
@@ -278,9 +288,11 @@ def construire(snapshot: dict[str, Any]) -> tuple[list[Ligne], dict[str, Sonde]]
                     donnees=(f"{mesure.lignes} ligne" + ("s" if mesure.lignes > 1 else "")
                              + " affichée" + ("s" if mesure.lignes > 1 else "")
                              if mesure.lignes else "présent, 0 ligne affichée"),
-                    statut="PARTIEL",
-                    action="re-certifier : contenu, actions, permissions, états vides",
-                    preuve="parcours jsdom : page affichée",
+                    statut="CONFORME" if verifie else "PARTIEL",
+                    action=("consultation et interactions vérifiées ; écritures non expérimentées"
+                            if verifie else
+                            "re-certifier : contenu, actions, permissions, états vides"),
+                    preuve=verifie or "parcours jsdom : page affichée",
                 ))
             else:
                 lignes.append(Ligne(

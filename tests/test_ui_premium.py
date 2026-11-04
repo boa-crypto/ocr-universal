@@ -719,3 +719,21 @@ def test_aucune_entree_de_menu_ne_retombe_sur_un_bandeau() -> None:
     orphelines = sorted(menu - couvertes)
 
     assert orphelines == [], f"entrées de menu sans écran : {orphelines}"
+
+
+def test_file_de_revision_se_charge_a_l_ouverture() -> None:
+    """La page Révision est atteinte par le hash : elle doit s'auto-charger.
+
+    Sans ce déclencheur, la file restait vide jusqu'au clic sur « Actualiser ».
+    Le test verrouille aussi le garde-fou `scrollIntoView`, dont l'absence ne
+    doit jamais casser l'affichage de la file.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    extras = (racine / "web" / "app-extras.js").read_text(encoding="utf-8")
+
+    assert ".addEventListener(\"hashchange\"" in extras
+    assert "chargerRevueSiAffichee" in extras
+    assert 'route === "documents/revue"' in extras
+    assert 'typeof rows[focusIdx].scrollIntoView === "function"' in extras
+    # L'erreur de rendu ne doit plus être présentée comme une API absente.
+    assert "console.error(\"file de révision :\", e)" in extras
