@@ -906,6 +906,29 @@ Preuve rejouable : `npm run ui:comparaison [URL]` vérifie six lignes et le bloc
 explicatif, sans écriture. Tests statistiques : **18 passed**, dont huit nouveaux
 cas sur statuts non terminés, dates invalides, panne de lecture et troncature.
 
+## 2.28 Passe 25 — Déclarations : remplacer le formulaire inerte
+
+L'entrée `#douane/declarations` ouvrait un ancien formulaire HTML dont le bouton
+`declCreer` n'avait aucun gestionnaire. Le formulaire connecté existait uniquement
+sur Contrôles. La navigation ouvre maintenant le moteur générique, avec une
+copie distincte de la définition de Contrôles (état de route non partagé), un titre
+de préparation et le même contrat `/api/declarations`. L'ancien écran ne conserve
+qu'un lien vers le parcours actif ; ses champs et son bouton inertes sont retirés.
+
+`npm run ui:declarations [URL]` teste la navigation, l'avertissement, le refus d'un
+identifiant inconnu, puis une création complète avec POST **simulé** : identifiant
+du dossier et numéro envoyés, boîte fermée, ligne relue dans la liste. Dossiers et
+déclarations sont simulés ; seuls les fichiers UI et autres GET viennent du serveur.
+Aucune déclaration métier réelle n'est créée. Ce n'est pas un dépôt officiel.
+
+Limite explicitement affichée : le stockage des déclarations est en mémoire et ne
+survit pas au redémarrage. La persistance reste une prochaine tâche, pas un acquis.
+
+La matrice régénérée classe cette route en PARTIEL : la création est testée avec
+un serveur simulé, mais le CRUD complet de cette entrée n'est pas re-certifié.
+Bilan honnête : **101 routes, 100 conformes, 1 partielle**. Le total précédent à
+101 conformes ne détectait pas le bouton inerte de cet écran historique.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

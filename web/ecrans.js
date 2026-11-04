@@ -2020,6 +2020,16 @@
     }
   };
 
+  /* Préparation et contrôle partagent le même contrat API, pas deux formulaires
+     concurrents. Une définition distincte conserve l'état de navigation. */
+  ECRANS["douane/declarations"] = Object.assign({}, ECRANS["douane/controles"], {
+    titre: "Préparation des déclarations",
+    desc: "Choisissez un dossier puis créez sa déclaration. Aucun dépôt officiel " +
+      "n'est effectué. Attention : ce module conserve actuellement les déclarations " +
+      "en mémoire du serveur ; elles ne survivent pas à son redémarrage.",
+    vide: { message: "Aucune déclaration préparée. Utilisez Nouveau et choisissez un dossier existant." }
+  });
+
   /* Le module Dossiers ouvre le même écran Clients que les référentiels
      (création, édition, suppression) au lieu d'une liste vide sans action. */
   if (ECRANS["referentiels/clients"] && !ECRANS["dossiers/clients"]) {

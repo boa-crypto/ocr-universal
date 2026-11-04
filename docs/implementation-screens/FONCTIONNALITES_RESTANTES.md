@@ -100,3 +100,11 @@ sautant explicitement quand jsdom ou le serveur manquent.
    la matrice** — c'est elle qui fait foi.
 3. Ne déclarer CONFORME qu'un écran accessible, affichant les bonnes données,
    avec des actions fonctionnelles, permissions respectées et test vert.
+
+### État corrigé après la passe 25
+
+La matrice régénérée compte **101 entrées, 100 conformes et 1 partielle** :
+Déclarations utilise enfin le formulaire connecté, mais son CRUD complet reste à
+re-certifier. Le parcours de création est vérifié avec POST simulé via
+`npm run ui:declarations`. Le stockage des déclarations, liquidations et enlèvements
+est encore en mémoire : leur persistance doit être traitée avant usage durable.

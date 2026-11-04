@@ -1095,3 +1095,14 @@ def test_registres_proposent_les_identifiants_metier() -> None:
     assert "Object.prototype.hasOwnProperty.call(controle.__valeurs, valeur)" in moteur
     assert "Impossible de charger les choix" in moteur
     assert "choisir dans la liste" in moteur
+
+
+def test_preparation_declarations_utilise_le_formulaire_connecte() -> None:
+    racine = Path(__file__).resolve().parent.parent
+    moteur = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+    nav = (racine / "web" / "navigation.js").read_text(encoding="utf-8")
+    html = (racine / "web" / "index.html").read_text(encoding="utf-8")
+    assert 'ECRANS["douane/declarations"] = Object.assign({}, ECRANS["douane/controles"]' in moteur
+    assert "'douane/declarations': 'tab-ecran'" in nav
+    assert 'id="declCreer"' not in html
+    assert "elles ne survivent pas à son redémarrage" in moteur

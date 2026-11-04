@@ -184,3 +184,12 @@ python3 docs/implementation-screens/outils/generer_matrice.py /tmp/ui.json
   au lieu des 200 jobs tous états, aucune erreur réseau et aucune écriture.
 - Suite complète : **1036 passed, 23 failed, 11 skipped** ; les échecs OCR
   environnementaux connus persistent. Smoke UI : **15/15**. Ruff : aucune erreur.
+
+### Passe 25 — préparation des déclarations
+
+- `npm run ui:declarations` : navigation, avertissement mémoire, refus inconnu,
+  POST simulé, fermeture du formulaire et liste actualisée. Aucune écriture réelle.
+- Suite complète : **1037 passed, 23 failed, 11 skipped** ; échecs OCR connus.
+- Smoke UI : **15/15** ; Ruff : aucune erreur.
+- Matrice régénérée : **100 conformes, 1 partielle** sur 101 entrées (CRUD de
+  l'entrée Déclarations non entièrement re-certifié ; ne pas annoncer 101 conformes).

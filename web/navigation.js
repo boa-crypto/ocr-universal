@@ -606,7 +606,7 @@
       'maritime/bl': 'tab-bl',
       'maritime/navires': 'tab-navires',
       'maritime/arrivees': 'tab-eta-etd',
-      'douane/declarations': 'tab-declarations',
+      'douane/declarations': 'tab-ecran',
       'douane/tarif': 'tab-nomenclature',
       'douane/mainlevee': 'tab-mainleves',
       'enlevissement/ordres': 'tab-enlevement',

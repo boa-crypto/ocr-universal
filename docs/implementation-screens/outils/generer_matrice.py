@@ -128,7 +128,7 @@ HISTORIQUES_VERIFIES: dict[str, str] = {
     "maritime/bl": "jsdom : source 200, 0 ligne, état vide explicite",
     "maritime/conteneurs": "jsdom : source 200, 0 ligne, état vide explicite",
     "maritime/arrivees": "jsdom : source 200, 0 ligne, état vide explicite",
-    "douane/declarations": "jsdom : source 200, 0 ligne, état vide explicite",
+    "douane/declarations": "jsdom versionné : choix dossier, refus inconnu, POST simulé et liste actualisée ; aucune écriture métier réelle",
     "douane/paiements": "jsdom : source 200, 0 ligne, état vide explicite",
     "douane/mainlevee": "jsdom : source 200, 0 ligne, état vide explicite",
     "douane/tarif": "jsdom : 9 codes SH réels affichés",

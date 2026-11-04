@@ -46,21 +46,21 @@ peut pas être « CONFORME » pour un écran à écritures.
 | Documents & OCR | 14 | 14 | 0 | 0 | 0 | 0 |
 | Contrôle & conformité | 7 | 7 | 0 | 0 | 0 | 0 |
 | Opérations maritimes | 8 | 8 | 0 | 0 | 0 | 0 |
-| Douane & réglementation | 9 | 9 | 0 | 0 | 0 | 0 |
+| Douane & réglementation | 9 | 8 | 1 | 0 | 0 | 0 |
 | Enlèvement & livraison | 8 | 8 | 0 | 0 | 0 | 0 |
 | Finance & facturation | 8 | 8 | 0 | 0 | 0 | 0 |
 | Rapports & statistiques | 5 | 5 | 0 | 0 | 0 | 0 |
 | Référentiels & paramètres | 15 | 15 | 0 | 0 | 0 | 0 |
 | Administration & sécurité | 13 | 13 | 0 | 0 | 0 | 0 |
-| **Total** | **101** | **101** | **0** | **0** | **0** | **0** |
+| **Total** | **101** | **100** | **1** | **0** | **0** | **0** |
 
 - **Entrées de menu recensées** : 101
-- **Écrans conformes** : 101
-- **Écrans partiels** : 0
+- **Écrans conformes** : 100
+- **Écrans partiels** : 1
 - **Écrans absents** : 0
 - **Écrans non connectés** : 0
 
-Lecture honnête de ces chiffres : les 101 écrans conformes sont
+Lecture honnête de ces chiffres : les 100 écrans conformes sont
 ceux dont la source a répondu et dont les écritures éventuelles sont branchées ;
 les écrans « hérités » (mis en page lors des missions précédentes) restent
 marqués **PARTIEL** tant qu'ils n'ont pas été re-testés un par un dans cette
@@ -102,11 +102,11 @@ terminé.
 
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Preuve | Action requise |
 |---|---|---|---|---|---|---|---|---|---|
-| Documents & OCR | Vue d'ensemble | `#documents` | Vue d'ensemble (`web/ecrans.js`) | `/api/jobs?limit=300` | 200 lignes | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
+| Documents & OCR | Vue d'ensemble | `#documents` | Vue d'ensemble (`web/ecrans.js`) | `/api/jobs?limit=300` | 202 lignes | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
 | Documents & OCR | Scanner / Importer | `#documents/import` | écran existant `#tab-dashboard` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : atelier d'import (6 cartes, options réelles) | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Boîte de réception | `#documents/inbox` | écran existant `#tab-center` | `(module historique)` | 25 lignes affichées | Oui | **CONFORME** | jsdom : 25 lignes, recherche 25→0, pagination opérationnelle | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Classification | `#documents/classif` | écran existant `#tab-classif` | `(module historique)` | 21 lignes affichées | Oui | **CONFORME** | jsdom : 21 catégories réelles, recherche 21→0 | consultation et interactions vérifiées ; écritures non expérimentées |
-| Documents & OCR | Extraction OCR | `#documents/ocr` | Extraction OCR (`web/ecrans.js`) | `/api/jobs?limit=300` | 200 lignes | Oui | **CONFORME** | jsdom : Texte, Résultat, Historique, Relancer → 200 | actions exercées par test (Texte, Résultat, Historique, Relancer) |
+| Documents & OCR | Extraction OCR | `#documents/ocr` | Extraction OCR (`web/ecrans.js`) | `/api/jobs?limit=300` | 202 lignes | Oui | **CONFORME** | jsdom : Texte, Résultat, Historique, Relancer → 200 | actions exercées par test (Texte, Résultat, Historique, Relancer) |
 | Documents & OCR | Résultat d'analyse | `#documents/resultat` | écran existant `#tab-result` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : « Ouvrir le résultat » sur un document traité → GET /result 200, texte et pages affichés ; état vide expliqué sinon | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Contrôle qualité | `#documents/qualite` | écran existant `#tab-quality` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : jauges alimentées par le document ouvert (moteur 100 %, 3 anomalies) ; état vide expliqué sinon | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Révision humaine | `#documents/revue` | écran existant `#tab-review` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : file chargée automatiquement, champs réels, « Actualiser » → GET 200 | consultation et interactions vérifiées ; écritures non expérimentées |
@@ -115,7 +115,7 @@ terminé.
 | Documents & OCR | Connecteur Hub | `#documents/connecteurs` | écran existant `#tab-connectors` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : catalogue, connecteurs configurés et transmissions issus de /api/connectors/* (200) | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Configuration | `#documents/configuration` | écran existant `#tab-config` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : moteurs réels (tesseract indisponible, native_pdf actif), langues et profils depuis l'API | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Archives | `#documents/archives` | écran existant `#tab-ged` | `(module historique)` | 25 lignes affichées | Oui | **CONFORME** | jsdom : 25 lignes, recherche, pagination, « Ouvrir » → dossier | consultation et interactions vérifiées ; écritures non expérimentées |
-| Documents & OCR | Gestion des versions | `#documents/versions` | Gestion des versions (`web/ecrans.js`) | `/api/jobs?limit=300` | 200 lignes | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
+| Documents & OCR | Gestion des versions | `#documents/versions` | Gestion des versions (`web/ecrans.js`) | `/api/jobs?limit=300` | 202 lignes | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
 
 ### 5. Contrôle & conformité
 
@@ -148,7 +148,7 @@ terminé.
 |---|---|---|---|---|---|---|---|---|---|
 | Douane & réglementation | Vue d'ensemble | `#douane` | écran existant `#tab-douane` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 12 liens, 14 cartes, 2 sources API | consultation et interactions vérifiées ; écritures non expérimentées |
 | Douane & réglementation | Classement tarifaire | `#douane/tarif` | écran existant `#tab-nomenclature` | `(module historique)` | 9 lignes affichées | Oui | **CONFORME** | jsdom : 9 codes SH réels affichés | consultation et interactions vérifiées ; écritures non expérimentées |
-| Douane & réglementation | Déclarations | `#douane/declarations` | écran existant `#tab-declarations` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : source 200, 0 ligne, état vide explicite | consultation et interactions vérifiées ; écritures non expérimentées |
+| Douane & réglementation | Déclarations | `#douane/declarations` | Préparation des déclarations (`web/ecrans.js`) | `/api/declarations` | 0 ligne | Partiel | **PARTIEL** | rendu jsdom + GET 200 sans erreur JS | exercer le CRUD (création, édition, suppression) : aucune preuve pour l'instant |
 | Douane & réglementation | Contrôles douaniers | `#douane/controles` | Contrôles douaniers (`web/ecrans.js`) | `/api/declarations` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200, édition PUT 200, suppression DELETE 200 | maintenir ; étendre les champs métier si besoin |
 | Douane & réglementation | Liquidation | `#douane/liquidation` | Liquidation (`web/ecrans.js`) | `/api/declarations/liquidation` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200, suppression DELETE 200 | maintenir ; étendre les champs métier si besoin |
 | Douane & réglementation | Paiements | `#douane/paiements` | Paiements douaniers (`web/ecrans.js`) | `/api/declarations/liquidation` | 0 ligne | Oui | **CONFORME** | jsdom : Marquer payée → 200 | actions exercées par test (Marquer payée) |
