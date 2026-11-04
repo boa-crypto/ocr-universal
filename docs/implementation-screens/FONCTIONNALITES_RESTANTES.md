@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 33. Ce document est la liste de travail
+État au 2026-11-04, après la passe 34. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -185,3 +185,12 @@ Restent l'interface utilisateur de gestion des pièces, la récupération/collec
 explicite d'anciens blobs ou quarantaines, le contrôle antivirus et le comportement
 après arrêt brutal à toutes les frontières fichier/DB. Aucun ancien fichier migré
 automatiquement. Le circuit ne représente pas un import bancaire.
+
+### Passe 34 — interface des justificatifs
+
+✅ Action Justificatifs depuis les frais : liste, ajout, téléchargement, suppression,
+erreurs/reprises et mode lecteur sans mutation. Harnais `npm run ui:justificatifs`
+(API simulée), rejoué depuis pytest ; tests multipart API réels séparés.
+La limite d'interface de la passe 33 est levée pour ce dialogue. Restent un test
+navigateur contre l'API réelle pour ce parcours, la collecte de blobs/quarantaines,
+l'antivirus et les tests d'arrêt brutal. Aucun nouvel écran de menu.

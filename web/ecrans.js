@@ -768,6 +768,7 @@
           { cle: "commentaire", libelle: "Commentaire", type: "textarea" }
         ]
       },
+      actions: [{ libelle: "Justificatifs", executer: ouvrirJustificatifs }],
       suppression: { url: "/api/frais/{id}" },
       vide: {
         message: "Aucun frais enregistré. Les frais s'ajoutent ici ou depuis l'espace " +
@@ -2681,6 +2682,135 @@
     fermer.addEventListener("click", function () { bloc.remove(); });
     bloc.appendChild(fermer);
     zone.insertBefore(bloc, zone.firstChild);
+  }
+
+  /* Pièces d'un frais : lecture pour tous, mutations selon les droits existants.
+     Le POST multipart laisse le navigateur poser sa frontière Content-Type. */
+  function ouvrirJustificatifs(frais) {
+    var precedent = document.activeElement;
+    var voile = elt("div", "ecran__voile");
+    var boite = elt("div", "ecran__boite ecran__boite--pieces");
+    boite.setAttribute("role", "dialog");
+    boite.setAttribute("aria-modal", "true");
+    boite.setAttribute("aria-label", "Justificatifs du frais");
+    var titre = elt("h2", "ecran__boite-titre", "Justificatifs du frais");
+    boite.appendChild(titre);
+    boite.appendChild(elt("p", "ecran__aide", "Fichiers conservés sur le serveur — 20 Mio maximum par pièce. Le contenu n’est pas analysé par un antivirus."));
+    var fermer = elt("button", "btn ghost", "Fermer");
+    fermer.type = "button";
+    function fermeture() {
+      document.removeEventListener("keydown", clavier);
+      voile.remove();
+      if (precedent && precedent.isConnected) precedent.focus();
+    }
+    function clavier(ev) {
+      if (ev.key === "Escape") { fermeture(); return; }
+      if (ev.key !== "Tab") return;
+      var controles = boite.querySelectorAll("button:not([disabled]),input:not([disabled])");
+      var premier = controles[0], dernier = controles[controles.length - 1];
+      if (ev.shiftKey && document.activeElement === premier) { ev.preventDefault(); dernier.focus(); }
+      else if (!ev.shiftKey && document.activeElement === dernier) { ev.preventDefault(); premier.focus(); }
+    }
+    fermer.addEventListener("click", fermeture);
+    document.addEventListener("keydown", clavier);
+    var statut = elt("p", "ecran__aide", "Chargement des justificatifs…");
+    statut.setAttribute("role", "status");
+    var erreur = elt("p", "ecran__erreur");
+    erreur.setAttribute("role", "alert");
+    var liste = elt("div", "ecran__pieces");
+    boite.appendChild(statut);
+    boite.appendChild(erreur);
+    boite.appendChild(liste);
+    function reponseJSON(rep) {
+      if (rep.ok) return rep.json();
+      return rep.text().then(function (texte) {
+        var message = "HTTP " + rep.status;
+        try { var corps = JSON.parse(texte); message = corps.detail ? String(corps.detail) : message; }
+        catch (e) { /* Réponse non JSON : conserver le code HTTP. */ }
+        throw new Error(message);
+      });
+    }
+    var chargement = 0;
+    function recharger() {
+      var version = ++chargement;
+      return lire("/api/frais/" + encodeURIComponent(frais.id) + "/justificatifs").then(function (pieces) {
+        if (version !== chargement) return;
+        liste.textContent = "";
+        statut.textContent = pieces.length ? pieces.length + " justificatif(s) conservé(s)." : "Aucun justificatif pour ce frais.";
+        pieces.forEach(function (piece) {
+          var ligne = elt("div", "ecran__piece");
+          ligne.appendChild(elt("p", "ecran__aide", piece.nom_fichier + " — " + piece.taille_octets + " octets"));
+          var telecharger = elt("button", "btn ghost sm", "Télécharger");
+          telecharger.type = "button";
+          telecharger.setAttribute("aria-label", "Télécharger " + piece.nom_fichier);
+          telecharger.addEventListener("click", function () {
+            erreur.textContent = "";
+            telecharger.disabled = true;
+            fetch("/api/frais/justificatif/" + encodeURIComponent(piece.id) + "/download", {
+              headers: entetes(), credentials: "same-origin"
+            }).then(function (rep) {
+              if (!rep.ok) return reponseJSON(rep);
+              return rep.blob();
+            }).then(function (blob) {
+              var url = URL.createObjectURL(blob);
+              var lien = elt("a");
+              lien.href = url; lien.download = piece.nom_fichier;
+              document.body.appendChild(lien); lien.click(); lien.remove();
+              setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+            }).catch(function (e) { erreur.textContent = "Téléchargement impossible : " + e.message; })
+              .finally(function () { telecharger.disabled = false; });
+          });
+          ligne.appendChild(telecharger);
+          if (peutEcrire()) {
+            var supprimer = elt("button", "btn ghost sm ecran__btn-danger", "Supprimer la pièce");
+            supprimer.type = "button";
+            supprimer.setAttribute("aria-label", "Supprimer " + piece.nom_fichier);
+            supprimer.addEventListener("click", function () {
+              if (!window.confirm("Supprimer définitivement ce justificatif ?")) return;
+              supprimer.disabled = true; erreur.textContent = "";
+              ecrire("/api/frais/justificatif/" + encodeURIComponent(piece.id), "DELETE")
+                .then(recharger).catch(function (e) { erreur.textContent = e.message; })
+                .finally(function () { supprimer.disabled = false; });
+            });
+            ligne.appendChild(supprimer);
+          }
+          liste.appendChild(ligne);
+        });
+      });
+    }
+    if (peutEcrire()) {
+      var form = elt("form", "ecran__form");
+      var identifiant = "piece-frais-" + Math.random().toString(36).slice(2);
+      var label = elt("label", "ecran__label", "Fichier justificatif");
+      label.htmlFor = identifiant;
+      var fichier = elt("input", "inp");
+      fichier.type = "file"; fichier.id = identifiant; fichier.required = true;
+      var ajouter = elt("button", "btn btn--primaire", "Ajouter la pièce");
+      ajouter.type = "submit";
+      form.appendChild(label); form.appendChild(fichier); form.appendChild(ajouter);
+      form.addEventListener("submit", function (ev) {
+        ev.preventDefault(); erreur.textContent = "";
+        var piece = fichier.files && fichier.files[0];
+        if (!piece) { erreur.textContent = "Choisissez un fichier."; return; }
+        if (!piece.size || piece.size > 20 * 1024 * 1024) {
+          erreur.textContent = "Choisissez un fichier non vide de 20 Mio maximum."; return;
+        }
+        var corps = new FormData();
+        corps.append("frais_id", frais.id); corps.append("fichier", piece);
+        ajouter.disabled = true;
+        fetch("/api/frais/justificatif/upload", {
+          method: "POST", headers: entetes(), credentials: "same-origin", body: corps
+        }).then(reponseJSON).then(function () {
+          fichier.value = "";
+          return recharger();
+        }).catch(function (e) { erreur.textContent = "Ajout impossible : " + e.message; })
+          .finally(function () { ajouter.disabled = false; });
+      });
+      boite.appendChild(form);
+    }
+    boite.appendChild(fermer); voile.appendChild(boite); document.body.appendChild(voile);
+    fermer.focus();
+    recharger().catch(function (e) { statut.textContent = "Liste indisponible."; erreur.textContent = e.message; });
   }
 
   function afficherResultat(titre, donnees, resume) {

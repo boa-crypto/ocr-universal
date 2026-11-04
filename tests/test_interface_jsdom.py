@@ -59,3 +59,18 @@ def test_interface_dans_un_navigateur():
         "vérifications navigateur en échec :\n" + sortie[-4000:])
     assert "Aucune écriture émise" in sortie
     assert "vérifications passées" in sortie
+
+
+def test_interface_justificatifs():
+    if not _jsdom_disponible():
+        pytest.skip("jsdom absent : lancer npm install pour tester les justificatifs")
+    url = os.environ.get("UNIOCR_UI_URL", "http://127.0.0.1:8000")
+    if not _serveur(url):
+        pytest.skip(f"aucun serveur sur {url} pour charger les fichiers UI")
+    resultat = subprocess.run(
+        ["node", str(RACINE / "tests" / "ui_justificatifs.js"), url],
+        cwd=RACINE, capture_output=True, text=True, timeout=90,
+    )
+    assert resultat.returncode == 0, resultat.stdout + resultat.stderr
+    assert "lecteur sans mutation" in resultat.stdout
+    assert "suppression confirmée" in resultat.stdout

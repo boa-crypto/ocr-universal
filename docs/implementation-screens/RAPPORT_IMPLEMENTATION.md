@@ -1210,6 +1210,38 @@ renommage et commit. Les erreurs de nettoyage de quarantaine sont journalisées.
 Le système de fichiers et SQLite ne constituent pas une transaction distribuée.
 Aucun fichier d'exploitation ajouté au dépôt (`data/justificatifs/` ignoré).
 
+## 2.37 Passe 34 — gestion des pièces depuis un frais
+
+Chaque ligne de Finance → Frais dossier possède maintenant une action
+**Justificatifs**, ouvrant un dialogue dédié : liste lisible (nom et taille), état
+vide/erreur explicite, téléchargement, ajout multipart et suppression confirmée.
+Les erreurs API restent visibles sans fermer le formulaire ; un ajout refusé peut
+être retenté. Les réponses de liste périmées ne remplacent pas une lecture plus récente.
+
+Le champ fichier est étiqueté, refuse absence, vide et taille >20 Mio avant envoi.
+Le navigateur génère la frontière multipart : aucun Content-Type JSON n'est forcé.
+Les téléchargements passent par fetch avec les en-têtes d'authentification et un
+Blob, sans exposer un chemin disque. L'API reste l'autorité sur taille/empreinte.
+Le dialogue rappelle que le fichier n'est pas analysé par antivirus.
+
+Les lecteurs disposent de la liste et du téléchargement, pas du formulaire d'ajout
+ni de suppression. Ce masquage UI ne remplace pas le contrôle serveur des rôles.
+Le dialogue a un nom accessible, des états annoncés, fermeture Échap, boucle Tab
+et restitution du focus. Les noms de fichiers sont rendus avec textContent.
+
+`npm run ui:justificatifs [URL]` charge les fichiers UI réels et **simule l'API**.
+Il vérifie les deux rôles, les validations locales, un refus d'ajout et sa reprise,
+le contenu du multipart, une erreur de téléchargement et sa reprise, le Blob
+reçu, une suppression annulée puis confirmée et les interactions clavier.
+Aucune écriture métier n'est envoyée au serveur. Le test est rejoué dans pytest
+(`test_interface_justificatifs`), avec saut explicite sans node/jsdom ou serveur.
+Les **17 tests API multipart réels** sont rejoués séparément et passent toujours.
+
+Suite complète : **1134 passed / 23 failed / 11 skipped**. Pas de nouveau menu,
+matrice inchangée. Cache v39. Cette preuve jsdom n'est pas un test graphique
+Chromium ni un téléversement navigateur end-to-end contre la vraie API.
+Restent la gestion des blobs résiduels, l'antivirus et les frontières d'arrêt brutal.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

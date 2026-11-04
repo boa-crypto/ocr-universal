@@ -2980,3 +2980,10 @@ dialog::backdrop { background: rgba(1, 4, 13, 0.72); backdrop-filter: blur(4px);
   .ecran__skeleton { animation: none; }
   .ecran__voile, .ecran__boite { animation: none; }
 }
+
+/* Gestion des pièces d'un frais : même dialogue, contenu lisible sans JSON. */
+.ecran__boite--pieces { padding: 20px; }
+.ecran__boite--pieces .ecran__form { padding: 16px 0; }
+.ecran__pieces { display: grid; gap: 10px; margin-block: 12px; }
+.ecran__piece { padding: 12px; border: 1px solid var(--ds-line); border-radius: var(--ds-r-2); overflow-wrap: anywhere; }
+.ecran__piece .btn { margin: 4px 6px 0 0; }
