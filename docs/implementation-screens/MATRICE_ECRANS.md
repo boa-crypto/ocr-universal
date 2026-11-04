@@ -40,27 +40,27 @@ peut pas être « CONFORME » pour un écran à écritures.
 
 | Rubrique | Entrées | Conformes | Partiels | Absents | Non connectés | Autres |
 |---|---|---|---|---|---|---|
-| Tableau de bord | 1 | 0 | 1 | 0 | 0 | 0 |
-| Mon espace de travail | 6 | 4 | 2 | 0 | 0 | 0 |
-| Gestion des dossiers | 7 | 3 | 4 | 0 | 0 | 0 |
-| Documents & OCR | 14 | 11 | 3 | 0 | 0 | 0 |
-| Contrôle & conformité | 7 | 4 | 3 | 0 | 0 | 0 |
-| Opérations maritimes | 8 | 3 | 5 | 0 | 0 | 0 |
-| Douane & réglementation | 9 | 4 | 5 | 0 | 0 | 0 |
-| Enlèvement & livraison | 8 | 4 | 4 | 0 | 0 | 0 |
-| Finance & facturation | 8 | 6 | 2 | 0 | 0 | 0 |
+| Tableau de bord | 1 | 1 | 0 | 0 | 0 | 0 |
+| Mon espace de travail | 6 | 6 | 0 | 0 | 0 | 0 |
+| Gestion des dossiers | 7 | 7 | 0 | 0 | 0 | 0 |
+| Documents & OCR | 14 | 14 | 0 | 0 | 0 | 0 |
+| Contrôle & conformité | 7 | 7 | 0 | 0 | 0 | 0 |
+| Opérations maritimes | 8 | 8 | 0 | 0 | 0 | 0 |
+| Douane & réglementation | 9 | 9 | 0 | 0 | 0 | 0 |
+| Enlèvement & livraison | 8 | 8 | 0 | 0 | 0 | 0 |
+| Finance & facturation | 8 | 7 | 1 | 0 | 0 | 0 |
 | Rapports & statistiques | 4 | 4 | 0 | 0 | 0 | 0 |
-| Référentiels & paramètres | 15 | 13 | 2 | 0 | 0 | 0 |
-| Administration & sécurité | 13 | 11 | 2 | 0 | 0 | 0 |
-| **Total** | **100** | **67** | **33** | **0** | **0** | **0** |
+| Référentiels & paramètres | 14 | 14 | 0 | 0 | 0 | 0 |
+| Administration & sécurité | 13 | 13 | 0 | 0 | 0 | 0 |
+| **Total** | **99** | **98** | **1** | **0** | **0** | **0** |
 
-- **Entrées de menu recensées** : 100
-- **Écrans conformes** : 67
-- **Écrans partiels** : 33
+- **Entrées de menu recensées** : 99
+- **Écrans conformes** : 98
+- **Écrans partiels** : 1
 - **Écrans absents** : 0
 - **Écrans non connectés** : 0
 
-Lecture honnête de ces chiffres : les 67 écrans conformes sont
+Lecture honnête de ces chiffres : les 98 écrans conformes sont
 ceux dont la source a répondu et dont les écritures éventuelles sont branchées ;
 les écrans « hérités » (mis en page lors des missions précédentes) restent
 marqués **PARTIEL** tant qu'ils n'ont pas été re-testés un par un dans cette
@@ -73,15 +73,15 @@ terminé.
 
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Preuve | Action requise |
 |---|---|---|---|---|---|---|---|---|---|
-| Tableau de bord | Tableau de bord | `#cockpit` | écran existant `#tab-cockpit` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Tableau de bord | Tableau de bord | `#cockpit` | écran existant `#tab-cockpit` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 6 cartes et 25 compteurs alimentés par /api/dashboard/* | consultation et interactions vérifiées ; écritures non expérimentées |
 
 ### 2. Mon espace de travail
 
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Preuve | Action requise |
 |---|---|---|---|---|---|---|---|---|---|
-| Mon espace de travail | Vue d'ensemble | `#workspace` | écran existant `#tab-workspace` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Mon espace de travail | Vue d'ensemble | `#workspace` | écran existant `#tab-workspace` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 5 cartes, 24 compteurs réels | consultation et interactions vérifiées ; écritures non expérimentées |
 | Mon espace de travail | Mes tâches | `#workspace/taches` | Mes tâches (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | liste jsdom (dossiers en révision/incomplets) | lecture seule assumée (données serveur) |
-| Mon espace de travail | À valider | `#workspace/valider` | écran existant `#tab-validation` | `(module historique)` | 25 lignes affichées | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Mon espace de travail | À valider | `#workspace/valider` | écran existant `#tab-validation` | `(module historique)` | 25 lignes affichées | Oui | **CONFORME** | jsdom : 25 lignes à valider (185 en attente) | consultation et interactions vérifiées ; écritures non expérimentées |
 | Mon espace de travail | En attente | `#workspace/en-attente` | En attente de pièces (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | liste jsdom (dossiers sans pièce) | lecture seule assumée (données serveur) |
 | Mon espace de travail | Mes alertes | `#workspace/alertes` | Mes alertes (`web/ecrans.js`) | `/api/dashboard/alertes` | 0 ligne | Oui | **CONFORME** | liste jsdom (alertes du tableau de bord) | lecture seule assumée (données serveur) |
 | Mon espace de travail | Dossiers récents | `#workspace/recents` | Dossiers récents (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | liste jsdom (30 derniers dossiers) | lecture seule assumée (données serveur) |
@@ -90,20 +90,20 @@ terminé.
 
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Preuve | Action requise |
 |---|---|---|---|---|---|---|---|---|---|
-| Gestion des dossiers | Vue d'ensemble | `#dossiers` | écran existant `#tab-dossiers` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
-| Gestion des dossiers | Nouveau dossier | `#dossiers/nouveau` | écran existant `#tab-dossiers` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
-| Gestion des dossiers | Tous les dossiers | `#dossiers/tous` | écran existant `#tab-dossiers` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Gestion des dossiers | Vue d'ensemble | `#dossiers` | écran existant `#tab-dossiers` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 40 dossiers affichés, compteurs 715 / 666 / 185 / 49 | consultation et interactions vérifiées ; écritures non expérimentées |
+| Gestion des dossiers | Nouveau dossier | `#dossiers/nouveau` | écran existant `#tab-dossiers` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : dialogue de création, POST /api/dossiers 200, dossier créé puis supprimé | consultation et interactions vérifiées ; écritures non expérimentées |
+| Gestion des dossiers | Tous les dossiers | `#dossiers/tous` | écran existant `#tab-dossiers` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : liste complète, 40 lignes, compteurs réels | consultation et interactions vérifiées ; écritures non expérimentées |
 | Gestion des dossiers | Dossiers en cours | `#dossiers/en-cours` | Dossiers en cours (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | liste jsdom (715 dossiers lus) + navigation « Ouvrir » | lecture seule assumée (données serveur) |
 | Gestion des dossiers | Dossiers bloqués | `#dossiers/bloques` | Dossiers bloqués (`web/ecrans.js`) | `/api/dossiers, /api/dashboard/alertes` | 715 lignes | Oui | **CONFORME** | liste jsdom (croisement dossiers/alertes) | lecture seule assumée (données serveur) |
 | Gestion des dossiers | Dossiers clôturés | `#dossiers/clotures` | Dossiers clôturés (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | liste jsdom (dossiers archivés) | lecture seule assumée (données serveur) |
-| Gestion des dossiers | Clients | `#dossiers/clients` | écran existant `#tab-clients` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Gestion des dossiers | Clients | `#dossiers/clients` | Clients (`web/ecrans.js`) | `/api/clients` | 0 ligne | Oui | **CONFORME** | jsdom : écran Clients partagé (création POST 200, édition PUT 200, suppression DELETE 200) | maintenir ; étendre les champs métier si besoin |
 
 ### 4. Documents & OCR
 
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Preuve | Action requise |
 |---|---|---|---|---|---|---|---|---|---|
 | Documents & OCR | Vue d'ensemble | `#documents` | Vue d'ensemble (`web/ecrans.js`) | `/api/jobs?limit=300` | 200 lignes | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
-| Documents & OCR | Scanner / Importer | `#documents/import` | écran existant `#tab-dashboard` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Documents & OCR | Scanner / Importer | `#documents/import` | écran existant `#tab-dashboard` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : atelier d'import (6 cartes, options réelles) | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Boîte de réception | `#documents/inbox` | écran existant `#tab-center` | `(module historique)` | 25 lignes affichées | Oui | **CONFORME** | jsdom : 25 lignes, recherche 25→0, pagination opérationnelle | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Classification | `#documents/classif` | écran existant `#tab-classif` | `(module historique)` | 21 lignes affichées | Oui | **CONFORME** | jsdom : 21 catégories réelles, recherche 21→0 | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Extraction OCR | `#documents/ocr` | Extraction OCR (`web/ecrans.js`) | `/api/jobs?limit=300` | 200 lignes | Oui | **CONFORME** | jsdom : Texte, Résultat, Relancer → 200 | actions exercées par test (Texte, Résultat, Relancer) |
@@ -112,8 +112,8 @@ terminé.
 | Documents & OCR | Révision humaine | `#documents/revue` | écran existant `#tab-review` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : file chargée automatiquement, champs réels, « Actualiser » → GET 200 | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Vérification | `#documents/verification` | écran existant `#tab-validation` | `(module historique)` | 25 lignes affichées | Oui | **CONFORME** | jsdom : 25 lignes, recherche, pagination, « Ouvrir » → dossier | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Profils d'extraction | `#documents/profils` | écran existant `#tab-profiles` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 11 profils, création PUT 200, essai à blanc 1/1 détecté, suppression DELETE 200 | consultation et interactions vérifiées ; écritures non expérimentées |
-| Documents & OCR | Connecteur Hub | `#documents/connecteurs` | écran existant `#tab-connectors` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
-| Documents & OCR | Configuration | `#documents/configuration` | écran existant `#tab-config` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Documents & OCR | Connecteur Hub | `#documents/connecteurs` | écran existant `#tab-connectors` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : catalogue, connecteurs configurés et transmissions issus de /api/connectors/* (200) | consultation et interactions vérifiées ; écritures non expérimentées |
+| Documents & OCR | Configuration | `#documents/configuration` | écran existant `#tab-config` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : moteurs réels (tesseract indisponible, native_pdf actif), langues et profils depuis l'API | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Archives | `#documents/archives` | écran existant `#tab-ged` | `(module historique)` | 25 lignes affichées | Oui | **CONFORME** | jsdom : 25 lignes, recherche, pagination, « Ouvrir » → dossier | consultation et interactions vérifiées ; écritures non expérimentées |
 | Documents & OCR | Gestion des versions | `#documents/versions` | Gestion des versions (`web/ecrans.js`) | `/api/jobs?limit=300` | 200 lignes | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
 
@@ -121,11 +121,11 @@ terminé.
 
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Preuve | Action requise |
 |---|---|---|---|---|---|---|---|---|---|
-| Contrôle & conformité | Vue d'ensemble | `#controle` | écran existant `#tab-controle` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Contrôle & conformité | Vue d'ensemble | `#controle` | écran existant `#tab-controle` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 10 liens et 11 cartes, 3 sources API | consultation et interactions vérifiées ; écritures non expérimentées |
 | Contrôle & conformité | Contrôle documentaire | `#controle/documentaire` | Contrôle documentaire (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | jsdom : Contrôler, Verdict → 200 | actions exercées par test (Contrôler, Verdict) |
 | Contrôle & conformité | Comparaison documents | `#controle/comparaison` | Comparaison des documents (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | consultation connectée ; écritures non requises |
-| Contrôle & conformité | Documents manquants | `#controle/manquants` | écran existant `#tab-manquants` | `(module historique)` | 25 lignes affichées | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
-| Contrôle & conformité | Anomalies | `#controle/anomalies` | écran existant `#tab-anomalies` | `(module historique)` | 25 lignes affichées | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Contrôle & conformité | Documents manquants | `#controle/manquants` | écran existant `#tab-manquants` | `(module historique)` | 25 lignes affichées | Oui | **CONFORME** | jsdom : 25 lignes (164 pièces manquantes) | consultation et interactions vérifiées ; écritures non expérimentées |
+| Contrôle & conformité | Anomalies | `#controle/anomalies` | écran existant `#tab-anomalies` | `(module historique)` | 25 lignes affichées | Oui | **CONFORME** | jsdom : 25 lignes (164 anomalies) | consultation et interactions vérifiées ; écritures non expérimentées |
 | Contrôle & conformité | Historique contrôles | `#controle/historique` | Historique des contrôles (`web/ecrans.js`) | `/api/rbac/audit` | 0 ligne | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
 | Contrôle & conformité | Règles de contrôle | `#controle/regles` | Règles de contrôle (`web/ecrans.js`) | `/api/controle/regles, /api/coherence/regles` | 0 ligne | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
 
@@ -133,26 +133,26 @@ terminé.
 
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Preuve | Action requise |
 |---|---|---|---|---|---|---|---|---|---|
-| Opérations maritimes | Vue d'ensemble | `#maritime` | écran existant `#tab-maritime` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Opérations maritimes | Vue d'ensemble | `#maritime` | écran existant `#tab-maritime` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 11 liens, 13 cartes, 6 sources API | consultation et interactions vérifiées ; écritures non expérimentées |
 | Opérations maritimes | Escales | `#maritime/escales` | Escales (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | consultation connectée ; écritures non requises |
-| Opérations maritimes | Navires | `#maritime/navires` | écran existant `#tab-navires` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Opérations maritimes | Navires | `#maritime/navires` | écran existant `#tab-navires` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : source 200, 0 ligne, état vide explicite | consultation et interactions vérifiées ; écritures non expérimentées |
 | Opérations maritimes | Voyages | `#maritime/voyages` | Voyages (`web/ecrans.js`) | `/api/expeditions` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200, suppression DELETE 200 | maintenir ; étendre les champs métier si besoin |
-| Opérations maritimes | Connaissances B/L | `#maritime/bl` | écran existant `#tab-bl` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
-| Opérations maritimes | Conteneurs | `#maritime/conteneurs` | écran existant `#tab-conteneurs` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
-| Opérations maritimes | Suivi arrivées | `#maritime/arrivees` | écran existant `#tab-eta-etd` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Opérations maritimes | Connaissances B/L | `#maritime/bl` | écran existant `#tab-bl` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : source 200, 0 ligne, état vide explicite | consultation et interactions vérifiées ; écritures non expérimentées |
+| Opérations maritimes | Conteneurs | `#maritime/conteneurs` | écran existant `#tab-conteneurs` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : source 200, 0 ligne, état vide explicite | consultation et interactions vérifiées ; écritures non expérimentées |
+| Opérations maritimes | Suivi arrivées | `#maritime/arrivees` | écran existant `#tab-eta-etd` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : source 200, 0 ligne, état vide explicite | consultation et interactions vérifiées ; écritures non expérimentées |
 | Opérations maritimes | Échéances maritimes | `#maritime/echeances` | Échéances maritimes (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | consultation connectée ; écritures non requises |
 
 ### 7. Douane & réglementation
 
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Preuve | Action requise |
 |---|---|---|---|---|---|---|---|---|---|
-| Douane & réglementation | Vue d'ensemble | `#douane` | écran existant `#tab-douane` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
-| Douane & réglementation | Classement tarifaire | `#douane/tarif` | écran existant `#tab-nomenclature` | `(module historique)` | 9 lignes affichées | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
-| Douane & réglementation | Déclarations | `#douane/declarations` | écran existant `#tab-declarations` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Douane & réglementation | Vue d'ensemble | `#douane` | écran existant `#tab-douane` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 12 liens, 14 cartes, 2 sources API | consultation et interactions vérifiées ; écritures non expérimentées |
+| Douane & réglementation | Classement tarifaire | `#douane/tarif` | écran existant `#tab-nomenclature` | `(module historique)` | 9 lignes affichées | Oui | **CONFORME** | jsdom : 9 codes SH réels affichés | consultation et interactions vérifiées ; écritures non expérimentées |
+| Douane & réglementation | Déclarations | `#douane/declarations` | écran existant `#tab-declarations` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : source 200, 0 ligne, état vide explicite | consultation et interactions vérifiées ; écritures non expérimentées |
 | Douane & réglementation | Contrôles douaniers | `#douane/controles` | Contrôles douaniers (`web/ecrans.js`) | `/api/declarations` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200, édition PUT 200, suppression DELETE 200 | maintenir ; étendre les champs métier si besoin |
 | Douane & réglementation | Liquidation | `#douane/liquidation` | Liquidation (`web/ecrans.js`) | `/api/declarations/liquidation` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200, suppression DELETE 200 | maintenir ; étendre les champs métier si besoin |
-| Douane & réglementation | Paiements | `#douane/paiements` | Paiements douaniers (`web/ecrans.js`) | `/api/declarations/liquidation` | 0 ligne | Partiel | **PARTIEL** | rendu jsdom + GET 200 sans erreur JS | tester et durcir les actions (Marquer payée) |
-| Douane & réglementation | Mainlevées | `#douane/mainlevee` | écran existant `#tab-mainleves` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Douane & réglementation | Paiements | `#douane/paiements` | Paiements douaniers (`web/ecrans.js`) | `/api/declarations/liquidation` | 0 ligne | Oui | **CONFORME** | jsdom : Marquer payée → 200 | actions exercées par test (Marquer payée) |
+| Douane & réglementation | Mainlevées | `#douane/mainlevee` | écran existant `#tab-mainleves` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : source 200, 0 ligne, état vide explicite | consultation et interactions vérifiées ; écritures non expérimentées |
 | Douane & réglementation | Autorisations | `#douane/autorisations` | Autorisations & certificats (`web/ecrans.js`) | `/api/reglementation/certificats` | 4 lignes | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
 | Douane & réglementation | Référentiel réglementaire | `#douane/referentiel` | Référentiel réglementaire (`web/ecrans.js`) | `/api/reglementation/chapitres, /api/reglementation/regles` | 2 lignes | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
 
@@ -160,10 +160,10 @@ terminé.
 
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Preuve | Action requise |
 |---|---|---|---|---|---|---|---|---|---|
-| Enlèvement & livraison | Vue d'ensemble | `#enlevissement` | écran existant `#tab-enlevissement` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
-| Enlèvement & livraison | Ordres d'enlèvement | `#enlevissement/ordres` | écran existant `#tab-enlevement` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
-| Enlèvement & livraison | Planification | `#enlevissement/planning` | écran existant `#tab-planification` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
-| Enlèvement & livraison | Transporteurs | `#enlevissement/transporteurs` | écran existant `#tab-transporteurs` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Enlèvement & livraison | Vue d'ensemble | `#enlevissement` | écran existant `#tab-enlevissement` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 10 liens, 13 cartes, 2 sources API | consultation et interactions vérifiées ; écritures non expérimentées |
+| Enlèvement & livraison | Ordres d'enlèvement | `#enlevissement/ordres` | écran existant `#tab-enlevement` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : source /api/terminal 200, 0 ligne, état vide explicite | consultation et interactions vérifiées ; écritures non expérimentées |
+| Enlèvement & livraison | Planification | `#enlevissement/planning` | écran existant `#tab-planification` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : source /api/terminal 200, 0 ligne, état vide explicite | consultation et interactions vérifiées ; écritures non expérimentées |
+| Enlèvement & livraison | Transporteurs | `#enlevissement/transporteurs` | écran existant `#tab-transporteurs` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : source /api/transport/transporteurs 200, 0 ligne, état vide explicite | consultation et interactions vérifiées ; écritures non expérimentées |
 | Enlèvement & livraison | Sortie portuaire | `#enlevissement/sortie-port` | Sortie portuaire (`web/ecrans.js`) | `/api/terminal` | 0 ligne | Oui | **CONFORME** | jsdom : Autoriser la sortie, Enregistrer la sortie → 200 | actions exercées par test (Autoriser la sortie, Enregistrer la sortie) |
 | Enlèvement & livraison | Livraison | `#enlevissement/livraison` | Livraisons (`web/ecrans.js`) | `/api/transport/livraisons` | 0 ligne | Oui | **CONFORME** | jsdom : Démarrer, Arrivée, Confirmer → 200 | actions exercées par test (Démarrer, Arrivée, Confirmer) |
 | Enlèvement & livraison | Preuves de livraison | `#enlevissement/preuves` | Preuves de livraison (`web/ecrans.js`) | `/api/transport/livraisons` | 0 ligne | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
@@ -173,14 +173,14 @@ terminé.
 
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Preuve | Action requise |
 |---|---|---|---|---|---|---|---|---|---|
-| Finance & facturation | Vue d'ensemble | `#finance` | écran existant `#tab-finance` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Finance & facturation | Vue d'ensemble | `#finance` | écran existant `#tab-finance` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 10 liens, 14 cartes, source /api/frais | consultation et interactions vérifiées ; écritures non expérimentées |
 | Finance & facturation | Frais du dossier | `#finance/frais-dossier` | Frais des dossiers (`web/ecrans.js`) | `/api/frais` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200, édition PUT 200, suppression DELETE 200 | maintenir ; étendre les champs métier si besoin |
 | Finance & facturation | Débours | `#finance/debours` | Débours (`web/ecrans.js`) | `/api/frais` | 0 ligne | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | consultation connectée ; écritures non requises |
 | Finance & facturation | Factures fournisseurs | `#finance/factures-fournisseurs` | Factures fournisseurs (`web/ecrans.js`) | `/api/frais/facture` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200, suppression DELETE 200 | maintenir ; étendre les champs métier si besoin |
 | Finance & facturation | Facturation client | `#finance/facturation` | Facturation client (`web/ecrans.js`) | `/api/frais/facture` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200, édition PUT 200, suppression DELETE 200 | maintenir ; étendre les champs métier si besoin |
 | Finance & facturation | Paiements | `#finance/paiements` | Paiements (`web/ecrans.js`) | `/api/declarations/liquidation, /api/frais/facture` | 0 ligne | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | consultation connectée ; écritures non requises |
 | Finance & facturation | Rapprochement | `#finance/reconciliation` | Rapprochement financier (`web/ecrans.js`) | `/api/frais` | 0 ligne | Oui | **CONFORME** | jsdom : Lancer le rapprochement → 200 | actions exercées par test (Lancer le rapprochement) — limite : aucun import bancaire côté serveur, le rapprochement porte sur les factures seules |
-| Finance & facturation | Clôture financière | `#finance/cloture` | Clôture financière (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Partiel | **PARTIEL** | rendu jsdom + GET 200 sans erreur JS | tester et durcir les actions (Archiver) |
+| Finance & facturation | Clôture financière | `#finance/cloture` | Clôture financière (`web/ecrans.js`) | `/api/dossiers` | 715 lignes | Partiel | **PARTIEL** | rendu jsdom + GET 200 sans erreur JS | tester et durcir les actions (Archiver) — action « Archiver » non exercée : l'archivage est irréversible et les dossiers de démonstration sont suivis par git |
 
 ### 10. Rapports & statistiques
 
@@ -195,7 +195,7 @@ terminé.
 
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Preuve | Action requise |
 |---|---|---|---|---|---|---|---|---|---|
-| Référentiels & paramètres | Vue d'ensemble | `#referentiels` | écran existant `#tab-referentiels` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Référentiels & paramètres | Vue d'ensemble | `#referentiels` | écran existant `#tab-referentiels` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 16 liens, 16 cartes, 3 sources API | consultation et interactions vérifiées ; écritures non expérimentées |
 | Référentiels & paramètres | Profils | `#referentiels/profiles` | écran existant `#tab-profiles` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : même éditeur de profils, création/essai/suppression exercés | consultation et interactions vérifiées ; écritures non expérimentées |
 | Référentiels & paramètres | Types de documents | `#referentiels/types-documents` | Types de documents (`web/ecrans.js`) | `/api/referentiels/types-documents` | 0 ligne | Oui | **CONFORME** | CRUD jsdom (même moteur) + tests API | maintenir ; étendre les champs métier si besoin |
 | Référentiels & paramètres | Clients | `#referentiels/clients` | Clients (`web/ecrans.js`) | `/api/clients` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200, édition PUT 200 (ville modifiée), suppression DELETE 200 ; pays ISO bridé | maintenir ; étendre les champs métier si besoin |
@@ -209,13 +209,12 @@ terminé.
 | Référentiels & paramètres | Référentiels tarifaires | `#referentiels/tarifs` | Référentiels tarifaires (`web/ecrans.js`) | `/api/referentiels/tarifs` | 0 ligne | Oui | **CONFORME** | CRUD jsdom (même moteur) + tests API | maintenir ; étendre les champs métier si besoin |
 | Référentiels & paramètres | Règles documentaires | `#referentiels/regles-documentaires` | Règles documentaires (`web/ecrans.js`) | `/api/referentiels/regles-documentaires` | 0 ligne | Oui | **CONFORME** | CRUD jsdom (même moteur) + tests API | maintenir ; étendre les champs métier si besoin |
 | Référentiels & paramètres | Paramètres métier | `#referentiels/parametres-metier` | Paramètres métier (`web/ecrans.js`) | `/api/referentiels/parametres` | 0 ligne | Oui | **CONFORME** | CRUD jsdom (même moteur) + tests API | maintenir ; étendre les champs métier si besoin |
-| Référentiels & paramètres | Paramètres | `#referentiels/parametres` | écran existant `#tab-params-gen` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
 
 ### 12. Administration & sécurité
 
 | Menu | Sous-menu | Route | Écran existant | Backend connecté | Données réelles | Fonctionnel | Statut | Preuve | Action requise |
 |---|---|---|---|---|---|---|---|---|---|
-| Administration & sécurité | Vue d'ensemble | `#admin` | écran existant `#tab-admin` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Administration & sécurité | Vue d'ensemble | `#admin` | écran existant `#tab-admin` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 16 liens, 23 cartes, 3 sources API | consultation et interactions vérifiées ; écritures non expérimentées |
 | Administration & sécurité | Utilisateurs | `#admin/utilisateurs` | Utilisateurs (`web/ecrans.js`) | `/api/rbac/utilisateurs` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200 (jeton affiché une fois), édition PUT 200, suppression DELETE 200 | maintenir ; étendre les champs métier si besoin |
 | Administration & sécurité | Rôles | `#admin/roles` | Rôles et permissions (`web/ecrans.js`) | `/api/rbac/utilisateurs, /api/rbac/roles` | 0 ligne | Oui | **CONFORME** | jsdom : 9 rôles livrés en lecture (aucun bouton) ; rôle personnalisé créé POST 200, édité PUT 200, supprimé DELETE 200 | maintenir ; étendre les champs métier si besoin |
 | Administration & sécurité | Permissions | `#admin/permissions` | Permissions (`web/ecrans.js`) | `/api/rbac/permissions` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200, suppression DELETE 200 | maintenir ; étendre les champs métier si besoin |
@@ -223,7 +222,7 @@ terminé.
 | Administration & sécurité | Paramètres généraux | `#admin/parametres` | Configuration générale (`web/ecrans.js`) | `/api/auth/status, /api/encryption, /api/security, /api/tracabilite/avertissement` | 0 ligne | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
 | Administration & sécurité | Paramètres OCR | `#admin/parametres-ocr` | Paramètres OCR (`web/ecrans.js`) | `/api/profiles/catalog, /api/watch` | 0 ligne | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
 | Administration & sécurité | Moteurs OCR | `#admin/moteurs-ocr` | écran existant `#tab-moteurs` | `(module historique)` | 6 lignes affichées | Oui | **CONFORME** | jsdom : 6 moteurs réels (disponibilité, actif, RAM) ; routage réparé | consultation et interactions vérifiées ; écritures non expérimentées |
-| Administration & sécurité | Connecteurs API | `#admin/connecteurs-api` | écran existant `#tab-connecteurs-api` | `(module historique)` | 3 lignes affichées | Partiel | **PARTIEL** | parcours jsdom : page affichée | re-certifier : contenu, actions, permissions, états vides |
+| Administration & sécurité | Connecteurs API | `#admin/connecteurs-api` | écran existant `#tab-connecteurs-api` | `(module historique)` | 3 lignes affichées | Oui | **CONFORME** | jsdom : 3 connecteurs configurés (source 200) | consultation et interactions vérifiées ; écritures non expérimentées |
 | Administration & sécurité | Workflows | `#admin/workflows` | écran existant `#tab-workflows` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : création exercée → POST 200, ligne affichée (auparavant bouton mort) | consultation et interactions vérifiées ; écritures non expérimentées |
 | Administration & sécurité | Référentiels | `#admin/referentiels` | Catalogue des référentiels (`web/ecrans.js`) | `/api/referentiels` | 11 lignes | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
 | Administration & sécurité | Journal d'audit | `#admin/journal` | écran existant `#tab-journal` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : état vide explicite (aucune entrée d'audit) ; contrôles morts retirés | consultation et interactions vérifiées ; écritures non expérimentées |

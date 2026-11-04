@@ -178,8 +178,7 @@
         { key: 'goods', title: 'Types de marchandises', route: '#referentiels/types-marchandises', icon: 'package' },
         { key: 'tariffs', title: 'Référentiels tarifaires', route: '#referentiels/tarifs', icon: 'receipt' },
         { key: 'doc-rules', title: 'Règles documentaires', route: '#referentiels/regles-documentaires', icon: 'file-check' },
-        { key: 'business', title: 'Paramètres métier', route: '#referentiels/parametres-metier', icon: 'sliders' },
-        { key: 'settings', title: 'Paramètres', route: '#referentiels/parametres', icon: 'settings' }
+        { key: 'business', title: 'Paramètres métier', route: '#referentiels/parametres-metier', icon: 'sliders' }
       ]
     },
     {
@@ -633,10 +632,9 @@
       'workspace/recents': 'tab-ecran',
       'dossiers/tous': 'tab-dossiers',
       'dossiers/nouveau': 'tab-dossiers',
-      'dossiers/clients': 'tab-clients',
+      'dossiers/clients': 'tab-ecran',
       'workspace/valider': 'tab-validation',
       'referentiels/profiles': 'tab-profiles',
-      'referentiels/parametres': 'tab-params-gen',
 
       'controle/documentaire': 'tab-ecran',
       'controle/comparaison': 'tab-ecran',

@@ -1,6 +1,6 @@
 # Rapport de tests — écrans UniOCR
 
-Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, commit `929766cb`.
+Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, passe 13.
 
 Ce document liste **uniquement des résultats obtenus**, avec la commande qui
 les produit. Les tests ajoutés dans cette passe sont marqués 🆕.
@@ -12,14 +12,31 @@ les produit. Les tests ajoutés dans cette passe sont marqués 🆕.
 | Commande | Résultat | Commentaire |
 |---|---|---|
 | `ruff check src tests` | **All checks passed** | 0 erreur de style |
-| `python -m pytest -q` | **959 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
-| `python -m pytest tests/test_ui_premium.py -q` | **37 passed** | 33 avant la passe, 4 ajoutés 🆕 |
+| `python -m pytest -q` | **970 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
+| `python -m pytest tests/test_ui_premium.py -q` | **47 passed** | 37 avant la passe 12, 10 ajoutés sur les écrans rôles/utilisateurs |
 | `python -m pytest tests/test_referentiels.py -q` | **7 passed** 🆕 | CRUD, persistance, doublons, audit |
 | `python -m pytest tests/test_route_ordering.py -q` | **4 passed** 🆕 | détection des routes masquées |
 
-Comparaison avec l'état initial de la passe : 945 → **959 tests passants**
-(+14 : 7 référentiels, 4 ordre des routes, 4 intégrité UI, moins un test de
-service worker réécrit pour être version-agnostique).
+Comparaison avec le début du cycle : 945 → **970 tests passants**
+(+7 référentiels, +4 ordre des routes, +10 écrans rôles/utilisateurs, +4
+intégrité UI, moins un test de service worker réécrit pour être
+version-agnostique).
+
+## 1 bis. Mesures d'écrans (passe 13)
+
+Les écrans ne se prouvent pas seulement par des tests serveur. Un harnais
+jsdom (`docs/implementation-screens/outils/dump_interface.js` + scripts
+jetables) a parcouru les 99 routes :
+
+- `dump_interface.js` → 99 routes, **0 page vide** ;
+- matrice régénérée → **99 entrées, 98 conformes, 1 partiel** ;
+- création de dossier par le dialogue : **POST /api/dossiers 200** (dossier
+  d'essai supprimé ensuite, 715 dossiers retrouvés) ;
+- « Marquer payée » sur une liquidation : **PUT 200** (liquidation d'essai
+  supprimée ensuite) ;
+- `dossiers/clients` : 3 boutons, état vide explicite (plus de page héritée
+  muette) ;
+- `#referentiels/parametres` supprimée : plus de formulaire sans sauvegarde.
 
 ## 2. Tests serveur ajoutés
 

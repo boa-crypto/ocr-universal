@@ -1893,6 +1893,12 @@
     };
   });
 
+  /* Le module Dossiers ouvre le même écran Clients que les référentiels
+     (création, édition, suppression) au lieu d'une liste vide sans action. */
+  if (ECRANS["referentiels/clients"] && !ECRANS["dossiers/clients"]) {
+    ECRANS["dossiers/clients"] = ECRANS["referentiels/clients"];
+  }
+
   /* ==================== 3. État et rendu ==================== */
 
   var etats = {};          // { route: { recherche, page, filtres, tri } }

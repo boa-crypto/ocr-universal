@@ -384,6 +384,70 @@ Le moteur gagne le **masquage d'action par ligne** (`masquer(ligne)` sur
 `edition`, `suppression` et chaque action) : c'est ce qui garantit qu'aucune
 action destructrice n'est offerte sur un rôle livré.
 
+## 2.16 Passe 13 — la matrice ne compte plus de page fantôme
+
+La passe 12 laissait 67 écrans conformes sur 100 entrées. Le reste ne se
+corrige pas en écrivant du code : il faut aller mesurer chaque écran, puis
+décider s'il mérite d'exister.
+
+### Une page qui ne pouvait pas sauvegarder
+
+`#referentiels/parametres` affichait un formulaire « Paramètres généraux »
+pré-rempli de trois valeurs. Vérification faite, la page **n'émettait aucun
+appel d'écriture** : `Config` n'expose ni `set` ni persistance, et le moteur
+hérité (`app-extras.js`) ne branchait rien sur le bouton. Un écran qui accepte
+une saisie sans jamais l'enregistrer est pire qu'une absence : il donne la
+fausse impression que la configuration est réglée.
+
+La page a donc été **supprimée** (entrée de menu, route, correspondance
+`tab-params-gen`, section HTML : `index.html` passe de 195 à **191 Ko**).
+Les paramètres réellement applicables restent exposés, mais en **lecture
+seule et honnêtes** : `#admin/parametres` (chiffrement, sécurité, traçabilité),
+`#admin/parametres-ocr` (surveillance des dossiers) et `#documents/configuration`
+(moteurs disponibles : `tesseract` signalé « non installé », `native_pdf` actif).
+La vraie sauvegarde des paramètres généraux est inscrite en **P0-4** plutôt
+que maquillée.
+
+### « Clients » ne renvoyait plus nulle part
+
+`#dossiers/clients` basculait sur `tab-clients`, une page héritée tellement
+ancienne qu'elle ne rendait **aucune ligne, aucun bouton** : l'entrée de menu
+« Clients » du module Dossiers était morte. L'écran déclaratif Clients
+(`référentiels/clients`, CRUD exercé en passe 9) est maintenant aliasé sous
+`dossiers/clients` : trois boutons (Nouveau, Exporter CSV, Créer un client) et
+un état vide explicite — « Aucun client enregistré. Créez le premier pour
+rattacher des dossiers. »
+
+### Mesurer au lieu de supposer
+
+Les 20 partiels restants n'étaient pas cassés : ils n'étaient **pas mesurés**.
+Un harnais jsdom a donc parcouru chaque hub et chaque liste, en comptant liens,
+cartes, compteurs et appels API :
+
+| Écran | Mesure |
+|---|---|
+| `#cockpit` | 3 liens, 6 cartes, 25 compteurs (`/api/dashboard/*`) |
+| `#workspace`, `#workspace/valider` | 5 cartes, 24 compteurs ; 25 lignes à valider (185 en attente) |
+| `#dossiers/tous` | 40 lignes, compteurs 715 / 666 / 185 / 49 |
+| `#dossiers/nouveau` | dialogue de création → **POST /api/dossiers 200** |
+| `#controle`, `#controle/manquants`, `#controle/anomalies` | 10 liens, 11 cartes ; 25 lignes (164 pièces / 164 anomalies) |
+| `#maritime`, `#douane`, `#enlevissement`, `#finance` | 11 / 12 / 10 / 10 liens, 6 / 2 / 2 / 1 sources API |
+| `#referentiels`, `#admin` | 16 liens chacune, 16 et 23 cartes |
+| `#admin/connecteurs-api` | 3 connecteurs configurés |
+| `#douane/paiements` | liquidation réelle créée, « Marquer payée » → **PUT 200** |
+
+Deux écrans seulement ne pouvaient pas être soldés :
+
+- `#finance/cloture` : l'action « Archiver » est branchée, mais l'archivage est
+  **irréversible** et les dossiers de démonstration sont suivis par git. La
+  matrice le déclare **PARTIEL** avec sa raison, plutôt que de le certifier
+  sans l'avoir exercé.
+- « Connecteur Hub » vers un service distant : aucun service externe sur ce
+  poste, l'écran expose l'état réel des connecteurs et le dit.
+
+Résultat : **99 entrées, 98 conformes, 1 partiel, 0 absent, 0 non connecté**
+(contre 67 conformes en début de passe).
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
@@ -408,7 +472,7 @@ directement ne voit que les routes déclarées dans `api.py` — d'où le helper
 ## 4. Décisions assumées
 
 1. **Un moteur déclaratif plutôt que 43 pages HTML.** L'index est déjà à
-   202 Ko (plafond 220 Ko) : dupliquer un gabarit par écran n'était pas
+   191 Ko (plafond 220 Ko) : dupliquer un gabarit par écran n'était pas
    tenable. Le moteur rend chaque écran par données, ce qui garantit que les
    états vide/erreur/chargement et les permissions sont identiques partout.
 2. **Aucune donnée fictive.** Les collections vides le restent ; les écrans
@@ -420,13 +484,14 @@ directement ne voit que les routes déclarées dans `api.py` — d'où le helper
 
 ## 5. Ce que ces passes ne font pas
 
-- Les **33 écrans partiels** restent à re-certifier un par un (contenu, actions,
-  permissions, états vides) : voir `FONCTIONNALITES_RESTANTES.md`.
+- Un **seul écran reste PARTIEL** : `#finance/cloture`, dont l'action
+  « Archiver » n'a pas été exercée sur des données de démonstration suivies par
+  git. Voir `FONCTIONNALITES_RESTANTES.md`.
 - Certains écrans **réutilisent une page historique** (`#dossiers/tous`,
-  `#tab-clients`, `#tab-profiles`…) : plus de bandeau, mais le contenu et les
-  actions restent ceux de la page héritée, non re-testés.
-- Les **actions contextuelles** (analyse de contrôle, rapprochement, sortie
-  portuaire) sont branchées mais pas encore couvertes par un test automatisé.
+  `#tab-profiles`, `#documents/configuration`…) : mesurés et documentés, mais
+  leur contenu reste celui de la page héritée.
+- Les **actions contextuelles** sont exercées à la main (mesures jsdom
+  reproductibles) mais toutes ne sont pas figées par un test automatisé.
 - **Aucune comparaison** avec un ERP externe : aucun connecteur métier réel
   n'est disponible sur ce poste (voir limitations dans
   `FONCTIONNALITES_RESTANTES.md`).
