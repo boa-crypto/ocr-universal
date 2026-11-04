@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 40. Ce document est la liste de travail
+État au 2026-11-04, après la passe 41. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -258,3 +258,17 @@ réponse HTTP et l'événement d'audit ; une absence de réponse/audit ne signif
 que la suppression a été annulée. Relire l'état, ne pas forcer une purge.
 Restent aussi les coupures électriques, interruptions upload/backup, collecte
 contrôlée des résidus et antivirus. Aucune purge automatique ajoutée.
+
+
+### Passe 41 — trace SQLite atomique de suppression disponible
+
+✅ Un reçu local est validé/annulé avec les métadonnées de suppression.
+`pieces-receipt ID --data-dir <magasin> [--json]` le consulte sans écrire.
+Les tests SIGKILL confirment absence avant commit et présence après commit ;
+sauvegarde/restauration couvertes. 78 tests ciblés réussis.
+Le trou de consultation locale de la passe 40 est levé pour les nouvelles
+suppressions de pièces, pas pour le journal fichier ni les opérations historiques.
+Restent relais/réconciliation audit.log, traces transactionnelles des autres
+opérations, durabilité après coupure électrique, interruptions upload/backup,
+collecte contrôlée des résidus et antivirus. Le reçu n'est ni infalsifiable ni
+une attribution vérifiée ; son absence ne prouve jamais une annulation.

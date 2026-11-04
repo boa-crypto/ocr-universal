@@ -22,6 +22,7 @@ from ..business_store import BusinessStore
 from ..config import get_config
 from ..logging_setup import audit, get_logger
 from ..models import Facture, Frais, Justificatif, new_id
+from ..pieces_receipts import enregistrer_suppression
 
 log = get_logger("frais")
 
@@ -597,6 +598,7 @@ def delete_justificatif(justificatif_id: str, request: Request) -> dict:
             if frais is not None:
                 frais.justificatifs = [j for j in frais.justificatifs if j != justificatif_id]
                 frais_store[frais.id] = frais
+            enregistrer_suppression(transaction, justificatif)
             del transaction[justificatif_id]
     except Exception as exc:
         if quarantaine_creee:

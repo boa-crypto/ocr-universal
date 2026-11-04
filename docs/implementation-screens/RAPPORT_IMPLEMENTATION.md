@@ -1514,10 +1514,61 @@ interruption, relire l'état via API et `pieces-check`, sans relancer ni purger
 aveuglément. L'audit fichier n'est pas transactionnel avec SQLite ; une outbox
 transactionnelle/reconciliation reste à concevoir.
 
-Validation : **29 tests de persistance**, dont les quatre nouveaux SIGKILL ;
+Validation : **30 tests de persistance**, dont les quatre nouveaux SIGKILL ;
 ciblés persistance/récupération/diagnostic/UI-API réelle **63 passed**. Ruff OK.
 Suite complète : **1180 passed / 23 failed / 11 skipped** (échecs OCR connus).
 Aucun changement de code métier ni de données utilisateur ; aperçu passe 39
 inchangé. Les tests sont sautés hors POSIX. La preuve concerne la mort d'un
 processus aux points choisis, pas une coupure électrique ni tous les points
 possibles, et ne couvre pas les interruptions upload/backup ni l'antivirus.
+
+
+## 2.44 Passe 41 — reçu SQLite atomique de suppression
+
+La route DELETE écrit désormais un reçu `suppression_justificatif` dans la table
+`objects`, avec la même connexion/transaction que le retrait des métadonnées et
+du lien frais. Une panne d'enregistrement du reçu fait échouer la suppression et
+rétablit le fichier selon les règles exclusives de la passe 39. Un reçu existant
+n'est pas remplacé : l'opération est refusée. Pas de migration de schéma ni de
+reconstitution des anciennes suppressions.
+
+Le reçu contient l'identifiant de la pièce, celui du frais, l'événement,
+la date UTC avec fuseau, la taille et l'empreinte **déclarées** dans la métadonnée.
+Il ne contient ni octets du fichier, ni nom de fichier, ni jeton, ni attribution
+vérifiée à une personne. Il est local et modifiable par un administrateur du
+magasin : ce n'est pas un journal infalsifiable ni une certification comptable.
+
+Consultation opérateur en lecture seule, y compris après disparition des métadonnées :
+
+```sh
+PYTHONPATH=src python -m unocr.cli pieces-receipt just_ID --data-dir <magasin> --json
+```
+
+Réponses `trouve` ou `absent` : code 0 (consultation achevée) ; `indisponible` :
+code 2. Le JSON indique `lecture_seule`, `recu` et les limites. La lecture ciblée
+utilise des paramètres SQL, `mode=ro/query_only`, refuse les bases absentes,
+symboliques, corrompues ou WAL et les reçus incohérents. Aucun magasin/base/sidecar
+n'est créé. Une base encore munie d'un journal chaud peut nécessiter une réouverture
+normale avant consultation ; ne pas présenter le reçu comme un outil de réparation.
+
+Les quatre tests SIGKILL de suppression vérifient maintenant le reçu : absent aux
+trois points avant commit, présent après commit même sans réponse ni audit fichier.
+Le reçu est inséré avant le DELETE SQL : le test avant commit couvre donc son
+rollback effectif, pas seulement une interruption avant sa création. Les copies
+SQLite de sauvegarde/restauration conservent aussi les reçus (test isolé).
+
+Limites : l'écart entre commit et `audit.log` subsiste, mais la trace locale SQLite
+permet de consulter une suppression validée par le nouveau code. Aucun relais
+exactly-once vers le fichier, aucune réconciliation automatique, aucune trace
+transactionnelle d'upload/récupération ou des autres modules ajoutée. L'absence de
+reçu ne prouve pas une annulation, notamment pour les anciennes versions/sauvegardes.
+Après interruption, consulter le reçu **et** l'état réel, ne pas purger aveuglément.
+
+Validation : **10 nouveaux tests de consultation**, **5 nouveaux tests API**, et
+assertions enrichies des quatre SIGKILL existants. **78 tests ciblés réussis** ;
+Ruff OK ; suite complète **1195 passed / 23 failed / 11 skipped**. Échecs OCR connus
+inchangés. Tests entièrement temporaires ; aucune suppression utilisateur exécutée.
+La mention 29 tests de persistance de la passe 40 était une erreur de décompte :
+il y en avait 30, désormais 35. Aucune nouvelle mesure de matrice/navigateur visuel.
+
+Aperçu redémarré sur le backend passe 41, port 8000, hôte distant vérifié HTTP 200.

@@ -320,6 +320,7 @@ def test_suppression_sigkill_preserve_preuve_et_references(client_factory, piece
     from tests._crash_isole import tuer_a_barriere
     from unocr.justificatifs_diagnostic import diagnostiquer_pieces
     from unocr.justificatifs_recovery import RecuperationRefusee, recuperer_piece
+    from unocr.pieces_receipts import consulter_suppression
 
     with client_factory() as client:
         identifiant = upload(client, piece).json()["id"]
@@ -343,6 +344,11 @@ def test_suppression_sigkill_preserve_preuve_et_references(client_factory, piece
         assert client.get(f"/api/frais/{piece}/justificatifs").json() == pieces_attendues
         with sqlite3.connect(tmp_path / "metier.sqlite3") as db:
             assert db.execute("PRAGMA integrity_check").fetchone() == ("ok",)
+        recu = consulter_suppression(tmp_path, identifiant)
+        assert recu["etat"] == ("trouve" if phase == "apres_commit" else "absent")
+        if phase == "apres_commit":
+            assert recu["recu"]["frais_id"] == piece
+            assert recu["recu"]["hash_sha256"] == hashlib.sha256(b"piece test").hexdigest()
         diagnostic = diagnostiquer_pieces(tmp_path)
         categories = {a["categorie"] for a in diagnostic["anomalies"]}
         assert "quarantaine" in categories
@@ -371,3 +377,80 @@ def test_suppression_sigkill_preserve_preuve_et_references(client_factory, piece
         assert client.get(f"/api/frais/{piece}/justificatifs").json() == pieces_attendues
     assert quarantaine.read_bytes() == b"piece test"
     assert (tmp_path / "logs/audit.log").read_bytes() == audit_avant
+
+
+def test_suppression_recu_commit_consultable(client_factory, piece, tmp_path):
+    from unocr.pieces_receipts import consulter_suppression
+
+    with client_factory() as client:
+        identifiant = upload(client, piece).json()["id"]
+        assert consulter_suppression(tmp_path, identifiant)["etat"] == "absent"
+        assert client.delete(f"/api/frais/justificatif/{identifiant}").status_code == 200
+        rep = consulter_suppression(tmp_path, identifiant)
+        assert rep["etat"] == "trouve"
+        assert rep["recu"]["id"] == identifiant
+        assert rep["recu"]["frais_id"] == piece
+        assert rep["recu"]["hash_sha256"] == hashlib.sha256(b"piece test").hexdigest()
+        assert rep["recu"]["taille_octets"] == len(b"piece test")
+        assert "nom_fichier" not in rep["recu"]
+        assert client.delete(f"/api/frais/justificatif/{identifiant}").status_code == 404
+        assert consulter_suppression(tmp_path, identifiant) == rep
+    assert list((tmp_path / "justificatifs").iterdir()) == []
+
+
+def test_echec_ecriture_recu_annule_suppression(client_factory, piece, tmp_path, monkeypatch):
+    from unocr.pieces_receipts import COLLECTION, consulter_suppression
+
+    with client_factory() as client:
+        identifiant = upload(client, piece).json()["id"]
+        original = BusinessStore.__setitem__
+        def panne(self, cle, valeur):
+            if self.collection == COLLECTION:
+                raise sqlite3.OperationalError("écriture du reçu impossible")
+            return original(self, cle, valeur)
+        monkeypatch.setattr(BusinessStore, "__setitem__", panne)
+        assert client.delete(f"/api/frais/justificatif/{identifiant}").status_code == 503
+        assert consulter_suppression(tmp_path, identifiant)["etat"] == "absent"
+        assert client.get(f"/api/frais/{piece}").json()["justificatifs"] == [identifiant]
+        assert client.get(f"/api/frais/justificatif/{identifiant}/download").content == b"piece test"
+        assert not list((tmp_path / "justificatifs").glob("*.tmp"))
+
+
+def test_recu_preexistant_jamais_remplace(client_factory, piece, tmp_path):
+    from unocr.pieces_receipts import COLLECTION, RecuSuppressionPiece, consulter_suppression
+
+    with client_factory() as client:
+        identifiant = upload(client, piece).json()["id"]
+        ancien = RecuSuppressionPiece(id=identifiant, frais_id="autre", hash_sha256="b" * 64, taille_octets=8)
+        BusinessStore(tmp_path / "metier.sqlite3", COLLECTION, RecuSuppressionPiece)[identifiant] = ancien
+        avant = consulter_suppression(tmp_path, identifiant)
+        assert client.delete(f"/api/frais/justificatif/{identifiant}").status_code == 503
+        assert consulter_suppression(tmp_path, identifiant) == avant
+        assert client.get(f"/api/frais/{piece}").json()["justificatifs"] == [identifiant]
+        assert client.get(f"/api/frais/justificatif/{identifiant}/download").content == b"piece test"
+
+
+def test_recu_dans_sauvegarde_restauree(client_factory, piece, tmp_path):
+    from unocr.pieces_receipts import consulter_suppression
+
+    with client_factory() as client:
+        identifiant = upload(client, piece).json()["id"]
+        assert client.delete(f"/api/frais/justificatif/{identifiant}").status_code == 200
+    attendu = consulter_suppression(tmp_path, identifiant)
+    archive = creer_sauvegarde(frais.cfg, destination=tmp_path / "archives")
+    autre = SimpleNamespace(data_dir=tmp_path / "restaure", log_dir=tmp_path / "logs_restaures")
+    restaurer_sauvegarde(autre, archive.chemin)
+    assert consulter_suppression(autre.data_dir, identifiant) == attendu
+
+
+def test_audit_fichier_indisponible_recu_conserve(client_factory, piece, tmp_path, monkeypatch):
+    from unocr.pieces_receipts import consulter_suppression
+
+    with client_factory() as client:
+        identifiant = upload(client, piece).json()["id"]
+        log_bloque = tmp_path / "pas_un_repertoire"
+        log_bloque.write_bytes(b"ne pas modifier")
+        monkeypatch.setattr(frais, "cfg", SimpleNamespace(data_dir=tmp_path, log_dir=log_bloque))
+        assert client.delete(f"/api/frais/justificatif/{identifiant}").status_code == 200
+        assert consulter_suppression(tmp_path, identifiant)["etat"] == "trouve"
+        assert log_bloque.read_bytes() == b"ne pas modifier"
