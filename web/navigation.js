@@ -437,6 +437,7 @@
     hash = hash || window.location.hash || '#cockpit';
     document.querySelectorAll('.nav-item, .nav-subitem').forEach(function (el) {
       el.classList.remove('active');
+      el.removeAttribute('aria-current');
     });
     document.querySelectorAll('.nav-group').forEach(function (groupe) {
       groupe.classList.remove('is-current');
@@ -444,11 +445,15 @@
 
     var sectionKey = hash.replace('#', '').split('/')[0];
     var principal = document.querySelector('.nav-item[data-section="' + sectionKey + '"]');
-    if (principal) principal.classList.add('active');
+    if (principal) {
+      principal.classList.add('active');
+      principal.setAttribute('aria-current', 'page');
+    }
 
     var sous = document.querySelector('.nav-subitem[data-route="' + hash + '"]');
     if (sous) {
       sous.classList.add('active');
+      sous.setAttribute('aria-current', 'page');
       var groupe = sous.closest('.nav-group');
       if (groupe) {
         groupe.classList.add('is-current', 'is-open');

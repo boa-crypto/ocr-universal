@@ -105,6 +105,27 @@ def test_sous_pages_branchees_sur_des_endpoints_existants() -> None:
         assert url in chemins, f"{url} doit exister dans le contrat OpenAPI"
 
 
+def test_accessibilite_de_base() -> None:
+    """Lien d'évitement, cible de contenu, champs nommés, page courante."""
+    index = (WEB / "index.html").read_text(encoding="utf-8")
+    nav = (WEB / "navigation.js").read_text(encoding="utf-8")
+    css = (WEB / "uniocr-ds.css").read_text(encoding="utf-8")
+
+    assert 'class="skip-link"' in index and 'href="#contenu-principal"' in index
+    assert 'id="contenu-principal"' in index
+    assert '<html lang="fr"' in index
+    assert ":focus-visible" in css
+
+    for champ in ("dashboardPeriod", "dashboardClient", "dashboardPort",
+                  "dashboardManager", "transitFileInput"):
+        balise = re.search(r"<[^>]*id=\"" + champ + r"\"[^>]*>", index)
+        assert balise, f"le champ {champ} doit exister"
+        assert "aria-label" in balise.group(0), \
+            f"{champ} doit porter un libellé accessible"
+
+    assert "aria-current" in nav, "le lien courant doit être annoncé aux lecteurs d'écran"
+
+
 def test_rapports_utilisent_les_graphiques_du_serveur() -> None:
     index = (WEB / "index.html").read_text(encoding="utf-8")
     js = (WEB / "rapports.js").read_text(encoding="utf-8")

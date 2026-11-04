@@ -2349,3 +2349,41 @@ dialog::backdrop { background: rgba(1, 4, 13, 0.72); backdrop-filter: blur(4px);
 @media (max-width: 700px) {
   .rapports__grid { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   27. ACCESSIBILITÉ
+   Lien d'évitement, anneaux de focus visibles, réduction des mouvements.
+   ══════════════════════════════════════════════════════════════════════════ */
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 1200;
+  padding: 10px 16px;
+  border-radius: 0 0 var(--ds-r-2) var(--ds-r-2);
+  background: var(--ds-blue);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: top var(--ds-t-fast) var(--ds-ease);
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid var(--ds-cyan);
+  outline-offset: 2px;
+}
+
+/* Un anneau de focus unique, visible sur fond sombre comme sur fond clair. */
+:where(a, button, [role="button"], input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--ds-cyan);
+  outline-offset: 2px;
+  border-radius: var(--ds-r-1);
+}
+
+/* La zone de contenu reçoit le focus après le lien d'évitement, sans cadre. */
+#contenu-principal:focus { outline: none; }
+
+.nav-item[aria-current="page"],
+.nav-subitem[aria-current="page"] { position: relative; }

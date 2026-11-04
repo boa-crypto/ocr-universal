@@ -37,6 +37,7 @@
 </head>
 <body>
 
+<a class="skip-link" href="#contenu-principal">Aller au contenu principal</a>
 <div class="app" id="app">
 
   <!-- ═══════ BARRE LATÉRALE ═══════ -->
@@ -161,7 +162,7 @@
       <button class="btn sm" id="apiBaseBtn">Connecter</button>
     </div>
 
-    <main class="workspace">
+    <main class="workspace" id="contenu-principal" tabindex="-1">
       <!-- ═══════ NOUVELLE NAVIGATION PRINCIPALE ═══════ -->
       <div id="appNavigation" class="app-navigation"></div>
 
@@ -1170,7 +1171,7 @@
         <div class="dashboard-toolbar mb-4 flex flex-wrap gap-3">
           <div class="toolbar-group">
             <label class="toolbar-label">Période</label>
-            <select id="dashboardPeriod" class="toolbar-select">
+            <select id="dashboardPeriod" aria-label="Période du tableau de bord" class="toolbar-select">
               <option value="7j">7 derniers jours</option>
               <option value="30j">30 derniers jours</option>
               <option value="90j">90 derniers jours</option>
@@ -1179,19 +1180,19 @@
           </div>
           <div class="toolbar-group">
             <label class="toolbar-label">Client</label>
-            <select id="dashboardClient" class="toolbar-select">
+            <select id="dashboardClient" aria-label="Filtrer par client" class="toolbar-select">
               <option value="all">Tous les clients</option>
             </select>
           </div>
           <div class="toolbar-group">
             <label class="toolbar-label">Port</label>
-            <select id="dashboardPort" class="toolbar-select">
+            <select id="dashboardPort" aria-label="Filtrer par port" class="toolbar-select">
               <option value="all">Tous les ports</option>
             </select>
           </div>
           <div class="toolbar-group">
             <label class="toolbar-label">Gestionnaire</label>
-            <select id="dashboardManager" class="toolbar-select">
+            <select id="dashboardManager" aria-label="Filtrer par gestionnaire" class="toolbar-select">
               <option value="all">Tous les gestionnaires</option>
             </select>
           </div>
@@ -2524,7 +2525,7 @@ section id="tab-docs" class="page">
                     <div class="caption" id="transitFileName" style="margin-top:8px;font-weight:var(--font-weight-medium);color:var(--color-fg)"></div>
                     <div class="caption" id="transitFileSize"></div>
                   </div>
-                  <input type="file" id="transitFileInput" accept=".pdf,.png,.jpg,.jpeg,.tif,.tiff,.bmp,.webp,.docx,.odt,.txt,.rtf,.csv,.xlsx" hidden>
+                  <input type="file" aria-label="Fichier à importer dans le dossier" id="transitFileInput" accept=".pdf,.png,.jpg,.jpeg,.tif,.tiff,.bmp,.webp,.docx,.odt,.txt,.rtf,.csv,.xlsx" hidden>
                 </div>
                 <div style="margin-top:var(--space-4);display:flex;gap:8px;align-items:center">
                   <button class="btn btn-primary" id="transitAnalyser" disabled>Lancer l'analyse</button>

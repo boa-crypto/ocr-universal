@@ -236,7 +236,19 @@ fret-par-gestionnaire}`) et les compteurs `/api/stats` :
   graphique trompeur ;
 - libellés, valeurs et agrégats viennent exclusivement du serveur.
 
-### 3.9 Animations
+### 3.9 Accessibilité
+
+- **Lien d'évitement** « Aller au contenu principal » (visible au focus) et zone
+  de contenu focalisable.
+- **Anneau de focus unique** (`:focus-visible`) sur tous les éléments
+  interactifs, lisible sur fond sombre comme sur fond clair.
+- **`aria-current="page"`** posé sur l'entrée de navigation courante.
+- Groupes de navigation en `aria-expanded`, onglets en `tablist`/`tab`/
+  `aria-selected` (flèches ← →), recherche en `combobox`, menus en `aria-haspopup`.
+- **Tous les champs portent un libellé** (0 champ sans nom accessible, 0 bouton
+  icône sans `aria-label`, 0 image sans `alt` — vérifié sur la page réelle).
+
+### 3.10 Animations
 
 Transitions de page, ouverture des groupes de navigation, apparition des cartes,
 infobulles, menus, panneaux latéraux, skeletons, tracé progressif des courbes
@@ -245,7 +257,7 @@ Durées 120–720 ms, courbe `cubic-bezier(.22,1,.36,1)`.
 `prefers-reduced-motion: reduce` neutralise animations et tracés ; les
 transitions restent fonctionnelles sans mouvement.
 
-### 3.10 Bibliothèques
+### 3.11 Bibliothèques
 
 **Aucune dépendance ajoutée.** Framer Motion n'est pas applicable (front vanilla) :
 les animations sont en CSS et les graphiques en SVG natif (`web/charts.js`,
@@ -274,7 +286,7 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 .venv/bin/python -m pytest -q              → 924 passed, 24 failed, 11 skipped (71 s)
 ```
 
-- **Nouveau fichier** `tests/test_ui_premium.py` : **20 tests**, tous verts
+- **Nouveau fichier** `tests/test_ui_premium.py` : **21 tests**, tous verts
   (ordre de cascade CSS, absence de `<style>`, présence des modules et des
   identifiants de coque, 5 KPI, palette centralisée, jetons hérités conservés,
   `prefers-reduced-motion` + `@media print`, 12 rubriques, repli + infobulles,
@@ -347,5 +359,6 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
    avec comparaison inter-documents reste à construire.
 5. **Pages de référence / rapports** : contenu encore générique, à brancher sur
    `/api/stats` et les graphiques `/api/dashboard/graphique/*`.
-6. **Accessibilité** : rôles ARIA posés (tablist, menus, combobox) ; un audit
-   clavier complet et un test avec lecteur d'écran restent à faire.
+6. **Accessibilité** : lien d'évitement, focus visible, `aria-current` et
+   libellés vérifiés automatiquement ; il reste un essai avec un lecteur
+   d'écran réel (NVDA/VoiceOver), impossible dans cet environnement.
