@@ -78,12 +78,13 @@ def client_factory(tmp_path, monkeypatch):
     from fastapi import FastAPI
     from fastapi.testclient import TestClient
 
-    from unocr.routes import declarations, expeditions, terminal
+    from unocr.routes import declarations, expeditions, frais, terminal
 
     cfg = SimpleNamespace(data_dir=tmp_path, log_dir=tmp_path / "logs")
     monkeypatch.setattr(declarations, "cfg", cfg)
     monkeypatch.setattr(terminal, "cfg", cfg)
     monkeypatch.setattr(expeditions, "cfg", cfg)
+    monkeypatch.setattr(frais, "cfg", cfg)
     # Dossiers réellement présents sur disque, pas des identifiants fictifs.
     import json
     (tmp_path / "dossiers").mkdir(exist_ok=True)
@@ -96,5 +97,6 @@ def client_factory(tmp_path, monkeypatch):
         app.include_router(declarations.router)
         app.include_router(terminal.router)
         app.include_router(expeditions.router)
+        app.include_router(frais.router)
         return TestClient(app)
     return nouveau

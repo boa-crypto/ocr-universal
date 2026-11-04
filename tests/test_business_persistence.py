@@ -5,7 +5,7 @@ from types import SimpleNamespace
 import pytest
 
 from unocr.business_store import BusinessStore
-from unocr.models import DeclarationDouaniere, Expeditions
+from unocr.models import DeclarationDouaniere, Expeditions, Facture, Frais
 
 
 @pytest.mark.parametrize("route,corps,champ_id,modification", [
@@ -13,6 +13,9 @@ from unocr.models import DeclarationDouaniere, Expeditions
      "id", {"statut": "deposee"}),
     ("/api/declarations/liquidation", {"dossier_id": "dos_test", "declaration_id": "decl_test"},
      "id", {"tva": 120.5}),
+    ("/api/frais", {"dossier_id": "dos_test", "montant": 20}, "id", {"montant": 35}),
+    ("/api/frais/facture", {"dossier_id": "dos_test", "numero_facture": "F-1"},
+     "id", {"montant_ttc": 42, "notes": "Modifiée"}),
     ("/api/expeditions", {"dossier_id": "dos_test", "navire": "NAVIRE"},
      "id", {"navire": "NAVIRE MODIFIE", "date_emission": "2026-11-04"}),
     ("/api/terminal", {"dossier_id": "dos_test", "numero_bl": "BL-1", "numero_conteneur": "CONT-1"},
@@ -105,6 +108,9 @@ def test_sauvegarde_restauration_metier(tmp_path):
     store["decl_test"] = DeclarationDouaniere(id="decl_test", dossier_id="dos_test")
     expeditions = BusinessStore(cfg.data_dir / "metier.sqlite3", "expedition", Expeditions)
     expeditions["exp_test"] = Expeditions(id="exp_test", dossier_id="dos_test", navire="NAVIRE")
+    for collection, modele in [("frais", Frais), ("facture", Facture)]:
+        financier = BusinessStore(cfg.data_dir / "metier.sqlite3", collection, modele)
+        financier["test"] = modele(id="test", dossier_id="dos_test")
     sauvegarde = creer_sauvegarde(cfg)
     autre = SimpleNamespace(data_dir=tmp_path / "restaure", log_dir=tmp_path / "autres_logs")
     restaurer_sauvegarde(autre, sauvegarde.chemin)
@@ -112,6 +118,9 @@ def test_sauvegarde_restauration_metier(tmp_path):
     assert nouveau["decl_test"].dossier_id == "dos_test"
     expeditions_restaurees = BusinessStore(autre.data_dir / "metier.sqlite3", "expedition", Expeditions)
     assert expeditions_restaurees["exp_test"].navire == "NAVIRE"
+    for collection, modele in [("frais", Frais), ("facture", Facture)]:
+        restaure = BusinessStore(autre.data_dir / "metier.sqlite3", collection, modele)
+        assert restaure["test"].dossier_id == "dos_test"
     with pytest.raises(BackupError, match="magasin non vide"):
         restaurer_sauvegarde(autre, sauvegarde.chemin)
 

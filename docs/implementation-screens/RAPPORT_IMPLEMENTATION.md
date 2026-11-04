@@ -1131,6 +1131,44 @@ peuvent pas être récupérés. Matrice inchangée, aucun nouvel écran.
 Limites restantes : frais/factures encore hors de cette protection et persistance ;
 pas de contrôle sémantique complet des dates maritimes, ports ou numéros de B/L.
 
+## 2.35 Passe 32 — frais et factures persistants
+
+Frais et factures utilisent maintenant les collections SQLite `frais` et `facture`.
+Création/réaffectation exigent un dossier présent ; modification validée avant
+écriture ; suppression du dossier bloquée si un objet financier le référence.
+Les tests de liens, dossiers protégés et courses création/suppression sont étendus
+aux deux collections. Le test de sauvegarde/restauration les relit également.
+
+Le CRUD API est relu entre applications pour chaque collection. Un frais portant
+des IDs justificatifs ne peut pas être supprimé par le CRUD générique (409), afin
+de ne pas perdre silencieusement ses liens. Le stockage et téléversement des
+justificatifs restent **hors de cette passe**, encore non certifiés et en mémoire.
+Aucune persistance complète des pièces jointes n'est revendiquée.
+
+Le modèle Facture ignorait `documents_joints` (nom interne `documents_joint`) :
+champ canonique et alias de lecture corrigés. Le rapprochement lisait deux champs
+absents du modèle (`rapprochee`, `operation_bancaire_id`) et échouait avec une vraie
+facture : ces champs existent désormais et sont persistables. Sans opérations
+bancaires importées, le test attend zéro rapprochement et « aucune_correspondance ».
+Il n'y a toujours pas d'import bancaire ni de virement effectué par ce module.
+
+L'écran Paiements perdait toutes ses lignes faute de `facture_id`/`liquidation_id`.
+Les sources et URLs utilisent maintenant `id`, le paiement facture produit le
+statut canonique `payee` et les statuts paye/payee sont exclus des lignes restantes.
+Une panne de l'une des deux sources n'est plus masquée en liste vide. Les écrans
+financiers simples utilisent aussi `id` directement.
+
+Preuves : 4 tests financiers spécifiques (documents joints conservés, rapprochement
+sans import, montant null refusé sans mutation, frais avec pièces non supprimé) ;
+**13 tests de persistance** et **33 tests de liens dossier** ;
+`npm run ui:finance` vérifie le rendu de deux sources, deux paiements simulés,
+leurs URLs/statuts et le retrait des lignes, sans écrire dans les données réelles.
+Suite complète : **1116 passed / 23 failed / 11 skipped**, smoke **15/15**, Ruff OK.
+
+Limites : pas de certification des montants/devises ou obligations comptables,
+pas de journal bancaire ; justificatifs à traiter séparément. Aucune donnée
+financière d'exploitation ajoutée. Matrice inchangée, pas de nouvel écran.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

@@ -1,6 +1,6 @@
 # Rapport de tests — écrans UniOCR
 
-Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 31.
+Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 32.
 
 Ce document liste **uniquement des résultats obtenus**, avec la commande qui
 les produit. Les sections de passes ci-dessous conservent les résultats historiques.
@@ -12,7 +12,7 @@ les produit. Les sections de passes ci-dessous conservent les résultats histori
 | Commande | Résultat | Commentaire |
 |---|---|---|
 | `ruff check src tests` | **All checks passed** | 0 erreur de style |
-| `python -m pytest -q` | **1098 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
+| `python -m pytest -q` | **1116 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
 | `python -m pytest tests/test_ui_premium.py -q` | **56 passed** | tests de contrat et intégrité UI |
 | `python -m pytest tests/test_historique.py -q` | **5 passed** 🆕 | ordre, filtrage par document, événements inconnus, journal illisible |
 | `python -m pytest tests/test_rbac_ecritures.py -q` | **18 passed** | 14 familles d'écriture refusées à un lecteur, refus tracés |
@@ -249,3 +249,13 @@ python3 docs/implementation-screens/outils/generer_matrice.py /tmp/ui.json
   réouverture, date d'émission, sauvegarde/restauration et courses concurrentes.
 - Suite complète : **1098 passed, 23 failed, 11 skipped** ; échecs OCR connus.
 - Smoke UI **15/15**, Ruff sans erreur. Matrice inchangée, pas de nouvel écran.
+
+### Passe 32 — finances persistantes
+
+- `pytest tests/test_finance_persistence.py -q` : **4 passed**.
+- Tests paramétrés étendus : **13 persistance**, **33 liens dossier**, couvrant
+  frais/factures et protection contre suppression concurrente du dossier.
+- `npm run ui:finance` : deux sources avec `id`, statuts payés exclus, URLs et
+  corps PUT vérifiés, retrait des lignes (API simulée, aucune écriture réelle).
+- Suite complète : **1116 passed, 23 failed, 11 skipped** ; échecs OCR connus.
+- Smoke UI **15/15**, Ruff sans erreur. Justificatifs non certifiés par cette passe.

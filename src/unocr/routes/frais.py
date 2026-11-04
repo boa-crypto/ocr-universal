@@ -9,8 +9,10 @@ from pathlib import Path
 from typing import List, Optional
 
 from fastapi import APIRouter, Body, File, HTTPException, Request, UploadFile
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
+from ..business_links import exiger_dossier
+from ..business_store import BusinessStore
 from ..config import get_config
 from ..logging_setup import audit, get_logger
 from ..models import Facture, Frais, Justificatif, new_id
@@ -23,12 +25,8 @@ cfg = get_config()
 
 
 # ───────────────────────────────────────────────────────────────
-# Stores en mémoire
+# Frais/factures persistants ; justificatifs encore en mémoire
 # ───────────────────────────────────────────────────────────────
-
-_frais_store: dict[str, Frais] = {}
-_facture_store: dict[str, Facture] = {}
-
 
 def _get_justificatif_store(request: Request) -> dict:
     if not hasattr(request.app.state, 'justificatif_store'):
@@ -36,16 +34,12 @@ def _get_justificatif_store(request: Request) -> dict:
     return request.app.state.justificatif_store
 
 
-def _get_frais_store(request: Request) -> dict:
-    if not hasattr(request.app.state, 'frais_store'):
-        request.app.state.frais_store = {}
-    return request.app.state.frais_store
+def _get_frais_store(request: Request) -> BusinessStore[Frais]:
+    return BusinessStore(cfg.data_dir / "metier.sqlite3", "frais", Frais)
 
 
-def _get_facture_store(request: Request) -> dict:
-    if not hasattr(request.app.state, 'facture_store'):
-        request.app.state.facture_store = {}
-    return request.app.state.facture_store
+def _get_facture_store(request: Request) -> BusinessStore[Facture]:
+    return BusinessStore(cfg.data_dir / "metier.sqlite3", "facture", Facture)
 
 
 # ───────────────────────────────────────────────────────────────
@@ -141,7 +135,9 @@ def create_frais(
         commentaire=frais.commentaire,
         avance_client=frais.avance_client,
     )
-    store[frais_obj.id] = frais_obj
+    with store.transaction() as transaction:
+        exiger_dossier(cfg, frais_obj.dossier_id)
+        transaction[frais_obj.id] = frais_obj
     audit(cfg.log_dir, "frais_cree", dossier=frais.dossier_id, montant=frais.montant)
     return frais_obj.model_dump()
 
@@ -193,13 +189,17 @@ def update_frais(
 ) -> dict:
     """Mettre à jour un frais."""
     store = _get_frais_store(request)
-    frais = store.get(frais_id)
-    if not frais:
-        raise HTTPException(404, "Frais introuvable")
-
-    update_data = frais_update.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(frais, key, value)
+    with store.transaction() as transaction:
+        frais = transaction.get(frais_id)
+        if not frais:
+            raise HTTPException(404, "Frais introuvable")
+        update_data = frais_update.model_dump(exclude_unset=True)
+        try:
+            frais = Frais.model_validate({**frais.model_dump(), **update_data})
+        except ValidationError as exc:
+            raise HTTPException(422, exc.errors(include_context=False)) from exc
+        exiger_dossier(cfg, frais.dossier_id)
+        transaction[frais_id] = frais
 
     audit(cfg.log_dir, "frais_modifie", cible=frais_id)
     return frais.model_dump()
@@ -212,10 +212,13 @@ def delete_frais(
 ) -> dict:
     """Supprimer un frais."""
     store = _get_frais_store(request)
-    if frais_id not in store:
-        raise HTTPException(404, "Frais introuvable")
-
-    del store[frais_id]
+    with store.transaction() as transaction:
+        frais = transaction.get(frais_id)
+        if frais is None:
+            raise HTTPException(404, "Frais introuvable")
+        if frais.justificatifs:
+            raise HTTPException(409, "Ce frais possède des justificatifs : suppression refusée")
+        del transaction[frais_id]
     audit(cfg.log_dir, "frais_supprime", cible=frais_id)
     return {"deleted": True, "id": frais_id}
 
@@ -247,7 +250,9 @@ def create_facture(
         documents_joints=facture.documents_joints,
         notes=facture.notes,
     )
-    store[facture_obj.id] = facture_obj
+    with store.transaction() as transaction:
+        exiger_dossier(cfg, facture_obj.dossier_id)
+        transaction[facture_obj.id] = facture_obj
     audit(cfg.log_dir, "facture_creee", dossier=facture.dossier_id, numero=facture.numero_facture)
     return facture_obj.model_dump()
 
@@ -273,13 +278,17 @@ def update_facture(
 ) -> dict:
     """Mettre à jour une facture."""
     store = _get_facture_store(request)
-    facture = store.get(facture_id)
-    if not facture:
-        raise HTTPException(404, "Facture introuvable")
-
-    update_data = facture_update.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(facture, key, value)
+    with store.transaction() as transaction:
+        facture = transaction.get(facture_id)
+        if not facture:
+            raise HTTPException(404, "Facture introuvable")
+        update_data = facture_update.model_dump(exclude_unset=True)
+        try:
+            facture = Facture.model_validate({**facture.model_dump(), **update_data})
+        except ValidationError as exc:
+            raise HTTPException(422, exc.errors(include_context=False)) from exc
+        exiger_dossier(cfg, facture.dossier_id)
+        transaction[facture_id] = facture
 
     audit(cfg.log_dir, "facture_modifiee", cible=facture_id)
     return facture.model_dump()

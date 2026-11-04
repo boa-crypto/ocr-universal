@@ -1126,7 +1126,10 @@ class Facture(BaseModel):
     statut_paiement: str = "en_attente"  # en_attente, envoyee, payee, annulee, en_retard, remboursee
     client_id: str = ""
     fournisseur_id: str = ""
-    documents_joint: list[str] = Field(default_factory=list)
+    documents_joints: list[str] = Field(default_factory=list,
+        validation_alias=AliasChoices("documents_joints", "documents_joint"))
+    rapprochee: bool = False
+    operation_bancaire_id: Optional[str] = None
     justificatifs: list[str] = Field(default_factory=list)  # IDs des justificatifs
     notes: str = ""
     date_envoi: Optional[str] = None

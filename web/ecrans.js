@@ -727,7 +727,7 @@
       titre: "Frais des dossiers",
       desc: "Frais imputés aux dossiers : catégorie, fournisseur, montant et état de paiement.",
       source: { url: "/api/frais" },
-      id: "frais_id",
+      id: "id",
       colonnes: [
         { cle: "dossier_id", libelle: "Dossier" },
         { cle: "categorie", libelle: "Catégorie" },
@@ -781,7 +781,7 @@
       titre: "Débours",
       desc: "Frais avancés pour le compte du client, à refacturer.",
       source: { url: "/api/frais" },
-      id: "frais_id",
+      id: "id",
       filtreLocal: function (ligne) { return ligne.avance_client === true; },
       colonnes: [
         { cle: "dossier_id", libelle: "Dossier" },
@@ -802,7 +802,7 @@
       titre: "Factures fournisseurs",
       desc: "Factures reçues des fournisseurs et leur état de règlement.",
       source: { url: "/api/frais/facture" },
-      id: "facture_id",
+      id: "id",
       filtreLocal: function (ligne) { return String(ligne.type_facture || "") === "recue"; },
       colonnes: [
         { cle: "numero_facture", libelle: "N° facture" },
@@ -839,7 +839,7 @@
       titre: "Facturation client",
       desc: "Factures émises vers les clients et reste à encaisser.",
       source: { url: "/api/frais/facture" },
-      id: "facture_id",
+      id: "id",
       filtreLocal: function (ligne) { return String(ligne.type_facture || "") === "emise"; },
       colonnes: [
         { cle: "numero_facture", libelle: "N° facture" },
@@ -890,20 +890,20 @@
       source: {
         charger: function () {
           return Promise.all([
-            lire("/api/frais/facture").catch(function () { return []; }),
-            lire("/api/declarations/liquidation").catch(function () { return []; })
+            lire("/api/frais/facture"),
+            lire("/api/declarations/liquidation")
           ]).then(function (r) {
             var factures = (r[0] || []).filter(function (f) {
-              return String(f.statut_paiement || "") !== "paye";
+              return ["paye", "payee"].indexOf(String(f.statut_paiement || "")) === -1;
             }).map(function (f) {
-              return Object.assign({ origine: "Facture", cle: f.facture_id }, f);
+              return Object.assign({ origine: "Facture", cle: f.id }, f);
             });
             var liquidations = (r[1] || []).filter(function (l) {
               return String(l.statut || "") !== "payee";
             }).map(function (l) {
               return Object.assign({
                 origine: "Liquidation douanière",
-                cle: l.liquidation_id,
+                cle: l.id,
                 numero_facture: "Liquidation " + (l.date_liquidation || ""),
                 montant_ttc: l.total_a_payer,
                 statut_paiement: l.statut
@@ -928,13 +928,13 @@
         libelle: "Marquer payé",
         url: function (ligne) {
           return ligne.origine === "Facture"
-            ? "/api/frais/facture/" + ligne.facture_id
-            : "/api/declarations/liquidation/" + ligne.liquidation_id;
+            ? "/api/frais/facture/" + ligne.id
+            : "/api/declarations/liquidation/" + ligne.id;
         },
         methode: "PUT",
         corps: function (ligne) {
           return ligne.origine === "Facture"
-            ? { statut_paiement: "paye" }
+            ? { statut_paiement: "payee" }
             : { statut: "payee" };
         },
         confirmation: "Confirmer l'encaissement de cette pièce ?",
@@ -952,7 +952,7 @@
             "donc sur les factures et retournera zéro opération tant que " +
             "l'import bancaire n'est pas branché.",
       source: { url: "/api/frais" },
-      id: "frais_id",
+      id: "id",
       colonnes: [
         { cle: "dossier_id", libelle: "Dossier" },
         { cle: "categorie", libelle: "Catégorie" },

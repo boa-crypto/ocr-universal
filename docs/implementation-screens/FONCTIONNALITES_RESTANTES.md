@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 31. Ce document est la liste de travail
+État au 2026-11-04, après la passe 32. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -164,3 +164,13 @@ Cette coordination n'est pas une transaction distribuée entre JSON et SQLite.
 Les limites de la passe 30 sur les expéditions sont levées. Restent notamment
 frais/factures et justificatifs, règles sémantiques maritimes et interventions
 hors API. Aucun nouveau CRUD navigateur complet Voyages n'est revendiqué.
+
+### Passe 32 — frais et factures intégrés
+
+✅ Frais et factures persistants, sauvegardés, références dossier vérifiées et
+suppression du dossier protégée. Les limites précédentes sur ces deux objets sont
+levées. Paiements utilise les vrais identifiants et statuts ; preuve navigateur
+rejouable avec API simulée : `npm run ui:finance`.
+Restent en priorité les justificatifs (métadonnées, fichiers, téléversement,
+suppression cohérente, sauvegarde), l'import bancaire réel et la validation
+comptable des montants/devises. Le rapprochement ne simule aucune opération réelle.

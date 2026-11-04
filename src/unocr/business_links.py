@@ -12,7 +12,14 @@ from typing import Any
 from fastapi import HTTPException
 
 from .business_store import BusinessStore
-from .models import DeclarationDouaniere, Expeditions, Liquidation, TerminalEnlevement
+from .models import (
+    DeclarationDouaniere,
+    Expeditions,
+    Facture,
+    Frais,
+    Liquidation,
+    TerminalEnlevement,
+)
 
 
 def exiger_dossier(cfg: Any, identifiant: str, absent: int = 422) -> None:
@@ -35,6 +42,8 @@ def exiger_dossier_sans_liens(transaction: BusinessStore[DeclarationDouaniere], 
         ("liquidation", Liquidation, "une liquidation"),
         ("terminal", TerminalEnlevement, "un enlèvement"),
         ("expedition", Expeditions, "une expédition"),
+        ("frais", Frais, "un frais"),
+        ("facture", Facture, "une facture"),
     ]:
         if any(objet.dossier_id == identifiant for objet in transaction.related(collection, model).values()):
             raise HTTPException(409, f"Suppression refusée : {nom} référence encore ce dossier")
