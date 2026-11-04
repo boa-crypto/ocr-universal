@@ -178,7 +178,8 @@
         { key: 'goods', title: 'Types de marchandises', route: '#referentiels/types-marchandises', icon: 'package' },
         { key: 'tariffs', title: 'Référentiels tarifaires', route: '#referentiels/tarifs', icon: 'receipt' },
         { key: 'doc-rules', title: 'Règles documentaires', route: '#referentiels/regles-documentaires', icon: 'file-check' },
-        { key: 'business', title: 'Paramètres métier', route: '#referentiels/parametres-metier', icon: 'sliders' }
+        { key: 'business', title: 'Paramètres métier', route: '#referentiels/parametres-metier', icon: 'sliders' },
+        { key: 'settings', title: 'Paramètres généraux', route: '#referentiels/parametres', icon: 'sliders' }
       ]
     },
     {
@@ -192,7 +193,7 @@
         { key: 'roles', title: 'Rôles', route: '#admin/roles', icon: 'shield' },
         { key: 'permissions', title: 'Permissions', route: '#admin/permissions', icon: 'key-round' },
         { key: 'teams', title: 'Équipes', route: '#admin/equipes', icon: 'user-group' },
-        { key: 'settings', title: 'Paramètres généraux', route: '#admin/parametres', icon: 'sliders' },
+        { key: 'settings', title: 'Configuration & sécurité', route: '#admin/parametres', icon: 'shield' },
         { key: 'ocr-settings', title: 'Paramètres OCR', route: '#admin/parametres-ocr', icon: 'cpu' },
         { key: 'engines', title: 'Moteurs OCR', route: '#admin/moteurs-ocr', icon: 'database' },
         { key: 'connectors', title: 'Connecteurs API', route: '#admin/connecteurs-api', icon: 'plug' },
@@ -673,6 +674,7 @@
       'referentiels/tarifs': 'tab-ecran',
       'referentiels/regles-documentaires': 'tab-ecran',
       'referentiels/parametres-metier': 'tab-ecran',
+      'referentiels/parametres': 'tab-ecran',
       'referentiels/types-documents': 'tab-ecran',
       'admin/permissions': 'tab-ecran',
       'admin/equipes': 'tab-ecran',

@@ -1893,6 +1893,49 @@
     };
   });
 
+  /* Les paramètres généraux : valeurs réellement lues par le serveur,
+     écrites dans `data/parametres.json` (jamais dans la config livrée).
+     La modification est validée côté serveur (422 nommant le champ) ; ici on
+     n'affiche que ce que le serveur annonce. */
+  ECRANS["referentiels/parametres"] = {
+    section: "Référentiels & paramètres",
+    titre: "Paramètres généraux",
+    desc: "Réglages appliqués par le serveur d'extraction. Chaque valeur est " +
+          "validée avant écriture et prend effet immédiatement.",
+    source: { url: "/api/parametres" },
+    sourceCle: "parametres",
+    id: "cle",
+    colonnes: [
+      { cle: "libelle", libelle: "Réglage" },
+      { cle: "valeur", libelle: "Valeur" },
+      { cle: "etat", libelle: "État" },
+      { cle: "defaut", libelle: "Défaut" },
+      { cle: "effet", libelle: "Ce que cela change" }
+    ],
+    filtres: [{ cle: "etat", libelle: "État" }],
+    edition: {
+      url: "/api/parametres/{id}",
+      champs: [
+        { cle: "valeur", libelle: "Nouvelle valeur", requis: true,
+          aide: "Entier, ou codes de langue séparés par des virgules. " +
+                "Le serveur refuse une valeur hors bornes en nommant le réglage." }
+      ]
+    },
+    actions: [{
+      libelle: "Rétablir le défaut",
+      url: "/api/parametres/{id}",
+      methode: "DELETE",
+      confirmation: "Revenir à la valeur livrée avec l'application ?",
+      succes: "Valeur par défaut rétablie",
+      /* Un réglage déjà au défaut n'a rien à rétablir. */
+      masquer: function (ligne) { return !ligne.modifie; }
+    }],
+    vide: {
+      message: "Le serveur n'expose aucun réglage modifiable : rien à régler ici.",
+      action: { libelle: "Voir la configuration", route: "#admin/parametres" }
+    }
+  };
+
   /* Le module Dossiers ouvre le même écran Clients que les référentiels
      (création, édition, suppression) au lieu d'une liste vide sans action. */
   if (ECRANS["referentiels/clients"] && !ECRANS["dossiers/clients"]) {

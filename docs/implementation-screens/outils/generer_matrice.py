@@ -74,6 +74,7 @@ ACTIONS_TESTEES: dict[str, set[str]] = {
     "enlevissement/livraison": {"Démarrer", "Arrivée", "Confirmer"},
     "rapports/exports": {"Télécharger (JSON)", "Télécharger (CSV)"},
     "douane/paiements": {"Marquer payée"},
+    "referentiels/parametres": {"Rétablir le défaut"},
 }
 #: Limitations externes connues, affichées dans la colonne « Action requise ».
 LIMITES: dict[str, str] = {
@@ -108,6 +109,7 @@ HISTORIQUES_VERIFIES: dict[str, str] = {
     "enlevissement": "jsdom : 10 liens, 13 cartes, 2 sources API",
     "finance": "jsdom : 10 liens, 14 cartes, source /api/frais",
     "finance/cloture": "jsdom : 25 dossiers clos, source 200",
+    "referentiels/parametres": "jsdom : 7 réglages, PUT 200 puis DELETE 200, 422 nommant le champ hors bornes",
     "referentiels": "jsdom : 16 liens, 16 cartes, 3 sources API",
     "admin": "jsdom : 16 liens, 23 cartes, 3 sources API",
     "admin/connecteurs-api": "jsdom : 3 connecteurs configurés (source 200)",
@@ -205,7 +207,8 @@ def compter(donnees: Any) -> int | None:
     if isinstance(donnees, list):
         return len(donnees)
     if isinstance(donnees, dict):
-        for cle in ("entrees", "items", "lignes", "collections", "dossiers", "jobs"):
+        for cle in ("entrees", "items", "lignes", "collections", "dossiers",
+                    "jobs", "parametres"):
             if isinstance(donnees.get(cle), list):
                 return len(donnees[cle])
     return None

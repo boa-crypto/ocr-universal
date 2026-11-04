@@ -50,17 +50,17 @@ peut pas être « CONFORME » pour un écran à écritures.
 | Enlèvement & livraison | 8 | 8 | 0 | 0 | 0 | 0 |
 | Finance & facturation | 8 | 7 | 1 | 0 | 0 | 0 |
 | Rapports & statistiques | 4 | 4 | 0 | 0 | 0 | 0 |
-| Référentiels & paramètres | 14 | 14 | 0 | 0 | 0 | 0 |
+| Référentiels & paramètres | 15 | 15 | 0 | 0 | 0 | 0 |
 | Administration & sécurité | 13 | 13 | 0 | 0 | 0 | 0 |
-| **Total** | **99** | **98** | **1** | **0** | **0** | **0** |
+| **Total** | **100** | **99** | **1** | **0** | **0** | **0** |
 
-- **Entrées de menu recensées** : 99
-- **Écrans conformes** : 98
+- **Entrées de menu recensées** : 100
+- **Écrans conformes** : 99
 - **Écrans partiels** : 1
 - **Écrans absents** : 0
 - **Écrans non connectés** : 0
 
-Lecture honnête de ces chiffres : les 98 écrans conformes sont
+Lecture honnête de ces chiffres : les 99 écrans conformes sont
 ceux dont la source a répondu et dont les écritures éventuelles sont branchées ;
 les écrans « hérités » (mis en page lors des missions précédentes) restent
 marqués **PARTIEL** tant qu'ils n'ont pas été re-testés un par un dans cette
@@ -209,6 +209,7 @@ terminé.
 | Référentiels & paramètres | Référentiels tarifaires | `#referentiels/tarifs` | Référentiels tarifaires (`web/ecrans.js`) | `/api/referentiels/tarifs` | 0 ligne | Oui | **CONFORME** | CRUD jsdom (même moteur) + tests API | maintenir ; étendre les champs métier si besoin |
 | Référentiels & paramètres | Règles documentaires | `#referentiels/regles-documentaires` | Règles documentaires (`web/ecrans.js`) | `/api/referentiels/regles-documentaires` | 0 ligne | Oui | **CONFORME** | CRUD jsdom (même moteur) + tests API | maintenir ; étendre les champs métier si besoin |
 | Référentiels & paramètres | Paramètres métier | `#referentiels/parametres-metier` | Paramètres métier (`web/ecrans.js`) | `/api/referentiels/parametres` | 0 ligne | Oui | **CONFORME** | CRUD jsdom (même moteur) + tests API | maintenir ; étendre les champs métier si besoin |
+| Référentiels & paramètres | Paramètres généraux | `#referentiels/parametres` | Paramètres généraux (`web/ecrans.js`) | `/api/parametres` | 7 lignes | Oui | **CONFORME** | jsdom : Rétablir le défaut → 200 | actions exercées par test (Rétablir le défaut) |
 
 ### 12. Administration & sécurité
 
@@ -219,7 +220,7 @@ terminé.
 | Administration & sécurité | Rôles | `#admin/roles` | Rôles et permissions (`web/ecrans.js`) | `/api/rbac/utilisateurs, /api/rbac/roles` | 0 ligne | Oui | **CONFORME** | jsdom : 9 rôles livrés en lecture (aucun bouton) ; rôle personnalisé créé POST 200, édité PUT 200, supprimé DELETE 200 | maintenir ; étendre les champs métier si besoin |
 | Administration & sécurité | Permissions | `#admin/permissions` | Permissions (`web/ecrans.js`) | `/api/rbac/permissions` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200, suppression DELETE 200 | maintenir ; étendre les champs métier si besoin |
 | Administration & sécurité | Équipes | `#admin/equipes` | Équipes (`web/ecrans.js`) | `/api/referentiels/equipes` | 0 ligne | Oui | **CONFORME** | CRUD jsdom (même moteur) + tests API | maintenir ; étendre les champs métier si besoin |
-| Administration & sécurité | Paramètres généraux | `#admin/parametres` | Configuration générale (`web/ecrans.js`) | `/api/auth/status, /api/encryption, /api/security, /api/tracabilite/avertissement` | 0 ligne | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
+| Administration & sécurité | Configuration & sécurité | `#admin/parametres` | Configuration générale (`web/ecrans.js`) | `/api/auth/status, /api/encryption, /api/security, /api/tracabilite/avertissement` | 0 ligne | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
 | Administration & sécurité | Paramètres OCR | `#admin/parametres-ocr` | Paramètres OCR (`web/ecrans.js`) | `/api/profiles/catalog, /api/watch` | 0 ligne | Oui | **CONFORME** | rendu jsdom + GET 200 sans erreur JS | lecture seule assumée (données serveur) |
 | Administration & sécurité | Moteurs OCR | `#admin/moteurs-ocr` | écran existant `#tab-moteurs` | `(module historique)` | 6 lignes affichées | Oui | **CONFORME** | jsdom : 6 moteurs réels (disponibilité, actif, RAM) ; routage réparé | consultation et interactions vérifiées ; écritures non expérimentées |
 | Administration & sécurité | Connecteurs API | `#admin/connecteurs-api` | écran existant `#tab-connecteurs-api` | `(module historique)` | 3 lignes affichées | Oui | **CONFORME** | jsdom : 3 connecteurs configurés (source 200) | consultation et interactions vérifiées ; écritures non expérimentées |

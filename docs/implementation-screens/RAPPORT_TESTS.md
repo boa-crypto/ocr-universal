@@ -12,12 +12,13 @@ les produit. Les tests ajoutés dans cette passe sont marqués 🆕.
 | Commande | Résultat | Commentaire |
 |---|---|---|
 | `ruff check src tests` | **All checks passed** | 0 erreur de style |
-| `python -m pytest -q` | **970 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
-| `python -m pytest tests/test_ui_premium.py -q` | **47 passed** | 37 avant la passe 12, 10 ajoutés sur les écrans rôles/utilisateurs |
+| `python -m pytest -q` | **981 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
+| `python -m pytest tests/test_ui_premium.py -q` | **48 passed** | +10 en passe 12, +1 en passe 14 (paramètres généraux) |
+| `python -m pytest tests/test_parametres.py -q` | **10 passed** 🆕 | écriture, bornes, persistance, effet réel sur l'import |
 | `python -m pytest tests/test_referentiels.py -q` | **7 passed** 🆕 | CRUD, persistance, doublons, audit |
 | `python -m pytest tests/test_route_ordering.py -q` | **4 passed** 🆕 | détection des routes masquées |
 
-Comparaison avec le début du cycle : 945 → **970 tests passants**
+Comparaison avec le début du cycle : 945 → **981 tests passants**
 (+7 référentiels, +4 ordre des routes, +10 écrans rôles/utilisateurs, +4
 intégrité UI, moins un test de service worker réécrit pour être
 version-agnostique).

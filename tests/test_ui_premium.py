@@ -901,3 +901,34 @@ def test_ecran_roles_distingue_livres_et_personnalises() -> None:
 
     assert "'admin/roles': 'tab-ecran'" in nav
     assert 'id="tab-roles"' not in html
+
+
+def test_ecran_parametres_generaux_ecrit_vraiment() -> None:
+    """La page « Paramètres généraux » écrit dans une API qui persiste.
+
+    La version précédente affichait un formulaire pré-rempli sans jamais
+    enregistrer. L'écran actuel lit `/api/parametres`, modifie par PUT et
+    rétablit le défaut par DELETE — on vérifie ici le câblage, le serveur étant
+    couvert par `tests/test_parametres.py`.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    moteur = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+    nav = (racine / "web" / "navigation.js").read_text(encoding="utf-8")
+    serveur = (racine / "src" / "unocr" / "routes" / "parametres.py").read_text(
+        encoding="utf-8")
+
+    debut = moteur.index('ECRANS["referentiels/parametres"]')
+    bloc = moteur[debut:debut + 1800]
+    assert 'source: { url: "/api/parametres" }' in bloc
+    assert 'sourceCle: "parametres"' in bloc
+    assert 'url: "/api/parametres/{id}"' in bloc
+    assert 'methode: "DELETE"' in bloc          # « Rétablir le défaut »
+    assert "masquer: function (ligne) { return !ligne.modifie; }" in bloc
+
+    # la route n'est plus une page morte : elle est branchée sur le moteur
+    assert "{ key: 'settings', title: 'Paramètres généraux', route: '#referentiels/parametres'" in nav
+    assert "'referentiels/parametres': 'tab-ecran'" in nav
+
+    # le serveur valide en nommant le champ et persiste hors de config/
+    assert '"champ": self.cle' in serveur
+    assert "parametres.json" in serveur or "parametres_path" in serveur

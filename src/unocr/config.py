@@ -6,6 +6,8 @@ import os
 from pathlib import Path
 from typing import Any
 
+from .logging_setup import get_logger
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 DEFAULTS: dict[str, Any] = {
@@ -57,9 +59,15 @@ def _deep_merge(base: dict, override: dict) -> dict:
 
 
 class Config:
-    def __init__(self, data: dict[str, Any], root: Path):
+    def __init__(self, data: dict[str, Any], root: Path,
+                 surcharges: dict[str, Any] | None = None):
         self.data = data
         self.root = root
+        #: valeurs écrites depuis l'interface (data/parametres.json)
+        self.surcharges: dict[str, Any] = dict(surcharges or {})
+        #: valeurs de référence (fichier de config + défauts), pour pouvoir
+        #: revenir en arrière sans redémarrer le serveur.
+        self._defauts: dict[str, Any] = json.loads(json.dumps(data))
 
     # -- accès -----------------------------------------------------------
     def get(self, dotted: str, default: Any = None) -> Any:
@@ -116,6 +124,91 @@ class Config:
     def web_dir(self) -> Path:
         return self.root / "web"
 
+    @property
+    def parametres_path(self) -> Path:
+        """Fichier des paramètres modifiés depuis l'interface.
+
+        Séparé de ``config/default.json`` : une mise à jour du projet ne doit
+        pas effacer les réglages d'exploitation, et un réglage d'exploitation
+        ne doit pas réécrire les défauts livrés.
+        """
+        return self.data_dir / PARAMETRES_FILE
+
+    # -- écriture des paramètres ----------------------------------------
+    def valeur_par_defaut(self, cle: str) -> Any:
+        node: Any = self._defauts
+        for part in cle.split("."):
+            if not isinstance(node, dict) or part not in node:
+                return None
+            node = node[part]
+        return node
+
+    def definir(self, cle: str, valeur: Any) -> None:
+        """Applique et persiste une valeur ; l'effet est immédiat."""
+        parts = cle.split(".")
+        node = self.data
+        for part in parts[:-1]:
+            if not isinstance(node.get(part), dict):
+                node[part] = {}
+            node = node[part]
+        node[parts[-1]] = valeur
+        self.surcharges[cle] = valeur
+        self._ecrire_surcharges()
+
+    def reinitialiser(self, cle: str) -> bool:
+        """Retire la surcharge et revient à la valeur de référence."""
+        if cle not in self.surcharges:
+            return False
+        self.surcharges.pop(cle, None)
+        parts = cle.split(".")
+        node = self.data
+        for part in parts[:-1]:
+            if not isinstance(node, dict) or part not in node:
+                node = {}
+                break
+            node = node[part]
+        if isinstance(node, dict):
+            defaut = self.valeur_par_defaut(cle)
+            if defaut is None:
+                node.pop(parts[-1], None)
+            else:
+                node[parts[-1]] = defaut
+        self._ecrire_surcharges()
+        return True
+
+    def _ecrire_surcharges(self) -> None:
+        try:
+            path = self.parametres_path
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(json.dumps(dict(sorted(self.surcharges.items())),
+                                       ensure_ascii=False, indent=2) + "\n",
+                            encoding="utf-8")
+        except OSError:
+            get_logger("config").exception("impossible d'écrire les paramètres")
+
+
+PARAMETRES_FILE = "parametres.json"
+
+
+def donnees_dir(root: Path) -> Path:
+    """Répertoire de données effectif (respecte UNOCR_DATA_DIR)."""
+    env = os.environ.get("UNOCR_DATA_DIR")
+    return Path(env).resolve() if env else root / "data"
+
+
+def _lire_surcharges(root: Path) -> dict[str, Any]:
+    path = donnees_dir(root) / PARAMETRES_FILE
+    if not path.is_file():
+        return {}
+    try:
+        contenu = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        get_logger("config").warning("paramètres illisibles : %s", path)
+        return {}
+    if not isinstance(contenu, dict):
+        return {}
+    return {str(k): v for k, v in contenu.items()}
+
 
 def load_config(config_path: str | os.PathLike | None = None) -> Config:
     root = Path(os.environ.get("UNOCR_ROOT", PROJECT_ROOT)).resolve()
@@ -128,7 +221,16 @@ def load_config(config_path: str | os.PathLike | None = None) -> Config:
                 data = _deep_merge(DEFAULTS, user_cfg)
         except (json.JSONDecodeError, OSError):
             pass  # config illisible → défauts, signalé par le journal
-    return Config(data, root)
+    surcharges = _lire_surcharges(root)
+    for cle, valeur in surcharges.items():
+        parts = cle.split(".")
+        node = data
+        for part in parts[:-1]:
+            if not isinstance(node.get(part), dict):
+                node[part] = {}
+            node = node[part]
+        node[parts[-1]] = valeur
+    return Config(data, root, surcharges)
 
 
 _CONFIG: Config | None = None

@@ -448,6 +448,67 @@ Deux écrans seulement ne pouvaient pas être soldés :
 Résultat : **99 entrées, 98 conformes, 1 partiel, 0 absent, 0 non connecté**
 (contre 67 conformes en début de passe).
 
+## 2.17 Passe 14 — des paramètres qui s'appliquent vraiment
+
+La passe 13 avait supprimé la page « Paramètres généraux » : son formulaire
+n'enregistrait rien. Supprimer ne suffisait pas — un poste sans réglage reste
+un poste qu'on ne peut pas exploiter. Cette passe rend la fonction réelle.
+
+### Ce qui est écrit, et où
+
+`PUT /api/parametres/{cle}` écrit dans **`data/parametres.json`**, jamais dans
+`config/default.json` : une mise à jour du projet ne doit pas écraser les
+réglages d'exploitation, et un réglage d'exploitation ne doit pas réécrire les
+défauts livrés. Le fichier est relu au démarrage ; l'effet est aussi immédiat
+en mémoire, sans redémarrage.
+
+Sept réglages sont exposés — **uniquement ceux que le code lit réellement**,
+chacun accompagné de l'effet qu'il produit :
+
+| Réglage | Effet appliqué | Bornes |
+|---|---|---|
+| Taille maximale d'un fichier | refus à l'import (413) | 1–500 Mo |
+| Taille maximale d'un lot | plafond de l'import groupé | 1–2000 Mo |
+| Pages maximales | pages lues dans un PDF | 1–5000 |
+| Rétention des jobs | purge des jobs terminés | 1–3650 jours |
+| ZIP décompressé / ratio | garde-fous de décompression | 1–5000 Mo · 1–1000:1 |
+| Langues OCR par défaut | langues proposées au moteur | codes de 3 lettres |
+
+Les réglages lus nulle part (`ocr.tesseract_psm`) ont été **écartés** : les
+afficher aurait reproduit le défaut corrigé en passe 13.
+
+### La validation nomme le champ
+
+Une valeur hors bornes ne produit pas un 500 ni un message générique :
+
+```
+PUT /api/parametres/max_file_size_mb  {"valeur": 9999}
+422 {"detail": {"champ": "max_file_size_mb",
+                "message": "Taille maximale d'un fichier : maximum 500 Mo (reçu 9999)."}}
+```
+
+L'écran réaffiche ce message tel quel et **laisse le dialogue ouvert** : la
+saisie fautive n'est pas perdue. Les langues sont normalisées (`FRA, eng` →
+`fra, eng`) et refusées si un code ne fait pas trois lettres.
+
+### La preuve par l'effet
+
+Les tests ne se contentent pas du code HTTP : ils vérifient que le serveur
+change de comportement.
+
+- limite à 1 Mo → import d'un PDF de 2 Mo : **413** « fichier trop volumineux » ;
+- limite rétablie à 50 Mo → même fichier : **200**, job créé ;
+- `DELETE /api/parametres/{cle}` rétablit la valeur livrée, et une seconde
+  réinitialisation renvoie **409** plutôt qu'un faux succès ;
+- fichier de réglages corrompu → le serveur démarre quand même sur les défauts.
+
+Mesures jsdom : 7 lignes, colonne « État » (`défaut` / `modifié`), édition
+`PUT 200` (valeur 42 affichée), « Rétablir le défaut » `DELETE 200`, saisie
+9999 → message d'erreur affiché, dialogue maintenu.
+
+La matrice repasse à **100 entrées : 99 conformes, 1 partiel** (l'archivage
+irréversible de `#finance/cloture`).
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
