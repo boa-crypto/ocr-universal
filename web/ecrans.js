@@ -1997,6 +1997,11 @@
           "trompeuse.",
     source: { url: "/api/stats/comparaison?jours=30" },
     sourceCle: "indicateurs",
+    sourceNote: function (donnees) {
+      return [donnees.avertissement, donnees.limites,
+        donnees.sans_date ? donnees.sans_date + " dossier(s) sans date de création exploitable." : ""]
+        .filter(Boolean).join(" ");
+    },
     id: "id",
     colonnes: [
       { cle: "indicateur", libelle: "Indicateur" },
@@ -2120,6 +2125,11 @@
     var titres = elt("div", "ecran__titres");
     titres.appendChild(elt("h1", "ecran__titre", ecran.titre));
     titres.appendChild(elt("p", "ecran__desc", ecran.desc));
+    if (ecran.__sourceNote) {
+      var note = elt("p", "ecran__aide", ecran.__sourceNote);
+      note.setAttribute("role", "status");
+      titres.appendChild(note);
+    }
     ligne.appendChild(titres);
 
     var actions = elt("div", "ecran__actions");
@@ -3032,6 +3042,7 @@
       promesse = ecran.source.charger(lire);
     } else if (ecran.source && ecran.source.url) {
       promesse = lire(ecran.source.url).then(function (donnees) {
+        if (typeof ecran.sourceNote === "function") ecran.__sourceNote = ecran.sourceNote(donnees);
         return extraireLignes(ecran, donnees);
       });
     } else {

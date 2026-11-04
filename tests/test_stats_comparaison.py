@@ -94,7 +94,7 @@ def test_jobs_comptes_sur_leur_dernier_etat():
             Job("done", MAINTENANT - 40 * JOUR)]
     par_nom = {i["indicateur"]: i
                for i in comparer([], jobs, 30, MAINTENANT)["indicateurs"]}
-    assert par_nom["Documents traités"]["courant"] == 2
+    assert par_nom["Documents traités"]["courant"] == 1
     assert par_nom["Documents traités"]["precedent"] == 1
     assert par_nom["Documents en erreur"]["courant"] == 1
 
@@ -117,3 +117,49 @@ def test_fenetres_consecutives(jours):
     assert fin_courant == MAINTENANT
     assert fin_precedent == debut_courant
     assert fin_courant - debut_courant == debut_courant - debut_precedent == jours * JOUR
+
+
+def test_documents_en_attente_ne_sont_pas_traites():
+    jobs = [{"status": statut, "updated_at": MAINTENANT - JOUR}
+            for statut in ["queued", "processing", "cancelled", "error", "done", "not_error"]]
+    par_nom = {i["indicateur"]: i for i in comparer([], jobs, 30, MAINTENANT)["indicateurs"]}
+    assert par_nom["Documents traités"]["courant"] == 1
+    assert par_nom["Documents en erreur"]["courant"] == 1
+
+
+@pytest.mark.parametrize("date", [float("nan"), float("inf"), float("-inf"), "invalide"])
+def test_dates_non_finies_signalees(date):
+    corps = comparer([dossier(date)], [], 30, MAINTENANT)
+    assert corps["sans_date"] == 1
+    assert corps["indicateurs"][0]["courant"] == 0
+
+
+def test_job_sans_modification_ne_replie_pas_sur_creation():
+    corps = comparer([], [{"status": "done", "created_at": MAINTENANT - JOUR}], 30, MAINTENANT)
+    assert next(i for i in corps["indicateurs"] if i["indicateur"] == "Documents traités")["courant"] == 0
+
+
+def test_erreur_magasin_n_est_pas_une_periode_vide(monkeypatch):
+    from unocr.api import _dossiers
+
+    def panne():
+        raise OSError("indisponible")
+
+    monkeypatch.setattr(_dossiers, "liste", panne)
+    reponse = TestClient(app).get("/api/stats/comparaison")
+    assert reponse.status_code == 503
+    assert "lecture des dossiers" in reponse.json()["detail"]
+
+
+def test_limite_documents_signalee(monkeypatch):
+    from unocr.api import _dossiers
+
+    monkeypatch.setattr(_dossiers, "liste", lambda: [])
+    def liste(limit):
+        assert limit == 2001
+        return [{"status": "done", "updated_at": MAINTENANT - JOUR}] * limit
+    monkeypatch.setattr(app.state.store, "list_jobs", liste)
+    corps = TestClient(app).get("/api/stats/comparaison").json()
+    assert corps["jobs_tronques"] is True
+    assert corps["jobs_analyses"] == 2000
+    assert "2000" in corps["limites"]

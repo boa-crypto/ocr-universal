@@ -176,3 +176,11 @@ python3 docs/implementation-screens/outils/generer_matrice.py /tmp/ui.json
 - `npm run ui:smoke` : **15/15**.
 - `ruff check src tests` : aucune erreur.
 - Suite complète : **1028 passed, 23 failed, 11 skipped** (les 23 échecs environnementaux OCR déjà connus persistent).
+
+### Passe 24 — fiabilité des mesures
+
+- `pytest tests/test_stats_comparaison.py -q` : **18 passed**.
+- `npm run ui:comparaison` : six lignes, limites visibles, 131 documents réussis
+  au lieu des 200 jobs tous états, aucune erreur réseau et aucune écriture.
+- Suite complète : **1036 passed, 23 failed, 11 skipped** ; les échecs OCR
+  environnementaux connus persistent. Smoke UI : **15/15**. Ruff : aucune erreur.

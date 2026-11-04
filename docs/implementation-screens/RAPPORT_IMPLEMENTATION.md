@@ -884,6 +884,28 @@ Révision requise », `dos_inconnu` refusé. Harnais versionné :
 Aucune donnée d'exploitation ajoutée : cette passe facilite la saisie, elle ne
 constitue ni une importation automatique ni l'alimentation du terminal.
 
+## 2.27 Passe 24 — statistiques : corriger les faux traités et expliciter les limites
+
+La revue de la passe 22 a trouvé une erreur : « Documents traités » comptait tous
+les jobs, même queued, processing, cancelled et error. Désormais, seuls les jobs
+actuellement `done` sont comptés : sur ce poste, **131 au lieu de 200**. Les erreurs
+sont identifiées par égalité exacte (`error`), pas par suffixe.
+
+Les dates disponibles sont des créations et dernières modifications : elles ne
+prouvent pas la date exacte d'une transition. La colonne « Date utilisée » indique
+notamment « dernière modification des dossiers actuellement archivés ». Un bloc
+visible précise que les six lignes sont une photographie des états actuels, pas
+un journal historique. L'avertissement période précédente vide et les dossiers
+sans date exploitable sont maintenant affichés, pas seulement renvoyés par l'API.
+
+Une panne de lecture renvoie 503 plutôt qu'une fausse période vide. La limite de
+2000 documents est détectée avec une ligne sentinelle et signalée dans les limites
+visibles ; les nombres NaN et infinis sont traités comme dates manquantes.
+
+Preuve rejouable : `npm run ui:comparaison [URL]` vérifie six lignes et le bloc
+explicatif, sans écriture. Tests statistiques : **18 passed**, dont huit nouveaux
+cas sur statuts non terminés, dates invalides, panne de lecture et troncature.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

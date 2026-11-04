@@ -7,8 +7,9 @@ arbitrer une charge de travail.
 
 Deux fenêtres de même durée sont comparées : `[maintenant - jours, maintenant)`
 contre `[maintenant - 2·jours, maintenant - jours)`. Les indicateurs sont
-calculés sur des **dates réelles** (création du dossier, dernière modification,
-fin de traitement du job) ; aucun n'est extrapolé.
+calculés sur les dates de création et de dernière modification disponibles.
+Les états sont ceux du poste au moment de la lecture : ce n’est pas un
+historique des transitions ni une mesure de la date exacte d’archivage.
 
 Deux précautions de lecture :
 
@@ -20,10 +21,11 @@ Deux précautions de lecture :
 
 from __future__ import annotations
 
+import math
 import time
 from typing import Any, Iterable
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, HTTPException, Request
 
 router = APIRouter(prefix="/api/stats", tags=["statistiques"])
 
@@ -37,7 +39,8 @@ def _horodatage(valeur: Any) -> float | None:
     if valeur is None or valeur == "":
         return None
     try:
-        return float(valeur)
+        nombre = float(valeur)
+        return nombre if math.isfinite(nombre) else None
     except (TypeError, ValueError):
         return None
 
@@ -88,17 +91,18 @@ def comparer(dossiers: list[dict[str, Any]], jobs: list[Any],
         valeur = job.get(nom) if isinstance(job, dict) else getattr(job, nom, None)
         return getattr(valeur, "value", valeur)       # énumérations → valeur
 
-    fin_job = [_horodatage(champ(j, "updated_at") or champ(j, "created_at")) for j in jobs]
-    erreurs_job = [_horodatage(champ(j, "updated_at") or champ(j, "created_at"))
-                   if str(champ(j, "status")).endswith("error") else None for j in jobs]
+    fin_job = [_horodatage(champ(j, "updated_at"))
+               if champ(j, "status") == "done" else None for j in jobs]
+    erreurs_job = [_horodatage(champ(j, "updated_at"))
+                   if champ(j, "status") == "error" else None for j in jobs]
 
     indicateurs_def = [
         ("Dossiers ouverts", creation, "date de création du dossier"),
-        ("Dossiers archivés", archives, "date d'archivage"),
-        ("Documents traités", fin_job, "fin de traitement du job"),
+        ("Dossiers archivés", archives, "dernière modification des dossiers actuellement archivés"),
+        ("Documents traités", fin_job, "dernière modification des jobs actuellement réussis (done)"),
         ("Documents en erreur", erreurs_job, "dernier état du job"),
-        ("Dossiers à revoir", a_revoir, "créés puis signalés"),
-        ("Dossiers mis à jour", maj, "toute modification"),
+        ("Dossiers à revoir", a_revoir, "création des dossiers actuellement à revoir"),
+        ("Dossiers mis à jour", maj, "dernière modification de chaque dossier"),
     ]
 
     lignes = []
@@ -152,13 +156,25 @@ def comparaison(request: Request, jours: int = 30) -> dict:
             d.model_dump() if hasattr(d, "model_dump") else dict(d.__dict__)
             for d in magasin_dossiers.liste()
         ]
-    except Exception:  # pragma: no cover - magasin indisponible
-        dossiers = []
+    except Exception as exc:
+        raise HTTPException(503, "Statistiques indisponibles : lecture des dossiers impossible") from exc
     store = getattr(request.app.state, "store", None)
-    jobs = []
-    if store is not None:
-        try:
-            jobs = list(store.list_jobs(limit=2000))
-        except Exception:  # pragma: no cover
-            jobs = []
-    return comparer(dossiers, jobs, jours)
+    if store is None:
+        raise HTTPException(503, "Statistiques indisponibles : magasin des documents absent")
+    try:
+        # Une ligne sentinelle permet de signaler la limite, jamais de la cacher.
+        jobs = list(store.list_jobs(limit=2001))
+    except Exception as exc:
+        raise HTTPException(503, "Statistiques indisponibles : lecture des documents impossible") from exc
+    tronque = len(jobs) > 2000
+    resultat = comparer(dossiers, jobs[:2000], jours)
+    resultat["jobs_tronques"] = tronque
+    resultat["jobs_analyses"] = min(len(jobs), 2000)
+    resultat["limites"] = (
+        "Photographie des états actuels, pas un historique des transitions : "
+        "les dates utilisées sont précisées pour chaque ligne. "
+        "Documents traités : uniquement les jobs actuellement réussis (done)."
+    )
+    if tronque:
+        resultat["limites"] += " Attention : seuls les 2000 documents les plus récents sont analysés."
+    return resultat

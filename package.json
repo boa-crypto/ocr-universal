@@ -6,7 +6,8 @@
   "scripts": {
     "ui:smoke": "node tests/ui_smoke.js",
     "ui:dump": "node docs/implementation-screens/outils/dump_interface.js",
-    "ui:registres": "node tests/ui_registres.js"
+    "ui:registres": "node tests/ui_registres.js",
+    "ui:comparaison": "node tests/ui_comparaison.js"
   },
   "devDependencies": {
     "jsdom": "^24.1.3"
