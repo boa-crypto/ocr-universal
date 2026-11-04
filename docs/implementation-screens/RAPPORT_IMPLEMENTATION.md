@@ -600,6 +600,49 @@ Le premier jet tombait dans le panneau JSON : corrigé, et couvert par un test.
 - `tests/test_historique.py` : 5 tests (ordre, filtrage par job, valeurs,
   événement inconnu, lignes illisibles).
 
+## 2.20 Passe 17 — un lecteur ne peut rien écrire (et le dit)
+
+La politique d'écriture existait dans le code : `_role_requis` exige au moins
+`operateur` sur toute méthode d'écriture, `administrateur` sur l'administration,
+les connecteurs, les sauvegardes et les rôles. Elle n'était **prouvée qu'à la
+main**, sur un serveur isolé. Une réutilisation pouvait la casser sans que
+rien ne le signale.
+
+### Ce que les tests exercent
+
+`tests/test_rbac_ecritures.py` installe un registre RBAC **dans un répertoire
+temporaire** (le poste de travail n'est jamais cloisonné), puis essaie
+**quatorze écritures**, une par famille :
+
+| Famille | Écriture essayée |
+|---|---|
+| Clients / fournisseurs | `POST`, `DELETE` |
+| Référentiels | `POST /api/referentiels/pays` |
+| Paramètres | `PUT /api/parametres/max_pages` |
+| Dossiers | `POST /api/dossiers` |
+| Frais | `POST /api/frais` |
+| Documents | `PATCH /api/jobs/{id}/fields/{nom}`, `POST …/retry` |
+| Administration | `POST/DELETE /api/rbac/utilisateurs`, `POST /api/admin/cleanup` |
+| Connecteurs / sauvegardes | `POST /api/connectors/{id}/test`, `POST /api/backups` |
+
+Chaque tentative, avec un jeton `lecteur`, renvoie **403** *et* laisse une
+entrée `acces_refuse_role` dans le journal, nominative. Un refus muet ne se
+distingue pas d'un bug : il est tracé.
+
+### Deux précautions de méthode
+
+- **Charges invalides, identifiants inexistants.** Un 422 ou un 404 prouve que
+  le contrôle de rôle a laissé passer **sans rien écrire** ; aucun jeu de
+  données n'est créé par la suite de tests.
+- **Le poste reste ouvert.** Le fichier de rôles vit dans `tmp_path` et le
+  registre est rechargé à la fin : hors RBAC, la dernière assertion vérifie
+  qu'une écriture invalide répond 422 (validée), pas 403 — comportement
+  historique conservé.
+
+Résultat : **18 tests verts**, dont 14 refus attendus, la lecture autorisée
+(`/api/health`, `/api/stats`, `/api/clients`, `/api/parametres` en 200), et la
+distinction opérateur/administrateur.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

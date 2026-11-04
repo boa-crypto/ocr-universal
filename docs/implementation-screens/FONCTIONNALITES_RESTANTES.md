@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 16. Ce document est la liste de travail
+État au 2026-11-04, après la passe 17. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -18,8 +18,8 @@ validation nommant le champ, effet immédiat et persistant.
 
 | # | Tâche | Pourquoi | Où |
 |---|---|---|---|
-| P0-1 | Figer par un test automatisé le comportement d'un rôle lecteur (écran en lecture, écriture refusée 403) | mesuré à la main sur un serveur isolé (RBAC hors du poste de travail) ; rien ne l'empêche de régresser | `src/unocr/routes/rbac*.py`, tests d'écran |
-| P0-2 | Étendre le test d'écriture refusée (403) à chaque famille d'écran | la sécurité serveur est vérifiée sur les routes historiques et les référentiels, pas sur tous les modules métier | `tests/test_referentiels.py` + équivalents |
+| ✅ P0-1 | ~~Figer par un test automatisé le comportement d'un rôle lecteur~~ | **fait en passe 17** : registre RBAC en répertoire temporaire, lecture autorisée (200), écriture refusée (403) et refus tracé (`acces_refuse_role`) | `tests/test_rbac_ecritures.py` |
+| ✅ P0-2 | ~~Étendre le test d'écriture refusée à chaque famille d'écran~~ | **fait en passe 17** : 14 écritures couvertes (clients, fournisseurs, référentiels, paramètres, dossiers, frais, documents, rôles, nettoyage, connecteurs, sauvegardes) + distinction opérateur/administrateur | `tests/test_rbac_ecritures.py` |
 | P0-3 | Exercer l'**archivage** d'un dossier depuis l'écran de clôture | action destructive et irréversible : elle n'a pas été testée pour ne pas altérer un dossier de démonstration suivi par git | `#finance/cloture`, `POST /api/dossiers/{id}/archiver` |
 | ✅ P0-4 | ~~Vraie sauvegarde des paramètres généraux (API + formulaire)~~ | **fait en passe 14** : `GET/PUT/DELETE /api/parametres`, persistance dans `data/parametres.json`, 422 nommant le champ, effet prouvé (limite 1 Mo → import 413, limite 50 Mo → 200) |
 
