@@ -309,6 +309,20 @@
     /* aucune écoute supplémentaire nécessaire */
   }
 
+  // Les anciennes pages « hub » (maritime, douane, finance…) sont des cartes
+  // de boutons dont les écrans ne sont pas encore livrés. Plutôt qu'un clic
+  // sans effet, on l'annonce clairement à l'utilisateur.
+  document.addEventListener('click', function (ev) {
+    const bouton = ev.target && ev.target.closest
+      ? ev.target.closest('button.btn-block:not([id]):not([data-nav])')
+      : null;
+    if (!bouton) return;
+    const libelle = (bouton.textContent || '').trim().replace(/\s+/g, ' ');
+    if (typeof window.toast === 'function') {
+      window.toast(`« ${libelle} » — fonction en préparation`, 'info');
+    }
+  });
+
   // Délégation : tout élément portant `data-nav="section/…"` navigue, sans
   // gestionnaire en ligne (une valeur d'API ne doit jamais finir dans du JS).
   document.addEventListener('click', function (ev) {
@@ -423,7 +437,7 @@
       'cockpit': 'tab-cockpit',
       'workspace': 'tab-workspace',
       'dossiers': 'tab-dossiers',
-      'documents': 'tab-documents',
+      'documents': 'tab-dashboard',
       'controle': 'tab-controle',
       'maritime': 'tab-maritime',
       'douane': 'tab-douane',
