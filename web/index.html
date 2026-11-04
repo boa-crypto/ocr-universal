@@ -3,6 +3,7 @@
 <head>
 
   <link rel="stylesheet" href="/web/styles.css">
+  <link rel="stylesheet" href="/web/refresh.css">
 <script src="/web/navigation.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -126,50 +127,111 @@
 
       <!-- ═══════ COCKPIT ═══════ -->
       <section id="tab-cockpit" class="page" role="region" aria-labelledby="cockpit-title">
-        <header class="page-header">
-          <div class="page-header__meta">
-            <span class="label label-badge label-badge-brand">COCKPIT</span>
+        <div class="ws-head">
+          <div>
+            <span class="label label-badge label-badge-brand">ESPACE DE TRAVAIL</span>
+            <h1 id="cockpit-title" class="ws-title">Vue d'ensemble de vos dossiers</h1>
+            <p class="ws-sub">Tâches, validations et documents qui demandent une action.</p>
           </div>
-          <h1 id="cockpit-title" class="display-2">Cockpit — Vue d'ensemble</h1>
-          <p class="lead">Indicateurs clés, alertes actives et accès rapide aux opérations courantes</p>
-        </header>
-
-        <!-- KPI Cards -->
-        <div class="grid grid-cols-4 gap-4 mb-6" id="cockpit-kpis">
-          <div class="stat card">
-            <div class="stat-label">Dossiers totaux</div>
-            <div class="stat-value" id="cockpit-total">—</div>
-          </div>
-          <div class="stat card">
-            <div class="stat-label">En cours</div>
-            <div class="stat-value" id="cockpit-en-cours">—</div>
-          </div>
-          <div class="stat card">
-            <div class="stat-label">À valider</div>
-            <div class="stat-value" id="cockpit-a-valider">—</div>
-          </div>
-          <div class="stat card">
-            <div class="stat-label">Bloqués</div>
-            <div class="stat-value" id="cockpit-bloques">—</div>
+          <div class="ws-head-actions">
+            <span class="ws-date" id="cockpit-date">—</span>
+            <button class="btn ghost sm" id="cockpit-refresh" type="button">Actualiser</button>
           </div>
         </div>
 
-        <!-- Alertes et tâches -->
-        <div class="grid grid-cols-2 gap-4">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Alertes récentes</h3>
+        <div class="kpi-grid" id="cockpit-kpis">
+          <div class="kpi">
+            <span class="kpi-ic kpi-ic--blue" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+            </span>
+            <span class="kpi-body">
+              <span class="kpi-lbl">Dossiers</span>
+              <span class="kpi-val" id="cockpit-total">—</span>
+              <span class="kpi-sub">tous statuts confondus</span>
+            </span>
+          </div>
+          <div class="kpi">
+            <span class="kpi-ic kpi-ic--amber" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </span>
+            <span class="kpi-body">
+              <span class="kpi-lbl">En cours</span>
+              <span class="kpi-val" id="cockpit-en-cours">—</span>
+              <span class="kpi-sub">traitement actif</span>
+            </span>
+          </div>
+          <div class="kpi">
+            <span class="kpi-ic kpi-ic--violet" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h9"/></svg>
+            </span>
+            <span class="kpi-body">
+              <span class="kpi-lbl">À valider</span>
+              <span class="kpi-val" id="cockpit-a-valider">—</span>
+              <span class="kpi-sub">en attente de décision</span>
+            </span>
+          </div>
+          <div class="kpi">
+            <span class="kpi-ic kpi-ic--red" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l9 16H3z"/><path d="M12 9v4"/><path d="M12 16.5v.5"/></svg>
+            </span>
+            <span class="kpi-body">
+              <span class="kpi-lbl">Alertes</span>
+              <span class="kpi-val" id="cockpit-alertes">—</span>
+              <span class="kpi-sub">anomalies et retards</span>
+            </span>
+          </div>
+          <div class="kpi">
+            <span class="kpi-ic kpi-ic--teal" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/></svg>
+            </span>
+            <span class="kpi-body">
+              <span class="kpi-lbl">Échéances 7 j</span>
+              <span class="kpi-val" id="cockpit-echeances">—</span>
+              <span class="kpi-sub">à traiter cette semaine</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="ws-grid">
+          <div class="ws-card">
+            <div class="ws-card-head">
+              <div class="ws-card-title">Mes tâches prioritaires</div>
+              <a class="ws-link" href="#dossiers/tous">Tout voir</a>
             </div>
-            <div class="card-body" id="cockpit-alerts">
-              <p class="muted">Aucune alerte active</p>
+            <div id="cockpit-tasks">
+              <p class="ws-empty">Chargement des dossiers…</p>
             </div>
           </div>
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Tâches prioritaires</h3>
+
+          <div class="ws-side">
+            <div class="ws-card">
+              <div class="ws-card-head">
+                <div class="ws-card-title">Ma journée en un coup d'œil</div>
+              </div>
+              <div class="day-list" id="cockpit-day">
+                <div class="ws-empty">Chargement…</div>
+              </div>
             </div>
-            <div class="card-body" id="cockpit-tasks">
-              <p class="muted">Aucune tâche en attente</p>
+
+            <div class="ws-card">
+              <div class="ws-card-head">
+                <div class="ws-card-title">Échéances proches</div>
+              </div>
+              <div class="day-list" id="cockpit-deadlines">
+                <div class="ws-empty">Chargement…</div>
+              </div>
+            </div>
+
+            <div class="ws-card">
+              <div class="ws-card-head">
+                <div class="ws-card-title">Accès rapide</div>
+              </div>
+              <div class="quick-grid">
+                <a class="quick-btn" href="#dossiers/nouveau"><span class="qi" aria-hidden="true">＋</span> Nouveau dossier</a>
+                <a class="quick-btn" href="#documents/import"><span class="qi" aria-hidden="true">⇪</span> Scanner / importer</a>
+                <a class="quick-btn" href="#rapports/statistiques"><span class="qi" aria-hidden="true">▤</span> Rapports</a>
+                <a class="quick-btn" href="#admin/connecteurs-api"><span class="qi" aria-hidden="true">⚯</span> Connecteurs</a>
+              </div>
             </div>
           </div>
         </div>
@@ -259,7 +321,7 @@
               <h3 class="card-title">Nouveau dossier</h3>
             </div>
             <div class="card-body">
-              <button class="btn btn-block" onclick="navigateToSection('dossiers/nouveau')">Créer un nouveau dossier</button>
+              <button class="btn btn-block" type="button" data-nav="dossiers/nouveau">Créer un nouveau dossier</button>
             </div>
           </div>
           <div class="card">
@@ -267,7 +329,7 @@
               <h3 class="card-title">Tous les dossiers</h3>
             </div>
             <div class="card-body">
-              <button class="btn btn-block" onclick="navigateToSection('dossiers/tous')">Voir tous les dossiers</button>
+              <button class="btn btn-block" type="button" data-nav="dossiers/tous">Voir tous les dossiers</button>
             </div>
           </div>
         </div>
@@ -6367,6 +6429,7 @@ var I18N = {
 <script src="formulaire.js" defer></script>
 <script src="tracabilite.js" defer></script>
 <script src="transmission.js" defer></script>
+<script src="/web/cockpit.js" defer></script>
 <script src="/web/transit.js" defer></script>
 <script src="/web/navigation.js" defer></script>
 </body>

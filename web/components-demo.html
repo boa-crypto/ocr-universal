@@ -258,8 +258,8 @@
             </form-select>
             <form-checkbox name="urgent" label="Urgent"></form-checkbox>
             <div slot="actions">
-              <button type="button" class="btn" onclick="demoForm.validate()">Valider</button>
-              <button type="button" class="btn btn-ghost" onclick="demoForm.reset()">Réinitialiser</button>
+              <button type="button" class="btn" data-demo="validate">Valider</button>
+              <button type="button" class="btn btn-ghost" data-demo="reset">Réinitialiser</button>
             </div>
           </form-container>
         </div>
@@ -458,6 +458,13 @@ if (!result.valid) {
     let demoForm;
     document.addEventListener('DOMContentLoaded', () => {
       demoForm = document.getElementById('demoForm');
+
+      document.querySelectorAll('[data-demo]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const action = btn.getAttribute('data-demo');
+          if (demoForm && typeof demoForm[action] === 'function') demoForm[action]();
+        });
+      });
 
       // Theme toggle button
       const themeBtn = document.getElementById('themeToggle');

@@ -423,13 +423,31 @@
         ).join("");
       }
 
-      // Show actions
+      // Show actions — construites par l'API DOM, sans gestionnaire en ligne
       const act = $("transitActions");
       if (act) {
-        act.innerHTML = `<div style="display:flex;flex-direction:column;gap:8px">
-          <button class="btn btn-sm" onclick="window.__uniocr_open_dossier('${job.job_id}')">Ouvrir le dossier</button>
-          <button class="btn btn-sm btn-ghost" onclick="window.location.href='${BASE}/jobs/${encodeURIComponent(job.job_id)}/export/json'">Exporter JSON</button>
-        </div>`;
+        act.textContent = "";
+        const box = document.createElement("div");
+        box.style.cssText = "display:flex;flex-direction:column;gap:8px";
+
+        const ouvrir = document.createElement("button");
+        ouvrir.type = "button";
+        ouvrir.className = "btn btn-sm";
+        ouvrir.textContent = "Ouvrir le dossier";
+        ouvrir.addEventListener("click", () => {
+          if (typeof window.__uniocr_open_dossier === "function") {
+            window.__uniocr_open_dossier(job.job_id);
+          }
+        });
+        box.appendChild(ouvrir);
+
+        const exporter = document.createElement("a");
+        exporter.className = "btn btn-sm btn-ghost";
+        exporter.textContent = "Exporter JSON";
+        exporter.href = `${BASE}/jobs/${encodeURIComponent(job.job_id)}/export/json`;
+        box.appendChild(exporter);
+
+        act.appendChild(box);
       }
 
       refreshDashboard();

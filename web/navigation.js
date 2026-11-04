@@ -299,6 +299,15 @@
     return html;
   }
 
+  // Délégation : tout élément portant `data-nav="section/…"` navigue, sans
+  // gestionnaire en ligne (une valeur d'API ne doit jamais finir dans du JS).
+  document.addEventListener('click', function (ev) {
+    const el = ev.target && ev.target.closest ? ev.target.closest('[data-nav]') : null;
+    if (!el) return;
+    ev.preventDefault();
+    window.location.hash = '#' + el.getAttribute('data-nav');
+  });
+
   /**
    * Initialiser la navigation
    */

@@ -4,7 +4,7 @@
  * importé, un export ou un résultat doit toujours venir du serveur local.
  * La coquille HTML et ses modules locaux sont stockés, pour que l'app
  * s'ouvre sans réseau. */
-const CACHE = "unocr-shell-v3-refactored";
+const CACHE = "unocr-shell-v4-refresh";
 const SHELL = [
   "./",
   "./index.html",
@@ -17,6 +17,8 @@ const SHELL = [
   "./formulaire.js",
   "./tracabilite.js",
   "./transmission.js",
+  "/web/refresh.css",
+  "/web/cockpit.js",
 ];
 
 self.addEventListener("install", (event) => {
