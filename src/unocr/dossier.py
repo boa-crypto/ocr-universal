@@ -488,6 +488,28 @@ class DossierStore:
             self._ecrire(dossier)
         return dossier
 
+    # ── vue « dictionnaire » utilisée par le module transit ──────────
+
+    def get_dossier(self, dossier_id: str) -> Optional[dict[str, Any]]:
+        """Dossier sous forme de dictionnaire (lecture seule)."""
+        dossier = self.get(dossier_id)
+        return dossier.as_dict() if dossier else None
+
+    def list_dossiers(self) -> list[dict[str, Any]]:
+        """Tous les dossiers sous forme de dictionnaires."""
+        return [d.as_dict() for d in self.liste()]
+
+    def save_dossier(self, dossier_id: str, champs: dict[str, Any],
+                     acteur: str = "systeme") -> Optional[dict[str, Any]]:
+        """Enregistre les champs connus d'un dossier ; les autres sont ignorés."""
+        dossier = self.mettre_a_jour(dossier_id, champs, acteur=acteur)
+        return dossier.as_dict() if dossier else None
+
+    def update_dossier(self, dossier_id: str, champs: dict[str, Any],
+                       acteur: str = "systeme") -> Optional[dict[str, Any]]:
+        """Alias historique de :meth:`save_dossier`."""
+        return self.save_dossier(dossier_id, champs, acteur=acteur)
+
     def liste(self) -> list[Dossier]:
         dossiers = []
         for p in sorted(self.root.glob("*.json")):

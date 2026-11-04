@@ -12,21 +12,12 @@ Ce module fournit un tableau de bord complet pour le transit maritime avec :
 
 from __future__ import annotations
 
-import json
 import time
-import math
 from datetime import datetime, timedelta
-from typing import Any, Optional, List, Dict
 
-from unocr.models import (
-    Client, Fournisseur, DossierTransit, ExtractionOCR, AnomalieDocumentaire,
-    Role, Permission, Workflow, Notification, JournalAudit, new_id,
-    CategorieFrais, Frais, Facture, TerminalEnlevement, Transporteur,
-    Camion, Livraison, ClassificationTarifaire, DeclarationDouaniere
-)
 from unocr.config import get_config
+from unocr.logging_setup import get_logger
 from unocr.ocr_integration import get_ocr_integration
-from unocr.logging_setup import audit, get_logger
 
 log = get_logger("dashboard")
 
@@ -118,7 +109,6 @@ class DashboardService:
         taux_recouvrement = round(frais_payes / total_frais * 100, 2) if total_frais > 0 else 0
 
         # Dokrs par client (top 10)
-        from .models import Client
         clients_stats = {}
         for dossier in dossiers:
             client = dossier.client_importateur or "inconnu"
@@ -219,6 +209,7 @@ class DashboardService:
             "taux_completion_pieces": taux_completion_pieces,
             "type_op_stats": type_op_stats,
             "prioritaires_stats": prioritaires_stats,
+            "top_prioritaires": top_prioritaires,
             "confiance_moteur": confiances_moteur,
         }
 
@@ -228,7 +219,6 @@ class DashboardService:
 
     def graphique_etat_dossiers(self) -> dict:
         """Graphique: répartition des dossiers par état."""
-        from unocr.dossier import DossierStore
         store = self._get_dossier_store()
         dossiers = store.liste()
 
@@ -283,7 +273,7 @@ class DashboardService:
                 if len(date_parts) >= 1:
                     m = int(date_parts[0]) if "/" not in f.date else int(date_parts[1])
                     mensuels[m] = mensuels.get(m, 0) + f.montant
-            except:
+            except (AttributeError, TypeError, ValueError, IndexError):
                 pass
 
         for f in facture_store.values():
@@ -292,7 +282,7 @@ class DashboardService:
                 if len(date_parts) >= 1:
                     m = int(date_parts[0]) if "/" not in f.date_facture else int(date_parts[1])
                     mensuels[m] = mensuels.get(m, 0) + f.montant_ttc
-            except:
+            except (AttributeError, TypeError, ValueError, IndexError):
                 pass
 
         # Trier par mois
@@ -443,7 +433,6 @@ class DashboardService:
                             pass
 
         # Dossiers avec pièces manquantes
-        from .dossier import DossierStore
         dossier_store = self._get_dossier_store()
         tous_dossiers = dossier_store.liste()
 
@@ -564,7 +553,6 @@ class DashboardService:
 
     def historique_statuts_dossier(self, dossier_id: str) -> dict:
         """Historique des changements d'état d'un dossier."""
-        from .dossier import DossierStore
         store = self._get_dossier_store()
         dossier = store.get(dossier_id)
         if not dossier:
@@ -632,49 +620,4 @@ def get_dashboard_service() -> DashboardService:
     return _dashboard_service
 
 
-# Point d'entrée pour compatibilité avec les routes
-__all__ = [
-    "DashboardService",
-    "get_dashboard_service",
-    "indicateurs_operationnels",
-    "alertes_systeme",
-    "graphique_etat_dossiers",
-    "graphique_financier_mensuel",
-    "resume_financier_dossier",
-    "historique_statuts_dossier",
-]
-
-
-# Ajout de la méthode statistiques_generales manquante
-def statistiques_generales(self) -> dict:
-    """Vue d'ensemble du système."""
-    jobs = self.job_store.list_jobs(limit=10000)
-
-    nb_total = len(jobs)
-    nb_termines = sum(1 for j in jobs if j.status == "done")
-    nb_erreurs = sum(1 for j in jobs if j.status == "error")
-    nb_en_cours = sum(1 for j in jobs if j.status == "processing")
-    nb_en_attente = sum(1 for j in jobs if j.status == "queued")
-
-    # Temps moyen de traitement
-    traitements = [j for j in jobs if j.status == "done" and j.progress == 1.0]
-    if traitements:
-        temps_moyen = sum(j.updated_at - j.created_at for j in traitements) / len(traitements)
-        duree_moyenne = str(timedelta(seconds=round(temps_moyen)))
-    else:
-        duree_moyenne = "N/A"
-
-    # Répartition par statut
-    repartition = {
-        "termine": nb_termines,
-        "erreur": nb_erreurs,
-        "en_cours": nb_en_cours,
-        "en_attente": nb_en_attente,
-    }
-
-    return {
-        "total_jobs": nb_total,
-        "repartition_par_statut": repartition,
-        "taux_reussite": round(nb_termines / nb_total * 100, 2) if nb_total > 0 else 0,
-        "duree_moyenne_traitement": duree_moyenne,
-    }
+__all__ = ["DashboardService", "get_dashboard_service"]

@@ -3,17 +3,15 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Optional
 
-from fastapi import APIRouter, Body, Depends, Request, HTTPException
+from fastapi import APIRouter, Request
 from pydantic import BaseModel
-from typing import Any, Optional, List
 
-from ..dashboard import DashboardService
-from ..dashboard import get_dashboard_service
 from ..config import get_config
-from ..logging_setup import audit, get_logger
-from .frais import _get_frais_store, _get_facture_store
-from ..rbac import ADMINISTRATEUR, LECTEUR
+from ..dashboard import get_dashboard_service
+from ..logging_setup import get_logger
+from .frais import _get_facture_store, _get_frais_store
 
 log = get_logger("dashboard")
 

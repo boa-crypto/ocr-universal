@@ -8,7 +8,6 @@ from pydantic import BaseModel
 
 from ..logging_setup import audit
 from ..watcher import WatchConfig
-from ..config import get_config as _get_config
 
 router = APIRouter(prefix="/api/watch", tags=["watch"])
 

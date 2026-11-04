@@ -6,7 +6,6 @@ du Design System (tokens CSS).
 """
 import re
 from pathlib import Path
-import pytest
 
 WEB = Path("web")
 STYLES = WEB / "styles.css"

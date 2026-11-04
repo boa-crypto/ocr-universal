@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Body, Depends, Request, HTTPException
-from pydantic import BaseModel
-from typing import Any, Optional, List
+from typing import Any, List, Optional
 
-from ..models import Role, Permission, Workflow, Notification, JournalAudit, new_id
+from fastapi import APIRouter, HTTPException, Request
+from pydantic import BaseModel
+
 from ..config import get_config
 from ..logging_setup import audit, get_logger
-from ..rbac import ADMINISTRATEUR, LECTEUR
+from ..models import JournalAudit, Notification, Permission, Role, Workflow, new_id
 
 log = get_logger("rbac_roles")
 

@@ -10,26 +10,18 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
-from fastapi import APIRouter, Body, Depends, HTTPException, status, Query
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, Body, HTTPException, Query, Request
 from pydantic import BaseModel
 
-from fastapi import APIRouter, Request, Body, Depends, HTTPException, status, Query
-from fastapi.responses import JSONResponse
-
-from ..rbac import (
-    LECTEUR,
-    AGENT_DE_TRANSIT,
-    RESPONSABLE_TRANSPORT,
-    DECLARANT_HABILE,
-    CONTROLEUR_DOCUMENTAIRE,
-    RESPONSABLE_FINANCIER,
-    ADMINISTRATEUR,
-    ACTIONS,
-)
-from ..routes.dependencies import _exige, _exige_dossier
-from ..logging_setup import audit
 from ..config import get_config
+from ..logging_setup import audit
+from ..rbac import (
+    ACTIONS,
+    ADMINISTRATEUR,
+    LECTEUR,
+    RESPONSABLE_FINANCIER,
+)
+from ..routes.dependencies import _exige, _exige_dossier, _utilisateur_ou_ouvert
 
 router = APIRouter(prefix="/transit", tags=["transit"])
 
@@ -50,18 +42,14 @@ def _action_maritime_autorisee(request: Request, action: str,
     Returns:
         L'utilisateur si autorisé, sinon lève HTTPException(403)
     """
-    from ..rbac import Utilisateur, _utilisateur_courant
-
-    u = _utilisateur_courant(request)
-    if u is None:
-        raise HTTPException(403, "authentification requise")
+    u = _utilisateur_ou_ouvert(request)
 
     # Vérifier le rôle pour l'action
     roles_autorises = ACTIONS.get(action, ())
     if not roles_autorises:
         raise HTTPException(500, f"action inconnue : {action}")
 
-    if not u.a_role(action):
+    if not any(u.a_role(role) for role in roles_autorises):
         audit(get_config().log_dir, "acces_refuse_role",
               route=request.url.path,
               methode=request.method,
@@ -109,31 +97,24 @@ def create_dossier(
     if not label.strip():
         raise HTTPException(400, "le label est requis")
 
-    from ..dossier import DossierStore, PROFILS_DOSSIER
-    from ..storage import JobStore
-    from uuid import uuid4
+    from ..dossier import PROFILS_DOSSIER, DossierStore
 
-    store = JobStore(get_config())
     if profile not in PROFILS_DOSSIER:
         raise HTTPException(400, f"profil de dossier inconnu: {profile}")
 
-    dossier_id = uuid4().hex[:12]
-    dossier = {
-        "id": dossier_id,
-        "label": label.strip(),
-        "profile": profile,
-        "reference": reference.strip() if reference else None,
-        "pieces": [],
-        "state": "draft",
-    }
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
+    dossier = store.creer(label.strip(), profile, acteur=u.nom)
+    if reference:
+        store.mettre_a_jour(dossier.id, {"reference": reference.strip()}, acteur=u.nom)
 
-    store.save_dossier(dossier_id, dossier)
-    audit(get_config().log_dir, "dossier_cree",
+    audit(config.log_dir, "dossier_cree",
           acteur=u.nom,
-          dossier=dossier_id,
+          dossier=dossier.id,
           label=label)
 
-    return {"id": dossier_id, "label": label, "profile": profile, "state": "draft"}
+    return {"id": dossier.id, "label": dossier.label, "profile": dossier.profile,
+            "state": dossier.state.value}
 
 
 @router.get("/dossiers")
@@ -165,9 +146,10 @@ def list_dossiers(
     """
     u = _exige(LECTEUR)(request)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
-    dossiers = store.list_dossiers()
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
+    dossiers = [d.as_dict() for d in store.liste()]
 
     # Filtrer par le périmètre de l'utilisateur
     visibles = [d for d in dossiers if u.voit_dossier(d.get("id", ""))]
@@ -220,11 +202,12 @@ def get_dossier(request: Request, dossier_id: str) -> dict:
     Exige le rôle: lecteur ou supérieur.
     Vérifie l'accès au dossier.
     """
-    u = _exige(LECTEUR)(request)
+    _exige(LECTEUR)(request)
     _exige_dossier(dossier_id, request)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
     dossier = store.get_dossier(dossier_id)
 
     if not dossier:
@@ -246,8 +229,9 @@ def update_dossier(
     """
     u = _action_maritime_autorisee(request, "modification", dossier_id)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
     dossier = store.get_dossier(dossier_id)
 
     if not dossier:
@@ -292,8 +276,9 @@ def prise_emplacement(
     """
     u = _action_maritime_autorisee(request, "prise_emplacement", dossier_id)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
@@ -328,8 +313,9 @@ def mettre_a_jour_eta(
     """
     u = _action_maritime_autorisee(request, "eta_update", dossier_id)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
@@ -365,8 +351,9 @@ def bl_receive(
     """
     u = _action_maritime_autorisee(request, "bl_receive", dossier_id)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
@@ -406,8 +393,9 @@ def creer_frais(
     """
     u = _action_maritime_autorisee(request, "frais_creation", dossier_id)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
@@ -451,8 +439,9 @@ def enregistrer_paiement(
     """
     u = _action_maritime_autorisee(request, "gestion_financiere", dossier_id)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
@@ -500,8 +489,9 @@ def exporter_dossier(
     """
     u = _action_maritime_autorisee(request, "export", dossier_id)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
@@ -545,8 +535,9 @@ def cloturer_dossier(
     """
     u = _action_maritime_autorisee(request, "changement_statut", dossier_id)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
@@ -585,8 +576,9 @@ def archiver_dossier(
     """
     u = _action_maritime_autorisee(request, "changement_statut", dossier_id)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
@@ -619,8 +611,9 @@ def restaurer_dossier(
     """
     u = _action_maritime_autorisee(request, "changement_statut", dossier_id)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
@@ -658,8 +651,9 @@ def lier_conteneur_dossier(
     """
     u = _action_maritime_autorisee(request, "prise_emplacement", dossier_id)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
@@ -667,7 +661,7 @@ def lier_conteneur_dossier(
 
     conteneurs = dossier.get("conteneurs", [])
     if conteneur in [c.get("numero") for c in conteneurs]:
-        raise HTTPException(400, f"Ce conteneur est déjà lié à ce dossier")
+        raise HTTPException(400, "Ce conteneur est déjà lié à ce dossier")
 
     conteneurs.append({
         "numero": conteneur,
@@ -701,8 +695,9 @@ def delier_conteneur_dossier(
     """
     u = _action_maritime_autorisee(request, "prise_emplacement", dossier_id)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
@@ -734,11 +729,12 @@ def lister_conteneurs_dossier(
     Exige le rôle: lecteur ou supérieur.
     Vérifie l'accès au dossier.
     """
-    u = _exige(LECTEUR)(request)
+    _exige(LECTEUR)(request)
     _exige_dossier(dossier_id, request)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
@@ -761,11 +757,12 @@ def historique_dossier(
     Exige le rôle: lecteur ou supérieur.
     Vérifie l'accès au dossier.
     """
-    u = _exige(LECTEUR)(request)
+    _exige(LECTEUR)(request)
     _exige_dossier(dossier_id, request)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
@@ -787,8 +784,9 @@ def export_dossier(
     """
     u = _action_maritime_autorisee(request, "export", dossier_id)
 
-    from ..storage import JobStore
-    store = JobStore(get_config())
+    from ..dossier import DossierStore
+    config = get_config()
+    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
@@ -838,13 +836,12 @@ def rechercher_doublons(
     Exige le rôle: lecteur ou supérieur.
     Compare les dossiers selon les critères fournis.
     """
-    u = _exige(LECTEUR)(request)
+    _exige(LECTEUR)(request)
 
-    from ..storage import JobStore
     from ..dossier import DossierStore
-    store = JobStore(get_config())
-    dossier_store = DossierStore(cfg.data_dir / "dossiers", log_dir=cfg.log_dir)
-    dossiers = dossier_store.liste()
+    config = get_config()
+    dossier_store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
+    dossiers = [d.as_dict() for d in dossier_store.liste()]
 
     doublons = []
 
@@ -905,10 +902,6 @@ def audit_logs(
     """
     u = _exige(LECTEUR)(request)
 
-    from pathlib import Path
-    from ..logging_setup import get_logger
-
-    log = get_logger("audit")
     audit_file = get_config().log_dir / "audit.log"
 
     if not audit_file.exists():
@@ -963,9 +956,9 @@ def security_status(request: Request) -> dict:
 
     Exige le rôle: lecteur ou supérieur.
     """
-    from ..rbac import _utilisateur_courant, Utilisateur
+    from ..routes.dependencies import _utilisateur_courant
 
-    u: Utilisateur = _utilisateur_courant(request)
+    u = _utilisateur_courant(request)
     if u is None:
         return {"rbac_actif": False, "detail": "RBAC inactif"}
 
@@ -976,7 +969,7 @@ def security_status(request: Request) -> dict:
         "dossiers_accessibles": list(u.dossiers),
         "actions_disponibles": [
             action for action, roles in ACTIONS.items()
-            if u.a_role(action)  # type: ignore
+            if any(u.a_role(role) for role in roles)
         ],
     }
 

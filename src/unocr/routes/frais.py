@@ -2,14 +2,18 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Body, Depends, Request, HTTPException, File, UploadFile
-from pydantic import BaseModel
-from typing import Any, Optional, List
+import os
+import uuid
+from datetime import datetime
+from pathlib import Path
+from typing import List, Optional
 
-from ..models import Frais, Facture, CategorieFrais, new_id, Justificatif, Justificatif
+from fastapi import APIRouter, Body, File, HTTPException, Request, UploadFile
+from pydantic import BaseModel
+
 from ..config import get_config
 from ..logging_setup import audit, get_logger
-from ..rbac import ADMINISTRATEUR, LECTEUR
+from ..models import Facture, Frais, Justificatif, new_id
 
 log = get_logger("frais")
 
@@ -24,6 +28,12 @@ cfg = get_config()
 
 _frais_store: dict[str, Frais] = {}
 _facture_store: dict[str, Facture] = {}
+
+
+def _get_justificatif_store(request: Request) -> dict:
+    if not hasattr(request.app.state, 'justificatif_store'):
+        request.app.state.justificatif_store = {}
+    return request.app.state.justificatif_store
 
 
 def _get_frais_store(request: Request) -> dict:
@@ -358,11 +368,7 @@ async def auto_rapprochement(
     date_fin: str = Body(...),
 ) -> dict:
     """Rapprochement automatique des opérations bancaires avec les factures."""
-    from ..models import Frais, Facture
-    from datetime import datetime
-    from decimal import Decimal
 
-    frais_store = _get_frais_store(request)
     facture_store = _get_facture_store(request)
 
     # Récupérer les opérations bancaires (simulé - en réalité viendrait d'un import bancaire)
@@ -431,7 +437,7 @@ def _match_transaction(facture: Facture, operation: dict) -> bool:
             do = datetime.fromisoformat(date_op)
             if abs((df - do).days) > 3:
                 return False
-        except:
+        except (TypeError, ValueError):
             pass
 
     # Comparaison par référence (numéro facture, IBAN, etc.)
@@ -450,16 +456,17 @@ async def upload_justificatif(
     fichier: UploadFile = File(...),
 ) -> dict:
     """Upload un justificatif pour un frais."""
-    from ..models import Justificatif
-    from ..config import get_config
     import hashlib
+
     import aiofiles
+
+    from ..config import get_config
 
     cfg = get_config()
     upload_dir = Path(cfg.data_dir) / "justificatifs"
     upload_dir.mkdir(parents=True, exist_ok=True)
 
-    frais_store = _get_frais_store(Request)
+    frais_store = _get_frais_store(request)
     frais = frais_store.get(frais_id)
     if not frais:
         raise HTTPException(404, "Frais introuvable")
@@ -490,9 +497,7 @@ async def upload_justificatif(
     )
 
     # Sauvegarder le justificatif
-    justificatif_store = request.app.state.justificatif_store
-    if not hasattr(request.app.state, 'justificatif_store'):
-        request.app.state.justificatif_store = {}
+    justificatif_store = _get_justificatif_store(request)
     justificatif_store[frais_id] = justificatif_store.get(frais_id, []) + [justificatif]
 
     # Lier au frais
@@ -505,10 +510,11 @@ async def upload_justificatif(
 @router.get("/justificatif/{justificatif_id}/download")
 async def download_justificatif(justificatif_id: str, request: Request):
     """Télécharger un justificatif."""
-    from fastapi.responses import FileResponse
     import os
 
-    justificatif_store = request.app.state.justificatif_store
+    from fastapi.responses import FileResponse
+
+    justificatif_store = _get_justificatif_store(request)
     for frais_id, justificatifs in justificatif_store.items():
         for j in justificatifs:
             if j.id == justificatif_id:
@@ -524,7 +530,7 @@ async def download_justificatif(justificatif_id: str, request: Request):
 @router.delete("/justificatif/{justificatif_id}")
 async def delete_justificatif(justificatif_id: str, request: Request):
     """Supprimer un justificatif."""
-    justificatif_store = request.app.state.justificatif_store
+    justificatif_store = _get_justificatif_store(request)
     for frais_id, justificatifs in justificatif_store.items():
         for i, j in enumerate(justificatifs):
             if j.id == justificatif_id:
@@ -534,7 +540,7 @@ async def delete_justificatif(justificatif_id: str, request: Request):
                 # Retirer de la liste
                 justificatif_store[frais_id].pop(i)
                 # Retirer du frais
-                frais_store = _get_frais_store(Request)
+                frais_store = _get_frais_store(request)
                 for f in frais_store.values():
                     if j.id in f.justificatifs:
                         f.justificatifs.remove(j.id)

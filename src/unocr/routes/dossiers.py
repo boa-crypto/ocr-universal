@@ -2,15 +2,27 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Body, Depends, Request, HTTPException
-from pydantic import BaseModel
-from typing import Any, Optional, List
+import uuid
+from typing import Any, Optional
 
-from ..models import DossierTransit, Fournisseur, new_id
-from ..fournisseur import FournisseurStore
+from fastapi import APIRouter, Body, Depends, HTTPException, Request
+from pydantic import BaseModel
+
 from ..config import get_config
 from ..logging_setup import audit, get_logger
-from ..dossier import DossierStore
+from ..models import (
+    WorkflowInstance,
+    WorkflowStage,
+    WorkflowStageStatus,
+    WorkflowStatus,
+    WorkflowTemplate,
+    calculer_progression,
+    new_id,
+    obtenir_etapes_non_applicables,
+    peut_passer_suivante,
+)
+from ..rbac import ADMINISTRATEUR, LECTEUR
+from .dependencies import _exige
 
 log = get_logger("dossiers")
 
@@ -85,7 +97,6 @@ def get_dossier(
     request: Request,
 ) -> dict:
     """Obtenir un dossier spécifique."""
-    from ..dossier import DossierStore
     store = request.app.state.store
     dossier = store.get(dossier_id)
     if not dossier:
@@ -102,7 +113,6 @@ def ajouter_piece(
     filename: str = Body(""),
 ) -> dict:
     """Ajouter une pièce à un dossier."""
-    from ..dossier import DossierStore
     store = request.app.state.store
     dossier = store.ajouter_piece(dossier_id, job_id, filename, category)
     dossier = store.recalculer_etat(dossier_id, {})
@@ -116,7 +126,6 @@ def retirer_piece(
     request: Request,
 ) -> dict:
     """Retirer une pièce d'un dossier."""
-    from ..dossier import DossierStore
     store = request.app.state.store
     dossier = store.retirer_piece(dossier_id, job_id)
     dossier = store.recalculer_etat(dossier_id, {})
@@ -130,7 +139,6 @@ def recalculer_etat(
     etat_documents: dict,
 ) -> dict:
     """Recalculer l'état d'un dossier."""
-    from ..dossier import DossierStore
     store = request.app.state.store
     dossier = store.recalculer_etat(dossier_id, etat_documents)
     return {"id": dossier.id, "etat": dossier.state.value}
@@ -145,7 +153,6 @@ def noter_constat(
     motif: str = Body(""),
 ) -> dict:
     """Noter un constat de cohérence."""
-    from ..dossier import DossierStore
     store = request.app.state.store
     dossier = store.trancher_constat(dossier_id, regle, statut, "utilisateur", motif)
     return {"id": dossier.id, "regle": regle, "statut": statut, "motif": motif}
@@ -159,7 +166,6 @@ def constater_etat(
     motif: str = Body(""),
 ) -> dict:
     """Changer l'état explicite d'un dossier."""
-    from ..dossier import DossierStore
     store = request.app.state.store
     dossier = store.forcer_etat(dossier_id, etat, "utilisateur", motif)
     return {"id": dossier.id, "etat": dossier.state.value, "version": dossier.version}
@@ -172,10 +178,10 @@ def create_document(
     filename: str = Body(...),
     format: str = Body("")) -> dict:
     from fastapi import HTTPException
-    from .rbac import _exige, LECTEUR
+
+    from ..rbac import LECTEUR
+    from .dependencies import _exige
     _exige(LECTEUR)(request)
-    from .dossier import DossierStore
-    from .ingest import load_document
     store = request.app.state.store
     dossier = store.get(dossier_id)
     if not dossier:
@@ -188,9 +194,10 @@ def create_document(
 def list_documents(
     request: Request, dossier_id: str) -> list[dict]:
     from fastapi import HTTPException
-    from .rbac import _exige, LECTEUR
+
+    from ..rbac import LECTEUR
+    from .dependencies import _exige
     _exige(LECTEUR)(request)
-    from .dossier import DossierStore
     store = request.app.state.store
     dossier = store.get(dossier_id)
     if not dossier:
@@ -204,9 +211,10 @@ def list_documents(
 def controles_croises(
     request: Request, dossier_id: str, regle: str) -> dict:
     from fastapi import HTTPException
-    from .rbac import _exige, ADMINISTRATEUR
+
+    from ..rbac import ADMINISTRATEUR
+    from .dependencies import _exige
     _exige(ADMINISTRATEUR)(request)
-    from .dossier import DossierStore
     store = request.app.state.store
     dossier = store.get(dossier_id)
     if not dossier:
@@ -216,13 +224,14 @@ def controles_croises(
 
 
 @router.post("/{dossier_id}/controles")
-def controles_croises(
+def controles_croises_lot(
     request: Request, dossier_id: str,
     regles: list[str] = Body(...)) -> dict:
     from fastapi import HTTPException
-    from .rbac import _exige, ADMINISTRATEUR
-    _exige(ADMINISTRATRICE)(request)
-    from .dossier import DossierStore
+
+    from ..rbac import ADMINISTRATEUR
+    from .dependencies import _exige
+    _exige(ADMINISTRATEUR)(request)
     store = request.app.state.store
     dossier = store.get(dossier_id)
     if not dossier:
@@ -239,9 +248,10 @@ def controles_croises(
 def ferry_dossier(
     request: Request, dossier_id: str) -> dict:
     from fastapi import HTTPException
-    from .rbac import _exige, ADMINISTRATEUR
+
+    from ..rbac import ADMINISTRATEUR
+    from .dependencies import _exige
     _exige(ADMINISTRATEUR)(request)
-    from .dossier import DossierStore
     store = request.app.state.store
     dossier = store.get(dossier_id)
     if not dossier:
@@ -254,9 +264,10 @@ def ferry_dossier(
 def liquidation_dossier(
     request: Request, dossier_id: str) -> dict:
     from fastapi import HTTPException
-    from .rbac import _exige, ADMINISTRATEUR
+
+    from ..rbac import ADMINISTRATEUR
+    from .dependencies import _exige
     _exige(ADMINISTRATEUR)(request)
-    from .dossier import DossierStore
     store = request.app.state.store
     dossier = store.get(dossier_id)
     if not dossier:
@@ -270,9 +281,10 @@ def cloture_dossier(
     request: Request, dossier_id: str,
     motif: str = Body("")) -> dict:
     from fastapi import HTTPException
-    from .rbac import _exige, ADMINISTRATEUR
+
+    from ..rbac import ADMINISTRATEUR
+    from .dependencies import _exige
     _exige(ADMINISTRATEUR)(request)
-    from .dossier import DossierStore
     store = request.app.state.store
     dossier = store.get(dossier_id)
     if not dossier:
@@ -284,16 +296,6 @@ def cloture_dossier(
 # ─────────────────────────────────────────────────────────────
 # Module 01 : Clients
 # ─────────────────────────────────────────────────────────────
-
-from ..models import Client, ClientStatus
-from pydantic import BaseModel
-from fastapi import Body
-from fastapi import HTTPException
-from ..rbac import ADMINISTRATEUR, LECTEUR
-from ..api import _exige
-from typing import Any, Optional, List
-import uuid
-
 
 class ClientCreate(BaseModel):
     name: str
@@ -346,7 +348,6 @@ def create_client(
     current_user: Any = Depends(_exige(ADMINISTRATEUR)),
 ) -> dict:
     """Create a new client."""
-    from ..models import Client, ClientStatus
 
     store = _get_client_store(request)
     client_id = f"client_{uuid.uuid4().hex[:12]}"
@@ -453,7 +454,6 @@ def list_client_dossiers(
     current_user: Any = Depends(_exige(LECTEUR)),
 ) -> list[dict]:
     """List dossiers for a specific client."""
-    from .dossier import DossierStore
     store = request.app.state.store
     client_store = _get_client_store(request)
 
@@ -469,13 +469,6 @@ def list_client_dossiers(
 # ============================================================
 # Routes de gestion de workflow
 # ============================================================
-
-from ..models import (
-    WorkflowStatus, WorkflowStage, WorkflowStageStatus, WorkflowTemplate,
-    WorkflowInstance, DocumentValidation, UserAssignment, WorkflowNotification,
-    calculer_progression, obtenir_etapes_non_applicables, peut_passer_suivante
-)
-
 
 class WorkflowInstanceBody(BaseModel):
     template_id: str = ""
@@ -498,7 +491,6 @@ def workflow_initialiser(
     body: WorkflowInstanceBody,
 ) -> dict:
     """Initialiser un nouveau workflow pour un dossier."""
-    from ..dossier import DossierStore
     from ..dossier import _dossiers
     store = request.app.state.store
     dossier = store.get(dossier_id)
@@ -510,7 +502,6 @@ def workflow_initialiser(
         raise HTTPException(422, "Impossible d'initialiser le workflow : dossier sans pièces")
 
     # Vérifier si un workflow existe déjà
-    from ..models import new_id
     workflow_id = f"wf_{dossier_id}"
 
     # Créer l'instance de workflow
@@ -575,7 +566,6 @@ def workflow_obtenir(
     request: Request,
 ) -> dict:
     """Récupérer l'état actuel du workflow d'un dossier."""
-    from ..dossier import DossierStore
     from ..models import _dossiers
     store = request.app.state.store
     dossier = store.get(dossier_id)
@@ -632,7 +622,6 @@ def workflow_mettre_a_jour_etape(
     body: EtapeStatusBody,
 ) -> dict:
     """Mettre à jour le statut d'une étape de workflow."""
-    from ..dossier import DossierStore
     store = request.app.state.store
     dossier = store.get(dossier_id)
     if not dossier:
@@ -665,9 +654,9 @@ def workflow_mettre_a_jour_etape(
     elif etape.status == WorkflowStatus.TERMINE:
         # Vérifier si toutes les étapes sont terminées
         toutes_terminees = all(
-            wf.etapes[s].status == WorkflowStatus.TERMINE
+            workflow.etapes[s].status == WorkflowStatus.TERMINE
             for s in WorkflowStage
-            if s in wf.etapes
+            if s in workflow.etapes
         )
         if toutes_terminees:
             workflow.statut_global = WorkflowStatus.TERMINE
@@ -703,7 +692,6 @@ def workflow_affecter_utilisateur(
     body: AffectationBody,
 ) -> dict:
     """Affecter un utilisateur à une étape de workflow."""
-    from ..dossier import DossierStore
     store = request.app.state.store
     dossier = store.get(dossier_id)
     if not dossier:
@@ -713,18 +701,25 @@ def workflow_affecter_utilisateur(
     if not workflow_id or f"workflow:{workflow_id}" not in dossier.arbitrages:
         raise HTTPException(404, "Workflow non initialisé pour ce dossier")
 
-    from ..models import UserAssignment, new_id, WorkflowStage
+    from ..models import UserAssignment, WorkflowStage, new_id
 
     workflow_data = dossier.arbitrages[f"workflow:{workflow_id}"]
     workflow = WorkflowInstance.model_validate(workflow_data)
 
-    # Pour l'instant, on stocke l'affectation avec l'étape par défaut
+    # Première étape non terminée = étape courante du dossier
+    etape_courante = next(
+        (stage for stage in WorkflowStage
+         if workflow.etapes.get(stage) is None
+         or workflow.etapes[stage].status != WorkflowStatus.TERMINE),
+        WorkflowStage.ETAPE_1_CREATION,
+    )
+
     assignment = UserAssignment(
         id=new_id("ua_"),
         workflow_id=workflow_id,
         utilisateur=body.utilisateur if hasattr(body, 'utilisateur') else "admin",
         rôle=body.role,
-        etape=WorkflowStage.ETAPE_1_CREATION,  # Par défaut, à affiner
+        etape=etape_courante,
     )
 
     if not hasattr(dossier, '_assignations'):
@@ -750,7 +745,6 @@ def workflow_valider_etape(
     body: dict,
 ) -> dict:
     """Valider une étape de workflow (action humaine)."""
-    from ..dossier import DossierStore
     store = request.app.state.store
     dossier = store.get(dossier_id)
     if not dossier:
@@ -803,7 +797,6 @@ def workflow_declarer_blocage(
     body: dict,
 ) -> dict:
     """Déclarer un blocage sur une étape de workflow."""
-    from ..dossier import DossierStore
     store = request.app.state.store
     dossier = store.get(dossier_id)
     if not dossier:
@@ -863,7 +856,6 @@ def workflow_lever_blocage(
     body: dict,
 ) -> dict:
     """Lever un blocage sur une étape de workflow."""
-    from ..dossier import DossierStore
     store = request.app.state.store
     dossier = store.get(dossier_id)
     if not dossier:
@@ -946,7 +938,6 @@ def workflow_progression(
     request: Request,
 ) -> dict:
     """Obtenir uniquement la progression du workflow."""
-    from ..dossier import DossierStore
     store = request.app.state.store
     dossier = store.get(dossier_id)
     if not dossier:
@@ -975,7 +966,6 @@ def workflow_marquer_non_applicable(
     body: dict,
 ) -> dict:
     """Marquer une étape comme non applicable avec justification."""
-    from ..dossier import DossierStore
     store = request.app.state.store
     dossier = store.get(dossier_id)
     if not dossier:

@@ -1,10 +1,11 @@
-import sqlite3
 import hashlib
 import json
-from pathlib import Path
-from typing import Optional, Any
-from .models import PageResult
+import sqlite3
+from typing import Optional
+
 from .config import get_config
+from .models import PageResult
+
 
 class PageCache:
     def __init__(self):

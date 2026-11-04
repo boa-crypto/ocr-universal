@@ -6,23 +6,16 @@ la vérification d'authentification et les cas d'erreur.
 from __future__ import annotations
 
 import json
-import tempfile
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
 
 from unocr.connectors.contract import (
-    ConnectionTestResult,
-    ConnectorCapability,
-    ConnectorState,
-    FormSchema,
     FieldSchema,
+    FormSchema,
     IntegrationMode,
-    SubmissionResult,
 )
 from unocr.connectors.customs import DouaneConnector
-
 
 # ---------------------------------------------------------------------------
 # Fixtures

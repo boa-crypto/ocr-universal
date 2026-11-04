@@ -2,14 +2,12 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Body, Depends, Request, HTTPException
+from fastapi import APIRouter, Request
 from pydantic import BaseModel
-from typing import Any, Optional, List
 
-from ..controle_documentaire import analyser_dossier_complet, ControleDocumentaireEngine
 from ..config import get_config
+from ..controle_documentaire import ControleDocumentaireEngine, analyser_dossier_complet
 from ..logging_setup import audit, get_logger
-from ..rbac import ADMINISTRATEUR, LECTEUR
 
 log = get_logger("controle_doc")
 
@@ -75,7 +73,7 @@ def get_anomalies_dossier(
 @router.get("/regles")
 def lister_regles() -> dict:
     """Liste les règles de comparaison configurées."""
-    from ..controle_documentaire import REGLES_COMPARAISON, TypeAnomalie, Gravite
+    from ..controle_documentaire import REGLES_COMPARAISON, Gravite, TypeAnomalie
 
     return {
         "regles": [

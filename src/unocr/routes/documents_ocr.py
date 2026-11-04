@@ -2,16 +2,15 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Body, Depends, Request, HTTPException, Query
-from pydantic import BaseModel
-from typing import Any, Optional, List
-
-from ..models import new_id
-from ..ocr_integration import get_ocr_integration, TYPES_DOCUMENTS_TRANSIT, suggest_document_type
 import time
+from typing import Optional
+
+from fastapi import APIRouter, HTTPException, Request
+from pydantic import BaseModel
+
 from ..config import get_config
 from ..logging_setup import audit, get_logger
-from ..rbac import ADMINISTRATEUR, LECTEUR
+from ..ocr_integration import get_ocr_integration, suggest_document_type
 
 log = get_logger("documents_ocr")
 
@@ -54,7 +53,6 @@ def creer_document_ocr(
     ocr_integration = get_ocr_integration()
 
     # Vérifier que le dossier existe
-    from ..dossier import DossierStore
     store = request.app.state.store
     dossier = store.get(dossier_id)
     if not dossier:
@@ -78,7 +76,6 @@ def creer_document_ocr(
         raise HTTPException(400, "Impossible de traiter le résultat OCR")
 
     # Ajouter la pièce au dossier
-    from ..dossier import DossierStore
     from ..storage import JobStore
     job_store = JobStore(cfg)
     result_json = job_store.load_result(doc.job_id) or {}

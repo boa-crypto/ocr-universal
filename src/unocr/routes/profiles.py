@@ -16,7 +16,6 @@ from ..profiles import (
     load_all_profiles,
 )
 from ..services.profile_store import MAX_FIELDS, MAX_PATTERN_LEN, user_profile_path
-from ..config import get_config as _get_config
 
 router = APIRouter(prefix="/api/profiles", tags=["profiles"])
 

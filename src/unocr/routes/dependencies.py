@@ -1,13 +1,12 @@
 """Dépendances partagées pour les routes — évite les imports circulaires."""
 from __future__ import annotations
 
-from fastapi import Request, HTTPException, Depends
 from typing import Any, Optional
 
-from ..config import get_config as _get_config
-from ..rbac import ADMINISTRATEUR, LECTEUR, SUPERVISEUR, OPERATEUR, TOUS
-from ..logging_setup import audit, get_logger
+from fastapi import Depends, HTTPException, Request
 
+from ..logging_setup import audit, get_logger
+from ..rbac import ADMINISTRATEUR, LECTEUR, OPERATEUR, SUPERVISEUR, TOUS, Utilisateur
 
 log = get_logger("deps")
 
@@ -22,6 +21,21 @@ def _utilisateur_courant(request: Request):
     return getattr(request.state, "utilisateur", None)
 
 
+def utilisateur_ouvert() -> Utilisateur:
+    """Utilisateur permissif utilisé quand `data/rbac.json` est absent.
+
+    Sans fichier de rôles, le poste est ouvert : les routes doivent pouvoir
+    journaliser un acteur (`u.nom`) et consulter le périmètre sans planter.
+    """
+    return Utilisateur(nom="local", roles=frozenset({ADMINISTRATEUR}),
+                       dossiers=frozenset({TOUS}))
+
+
+def _utilisateur_ou_ouvert(request: Request) -> Utilisateur:
+    """Utilisateur courant, ou utilisateur ouvert si le RBAC est inactif."""
+    return _utilisateur_courant(request) or utilisateur_ouvert()
+
+
 # ───────────────────────────────────────────────────────────────
 # Dépendances RBAC
 
@@ -32,10 +46,12 @@ def _exige(role: str):
     rôles, aucune route ne se ferme. Quand il est actif, un rôle insuffisant
     est refusé **et tracé** — un refus non tracé ne se distingue pas d'un bug.
     """
-    def dependance(request: Request) -> Optional[object]:
+    def dependance(request: Request) -> Optional[Utilisateur]:
         u = _utilisateur_courant(request)
         if u is None:
-            return None
+            # RBAC inactif : accès ouvert, mais on renvoie quand même un acteur
+            # pour que les routes puissent journaliser sans tester None.
+            return utilisateur_ouvert()
         if u.a_role(role):
             return u
         audit(request.app.state.cfg.log_dir, "acces_refuse_role", route=request.url.path,

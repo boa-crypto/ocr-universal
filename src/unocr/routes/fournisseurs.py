@@ -2,15 +2,14 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Body, Depends, Request, HTTPException
-from pydantic import BaseModel
-from typing import Any, Optional, List
+from typing import Optional
 
-from ..models import Fournisseur, new_id
-from ..fournisseur import FournisseurStore
+from fastapi import APIRouter, HTTPException, Request
+from pydantic import BaseModel
+
 from ..config import get_config
 from ..logging_setup import audit, get_logger
-from ..rbac import ADMINISTRATEUR, LECTEUR, SUPERVISEUR
+from ..models import Fournisseur, new_id
 
 log = get_logger("fournisseurs")
 

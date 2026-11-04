@@ -12,20 +12,10 @@ from __future__ import annotations
 
 import json
 import re
-import os
-from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Optional, List, Dict
+from typing import Any, Dict, List, Optional
 
-from .models import (
-    ClassificationTarifaire,
-    RegleReglementaire,
-    Autorisation,
-    DeclarationDouaniere,
-    new_id,
-    CategorieFrais,
-)
 from .config import get_config
 from .logging_setup import audit, get_logger
 
@@ -249,18 +239,6 @@ def verifier_code_sh(code: str) -> bool:
 
 def calculer_droits(dossier_id: str, code_sh: str, valeur: float, devise: str = "EUR") -> Dict[str, Any]:
     """Calcule les droits de douane pour une classification donnée."""
-    from .models import ClassificationTarifaire
-
-    # Récupérer la classification
-    cls = ClassificationTarifaire(
-        code_tarifaire=code_sh,
-        désignation="Produit identifié",
-        droits_importation=0.0,
-        tva=0.0,
-        tpc=0.0,
-        taxes_internes=0.0,
-    )
-
     # Taux par défaut Algérie (à remplacer par vraie base de données)
     taux_tva = 0.09  # 9% standard
     taux_tpc = 0.05  # 5% TPC standard
@@ -299,12 +277,12 @@ def rechercher_classe_sh(mot_cle: str, chapitre: Optional[str] = None) -> List[D
 
 
 def obtenir_droits_complets(code_sh: str, valeur: float, devise: str = "EUR") -> Dict[str, Any]:
-    """Obtient tous les droits et taxes pour une classification SH."""
-    validation = valider_code_sh(code_sh)
-    calcul = calculer_droits("", code_sh, valeur, devise)
-    validation["code_sh"] = code_sh
-    validation["validation_sh"] = validation
-    return validation
+    """Droits et taxes complets pour un code SH, avec sa validation."""
+    code = normaliser_code_sh(code_sh)
+    valide = verifier_code_sh(code)
+    calcul = calculer_droits("", code, valeur, devise)
+    calcul["validation_sh"] = {"code_sh": code, "valide": valide}
+    return calcul
 
 
 def exiger_certificat(type_cert: str, dossier_id: str) -> Dict[str, Any]:

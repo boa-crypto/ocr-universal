@@ -323,8 +323,9 @@ class Pipeline:
             return page_res
 
         # Vérification du cache SQLite
-        from .cache import PageCache
         import io
+
+        from .cache import PageCache
         cache = PageCache()
         buffered = io.BytesIO()
         lpage.image.save(buffered, format="PNG")
@@ -457,9 +458,6 @@ class Pipeline:
                         try:
                             out2 = tesseract_eng.recognize(img, languages, lpage.page_num)
                             if out2.ok:
-                                calibrated2 = self._calibration.apply(out2.mean_confidence) \
-                                    if hasattr(self, '_calibration') and self._calibration.active \
-                                    else out2.mean_confidence
                                 engine_runs.append(EngineRun(
                                     engine="tesseract", page_num=lpage.page_num,
                                     languages=languages, mean_confidence=out2.mean_confidence,

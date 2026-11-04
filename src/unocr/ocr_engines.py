@@ -340,10 +340,11 @@ class BaiduOCREngine(OCREngine):
         if not self.is_available():
             return EngineOutput(engine=self.name, text="", ok=False, error=self.unavailable_reason)
 
-        import os
-        import requests
         import base64
         import io
+        import os
+
+        import requests
 
         api_key = os.environ.get("BAIDU_OCR_API_KEY") or os.environ.get("BAIDU_API_KEY")
         secret_key = os.environ.get("BAIDU_OCR_SECRET_KEY") or os.environ.get("BAIDU_SECRET_KEY")

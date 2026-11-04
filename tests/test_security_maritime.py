@@ -8,17 +8,24 @@ Ces tests vérifient :
 - Journalisation d'audit
 - Protection contre les escalades de privilèges
 """
-import json
-import pytest
 import tempfile
 from pathlib import Path
 
-from unocr.rbac import (
-    RegistreRBAC, Utilisateur, LECTEUR, AGENT_DE_TRANSIT,
-    RESPONSABLE_TRANSPORT, DECLARANT_HABILE, CONTROLEUR_DOCUMENTAIRE,
-    RESPONSABLE_FINANCIER, ADMINISTRATEUR, ROLES, ACTIONS
-)
+import pytest
 
+from unocr.rbac import (
+    ACTIONS,
+    ADMINISTRATEUR,
+    AGENT_DE_TRANSIT,
+    CONTROLEUR_DOCUMENTAIRE,
+    DECLARANT_HABILE,
+    LECTEUR,
+    RESPONSABLE_FINANCIER,
+    RESPONSABLE_TRANSPORT,
+    ROLES,
+    RegistreRBAC,
+    Utilisateur,
+)
 
 # ============================================================================
 # Fixtures
@@ -104,7 +111,7 @@ class TestRolesMetier:
 
     def test_administrateur_tous_droits(self, rbac):
         """Un administrateur a tous les droits."""
-        u = rbac.ajouter("admin", [ADMINISTRATEUR], ["D1", "D2", "D3"])
+        rbac.ajouter("admin", [ADMINISTRATEUR], ["D1", "D2", "D3"])
 
         for action, roles in ACTIONS.items():
             # Vérifier que le rôle demandé est dans les rôles autorisés pour l'action
@@ -152,7 +159,6 @@ class TestIsolationDossier:
     def test_utilisateur_inconnu_n_a_plus_droit(self, rbac):
         """Un utilisateur avec rôles vides lève une erreur."""
         # Un Utilisateur avec rôles vides lève une erreur lors de a_role()
-        from unocr.rbac import RBACError
         u = Utilisateur(nom="inconnu", roles=frozenset(), dossiers=frozenset())
         with pytest.raises(ValueError):  # max() sur itérable vide
             u.a_role(LECTEUR)
@@ -247,7 +253,7 @@ class TestValidationRoles:
 
     def test_jeton_en_double_alerte(self, rbac, capsys):
         """Un jeton dupliqué génère une alerte."""
-        u1 = rbac.ajouter("user1", [LECTEUR], ["D1"])
+        rbac.ajouter("user1", [LECTEUR], ["D1"])
         # Créer un autre utilisateur avec le même jeton (impossible normalement)
         # Mais on peut vérifier que la comparaison est sécurisée
 

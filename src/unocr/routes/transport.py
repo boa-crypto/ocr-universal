@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Body, Depends, Request, HTTPException
-from pydantic import BaseModel
-from typing import Any, Optional, List
+from typing import Optional
 
-from ..models import Transporteur, Camion, Livraison, new_id
+from fastapi import APIRouter, HTTPException, Request
+from pydantic import BaseModel
+
 from ..config import get_config
 from ..logging_setup import audit, get_logger
-from ..rbac import ADMINISTRATEUR, LECTEUR
+from ..models import Camion, Livraison, Transporteur, new_id
 
 log = get_logger("transport")
 
@@ -328,7 +328,7 @@ def create_livraison(
 ) -> dict:
     """Créer une nouvelle livraison."""
     store = _get_livraison_store(request)
-    l = Livraison(
+    liv = Livraison(
         id=new_id("liv_"),
         dossier_id=livraison.dossier_id,
         transport_id=livraison.transport_id,
@@ -344,9 +344,9 @@ def create_livraison(
         reserves_eventuelles=livraison.reserves_eventuelles,
         observations=livraison.observations,
     )
-    store[l.id] = l
+    store[liv.id] = liv
     audit(cfg.log_dir, "livraison_creee", dossier=livraison.dossier_id)
-    return l.model_dump()
+    return liv.model_dump()
 
 
 @router.get("/livraisons")
@@ -358,8 +358,8 @@ def list_livraisons(
     store = _get_livraison_store(request)
     livraisons = list(store.values())
     if dossier_id:
-        livraisons = [l for l in livraisons if l.dossier_id == dossier_id]
-    return [l.model_dump() for l in livraisons]
+        livraisons = [liv for liv in livraisons if liv.dossier_id == dossier_id]
+    return [liv.model_dump() for liv in livraisons]
 
 
 @router.get("/livraisons/{livraison_id}")
@@ -369,10 +369,10 @@ def get_livraison(
 ) -> dict:
     """Obtenir une livraison."""
     store = _get_livraison_store(request)
-    l = store.get(livraison_id)
-    if not l:
+    liv = store.get(livraison_id)
+    if not liv:
         raise HTTPException(404, "Livraison introuvable")
-    return l.model_dump()
+    return liv.model_dump()
 
 
 @router.put("/livraisons/{livraison_id}")
@@ -383,16 +383,16 @@ def update_livraison(
 ) -> dict:
     """Mettre à jour une livraison."""
     store = _get_livraison_store(request)
-    l = store.get(livraison_id)
-    if not l:
+    liv = store.get(livraison_id)
+    if not liv:
         raise HTTPException(404, "Livraison introuvable")
 
     update_data = livraison_update.model_dump(exclude_unset=True)
     for key, value in update_data.items():
-        setattr(l, key, value)
+        setattr(liv, key, value)
 
     audit(cfg.log_dir, "livraison_modifiee", cible=livraison_id)
-    return l.model_dump()
+    return liv.model_dump()
 
 
 @router.delete("/livraisons/{livraison_id}")
@@ -421,14 +421,14 @@ def demarrer_livraison(
 ) -> dict:
     """Démarrer une livraison (en route)."""
     store = _get_livraison_store(request)
-    l = store.get(livraison_id)
-    if not l:
+    liv = store.get(livraison_id)
+    if not liv:
         raise HTTPException(404, "Livraison introuvable")
 
-    l.date_depart = date_depart
-    l.statut = "en_route"
+    liv.date_depart = date_depart
+    liv.statut = "en_route"
     audit(cfg.log_dir, "livraison_demarree", livraison=livraison_id)
-    return l.model_dump()
+    return liv.model_dump()
 
 
 @router.post("/livraisons/{livraison_id}/arriver")
@@ -438,17 +438,17 @@ def arriver_livraison(
     date_reelle: str,
     reserves: str = "",
 ) -> dict:
-    """Enregistrer l'arrivée chez le client."""
+    """Enregistrer liv'arrivée chez le client."""
     store = _get_livraison_store(request)
-    l = store.get(livraison_id)
-    if not l:
+    liv = store.get(livraison_id)
+    if not liv:
         raise HTTPException(404, "Livraison introuvable")
 
-    l.date_reelle = date_reelle
-    l.reserves_eventuelles = reserves
-    l.statut = "arrive" if not reserves else "reponse"
+    liv.date_reelle = date_reelle
+    liv.reserves_eventuelles = reserves
+    liv.statut = "arrive" if not reserves else "reponse"
     audit(cfg.log_dir, "livraison_arrivee", livraison=livraison_id, reserves=reserves)
-    return l.model_dump()
+    return liv.model_dump()
 
 
 @router.post("/livraisons/{livraison_id}/confirmer")
@@ -460,12 +460,12 @@ def confirmer_livraison(
 ) -> dict:
     """Confirmer la livraison avec preuve signée."""
     store = _get_livraison_store(request)
-    l = store.get(livraison_id)
-    if not l:
+    liv = store.get(livraison_id)
+    if not liv:
         raise HTTPException(404, "Livraison introuvable")
 
-    l.preuve_livraison_signee = preuve_signee
-    l.date_signature = date_signature
-    l.statut = "confirme"
+    liv.preuve_livraison_signee = preuve_signee
+    liv.date_signature = date_signature
+    liv.statut = "confirme"
     audit(cfg.log_dir, "livraison_confirmee", livraison=livraison_id, preuve=preuve_signee)
-    return l.model_dump()
+    return liv.model_dump()

@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Body, Depends, Request, HTTPException
-from pydantic import BaseModel
-from typing import Any, Optional, List
+from typing import Any, Optional
 
-from ..rbac import ADMINISTRATEUR, LECTEUR, SUPERVISEUR, TOUS
-from ..models import Client, ClientStatus, new_id, CategorieFrais
+from fastapi import APIRouter, Depends, HTTPException, Request
+from pydantic import BaseModel
+
 from ..config import get_config
 from ..logging_setup import audit, get_logger
+from ..models import new_id
 
 log = get_logger("clients")
 
@@ -123,16 +123,16 @@ def list_clients(
     clients = list(store.values())
 
     if status:
-        clients = [c for c in clients if c.get("status", "").lower() == status.lower()]
+        voulu = status.lower()
+        clients = [c for c in clients
+                   if str(getattr(c.status, "value", c.status)).lower() == voulu]
 
     if search:
-        search_lower = search.lower()
-        clients = [c for c in clients if
-            search_lower in c.get("name", "").lower() or
-            search_lower in c.get("legal_name", "").lower() or
-            search_lower in c.get("tax_id", "").lower() or
-            search_lower in c.get("email", "").lower()
-        ]
+        terme = search.lower()
+        champs = ("name", "legal_name", "tax_id", "email")
+        clients = [c for c in clients
+                   if any(terme in str(getattr(c, champ, "") or "").lower()
+                          for champ in champs)]
 
     return [c.as_dict() for c in clients]
 
@@ -140,6 +140,7 @@ def list_clients(
 @router.get("/{client_id}")
 def get_client(
     client_id: str,
+    request: Request,
 ) -> dict:
     """Obtenir un client spécifique."""
     store = _get_client_store(request)
@@ -153,6 +154,7 @@ def get_client(
 def update_client(
     client_id: str,
     client_update: ClientUpdate,
+    request: Request,
 ) -> dict:
     """Mettre à jour un client."""
     store = _get_client_store(request)
@@ -171,6 +173,7 @@ def update_client(
 @router.delete("/{client_id}")
 def delete_client(
     client_id: str,
+    request: Request,
 ) -> dict:
     """Supprimer un client."""
     store = _get_client_store(request)
@@ -185,10 +188,20 @@ def delete_client(
 @router.get("/{client_id}/dossiers")
 def list_client_dossiers(
     client_id: str,
+    request: Request,
 ) -> list[dict]:
-    """Lister les dossiers pour un client spécifique."""
-    from ..dossier import DossierStore
-    store = request.app.state.store
+    """Lister les dossiers rattachés à un client."""
+    client = _get_client_store(request).get(client_id)
+    if not client:
+        raise HTTPException(404, "Client introuvable")
 
-    dossiers = store.liste()
+    store = request.app.state.store
+    # Le dossier peut référencer le client par son identifiant ou par son nom
+    # selon qu'il vient de l'API transit ou de l'atelier documentaire.
+    cibles = {client.id, client.name, client.legal_name}
+    dossiers = [
+        d for d in store.liste()
+        if getattr(d, "client_id", "") in cibles
+        or getattr(d, "client_importateur", "") in cibles
+    ]
     return [d.as_dict() for d in dossiers]

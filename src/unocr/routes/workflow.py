@@ -2,25 +2,19 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Body, Depends, Request, HTTPException, Query
-from pydantic import BaseModel
-from typing import Any, Optional, List, Dict
-from enum import Enum
+import time
+from typing import Dict, Optional
 
+from fastapi import APIRouter, Body, Depends, Request
+from pydantic import BaseModel
+
+from ..config import get_config
+from ..logging_setup import get_logger
 from ..models import (
     WorkflowInstance,
-    WorkflowTemplate,
-    WorkflowStage,
-    WorkflowStageStatus,
-    WorkflowStatus,
-    new_id,
-    WorkflowInstance,
-    WorkflowTemplate,
 )
-from ..config import get_config
-from ..logging_setup import audit, get_logger
+from ..rbac import LECTEUR
 from ..routes.dependencies import _exige
-from ..rbac import LECTEUR, OPERATEUR, SUPERVISEUR, ADMINISTRATEUR
 
 log = get_logger("workflow")
 
@@ -109,7 +103,10 @@ class WorkflowEngine:
 
     def create_workflow(self, dossier_id: str, template_id: str = "default") -> "WorkflowInstance":
         """Crée un nouveau workflow pour un dossier."""
-        from ..models import WorkflowInstance, WorkflowTemplate, WorkflowStage, WorkflowStageStatus, WorkflowStatus
+        from ..models import (
+            WorkflowInstance,
+            WorkflowTemplate,
+        )
 
         # Template par défaut
         template = WorkflowTemplate(
@@ -120,7 +117,7 @@ class WorkflowEngine:
 
         workflow = WorkflowInstance(
             dossier_id=dossier_id,
-            template_id="default",
+            template_id=template.id,
         )
 
         # Initialiser les étapes
@@ -140,8 +137,6 @@ class WorkflowEngine:
     def can_transition(self, workflow: "WorkflowInstance", from_stage: str, to_stage: str,
                        user_role: str, user_id: str = "") -> tuple[bool, str]:
         """Vérifie si une transition est autorisée."""
-        key = (from_stage, to_stage)
-
         if (from_stage, to_stage) not in self.TRANSITIONS_AUTORISEES:
             return False, f"Transition non autorisée: {from_stage} -> {to_stage}"
 
@@ -167,7 +162,6 @@ class WorkflowEngine:
         if not workflow:
             return False, "Workflow introuvable"
 
-        from_stage = workflow.current_stage
         can, reason = self.can_transition(workflow, workflow.current_stage, to_stage, "operateur")
         if not can:
             return False, reason
@@ -199,7 +193,7 @@ async def create_workflow(
     workflow = workflow_engine.create_workflow(dossier_id, template_id)
     # TODO: sauvegarder en base
     return {
-        "workflow_id": f"wf_{dossier_id}",
+        "workflow_id": getattr(workflow, "id", f"wf_{dossier_id}"),
         "dossier_id": dossier_id,
         "status": "created",
         "current_stage": "creation",

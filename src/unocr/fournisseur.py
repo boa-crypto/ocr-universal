@@ -3,11 +3,10 @@
 from __future__ import annotations
 
 import json
-import time
 from pathlib import Path
-from typing import Any, Optional
+from typing import Optional
 
-from unocr.logging_setup import audit, get_logger
+from unocr.logging_setup import get_logger
 from unocr.models import Fournisseur, new_id
 
 log = get_logger("fournisseur")

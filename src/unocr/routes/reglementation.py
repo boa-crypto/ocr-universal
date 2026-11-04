@@ -2,27 +2,25 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Body, Depends, Request, HTTPException, Query
-from pydantic import BaseModel
-from typing import Any, Optional, List
+from typing import Optional
 
-from ..reglementation import (
-    normaliser_code_sh,
-    verifier_code_sh,
-    calculer_droits,
-    obtenir_droits_complets,
-    exiger_certificat,
-    rechercher_classe_sh,
-    initialiser_reglementation,
-    get_reglementation_store,
-    CODES_SH_ALGERIE,
-    REGLES_REGLEMENTAIRES,
-    TYPES_CERTIFICATS,
-    REGLES_REGLEMENTAIRES,
-)
+from fastapi import APIRouter, HTTPException, Request
+from pydantic import BaseModel
+
 from ..config import get_config
 from ..logging_setup import audit, get_logger
-from ..rbac import ADMINISTRATEUR, LECTEUR
+from ..reglementation import (
+    REGLES_REGLEMENTAIRES,
+    TYPES_CERTIFICATS,
+    calculer_droits,
+    exiger_certificat,
+    get_reglementation_store,
+    initialiser_reglementation,
+    normaliser_code_sh,
+    obtenir_droits_complets,
+    rechercher_classe_sh,
+    verifier_code_sh,
+)
 
 log = get_logger("reglementation")
 

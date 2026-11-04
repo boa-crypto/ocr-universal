@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Body, Depends, Request, HTTPException
-from pydantic import BaseModel
-from typing import Any, Optional, List
+from typing import List, Optional
 
-from ..models import DeclarationDouaniere, Liquidation, new_id
+from fastapi import APIRouter, HTTPException, Request
+from pydantic import BaseModel
+
 from ..config import get_config
 from ..logging_setup import audit, get_logger
-from ..rbac import ADMINISTRATEUR, LECTEUR
+from ..models import DeclarationDouaniere, Liquidation, new_id
 
 log = get_logger("declarations")
 
@@ -265,8 +265,8 @@ def list_liquidations(
     store = _get_liquidation_store(request)
     liqs = list(store.values())
     if dossier_id:
-        liqs = [l for l in liqs if l.dossier_id == dossier_id]
-    return [l.model_dump() for l in liqs]
+        liqs = [liq for liq in liqs if liq.dossier_id == dossier_id]
+    return [liq.model_dump() for liq in liqs]
 
 
 @router.get("/liquidation/{liquidation_id}")

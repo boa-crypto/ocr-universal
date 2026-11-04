@@ -1,5 +1,5 @@
-import pytest
 from unocr.ocr_engines import EngineRegistry
+
 
 def test_registry_includes_baidu():
     registry = EngineRegistry()

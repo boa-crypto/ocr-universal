@@ -32,7 +32,6 @@ from .calibration import Calibration
 from .config import get_config
 from .crypto_store import SALT_LEN, CryptoStore
 from .exporters import export_all, export_xlsx
-from .fournisseur import FournisseurStore
 from .logging_setup import audit, get_logger, setup_logging
 from .models import FieldStatus, JobOptions, JobStatus, ValueOrigin
 from .observabilite import HEADER_CORRELATION, CompteurDebit, nouvel_identifiant
@@ -55,25 +54,25 @@ from .rbac import (
     Utilisateur,
 )
 from .resources import snapshot
-from .routes.profiles import router as profiles_router
-from .routes.system import router as system_router
-from .routes.watch import router as watch_router
 from .routes.clients import router as clients_router
-from .routes.fournisseurs import router as fournisseurs_router
-from .routes.navires import router as navires_router
-from .routes.conteneurs import router as conteneurs_router
-from .routes.expeditions import router as expeditions_router
 from .routes.connaissements import router as connaissements_router
-from .routes.declarations import router as declarations_router
-from .routes.frais import router as frais_router
-from .routes.terminal import router as terminal_router
-from .routes.dashboard import router as dashboard_router
-from .routes.transport import router as transport_router
-from .routes.rbac_roles import router as rbac_roles_router
-from .routes.documents_ocr import router as documents_ocr_router
+from .routes.conteneurs import router as conteneurs_router
 from .routes.controle_doc import router as controle_doc_router
+from .routes.dashboard import router as dashboard_router
+from .routes.declarations import router as declarations_router
+from .routes.documents_ocr import router as documents_ocr_router
+from .routes.expeditions import router as expeditions_router
+from .routes.fournisseurs import router as fournisseurs_router
+from .routes.frais import router as frais_router
+from .routes.navires import router as navires_router
+from .routes.profiles import router as profiles_router
+from .routes.rbac_roles import router as rbac_roles_router
 from .routes.reglementation import router as reglementation_router
+from .routes.system import router as system_router
+from .routes.terminal import router as terminal_router
 from .routes.transit import router as transit_router
+from .routes.transport import router as transport_router
+from .routes.watch import router as watch_router
 from .routes.workflow import router as workflow_router
 from .security import sanitize_for_csv
 from .services.jobs import jobs_semaphore

@@ -1,7 +1,6 @@
-import pytest
 from unocr.ocr_engines import EngineRegistry
-from unocr.security import flag_untrusted_content, validate_file, SecurityError
-from pathlib import Path
+from unocr.security import flag_untrusted_content
+
 
 def test_intelligent_routing_blurry():
     registry = EngineRegistry()

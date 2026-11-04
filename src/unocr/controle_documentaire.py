@@ -10,15 +10,13 @@ Ce module compare les documents d'un même dossier pour détecter :
 
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
-from typing import Any, Optional, Dict, List, Set
+from datetime import datetime
+from typing import Any, Dict, List, Optional
 
-from .models import AnomalieDocumentaire, new_id
-from .ocr_integration import get_ocr_integration
 from .config import get_config
-from .logging_setup import audit, get_logger
+from .logging_setup import get_logger
+from .ocr_integration import get_ocr_integration
 
 log = get_logger("controle_documentaire")
 
@@ -440,21 +438,6 @@ class ControleDocumentaireEngine:
     def _sauvegarder_anomalies(self, dossier_id: str, anomalies: List[AnomalieDetectee]) -> None:
         """Sauvegarde les anomalies dans le store."""
         for anom in anomalies:
-            anom_obj = AnomalieDocumentaire(
-                id=new_id("anom_"),
-                dossier_id=dossier_id,
-                regle_violée=anom.regle,
-                type_anomalie=anom.type_anomalie,
-                document_source=anom.documents_concernes[0] if anom.documents_concernes else "",
-                document_reference=",".join(anom.documents_concernes[1:]) if len(anom.documents_concernes) > 1 else "",
-                valeur_detectée=str(anom.valeurs),
-                valeur_reference="",
-                gravite=anom.gravite,
-                responsable="",
-                date_detection=datetime.now().strftime("%Y-%m-%d"),
-                action_corrective=anom.message,
-                statut_resolution="ouvert",
-            )
             # Ici on pourrait sauvegarder dans un store dédié
             # Pour l'instant, log seulement
             log.info("Anomalie détectée: %s - %s", anom.regle, anom.message)

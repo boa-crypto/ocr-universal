@@ -9,14 +9,16 @@ from __future__ import annotations
 import json
 import time
 from pathlib import Path
-from typing import Any, Optional, Dict, List
+from typing import Any, Dict, List, Optional
 
-from .models import (
-    ExtractionOCR, ChampExtrait, TypeDocument, new_id,
-    DocumentResult, PageResult, FieldValue, FieldStatus, ValueOrigin
-)
 from .config import get_config
 from .logging_setup import audit, get_logger
+from .models import (
+    ChampExtrait,
+    ExtractionOCR,
+    FieldValue,
+    new_id,
+)
 
 log = get_logger("ocr_integration")
 
@@ -223,8 +225,8 @@ class OCRTransitIntegration:
         Returns:
             ExtractionOCR créée ou None si erreur
         """
-        from .storage import JobStore
         from .models import DocumentResult
+        from .storage import JobStore
 
         job_store = JobStore(cfg)
         result_json = job_store.load_result(job_id)
@@ -233,14 +235,6 @@ class OCRTransitIntegration:
             return None
 
         result = DocumentResult.model_validate(result_json)
-
-        # Récupérer le type de document
-        type_info = TYPES_DOCUMENTS_TRANSIT.get(document_type, {
-            "nom": document_type,
-            "code": document_type,
-            "profil": "generic",
-            "champs_cles": []
-        })
 
         # Construire le texte complet
         texte_complet = "\n\n".join(

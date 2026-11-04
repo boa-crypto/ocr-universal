@@ -4,7 +4,6 @@ Après le refactoring Phase 1, les modules JS ne sont plus dupliqués dans index
 Ce test vérifie que l'architecture refactorisée est cohérente.
 """
 from pathlib import Path
-import sys
 
 RACINE = Path(__file__).parent.parent
 WEB = RACINE / "web"
