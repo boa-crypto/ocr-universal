@@ -960,6 +960,9 @@ async function initLangChips() {
   const app = document.getElementById("app");
   const sc = document.getElementById("sidebarCollapse");
   if (sc && app) sc.addEventListener("click", () => {
+    // Le repli est piloté par la coque premium (web/shell.js) : persistance,
+    // libellé accessible et infobulles y sont gérés ensemble.
+    if (window.UniOCRShell) return;
     app.classList.toggle("collapsed");
     localStorage.setItem("unocr_sidebar",
       app.classList.contains("collapsed") ? "1" : "0");
@@ -1256,6 +1259,9 @@ async function initLangChips() {
   }
 
   async function runSearch() {
+    // La coque premium (web/shell.js) fournit la recherche transverse
+    // dossiers/clients/B/L/conteneurs : on n'écrase pas ses résultats.
+    if (window.UniOCRShell) return;
     const q = (gs.value || "").trim();
     if (q.length < 2) { closeSearch(); return; }
     sr.classList.remove("hidden");

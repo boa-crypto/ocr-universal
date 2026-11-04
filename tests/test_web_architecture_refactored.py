@@ -90,9 +90,15 @@ def test_service_worker_cache_architecture_refactorisee() -> None:
             f"Service worker doit cacher {module}"
 
 def test_reduction_taille_index() -> None:
-    """index.html doit être significativement plus petit."""
+    """index.html doit rester une coquille : aucun JS/CSS dupliqué.
+
+    Le plafond est passé de 200 KB à 220 KB avec la refonte premium : le
+    cockpit embarque désormais son balisage complet (bandeau d'accueil, cinq
+    tuiles KPI, panneaux et graphiques). Ce qui est mesuré ici reste la
+    duplication de code — les tests voisins vérifient qu'aucun CSS ni module
+    JS n'est réinliné dans le document.
+    """
     index_size = (WEB / "index.html").stat().st_size
-    # Avant: ~738KB, Après: <150KB
-    assert index_size < 200000, \
-        f"index.html doit être < 200KB (actuellement {index_size/1024:.1f}KB)"
-    print(f"✓ index.html réduit à {index_size/1024:.1f}KB (-80%)")
+    assert index_size < 220000, \
+        f"index.html doit rester < 220KB (actuellement {index_size/1024:.1f}KB)"
+    print(f"✓ index.html contenu à {index_size/1024:.1f}KB")

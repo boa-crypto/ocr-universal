@@ -2385,6 +2385,173 @@ def _search_payload(q: str, hits: list[dict], limit: int) -> dict:
     }
 
 
+# ─────────────── recherche transverse & amorçage de la coque ───────────────
+
+def _magasin(request: Request, nom: str) -> dict:
+    """Lit un store `app.state` sans le créer (recherche en lecture seule)."""
+    magasin = getattr(request.app.state, nom, None)
+    return magasin if isinstance(magasin, dict) else {}
+
+
+def _champ(objet: object, nom: str, defaut: str = "") -> str:
+    valeur = getattr(objet, nom, defaut)
+    return str(valeur) if valeur is not None else defaut
+
+
+@app.get("/api/search/global")
+def search_global(
+    request: Request,
+    q: str = Query(..., min_length=1, max_length=120),
+    limit: int = Query(6, ge=1, le=20),
+) -> dict:
+    """Recherche transverse : dossiers, clients, B/L, conteneurs, documents.
+
+    Un dossier est trouvé par identifiant, libellé, référence, client,
+    fournisseur, B/L, conteneur, scellé, navire ou code SH. Les autres
+    groupes lisent les stores du serveur et restent vides s'ils n'ont pas
+    encore d'enregistrement : aucune entrée n'est fabriquée.
+    """
+    terme = q.strip().lower()
+
+    def contient(*valeurs: object) -> bool:
+        return terme in " ".join(str(v or "") for v in valeurs).lower()
+
+    utilisateur = _utilisateur_courant(request)
+    groupes: dict[str, list[dict]] = {
+        "dossiers": [], "clients": [], "connaissements": [], "conteneurs": [], "documents": [],
+    }
+    total = 0
+
+    for dossier in _dossiers.liste():
+        if len(groupes["dossiers"]) >= limit:
+            break
+        if utilisateur is not None and not utilisateur.voit_dossier(dossier.id):
+            continue
+        conteneurs = " ".join(str(c) for c in (getattr(dossier, "conteneurs_associes", []) or []))
+        if not contient(dossier.id, dossier.reference, dossier.label, dossier.client_importateur,
+                        dossier.fournisseur, dossier.reference_bl, dossier.numero_conteneur,
+                        dossier.numero_scelle, dossier.navire, dossier.code_sh, conteneurs):
+            continue
+        groupes["dossiers"].append({
+            "kind": "dossier",
+            "id": dossier.id,
+            "label": dossier.label or dossier.id,
+            "reference": dossier.reference or dossier.id,
+            "meta": dossier.state.value.replace("_", " "),
+            "client": dossier.client_importateur or "",
+            "route": "dossiers/tous",
+        })
+        total += 1
+
+    for identifiant, client in _magasin(request, "client_store").items():
+        if len(groupes["clients"]) >= limit:
+            break
+        if contient(identifiant, _champ(client, "name"), _champ(client, "legal_name"),
+                    _champ(client, "tax_id"), _champ(client, "email")):
+            groupes["clients"].append({
+                "kind": "client",
+                "id": identifiant,
+                "label": _champ(client, "name") or identifiant,
+                "meta": _champ(client, "legal_name"),
+                "route": "dossiers/clients",
+            })
+            total += 1
+
+    for identifiant, bl in _magasin(request, "bl_store").items():
+        if len(groupes["connaissements"]) >= limit:
+            break
+        if contient(identifiant, _champ(bl, "numero_bl"), _champ(bl, "chargeur"),
+                    _champ(bl, "destinataire"), _champ(bl, "navire"),
+                    _champ(bl, "port_decharge"), _champ(bl, "marchandise")):
+            groupes["connaissements"].append({
+                "kind": "bl",
+                "id": identifiant,
+                "label": _champ(bl, "numero_bl") or identifiant,
+                "meta": _champ(bl, "port_decharge") or _champ(bl, "dossier_id"),
+                "route": "maritime/bl",
+            })
+            total += 1
+
+    for identifiant, conteneur in _magasin(request, "conteneur_store").items():
+        if len(groupes["conteneurs"]) >= limit:
+            break
+        if contient(identifiant, _champ(conteneur, "numero_conteneur"),
+                    _champ(conteneur, "seal_number"), _champ(conteneur, "position_actuelle"),
+                    _champ(conteneur, "dossier_id")):
+            groupes["conteneurs"].append({
+                "kind": "conteneur",
+                "id": identifiant,
+                "label": _champ(conteneur, "numero_conteneur") or identifiant,
+                "meta": _champ(conteneur, "statut"),
+                "route": "maritime/conteneurs",
+            })
+            total += 1
+
+    for job in store.list_jobs(limit=500):
+        if len(groupes["documents"]) >= limit:
+            break
+        if not _job_visible(request, job.id):
+            continue
+        if contient(job.id, job.filename):
+            groupes["documents"].append({
+                "kind": "document",
+                "id": job.id,
+                "label": job.filename or job.id,
+                "meta": str(getattr(job.status, "value", job.status)),
+                "route": "documents/ocr",
+            })
+            total += 1
+
+    return {"query": q, "total": total, "limite_par_groupe": limit, "groupes": groupes}
+
+
+@app.get("/api/ui/bootstrap")
+def ui_bootstrap(request: Request) -> dict:
+    """Tout ce dont la coque a besoin à l'affichage : identité et compteurs.
+
+    Les compteurs sont recalculés sur les dossiers réels ; une clé absente
+    côté serveur vaut zéro plutôt que d'inventer une valeur.
+    """
+    utilisateur = _utilisateur_courant(request)
+    identite = utilisateur.public() if utilisateur is not None else None
+
+    etats: dict[str, int] = {}
+    total = 0
+    visibles = 0
+    for dossier in _dossiers.liste():
+        total += 1
+        if utilisateur is not None and not utilisateur.voit_dossier(dossier.id):
+            continue
+        visibles += 1
+        etat = dossier.state.value
+        etats[etat] = etats.get(etat, 0) + 1
+
+    en_cours = sum(etats.get(e, 0) for e in
+                   ("en_preparation", "traitement_en_cours", "revision_requise",
+                    "incomplet", "en_validation"))
+    a_valider = sum(etats.get(e, 0) for e in ("en_validation", "revision_requise"))
+    clos = sum(etats.get(e, 0) for e in ("exporte", "archive"))
+    bloques = etats.get("incomplet", 0) + etats.get("erreur_traitement", 0)
+
+    notifications = _magasin(request, "notification_store")
+    non_lues = sum(1 for n in notifications.values() if not getattr(n, "lue", False))
+
+    return {
+        "utilisateur": identite,
+        "rbac_actif": identite is not None,
+        "compteurs": {
+            "dossiers": visibles,
+            "dossiers_total": total,
+            "dossiers_en_cours": en_cours,
+            "dossiers_a_valider": a_valider,
+            "dossiers_clos": clos,
+            "dossiers_bloques": bloques,
+            "notifications_non_lues": non_lues,
+        },
+        "etats": etats,
+    }
+
+
 # ─────────────────────── traitement par lots ───────────────────────
 # Ajouts purs : POST /api/documents et les exports unitaires sont intacts.
 

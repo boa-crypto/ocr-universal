@@ -84,6 +84,71 @@ def historique_etat(
     return service.historique_statuts_dossier(dossier_id)
 
 
+# ───────────────────────────────────────────────────────────────
+# Séries temporelles réelles (aucune donnée inventée)
+# ───────────────────────────────────────────────────────────────
+
+@router.get("/serie-dossiers")
+def serie_dossiers(request: Request, jours: int = 30) -> dict:
+    """Créations, mouvements et clôtures par jour, calculés sur les dossiers.
+
+    Une création vient de `created_at`, une clôture d'un passage vers
+    `exporte`/`archive`, un mouvement de toute autre action du journal.
+    La fenêtre est bornée à 365 jours.
+    """
+    import time
+    from datetime import datetime, timedelta
+
+    from ..dossier import DossierStore
+
+    jours = max(1, min(int(jours), 365))
+    conf = request.app.state.cfg
+    store = DossierStore(conf.data_dir / "dossiers", log_dir=conf.log_dir)
+
+    aujourdhui = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+    debut = aujourdhui - timedelta(days=jours - 1)
+    seau = {}
+    for i in range(jours):
+        jour = debut + timedelta(days=i)
+        seau[jour.strftime("%Y-%m-%d")] = {"date": jour.strftime("%Y-%m-%d"),
+                                           "crees": 0, "traites": 0, "clotures": 0}
+
+    etats_clos = {"exporte", "archive"}
+
+    def marquer(horodatage, cle):
+        try:
+            jour = datetime.fromtimestamp(float(horodatage)).replace(
+                hour=0, minute=0, second=0, microsecond=0)
+        except (TypeError, ValueError, OSError):
+            return
+        ligne = seau.get(jour.strftime("%Y-%m-%d"))
+        if ligne is not None:
+            ligne[cle] += 1
+
+    for dossier in store.liste():
+        marquer(dossier.created_at, "crees")
+        for evenement in dossier.history:
+            if evenement.action == "created":
+                continue
+            if evenement.action in ("state_changed", "state_forced"):
+                cible = str((evenement.detail or {}).get("to") or "")
+                if cible in etats_clos:
+                    marquer(evenement.ts, "clotures")
+                    continue
+            marquer(evenement.ts, "traites")
+
+    series = [seau[k] for k in sorted(seau)]
+    return {
+        "periode_jours": jours,
+        "debut": series[0]["date"] if series else "",
+        "fin": series[-1]["date"] if series else "",
+        "series": series,
+        "totaux": {cle: sum(ligne[cle] for ligne in series)
+                   for cle in ("crees", "traites", "clotures")},
+        "genere_le": time.time(),
+    }
+
+
 # Graphiques interactifs (6+ types)
 @router.get("/graphique/etat-dossiers")
 def graphique_etat_dossiers(

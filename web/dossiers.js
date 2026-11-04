@@ -83,6 +83,43 @@
     });
   }
 
+  /** GET sur une URL absolue (les modules exposent des préfixes différents). */
+  function getJSONUrl(url) {
+    var entetes = { Accept: "application/json" };
+    var t = jeton();
+    if (t) entetes.Authorization = "Bearer " + t;
+    return fetch(url, { headers: entetes, credentials: "same-origin" })
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      });
+  }
+
+  /**
+   * Affiche un squelette puis le panneau réel. Une erreur réseau est dite
+   * explicitement : le panneau n'affiche jamais de valeurs inventées.
+   */
+  function panneauAsync(zone, url, rendu) {
+    var attente = el("div", "dos-loading");
+    attente.appendChild(el("span", "skeleton skeleton--title"));
+    attente.appendChild(el("span", "skeleton skeleton--text"));
+    attente.appendChild(el("span", "skeleton skeleton--text"));
+    attente.appendChild(el("span", "skeleton skeleton--text"));
+    zone.appendChild(attente);
+
+    getJSONUrl(url).then(function (donnees) {
+      if (!attente.parentNode) return;
+      attente.remove();
+      rendu(donnees);
+    }).catch(function (erreur) {
+      if (!attente.parentNode) return;
+      attente.remove();
+      zone.appendChild(el("p", "dos-detail__empty-txt",
+        "Données indisponibles pour le moment (" + (erreur && erreur.message ? erreur.message : "erreur réseau") + ")."));
+    });
+    return zone;
+  }
+
   function el(tag, classe, texte) {
     var n = document.createElement(tag);
     if (classe) n.className = classe;
@@ -283,6 +320,28 @@
     note.textContent = chargement ? "Chargement du détail…" : "";
     corps.appendChild(note);
 
+    // Bandeau d'identité : les informations qui permettent de reconnaître le
+    // dossier d'un coup d'œil (référence, parties, transport, statut).
+    var bandeau = el("div", "dos-detail__meta");
+    [
+      ["Référence", d.reference || d.id],
+      ["Client", d.client_importateur],
+      ["Fournisseur", d.fournisseur],
+      ["Navire", d.navire],
+      ["B/L", d.reference_bl],
+      ["Conteneurs", (Array.isArray(d.conteneurs_associes) ? d.conteneurs_associes.length : 0) || ""],
+      ["Responsable", d.gestionnaire],
+      ["Priorité", d.priorite]
+    ].forEach(function (paire) {
+      var item = el("div", "dos-meta-item");
+      item.appendChild(el("span", "dos-meta-item__key", paire[0]));
+      item.appendChild(el("span", "dos-meta-item__val",
+        paire[1] === 0 || paire[1] === "" || paire[1] === undefined || paire[1] === null
+          ? "—" : String(paire[1])));
+      bandeau.appendChild(item);
+    });
+    corps.appendChild(bandeau);
+
     corps.appendChild(onglets(d));
   }
 
@@ -290,14 +349,23 @@
     var enveloppe = el("div", "dos-tabs");
     var barre = el("div", "dos-tabs__bar");
     barre.setAttribute("role", "tablist");
+    barre.setAttribute("aria-label", "Onglets du dossier");
 
     var panneaux = el("div", "dos-tabs__panels");
     var pieces = Array.isArray(d.pieces) ? d.pieces : [];
 
     var definitions = [
+      { cle: "synthese", titre: "Synthèse", rendu: panneauSynthese },
+      { cle: "informations", titre: "Informations générales", rendu: panneauInformations },
       { cle: "documents", titre: "Documents (" + pieces.length + ")", rendu: panneauDocuments },
-      { cle: "informations", titre: "Informations", rendu: panneauInformations },
-      { cle: "suivi", titre: "Suivi", rendu: panneauSuivi }
+      { cle: "ocr", titre: "Résultats OCR", rendu: panneauOCR },
+      { cle: "controle", titre: "Contrôle documentaire", rendu: panneauControle },
+      { cle: "anomalies", titre: "Anomalies", rendu: panneauAnomalies },
+      { cle: "maritime", titre: "Transport maritime", rendu: panneauMaritime },
+      { cle: "douane", titre: "Douane", rendu: panneauDouane },
+      { cle: "frais", titre: "Frais et paiements", rendu: panneauFrais },
+      { cle: "enlevement", titre: "Enlèvement et livraison", rendu: panneauEnlevement },
+      { cle: "historique", titre: "Historique", rendu: panneauHistorique }
     ];
 
     function activer(cle) {
@@ -305,25 +373,500 @@
         var on = b.getAttribute("data-tab") === cle;
         b.classList.toggle("is-active", on);
         b.setAttribute("aria-selected", on ? "true" : "false");
+        b.tabIndex = on ? 0 : -1;
       });
       panneaux.textContent = "";
       var def = definitions.filter(function (x) { return x.cle === cle; })[0];
       if (def) panneaux.appendChild(def.rendu(d));
     }
 
-    definitions.forEach(function (def) {
+    definitions.forEach(function (def, index) {
       var b = el("button", "dos-tab", def.titre);
       b.type = "button";
       b.setAttribute("role", "tab");
       b.setAttribute("data-tab", def.cle);
+      b.tabIndex = index === 0 ? 0 : -1;
       b.addEventListener("click", function () { activer(def.cle); });
       barre.appendChild(b);
     });
 
+    // Navigation clavier conforme au motif ARIA « tablist ».
+    barre.addEventListener("keydown", function (ev) {
+      if (ev.key !== "ArrowRight" && ev.key !== "ArrowLeft") return;
+      ev.preventDefault();
+      var index = definitions.map(function (x) { return x.cle; })
+        .indexOf(barre.querySelector(".dos-tab.is-active").getAttribute("data-tab"));
+      var suivant = ev.key === "ArrowRight" ? index + 1 : index - 1;
+      if (suivant < 0) suivant = definitions.length - 1;
+      if (suivant >= definitions.length) suivant = 0;
+      activer(definitions[suivant].cle);
+      barre.children[suivant].focus();
+    });
+
     enveloppe.appendChild(barre);
     enveloppe.appendChild(panneaux);
-    activer("documents");
+    activer("synthese");
     return enveloppe;
+  }
+
+  /* ---------- 1. Synthèse ---------- */
+
+  function panneauSynthese(d) {
+    var zone = el("div", "dos-panel");
+
+    var compteurs = el("div", "dos-counts");
+    function tuile(libelle, valeur, ton) {
+      var t = el("div", "dos-count");
+      t.appendChild(el("span", "dos-count__val" + (ton ? " dos-count__val--" + ton : ""), valeur));
+      t.appendChild(el("span", "dos-count__lbl", libelle));
+      return t;
+    }
+    var pieces = Array.isArray(d.pieces) ? d.pieces : [];
+    var conteneurs = Array.isArray(d.conteneurs_associes) ? d.conteneurs_associes : [];
+    compteurs.appendChild(tuile("Documents", pieces.length));
+    compteurs.appendChild(tuile("Conteneurs", conteneurs.length));
+    compteurs.appendChild(tuile("Extractions OCR", "…"));
+    compteurs.appendChild(tuile("Anomalies", "…"));
+    compteurs.appendChild(tuile("Frais cumulés", "…"));
+    zone.appendChild(compteurs);
+
+    // Renseigne les compteurs par des appels réels, sans bloquer l'affichage.
+    getJSONUrl("/api/dossiers/" + encodeURIComponent(d.id) + "/documents-ocr")
+      .then(function (extractions) {
+        compteurs.children[2].querySelector(".dos-count__val").textContent =
+          Array.isArray(extractions) ? extractions.length : 0;
+      }).catch(function () { compteurs.children[2].querySelector(".dos-count__val").textContent = "—"; });
+
+    getJSONUrl("/api/controle/" + encodeURIComponent(d.id) + "/anomalies")
+      .then(function (res) {
+        var liste = (res && res.anomalies) || [];
+        var valeur = compteurs.children[3].querySelector(".dos-count__val");
+        valeur.textContent = liste.length;
+        valeur.className = "dos-count__val" + (liste.length ? " dos-count__val--danger" : "");
+      }).catch(function () { compteurs.children[3].querySelector(".dos-count__val").textContent = "—"; });
+
+    getJSONUrl("/api/frais/dossier/" + encodeURIComponent(d.id) + "/resume")
+      .then(function (resume) {
+        compteurs.children[4].querySelector(".dos-count__val").textContent =
+          numero(resume.total_frais) + " " + (d.devise || "");
+      }).catch(function () { compteurs.children[4].querySelector(".dos-count__val").textContent = "—"; });
+
+    var grille = el("div", "dos-kv");
+    [
+      ["Référence dossier", d.reference || d.id],
+      ["Client importateur", d.client_importateur],
+      ["Fournisseur", d.fournisseur],
+      ["Navire / voyage", [d.navire, d.numero_voyage].filter(Boolean).join(" · ")],
+      ["Connaissement B/L", d.reference_bl],
+      ["Port de destination", d.port_destination],
+      ["Responsable", d.gestionnaire],
+      ["Priorité", d.priorite]
+    ].forEach(function (paire) {
+      var ligne = el("div", "dos-kv__row");
+      ligne.appendChild(el("span", "dos-kv__key", paire[0]));
+      ligne.appendChild(el("span", "dos-kv__val", texteOuTiret(paire[1])));
+      grille.appendChild(ligne);
+    });
+    zone.appendChild(grille);
+
+    var hist = Array.isArray(d.history) ? d.history : [];
+    zone.appendChild(el("h3", "dos-panel__titre", "Timeline opérationnelle"));
+    if (!hist.length) {
+      zone.appendChild(el("p", "dos-detail__empty-txt",
+        "Aucune évolution enregistrée pour ce dossier : la timeline se construit à partir des validations réelles."));
+    } else {
+      var tl = el("div", "timeline");
+      hist.slice(-8).reverse().forEach(function (entree, index) {
+        var step = el("div", "tl-step " + (index === 0 ? "tl-step--current" : "tl-step--done"));
+        var dot = el("span", "tl-dot", index === 0 ? "●" : "✓");
+        step.appendChild(dot);
+        var corps = el("div", "tl-body");
+        var action = entree.action || entree.evenement || entree.type || "Événement";
+        corps.appendChild(el("div", "tl-title", String(action).replace(/_/g, " ")));
+        var meta = [];
+        if (entree.acteur) meta.push(entree.acteur);
+        if (entree.etat) meta.push(entree.etat);
+        if (entree.horodatage || entree.created_at) meta.push(dateHeure(entree.horodatage || entree.created_at));
+        corps.appendChild(el("div", "tl-meta", meta.join(" · ") || "—"));
+        step.appendChild(corps);
+        tl.appendChild(step);
+      });
+      zone.appendChild(tl);
+    }
+    return zone;
+  }
+
+  /* ---------- 4. Résultats OCR ---------- */
+
+  function panneauOCR(d) {
+    var zone = el("div", "dos-panel");
+    zone.appendChild(el("p", "dos-panel__intro",
+      "Champs extraits par l'OCR. Une extraction n'est pas une validation réglementaire : chaque valeur doit être contrôlée avant transmission."));
+    return panneauAsync(zone, "/api/dossiers/" + encodeURIComponent(d.id) + "/documents-ocr", function (extractions) {
+      var liste = Array.isArray(extractions) ? extractions : [];
+      if (!liste.length) {
+        zone.appendChild(el("p", "dos-detail__empty-txt",
+          "Aucune extraction OCR rattachée à ce dossier. Importez un document puis classez-le depuis l'atelier OCR."));
+        return;
+      }
+      liste.forEach(function (extraction) {
+        var carte = el("div", "ocr-card");
+        var tete = el("div", "ocr-card__head");
+        tete.appendChild(el("span", "ocr-card__type", extraction.type_document || "Document"));
+        var statut = extraction.statut === "validated" ? ["Validé", "ok"]
+          : extraction.statut === "corrected" ? ["Corrigé", "warn"] : ["À valider", "info"];
+        tete.appendChild(pill(statut[0], statut[1]));
+        var confiance = Math.round(Number(extraction.confiance_globale || 0) * 100);
+        tete.appendChild(el("span", "ocr-card__conf", confiance + " % de confiance"));
+        carte.appendChild(tete);
+
+        var champs = Array.isArray(extraction.champs_extraits) ? extraction.champs_extraits : [];
+        if (!champs.length) {
+          carte.appendChild(el("p", "dos-detail__empty-txt", "Aucun champ exploitable détecté."));
+        } else {
+          var table = el("table", "table table--compact");
+          var thead = el("thead");
+          var trh = el("tr");
+          ["Champ", "Valeur", "Confiance", "État"].forEach(function (titre) {
+            trh.appendChild(el("th", null, titre));
+          });
+          thead.appendChild(trh);
+          table.appendChild(thead);
+          var tbody = el("tbody");
+          champs.slice(0, 8).forEach(function (champ) {
+            var tr = el("tr");
+            tr.appendChild(el("td", null, champ.nom || "—"));
+            var valeur = champ.valeur_confirmee || champ.valeur_correctee || champ.valeur_normale || champ.valeur_raw || "—";
+            tr.appendChild(el("td", null, valeur));
+            tr.appendChild(el("td", null, Math.round(Number(champ.confiance || 0) * 100) + " %"));
+            var etatChamp = champ.statut === "validated" ? ["Validé", "ok"]
+              : champ.statut === "corrected" ? ["Corrigé", "warn"]
+              : champ.statut === "rejected" ? ["Rejeté", "danger"] : ["Détecté", "info"];
+            var td = el("td");
+            td.appendChild(pill(etatChamp[0], etatChamp[1]));
+            tr.appendChild(td);
+            tbody.appendChild(tr);
+          });
+          table.appendChild(tbody);
+          var scroll = el("div", "table-wrap");
+          scroll.appendChild(table);
+          carte.appendChild(scroll);
+        }
+
+        if (extraction.document_id || extraction.job_id) {
+          var ouvrir = el("button", "btn ghost sm", "Ouvrir dans l'atelier OCR");
+          ouvrir.type = "button";
+          ouvrir.addEventListener("click", function () {
+            window.location.hash = "#documents/ocr";
+            var jobId = extraction.job_id || extraction.document_id;
+            setTimeout(function () {
+              if (window.openJob) window.openJob(jobId);
+            }, 120);
+          });
+          carte.appendChild(ouvrir);
+        }
+        zone.appendChild(carte);
+      });
+    });
+  }
+
+  /* ---------- 5. Contrôle documentaire ---------- */
+
+  function panneauControle(d) {
+    var zone = el("div", "dos-panel");
+    return panneauAsync(zone, "/api/dossiers/" + encodeURIComponent(d.id) + "/coherence", function (coherence) {
+      var entete = el("div", "dos-panel__head");
+      var transmissible = coherence && coherence.transmissible;
+      entete.appendChild(pill(transmissible ? "Transmissible" : "Non transmissible",
+        transmissible ? "ok" : "danger"));
+      entete.appendChild(el("span", "dos-panel__meta",
+        (coherence && coherence.documents_analyses ? coherence.documents_analyses : 0) + " document(s) analysé(s)"));
+      zone.appendChild(entete);
+
+      if (coherence && coherence.motif) {
+        zone.appendChild(el("p", "dos-panel__motif", coherence.motif));
+      }
+
+      var constats = (coherence && coherence.constats) || [];
+      if (!constats.length) {
+        zone.appendChild(el("p", "dos-detail__empty-txt",
+          "Aucun écart relevé entre les documents analysés. Le contrôle reste déclaratif : il porte sur les pièces présentes."));
+        return;
+      }
+      constats.forEach(function (constat) {
+        var niveau = constat.niveau || constat.severite || "info";
+        var ligne = el("div", "constat-row");
+        var ic = el("span", "row-ic" + (niveau === "critique" || niveau === "error" ? " row-ic--danger"
+          : niveau === "warning" || niveau === "avertissement" ? " row-ic--warn" : ""));
+        ic.textContent = "!";
+        ligne.appendChild(ic);
+        var corps = el("span", "row-main");
+        corps.appendChild(el("span", "row-title", constat.message || constat.libelle || "Écart détecté"));
+        corps.appendChild(el("span", "row-sub",
+          [constat.champ, constat.document, constat.regle].filter(Boolean).join(" · ")));
+        ligne.appendChild(corps);
+        zone.appendChild(ligne);
+      });
+    });
+  }
+
+  /* ---------- 6. Anomalies ---------- */
+
+  function panneauAnomalies(d) {
+    var zone = el("div", "dos-panel");
+    return panneauAsync(zone, "/api/controle/" + encodeURIComponent(d.id) + "/anomalies", function (resultat) {
+      var anomalies = (resultat && resultat.anomalies) || [];
+      if (!anomalies.length) {
+        zone.appendChild(el("p", "dos-detail__empty-txt", "Aucune anomalie active sur ce dossier."));
+        return;
+      }
+      anomalies.forEach(function (anomalie) {
+        var ligne = el("div", "constat-row");
+        var niveau = String(anomalie.niveau || anomalie.severite || "warning");
+        var ic = el("span", "row-ic" + (niveau === "critique" || niveau === "error" || niveau === "danger"
+          ? " row-ic--danger" : " row-ic--warn"));
+        ic.textContent = "!";
+        ligne.appendChild(ic);
+        var corps = el("span", "row-main");
+        corps.appendChild(el("span", "row-title", anomalie.message || anomalie.description || anomalie.type || "Anomalie"));
+        corps.appendChild(el("span", "row-sub",
+          [anomalie.champ, anomalie.document, anomalie.regle, anomalie.resolue ? "résolue" : "à traiter"]
+            .filter(Boolean).join(" · ")));
+        ligne.appendChild(corps);
+        var meta = el("span", "row-meta");
+        meta.appendChild(pill(niveau, niveau === "critique" || niveau === "danger" ? "danger" : "warn"));
+        ligne.appendChild(meta);
+        zone.appendChild(ligne);
+      });
+    });
+  }
+
+  /* ---------- 7. Transport maritime ---------- */
+
+  function panneauMaritime(d) {
+    var zone = el("div", "dos-panel");
+    var url = "/transit/dossiers/" + encodeURIComponent(d.id);
+    return panneauAsync(zone, url, function (transit) {
+      var grille = el("div", "dos-kv");
+      [
+        ["Navire", transit.navire],
+        ["Voyage", transit.numero_voyage],
+        ["Port de chargement", transit.port_chargement],
+        ["Port de destination", transit.port_destination],
+        ["ETA", transit.eta],
+        ["ETA effective", transit.eta_effective],
+        ["Connaissement B/L", transit.reference_bl],
+        ["Incoterm", [transit.incoterm, transit.lieu_incoterm].filter(Boolean).join(" · ")],
+        ["Colis", transit.nombre_colis ? numero(transit.nombre_colis) : ""],
+        ["Poids brut (kg)", transit.poids_brut ? numero(transit.poids_brut) : ""],
+        ["Marchandise", transit.description_marchandise]
+      ].forEach(function (paire) {
+        var ligne = el("div", "dos-kv__row");
+        ligne.appendChild(el("span", "dos-kv__key", paire[0]));
+        ligne.appendChild(el("span", "dos-kv__val", texteOuTiret(paire[1])));
+        grille.appendChild(ligne);
+      });
+      zone.appendChild(grille);
+
+      zone.appendChild(el("h3", "dos-panel__titre", "Conteneurs"));
+      getJSONUrl("/transit/dossiers/" + encodeURIComponent(d.id) + "/conteneurs")
+        .then(function (res) {
+          var liste = (res && res.conteneurs) || [];
+          if (!liste.length) {
+            zone.appendChild(el("p", "dos-detail__empty-txt",
+              "Aucun conteneur associé. Ajoutez les numéros depuis le module Opérations maritimes."));
+            return;
+          }
+          var table = el("table", "table table--compact");
+          var thead = el("thead");
+          var trh = el("tr");
+          ["Conteneur", "Type", "Poids", "Statut"].forEach(function (titre) { trh.appendChild(el("th", null, titre)); });
+          thead.appendChild(trh);
+          table.appendChild(thead);
+          var tbody = el("tbody");
+          liste.forEach(function (c) {
+            var tr = el("tr");
+            tr.appendChild(el("td", null, c.numero || c.id || "—"));
+            tr.appendChild(el("td", null, c.type_conteneur || c.type || "—"));
+            tr.appendChild(el("td", null, c.poids ? numero(c.poids) + " kg" : "—"));
+            tr.appendChild(el("td", null, c.statut || "—"));
+            tbody.appendChild(tr);
+          });
+          table.appendChild(tbody);
+          var scroll = el("div", "table-wrap");
+          scroll.appendChild(table);
+          zone.appendChild(scroll);
+        })
+        .catch(function () {
+          zone.appendChild(el("p", "dos-detail__empty-txt", "Conteneurs indisponibles pour le moment."));
+        });
+    });
+  }
+
+  /* ---------- 8. Douane ---------- */
+
+  function panneauDouane(d) {
+    var zone = el("div", "dos-panel");
+    var grille = el("div", "dos-kv");
+    [
+      ["Code SH", d.code_sh],
+      ["Valeur commerciale", d.valeur_commerciale ? numero(d.valeur_commerciale) + " " + (d.devise || "") : ""],
+      ["Pays d'origine", d.pays_origine],
+      ["Pays d'expédition", d.pays_expedition],
+      ["Type d'opération", d.type_operation],
+      ["Incoterm", d.incoterm]
+    ].forEach(function (paire) {
+      var ligne = el("div", "dos-kv__row");
+      ligne.appendChild(el("span", "dos-kv__key", paire[0]));
+      ligne.appendChild(el("span", "dos-kv__val", texteOuTiret(paire[1])));
+      grille.appendChild(ligne);
+    });
+    zone.appendChild(grille);
+
+    zone.appendChild(el("h3", "dos-panel__titre", "Déclarations douanières"));
+    getJSONUrl("/api/declarations").then(function (declarations) {
+      var liste = (Array.isArray(declarations) ? declarations : []).filter(function (dec) {
+        return dec.dossier_id === d.id;
+      });
+      if (!liste.length) {
+        zone.appendChild(el("p", "dos-detail__empty-txt",
+          "Aucune déclaration enregistrée pour ce dossier. Créez-la depuis le module Douane & réglementation."));
+        return;
+      }
+      var table = el("table", "table table--compact");
+      var thead = el("thead");
+      var trh = el("tr");
+      ["Numéro", "Régime", "Bureau", "Statut", "Liquidation"].forEach(function (t) { trh.appendChild(el("th", null, t)); });
+      thead.appendChild(trh);
+      table.appendChild(thead);
+      var tbody = el("tbody");
+      liste.forEach(function (dec) {
+        var tr = el("tr");
+        tr.appendChild(el("td", null, dec.numero || dec.id || "—"));
+        tr.appendChild(el("td", null, dec.regime_douanier || dec.regime || "—"));
+        tr.appendChild(el("td", null, dec.bureau_douane || dec.bureau || "—"));
+        tr.appendChild(el("td", null, dec.statut || "—"));
+        tr.appendChild(el("td", null, dec.montant_liquidation ? numero(dec.montant_liquidation) : "—"));
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+      var scroll = el("div", "table-wrap");
+      scroll.appendChild(table);
+      zone.appendChild(scroll);
+    }).catch(function () {
+      zone.appendChild(el("p", "dos-detail__empty-txt", "Déclarations indisponibles pour le moment."));
+    });
+    return zone;
+  }
+
+  /* ---------- 9. Frais et paiements ---------- */
+
+  function panneauFrais(d) {
+    var zone = el("div", "dos-panel");
+    return panneauAsync(zone, "/api/frais/dossier/" + encodeURIComponent(d.id) + "/resume", function (resume) {
+      var grille = el("div", "dos-counts");
+      [
+        ["Total frais", resume.total_frais, ""],
+        ["Avancés", resume.total_avances, ""],
+        ["Facturé client", resume.total_factures_client, ""],
+        ["Solde restant", resume.solde_restant, Number(resume.solde_restant) > 0 ? "danger" : "ok"]
+      ].forEach(function (paire) {
+        var tuile = el("div", "dos-count");
+        tuile.appendChild(el("span", "dos-count__val" + (paire[2] ? " dos-count__val--" + paire[2] : ""),
+          numero(paire[1]) + " " + (d.devise || "")));
+        tuile.appendChild(el("span", "dos-count__lbl", paire[0]));
+        grille.appendChild(tuile);
+      });
+      zone.appendChild(grille);
+
+      var categories = resume.par_categorie || {};
+      var cles = Object.keys(categories);
+      if (!cles.length) {
+        zone.appendChild(el("p", "dos-detail__empty-txt",
+          "Aucun frais enregistré pour ce dossier. Les frais se saisissent depuis le module Finance & facturation."));
+        return;
+      }
+      var table = el("table", "table table--compact");
+      var thead = el("thead");
+      var trh = el("tr");
+      ["Catégorie", "Montant"].forEach(function (t) { trh.appendChild(el("th", null, t)); });
+      thead.appendChild(trh);
+      table.appendChild(thead);
+      var tbody = el("tbody");
+      cles.forEach(function (cle) {
+        var tr = el("tr");
+        tr.appendChild(el("td", null, cle.replace(/_/g, " ")));
+        tr.appendChild(el("td", null, numero(categories[cle]) + " " + (d.devise || "")));
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+      var scroll = el("div", "table-wrap");
+      scroll.appendChild(table);
+      zone.appendChild(scroll);
+    });
+  }
+
+  /* ---------- 10. Enlèvement et livraison ---------- */
+
+  function panneauEnlevement(d) {
+    var zone = el("div", "dos-panel");
+    zone.appendChild(el("p", "dos-panel__intro",
+      "Le statut d'enlèvement provient du module terminal. Tant qu'aucun ordre n'est enregistré, ce dossier reste « à enlever »."));
+    return panneauAsync(zone, "/api/terminal", function (ordres) {
+      var liste = (Array.isArray(ordres) ? ordres : []).filter(function (o) {
+        return o.dossier_id === d.id;
+      });
+      if (!liste.length) {
+        zone.appendChild(el("p", "dos-detail__empty-txt",
+          "Aucun ordre d'enlèvement pour ce dossier."));
+        var lien = el("a", "ws-link", "Ouvrir le module Enlèvement & livraison");
+        lien.href = "#enlevissement";
+        zone.appendChild(lien);
+        return;
+      }
+      liste.forEach(function (ordre) {
+        var ligne = el("div", "constat-row");
+        var corps = el("span", "row-main");
+        corps.appendChild(el("span", "row-title", ordre.numero || ordre.id || "Ordre d'enlèvement"));
+        corps.appendChild(el("span", "row-sub",
+          [ordre.transporteur, ordre.terminal, ordre.date_planifiee ? dateCourte(ordre.date_planifiee) : ""]
+            .filter(Boolean).join(" · ")));
+        ligne.appendChild(corps);
+        ligne.appendChild(pill(ordre.statut || "en attente",
+          ordre.statut === "sortie" || ordre.statut === "livre" ? "ok" : "warn"));
+        zone.appendChild(ligne);
+      });
+    });
+  }
+
+  /* ---------- 11. Historique ---------- */
+
+  function panneauHistorique(d) {
+    var zone = el("div", "dos-panel");
+    return panneauAsync(zone, "/api/dossiers/" + encodeURIComponent(d.id) + "/trace", function (trace) {
+      if (trace && trace.avertissement) {
+        zone.appendChild(el("p", "dos-panel__intro", trace.avertissement));
+      }
+      var entrees = (trace && trace.entrees) || [];
+      if (!entrees.length) {
+        zone.appendChild(el("p", "dos-detail__empty-txt",
+          "Aucune entrée de journal pour ce dossier. L'historique s'alimente au fil des actions réelles."));
+        return;
+      }
+      var tl = el("div", "timeline");
+      entrees.slice(-30).reverse().forEach(function (entree, index) {
+        var step = el("div", "tl-step " + (index === 0 ? "tl-step--current" : "tl-step--done"));
+        step.appendChild(el("span", "tl-dot", "•"));
+        var corps = el("div", "tl-body");
+        corps.appendChild(el("div", "tl-title", String(entree.action || entree.evenement || "Action").replace(/_/g, " ")));
+        corps.appendChild(el("div", "tl-meta",
+          [entree.acteur, entree.horodatage || entree.date, entree.details]
+            .filter(Boolean).join(" · ") || "—"));
+        step.appendChild(corps);
+        tl.appendChild(step);
+      });
+      zone.appendChild(tl);
+    });
   }
 
   function panneauDocuments(d) {
@@ -633,5 +1176,5 @@
     demarrer();
   }
 
-  window.Dossiers = { charger: charger, etat: etat };
+  window.Dossiers = { charger: charger, etat: etat, ouvrir: selectionner };
 })();

@@ -1,0 +1,183 @@
+"""Non-régression de la refonte UI premium (design system + routes d'interface).
+
+Ces tests verrouillent trois choses :
+
+1. la coque HTML charge le design system dans le bon ordre, sans CSS inline ;
+2. les jetons de la palette imposée vivent dans un seul fichier ;
+3. les routes ajoutées pour alimenter l'interface répondent avec des données
+   réelles et des bornes explicites.
+"""
+from pathlib import Path
+
+import pytest
+from fastapi.testclient import TestClient
+
+from unocr.api import app
+
+RACINE = Path(__file__).parent.parent
+WEB = RACINE / "web"
+
+
+@pytest.fixture()
+def client(tmp_cfg):
+    return TestClient(app, raise_server_exceptions=False)
+
+
+# ── Coque HTML ────────────────────────────────────────────────────────────
+
+def test_design_system_charge_apres_les_feuilles_historiques() -> None:
+    index = (WEB / "index.html").read_text(encoding="utf-8")
+    assert "/web/uniocr-ds.css" in index, "index.html doit lier le design system premium"
+    assert "<style>" not in index, "aucun CSS inline ne doit revenir dans index.html"
+
+    position_styles = index.index("/web/styles.css")
+    position_refresh = index.index("/web/refresh.css")
+    position_ds = index.index("/web/uniocr-ds.css")
+    assert position_styles < position_refresh < position_ds, (
+        "l'ordre de cascade doit rester styles.css → refresh.css → uniocr-ds.css"
+    )
+
+
+def test_coque_charge_les_modules_de_l_interface() -> None:
+    index = (WEB / "index.html").read_text(encoding="utf-8")
+    for module in ("charts.js", "shell.js", "cockpit.js", "navigation.js"):
+        assert f"/web/{module}" in index, f"{module} doit être chargé par la coque"
+    # Les modules sont chargés en defer pour ne pas bloquer le rendu.
+    assert '<script src="/web/shell.js" defer></script>' in index
+
+
+def test_sidebar_expose_les_entrees_attendues() -> None:
+    index = (WEB / "index.html").read_text(encoding="utf-8")
+    for identifiant in ("mainNav", "sidebarCollapse", "themeToggle", "dashboardBtn"):
+        assert f'id="{identifiant}"' in index, f"#{identifiant} doit exister dans la barre latérale"
+
+
+def test_topbar_expose_recherche_notifications_profil() -> None:
+    index = (WEB / "index.html").read_text(encoding="utf-8")
+    for identifiant in ("globalSearch", "searchResults", "notifBtn", "notifMenu",
+                        "helpBtn", "helpMenu", "profileBtn", "profileMenu",
+                        "identChip", "enginesChip", "clockChip"):
+        assert f'id="{identifiant}"' in index, f"#{identifiant} doit exister dans la barre supérieure"
+
+
+def test_cockpit_expose_les_cinq_kpi_et_les_panneaux() -> None:
+    index = (WEB / "index.html").read_text(encoding="utf-8")
+    for identifiant in ("kpi-actifs", "kpi-attente", "kpi-anomalies", "kpi-arrivees",
+                        "kpi-livraisons", "cockpit-tasks", "cockpit-chart", "cockpit-donut",
+                        "cockpit-progression", "cockpit-arrivals", "cockpit-alerts"):
+        assert f'id="{identifiant}"' in index, f"#{identifiant} manque au cockpit"
+
+
+# ── Design system ─────────────────────────────────────────────────────────
+
+def test_palette_imposee_centralisee_dans_le_design_system() -> None:
+    """La palette de la mission est déclarée une seule fois, dans le DS."""
+    import re
+
+    css = (WEB / "uniocr-ds.css").read_text(encoding="utf-8")
+    jetons = dict(re.findall(r"(--ds-[a-z0-9-]+)\s*:\s*([^;]+);", css))
+    jetons = {cle: valeur.strip().upper() for cle, valeur in jetons.items()}
+
+    palette = {
+        "--ds-night": "#020817",
+        "--ds-sidebar": "#061329",
+        "--ds-surface": "#0B1B35",
+        "--ds-surface-2": "#102644",
+        "--ds-blue": "#1677FF",
+        "--ds-cyan": "#00D9FF",
+        "--ds-teal": "#00CBA8",
+        "--ds-text": "#F1F5FF",
+        "--ds-text-muted": "#94A9C7",
+        "--ds-red": "#F04452",
+        "--ds-amber": "#F59E0B",
+        "--ds-violet": "#9466F5",
+    }
+    for jeton, valeur in palette.items():
+        assert jetons.get(jeton) == valeur, (
+            f"{jeton} doit valoir {valeur} dans uniocr-ds.css (lu : {jetons.get(jeton)})"
+        )
+
+
+def test_jetons_historiques_conserves_pour_les_tests_existants() -> None:
+    index_css = (WEB / "styles.css").read_text(encoding="utf-8")
+    for jeton in ("--blue-accent", "--ink-dark", "--ink-light", "--ink-neutral",
+                  "--font-display", "--font-ui", "--font-mono"):
+        assert jeton in index_css, f"{jeton} doit rester défini (compatibilité des tests)"
+
+
+def test_design_system_annule_les_animations_si_demande() -> None:
+    css = (WEB / "uniocr-ds.css").read_text(encoding="utf-8")
+    assert "prefers-reduced-motion: reduce" in css
+    assert "@media print" in css
+
+
+def test_navigation_declare_douze_rubriques() -> None:
+    js = (WEB / "navigation.js").read_text(encoding="utf-8")
+    # 12 rubriques : cockpit + 11 modules (dont administration & sécurité).
+    assert js.count("requiredRole:") >= 12
+    for cle in ("cockpit", "workspace", "dossiers", "documents", "controle", "maritime",
+                "douane", "enlevissement", "finance", "reports", "referentiels", "admin"):
+        assert f"key: '{cle}'" in js, f"la rubrique {cle} doit rester déclarée"
+
+
+def test_sidebar_repliee_et_infobulles_gerees() -> None:
+    css = (WEB / "uniocr-ds.css").read_text(encoding="utf-8")
+    js = (WEB / "navigation.js").read_text(encoding="utf-8")
+    assert ".app.collapsed" in css, "l'état replié doit être stylé"
+    assert "data-tip" in js, "chaque entrée doit porter une infobulle pour le mode replié"
+    assert "uniocr_nav_" in js, "l'état des groupes doit être mémorisé"
+
+
+# ── Routes d'interface ────────────────────────────────────────────────────
+
+def test_bootstrap_interface(client) -> None:
+    reponse = client.get("/api/ui/bootstrap")
+    assert reponse.status_code == 200, reponse.text
+    donnees = reponse.json()
+    assert "utilisateur" in donnees
+    assert "compteurs" in donnees
+    compteurs = donnees["compteurs"]
+    for cle in ("dossiers", "dossiers_en_cours", "dossiers_a_valider",
+                "dossiers_clos", "dossiers_bloques", "notifications_non_lues"):
+        assert cle in compteurs, f"compteur {cle} attendu"
+        assert isinstance(compteurs[cle], int)
+
+
+def test_serie_dossiers_bornee(client) -> None:
+    reponse = client.get("/api/dashboard/serie-dossiers", params={"jours": 7})
+    assert reponse.status_code == 200, reponse.text
+    donnees = reponse.json()
+    assert donnees["periode_jours"] == 7
+    assert len(donnees["series"]) == 7
+    assert set(donnees["series"][0]) == {"date", "crees", "traites", "clotures"}
+    assert set(donnees["totaux"]) == {"crees", "traites", "clotures"}
+
+    # Les bornes sont appliquées côté serveur (pas de fenêtre absurde).
+    assert client.get("/api/dashboard/serie-dossiers", params={"jours": 0}).json()["periode_jours"] == 1
+    assert client.get("/api/dashboard/serie-dossiers", params={"jours": 5000}).json()["periode_jours"] == 365
+
+
+def test_recherche_globale_multi_entites(client) -> None:
+    dossier = client.post("/api/dossiers", json={
+        "label": "Recherche premium", "profile": "importation",
+    })
+    assert dossier.status_code in (200, 201), dossier.text
+
+    reponse = client.get("/api/search/global", params={"q": "premium"})
+    assert reponse.status_code == 200, reponse.text
+    donnees = reponse.json()
+    assert set(donnees["groupes"]) == {"dossiers", "clients", "connaissements",
+                                       "conteneurs", "documents"}
+    assert donnees["total"] >= 1
+    hit = donnees["groupes"]["dossiers"][0]
+    for cle in ("kind", "id", "label", "route"):
+        assert cle in hit
+
+    vide = client.get("/api/search/global", params={"q": "zzzz-introuvable-zzzz"}).json()
+    assert vide["total"] == 0
+
+
+def test_recherche_globale_refuse_une_requete_vide(client) -> None:
+    # `q` est obligatoire : une recherche vide est une erreur d'appel, pas un
+    # « tout retourner ». L'interface ne l'envoie jamais (seuil de 2 caractères).
+    assert client.get("/api/search/global", params={"q": ""}).status_code == 422

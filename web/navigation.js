@@ -248,59 +248,100 @@
   }
 
   /**
-   * Générer le HTML de la navigation principale
-   * @param {Array} roles - Les rôles de l'utilisateur
-   * @returns {string}
+   * Générer le HTML de la navigation principale.
+   *
+   * Le cockpit reste une entrée simple ; chaque autre section devient un
+   * groupe repliable dont la première entrée ouvre la vue d'ensemble du
+   * module. Chaque lien porte une infobulle (`data-tip`) utilisée quand la
+   * barre latérale est réduite.
    */
   function generateNavHTML(roles) {
-    let html = '';
+    var html = '';
 
-    // Cockpit - toujours visible (c'est la page d'accueil)
-    const cockpit = NAV_CONFIG[0];
-    html += generateNavItemHTML(cockpit, roles);
-
-    // Autres sections selon permissions
-    for (let i = 1; i < NAV_CONFIG.length; i++) {
-      const section = NAV_CONFIG[i];
-      if (hasSectionAccess(section.key, roles)) {
-        html += generateNavItemHTML(section, roles);
-      }
-    }
-
-    return html;
-  }
-
-  /**
-   * Générer un élément de navigation
-   * @param {object} section - Configuration de la section
-   * @param {Array} roles - Les rôles de l'utilisateur
-   * @returns {string}
-   */
-  function generateNavItemHTML(section, roles) {
-    const activeClass = window.location.hash === section.route ? ' active' : '';
-    const hasSubitems = section.subitems && section.subitems.length > 0;
-    const chevron = hasSubitems ? '<span class="nav-chevron">▾</span>' : '';
-
-    let html = `<a href="#${section.route.replace('#', '')}" class="nav-item${activeClass}" data-section="${section.key}">`;
-    html += `<span class="nav-icon">${section.icon}</span>`;
-    html += `<span class="nav-label">${section.title}</span>`;
-    html += chevron;
+    var cockpit = NAV_CONFIG[0];
+    html += '<a href="#cockpit" class="nav-item' + (estActif(cockpit.route) ? ' active' : '') + '"';
+    html += ' data-section="cockpit" data-tip="' + escAttr(cockpit.title) + '">';
+    html += '<span class="nav-icon">' + cockpit.icon + '</span>';
+    html += '<span class="nav-label">' + escAttr(cockpit.title) + '</span>';
     html += '</a>';
 
-    // Sous-items si présents
-    if (hasSubitems) {
-      html += '<div class="nav-subitems">';
-      section.subitems.forEach(sub => {
-        const subActive = window.location.hash === sub.route ? ' active' : '';
-        html += `<a href="#${sub.route.replace('#', '')}" class="nav-subitem${subActive}" data-route="${sub.route}">`;
-        html += `<span class="nav-sublabel">${sub.title}</span>`;
-        html += '</a>';
-      });
-      html += '</div>';
+    for (var i = 1; i < NAV_CONFIG.length; i++) {
+      var section = NAV_CONFIG[i];
+      if (!hasSectionAccess(section.key, roles)) continue;
+      html += generateGroupeHTML(section);
     }
 
     return html;
   }
+
+  function escAttr(valeur) {
+    return String(valeur == null ? "" : valeur)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function estActif(route) {
+    var hash = window.location.hash || "#cockpit";
+    return hash === route || hash.indexOf(route + "/") === 0;
+  }
+
+  function groupeOuvert(section) {
+    if (estActif(section.route)) return true;
+    try {
+      var memorise = localStorage.getItem("uniocr_nav_" + section.key);
+      if (memorise === "1") return true;
+      if (memorise === "0") return false;
+    } catch (e) { /* stockage indisponible */ }
+    return false;
+  }
+
+  function generateGroupeHTML(section) {
+    var ouvert = groupeOuvert(section);
+    var courant = estActif(section.route);
+    var classes = "nav-group" + (ouvert ? " is-open" : "") + (courant ? " is-current" : "");
+
+    var html = '<div class="' + classes + '" data-group="' + escAttr(section.key) + '">';
+    html += '<button type="button" class="nav-group-toggle" aria-expanded="' + (ouvert ? "true" : "false") + '"';
+    html += ' data-tip="' + escAttr(section.title) + '">';
+    html += '<span class="nav-icon">' + section.icon + '</span>';
+    html += '<span class="nav-label">' + escAttr(section.title) + '</span>';
+    html += '<span class="nav-chevron" aria-hidden="true">';
+    html += '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>';
+    html += '</span></button>';
+    html += '<div class="nav-group-items"><div class="nav-group-inner">';
+
+    html += '<a href="' + escAttr(section.route) + '" class="nav-subitem' + (estActif(section.route) && (window.location.hash || "") === section.route ? ' active' : '') + '"';
+    html += ' data-route="' + escAttr(section.route) + '">Vue d\'ensemble</a>';
+
+    (section.subitems || []).forEach(function (sub) {
+      var actif = (window.location.hash || "") === sub.route ? ' active' : '';
+      html += '<a href="' + escAttr(sub.route) + '" class="nav-subitem' + actif + '"';
+      html += ' data-route="' + escAttr(sub.route) + '">' + escAttr(sub.title) + '</a>';
+    });
+
+    html += '</div></div></div>';
+    return html;
+  }
+
+  /** Ouvrir/fermer un groupe et mémoriser l'état. */
+  function basculerGroupe(bouton) {
+    var groupe = bouton.closest('.nav-group');
+    if (!groupe) return;
+    var ouvert = groupe.classList.toggle('is-open');
+    bouton.setAttribute('aria-expanded', ouvert ? 'true' : 'false');
+    try {
+      localStorage.setItem('uniocr_nav_' + groupe.dataset.group, ouvert ? '1' : '0');
+    } catch (e) { /* stockage indisponible */ }
+  }
+
+  // Un clic sur le titre d'un groupe le déplie ; l'entrée « Vue d'ensemble »
+  // reste un lien vers la page du module.
+  document.addEventListener('click', function (ev) {
+    var bouton = ev.target && ev.target.closest ? ev.target.closest('.nav-group-toggle') : null;
+    if (!bouton) return;
+    ev.preventDefault();
+    basculerGroupe(bouton);
+  });
 
   // Les entrées du menu sont des liens d'ancre (`href="#…"`) : le routage
   // natif du navigateur suffit. Ce point d'accroche reste explicite pour que
@@ -393,29 +434,30 @@
    * @param {string} hash - L'hash actuel
    */
   function updateActiveLinks(hash) {
-    // Retirer la classe active de tous les liens
-    document.querySelectorAll('.nav-item, .nav-subitem').forEach(el => {
+    hash = hash || window.location.hash || '#cockpit';
+    document.querySelectorAll('.nav-item, .nav-subitem').forEach(function (el) {
       el.classList.remove('active');
     });
+    document.querySelectorAll('.nav-group').forEach(function (groupe) {
+      groupe.classList.remove('is-current');
+    });
 
-    // Activer le lien principal
-    const mainLink = document.querySelector(`.nav-item[data-section="${hash.replace('#', '')}"]`);
-    if (mainLink) {
-      mainLink.classList.add('active');
-    }
+    var sectionKey = hash.replace('#', '').split('/')[0];
+    var principal = document.querySelector('.nav-item[data-section="' + sectionKey + '"]');
+    if (principal) principal.classList.add('active');
 
-    // Activer le lien sous-menu si applicable
-    const subLink = document.querySelector(`.nav-subitem[data-route="${hash}"]`);
-    if (subLink) {
-      subLink.classList.add('active');
-      // Activer aussi le parent
-      const parent = subLink.closest('.nav-subitems');
-      if (parent) {
-        const parentItem = parent.previousElementSibling;
-        if (parentItem && parentItem.classList.contains('nav-item')) {
-          parentItem.classList.add('active');
-        }
+    var sous = document.querySelector('.nav-subitem[data-route="' + hash + '"]');
+    if (sous) {
+      sous.classList.add('active');
+      var groupe = sous.closest('.nav-group');
+      if (groupe) {
+        groupe.classList.add('is-current', 'is-open');
+        var bouton = groupe.querySelector('.nav-group-toggle');
+        if (bouton) bouton.setAttribute('aria-expanded', 'true');
       }
+    } else {
+      var courant = document.querySelector('.nav-group[data-group="' + sectionKey + '"]');
+      if (courant) courant.classList.add('is-current');
     }
   }
 
