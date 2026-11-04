@@ -43,20 +43,20 @@ explicite », jamais meublée de données fictives.
 | Contrôle & conformité | 7 | 4 | 3 | 0 | 0 | 0 |
 | Opérations maritimes | 8 | 3 | 5 | 0 | 0 | 0 |
 | Douane & réglementation | 9 | 4 | 5 | 0 | 0 | 0 |
-| Enlèvement & livraison | 8 | 2 | 6 | 0 | 0 | 0 |
+| Enlèvement & livraison | 8 | 4 | 4 | 0 | 0 | 0 |
 | Finance & facturation | 8 | 6 | 2 | 0 | 0 | 0 |
 | Rapports & statistiques | 4 | 1 | 3 | 0 | 0 | 0 |
 | Référentiels & paramètres | 15 | 12 | 3 | 0 | 0 | 0 |
 | Administration & sécurité | 13 | 5 | 8 | 0 | 0 | 0 |
-| **Total** | **100** | **52** | **48** | **0** | **0** | **0** |
+| **Total** | **100** | **54** | **46** | **0** | **0** | **0** |
 
 - **Entrées de menu recensées** : 100
-- **Écrans conformes** : 52
-- **Écrans partiels** : 48
+- **Écrans conformes** : 54
+- **Écrans partiels** : 46
 - **Écrans absents** : 0
 - **Écrans non connectés** : 0
 
-Lecture honnête de ces chiffres : les 52 écrans conformes sont
+Lecture honnête de ces chiffres : les 54 écrans conformes sont
 ceux dont la source a répondu et dont les écritures éventuelles sont branchées ;
 les écrans « hérités » (mis en page lors des missions précédentes) restent
 marqués **PARTIEL** tant qu'ils n'ont pas été re-testés un par un dans cette
@@ -160,8 +160,8 @@ terminé.
 | Enlèvement & livraison | Ordres d'enlèvement | `#enlevissement/ordres` | écran existant `#tab-enlevement` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Enlèvement & livraison | Planification | `#enlevissement/planning` | écran existant `#tab-planification` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
 | Enlèvement & livraison | Transporteurs | `#enlevissement/transporteurs` | écran existant `#tab-transporteurs` | `(module historique)` | présent, 0 ligne affichée | Partiel | **PARTIEL** | re-certifier : contenu, actions, permissions, états vides |
-| Enlèvement & livraison | Sortie portuaire | `#enlevissement/sortie-port` | Sortie portuaire (`web/ecrans.js`) | `/api/terminal` | 0 ligne | Partiel | **PARTIEL** | tester et durcir les actions (Autoriser la sortie, Enregistrer la sortie) |
-| Enlèvement & livraison | Livraison | `#enlevissement/livraison` | Livraisons (`web/ecrans.js`) | `/api/transport/livraisons` | 0 ligne | Partiel | **PARTIEL** | tester et durcir les actions (Démarrer, Arrivée, Confirmer) |
+| Enlèvement & livraison | Sortie portuaire | `#enlevissement/sortie-port` | Sortie portuaire (`web/ecrans.js`) | `/api/terminal` | 0 ligne | Oui | **CONFORME** | actions exercées par test (Autoriser la sortie, Enregistrer la sortie) |
+| Enlèvement & livraison | Livraison | `#enlevissement/livraison` | Livraisons (`web/ecrans.js`) | `/api/transport/livraisons` | 0 ligne | Oui | **CONFORME** | actions exercées par test (Démarrer, Arrivée, Confirmer) |
 | Enlèvement & livraison | Preuves de livraison | `#enlevissement/preuves` | Preuves de livraison (`web/ecrans.js`) | `/api/transport/livraisons` | 0 ligne | Oui | **CONFORME** | lecture seule assumée (données serveur) |
 | Enlèvement & livraison | Suivi des opérations | `#enlevissement/suivi` | Suivi des opérations (`web/ecrans.js`) | `/api/terminal` | 0 ligne | Oui | **CONFORME** | consultation connectée ; écritures non requises |
 

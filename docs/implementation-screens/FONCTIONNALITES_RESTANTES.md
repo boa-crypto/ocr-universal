@@ -5,7 +5,7 @@ priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui rest
 la référence ligne à ligne.
 
 **Chiffres du jour, sans arrondi complaisant** : 100 entrées de menu,
-**52 conformes**, **48 partiels**, 0 absent, 0 non connecté, et
+**54 conformes**, **46 partiels**, 0 absent, 0 non connecté, et
 **plus aucun bandeau « pas encore d'écran dédié »** (contre 14 en début de
 passe 2). Les 57 partiels sont désormais des écrans qui lisent des données
 réelles mais n'ont pas encore été re-certifiés, ou dont les actions d'écriture

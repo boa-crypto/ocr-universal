@@ -737,3 +737,25 @@ def test_file_de_revision_se_charge_a_l_ouverture() -> None:
     assert 'typeof rows[focusIdx].scrollIntoView === "function"' in extras
     # L'erreur de rendu ne doit plus être présentée comme une API absente.
     assert "console.error(\"file de révision :\", e)" in extras
+
+
+def test_actions_a_parametres_utilisent_la_query_string() -> None:
+    """Les routes d'écriture à scalaires attendent des paramètres d'URL.
+
+    Envoyer un corps JSON à ces routes produisait un 422 systématique
+    (sortie portuaire, transitions de livraison). Le moteur construit donc
+    l'URL quand l'action déclare `emplacement: "query"`.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    moteur = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+
+    assert 'action.emplacement === "query"' in moteur
+    assert "encodeURIComponent(cle)" in moteur
+    for route in ("enlevissement/sortie-port", "enlevissement/livraison"):
+        assert f'"{route}"' in moteur
+    # Chaque action de ces deux écrans passe ses paramètres en query.
+    assert moteur.count('emplacement: "query"') >= 5
+    # Les transitions déclarent leurs champs (date, booléens, justificatif).
+    for cle in ("justificatif_sortie", "date_sortie", "date_depart", "date_reelle",
+                "preuve_signee", "date_signature"):
+        assert f'cle: "{cle}"' in moteur

@@ -188,6 +188,39 @@ Les écrans **résultat, qualité, profils, connecteurs, configuration** restent
 PARTIEL : ils dépendent d'un document sélectionné ou exposent des écritures
 (profils, connecteurs) qui n'ont pas encore été exercées.
 
+## 2.9 Passe 6 — enlèvement et livraison : les cinq transitions exercées
+
+Les écrans **Sortie portuaire** et **Livraisons** étaient marqués partiels pour
+une raison précise : aucune donnée d'exploitation, donc aucune action
+exécutable. Un jeu d'essai a été créé **par l'API** (un enlèvement, une
+livraison), les actions ont été jouées dans l'interface, puis les
+enregistrements ont été supprimés. Rien n'est simulé côté écran.
+
+| Action | Requête réellement émise | Résultat |
+|---|---|---|
+| Autoriser la sortie | `POST /api/terminal/{id}/autoriser_sortie?mainlevee_obtenue=true&bad_obtenu=true&frais_portuaires_payes=true&justificatif_sortie=…` | 200 + liste rechargée |
+| Enregistrer la sortie | `POST /api/terminal/{id}/sortie?date_sortie=2026-11-04` | 200 |
+| Démarrer | `POST /api/transport/livraisons/{id}/demarrer?date_depart=2026-11-04` | 200 |
+| Arrivée | `POST /api/transport/livraisons/{id}/arriver?date_reelle=2026-11-04` | 200 |
+| Confirmer | `POST /api/transport/livraisons/{id}/confirmer?preuve_signee=true&date_signature=2026-11-04` | 200, puis preuve visible |
+
+### Défauts corrigés
+
+1. **Ces cinq actions renvoyaient 422.** Le serveur attend des paramètres
+   d'URL (scalaires FastAPI), l'écran envoyait un corps JSON vide. Le moteur
+   sait maintenant construire la *query string* (`emplacement: "query"`) et
+   chaque action déclare ses champs : dates préremplies au jour, conditions
+   portuaires en oui/non, justificatif obligatoire.
+2. **La table des livraisons affichait quatre colonnes inexistantes**
+   (`numero_conteneur`, `date_planifiee`, `adresse_livraison`,
+   `date_confirmation`) : cellules vides en production. Remplacées par les
+   champs réels du modèle (`lieu_livraison`, `camion_id`, `date_prevue`,
+   `date_reelle`, `reserves_eventuelles`).
+3. **L'écran Preuves de livraison ne pouvait rien afficher** : son filtre
+   cherchait « livr » dans un statut qui vaut `confirme`. Il s'appuie désormais
+   sur `preuve_livraison_signee` / `date_signature` — la preuve réelle du
+   serveur. Vérifié : la livraison confirmée apparaît avec « Oui » et sa date.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte
@@ -224,7 +257,7 @@ directement ne voit que les routes déclarées dans `api.py` — d'où le helper
 
 ## 5. Ce que ces passes ne font pas
 
-- Les **48 écrans partiels** restent à re-certifier un par un (contenu, actions,
+- Les **46 écrans partiels** restent à re-certifier un par un (contenu, actions,
   permissions, états vides) : voir `FONCTIONNALITES_RESTANTES.md`.
 - Certains écrans **réutilisent une page historique** (`#dossiers/tous`,
   `#tab-clients`, `#tab-profiles`…) : plus de bandeau, mais le contenu et les

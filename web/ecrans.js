@@ -566,14 +566,29 @@
         libelle: "Autoriser la sortie",
         url: "/api/terminal/{id}/autoriser_sortie",
         methode: "POST",
-        confirmation: "Autoriser la sortie de ce conteneur du terminal ?",
-        succes: "Sortie autorisée"
+        emplacement: "query",
+        succes: "Sortie autorisée",
+        champs: [
+          { cle: "mainlevee_obtenue", libelle: "Mainlevée obtenue", type: "booleen",
+            requis: true, valeur: true },
+          { cle: "bad_obtenu", libelle: "BAD obtenu", type: "booleen",
+            requis: true, valeur: true },
+          { cle: "frais_portuaires_payes", libelle: "Frais portuaires payés",
+            type: "booleen", requis: true, valeur: true,
+            aide: "Le terminal refuse la sortie si l'une des trois conditions manque." },
+          { cle: "justificatif_sortie", libelle: "Justificatif", type: "text",
+            requis: true, aide: "Référence du justificatif joint au dossier." }
+        ]
       }, {
         libelle: "Enregistrer la sortie",
         url: "/api/terminal/{id}/sortie",
         methode: "POST",
-        confirmation: "Enregistrer la sortie effective du conteneur ?",
-        succes: "Sortie enregistrée"
+        emplacement: "query",
+        succes: "Sortie enregistrée",
+        champs: [
+          { cle: "date_sortie", libelle: "Date de sortie", type: "date",
+            requis: true, defaut: "aujourdhui" }
+        ]
       }],
       vide: {
         message: "Aucune demande d'enlèvement enregistrée.",
@@ -589,29 +604,48 @@
       id: "livraison_id",
       colonnes: [
         { cle: "dossier_id", libelle: "Dossier" },
-        { cle: "numero_conteneur", libelle: "Conteneur" },
-        { cle: "transporteur_id", libelle: "Transporteur" },
-        { cle: "date_planifiee", libelle: "Planifiée", format: "date" },
+        { cle: "lieu_livraison", libelle: "Lieu de livraison" },
+        { cle: "camion_id", libelle: "Camion" },
+        { cle: "date_prevue", libelle: "Prévue", format: "date" },
+        { cle: "date_reelle", libelle: "Livrée le", format: "date" },
         { cle: "statut", libelle: "Statut" },
-        { cle: "adresse_livraison", libelle: "Adresse" }
+        { cle: "reserves_eventuelles", libelle: "Réserves" }
       ],
       filtres: [{ cle: "statut", libelle: "Statut" }],
       actions: [{
         libelle: "Démarrer",
         url: "/api/transport/livraisons/{id}/demarrer",
         methode: "POST",
-        succes: "Livraison démarrée"
+        emplacement: "query",
+        succes: "Livraison démarrée",
+        champs: [
+          { cle: "date_depart", libelle: "Date de départ", type: "date",
+            requis: true, defaut: "aujourdhui" }
+        ]
       }, {
         libelle: "Arrivée",
         url: "/api/transport/livraisons/{id}/arriver",
         methode: "POST",
-        succes: "Arrivée enregistrée"
+        emplacement: "query",
+        succes: "Arrivée enregistrée",
+        champs: [
+          { cle: "date_reelle", libelle: "Date d'arrivée", type: "date",
+            requis: true, defaut: "aujourdhui" },
+          { cle: "reserves", libelle: "Réserves", type: "text",
+            aide: "Laisser vide si la livraison est conforme." }
+        ]
       }, {
         libelle: "Confirmer",
         url: "/api/transport/livraisons/{id}/confirmer",
         methode: "POST",
-        confirmation: "Confirmer la réception par le client ?",
-        succes: "Livraison confirmée"
+        emplacement: "query",
+        succes: "Livraison confirmée",
+        champs: [
+          { cle: "preuve_signee", libelle: "Preuve signée", type: "booleen",
+            requis: true, valeur: true },
+          { cle: "date_signature", libelle: "Date de signature", type: "date",
+            requis: true, defaut: "aujourdhui" }
+        ]
       }],
       vide: {
         message: "Aucune livraison planifiée.",
@@ -626,14 +660,17 @@
       source: { url: "/api/transport/livraisons" },
       id: "livraison_id",
       filtreLocal: function (ligne) {
-        return String(ligne.statut || "").toLowerCase().indexOf("livr") !== -1 ||
-               String(ligne.statut || "").toLowerCase() === "confirmee";
+        /* La preuve, c'est la confirmation horodatée par le serveur
+           (`preuve_livraison_signee` + `date_signature`). */
+        return ligne.preuve_livraison_signee === true ||
+               String(ligne.statut || "").toLowerCase() === "confirme";
       },
       colonnes: [
         { cle: "dossier_id", libelle: "Dossier" },
-        { cle: "numero_conteneur", libelle: "Conteneur" },
-        { cle: "transporteur_id", libelle: "Transporteur" },
-        { cle: "date_confirmation", libelle: "Confirmée le", format: "date" },
+        { cle: "lieu_livraison", libelle: "Lieu de livraison" },
+        { cle: "camion_id", libelle: "Camion" },
+        { cle: "preuve_livraison_signee", libelle: "Preuve signée", format: "booleen" },
+        { cle: "date_signature", libelle: "Signée le", format: "date" },
         { cle: "statut", libelle: "Statut" }
       ],
       lectureSeule: true,
@@ -2148,14 +2185,21 @@
       bloc.appendChild(label);
 
       var controle;
-      if (champ.type === "select") {
+      if (champ.type === "select" || champ.type === "booleen") {
         controle = elt("select", "inp");
-        var vide = elt("option", null, "—");
-        vide.value = "";
-        controle.appendChild(vide);
-        (champ.options || []).forEach(function (option) {
-          var o = elt("option", null, option);
-          o.value = option;
+        var options = champ.type === "booleen"
+          ? [{ valeur: "true", libelle: "Oui" }, { valeur: "false", libelle: "Non" }]
+          : (champ.options || []).map(function (option) {
+              return { valeur: option, libelle: option };
+            });
+        if (champ.type !== "booleen") {
+          var vide = elt("option", null, "—");
+          vide.value = "";
+          controle.appendChild(vide);
+        }
+        options.forEach(function (option) {
+          var o = elt("option", null, option.libelle);
+          o.value = option.valeur;
           controle.appendChild(o);
         });
       } else {
@@ -2165,7 +2209,11 @@
       }
       controle.id = "action-" + champ.cle;
       controle.name = champ.cle;
-      controle.value = champ.valeur || (ligne && ligne[champ.cle]) || "";
+      var defaut = champ.defaut === "aujourdhui"
+        ? new Date().toISOString().slice(0, 10)
+        : (champ.valeur !== undefined ? champ.valeur : (ligne && ligne[champ.cle]));
+      if (typeof defaut === "boolean") defaut = defaut ? "true" : "false";
+      controle.value = defaut === null || defaut === undefined ? "" : String(defaut);
       if (champ.requis) controle.setAttribute("aria-required", "true");
       bloc.appendChild(controle);
       if (champ.aide) bloc.appendChild(elt("p", "ecran__aide", champ.aide));
@@ -2208,11 +2256,27 @@
         erreurs.textContent = "Champs obligatoires : " + manquants.join(", ");
         return;
       }
-      var corps = action.corps ? action.corps(ligne || {}, valeurs) : valeurs;
+      var url = urlRemplie(action.url, ligne || {}, ecran);
+      var corps;
+      if (action.emplacement === "query") {
+        /* Beaucoup de routes d'écriture attendent des paramètres d'URL
+           (FastAPI : scalaires = query string), pas un corps JSON.
+           Envoyer un corps produisait un 422 systématique. */
+        var paires = [];
+        Object.keys(valeurs).forEach(function (cle) {
+          var valeur = valeurs[cle];
+          if (valeur === "" || valeur === undefined || valeur === null) return;
+          paires.push(encodeURIComponent(cle) + "=" + encodeURIComponent(String(valeur)));
+        });
+        if (paires.length) {
+          url += (url.indexOf("?") === -1 ? "?" : "&") + paires.join("&");
+        }
+        corps = undefined;
+      } else {
+        corps = action.corps ? action.corps(ligne || {}, valeurs) : valeurs;
+      }
       voile.remove();
-      envoyerAction(ecran, action,
-        urlRemplie(action.url, ligne || {}, ecran),
-        action.methode || "POST", corps);
+      envoyerAction(ecran, action, url, action.methode || "POST", corps);
     });
 
     boite.appendChild(form);

@@ -56,6 +56,8 @@ ACTIONS_TESTEES: dict[str, set[str]] = {
     "documents/ocr": {"Texte", "Résultat", "Relancer"},
     "controle/documentaire": {"Contrôler", "Verdict"},
     "finance/reconciliation": {"Lancer le rapprochement"},
+    "enlevissement/sortie-port": {"Autoriser la sortie", "Enregistrer la sortie"},
+    "enlevissement/livraison": {"Démarrer", "Arrivée", "Confirmer"},
 }
 #: Limitations externes connues, affichées dans la colonne « Action requise ».
 LIMITES: dict[str, str] = {
