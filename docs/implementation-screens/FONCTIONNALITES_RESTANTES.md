@@ -1,6 +1,6 @@
 # Fonctionnalités restantes — UniOCR
 
-État au 2026-11-04, après la passe 22. Ce document est la liste de travail
+État au 2026-11-04, après la passe 27. Ce document est la liste de travail
 priorisée ; il se déduit de [`MATRICE_ECRANS.md`](MATRICE_ECRANS.md), qui reste
 la référence ligne à ligne.
 
@@ -118,3 +118,13 @@ La limite « en mémoire » indiquée en passe 25 est levée pour les nouvelles
 Restent : re-certification CRUD navigateur complète de Déclarations, contrôles
 métier des transitions et intégrité référentielle côté serveur. Matrice inchangée :
 **100 conformes, 1 partielle**. Ce stockage n'est pas une alimentation automatique.
+
+### Passe 27 — re-certification Déclarations terminée
+
+✅ Le CRUD navigateur de Déclarations est vérifié contre la vraie API isolée,
+avec trois démarrages serveur et relecture du stockage SQLite. Commande :
+`python -m pytest tests/test_declarations_e2e.py -q` (node/jsdom requis).
+La matrice régénérée revient à **101 conformes, 0 partiel**. Les bilans 25–26
+ci-dessus sont historiques. Restent les contrôles d'intégrité référentielle et
+les règles de transition métier ; la certification CRUD n'est pas une validation
+douanière officielle.

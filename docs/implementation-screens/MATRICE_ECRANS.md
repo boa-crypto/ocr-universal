@@ -46,21 +46,21 @@ peut pas être « CONFORME » pour un écran à écritures.
 | Documents & OCR | 14 | 14 | 0 | 0 | 0 | 0 |
 | Contrôle & conformité | 7 | 7 | 0 | 0 | 0 | 0 |
 | Opérations maritimes | 8 | 8 | 0 | 0 | 0 | 0 |
-| Douane & réglementation | 9 | 8 | 1 | 0 | 0 | 0 |
+| Douane & réglementation | 9 | 9 | 0 | 0 | 0 | 0 |
 | Enlèvement & livraison | 8 | 8 | 0 | 0 | 0 | 0 |
 | Finance & facturation | 8 | 8 | 0 | 0 | 0 | 0 |
 | Rapports & statistiques | 5 | 5 | 0 | 0 | 0 | 0 |
 | Référentiels & paramètres | 15 | 15 | 0 | 0 | 0 | 0 |
 | Administration & sécurité | 13 | 13 | 0 | 0 | 0 | 0 |
-| **Total** | **101** | **100** | **1** | **0** | **0** | **0** |
+| **Total** | **101** | **101** | **0** | **0** | **0** | **0** |
 
 - **Entrées de menu recensées** : 101
-- **Écrans conformes** : 100
-- **Écrans partiels** : 1
+- **Écrans conformes** : 101
+- **Écrans partiels** : 0
 - **Écrans absents** : 0
 - **Écrans non connectés** : 0
 
-Lecture honnête de ces chiffres : les 100 écrans conformes sont
+Lecture honnête de ces chiffres : les 101 écrans conformes sont
 ceux dont la source a répondu et dont les écritures éventuelles sont branchées ;
 les écrans « hérités » (mis en page lors des missions précédentes) restent
 marqués **PARTIEL** tant qu'ils n'ont pas été re-testés un par un dans cette
@@ -148,7 +148,7 @@ terminé.
 |---|---|---|---|---|---|---|---|---|---|
 | Douane & réglementation | Vue d'ensemble | `#douane` | écran existant `#tab-douane` | `(module historique)` | présent, 0 ligne affichée | Oui | **CONFORME** | jsdom : 12 liens, 14 cartes, 2 sources API | consultation et interactions vérifiées ; écritures non expérimentées |
 | Douane & réglementation | Classement tarifaire | `#douane/tarif` | écran existant `#tab-nomenclature` | `(module historique)` | 9 lignes affichées | Oui | **CONFORME** | jsdom : 9 codes SH réels affichés | consultation et interactions vérifiées ; écritures non expérimentées |
-| Douane & réglementation | Déclarations | `#douane/declarations` | Préparation des déclarations (`web/ecrans.js`) | `/api/declarations` | 0 ligne | Partiel | **PARTIEL** | rendu jsdom + GET 200 sans erreur JS | exercer le CRUD (création, édition, suppression) : aucune preuve pour l'instant |
+| Douane & réglementation | Déclarations | `#douane/declarations` | Préparation des déclarations (`web/ecrans.js`) | `/api/declarations` | 0 ligne | Oui | **CONFORME** | pytest tests/test_declarations_e2e.py : CRUD jsdom contre API réelle isolée, confirmation/annulation, trois démarrages et SQLite relu | maintenir ; étendre les champs métier si besoin |
 | Douane & réglementation | Contrôles douaniers | `#douane/controles` | Contrôles douaniers (`web/ecrans.js`) | `/api/declarations` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200, édition PUT 200, suppression DELETE 200 | maintenir ; étendre les champs métier si besoin |
 | Douane & réglementation | Liquidation | `#douane/liquidation` | Liquidation (`web/ecrans.js`) | `/api/declarations/liquidation` | 0 ligne | Oui | **CONFORME** | jsdom : création POST 200, suppression DELETE 200 | maintenir ; étendre les champs métier si besoin |
 | Douane & réglementation | Paiements | `#douane/paiements` | Paiements douaniers (`web/ecrans.js`) | `/api/declarations/liquidation` | 0 ligne | Oui | **CONFORME** | jsdom : Marquer payée → 200 | actions exercées par test (Marquer payée) |

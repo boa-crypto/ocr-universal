@@ -1,9 +1,9 @@
 # Rapport de tests — écrans UniOCR
 
-Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, passe 13.
+Date : 2026-11-04. Branche `arena/2cd4c91a-ocr-universal`, état après la passe 27.
 
 Ce document liste **uniquement des résultats obtenus**, avec la commande qui
-les produit. Les tests ajoutés dans cette passe sont marqués 🆕.
+les produit. Les sections de passes ci-dessous conservent les résultats historiques.
 
 ---
 
@@ -12,19 +12,19 @@ les produit. Les tests ajoutés dans cette passe sont marqués 🆕.
 | Commande | Résultat | Commentaire |
 |---|---|---|
 | `ruff check src tests` | **All checks passed** | 0 erreur de style |
-| `python -m pytest -q` | **1008 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
-| `python -m pytest tests/test_ui_premium.py -q` | **52 passed** | +1 par passe depuis la 14 |
+| `python -m pytest -q` | **1047 passed, 23 failed, 11 skipped** | les 23 échecs sont environnementaux (voir §6) |
+| `python -m pytest tests/test_ui_premium.py -q` | **56 passed** | tests de contrat et intégrité UI |
 | `python -m pytest tests/test_historique.py -q` | **5 passed** 🆕 | ordre, filtrage par document, événements inconnus, journal illisible |
 | `python -m pytest tests/test_rbac_ecritures.py -q` | **18 passed** | 14 familles d'écriture refusées à un lecteur, refus tracés |
 | `python -m pytest tests/test_referentiels_base.py -q` | **6 passed** | amorçage idempotent, non destructif, tracé, borné |
-| `python -m pytest tests/test_stats_comparaison.py -q` | **10 passed** 🆕 | hausse/baisse/stable, période vide, dates manquantes, bornes |
+| `python -m pytest tests/test_stats_comparaison.py -q` | **18 passed** | hausse/baisse/stable, période vide, dates manquantes, bornes et limites |
 | `npm run ui:smoke` | **15/15 vérifications** 🆕 | 8 écrans, 4 interactions, 0 écriture, 0 erreur JS ou 5xx |
 | `python -m pytest tests/test_interface_jsdom.py -q` | **1 passed** (ou sauté sans jsdom/serveur) 🆕 | rejoue le harnais depuis pytest |
 | `python -m pytest tests/test_parametres.py -q` | **10 passed** 🆕 | écriture, bornes, persistance, effet réel sur l'import |
 | `python -m pytest tests/test_referentiels.py -q` | **7 passed** 🆕 | CRUD, persistance, doublons, audit |
 | `python -m pytest tests/test_route_ordering.py -q` | **4 passed** 🆕 | détection des routes masquées |
 
-Comparaison avec le début du cycle : 945 → **1008 tests passants**
+Bilan historique à la passe 19 : 945 → **1008 tests passants**
 (+7 référentiels, +4 ordre des routes, +10 écrans rôles/utilisateurs, +4
 intégrité UI, moins un test de service worker réécrit pour être
 version-agnostique).
@@ -202,3 +202,15 @@ python3 docs/implementation-screens/outils/generer_matrice.py /tmp/ui.json
 - Suite complète : **1046 passed, 23 failed, 11 skipped** ; échecs OCR connus.
 - Le test navigateur Déclarations utilise maintenant la vraie clé `id`.
 - Harnais Déclarations : succès avec clé `id` et message de stockage local ; smoke UI **15/15** ; Ruff sans erreur.
+
+### Passe 27 — CRUD Déclarations réel et redémarrages
+
+- `python -m pytest tests/test_declarations_e2e.py -q` : **1 passed** (9,98 s).
+  API uvicorn réelle et jsdom, données/logs/profils temporaires, trois démarrages.
+  Création, modification, persistance, annulation de suppression, suppression et
+  persistance de la suppression. Aucune réponse API simulée.
+- Dépendances : `npm install`, puis commande pytest ci-dessus ; aucun serveur
+  préalable requis. Sans node/jsdom : saut explicite.
+- Suite complète : **1047 passed, 23 failed, 11 skipped** ; les 23 échecs OCR
+  environnementaux connus persistent. Ruff sans erreur.
+- Matrice parcourue et régénérée : **101 conformes, 0 partiel**.

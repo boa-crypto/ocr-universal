@@ -963,6 +963,37 @@ restent en dernière écriture gagnante. Restaurer les sauvegardes serveur arrê
 La matrice reste à **100 conformes / 1 partielle** : la persistance API ne certifie
 pas à elle seule toutes les interactions navigateur de l'entrée Déclarations.
 
+## 2.30 Passe 27 — CRUD Déclarations contre une API réelle, avec redémarrages
+
+La preuve de création de la passe 25 utilisait un POST simulé. Elle ne suffisait
+pas pour certifier l'édition, la suppression et la conservation réelle des valeurs.
+`tests/test_declarations_e2e.py` démarre maintenant l'application complète via
+uvicorn sur un port libre et avec `UNOCR_DATA_DIR`, `UNOCR_LOG_DIR` et les profils
+utilisateur dans `tmp_path`. Il n'utilise jamais le serveur du poste sur le port 8000.
+
+`tests/ui_declarations_e2e.js` charge l'interface dans jsdom et appelle les vraies
+routes API. Il ne simule aucune réponse métier. Il refuse les écritures navigateur
+autres que POST/PUT/DELETE vers les déclarations du serveur isolé. Le test Python
+prépare un dossier dans ce même magasin temporaire, puis vérifie :
+
+1. **Création** dans le formulaire : choix du dossier, numéro, date de dépôt, agent.
+2. **Édition** : numéro et statut changés, fermeture et liste actualisée.
+3. **Arrêt réel du processus**, redémarrage : les quatre valeurs sont relues via API.
+4. **Suppression annulée** : aucune requête DELETE.
+5. **Suppression confirmée** : DELETE réel et état vide visible.
+6. **Nouvel arrêt/redémarrage** : liste toujours vide.
+
+Les processus sont arrêtés en `finally`, les journaux et données restent dans les
+répertoires temporaires. Sans node/jsdom le test est sauté avec motif explicite.
+Commande rejouable : `npm install` puis
+`python -m pytest tests/test_declarations_e2e.py -q` (**1 passed**, environ 10 s).
+Ce test jsdom n'est pas un test de rendu graphique Chromium ni un dépôt douanier.
+
+La matrice est régénérée après parcours des 101 entrées ; Déclarations porte
+maintenant cette preuve complète : **101 conformes, 0 partiel**. Cela certifie
+le parcours CRUD local, pas l'intégrité référentielle, les règles de transition
+métier ou une connexion à un service douanier externe.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

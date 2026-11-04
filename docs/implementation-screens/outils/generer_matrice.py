@@ -34,6 +34,7 @@ BASE = "http://127.0.0.1:8000"
 
 #: Preuves de test disponibles par route d'écran (mises à jour à chaque passe).
 PREUVES: dict[str, str] = {
+    "douane/declarations": "pytest tests/test_declarations_e2e.py : CRUD jsdom contre API réelle isolée, confirmation/annulation, trois démarrages et SQLite relu",
     "maritime/voyages": "jsdom : création POST 200, suppression DELETE 200",
     "douane/controles": "jsdom : création POST 200, édition PUT 200, suppression DELETE 200",
     "douane/liquidation": "jsdom : création POST 200, suppression DELETE 200",
