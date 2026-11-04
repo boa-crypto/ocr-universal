@@ -1,0 +1,575 @@
+{
+  "$defs": {
+    "Chapitre": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[0-9]{2}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "section_id": {
+          "title": "Section Id",
+          "type": "string"
+        },
+        "designation": {
+          "minLength": 1,
+          "title": "Designation",
+          "type": "string"
+        },
+        "reference": {
+          "$ref": "#/$defs/SourceRef"
+        }
+      },
+      "required": [
+        "code",
+        "section_id",
+        "designation",
+        "reference"
+      ],
+      "title": "Chapitre",
+      "type": "object"
+    },
+    "LigneTarifaire": {
+      "additionalProperties": false,
+      "properties": {
+        "date_entree_vigueur": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date Entree Vigueur"
+        },
+        "date_fin_validite": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date Fin Validite"
+        },
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "code_tarifaire_10": {
+          "pattern": "^[0-9]{10}$",
+          "title": "Code Tarifaire 10",
+          "type": "string"
+        },
+        "code_sh_6": {
+          "pattern": "^[0-9]{6}$",
+          "title": "Code Sh 6",
+          "type": "string"
+        },
+        "chapitre": {
+          "pattern": "^[0-9]{2}$",
+          "title": "Chapitre",
+          "type": "string"
+        },
+        "position": {
+          "pattern": "^[0-9]{4}$",
+          "title": "Position",
+          "type": "string"
+        },
+        "sous_position": {
+          "pattern": "^[0-9]{6}$",
+          "title": "Sous Position",
+          "type": "string"
+        },
+        "section_id": {
+          "title": "Section Id",
+          "type": "string"
+        },
+        "designation_officielle_fr": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Designation Officielle Fr"
+        },
+        "designation_officielle_ar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Designation Officielle Ar"
+        },
+        "unite_statistique": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unite Statistique"
+        },
+        "unite_supplementaire": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unite Supplementaire"
+        },
+        "taux_droits_douane": {
+          "default": null,
+          "title": "Taux Droits Douane",
+          "type": "null"
+        },
+        "taux_tva": {
+          "default": null,
+          "title": "Taux Tva",
+          "type": "null"
+        },
+        "autres_taxes": {
+          "default": null,
+          "title": "Autres Taxes",
+          "type": "null"
+        },
+        "mesures_reglementaires": {
+          "default": null,
+          "title": "Mesures Reglementaires",
+          "type": "null"
+        },
+        "restrictions": {
+          "default": null,
+          "title": "Restrictions",
+          "type": "null"
+        },
+        "autorisations_requises": {
+          "default": null,
+          "title": "Autorisations Requises",
+          "type": "null"
+        },
+        "pays_origine_concerne_si_applicable": {
+          "default": null,
+          "title": "Pays Origine Concerne Si Applicable",
+          "type": "null"
+        },
+        "regime_douanier_applicable": {
+          "default": null,
+          "title": "Regime Douanier Applicable",
+          "type": "null"
+        },
+        "statut": {
+          "const": "a_verifier",
+          "default": "a_verifier",
+          "title": "Statut",
+          "type": "string"
+        },
+        "reference": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "date_validation": {
+          "default": null,
+          "title": "Date Validation",
+          "type": "null"
+        }
+      },
+      "required": [
+        "id",
+        "code_tarifaire_10",
+        "code_sh_6",
+        "chapitre",
+        "position",
+        "sous_position",
+        "section_id",
+        "reference"
+      ],
+      "title": "LigneTarifaire",
+      "type": "object"
+    },
+    "Mesure": {
+      "additionalProperties": false,
+      "properties": {
+        "date_entree_vigueur": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date Entree Vigueur"
+        },
+        "date_fin_validite": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date Fin Validite"
+        },
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "code_tarifaire_10": {
+          "pattern": "^[0-9]{10}$",
+          "title": "Code Tarifaire 10",
+          "type": "string"
+        },
+        "type_mesure": {
+          "enum": [
+            "droit",
+            "tva",
+            "autre_taxe",
+            "restriction",
+            "autorisation",
+            "regime"
+          ],
+          "title": "Type Mesure",
+          "type": "string"
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "taux": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Taux"
+        },
+        "unite_taux": {
+          "anyOf": [
+            {
+              "const": "pourcent",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unite Taux"
+        },
+        "reference": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "statut": {
+          "const": "a_verifier",
+          "default": "a_verifier",
+          "title": "Statut",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "code_tarifaire_10",
+        "type_mesure",
+        "description",
+        "reference"
+      ],
+      "title": "Mesure",
+      "type": "object"
+    },
+    "Position": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[0-9]{4}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "chapitre": {
+          "pattern": "^[0-9]{2}$",
+          "title": "Chapitre",
+          "type": "string"
+        },
+        "designation": {
+          "minLength": 1,
+          "title": "Designation",
+          "type": "string"
+        },
+        "reference": {
+          "$ref": "#/$defs/SourceRef"
+        }
+      },
+      "required": [
+        "code",
+        "chapitre",
+        "designation",
+        "reference"
+      ],
+      "title": "Position",
+      "type": "object"
+    },
+    "Section": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "designation": {
+          "minLength": 1,
+          "title": "Designation",
+          "type": "string"
+        },
+        "reference": {
+          "$ref": "#/$defs/SourceRef"
+        }
+      },
+      "required": [
+        "id",
+        "designation",
+        "reference"
+      ],
+      "title": "Section",
+      "type": "object"
+    },
+    "SourceDocument": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "titre": {
+          "minLength": 1,
+          "title": "Titre",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "organisme": {
+          "minLength": 1,
+          "title": "Organisme",
+          "type": "string"
+        },
+        "version_source": {
+          "minLength": 1,
+          "title": "Version Source",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "format": {
+          "enum": [
+            "json",
+            "csv",
+            "xlsx",
+            "xls",
+            "pdf",
+            "xml",
+            "zip"
+          ],
+          "title": "Format",
+          "type": "string"
+        },
+        "date_publication": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date Publication"
+        },
+        "verification": {
+          "const": "non_verifiee",
+          "default": "non_verifiee",
+          "title": "Verification",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "titre",
+        "url",
+        "organisme",
+        "version_source",
+        "sha256",
+        "format"
+      ],
+      "title": "SourceDocument",
+      "type": "object"
+    },
+    "SourceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "localisateur": {
+          "description": "Page, article, feuille/cellules ou ligne source",
+          "minLength": 1,
+          "title": "Localisateur",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "localisateur"
+      ],
+      "title": "SourceRef",
+      "type": "object"
+    },
+    "SousPosition": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[0-9]{6}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "position": {
+          "pattern": "^[0-9]{4}$",
+          "title": "Position",
+          "type": "string"
+        },
+        "designation": {
+          "minLength": 1,
+          "title": "Designation",
+          "type": "string"
+        },
+        "reference": {
+          "$ref": "#/$defs/SourceRef"
+        }
+      },
+      "required": [
+        "code",
+        "position",
+        "designation",
+        "reference"
+      ],
+      "title": "SousPosition",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/SourceDocument"
+    },
+    "sections": {
+      "items": {
+        "$ref": "#/$defs/Section"
+      },
+      "title": "Sections",
+      "type": "array"
+    },
+    "chapitres": {
+      "items": {
+        "$ref": "#/$defs/Chapitre"
+      },
+      "title": "Chapitres",
+      "type": "array"
+    },
+    "positions": {
+      "items": {
+        "$ref": "#/$defs/Position"
+      },
+      "title": "Positions",
+      "type": "array"
+    },
+    "sous_positions": {
+      "items": {
+        "$ref": "#/$defs/SousPosition"
+      },
+      "title": "Sous Positions",
+      "type": "array"
+    },
+    "lignes": {
+      "items": {
+        "$ref": "#/$defs/LigneTarifaire"
+      },
+      "minItems": 1,
+      "title": "Lignes",
+      "type": "array"
+    },
+    "mesures": {
+      "items": {
+        "$ref": "#/$defs/Mesure"
+      },
+      "title": "Mesures",
+      "type": "array"
+    },
+    "statut": {
+      "const": "quarantaine",
+      "default": "quarantaine",
+      "title": "Statut",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source",
+    "sections",
+    "chapitres",
+    "positions",
+    "sous_positions",
+    "lignes"
+  ],
+  "title": "TariffBatch",
+  "type": "object"
+}

@@ -87,8 +87,8 @@ _reglementation_store = StoreReglementation(Path(cfg.data_dir) / "reglementation
 # Codes SH/Taric Algériens (Codes douaniers)
 # ───────────────────────────────────────────────────────────────
 
-# Codes SH à 8 chiffres pour l'Algérie (base sur le SH international à 6 chiffres)
-# Préfixés par le code pays DZ
+# LEGACY NON VERIFIE : neuf exemples à quatre chiffres, sans preuve source.
+# Ni nomenclature nationale complète, ni données utilisables pour un calcul.
 CODES_SH_ALGERIE = {
     # Chapitre 1: Animaux vivants; produits animaux
     "0101": {"libelle": "Bovins vivants", "chapitre": "1"},
@@ -237,24 +237,16 @@ def verifier_code_sh(code: str) -> bool:
     return True  # SH à 6 chiffres: on fait confiance
 
 
-def calculer_droits(dossier_id: str, code_sh: str, valeur: float, devise: str = "EUR") -> Dict[str, Any]:
-    """Calcule les droits de douane pour une classification donnée."""
-    # Taux par défaut Algérie (à remplacer par vraie base de données)
-    taux_tva = 0.09  # 9% standard
-    taux_tpc = 0.05  # 5% TPC standard
-    droits_base = round(valeur * 0.05, 2)  # 5% droits de base hypothétique
+class ReferenceDouaniereNonVerifiee(ValueError):
+    """Aucun calcul réel sans nomenclature et mesures applicables validées."""
 
-    return {
-        "code_sh": code_sh,
-        "valeur": valeur,
-        "devise": devise,
-        "droits_importation": droits_base,
-        "tva": round(valeur * taux_tva, 2),
-        "tpc": round(valeur * taux_tpc, 2),
-        "total_douane": round(droits_base + valeur * taux_tva + valeur * taux_tpc, 2),
-        "taux_tva": taux_tva,
-        "taux_tpc": taux_tpc,
-    }
+
+def calculer_droits(dossier_id: str, code_sh: str, valeur: float, devise: str = "EUR") -> Dict[str, Any]:
+    """Refuse les anciens taux hypothétiques ; aucune base fiscale active validée."""
+    raise ReferenceDouaniereNonVerifiee(
+        "Calcul douanier indisponible : taux et mesures officiels applicables non validés. "
+        "Les anciens taux hypothétiques ont été désactivés."
+    )
 
 
 # ───────────────────────────────────────────────────────────────

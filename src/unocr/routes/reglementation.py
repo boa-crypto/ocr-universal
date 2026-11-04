@@ -12,6 +12,7 @@ from ..logging_setup import audit, get_logger
 from ..reglementation import (
     REGLES_REGLEMENTAIRES,
     TYPES_CERTIFICATS,
+    ReferenceDouaniereNonVerifiee,
     calculer_droits,
     exiger_certificat,
     get_reglementation_store,
@@ -159,7 +160,10 @@ def calculer_droits_douane(
     if not verifier_code_sh(body.code_sh):
         raise HTTPException(400, f"Code SH invalide: {body.code_sh}")
 
-    droits = calculer_droits("", body.code_sh, body.valeur, body.devise)
+    try:
+        droits = calculer_droits("", body.code_sh, body.valeur, body.devise)
+    except ReferenceDouaniereNonVerifiee as exc:
+        raise HTTPException(503, {"code": "reference_douaniere_non_verifiee", "message": str(exc)}) from exc
     audit(cfg.log_dir, "droits_calcules", code_sh=body.code_sh, valeur=body.valeur)
     return droits
 
@@ -170,7 +174,10 @@ def droits_complets(
     body: CalculDroits,
 ) -> dict:
     """Obtient tous les droits et taxes complets pour une classification."""
-    result = obtenir_droits_complets(body.code_sh, body.valeur, body.devise)
+    try:
+        result = obtenir_droits_complets(body.code_sh, body.valeur, body.devise)
+    except ReferenceDouaniereNonVerifiee as exc:
+        raise HTTPException(503, {"code": "reference_douaniere_non_verifiee", "message": str(exc)}) from exc
     return result
 
 

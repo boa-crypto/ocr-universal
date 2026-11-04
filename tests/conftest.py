@@ -24,7 +24,7 @@ def ground_truth(fixtures_dir) -> dict:
 
 
 @pytest.fixture()
-def tmp_cfg(tmp_path):
+def tmp_cfg(tmp_path, monkeypatch):
     import copy
 
     from unocr import api
@@ -34,6 +34,11 @@ def tmp_cfg(tmp_path):
     original_store = api.store
     original_cfg = api.cfg
     original_app_cfg = api.app.state.cfg
+    # Une variable UNOCR_DATA_DIR héritée du poste ne doit jamais court-circuiter
+    # le tmp_path et partager les données entre tests (ou toucher le magasin réel).
+    monkeypatch.setenv("UNOCR_DATA_DIR", str(tmp_path / "data"))
+    monkeypatch.setenv("UNOCR_LOG_DIR", str(tmp_path / "logs"))
+    monkeypatch.setenv("UNOCR_USER_PROFILES_DIR", str(tmp_path / "user_profiles"))
     data = copy.deepcopy(DEFAULTS)
     cfg = Config(data, tmp_path)
     set_config(cfg)

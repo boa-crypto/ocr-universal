@@ -2,7 +2,7 @@
 
 Chaque test couvre un bug réel corrigé : routes clients sans `Request`,
 module transit branché sur un store inexistant, store de justificatifs lu
-avant d'être créé, calcul des droits sur un code SH non normalisé.
+avant d'être créé, refus des droits calculés sans source officielle validée.
 """
 import pytest
 from fastapi.testclient import TestClient
@@ -119,13 +119,10 @@ def test_justificatif_absent_renvoie_404(client):
     assert client.delete("/api/frais/justificatif/inexistant").status_code == 404
 
 
-def test_droits_complets_normalise_le_code_sh():
-    from unocr.reglementation import obtenir_droits_complets
+def test_droits_complets_refuse_les_taux_non_sources():
+    from unocr.reglementation import ReferenceDouaniereNonVerifiee, obtenir_droits_complets
 
-    resultat = obtenir_droits_complets("0901.21", 1000)
-    assert resultat["code_sh"] == "090121"
-    assert resultat["validation_sh"]["valide"] is True
-    assert resultat["total_douane"] > 0
-
-    inconnu = obtenir_droits_complets("99999999", 100)
-    assert inconnu["validation_sh"]["valide"] is False
+    # L'ancien test attestait un total hypothétique : ce contrat est retiré.
+    for code in ("0901.21", "99999999"):
+        with pytest.raises(ReferenceDouaniereNonVerifiee, match="non validés"):
+            obtenir_droits_complets(code, 1000)

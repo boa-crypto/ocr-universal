@@ -114,3 +114,13 @@ séparation des modules) et [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 Tesseract (Apache-2.0), OpenCV (Apache-2.0), pdfminer.six (MIT), pypdfium2
 (BSD/Apache-2.0), reportlab (BSD), zxing-cpp (Apache-2.0), FastAPI (MIT)…
 Toutes compatibles usage local et redistribution prudente.
+
+
+## Référentiels douaniers algériens — chantier réglementaire
+
+Le [socle douanier et son état de complétude](docs/customs/README.md) distinguent
+les sources vérifiées des préparations en quarantaine. **Les deux référentiels
+nationaux complets ne sont pas encore livrés.** L'ancien calcul avec taux
+hypothétiques est désactivé ; aucun taux de remplacement n'est supposé.
+Voir [audit et blocages documentaires](docs/customs/AUDIT_INITIAL.md) et
+[rapport de recette partielle](docs/customs/RAPPORT_AVANCEMENT.md).

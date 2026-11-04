@@ -1,0 +1,129 @@
+{
+  "$defs": {
+    "SourceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "localisateur": {
+          "description": "Page, article, feuille/cellules ou ligne source",
+          "minLength": 1,
+          "title": "Localisateur",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "localisateur"
+      ],
+      "title": "SourceRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "date_entree_vigueur": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Date Entree Vigueur"
+    },
+    "date_fin_validite": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Date Fin Validite"
+    },
+    "id": {
+      "minLength": 1,
+      "title": "Id",
+      "type": "string"
+    },
+    "code_tarifaire_10": {
+      "pattern": "^[0-9]{10}$",
+      "title": "Code Tarifaire 10",
+      "type": "string"
+    },
+    "type_mesure": {
+      "enum": [
+        "droit",
+        "tva",
+        "autre_taxe",
+        "restriction",
+        "autorisation",
+        "regime"
+      ],
+      "title": "Type Mesure",
+      "type": "string"
+    },
+    "description": {
+      "minLength": 1,
+      "title": "Description",
+      "type": "string"
+    },
+    "taux": {
+      "anyOf": [
+        {
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Taux"
+    },
+    "unite_taux": {
+      "anyOf": [
+        {
+          "const": "pourcent",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Unite Taux"
+    },
+    "reference": {
+      "$ref": "#/$defs/SourceRef"
+    },
+    "statut": {
+      "const": "a_verifier",
+      "default": "a_verifier",
+      "title": "Statut",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "code_tarifaire_10",
+    "type_mesure",
+    "description",
+    "reference"
+  ],
+  "title": "Mesure",
+  "type": "object"
+}

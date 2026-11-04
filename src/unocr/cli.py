@@ -184,6 +184,13 @@ def main(argv=None) -> int:
     pa.add_argument("--json", action="store_true", dest="json_output", help="rapport structuré")
     pa.set_defaults(func=cmd_pieces_audit)
 
+    cr = sub.add_parser("customs-prepare", help="préparer un tarif CSV/JSON en quarantaine, jamais l'activer")
+    cr.add_argument("source", help="fichier source local")
+    cr.add_argument("--metadata", required=True, help="provenance, hiérarchie et mapping explicites")
+    cr.add_argument("--out", default="", help="nouveau répertoire de préparation")
+    cr.add_argument("--write", action="store_true", help="écrire explicitement le lot en quarantaine")
+    cr.set_defaults(func=cmd_customs_prepare)
+
     args = parser.parse_args(argv)
     return args.func(args)
 
@@ -214,6 +221,23 @@ def cmd_pieces_check(args) -> int:
         for anomalie in resultat["anomalies"]:
             print(f"  {anomalie['categorie']} : {anomalie['cible']} — {anomalie['detail']}")
     return {"conforme": 0, "anomalies": 1, "indisponible": 2}[resultat["etat"]]
+
+
+def cmd_customs_prepare(args) -> int:
+    from pydantic import ValidationError
+
+    from .customs_reference.importer import preparer_tarif
+
+    if args.write and not args.out:
+        print("--out est requis avec --write", file=sys.stderr)
+        return 2
+    try:
+        resultat = preparer_tarif(Path(args.source), Path(args.metadata), Path(args.out) if args.write else None)
+    except (OSError, ValueError, KeyError, TypeError, ValidationError) as exc:
+        print(json.dumps({"statut": "refuse", "publication_active": False, "detail": str(exc)}, ensure_ascii=False))
+        return 2
+    print(json.dumps(resultat, ensure_ascii=False, indent=2))
+    return 0
 
 
 def cmd_pieces_audit(args) -> int:
