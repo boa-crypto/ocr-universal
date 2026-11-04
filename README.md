@@ -29,6 +29,13 @@ python -m pytest tests/ -q
 ./scripts/run_server.sh          # UI : http://localhost:8000  ·  API : /docs
 ```
 
+Aperçu dans un bac à sable distant (écoute sur `0.0.0.0`, UI affichable en
+iframe, hôte `*.e2b.app` autorisé — **usage aperçu uniquement**) :
+
+```bash
+./scripts/run_preview.sh         # UNOCR_PREVIEW=1, port 8000
+```
+
 Ou en une commande avec Docker (embarque Tesseract + 11 langues + Poppler + zbar) :
 
 ```bash

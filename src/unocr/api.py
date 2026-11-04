@@ -594,7 +594,8 @@ async def _security_headers(request, call_next):
             del response.headers[key]
 
     policy = _default_security_headers()
-    response.headers.setdefault("X-Frame-Options", policy["x_frame_options"])
+    if policy["x_frame_options"]:  # vide en mode aperçu (UI en iframe)
+        response.headers.setdefault("X-Frame-Options", policy["x_frame_options"])
     response.headers.setdefault("X-Content-Type-Options", policy["x_content_type_options"])
     response.headers.setdefault("Referrer-Policy", policy["referrer_policy"])
     response.headers.setdefault("Permissions-Policy", policy["permissions_policy"])
@@ -690,6 +691,37 @@ def i18n_controls_module():
     if not path.is_file():
         raise HTTPException(status_code=404, detail="module i18n absent")
     return FileResponse(path, media_type="text/javascript")
+
+
+# Modules chargés par index.html depuis la racine (`<script src="...">`).
+# Sans ces routes, ils tombaient en 404 et l'UI perdait connecteurs, dossiers,
+# formulaires, traçabilité et transmission.
+MODULES_WEB_RACINE = (
+    "connectors.js",
+    "dossier.js",
+    "formulaire.js",
+    "tracabilite.js",
+    "transmission.js",
+)
+
+
+def _fabrique_module_web(nom_fichier: str):
+    def _module_web() -> FileResponse:
+        path = cfg.web_dir / nom_fichier
+        if not path.is_file():
+            raise HTTPException(status_code=404, detail=f"{nom_fichier} absent")
+        return FileResponse(path, media_type="text/javascript")
+    return _module_web
+
+
+for _nom_module in MODULES_WEB_RACINE:
+    app.add_api_route(
+        f"/{_nom_module}",
+        _fabrique_module_web(_nom_module),
+        methods=["GET"],
+        include_in_schema=False,
+        name=f"web_module_{_nom_module.replace('.', '_')}",
+    )
 
 
 @app.get("/icon.svg", include_in_schema=False)
