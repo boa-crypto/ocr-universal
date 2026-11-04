@@ -20,6 +20,7 @@ const SHELL = [
   "/web/refresh.css",
   "/web/cockpit.js",
   "/web/dossiers.js",
+  "/web/workspace.js",
 ];
 
 self.addEventListener("install", (event) => {
