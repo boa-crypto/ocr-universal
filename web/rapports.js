@@ -21,7 +21,14 @@
     { cle: "fret-par-gestionnaire", titre: "Frais par gestionnaire" }
   ];
 
-  var COULEURS = ["#1677FF", "#00D9FF", "#00CBA8", "#9466F5", "#F59E0B", "#F04452", "#4B6485"];
+  function teinte(nom) {
+    return window.UniOCRPalette ? window.UniOCRPalette.couleur(nom) : "currentColor";
+  }
+
+  /* Série ordinale : l'ordre vient de la palette, pas d'une liste de codes. */
+  function COULEURS() {
+    return window.UniOCRPalette ? window.UniOCRPalette.serie() : ["currentColor"];
+  }
 
   function $(id) { return document.getElementById(id); }
 
@@ -92,6 +99,7 @@
           return;
         }
 
+        var palette = COULEURS();
         var labels = series.map(function (p) { return p.name; });
         var valeurs = series.map(function (p) { return Number(p.y) || 0; });
         var type = donnees.type || "bar";
@@ -99,7 +107,7 @@
         if (type === "pie" || type === "doughnut") {
           window.UniOCRCharts.donut(cible.zone, {
             items: series.map(function (p, i) {
-              return { label: p.name, value: Number(p.y) || 0, color: COULEURS[i % COULEURS.length] };
+              return { label: p.name, value: Number(p.y) || 0, color: palette[i % palette.length] };
             }),
             size: 168,
             centre: "total",
@@ -108,7 +116,7 @@
         } else if (type === "line") {
           window.UniOCRCharts.line(cible.zone, {
             labels: labels,
-            series: [{ key: definition.cle, label: definition.titre, values: valeurs, color: "#1677FF", fill: true }],
+            series: [{ key: definition.cle, label: definition.titre, values: valeurs, color: teinte("blue"), fill: true }],
             height: 200,
             dots: false,
             label: definition.titre
@@ -117,7 +125,7 @@
           window.UniOCRCharts.bars(cible.zone, {
             labels: labels,
             values: valeurs,
-            colors: series.map(function (_, i) { return COULEURS[i % COULEURS.length]; }),
+            colors: series.map(function (_, i) { return palette[i % palette.length]; }),
             height: 200,
             label: definition.titre
           });

@@ -327,3 +327,38 @@ def test_recherche_globale_refuse_une_requete_vide(client) -> None:
     # `q` est obligatoire : une recherche vide est une erreur d'appel, pas un
     # « tout retourner ». L'interface ne l'envoie jamais (seuil de 2 caractères).
     assert client.get("/api/search/global", params={"q": ""}).status_code == 422
+
+
+def test_aucune_couleur_dispersee_dans_les_rendus_js() -> None:
+    """La palette vit dans `uniocr-ds.css` ; les rendus SVG lisent `palette.js`.
+
+    Un code couleur écrit dans un composant casse la cohérence du design
+    system (et le thème clair). Le test balaie les modules de rendu et refuse
+    tout littéral hexadécimal à six chiffres.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    rendus = ["charts.js", "cockpit.js", "rapports.js", "modules.js",
+              "souspages.js", "dossiers.js", "workspace.js", "navigation.js",
+              "shell.js", "app-extras.js", "palette.js"]
+    coupables = []
+    for nom in rendus:
+        fichier = racine / "web" / nom
+        assert fichier.is_file(), f"module attendu absent : {nom}"
+        for numero, ligne in enumerate(fichier.read_text(encoding="utf-8").splitlines(), 1):
+            code = ligne.split("//", 1)[0]
+            if re.search(r"#[0-9A-Fa-f]{6}\b", code) or re.search(r"rgba?\(", code):
+                coupables.append(f"{nom}:{numero}")
+    assert not coupables, "couleurs codées en dur hors du design system : " + ", ".join(coupables)
+
+    # La passerelle lit bien les jetons du design system.
+    css = (racine / "web" / "uniocr-ds.css").read_text(encoding="utf-8")
+    passerelle = (racine / "web" / "palette.js").read_text(encoding="utf-8")
+    assert "--ds-neutral:" in css
+    for jeton in ("--ds-blue", "--ds-cyan", "--ds-teal", "--ds-violet",
+                  "--ds-amber", "--ds-red", "--ds-neutral"):
+        assert jeton in passerelle, f"jeton non exposé par palette.js : {jeton}"
+
+    # Et elle est chargée avant les modules qui dessinent.
+    index = (racine / "web" / "index.html").read_text(encoding="utf-8")
+    assert index.index("/web/palette.js") < index.index("/web/charts.js")
+    assert index.index("/web/palette.js") < index.index("/web/cockpit.js")

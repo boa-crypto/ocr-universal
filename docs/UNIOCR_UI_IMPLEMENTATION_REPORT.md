@@ -41,6 +41,7 @@ index.html
 └── uniocr-ds.css         (NOUVEAU design system v4, chargé en dernier)
 web/
 ├── navigation.js         (groupes repliables, badges, infobulles, état mémorisé)
+├── palette.js            (NOUVEAU — passerelle jetons CSS → SVG, zéro couleur en dur)
 ├── charts.js             (NOUVEAU — courbes, barres, anneau, étincelles ; SVG natif)
 ├── shell.js              (NOUVEAU — coque : repli, menus, recherche, bootstrap)
 ├── cockpit.js            (réécrit — 5 KPI, tâches, progression, arrivées, alertes)
@@ -57,7 +58,9 @@ src/unocr/api.py               (+ GET /api/search/global, + GET /api/ui/bootstra
 Le design system arrive en dernier pour primer, sans réécrire les écrans
 existants : il redéfinit les jetons hérités (`--bg`, `--surface`, `--electric`,
 `--accent`, `--text`, `--line`, `--ok/--warn/--err`, `--ink-*`) vers les
-nouveaux jetons `--ds-*`. Aucun composant ne contient de couleur en propre.
+nouveaux jetons `--ds-*`. Aucun composant ne contient de couleur en propre : `palette.js` lit les jetons
+dans `getComputedStyle` pour les rendre disponibles aux attributs SVG
+(`fill`, `stroke`, `stop-color`), là où `var(--ds-…)` n'est pas résolu.
 
 ### Jetons (`web/uniocr-ds.css`, section 01)
 
@@ -72,6 +75,7 @@ nouveaux jetons `--ds-*`. Aucun composant ne contient de couleur en propre.
 | `--ds-teal` | `#00CBA8` | succès |
 | `--ds-text` / `--ds-text-muted` | `#F1F5FF` / `#94A9C7` | texte / texte secondaire |
 | `--ds-red` / `--ds-amber` / `--ds-violet` | `#F04452` / `#F59E0B` / `#9466F5` | erreur / attention / information |
+| `--ds-neutral` | `#4B6485` | élément neutre / archivé |
 
 + échelles d'espacement, rayons, ombres, durées et courbes d'animation.
 
@@ -303,7 +307,7 @@ les animations sont en CSS et les graphiques en SVG natif (`web/charts.js`,
 |---|---|---|
 | `GET /api/dashboard/serie-dossiers?jours=30` | `{periode_jours, debut, fin, series[{date, crees, traites, clotures}], totaux, genere_le}` — créations depuis `created_at`, clôtures sur passage à `exporte`/`archive`, traitements sur les autres actions du journal. Bornes **1–365**. | 200, données réelles (`2026-10-30 : 49 créés, 53 traités`) |
 | `GET /api/search/global?q=&limit=` | `{query, total, limite_par_groupe, groupes{dossiers, clients, connaissements, conteneurs, documents}}` ; filtre `utilisateur.voit_dossier`. | 200 (`q=arbitrage` → 6, `q=dos_3c04` → 1, `q=zzzzz` → 0) ; `q` vide → 422 (volontaire) |
-| `GET /api/ui/bootstrap` | `{utilisateur, rbac_actif, compteurs{dossiers, en_cours, a_valider, clos, bloques, notifications_non_lues}}` | 200 (716 dossiers, 666 en cours, 185 à valider) |
+| `GET /api/ui/bootstrap` | `{utilisateur, rbac_actif, compteurs{dossiers, en_cours, a_valider, clos, bloques, notifications_non_lues}}` | 200 (715 dossiers, 666 en cours, 185 à valider) |
 
 Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 
@@ -315,10 +319,10 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 
 ```
 .venv/bin/python -m ruff check src tests   → All checks passed!
-.venv/bin/python -m pytest -q              → 933 passed, 23 failed, 11 skipped (70 s)
+.venv/bin/python -m pytest -q              → 935 passed, 23 failed, 11 skipped (70 s)
 ```
 
-- **Nouveau fichier** `tests/test_ui_premium.py` : **23 tests**, tous verts
+- **Nouveau fichier** `tests/test_ui_premium.py` : **24 tests**, tous verts
   (ordre de cascade CSS, absence de `<style>`, présence des modules et des
   identifiants de coque, 5 KPI, palette centralisée, jetons hérités conservés,
   `prefers-reduced-motion` + `@media print`, 12 rubriques, repli + infobulles,
@@ -326,7 +330,8 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
   grille inline, avertissements de portée de l'OCR, sous-pages branchées sur
   des endpoints existants, routage fin des sous-rubriques, graphiques de la
   page Rapports, accessibilité de base, comparaison inter-documents et
-  accessibilité des pages historiques après la refonte de la barre latérale).
+  accessibilité des pages historiques après la refonte de la barre latérale,
+  absence de couleur codée en dur dans les modules de rendu).
 - Les **23 échecs préexistants** sont inchangés et **environnementaux**
   (Tesseract/Indra absents, connecteur `customs_api`, routage flou) ; ils ne
   sont pas masqués.
@@ -351,6 +356,8 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 | Modules | 8 bandeaux de 4 indicateurs, valeurs réelles, 0 erreur |
 | Sous-pages | 10 routes testées : bonne page affichée, listes et colonnes réelles |
 | Rapports | 7 graphiques rendus sur données réelles, 0 erreur |
+| Palette SVG | `UniOCRPalette.couleur("blue")` → `#1677FF`, série complète lue dans le CSS ; dégradé, anneau et étincelles du cockpit peints avec les jetons `--ds-*` (aucun code couleur dans les modules) |
+| Rejet de champ | 37 champs sur un document réel, 37 boutons Valider / 37 Rejeter, `PATCH /api/jobs/{id}/fields/{nom}` renvoyé avec statut `rejected` et motif |
 
 ---
 
@@ -390,11 +397,11 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
    dédié : elles retombent sur la vue d'ensemble de leur module. Les 92
    sections `tab-*` existent ; y brancher un endpoint est un ajout de quelques
    lignes dans `web/souspages.js` quand la route existe côté serveur.
-4. **Atelier OCR** : la vue « document / données extraites » existe
-   (`#tab-result`) et la comparaison inter-documents vit dans l'espace dossier
-   (onglet Résultats OCR). Il reste à aligner les deux dans un même écran et à
-   exposer les actions valider/corriger/rejeter directement dans l'atelier
-   (elles existent déjà dans la file de validation).
+4. **Atelier OCR** : la vue « document / données extraites » (`#tab-result`)
+   expose désormais valider / rejeter par champ et relancer un traitement ; la
+   comparaison inter-documents vit dans l'espace dossier (onglet Résultats OCR).
+   Il reste à réunir prévisualisation du document et tableau extrait dans une
+   colonne unique et à proposer la comparaison depuis l'atelier lui-même.
 5. **Pages de référence / rapports** : contenu encore générique, à brancher sur
    `/api/stats` et les graphiques `/api/dashboard/graphique/*`.
 6. **Accessibilité** : lien d'évitement, focus visible, `aria-current` et

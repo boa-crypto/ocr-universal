@@ -4,7 +4,7 @@
  * importé, un export ou un résultat doit toujours venir du serveur local.
  * La coquille HTML et ses modules locaux sont stockés, pour que l'app
  * s'ouvre sans réseau. */
-const CACHE = "unocr-shell-v8-rapports";
+const CACHE = "unocr-shell-v9-palette";
 const SHELL = [
   "./",
   "./index.html",
@@ -19,6 +19,7 @@ const SHELL = [
   "./transmission.js",
   "/web/refresh.css",
   "/web/uniocr-ds.css",
+  "/web/palette.js",
   "/web/charts.js",
   "/web/shell.js",
   "/web/modules.js",

@@ -21,6 +21,13 @@
     }
   }
 
+  /* Couleurs : jamais de code en dur, on lit les jetons du design system. */
+  function teinte(nom, secours) {
+    return window.UniOCRPalette
+      ? window.UniOCRPalette.couleur(nom, secours)
+      : (secours || "currentColor");
+  }
+
   function el(nom, attrs) {
     var noeud = document.createElementNS(NS, nom);
     if (attrs) {
@@ -81,8 +88,8 @@
 
     var defs = el("defs");
     var grad = el("linearGradient", { id: "dsAreaGradient", x1: "0", y1: "0", x2: "0", y2: "1" });
-    grad.appendChild(el("stop", { offset: "0", "stop-color": "#1677FF", "stop-opacity": "0.38" }));
-    grad.appendChild(el("stop", { offset: "1", "stop-color": "#1677FF", "stop-opacity": "0" }));
+    grad.appendChild(el("stop", { offset: "0", "stop-color": teinte("blue"), "stop-opacity": "0.38" }));
+    grad.appendChild(el("stop", { offset: "1", "stop-color": teinte("blue"), "stop-opacity": "0" }));
     defs.appendChild(grad);
     svg.appendChild(defs);
 
@@ -287,7 +294,7 @@
 
     svg.appendChild(el("circle", {
       cx: taille / 2, cy: taille / 2, r: rayon, fill: "none",
-      stroke: "rgba(122,168,255,.12)", "stroke-width": 14
+      stroke: teinte("line"), "stroke-width": 14
     }));
 
     var total = items.reduce(function (somme, i) { return somme + nombre(i.value); }, 0) || 1;
@@ -296,7 +303,7 @@
       var part = nombre(item.value) / total;
       var arc = el("circle", {
         cx: taille / 2, cy: taille / 2, r: rayon, fill: "none",
-        stroke: item.color || "#1677FF", "stroke-width": 14,
+        stroke: item.color || teinte("blue"), "stroke-width": 14,
         "stroke-dasharray": (circonference * part).toFixed(2) + " " + circonference.toFixed(2),
         "stroke-dashoffset": (-circonference * offset).toFixed(2),
         "stroke-linecap": "butt",
@@ -313,14 +320,14 @@
 
     var centreNombre = el("text", {
       x: taille / 2, y: taille / 2 + 2, "text-anchor": "middle",
-      fill: "#F1F5FF", "font-size": 24, "font-weight": 700,
+      fill: teinte("text"), "font-size": 24, "font-weight": 700,
       "font-family": "Inter, system-ui, sans-serif"
     });
     centreNombre.textContent = String(total);
     svg.appendChild(centreNombre);
     var centreLabel = el("text", {
       x: taille / 2, y: taille / 2 + 22, "text-anchor": "middle",
-      fill: "#94A9C7", "font-size": 10.5, "font-family": "Inter, system-ui, sans-serif"
+      fill: teinte("muted"), "font-size": 10.5, "font-family": "Inter, system-ui, sans-serif"
     });
     centreLabel.textContent = opts.centre || "dossiers";
     svg.appendChild(centreLabel);
@@ -335,7 +342,7 @@
       items.forEach(function (item) {
         var span = document.createElement("span");
         var puce = document.createElement("i");
-        puce.style.background = item.color || "#1677FF";
+        puce.style.background = item.color || teinte("blue");
         span.appendChild(puce);
         span.appendChild(document.createTextNode(item.label + " · " + nombre(item.value)));
         legende.appendChild(span);

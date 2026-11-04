@@ -18,16 +18,21 @@
   var ETATS_A_RISQUE = { revision_requise: true, incomplet: true, erreur_traitement: true };
   var PRIORITES = { urgente: 0, haute: 1, normale: 2, basse: 3 };
 
-  var COULEURS_ETATS = {
-    en_preparation: "#1677FF",
-    traitement_en_cours: "#00D9FF",
-    en_validation: "#9466F5",
-    revision_requise: "#F59E0B",
-    incomplet: "#F04452",
-    erreur_traitement: "#F04452",
-    exporte: "#00CBA8",
-    archive: "#4B6485"
+  /* États → jetons du design system (résolus à l'affichage par palette.js). */
+  var JETONS_ETATS = {
+    en_preparation: "blue",
+    traitement_en_cours: "cyan",
+    en_validation: "violet",
+    revision_requise: "amber",
+    incomplet: "red",
+    erreur_traitement: "red",
+    exporte: "teal",
+    archive: "neutral"
   };
+
+  function teinte(nom) {
+    return window.UniOCRPalette ? window.UniOCRPalette.couleur(nom) : "currentColor";
+  }
 
   var etat = {
     dossiers: [],
@@ -158,11 +163,11 @@
       var traites = serie.series.map(function (l) { return l.traites; });
       var clos = serie.series.map(function (l) { return l.clotures; });
       if (window.UniOCRCharts) {
-        window.UniOCRCharts.sparkline($("spark-actifs"), crees, { color: "#1677FF" });
-        window.UniOCRCharts.sparkline($("spark-attente"), traites, { color: "#F59E0B" });
-        window.UniOCRCharts.sparkline($("spark-anomalies"), traites, { color: "#F04452" });
-        window.UniOCRCharts.sparkline($("spark-arrivees"), crees, { color: "#00D9FF" });
-        window.UniOCRCharts.sparkline($("spark-livraisons"), clos, { color: "#9466F5" });
+        window.UniOCRCharts.sparkline($("spark-actifs"), crees, { color: teinte("blue") });
+        window.UniOCRCharts.sparkline($("spark-attente"), traites, { color: teinte("amber") });
+        window.UniOCRCharts.sparkline($("spark-anomalies"), traites, { color: teinte("red") });
+        window.UniOCRCharts.sparkline($("spark-arrivees"), crees, { color: teinte("cyan") });
+        window.UniOCRCharts.sparkline($("spark-livraisons"), clos, { color: teinte("violet") });
       }
     }
   }
@@ -407,9 +412,9 @@
     window.UniOCRCharts.line(hote, {
       labels: labels,
       series: [
-        { key: "crees", label: "Créés", values: serie.series.map(function (l) { return l.crees; }), color: "#1677FF", fill: true },
-        { key: "traites", label: "Traités", values: serie.series.map(function (l) { return l.traites; }), color: "#00D9FF" },
-        { key: "clotures", label: "Clôturés", values: serie.series.map(function (l) { return l.clotures; }), color: "#00CBA8" }
+        { key: "crees", label: "Créés", values: serie.series.map(function (l) { return l.crees; }), color: teinte("blue"), fill: true },
+        { key: "traites", label: "Traités", values: serie.series.map(function (l) { return l.traites; }), color: teinte("cyan") },
+        { key: "clotures", label: "Clôturés", values: serie.series.map(function (l) { return l.clotures; }), color: teinte("teal") }
       ],
       height: 236,
       label: "Évolution des dossiers sur " + serie.periode_jours + " jours"
@@ -430,11 +435,11 @@
     });
     var items = Object.keys(compte).map(function (cle) {
       var brut = null;
-      Object.keys(COULEURS_ETATS).forEach(function (code) {
+      Object.keys(JETONS_ETATS).forEach(function (code) {
         var dossier = etat.dossiers.find(function (d) { return (d.state_label || d.state) === cle; });
-        if (dossier && dossier.state === code) brut = COULEURS_ETATS[code];
+        if (dossier && dossier.state === code) brut = teinte(JETONS_ETATS[code]);
       });
-      return { label: cle, value: compte[cle], color: brut || "#4B6485" };
+      return { label: cle, value: compte[cle], color: brut || teinte("neutral") };
     }).sort(function (a, b) { return b.value - a.value; });
 
     window.UniOCRCharts.donut(hote, {
