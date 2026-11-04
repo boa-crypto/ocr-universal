@@ -362,3 +362,126 @@ def test_aucune_couleur_dispersee_dans_les_rendus_js() -> None:
     index = (racine / "web" / "index.html").read_text(encoding="utf-8")
     assert index.index("/web/palette.js") < index.index("/web/charts.js")
     assert index.index("/web/palette.js") < index.index("/web/cockpit.js")
+
+
+def _analyser_html(source: str) -> tuple[list[str], list[str], dict[str, int]]:
+    """Analyse le balisage : erreurs de nesting, ids dupliqués."""
+    from html.parser import HTMLParser
+
+    void = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link",
+            "meta", "param", "source", "track", "wbr"}
+
+    class Analyseur(HTMLParser):
+        def __init__(self) -> None:
+            super().__init__(convert_charrefs=True)
+            self.pile: list[tuple[str, int]] = []
+            self.erreurs: list[str] = []
+            self.ids: dict[str, int] = {}
+
+        def handle_starttag(self, tag, attrs):
+            attributs = dict(attrs)
+            if "id" in attributs:
+                self.ids[attributs["id"]] = self.ids.get(attributs["id"], 0) + 1
+            if tag in void:
+                return
+            self.pile.append((tag, self.getpos()[0]))
+
+        def handle_endtag(self, tag):
+            if tag in void:
+                return
+            if not self.pile:
+                self.erreurs.append(f"</{tag}> orpheline ligne {self.getpos()[0]}")
+                return
+            if self.pile[-1][0] != tag:
+                self.erreurs.append(
+                    f"</{tag}> ligne {self.getpos()[0]} alors que "
+                    f"<{self.pile[-1][0]}> (ligne {self.pile[-1][1]}) est ouvert"
+                )
+                for index in range(len(self.pile) - 1, -1, -1):
+                    if self.pile[index][0] == tag:
+                        del self.pile[index:]
+                        return
+                return
+            self.pile.pop()
+
+        def handle_data(self, data):
+            texte = data.strip()
+            # Un balisage recopié en texte (balise ouvrante amputée) est un bug
+            # de rendu : le navigateur affiche alors le code à l'écran.
+            if texte.startswith("<") and len(texte) < 80:
+                self.erreurs.append(f"balise affichée en texte ligne {self.getpos()[0]} : {texte[:40]}")
+
+    analyseur = Analyseur()
+    analyseur.feed(source)
+    for tag, ligne in analyseur.pile:
+        analyseur.erreurs.append(f"<{tag}> ligne {ligne} jamais fermé")
+    return analyseur.erreurs, [], analyseur.ids
+
+
+def test_le_document_html_est_structurellement_sain() -> None:
+    """Le balisage ne doit jamais laisser du code s'afficher dans la page.
+
+    Une balise ouvrante amputée (`section id="…"`) fait sortir les sections
+    suivantes de `<main>` : elles s'empilent alors sous la coque et la
+    navigation paraît inerte.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    index = (racine / "web" / "index.html").read_text(encoding="utf-8")
+
+    erreurs, _, ids = _analyser_html(index)
+    assert not erreurs, "balisage déséquilibré :\n" + "\n".join(erreurs)
+    doublons = {cle: nombre for cle, nombre in ids.items() if nombre > 1}
+    assert not doublons, f"identifiants dupliqués : {doublons}"
+
+    # Toutes les pages restent dans la zone de travail : sinon elles
+    # s'affichent les unes sous les autres, hors de la mise en page.
+    assert index.count('<section id="tab-') == index.count('class="page"') - index.count('section.page')
+    assert '<section id="tab-docs" class="page">' in index
+
+
+def test_barre_laterale_utilisable_quand_elle_est_repliee() -> None:
+    """En mode rail (≤ 1024 px), un clic doit toujours produire un effet."""
+    racine = Path(__file__).resolve().parent.parent
+    css = (racine / "web" / "uniocr-ds.css").read_text(encoding="utf-8")
+    navigation = (racine / "web" / "navigation.js").read_text(encoding="utf-8")
+    shell = (racine / "web" / "shell.js").read_text(encoding="utf-8")
+
+    debut = css.index("@media (max-width: 1024px)")
+    bloc = css[debut:css.index("@media (max-width: 820px)", debut)]
+    assert ".nav-burger { display: inline-flex; }" in bloc, \
+        "le bouton d'ouverture doit être visible dès le mode rail"
+    assert ".app.nav-open .sidebar" in bloc, "le panneau complet doit pouvoir s'ouvrir"
+    assert ".app.nav-open .sidebar .nav-subitem { display: flex; }" in bloc
+    assert ".app.nav-open .sidebar .nav-label" in bloc
+
+    # La largeur de la barre vient de la grille, pas du CSS hérité.
+    assert ".sidebar { width: auto; }" in css
+
+    # Le clic sur un groupe ouvre le panneau avant de déplier le groupe.
+    assert "function basculerTiroir" in navigation
+    assert "basculerTiroir(true)" in navigation
+    assert "nav-open" in navigation and "nav-open" in shell
+    assert "Fermer le menu" in shell or "Fermer le menu" in navigation
+
+
+def test_service_worker_ne_sert_jamais_une_interface_perimee() -> None:
+    """La coquille est servie réseau d'abord : une correction s'applique aussitôt."""
+    racine = Path(__file__).resolve().parent.parent
+    sw = (racine / "web" / "sw.js").read_text(encoding="utf-8")
+
+    assert "unocr-shell-v10-menu" in sw
+    assert "function reseauDAbord" in sw and "function estCoquille" in sw
+    assert "reseauDAbord(req)" in sw
+    # Les API ne passent jamais par le cache.
+    assert 'url.pathname.startsWith("/api/")' in sw
+
+
+def test_theme_sombre_par_defaut() -> None:
+    """Le poste est sombre : une préférence système claire ne l'impose plus."""
+    racine = Path(__file__).resolve().parent.parent
+    extras = (racine / "web" / "app-extras.js").read_text(encoding="utf-8")
+
+    assert 'root.setAttribute("data-theme", saved === "light" ? "light" : "dark")' in extras
+    assert "prefers-color-scheme: light" not in extras
+    # La bascule manuelle reste disponible.
+    assert 'localStorage.setItem("unocr_theme", next)' in extras

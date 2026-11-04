@@ -340,13 +340,65 @@
     } catch (e) { /* stockage indisponible */ }
   }
 
+  /** Le rail (barre réduite en icônes) s'active sous 1024 px. */
+  function modeRail() {
+    try {
+      return window.matchMedia("(max-width: 1024px)").matches;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function tiroir() {
+    return document.getElementById("app");
+  }
+
+  /**
+   * Ouvrir / fermer le tiroir de navigation (mode rail et mobile).
+   * Sans cela, un clic sur une icône de groupe ne produisait aucun effet
+   * visible : le sous-menu restait masqué par la mise en page compacte.
+   */
+  function basculerTiroir(ouvrir) {
+    var app = tiroir();
+    if (!app) return;
+    var ouvert = typeof ouvrir === "boolean" ? ouvrir : !app.classList.contains("nav-open");
+    app.classList.toggle("nav-open", ouvert);
+    var burger = document.getElementById("navBurger");
+    if (burger) burger.setAttribute("aria-expanded", ouvert ? "true" : "false");
+    var repli = document.getElementById("sidebarCollapse");
+    if (repli && modeRail()) {
+      repli.setAttribute("aria-label", ouvert ? "Fermer le menu" : "Ouvrir le menu");
+    }
+  }
+
   // Un clic sur le titre d'un groupe le déplie ; l'entrée « Vue d'ensemble »
-  // reste un lien vers la page du module.
+  // reste un lien vers la page du module. En mode rail, le premier clic ouvre
+  // aussi le panneau complet.
   document.addEventListener('click', function (ev) {
+    var app = tiroir();
     var bouton = ev.target && ev.target.closest ? ev.target.closest('.nav-group-toggle') : null;
-    if (!bouton) return;
-    ev.preventDefault();
-    basculerGroupe(bouton);
+    if (bouton) {
+      ev.preventDefault();
+      if (app && modeRail() && !app.classList.contains('nav-open')) {
+        basculerTiroir(true);
+      }
+      basculerGroupe(bouton);
+      return;
+    }
+    var lien = ev.target && ev.target.closest ? ev.target.closest('.nav-subitem, .nav-item') : null;
+    if (lien) {
+      if (app && modeRail()) basculerTiroir(false);
+      return;
+    }
+    // Le clic hors du panneau est déjà traité par la coque (`shell.js`),
+    // qui ignore le bouton d'ouverture : on ne duplique pas cette logique.
+  });
+
+  // Échap referme le panneau, comme tout menu superposé.
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key !== 'Escape') return;
+    var app = tiroir();
+    if (app && app.classList.contains('nav-open')) basculerTiroir(false);
   });
 
   // Les entrées du menu sont des liens d'ancre (`href="#…"`) : le routage

@@ -319,10 +319,10 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 
 ```
 .venv/bin/python -m ruff check src tests   → All checks passed!
-.venv/bin/python -m pytest -q              → 935 passed, 23 failed, 11 skipped (70 s)
+.venv/bin/python -m pytest -q              → 939 passed, 23 failed, 11 skipped (72 s)
 ```
 
-- **Nouveau fichier** `tests/test_ui_premium.py` : **24 tests**, tous verts
+- **Nouveau fichier** `tests/test_ui_premium.py` : **28 tests**, tous verts
   (ordre de cascade CSS, absence de `<style>`, présence des modules et des
   identifiants de coque, 5 KPI, palette centralisée, jetons hérités conservés,
   `prefers-reduced-motion` + `@media print`, 12 rubriques, repli + infobulles,
@@ -331,7 +331,9 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
   des endpoints existants, routage fin des sous-rubriques, graphiques de la
   page Rapports, accessibilité de base, comparaison inter-documents et
   accessibilité des pages historiques après la refonte de la barre latérale,
-  absence de couleur codée en dur dans les modules de rendu).
+  absence de couleur codée en dur dans les modules de rendu, intégrité du
+  balisage, barre latérale utilisable en mode rail, stratégie du service
+  worker, thème sombre par défaut).
 - Les **23 échecs préexistants** sont inchangés et **environnementaux**
   (Tesseract/Indra absents, connecteur `customs_api`, routage flou) ; ils ne
   sont pas masqués.
@@ -356,6 +358,9 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 | Modules | 8 bandeaux de 4 indicateurs, valeurs réelles, 0 erreur |
 | Sous-pages | 10 routes testées : bonne page affichée, listes et colonnes réelles |
 | Rapports | 7 graphiques rendus sur données réelles, 0 erreur |
+| Barre latérale, 900 px | Clic sur un groupe → panneau complet + sous-menu ouvert ; clic sur un lien → tiroir refermé et page affichée ; bouton de repli et burger pilotent le même tiroir ; Échap referme |
+| Infobulles | `#dsTooltip` (`role="tooltip"`) affichée au survol en mode rail, masquée en mode large et quand le panneau est ouvert |
+| Parcours de navigation | **81 routes** du menu balayées : une section visible pour chacune, 0 page vide |
 | Palette SVG | `UniOCRPalette.couleur("blue")` → `#1677FF`, série complète lue dans le CSS ; dégradé, anneau et étincelles du cockpit peints avec les jetons `--ds-*` (aucun code couleur dans les modules) |
 | Rejet de champ | 37 champs sur un document réel, 37 boutons Valider / 37 Rejeter, `PATCH /api/jobs/{id}/fields/{nom}` renvoyé avec statut `rejected` et motif |
 
@@ -374,6 +379,12 @@ Aucune route existante n'a été supprimée, renommée ou changée de contrat.
 | Routes ajoutées en 404 dans l'aperçu | serveur relancé après modification du code Python |
 | Thème clair redevenu sombre (ordre de cascade) | section 20 de `uniocr-ds.css` : thème clair complet par jetons |
 | Taille d'`index.html` au-delà du plafond de test | plafond ajusté et justifié (voir §5) |
+| **Interface cassée après la mise en page** : la balise ouvrante de la section « Documents traités » avait perdu son `<`, un `</section>` était en trop après le cockpit et un badge était recollé ; le navigateur affichait le balisage à l'écran et sortait une trentaine de pages de `<main>` | balisage réparé, test d'intégrité ajouté (aucune balise en texte, nesting équilibré, ids uniques, 92 pages dans `<main>`) |
+| **Barre latérale inerte en mode tablette** : sous 1024 px la barre passe en rail d'icônes, le sous-menu était `display:none`, aucun bouton d'ouverture n'était visible et le clic sur une icône ne produisait rien | bouton d'ouverture visible dès 1024 px, panneau complet au clic sur un groupe, fermeture au clic sur un lien, à l'extérieur et sur Échap |
+| **Icônes sans libellé en rail** : l'infobulle était une pseudo-élément rognée par le défilement de la liste | infobulle flottante `#dsTooltip` positionnée hors de la zone défilante |
+| **Largeur héritée de la barre** (274 px, 72 px repliée) qui débordait sur le contenu dès que la colonne se réduisait | `width: auto`, la largeur vient de la grille de la coque |
+| **Interface périmée** : le service worker servait la coquille depuis le cache avant de rafraîchir, une correction restait invisible au premier rechargement | réseau d'abord pour navigation/HTML/JS/CSS (cache en secours hors ligne), cache `v10` |
+| **Thème clair imposé par le système** alors que le poste est conçu sombre | thème sombre par défaut, bascule manuelle conservée |
 | **Régression** : après le remplacement de la barre latérale, les pages de l'atelier (résultat, qualité, révision, profils, connecteurs, configuration, parcours, transit) n'étaient plus atteignables et `openJob()` levait une erreur | routes dédiées + pont `PAGE_ROUTES` dans `app-extras.js` ; sous-menu « Documents & OCR » complété ; test de non-régression ajouté |
 | Grilles multi-colonnes figées en style inline : pas de repliement sous 1120 px | remplacées par `.cols-half`, `.cols-third`, `.cols-source` (les 10 occurrences) |
 | Modale de première visite en blanc sur fond sombre | restylée (`.walkthrough-card`) avec la palette du design system |

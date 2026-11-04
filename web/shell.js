@@ -92,7 +92,17 @@
     if (bouton) {
       bouton.addEventListener("click", function () {
         var app = $("app");
-        appliquerRepli(!(app && app.classList.contains("collapsed")));
+        if (!app) return;
+        // Sous 1024 px la barre est déjà en rail : le repli n'a plus d'effet
+        // visuel, c'est le panneau complet qu'il faut ouvrir ou refermer.
+        var rail = false;
+        try { rail = window.matchMedia("(max-width: 1024px)").matches; } catch (e) { rail = false; }
+        if (rail) {
+          var ouvert = app.classList.toggle("nav-open");
+          bouton.setAttribute("aria-label", ouvert ? "Fermer le menu" : "Ouvrir le menu");
+          return;
+        }
+        appliquerRepli(!app.classList.contains("collapsed"));
       });
     }
 
@@ -611,8 +621,74 @@
     }, 120000);
   }
 
+  /* ── Infobulles de la barre repliée / du mode rail ─────────────────── */
+  function initInfobulles() {
+    var bulle = document.getElementById("dsTooltip");
+    if (!bulle) {
+      bulle = document.createElement("div");
+      bulle.id = "dsTooltip";
+      bulle.className = "ds-tip";
+      bulle.setAttribute("role", "tooltip");
+      bulle.setAttribute("aria-hidden", "true");
+      document.body.appendChild(bulle);
+    }
+
+    var cible = null;
+
+    function compacte() {
+      var app = $("app");
+      if (!app) return false;
+      if (app.classList.contains("collapsed")) return true;
+      var rail = false;
+      try { rail = window.matchMedia("(max-width: 1024px)").matches; } catch (e) { rail = false; }
+      return rail && !app.classList.contains("nav-open");
+    }
+
+    function montrer(element) {
+      if (!compacte()) return;
+      var texte = element.getAttribute("data-tip");
+      if (!texte) return;
+      var cadre = element.getBoundingClientRect();
+      bulle.textContent = texte;
+      bulle.style.top = (cadre.top + cadre.height / 2) + "px";
+      bulle.style.left = (cadre.right + 12) + "px";
+      bulle.classList.add("is-on");
+      cible = element;
+    }
+
+    function cacher() {
+      if (!cible) return;
+      bulle.classList.remove("is-on");
+      cible = null;
+    }
+
+    function porteur(ev) {
+      var t = ev.target;
+      if (!t || t.nodeType !== 1 || !t.closest) return null;
+      return t.closest("[data-tip]");
+    }
+
+    document.addEventListener("mouseover", function (ev) {
+      var element = porteur(ev);
+      if (element && element !== cible) montrer(element);
+      else if (!element) cacher();
+    });
+    document.addEventListener("mouseout", function (ev) {
+      if (cible && ev.relatedTarget && cible.contains(ev.relatedTarget)) return;
+      cacher();
+    });
+    document.addEventListener("focusin", function (ev) {
+      var element = porteur(ev);
+      if (element) montrer(element);
+    });
+    document.addEventListener("focusout", cacher);
+    window.addEventListener("scroll", cacher, true);
+    document.addEventListener("click", cacher, true);
+  }
+
   function demarrer() {
     initRepli();
+    initInfobulles();
     initMenus();
     construireAide();
     initRecherche();

@@ -205,6 +205,12 @@ h1, h2, h3, h4 { letter-spacing: -0.02em; color: var(--ds-text); }
   overflow: hidden;
 }
 
+/* La largeur est décidée par la grille de la coque (`--ds-sidebar-w`) : la
+   largeur héritée (274 px) débordait sur le contenu dès que la colonne se
+   réduisait, et la valeur de repli héritée (72 px) laissait un filet vide. */
+.sidebar { width: auto; }
+.app.collapsed .sidebar { width: auto; }
+
 .sidebar::after {
   content: "";
   position: absolute;
@@ -457,13 +463,13 @@ h1, h2, h3, h4 { letter-spacing: -0.02em; color: var(--ds-text); }
 .app.collapsed .nav-group-inner { border-left: 0; }
 
 /* Infobulle au survol quand la barre est repliée */
-.app.collapsed .nav-item::after,
-.app.collapsed .nav-group-toggle::after,
-.app.collapsed .foot-btn::after {
-  content: attr(data-tip);
-  position: absolute;
-  left: calc(100% + 12px);
-  top: 50%;
+/* Infobulle flottante (barre repliée et mode rail).
+   Une pseudo-élément était rogné par le défilement vertical de la liste : le
+   libellé n'apparaissait jamais. L'infobulle est désormais un élément
+   flottant, positionné par `shell.js` hors de la zone qui défile. */
+.ds-tip {
+  position: fixed;
+  z-index: 95;
   transform: translateY(-50%) translateX(-4px);
   padding: 6px 10px;
   border-radius: var(--ds-r-1);
@@ -476,15 +482,13 @@ h1, h2, h3, h4 { letter-spacing: -0.02em; color: var(--ds-text); }
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--ds-t-fast), transform var(--ds-t-fast);
-  z-index: 5;
+  transition: opacity var(--ds-t-fast) var(--ds-ease), transform var(--ds-t-fast) var(--ds-ease);
 }
 
-.app.collapsed .nav-item:hover::after,
-.app.collapsed .nav-group-toggle:hover::after,
-.app.collapsed .foot-btn:hover::after {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0);
+.ds-tip.is-on { opacity: 1; transform: translateY(-50%) translateX(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-tip { transition: none; }
 }
 
 /* --- Colonne principale --- */
@@ -1553,10 +1557,53 @@ dialog::backdrop { background: rgba(1, 4, 13, 0.72); backdrop-filter: blur(4px);
   .nav-item, .nav-group-toggle, .foot-btn { justify-content: center; padding: 10px; }
   .nav-group-items { display: none; }
 
+  /* Le bouton d'ouverture est indispensable dès que la barre passe en rail :
+     sans lui, aucun libellé n'était atteignable au doigt. */
+  .nav-burger { display: inline-flex; }
+
+  /* Clic sur un groupe : la barre s'ouvre en panneau complet (tiroir) au-dessus
+     du contenu, avec les libellés et le sous-menu du groupe choisi. */
+  .app.nav-open .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(320px, 88vw);
+    height: 100vh;
+    z-index: 70;
+    box-shadow: var(--ds-shadow-3);
+    transform: none;
+  }
+
+  .app.nav-open .sidebar .brand-txt,
+  .app.nav-open .sidebar .foot-label { display: block; }
+  .app.nav-open .sidebar .nav-label,
+  .app.nav-open .sidebar .nav-chevron,
+  .app.nav-open .sidebar .nav-badge { display: inline-flex; }
+  .app.nav-open .sidebar .nav-subitem { display: flex; }
+  .app.nav-open .sidebar .nav-group-items { display: grid; }
+  .app.nav-open .sidebar .nav-item,
+  .app.nav-open .sidebar .nav-group-toggle,
+  .app.nav-open .sidebar .foot-btn {
+    justify-content: flex-start;
+    padding: 9px 10px;
+  }
+
+  .app.nav-open::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(1, 4, 13, 0.62);
+    backdrop-filter: blur(2px);
+    z-index: 65;
+  }
+
   .ws-grid, .grid-2, .grid-3 { grid-template-columns: minmax(0, 1fr); }
   .workspace { padding: 20px 18px 44px; }
   .topbar { padding: 0 18px; gap: 10px; }
   .crumb .sub { display: none; }
+  /* Le fil d'Ariane cédait tout l'espace à la recherche : il se réduit
+     désormais proprement au lieu d'être rogné à une lettre. */
+  .crumb { flex: 0 1 auto; max-width: 30vw; }
+  .top-search { flex: 1 1 220px; min-width: 0; }
 }
 
 @media (max-width: 820px) {

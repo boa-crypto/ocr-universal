@@ -1006,11 +1006,10 @@ async function initLangChips() {
    ═══════════════════════════════════════════ */
 (function editorialExtras() {
   const root = document.documentElement;
+  // Le poste de travail est conçu sombre (identité UniOCR) : la préférence
+  // système ne l'impose plus, seule une bascule explicite change de thème.
   const saved = localStorage.getItem("unocr_theme");
-  const prefersLight = window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: light)").matches;
-  if (saved === "light" || saved === "dark") root.setAttribute("data-theme", saved);
-  else if (prefersLight) root.setAttribute("data-theme", "light");
+  root.setAttribute("data-theme", saved === "light" ? "light" : "dark");
 
   const tt = document.getElementById("themeToggle");
   if (tt) tt.addEventListener("click", () => {

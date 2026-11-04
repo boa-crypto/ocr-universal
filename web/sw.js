@@ -4,7 +4,7 @@
  * importé, un export ou un résultat doit toujours venir du serveur local.
  * La coquille HTML et ses modules locaux sont stockés, pour que l'app
  * s'ouvre sans réseau. */
-const CACHE = "unocr-shell-v9-palette";
+const CACHE = "unocr-shell-v10-menu";
 const SHELL = [
   "./",
   "./index.html",
@@ -47,28 +47,53 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+/* Stratégie :
+ *   - coquille (navigation, HTML, JS, CSS) → RÉSEAU D'ABORD : une correction
+ *     livrée est visible au premier rechargement, jamais une version périmée ;
+ *   - ressources statiques (icônes, polices locales) → cache d'abord, avec
+ *     rafraîchissement en arrière-plan ;
+ *   - hors ligne : on retombe sur le cache, puis sur la coquille. */
+function estCoquille(req, url) {
+  if (req.mode === "navigate") return true;
+  if (url.pathname === "/" || url.pathname.endsWith("/index.html")) return true;
+  return /\.(js|css|webmanifest)$/.test(url.pathname);
+}
+
+function mettreEnCache(req, reponse) {
+  if (!reponse || !reponse.ok) return reponse;
+  const copie = reponse.clone();
+  caches.open(CACHE).then((c) => c.put(req, copie)).catch(() => {});
+  return reponse;
+}
+
+function reseauDAbord(req) {
+  return fetch(req)
+    .then((fraiche) => mettreEnCache(req, fraiche))
+    .catch(() =>
+      caches.match(req).then((entree) => entree || caches.match("./index.html"))
+    );
+}
+
+function cacheDAbord(req) {
+  return caches.match(req).then((entree) => {
+    if (entree) {
+      fetch(req)
+        .then((fraiche) => mettreEnCache(req, fraiche))
+        .catch(() => {});
+      return entree;
+    }
+    return fetch(req)
+      .then((fraiche) => mettreEnCache(req, fraiche))
+      .catch(() => caches.match("./index.html"));
+  });
+}
+
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return;                 // POST /api/* : jamais en cache
   const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;  // ressources tierces : réseau direct
   if (url.pathname.startsWith("/api/")) return;     // données fraîches obligatoires
 
-  event.respondWith(
-    caches.match(req).then((hit) => {
-      if (hit) {
-        // sert le cache, rafraîchit en arrière-plan
-        fetch(req).then((fresh) => {
-          if (fresh && fresh.ok) caches.open(CACHE).then((c) => c.put(req, fresh.clone()));
-        }).catch(() => {});
-        return hit;
-      }
-      return fetch(req).then((fresh) => {
-        if (fresh && fresh.ok && url.origin === self.location.origin) {
-          const copy = fresh.clone();
-          caches.open(CACHE).then((c) => c.put(req, copy));
-        }
-        return fresh;
-      }).catch(() => caches.match("./index.html"));
-    })
-  );
+  event.respondWith(estCoquille(req, url) ? reseauDAbord(req) : cacheDAbord(req));
 });
