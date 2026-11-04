@@ -262,6 +262,56 @@ réellement existants ; le balisage est corrigé.
 Actions de téléchargement exercées : `GET /api/jobs/{id}/export/csv` → **200**
 (toast « Export téléchargé »), `export/json` → **200** (96 Ko vérifiés).
 
+## 2.12 Passe 9 — référentiels : un 500, un contrat d'API faux, neuf CRUD exercés
+
+### Le 500 qui cachait un 422
+
+Créer un client depuis l'écran avec « Algérie » dans le champ Pays renvoyait
+une **erreur 500** (`Internal Server Error`, sans corps). Cause : le modèle
+`Client` limite `country` à deux caractères (ISO 3166-1), mais le corps de
+requête ne le vérifiait pas — la construction du modèle levait une
+`ValidationError` non rattrapée.
+
+Corrections : contrainte `max_length=2` sur le corps (`ClientCreate` /
+`ClientUpdate`) et garde-fou `ValidationError → 422` avec un message lisible.
+L'écran, lui, bride le champ à deux signes, propose `DZ` par défaut et
+explique le format. Vérifié : `country: "Algérie"` → **422** nommant le champ,
+`country: "DZ"` → **200**.
+
+### L'écran Fournisseurs parlait une autre langue que l'API
+
+L'écran envoyait `name`, `country`, `status` ; l'API attend `nom`,
+`nom_commercial` (obligatoire), `pays`. **Toute création renvoyait 422.** Les
+colonnes, la création et l'édition ont été réalignées sur le modèle réel.
+
+### Neuf CRUD exercés de bout en bout
+
+Un harnais jsdom générique ouvre chaque écran, remplit les champs obligatoires,
+crée, édite quand l'action existe, puis supprime. Résultats mesurés :
+
+| Écran | Création | Édition | Suppression |
+|---|---|---|---|
+| Clients | POST 200 | PUT 200 (ville modifiée) | DELETE 200 |
+| Fournisseurs | POST 200 | PUT 200 | DELETE 200 |
+| Transporteurs | POST 200 | — | DELETE 200 |
+| Navires | POST 200 | — | DELETE 200 |
+| Permissions | POST 200 | — | DELETE 200 |
+| Voyages (expéditions) | POST 200 | — | DELETE 200 |
+| Contrôles douaniers | POST 200 | PUT 200 | DELETE 200 |
+| Liquidation | POST 200 | — | DELETE 200 |
+| Frais du dossier | POST 200 | PUT 200 | DELETE 200 |
+| Factures fournisseurs | POST 200 | — | DELETE 200 |
+| Facturation client | POST 200 | PUT 200 | DELETE 200 |
+
+### La matrice ne s'accorde plus de crédit
+
+Règle durcie : un écran doté d'un CRUD déclaré **n'est plus « conforme » par
+simple déclaration** — il faut une preuve d'exercice (`PREUVES`). Effet
+immédiat et assumé : 9 écrans sont repassés en « partiel » le temps de les
+exercer, puis sont revenus en « conforme » avec leur mesure. Le total reste
+63 conformes / 37 partiels, mais chaque « conforme » de type CRUD a maintenant
+une ligne de test derrière lui.
+
 ## 3. Défauts corrigés en route (trouvés par les tests, pas par hasard)
 
 Le garde-fou `tests/test_route_ordering.py` (ajouté dans cette passe) détecte

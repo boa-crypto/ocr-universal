@@ -42,6 +42,27 @@ def test_clients_crud(client):
     assert client.get(f"/api/clients/{client_id}").status_code == 404
 
 
+def test_client_pays_invalide_renvoie_422_pas_500(client):
+    """Un code pays trop long doit être refusé proprement (422).
+
+    Le modèle `Client` limite `country` à deux caractères (ISO 3166-1). Le
+    corps de requête, lui, ne le vérifiait pas : la construction du modèle
+    levait une ValidationError et l'API répondait 500 sans explication.
+    """
+    trop_long = client.post(
+        "/api/clients", json={"name": "ACME", "legal_name": "ACME SARL",
+                              "country": "Algérie"},
+    )
+    assert trop_long.status_code == 422, trop_long.text
+    assert "country" in trop_long.text
+
+    valide = client.post(
+        "/api/clients", json={"name": "ACME", "legal_name": "ACME SARL", "country": "DZ"},
+    )
+    assert valide.status_code == 200, valide.text
+    assert valide.json()["country"] == "DZ"
+
+
 def test_client_dossiers_filtre_par_client(client):
     client_id = client.post(
         "/api/clients", json={"name": "Client maritime", "legal_name": "CM SARL"}

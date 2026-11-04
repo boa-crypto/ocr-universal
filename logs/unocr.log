@@ -39619,3 +39619,7 @@ pypdfium2._helpers.misc.PdfiumError: Failed to load document (PDFium: Data forma
 2026-11-04 15:45:48 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
 2026-11-04 15:45:48 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
 2026-11-04 15:45:48 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)
+2026-11-04 16:50:09 INFO [unocr.connectors.registry] adaptateur enregistré : demo_simulated (SimulatedConnector)
+2026-11-04 16:50:09 INFO [unocr.connectors.registry] adaptateur enregistré : assisted_export (AssistedExportConnector)
+2026-11-04 16:50:09 INFO [unocr.connectors.registry] adaptateur enregistré : customs_api (DouaneConnector)
+2026-11-04 16:50:09 INFO [unocr.api] data/rbac.json absent : rôles et cloisonnement inactifs (comportement historique, jeton unique ou accès ouvert)

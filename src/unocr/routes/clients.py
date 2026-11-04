@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any, Optional
 
 from fastapi import APIRouter, HTTPException, Request
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, ValidationError
 
 from ..config import get_config
 from ..logging_setup import audit, get_logger
@@ -28,7 +28,8 @@ class ClientCreate(BaseModel):
     email: str = ""
     address: str = ""
     city: str = ""
-    country: str = "DZ"
+    country: str = Field("DZ", max_length=2,
+                         description="Pays (code ISO 3166-1 alpha-2)")
     region: str = ""
     postal_code: str = ""
     contacts: list[str] = []
@@ -51,7 +52,8 @@ class ClientUpdate(BaseModel):
     email: Optional[str] = None
     address: Optional[str] = None
     city: Optional[str] = None
-    country: Optional[str] = None
+    country: Optional[str] = Field(None, max_length=2,
+                                   description="Pays (code ISO 3166-1 alpha-2)")
     region: Optional[str] = None
     postal_code: Optional[str] = None
     contacts: Optional[list[str]] = None
@@ -83,29 +85,38 @@ def create_client(
 
     store = _get_client_store(request)
     client_id = new_id("client_")
-    client_obj = Client(
-        id=client_id,
-        name=client.name,
-        legal_name=client.legal_name,
-        status=ClientStatus(client.status if client.status else "active"),
-        website=client.website,
-        tax_id=client.tax_id,
-        phone=client.phone,
-        email=client.email,
-        address=client.address,
-        city=client.city,
-        country=client.country,
-        region=client.region,
-        postal_code=client.postal_code,
-        contacts=client.contacts,
-        notes=client.notes,
-        entreprise=client.entreprise,
-        wilaya=client.wilaya,
-        telephone_contact=client.telephone_contact,
-        email_contact=client.email_contact,
-        banque_domiciliataire=client.banque_domiciliataire,
-        mandant_representant=client.mandant_representant,
-    )
+    try:
+        client_obj = Client(
+            id=client_id,
+            name=client.name,
+            legal_name=client.legal_name,
+            status=ClientStatus(client.status if client.status else "active"),
+            website=client.website,
+            tax_id=client.tax_id,
+            phone=client.phone,
+            email=client.email,
+            address=client.address,
+            city=client.city,
+            country=client.country,
+            region=client.region,
+            postal_code=client.postal_code,
+            contacts=client.contacts,
+            notes=client.notes,
+            entreprise=client.entreprise,
+            wilaya=client.wilaya,
+            telephone_contact=client.telephone_contact,
+            email_contact=client.email_contact,
+            banque_domiciliataire=client.banque_domiciliataire,
+            mandant_representant=client.mandant_representant,
+        )
+    except ValidationError as exc:
+        # Le corps est validé avant d'atteindre le modèle : sans ce garde-fou,
+        # un champ hors contraintes produisait une erreur 500 opaque.
+        detail = "; ".join(
+            f"{'.'.join(str(x) for x in err['loc'])} : {err['msg']}"
+            for err in exc.errors()
+        ) or "données client invalides"
+        raise HTTPException(422, detail) from exc
     store[client_id] = client_obj
     audit(request.app.state.cfg.log_dir, "client_cree", acteur="admin", nom=client.name)
     return client_obj.as_dict()

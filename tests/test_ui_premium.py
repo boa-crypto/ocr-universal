@@ -802,3 +802,29 @@ def test_rapports_sans_bouton_inerte() -> None:
     # L'attribut cassé `classpage-header__meta` est corrigé.
     assert "classpage-header__meta" not in html
     assert 'data-rapports' in rapports
+
+
+def test_ecran_fournisseurs_aligne_sur_le_contrat_api() -> None:
+    """L'écran Fournisseurs doit envoyer les clés attendues par le serveur.
+
+    Il envoyait `name`/`country`/`status` alors que l'API attend
+    `nom`/`nom_commercial`/`pays` : toute création renvoyait 422.
+    """
+    racine = Path(__file__).resolve().parent.parent
+    moteur = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+    debut = moteur.index('"referentiels/fournisseurs"')
+    bloc = moteur[debut:debut + 2600]
+
+    for cle in ("nom", "nom_commercial", "pays", "nif", "rc", "contact"):
+        assert f'cle: "{cle}"' in bloc
+    for absente in ('cle: "name"', 'cle: "country"', 'cle: "status"'):
+        assert absente not in bloc
+
+
+def test_champ_pays_limite_a_deux_caracteres() -> None:
+    """Le champ pays des formulaires est un code ISO : il est bridé à 2 signes."""
+    racine = Path(__file__).resolve().parent.parent
+    moteur = (racine / "web" / "ecrans.js").read_text(encoding="utf-8")
+
+    assert "longueurMax" in moteur
+    assert "controle.maxLength = champ.longueurMax" in moteur

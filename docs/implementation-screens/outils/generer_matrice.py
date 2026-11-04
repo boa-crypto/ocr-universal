@@ -34,6 +34,17 @@ BASE = "http://127.0.0.1:8000"
 
 #: Preuves de test disponibles par route d'écran (mises à jour à chaque passe).
 PREUVES: dict[str, str] = {
+    "maritime/voyages": "jsdom : création POST 200, suppression DELETE 200",
+    "douane/controles": "jsdom : création POST 200, édition PUT 200, suppression DELETE 200",
+    "douane/liquidation": "jsdom : création POST 200, suppression DELETE 200",
+    "finance/frais-dossier": "jsdom : création POST 200, édition PUT 200, suppression DELETE 200",
+    "finance/factures-fournisseurs": "jsdom : création POST 200, suppression DELETE 200",
+    "finance/facturation": "jsdom : création POST 200, édition PUT 200, suppression DELETE 200",
+    "referentiels/transporteurs": "jsdom : création POST 200, suppression DELETE 200",
+    "referentiels/navires": "jsdom : création POST 200, suppression DELETE 200",
+    "admin/permissions": "jsdom : création POST 200, suppression DELETE 200",
+    "referentiels/clients": "jsdom : création POST 200, édition PUT 200 (ville modifiée), suppression DELETE 200 ; pays ISO bridé",
+    "referentiels/fournisseurs": "jsdom : création POST 200, édition PUT 200, suppression DELETE 200 (clés alignées sur l'API)",
     "referentiels/ports": "CRUD jsdom + 7 tests API (référentiels)",
     "referentiels/pays": "CRUD jsdom (même moteur) + tests API",
     "referentiels/devises": "CRUD jsdom (même moteur) + tests API",
@@ -217,8 +228,14 @@ def construire(snapshot: dict[str, Any]) -> tuple[list[Ligne], dict[str, Sonde]]
                     detail = sondes[0].detail if sondes else "aucune source déclarée"
                     action = f"brancher la source ({detail})"
                 elif ecran.get("creation") and (ecran.get("edition") or ecran.get("suppression")):
-                    statut = "CONFORME"
-                    action = "maintenir ; étendre les champs métier si besoin"
+                    # Un CRUD déclaré n'est pas un CRUD vérifié : sans preuve
+                    # d'exercice, l'écran reste partiel.
+                    if route in PREUVES:
+                        statut = "CONFORME"
+                        action = "maintenir ; étendre les champs métier si besoin"
+                    else:
+                        statut = "PARTIEL"
+                        action = "exercer le CRUD (création, édition, suppression) : aucune preuve pour l'instant"
                 elif any(a.get("url") for a in actions):
                     ecritures = [a for a in actions if a.get("url")]
                     testees = ACTIONS_TESTEES.get(route, set())
@@ -387,6 +404,10 @@ explicite », jamais meublée de données fictives.
 
 ## Définition des statuts
 
+La colonne « Preuve » dit **comment** le statut a été obtenu : exercice jsdom
+d'une action, test API, ou simple rendu. Un statut sans preuve d'exercice ne
+peut pas être « CONFORME » pour un écran à écritures.
+
 | Statut | Signification exacte |
 |---|---|
 | **CONFORME** | L'écran existe, est ouvert par le menu, appelle une source serveur qui répond 200, gère les états vide/erreur, et toutes les écritures qu'il propose sont branchées sur une route serveur réelle. |
@@ -423,15 +444,16 @@ terminé.
         parties.append(f"### {index}. {rubrique}\n")
         parties.append(
             "| Menu | Sous-menu | Route | Écran existant | Backend connecté | "
-            "Données réelles | Fonctionnel | Statut | Action requise |"
+            "Données réelles | Fonctionnel | Statut | Preuve | Action requise |"
         )
-        parties.append("|---|---|---|---|---|---|---|---|---|")
+        parties.append("|---|---|---|---|---|---|---|---|---|---|")
         for ligne in items:
+            preuve = (ligne.preuve or "—").replace("|", "/")
             parties.append(
                 f"| {ligne.rubrique} | {ligne.sous_menu} | `{ligne.route}` | "
                 f"{ligne.ecran} | `{ligne.source}` | {ligne.donnees} | "
                 f"{FONCTIONNEL.get(ligne.statut, 'Non')} | **{ligne.statut}** | "
-                f"{ligne.action} |"
+                f"{preuve} | {ligne.action} |"
             )
         parties.append("")
 

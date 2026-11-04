@@ -1064,7 +1064,7 @@
         { cle: "legal_name", libelle: "Raison sociale" },
         { cle: "tax_id", libelle: "NIF" },
         { cle: "city", libelle: "Ville" },
-        { cle: "country", libelle: "Pays" },
+        { cle: "country", libelle: "Pays (code ISO à 2 lettres)", longueurMax: 2 },
         { cle: "email", libelle: "Courriel" },
         { cle: "status", libelle: "Statut" }
       ],
@@ -1081,7 +1081,9 @@
           { cle: "address", libelle: "Adresse", type: "textarea" },
           { cle: "city", libelle: "Ville" },
           { cle: "wilaya", libelle: "Wilaya" },
-          { cle: "country", libelle: "Pays" },
+          { cle: "country", libelle: "Pays (code ISO à 2 lettres)",
+            longueurMax: 2, valeur: "DZ",
+            aide: "Code ISO 3166-1 alpha-2 : DZ, FR, ES…" },
           { cle: "status", libelle: "Statut", type: "select", options: ["active", "inactive"] }
         ]
       },
@@ -1107,29 +1109,48 @@
     "referentiels/fournisseurs": {
       section: "Référentiels & paramètres",
       titre: "Fournisseurs",
-      desc: "Prestataires et fournisseurs intervenant sur les dossiers.",
+      desc: "Prestataires et fournisseurs étrangers intervenant sur les dossiers.",
       source: { url: "/api/fournisseurs" },
       id: "fournisseur_id",
       idAlt: ["id"],
       colonnes: [
-        { cle: "name", libelle: "Nom" },
-        { cle: "country", libelle: "Pays" },
-        { cle: "status", libelle: "Statut" }
+        { cle: "nom", libelle: "Nom" },
+        { cle: "nom_commercial", libelle: "Nom commercial" },
+        { cle: "pays", libelle: "Pays" },
+        { cle: "nif", libelle: "NIF" },
+        { cle: "contact", libelle: "Contact" },
+        { cle: "telephone", libelle: "Téléphone" }
       ],
       creation: {
         url: "/api/fournisseurs",
         champs: [
-          { cle: "name", libelle: "Nom", requis: true },
-          { cle: "country", libelle: "Pays" },
-          { cle: "status", libelle: "Statut", type: "select", options: ["actif", "inactif"] }
+          { cle: "nom", libelle: "Nom", requis: true },
+          { cle: "nom_commercial", libelle: "Nom commercial", requis: true,
+            aide: "Champ obligatoire côté serveur, au même titre que le nom." },
+          { cle: "pays", libelle: "Pays (code ISO à 2 lettres)", longueurMax: 2,
+            aide: "Code ISO 3166-1 alpha-2 : FR, ES, CN…" },
+          { cle: "nif", libelle: "NIF / identifiant fiscal" },
+          { cle: "rc", libelle: "Registre de commerce" },
+          { cle: "contact", libelle: "Personne de contact" },
+          { cle: "telephone", libelle: "Téléphone" },
+          { cle: "email", libelle: "Courriel", type: "email" },
+          { cle: "adresse", libelle: "Adresse", type: "textarea" },
+          { cle: "notes", libelle: "Notes", type: "textarea" }
         ]
       },
       edition: {
         url: "/api/fournisseurs/{id}",
         champs: [
-          { cle: "name", libelle: "Nom" },
-          { cle: "country", libelle: "Pays" },
-          { cle: "status", libelle: "Statut" }
+          { cle: "nom", libelle: "Nom" },
+          { cle: "nom_commercial", libelle: "Nom commercial" },
+          { cle: "pays", libelle: "Pays (code ISO à 2 lettres)", longueurMax: 2 },
+          { cle: "nif", libelle: "NIF / identifiant fiscal" },
+          { cle: "rc", libelle: "Registre de commerce" },
+          { cle: "contact", libelle: "Personne de contact" },
+          { cle: "telephone", libelle: "Téléphone" },
+          { cle: "email", libelle: "Courriel", type: "email" },
+          { cle: "adresse", libelle: "Adresse", type: "textarea" },
+          { cle: "notes", libelle: "Notes", type: "textarea" }
         ]
       },
       suppression: { url: "/api/fournisseurs/{id}" },
@@ -2209,6 +2230,7 @@
       }
       controle.id = "action-" + champ.cle;
       controle.name = champ.cle;
+      if (champ.longueurMax) controle.maxLength = champ.longueurMax;
       var defaut = champ.defaut === "aujourdhui"
         ? new Date().toISOString().slice(0, 10)
         : (champ.valeur !== undefined ? champ.valeur : (ligne && ligne[champ.cle]));
@@ -2421,6 +2443,7 @@
       }
       controle.id = "champ-" + champ.cle.replace(/\./g, "-");
       controle.name = champ.cle;
+      if (champ.longueurMax) controle.maxLength = champ.longueurMax;
       if (champ.requis) controle.setAttribute("aria-required", "true");
 
       var valeur = champValeur(ligne, champ.cle);

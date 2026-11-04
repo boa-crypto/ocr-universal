@@ -40,6 +40,7 @@ ne sont pas couvertes par un test.
 | P2-2 | Tester les parcours de livraison (démarrer → arriver → confirmer) de bout en bout | routes existantes, aucun test d'écran |
 | ✅ P2-3 | ~~Tester le rapprochement automatique~~ | **fait en passe 4** : dialogue de paramètres (dossier + période), `POST` 200, verdict affiché. **Reste à faire** : l'import bancaire côté serveur (`frais.py` : `operations_bancaires = []`, TODO explicite) — sans lui le rapprochement ne peut rien rapprocher |
 | ✅ P2-4 | ~~Remplacer les redirections « Rapports » (graphiques), « Référentiels » (profils, paramètres)~~ | **fait en passe 2** : graphiques → `#tab-reports`, profils → `#tab-profiles`, paramètres → `#tab-params-gen` ; plus aucun bandeau dans l'application |
+| ✅ P2-6 | ~~Exercer les CRUD des référentiels et des modules métier~~ | **fait en passe 9** : 11 écrans créés / édités / supprimés depuis l'interface (200 partout). Deux défauts serveur corrigés : pays trop long → **500** devenu **422** ; écran Fournisseurs qui envoyait `name`/`country`/`status` au lieu de `nom`/`nom_commercial`/`pays` (toute création échouait) |
 | P2-5 | Découpler les écrans de référence des pages historiques : `#dossiers/tous` ouvre encore la page héritée `#tab-dossiers` | fonctionne, mais le contenu et les actions restent ceux de la page historique |
 
 ## P3 — Référentiels, administration, statistiques avancées
