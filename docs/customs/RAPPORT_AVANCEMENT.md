@@ -23,6 +23,7 @@
 [Lot 19 : préparation depuis un membre ZIP explicite](RAPPORT_LOT19.md), 2026-11-06.
 [Lot 20 : préparation XLS textuelle OLE/BIFF8](RAPPORT_LOT20.md), 2026-11-06.
 [Lot 21 : lecture native des pages PDF reçues du Code](RAPPORT_LOT21.md), 2026-11-06.
+[Lot 22 : lecture PDF intégrée et export partiel](RAPPORT_LOT22.md), 2026-11-06.
 Le présent document conserve les résultats historiques du lot 1.
 
 ## Complétude réelle

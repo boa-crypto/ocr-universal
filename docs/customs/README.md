@@ -1,4 +1,4 @@
-# Mission référentiels douaniers — lots 1–21 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–22 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
@@ -285,7 +285,7 @@ avant lecture des caches xlrd ; pas de qualification générale Excel ou nationa
 
 [Service/CLI/API et limites](LECTURE_PDF.md), [rapport](RAPPORT_LOT21.md).
 Une page identifiée du lot contrôlé, sans OCR, rendu, transcription validée ou
-import tarifaire PDF. Intégration de commandes UI non ajoutée dans ce lot.
+import tarifaire PDF. [Commandes UI ajoutées au lot 22](INTERFACE_PDF.md).
 
 ## Intégration future, sans double source de vérité
 

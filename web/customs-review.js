@@ -114,11 +114,13 @@
     }
     function afficher(rep) {
       resultat.textContent = JSON.stringify(rep, null, 2);
-      if (rep.type_rapport === "lecture_article_documentaire" && typeof rep.fragment === "string") {
+      if (["lecture_article_documentaire", "lecture_page_pdf_recu"].includes(rep.type_rapport) && typeof rep.fragment === "string") {
         extrait.textContent = rep.fragment; extrait.hidden = false;
       }
       rendreActions(rep);
-      statut.textContent = "Résultat technique — non validé juridiquement, non publié.";
+      statut.textContent = rep.type_rapport === "lecture_page_pdf_recu" && rep.texte_natif_non_vide === false ?
+        "Aucun texte natif sélectionnable : aucun OCR effectué. Cela ne prouve pas une page vide ou l’absence de droit." :
+        "Résultat technique — non validé juridiquement, non publié.";
     }
     lire("/lots", function (rep) {
       if (!Array.isArray(rep.lots)) throw new Error("Liste de lots illisible.");
@@ -175,7 +177,7 @@
         histoire.disabled = filtres.disabled;
         fiche.disabled = !filtres.disabled;
         arbre.disabled = !filtres.disabled;
-        lecture.disabled = filtres.disabled;
+        lecture.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
         ++requete; viderResultat();
       }
       var limit = champ(form, "Limite (1–100)", "input", "number");
@@ -289,6 +291,27 @@
         lire("/lots/" + encodeURIComponent(lot.value) + "/article?" + params, afficher);
       }
       lecture.append(bouton("Lire le fragment d’article", chargerArticle));
+      var pdfLecture = element("fieldset");
+      pdfLecture.append(element("legend", "Texte natif PDF reçu — Code seulement"));
+      pdfLecture.append(element("p", "Page physique, pas numéro imprimé du JO. Sans OCR ni transcription vérifiée. Aucun PDF brut ou lien distant ouvert."));
+      var pdfId = champ(pdfLecture, "ID exact du document PDF"); pdfId.maxLength = 256; pdfId.setAttribute("data-pdf-id", "");
+      var pdfPage = champ(pdfLecture, "Page physique PDF (1–10000)", "input", "number");
+      pdfPage.min = 1; pdfPage.max = 10000; pdfPage.value = 1; pdfPage.required = true; pdfPage.setAttribute("data-pdf-page", "");
+      var pdfLimit = champ(pdfLecture, "Caractères du fragment PDF (1–16000)", "input", "number");
+      pdfLimit.min = 1; pdfLimit.max = 16000; pdfLimit.value = 4000; pdfLimit.required = true; pdfLimit.setAttribute("data-pdf-limit", "");
+      var pdfOffset = champ(pdfLecture, "Décalage du texte PDF (0–67108864)", "input", "number");
+      pdfOffset.min = 0; pdfOffset.max = 67108864; pdfOffset.value = 0; pdfOffset.required = true; pdfOffset.setAttribute("data-pdf-offset", "");
+      function chargerPDF() {
+        if (pdfLecture.disabled) return;
+        if (!idValide(pdfId.value) || !entier(Number(pdfPage.value), 1, 10000) ||
+            !entier(Number(pdfLimit.value), 1, 16000) || !entier(Number(pdfOffset.value), 0, 67108864) ||
+            !pdfPage.reportValidity() || !pdfLimit.reportValidity() || !pdfOffset.reportValidity()) {
+          ++requete; viderResultat(); statut.textContent = "Document exact, page et plage PDF valides requis."; return;
+        }
+        lire("/lots/" + encodeURIComponent(lot.value) + "/pdf?" + new URLSearchParams({document_id: pdfId.value,
+          page: pdfPage.value, limit: pdfLimit.value, offset: pdfOffset.value}), afficher);
+      }
+      pdfLecture.append(bouton("Lire le texte natif PDF", chargerPDF));
       function idValide(id) {
         return typeof id === "string" && id.trim() && Array.from(id).length <= 256 && !/[\u0000-\u001f\u007f-\u009f]/.test(id);
       }
@@ -361,6 +384,33 @@
             }));
           }
         }
+        var docPDF = rapport.document_declare;
+        if (!pdfLecture.disabled && docPDF && idValide(docPDF.id) && typeof docPDF.sha256 === "string" && /^[a-f0-9]{64}$/.test(docPDF.sha256)) {
+          actions.append(actionDocumentaire("Lire le PDF reçu " + docPDF.id + " — page 1", function () {
+            pdfId.value = docPDF.id; pdfPage.value = 1; pdfLimit.value = 4000; pdfOffset.value = 0; chargerPDF();
+          }));
+        }
+        if (!pdfLecture.disabled && rapport.type_rapport === "lecture_page_pdf_recu" && docPDF && idValide(docPDF.id) &&
+            typeof docPDF.sha256 === "string" && /^[a-f0-9]{64}$/.test(docPDF.sha256) && rapport.sha256_pdf_lu === docPDF.sha256 &&
+            rapport.methode === "texte_natif_pdfium_sans_ocr" && rapport.unite_decalage === "points_de_code_unicode_python" &&
+            entier(rapport.page_physique, 1, 10000) && entier(rapport.nombre_pages_pdf, rapport.page_physique, 10000) &&
+            entier(rapport.limite, 1, 16000) && entier(rapport.decalage, 0, 67108864) &&
+            entier(rapport.total_caracteres, 0, 200000)) {
+          if (typeof rapport.fragment === "string" && Array.from(rapport.fragment).length <= rapport.limite &&
+              rapport.decalage_suivant === rapport.decalage + Array.from(rapport.fragment).length &&
+              entier(rapport.decalage_suivant, rapport.decalage + 1, rapport.total_caracteres - 1)) {
+            actions.append(actionDocumentaire("Fragment suivant de la page PDF", function () {
+              pdfId.value = docPDF.id; pdfPage.value = rapport.page_physique;
+              pdfLimit.value = rapport.limite; pdfOffset.value = rapport.decalage_suivant; chargerPDF();
+            }));
+          }
+          if (rapport.page_physique_suivante === rapport.page_physique + 1 && rapport.page_physique_suivante <= rapport.nombre_pages_pdf) {
+            actions.append(actionDocumentaire("Page physique PDF suivante", function () {
+              pdfId.value = docPDF.id; pdfPage.value = rapport.page_physique_suivante;
+              pdfLimit.value = rapport.limite; pdfOffset.value = 0; chargerPDF();
+            }));
+          }
+        }
         if (rapport.type_rapport === "lecture_article_documentaire" && !lecture.disabled &&
             rapport.article_trouve === true && rapport.texte_renseigne === true &&
             rapport.unite_decalage === "points_de_code_unicode_python" && idValide(rapport.article_id_exact) &&
@@ -375,7 +425,7 @@
         }
       };
       lot.addEventListener("change", adapter); adapter();
-      outils.append(form, fiche, arbre, lecture);
+      outils.append(form, fiche, arbre, lecture, pdfLecture);
     });
   }
   function demarrer() {

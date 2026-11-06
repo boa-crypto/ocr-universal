@@ -58,9 +58,13 @@ n’est pas une garantie globale de mémoire : le rapport/JSON sont déjà const
 avant le contrôle. L’URL objet temporaire est révoquée après la demande de
 téléchargement. Pas de localStorage, nouveau cache API, chiffrement, signature,
 preuve d’authenticité, WORM ou retrait d’un fichier déjà enregistré par l’utilisateur.
-La coque service worker passe à v48. Politique navigateur, protections de poste,
+La coque service worker passe à v49 depuis le lot 22. Politique navigateur, protections de poste,
 rétention et partage des fichiers restent à qualifier. JSDOM vérifie le contenu
 et l’initiation, pas la boîte de dialogue/téléchargement réel dans tous les navigateurs.
 
 [Rapport et qualification](RAPPORT_LOT16.md). Le corpus officiel et sa validation
 humaine restent nécessaires ; aucun calcul réglementaire n’est autorisé.
+
+
+[Lot 22 : export JSON du fragment de texte natif PDF](INTERFACE_PDF.md), après
+relecture protégée. Pas d’export du binaire PDF ou de toutes ses pages.

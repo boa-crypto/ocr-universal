@@ -312,5 +312,64 @@ await scenario('ancien bouton export inerte après remplacement', async({host,ap
   reponse(envelope({rapport:'TEST'})); button('Contrôler').click(); await tick(); const ancien=button('Exporter ce rapport');
   button('Contrôler').click(); await tick(); const n=appels.length; ancien.click(); await tick(); assert.equal(appels.length,n);
 });
+const pdfRapport = (extra={})=>({type_rapport:'lecture_page_pdf_recu', document_declare:{id:'DOC_TEST',sha256:'a'.repeat(64)},
+  sha256_pdf_lu:'a'.repeat(64), methode:'texte_natif_pdfium_sans_ocr',unite_decalage:'points_de_code_unicode_python',
+  page_physique:1,nombre_pages_pdf:2,page_physique_suivante:2,limite:4,decalage:0,total_caracteres:10,
+  fragment:'أ😀é',decalage_suivant:4,texte_natif_non_vide:true,...extra});
+await scenario('PDF natif : paramètres exacts et texte sans HTML',async({host,appels,button,reponse})=>{
+  host.querySelector('[data-pdf-id]').value='DOC & عربي'; host.querySelector('[data-pdf-page]').value='2';
+  host.querySelector('[data-pdf-limit]').value='4'; host.querySelector('[data-pdf-offset]').value='7';
+  reponse(envelope(pdfRapport({fragment:'<img src=x onerror=alert(1)>',decalage_suivant:null})));
+  button('Lire le texte natif PDF').click(); await tick();
+  const u=new URL(appels.at(-1).url,'https://test.invalid'); assert.equal(u.searchParams.get('document_id'),'DOC & عربي');
+  assert.equal(u.searchParams.get('page'),'2'); assert.equal(u.searchParams.get('offset'),'7');
+  assert.equal(host.querySelector('img'),null); assert(host.querySelector('[data-article-fragment]').textContent.includes('<img'));
+});
+await scenario('PDF suites : Unicode Python et page suivante remet offset zéro',async({host,appels,button,reponse})=>{
+  host.querySelector('[data-pdf-id]').value='DOC_TEST'; reponse(envelope(pdfRapport()));
+  button('Lire le texte natif PDF').click(); await tick();
+  button('Fragment suivant de la page PDF').click(); await tick();
+  assert(new URL(appels.at(-1).url,'https://test.invalid').searchParams.get('offset')==='4');
+  button('Page physique PDF suivante').click(); await tick();
+  const u=new URL(appels.at(-1).url,'https://test.invalid'); assert.equal(u.searchParams.get('page'),'2'); assert.equal(u.searchParams.get('offset'),'0');
+});
+await scenario('PDF sans texte natif ne devient pas OCR ou droit absent',async({host,button,reponse,status})=>{
+  host.querySelector('[data-pdf-id]').value='DOC_TEST';
+  reponse(envelope(pdfRapport({fragment:'',total_caracteres:0,texte_natif_non_vide:false,decalage_suivant:null})));
+  button('Lire le texte natif PDF').click(); await tick();
+  assert(status().includes('aucun OCR')); assert(!button('Fragment suivant de la page PDF'));
+});
+await scenario('PDF invalides et tarif ne déclenchent pas de requête',async({w,host,appels,button})=>{
+  const n=appels.length; button('Lire le texte natif PDF').click(); await tick(); assert.equal(appels.length,n);
+  host.querySelector('[data-pdf-id]').value='DOC_TEST'; host.querySelector('[data-pdf-page]').value='0';
+  button('Lire le texte natif PDF').click(); await tick(); assert.equal(appels.length,n);
+  const lot=host.querySelector('select'); lot.value='test-tarif'; lot.dispatchEvent(new w.Event('change'));
+  button('Lire le texte natif PDF').click(); await tick(); assert.equal(appels.length,n);
+});
+await scenario('PDF suites incohérentes non proposées',async({host,button,reponse})=>{
+  host.querySelector('[data-pdf-id]').value='DOC_TEST';
+  reponse(envelope(pdfRapport({decalage_suivant:5,page_physique_suivante:99})));
+  button('Lire le texte natif PDF').click(); await tick();
+  assert(!button('Fragment suivant de la page PDF')); assert(!button('Page physique PDF suivante'));
+});
+await scenario('PDF actions anciennes inertes après changement de lot',async({w,host,appels,button,reponse})=>{
+  host.querySelector('[data-pdf-id]').value='DOC_TEST'; reponse(envelope(pdfRapport()));
+  button('Lire le texte natif PDF').click(); await tick(); const ancien=button('Page physique PDF suivante');
+  const lot=host.querySelector('select'); lot.value='test-tarif'; lot.dispatchEvent(new w.Event('change'));
+  const n=appels.length; ancien.click(); await tick(); assert.equal(appels.length,n);
+});
+await scenario('PDF actions après changement de jeton effacent sans lecture',async({w,host,appels,button,reponse})=>{
+  host.querySelector('[data-pdf-id]').value='DOC_TEST'; reponse(envelope(pdfRapport()));
+  button('Lire le texte natif PDF').click(); await tick(); const ancien=button('Page physique PDF suivante');
+  w.sessionStorage.setItem('uniocr_token','AUTRE_TEST'); const n=appels.length; ancien.click(); await tick();
+  assert.equal(appels.length,n); assert.equal(host.querySelector('pre').textContent,'');
+});
+await scenario('PDF 503 audit efface fragment et actions',async({host,button,reponse})=>{
+  host.querySelector('[data-pdf-id]').value='DOC_TEST'; reponse(envelope(pdfRapport()));
+  button('Lire le texte natif PDF').click(); await tick(); reponse({detail:{code:'audit_revue_indisponible'}},503);
+  button('Page physique PDF suivante').click(); await tick();
+  assert.equal(host.querySelector('pre').textContent,''); assert.equal(host.querySelector('[data-article-fragment]').textContent,'');
+  assert.equal(host.querySelector('[data-review-actions]').textContent,'');
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

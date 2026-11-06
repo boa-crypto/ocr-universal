@@ -62,8 +62,8 @@ parties du serveur et son chargeur de lots ont leurs limites propres. Le process
 séparé réduit le partage d’état ; il n’établit pas l’innocuité du parseur C.
 Un PDF chiffré nécessitant un mot de passe est refusé, sans tentative de déchiffrement.
 
-**Pas de nouveau bouton PDF, lecteur visuel ou export PDF dans l’interface à ce lot.**
-L’export JSON UI/contrôle hors ligne existant conserve son périmètre antérieur ;
-ne pas présenter cet ajout API comme un parcours graphique déjà livré.
+Au lot 21, aucune commande UI n’était ajoutée. Le [lot 22](INTERFACE_PDF.md)
+intègre la lecture native et l’export JSON du fragment dans la coque existante,
+sans visionneuse graphique, PDF brut ou validation de transcription.
 
 [Rapport et qualification](RAPPORT_LOT21.md).

@@ -67,3 +67,8 @@ une procédure juridique habilitée pour aller au-delà. Le résultat indique to
 Aucun usage de calcul réglementaire réel n’est autorisé par un code retour 0.
 
 [Qualification et rapport](RAPPORT_LOT17.md).
+
+
+Lot 22 : la route de lecture `/pdf` est admise par le contrôleur et le schéma
+version 1 actualisés. Le rapport PDF reste opaque hors marqueurs/provenance ;
+aucune authenticité, lisibilité visuelle ou fidélité de transcription attestée.
