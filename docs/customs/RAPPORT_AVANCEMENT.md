@@ -7,6 +7,7 @@
 également daté du 2026-11-06.
 [Lot 4 : vérification/rejeu et comparaison des lots Code](RAPPORT_LOT4.md), 2026-11-06.
 [Lot 5 : recherche documentaire locale FR/AR](RAPPORT_LOT5.md), 2026-11-06.
+[Lot 6 : API de revue administrative strictement autorisée](RAPPORT_LOT6.md), 2026-11-06.
 Le présent document conserve les résultats historiques du lot 1.
 
 ## Complétude réelle

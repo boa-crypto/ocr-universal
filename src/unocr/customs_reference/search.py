@@ -12,6 +12,10 @@ MAX_APERCU = 512
 NATURES = {"originale", "modificative", "consolidee_provisoire"}
 
 
+class ParamRechercheInvalide(ValueError):
+    """Paramètres clients invalides, distincts d’une archive incohérente."""
+
+
 def _normaliser(texte):
     # Copie pour comparaison seulement ; aucun champ archivé n'est modifié.
     decompose = unicodedata.normalize("NFKD", texte).casefold().replace("œ", "oe").replace("æ", "ae")
@@ -21,18 +25,18 @@ def _normaliser(texte):
 
 def _parametres(requete, limite, decalage, filtre=False):
     if type(limite) is not int or not 1 <= limite <= 100:
-        raise ValueError("Limite entière de 1 à 100 requise")
+        raise ParamRechercheInvalide("Limite entière de 1 à 100 requise")
     if type(decalage) is not int or not 0 <= decalage <= 1_000_000:
-        raise ValueError("Décalage entier de 0 à 1000000 requis")
+        raise ParamRechercheInvalide("Décalage entier de 0 à 1000000 requis")
     if not isinstance(requete, str) or len(requete) > MAX_REQUETE:
-        raise ValueError("Requête textuelle de 256 caractères maximum requise")
+        raise ParamRechercheInvalide("Requête textuelle de 256 caractères maximum requise")
     if any(unicodedata.category(c) == "Cc" and not c.isspace() for c in requete):
-        raise ValueError("Caractère de contrôle interdit dans la requête")
+        raise ParamRechercheInvalide("Caractère de contrôle interdit dans la requête")
     termes = list(dict.fromkeys(_normaliser(requete).split()))
     if len(termes) > MAX_TERMES:
-        raise ValueError("16 termes maximum par requête")
+        raise ParamRechercheInvalide("16 termes maximum par requête")
     if not termes and (requete.strip() or not filtre):
-        raise ValueError("Requête vide ou sans terme recherchable")
+        raise ParamRechercheInvalide("Requête vide ou sans terme recherchable")
     return termes
 
 
@@ -74,7 +78,7 @@ def rechercher_tarif(repertoire: Path, requete: str, limite: int = 20, decalage:
     brut = requete.strip()
     numerique = brut.isdecimal()
     if numerique and re.fullmatch(r"[0-9]{1,10}", brut) is None:
-        raise ValueError("Préfixe de code : de 1 à 10 chiffres ASCII, sans conversion ni zfill")
+        raise ParamRechercheInvalide("Préfixe de code : de 1 à 10 chiffres ASCII, sans conversion ni zfill")
     lot, rapport = charger_lot(repertoire)
     resultats, total = [], 0
     for ligne in sorted(lot.lignes, key=lambda o: o.code_tarifaire_10):
@@ -99,9 +103,9 @@ def rechercher_code(repertoire: Path, requete: str = "", limite: int = 20, decal
                     numero_article: str | None = None, source_id: str | None = None, nature: str | None = None) -> dict:
     for valeur in (numero_article, source_id):
         if valeur is not None and (not isinstance(valeur, str) or not valeur.strip() or len(valeur) > MAX_REQUETE):
-            raise ValueError("Filtre article/source textuel non vide, de 256 caractères maximum requis")
+            raise ParamRechercheInvalide("Filtre article/source textuel non vide, de 256 caractères maximum requis")
     if nature is not None and (not isinstance(nature, str) or nature not in NATURES):
-        raise ValueError("Nature d'article inconnue")
+        raise ParamRechercheInvalide("Nature d'article inconnue")
     filtres = {"numero_article": numero_article, "source_id": source_id, "nature_version": nature}
     termes = _parametres(requete, limite, decalage, any(v is not None for v in filtres.values()))
     lot, rapport = charger_lot_code(repertoire)

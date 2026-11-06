@@ -1,0 +1,71 @@
+{
+  "$defs": {
+    "LotRevue": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "type_lot": {
+          "enum": [
+            "tarif",
+            "code"
+          ],
+          "title": "Type Lot",
+          "type": "string"
+        },
+        "dossier": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$",
+          "title": "Dossier",
+          "type": "string"
+        },
+        "manifest_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Manifest Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type_lot",
+        "dossier",
+        "manifest_sha256"
+      ],
+      "title": "LotRevue",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "reviseurs": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 64,
+      "title": "Reviseurs",
+      "type": "array"
+    },
+    "lots": {
+      "items": {
+        "$ref": "#/$defs/LotRevue"
+      },
+      "maxItems": 64,
+      "title": "Lots",
+      "type": "array"
+    }
+  },
+  "required": [
+    "reviseurs",
+    "lots"
+  ],
+  "title": "RegistreRevue",
+  "type": "object"
+}

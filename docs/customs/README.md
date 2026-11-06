@@ -1,9 +1,10 @@
-# Mission référentiels douaniers — lots 1–5 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–6 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
 [le lot 2](RAPPORT_LOT2.md), [le lot 3](RAPPORT_LOT3.md),
-[le lot 4](RAPPORT_LOT4.md), [le lot 5 du 6 novembre 2026](RAPPORT_LOT5.md) et [le registre documentaire](SOURCES_RECHERCHE.json).
+[le lot 4](RAPPORT_LOT4.md), [le lot 5](RAPPORT_LOT5.md),
+[le lot 6 du 6 novembre 2026](RAPPORT_LOT6.md) et [le registre documentaire](SOURCES_RECHERCHE.json).
 
 ## Livré
 
@@ -171,6 +172,17 @@ exacts, sans fusionner les versions. Contrôle complet du lot, pagination borné
 références, champs correspondants et textes reçus conservés. Aucune IA, synonymie
 inventée, interprétation juridique ou suggestion de classement officiel.
 
+## API de revue administrative (lot 6)
+
+[Contrat, habilitations et configuration](API_REVUE.md),
+[rapport de qualification](RAPPORT_LOT6.md). GET sous `/api/v1/customs-review` :
+liste des lots inscrits côté serveur, contrôle, recherche et diff. Administrateur
+RBAC nominatif **et** habilitation explicite dans le registre local ; mode ouvert
+et passe-partout d’environnement refusés. Aucun chemin choisi par HTTP ; manifeste
+épinglé avant et après le traitement. Audit existant, pas de nouvel index métier.
+**Aucune écriture, validation juridique, publication ou administration graphique.**
+Aucun compte ni registre n’est créé automatiquement sur le poste.
+
 ## Intégration future, sans double source de vérité
 
 Le module `customs_reference` ne consomme pas CODES_SH_ALGERIE et ne publie pas ses
@@ -180,7 +192,8 @@ humaine habilitée et tracée. Les modules marchandise/transit devront référen
 une version publiée ; l'IA ne pourra proposer que des candidats sourcés et devra
 s'abstenir lorsqu'aucune version validée n'est disponible.
 
-Les API v1, l'import administrateur sécurisé, la recherche sur versions publiées, la
+Les API v1 de référentiels publiés, l'import administrateur sécurisé, la recherche
+sur versions publiées, la
 classification tarifaire et l'extension du DS seront développés sur ce domaine,
 pas sur les exemples legacy. Aucun endpoint de validation ne doit être ouvert
 simplement parce que le RBAC historique est désactivé.

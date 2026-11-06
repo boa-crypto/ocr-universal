@@ -58,6 +58,7 @@ from .routes.clients import router as clients_router
 from .routes.connaissements import router as connaissements_router
 from .routes.conteneurs import router as conteneurs_router
 from .routes.controle_doc import router as controle_doc_router
+from .routes.customs_review import creer_router_revue
 from .routes.dashboard import router as dashboard_router
 from .routes.declarations import router as declarations_router
 from .routes.documents_ocr import router as documents_ocr_router
@@ -369,6 +370,25 @@ def _recharge_rbac() -> RegistreRBAC:
 def _utilisateur_courant(request) -> Optional[Utilisateur]:
     """Utilisateur résolu par le middleware, ou None si RBAC inactif."""
     return getattr(request.state, "utilisateur", None)
+
+
+def _autorise_revue_douaniere(request: Request) -> Utilisateur:
+    """Frontière stricte, même quand les routes legacy sont en mode ouvert."""
+    utilisateur = _utilisateur_courant(request)
+    if (not _rbac.actif or utilisateur is None or utilisateur.environnement
+            or ADMINISTRATEUR not in utilisateur.roles):
+        audit(cfg.log_dir, "revue_douaniere_acces_refuse", methode=request.method,
+              acteur=utilisateur.nom if utilisateur else "non_identifie")
+        raise HTTPException(403, {"code": "administrateur_nominatif_rbac_requis"},
+                            headers={"Cache-Control": "no-store"})
+    return utilisateur
+
+
+app.include_router(creer_router_revue(
+    _autorise_revue_douaniere,
+    lambda: cfg.data_dir / "customs-quarantine" / "registre.json",
+    lambda **champs: audit(cfg.log_dir, "revue_douaniere", **champs),
+))
 
 
 def _exige(role: str):

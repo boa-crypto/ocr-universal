@@ -21,7 +21,11 @@ from unocr.rbac import RegistreRBAC
 
 
 @pytest.fixture()
-def magasin(tmp_path):
+def magasin(tmp_path, monkeypatch):
+    # Ne pas hériter du magasin de l'hôte/du processus de test : la restauration
+    # supprime ce répertoire. Le root Config seul ne prime pas sur ces variables.
+    monkeypatch.setenv("UNOCR_DATA_DIR", str(tmp_path / "data"))
+    monkeypatch.setenv("UNOCR_LOG_DIR", str(tmp_path / "logs"))
     (tmp_path / "data" / "jobs").mkdir(parents=True)
     (tmp_path / "data" / "rbac.json").write_text(json.dumps({"utilisateurs": [
         {"nom": "marie", "jeton": "jeton-marie", "roles": ["operateur"],
