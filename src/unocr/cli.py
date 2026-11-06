@@ -142,16 +142,18 @@ def main(argv=None) -> int:
 
     b = sub.add_parser("backup", help="sauvegarder le magasin (jobs, dossiers, exports, audit)")
     b.add_argument("--out", default="",
-                   help="répertoire de destination (défaut : <data>/../sauvegardes)")
+                   help="répertoire de destination (défaut : sauvegardes, ou sauvegardes-quarantaine avec option explicite)")
     b.add_argument("--tag", default="", help="étiquette ajoutée au nom du fichier")
     b.add_argument("--keep", type=int, default=5,
                    help="nombre de sauvegardes à conserver (0 = ne pas purger)")
+    b.add_argument("--include-customs-quarantine", action="store_true", help="inclure explicitement la quarantaine (CLI local seulement)")
     b.set_defaults(func=cmd_backup)
 
     r = sub.add_parser("restore", help="restaurer le magasin depuis une sauvegarde")
     r.add_argument("fichier", help="chemin du .zip de sauvegarde")
     r.add_argument("--force", action="store_true",
                    help="autoriser l'écriture sur un magasin non vide")
+    r.add_argument("--include-customs-quarantine", action="store_true", help="reprendre explicitement la quarantaine dans un magasin neuf")
     r.set_defaults(func=cmd_restore)
 
     lb = sub.add_parser("backups", help="lister les sauvegardes disponibles")
@@ -401,7 +403,8 @@ def cmd_backup(args) -> int:
     cfg = get_config()
     destination = Path(args.out) if args.out else None
     try:
-        res = creer_sauvegarde(cfg, destination=destination, etiquette=args.tag)
+        res = creer_sauvegarde(cfg, destination=destination, etiquette=args.tag,
+                               inclure_quarantaine=getattr(args, "include_customs_quarantine", False))
     except BackupError as exc:
         print(f"sauvegarde refusée : {exc}", file=sys.stderr)
         return 2
@@ -426,7 +429,8 @@ def cmd_restore(args) -> int:
 
     cfg = get_config()
     try:
-        res = restaurer_sauvegarde(cfg, Path(args.fichier), force=args.force)
+        res = restaurer_sauvegarde(cfg, Path(args.fichier), force=args.force,
+                                    inclure_quarantaine=getattr(args, "include_customs_quarantine", False))
     except BackupError as exc:
         print(f"restauration refusée : {exc}", file=sys.stderr)
         return 2

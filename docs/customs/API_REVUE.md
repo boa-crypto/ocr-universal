@@ -55,11 +55,11 @@ traversée, dossier répété ou ID répété. Registre limité à 1 Mio ; clés
 dupliquées et champs inconnus refusés. Les symlinks directs du registre/de son
 répertoire et ceux des lots sont refusés par les lecteurs.
 
-**Sauvegarde :** le dossier `customs-quarantine` ne figure pas actuellement dans
-les répertoires inclus par `backup.py`. Prévoir une copie protégée indépendante
-du registre et des lots ; l’intégration sauvegarde/reprise de ce nouveau dossier
-reste à qualifier avant un déploiement documentaire réel. Les tests de reprise
-RBAC ne constituent pas une preuve de sauvegarde de ces lots.
+**Sauvegarde (lot 7) :** le dossier `customs-quarantine` est désormais couvert
+avec option **CLI explicite**, destination dédiée et refus de fusion en reprise.
+Les routes HTTP legacy ne peuvent pas activer cette inclusion. Voir le
+[guide de sauvegarde/reprise](SAUVEGARDE_QUARANTAINE.md). La qualification reste
+technique, pas une validation réglementaire des fichiers.
 
 Les lots préparés doivent être copiés avec **tous** leurs fichiers, sans modifier
 leurs originaux. Calculer l’empreinte attendue sur le manifeste réellement revu,

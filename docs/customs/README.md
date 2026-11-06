@@ -1,10 +1,10 @@
-# Mission référentiels douaniers — lots 1–6 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–7 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
 [le lot 2](RAPPORT_LOT2.md), [le lot 3](RAPPORT_LOT3.md),
 [le lot 4](RAPPORT_LOT4.md), [le lot 5](RAPPORT_LOT5.md),
-[le lot 6 du 6 novembre 2026](RAPPORT_LOT6.md) et [le registre documentaire](SOURCES_RECHERCHE.json).
+[le lot 6](RAPPORT_LOT6.md), [le lot 7 du 6 novembre 2026](RAPPORT_LOT7.md) et [le registre documentaire](SOURCES_RECHERCHE.json).
 
 ## Livré
 
@@ -182,6 +182,15 @@ et passe-partout d’environnement refusés. Aucun chemin choisi par HTTP ; mani
 épinglé avant et après le traitement. Audit existant, pas de nouvel index métier.
 **Aucune écriture, validation juridique, publication ou administration graphique.**
 Aucun compte ni registre n’est créé automatiquement sur le poste.
+
+## Sauvegarde et reprise locale (lot 7)
+
+[Guide](SAUVEGARDE_QUARANTAINE.md) et [qualification](RAPPORT_LOT7.md).
+`backup` et `restore` couvrent le registre/les lots avec
+`--include-customs-quarantine`, via le CLI seulement. Sans cette option, une
+quarantaine présente n’est pas omise silencieusement : l’opération est refusée.
+Destination de copies dédiée ; reprise sans quarantaine préexistante, même avec
+`--force`. Les octets et épingles sont conservés, pas une validité réglementaire.
 
 ## Intégration future, sans double source de vérité
 

@@ -13,13 +13,17 @@ Contraintes tenues ici :
 - la restauration **refuse** d'écraser un magasin non vide sans `--force` :
   restaurer par-dessus ferait disparaître des documents plus récents ;
 - l'intégrité est vérifiée après écriture (manifeste + empreinte) ;
-- le journal d'audit est toujours conservé, jamais tronqué.
+- le journal d'audit est inclus ; restaurer vers des journaux neufs pour ne
+  pas remplacer un journal actif (comportement legacy hors quarantaine) ;
+- la quarantaine exige une option CLI explicite et ne fusionne jamais avec
+  une quarantaine cible existante, même avec force.
 """
 from __future__ import annotations
 
 import hashlib
 import json
 import sqlite3
+import stat
 import tempfile
 import time
 import zipfile
@@ -35,7 +39,7 @@ log = get_logger("backup")
 
 #: répertoires du magasin à sauvegarder, dans l'ordre de criticité
 REPERTOIRES = ("jobs", "dossiers", "exports", "connectors", "formulaires",
-               "profiles", "keys", "justificatifs")
+               "profiles", "keys", "justificatifs", "customs-quarantine")
 
 #: fichiers isolés à conserver (l'audit est irremplaçable)
 #: `rbac.json` figure ici pour une raison de sécurité : sans lui, une
@@ -92,16 +96,18 @@ def _fichiers_utiles(racine: Path) -> Iterable[tuple[Path, Path]]:
     """
     for nom in REPERTOIRES:
         base = racine / nom
-        if nom == "justificatifs" and base.is_symlink():
-            raise BackupError("répertoire justificatifs symbolique refusé")
+        if nom in {"justificatifs", "customs-quarantine"} and base.is_symlink():
+            raise BackupError(f"répertoire {nom} symbolique refusé")
         if not base.is_dir():
             continue
         for src in sorted(base.rglob("*")):
-            if nom == "justificatifs" and src.is_symlink():
-                raise BackupError("lien symbolique de justificatif refusé")
+            if nom in {"justificatifs", "customs-quarantine"} and src.is_symlink():
+                raise BackupError(f"lien symbolique de {nom} refusé")
+            if nom == "customs-quarantine" and not src.is_dir() and not src.is_file():
+                raise BackupError("fichier spécial de quarantaine refusé")
             if not src.is_file():
                 continue
-            if src.name.startswith(".") or src.suffix == ".tmp":
+            if nom != "customs-quarantine" and (src.name.startswith(".") or src.suffix == ".tmp"):
                 continue
             yield src, PREF_DATA / src.relative_to(racine)
     for nom in FICHIERS:
@@ -121,18 +127,25 @@ def _fichiers_journal(cfg) -> Iterable[tuple[Path, Path]]:
 
 
 def creer_sauvegarde(cfg, destination: Path | None = None,
-                     etiquette: str = "") -> ResultatSauvegarde:
+                     etiquette: str = "", inclure_quarantaine: bool = False) -> ResultatSauvegarde:
     """Archive le magasin dans un ZIP horodaté, manifeste inclus.
 
     Le nom porte l'horodatage : deux sauvegardes dans la même minute ne
     s'écrasent pas, et l'ordre de reprise reste lisible.
     """
     racine = cfg.data_dir
+    quarantaine = racine / "customs-quarantine"
+    if type(inclure_quarantaine) is not bool:
+        raise BackupError("Option de quarantaine booléenne requise")
+    if (quarantaine.exists() or quarantaine.is_symlink()) and not inclure_quarantaine:
+        raise BackupError("Quarantaine présente : sauvegarde CLI explicite avec --include-customs-quarantine requise")
+    if inclure_quarantaine and quarantaine.exists() and not quarantaine.is_dir():
+        raise BackupError("Racine de quarantaine non répertoire")
     if not racine.is_dir():
         raise BackupError(f"magasin introuvable : {racine}")
 
-    cible_dir = destination or (racine.parent / "sauvegardes")
-    cible_dir.mkdir(parents=True, exist_ok=True)
+    cible_dir = destination or (racine.parent / ("sauvegardes-quarantaine" if inclure_quarantaine else "sauvegardes"))
+    cible_dir.mkdir(mode=0o700 if inclure_quarantaine else 0o777, parents=True, exist_ok=True)
     horodatage = time.strftime("%Y%m%d-%H%M%S")
     suffixe = f"-{etiquette}" if etiquette else ""
     chemin = cible_dir / f"sauvegarde-{horodatage}{suffixe}.zip"
@@ -141,7 +154,22 @@ def creer_sauvegarde(cfg, destination: Path | None = None,
     # Même verrou que les téléversements/suppressions : les blobs ne peuvent
     # changer entre leur copie et l'instantané SQLite des métadonnées.
     magasin = BusinessStore(racine / "metier.sqlite3", "justificatif", Justificatif)
-    with magasin.transaction(), zipfile.ZipFile(chemin, "w", zipfile.ZIP_DEFLATED) as zf:
+    # Réservation exclusive : deux sauvegardes dans la même seconde ne doivent
+    # pas écraser l'archive précédente (y compris entre deux processus).
+    indice = 0
+    while True:
+        try:
+            archive = zipfile.ZipFile(chemin, "x", zipfile.ZIP_DEFLATED)
+            break
+        except FileExistsError:
+            indice += 1
+            chemin = cible_dir / f"sauvegarde-{horodatage}{suffixe}-{indice:04d}.zip"
+    with archive as zf, magasin.transaction():
+        if inclure_quarantaine:
+            try:
+                chemin.chmod(0o600)
+            except OSError as exc:
+                raise BackupError("Impossible de restreindre les permissions de la sauvegarde") from exc
         for src, rel in list(_fichiers_utiles(racine)) + list(
                 _fichiers_journal(cfg)):
             nom_archive = rel.as_posix()
@@ -174,6 +202,7 @@ def creer_sauvegarde(cfg, destination: Path | None = None,
         zf.writestr(MANIFESTE, json.dumps(manifeste, ensure_ascii=False,
                                           indent=1))
 
+    verifier_sauvegarde(chemin)
     res = ResultatSauvegarde(
         chemin=chemin, taille=chemin.stat().st_size,
         fichiers=len(fichiers), octets=sum(f["octets"] for f in fichiers),
@@ -196,6 +225,9 @@ def verifier_sauvegarde(chemin: Path) -> dict:
     try:
         with zipfile.ZipFile(chemin) as zf:
             noms = zf.namelist()
+            if any(info.filename.startswith("data/customs-quarantine/")
+                   and stat.S_ISLNK(info.external_attr >> 16) for info in zf.infolist()):
+                raise BackupError("lien symbolique ZIP de quarantaine refusé")
             if MANIFESTE not in noms:
                 raise BackupError(f"{chemin.name} : sans manifeste, "
                                   "intégrité invérifiable")
@@ -237,7 +269,8 @@ def verifier_sauvegarde(chemin: Path) -> dict:
         raise BackupError(f"{chemin.name} : archive ou manifeste invalide") from exc
     retour = {"chemin": str(chemin), "fichiers": len(manifeste.get("fichiers", [])),
               "manquants": manquants, "alteres": alteres,
-              "valide": not manquants and not alteres}
+              "valide": not manquants and not alteres,
+              "quarantaine_presente": any(nom == "data/customs-quarantine" or nom.startswith("data/customs-quarantine/") for nom in noms)}
     if not retour["valide"]:
         raise BackupError(f"{chemin.name} : {len(manquants)} manquant(s), "
                           f"{len(alteres)} altéré(s)")
@@ -258,15 +291,23 @@ def lister_sauvegardes(repertoire: Path) -> list[dict]:
     return sortie
 
 
-def restaurer_sauvegarde(cfg, chemin: Path, force: bool = False) -> dict:
+def restaurer_sauvegarde(cfg, chemin: Path, force: bool = False,
+                         inclure_quarantaine: bool = False) -> dict:
     """Restaure le magasin depuis une archive vérifiée.
 
     `force` est exigé si le magasin contient déjà des données : restaurer
     par-dessus ferait disparaître des documents plus récents que la
     sauvegarde, et l'opérateur ne s'en rendrait pas compte.
     """
-    verifier_sauvegarde(chemin)
+    controle = verifier_sauvegarde(chemin)
+    if type(inclure_quarantaine) is not bool:
+        raise BackupError("Option de quarantaine booléenne requise")
+    if controle["quarantaine_presente"] and not inclure_quarantaine:
+        raise BackupError("Reprise de quarantaine : CLI explicite --include-customs-quarantine requis")
     racine = cfg.data_dir
+    quarantaine = racine / "customs-quarantine"
+    if quarantaine.exists() or quarantaine.is_symlink():
+        raise BackupError("Quarantaine cible déjà présente : reprise dans un magasin neuf requise, même avec force")
     existants = [p for p in racine.iterdir() if p.is_dir() or p.name == "metier.sqlite3"] if racine.is_dir() else []
     if existants and not force:
         raise BackupError(
@@ -299,8 +340,16 @@ def restaurer_sauvegarde(cfg, chemin: Path, force: bool = False) -> dict:
                 cible.relative_to(bornes[prefixe])
             except ValueError:
                 raise BackupError(f"chemin hors magasin refusé : {membre}")
-            cible.parent.mkdir(parents=True, exist_ok=True)
-            cible.write_bytes(zf.read(membre))
+            if prefixe == "data" and relatif.parts[1] == "customs-quarantine":
+                # La quarantaine n'existait pas au précontrôle : fichiers neufs
+                # exclusivement, pas de fusion même si un écrivain intervient.
+                (racine / "customs-quarantine").mkdir(mode=0o700, exist_ok=True)
+                cible.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+                with cible.open("xb") as fichier:
+                    fichier.write(zf.read(membre))
+            else:
+                cible.parent.mkdir(parents=True, exist_ok=True)
+                cible.write_bytes(zf.read(membre))
             restaures += 1
     audit(cfg.log_dir, "sauvegarde_restauree", chemin=str(chemin),
           fichiers=restaures, force=bool(force))

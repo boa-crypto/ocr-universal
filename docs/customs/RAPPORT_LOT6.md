@@ -2,6 +2,9 @@
 
 **2026-11-06 — revue de quarantaine, pas validation juridique ou publication.**
 
+**Suite :** [lot 7 — sauvegarde/reprise locale explicite](RAPPORT_LOT7.md).
+Les résultats ci-dessous conservent l’état historique du lot 6.
+
 ## Livré
 
 - Routes GET intégrées à l’API FastAPI UniOCR existante, sous
