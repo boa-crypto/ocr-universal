@@ -268,6 +268,14 @@ def main(argv=None) -> int:
     ca.add_argument("--offset", type=int, default=0)
     ca.set_defaults(func=cmd_customs_code_read)
 
+    cp = sub.add_parser("customs-code-pdf-read", help="lire le texte natif d'une page PDF reçue, sans validation")
+    cp.add_argument("lot")
+    cp.add_argument("--document", required=True)
+    cp.add_argument("--page", type=int, default=1)
+    cp.add_argument("--limit", type=int, default=4000)
+    cp.add_argument("--offset", type=int, default=0)
+    cp.set_defaults(func=cmd_customs_code_pdf_read)
+
     ve = sub.add_parser("customs-review-export-check", help="contrôler hors ligne la structure d'un export, sans authentification")
     ve.add_argument("file", help="export JSON non validé de 10 Mio maximum")
     ve.set_defaults(func=cmd_customs_review_export_check)
@@ -332,6 +340,13 @@ def cmd_customs_review_export_check(args) -> int:
     from .customs_reference.review_export import verifier_export
 
     return _afficher_lecture_douaniere(verifier_export, args.file)
+
+
+def cmd_customs_code_pdf_read(args) -> int:
+    from .customs_reference.pdf_page import lire_page_pdf
+
+    return _afficher_lecture_douaniere(lambda chemin: lire_page_pdf(
+        chemin, args.document, args.page, args.limit, args.offset), args.lot)
 
 
 def cmd_customs_code_read(args) -> int:

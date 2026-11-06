@@ -16,6 +16,7 @@ from ..customs_reference.coverage import diagnostiquer_couverture
 from ..customs_reference.history import ParamHistoriqueInvalide, historique_article
 from ..customs_reference.importer import _lire
 from ..customs_reference.legal_comparison import charger_lot_code, comparer_lots_code
+from ..customs_reference.pdf_page import LecturePDFRefusee, ParamPDFInvalide, lire_page_pdf
 from ..customs_reference.review_registry import (
     IDENTIFIANT,
     RegistreRevueIndisponible,
@@ -68,6 +69,10 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
             reponse = JSONResponse({"lecture_seule": True, "publication_active": False,
                                  "validation_juridique": "non_validee", "perimetre": "revue_administrative_quarantaine",
                                  "resultat": resultat}, headers=NO_STORE)
+        except ParamPDFInvalide:
+            statut, code = 422, "parametres_lecture_pdf_invalides"
+        except LecturePDFRefusee:
+            statut, code = 409, "pdf_recu_non_lisible_ou_hors_limites"
         except ParamArticleInvalide:
             statut, code = 422, "parametres_lecture_article_invalides"
         except ParamArbreTarifInvalide:
@@ -167,6 +172,16 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 raise HTTPException(422, {"code": "lecture_article_non_applicable_au_tarif"}, headers=NO_STORE)
             return consulter_article(p[0], article_id, field, limit, offset)
         return executer(utilisateur, "lecture_article", [lot_id], lire_version)
+
+    @router.get("/lots/{lot_id}/pdf")
+    def lire_pdf(lot_id: str, document_id: str = Query(..., min_length=1, max_length=256),
+                 page: int = Query(1, ge=1, le=10000), limit: int = Query(4000, ge=1, le=MAX_FRAGMENT),
+                 offset: int = Query(0, ge=0, le=MAX_DECALAGE_TEXTE), utilisateur=Depends(autoriser)):
+        def lire_document(e, p, registre):
+            if e[0].type_lot != "code":
+                raise HTTPException(422, {"code": "lecture_pdf_non_applicable_au_tarif"}, headers=NO_STORE)
+            return lire_page_pdf(p[0], document_id, page, limit, offset)
+        return executer(utilisateur, "lecture_pdf", [lot_id], lire_document)
 
     @router.get("/diff")
     def comparer(avant: str = Query(..., pattern=IDENTIFIANT), apres: str = Query(..., pattern=IDENTIFIANT),

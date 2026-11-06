@@ -140,3 +140,11 @@ Les lectures relancent les contrôles complets ; pas de cache ni de benchmark su
 un corpus national réel. Les plafonds des lecteurs et de la recherche s’appliquent.
 Cette API ne remplace ni le workflow humain habilité et tracé, ni la gouvernance
 des versions, ni la revue réglementaire qui devront précéder toute publication.
+
+
+## Pages PDF reçues (lot 21)
+
+`GET /api/v1/customs-review/lots/{lot_id}/pdf?document_id=ID&page=1&limit=4000&offset=0`
+Code seulement ; texte natif en fragment, aucun binaire ou chemin client. Succès
+soumis aux mêmes épingles et audit obligatoire, opération `lecture_pdf`.
+[Contrat, refus et limites](LECTURE_PDF.md). Pas d’OCR ou validation juridique.

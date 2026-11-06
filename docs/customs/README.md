@@ -1,4 +1,4 @@
-# Mission référentiels douaniers — lots 1–20 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–21 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
@@ -280,6 +280,12 @@ extraction sur disque, ZIP reçu archivé et rejoué. Autres membres non validé
 [Contrat BIFF8](IMPORT_XLS.md), [rapport](RAPPORT_LOT20.md).
 Feuille/mapping explicites, cellules textuelles uniquement, contrôle des records
 avant lecture des caches xlrd ; pas de qualification générale Excel ou nationale.
+
+## Texte natif des PDF reçus du Code (lot 21)
+
+[Service/CLI/API et limites](LECTURE_PDF.md), [rapport](RAPPORT_LOT21.md).
+Une page identifiée du lot contrôlé, sans OCR, rendu, transcription validée ou
+import tarifaire PDF. Intégration de commandes UI non ajoutée dans ce lot.
 
 ## Intégration future, sans double source de vérité
 

@@ -80,3 +80,8 @@ confiance, registre inaltérable ou WORM. Les administrateurs OS restent capable
 de réécrire le journal. Cette amélioration n’est pas une validation humaine/juridique.
 
 [Qualification et limites](RAPPORT_LOT15.md). Aucun corpus officiel acquis ou publié.
+
+
+Lot 21 : la lecture native PDF est aussi soumise au contrat de succès obligatoire
+(opération `lecture_pdf`), avec tests API sur PDF ReportLab NON OFFICIELS. Aucun
+fragment PDF/document_id/page n’est ajouté à l’événement métier de succès.
