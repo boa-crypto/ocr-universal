@@ -32,7 +32,7 @@ from .calibration import Calibration
 from .config import get_config
 from .crypto_store import SALT_LEN, CryptoStore
 from .exporters import export_all, export_xlsx
-from .logging_setup import audit, get_logger, setup_logging
+from .logging_setup import audit, audit_obligatoire, get_logger, setup_logging
 from .models import FieldStatus, JobOptions, JobStatus, ValueOrigin
 from .observabilite import HEADER_CORRELATION, CompteurDebit, nouvel_identifiant
 from .ocr_engines import EngineRegistry
@@ -387,7 +387,7 @@ def _autorise_revue_douaniere(request: Request) -> Utilisateur:
 app.include_router(creer_router_revue(
     _autorise_revue_douaniere,
     lambda: cfg.data_dir / "customs-quarantine" / "registre.json",
-    lambda **champs: audit(cfg.log_dir, "revue_douaniere", **champs),
+    lambda **champs: audit_obligatoire(cfg.log_dir, "revue_douaniere", **champs),
 ))
 
 

@@ -277,5 +277,17 @@ await scenario('action après changement de jeton refuse sans nouveau fetch', as
   w.sessionStorage.removeItem('uniocr_token'); button('Lire la version V1').click(); await tick();
   assert.equal(appels.length,n); assert.equal(host.querySelector('select'),null); assert(status().includes('Compte modifié'));
 });
+await scenario('audit indisponible : 503 efface texte et actions, message serveur générique', async({host,button,reponse,status})=>{
+  host.querySelector('[data-read-id]').value='V1';
+  reponse(envelope({type_rapport:'lecture_article_documentaire',article_trouve:true,texte_renseigne:true,
+    unite_decalage:'points_de_code_unicode_python',article_id_exact:'V1',champ_texte:'texte_integral',
+    fragment:'TEXTE TEST CONFIDENTIEL',limite:2,decalage:0,decalage_suivant:2,total_caracteres:4}));
+  button('Lire le fragment').click(); await tick(); assert(button('Fragment suivant de l’article'));
+  reponse({detail:{code:'audit_revue_indisponible',path:'/NE/PAS/AFFICHER'}},503);
+  button('Lire le fragment').click(); await tick();
+  assert.equal(host.querySelector('pre').textContent,''); assert.equal(host.querySelector('[data-article-fragment]').textContent,'');
+  assert.equal(host.querySelector('[data-review-actions]').textContent,''); assert.equal(host.querySelector('select'),null);
+  assert(status().includes('journal d’audit')); assert(!host.textContent.includes('/NE/PAS/AFFICHER'));
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

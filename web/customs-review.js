@@ -51,7 +51,7 @@
       404: "Lot non inscrit dans le registre courant. Actualisez les lots.",
       409: "Lot incohérent ou empreinte modifiée. Aucune exploitation autorisée.",
       422: "Paramètres invalides ou types de lots incompatibles.",
-      503: "Registre de revue absent ou invalide. Configuration serveur requise."
+      503: "Revue indisponible : registre ou journal d’audit. Intervention serveur requise."
     };
     var requete = 0;
     async function lire(chemin, recevoir) {

@@ -1,4 +1,4 @@
-# API de revue administrative — lots 6 à 13
+# API de revue administrative — lots 6 à 15
 
 2026-11-06. **Lecture seule de lots en quarantaine ; ni validation ni publication.**
 
@@ -116,7 +116,7 @@ par la simple consultation du registre.
 Statuts : 401 pour jeton inconnu/absent quand le middleware RBAC le demande ;
 403 pour absence d’habilitation nominative ; 404 pour ID non inscrit ; 409 pour
 lot incohérent ou empreinte différente ; 422 pour paramètres/types incompatibles ;
-503 pour registre absent/invalide. Les contrôles du middleware peuvent précéder
+503 pour registre absent/invalide ou audit obligatoire indisponible. Les contrôles du middleware peuvent précéder
 ces statuts. Les routes n’exposent ni PDF brut ni fichier de configuration.
 
 Aucun endpoint POST/PUT/PATCH/DELETE de revue. Pas de route `validate`, d’import
@@ -129,8 +129,10 @@ ajoute une interface dans la coque UniOCR, sans UI séparée ni droits suppléme
 
 Les événements `revue_douaniere` et `revue_douaniere_acces_refuse` réutilisent
 l’audit JSONL existant : acteur, opération, IDs de lots et statut. Ils n’enregistrent
-ni jeton, ni requête de recherche, ni texte d’article. Ce journal reste **best-effort**,
-non WORM ; un échec d’audit n’est pas une validation juridique implicite.
+ni jeton, ni requête de recherche, ni texte d’article. Depuis le [lot 15](AUDIT_REVUE.md), les succès de ce routeur exigent un append
+et une synchronisation locale réussis avant remise de la réponse ; sinon 503 sans
+résultat. Les événements de succès incluent les manifestes épinglés. Les refus et
+le middleware restent best-effort ; aucun WORM ou accusé de livraison garanti.
 Les journaux HTTP du serveur/proxy peuvent contenir les paramètres de l’URL :
 leur configuration et leur rétention doivent être adaptées au déploiement.
 

@@ -24,12 +24,21 @@ from ..customs_reference.review_registry import (
 from ..customs_reference.search import ParamRechercheInvalide, rechercher_code, rechercher_tarif
 from ..customs_reference.tariff_detail import ParamFicheTarifInvalide, consulter_code
 from ..customs_reference.tariff_tree import ParamArbreTarifInvalide, parcourir_tarif
+from ..logging_setup import AuditIndisponible
 
 NO_STORE = {"Cache-Control": "no-store"}
 
 
 def creer_router_revue(autoriser, chemin_registre, tracer):
     router = APIRouter(prefix="/api/v1/customs-review", tags=["customs-review"])
+
+    def tracer_operation(obligatoire=False, **champs):
+        try:
+            tracer(**champs)
+        except AuditIndisponible:
+            if obligatoire:
+                raise HTTPException(503, {"code": "audit_revue_indisponible"}, headers=NO_STORE) from None
+            # Ne pas transformer un refus d'accès ou de lot en succès si l'audit échoue.
 
     def executer(utilisateur, operation, ids, action):
         try:
@@ -56,8 +65,7 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                             else [resultat["archives"]["avant"], resultat["archives"]["apres"]])
                 if any(archive["manifest_sha256"] != entree.manifest_sha256 for archive, entree in zip(archives, entrees)):
                     raise ValueError("Manifeste lu différent de l'empreinte épinglée")
-            tracer(operation=operation, acteur=utilisateur.nom, lots=ids, statut=200)
-            return JSONResponse({"lecture_seule": True, "publication_active": False,
+            reponse = JSONResponse({"lecture_seule": True, "publication_active": False,
                                  "validation_juridique": "non_validee", "perimetre": "revue_administrative_quarantaine",
                                  "resultat": resultat}, headers=NO_STORE)
         except ParamArticleInvalide:
@@ -73,11 +81,17 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
         except RegistreRevueIndisponible:
             statut, code = 503, "registre_revue_indisponible"
         except HTTPException as exc:
-            tracer(operation=operation, acteur=utilisateur.nom, lots=ids, statut=exc.status_code)
+            tracer_operation(operation=operation, acteur=utilisateur.nom, lots=ids, statut=exc.status_code)
             raise
         except (OSError, ValueError, KeyError, TypeError, RecursionError):
             statut, code = 409, "lot_revue_incoherent_ou_empreinte_modifiee"
-        tracer(operation=operation, acteur=utilisateur.nom, lots=ids, statut=statut)
+        else:
+            # Réponse sérialisée avant l'événement ; aucun contenu métier libéré si
+            # l'append/synchronisation échoue. Cela ne garantit pas sa livraison réseau.
+            tracer_operation(obligatoire=True, operation=operation, acteur=utilisateur.nom, lots=ids, statut=200,
+                             manifestes={lot.id: lot.manifest_sha256 for lot in entrees})
+            return reponse
+        tracer_operation(operation=operation, acteur=utilisateur.nom, lots=ids, statut=statut)
         # Ni chemin local ni texte de validation ni contenu de document dans l'erreur.
         raise HTTPException(statut, {"code": code}, headers=NO_STORE)
 
