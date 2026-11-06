@@ -1,4 +1,4 @@
-# Mission référentiels douaniers — lots 1–7 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–8 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
@@ -191,6 +191,13 @@ Aucun compte ni registre n’est créé automatiquement sur le poste.
 quarantaine présente n’est pas omise silencieusement : l’opération est refusée.
 Destination de copies dédiée ; reprise sans quarantaine préexistante, même avec
 `--force`. Les octets et épingles sont conservés, pas une validité réglementaire.
+
+## Interface de revue (lot 8)
+
+Dans Administration → Revue douanière · quarantaine : liste, contrôle, recherche
+et comparaison via l’API stricte existante. Lecture seule ; aucune habilitation
+accordée par le menu. [Guide](INTERFACE_REVUE.md), [rapport](RAPPORT_LOT8.md).
+Rapports JSON sûrs, pas de corpus de démonstration ou d’édition réglementaire.
 
 ## Intégration future, sans double source de vérité
 

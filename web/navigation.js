@@ -200,6 +200,7 @@
         { key: 'connectors', title: 'Connecteurs API', route: '#admin/connecteurs-api', icon: 'plug' },
         { key: 'workflows', title: 'Workflows', route: '#admin/workflows', icon: 'git-branch' },
         { key: 'referentiels', title: 'Référentiels', route: '#admin/referentiels', icon: 'book-open' },
+        { key: 'customs-review', title: 'Revue douanière · quarantaine', route: '#admin/revue-douaniere', icon: 'book-open' },
         { key: 'audit', title: 'Journal d\'audit', route: '#admin/journal', icon: 'scroll-text' },
         { key: 'backups', title: 'Sauvegardes', route: '#admin/sauvegardes', icon: 'save' }
       ]
@@ -678,6 +679,7 @@
       'referentiels/parametres-metier': 'tab-ecran',
       'referentiels/parametres': 'tab-ecran',
       'referentiels/types-documents': 'tab-ecran',
+      'admin/revue-douaniere': 'tab-customs-review',
       'admin/permissions': 'tab-ecran',
       'admin/equipes': 'tab-ecran',
       'admin/referentiels': 'tab-ecran',

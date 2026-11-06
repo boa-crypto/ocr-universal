@@ -106,7 +106,8 @@ ces statuts. Les routes n’exposent ni PDF brut ni fichier de configuration.
 Aucun endpoint POST/PUT/PATCH/DELETE de revue. Pas de route `validate`, d’import
 HTTP, d’inscription de lot, de publication ou de calcul. Les API publiques
 `customs-code/articles`, `tariff/codes` et la classification restent distinctes,
-non livrées comme référentiel officiel par cette étape. Aucune UI séparée ajoutée.
+non livrées comme référentiel officiel par cette étape. Le [lot 8](INTERFACE_REVUE.md)
+ajoute une interface dans la coque UniOCR, sans UI séparée ni droits supplémentaires.
 
 ## Audit et limites
 
