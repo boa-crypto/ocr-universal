@@ -17,6 +17,7 @@
 [Lot 13 : lecture individuelle des versions d’articles](RAPPORT_LOT13.md), 2026-11-06.
 [Lot 14 : navigation assistée dans les résultats](RAPPORT_LOT14.md), 2026-11-06.
 [Lot 15 : audit obligatoire des succès de revue](RAPPORT_LOT15.md), 2026-11-06.
+[Lot 16 : export du rapport/page non validé](RAPPORT_LOT16.md), 2026-11-06.
 Le présent document conserve les résultats historiques du lot 1.
 
 ## Complétude réelle

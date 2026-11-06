@@ -218,7 +218,7 @@ await scenario('histoire propose versions et contexte sans doublon', async({host
   reponse(envelope({type_rapport:'historique_documentaire_article',versions_meme_numero:[{id:'V1'}],
     articles_contexte_relations:[{id:'V1'},{id:'MODIF_7'}]}));
   button('Afficher l’historique').click(); await tick();
-  const textes=[...host.querySelector('[data-review-actions]').querySelectorAll('button')].map(b=>b.textContent);
+  const textes=[...host.querySelector('[data-review-actions]').querySelectorAll('button')].map(b=>b.textContent).filter(t=>t.startsWith('Lire la version'));
   assert.deepEqual(textes,['Lire la version V1','Lire la version MODIF_7']);
 });
 await scenario('résultat tarifaire ouvre une fiche sans perdre les zéros', async({w,host,appels,button,reponse})=>{
@@ -288,6 +288,29 @@ await scenario('audit indisponible : 503 efface texte et actions, message serveu
   assert.equal(host.querySelector('pre').textContent,''); assert.equal(host.querySelector('[data-article-fragment]').textContent,'');
   assert.equal(host.querySelector('[data-review-actions]').textContent,''); assert.equal(host.querySelector('select'),null);
   assert(status().includes('journal d’audit')); assert(!host.textContent.includes('/NE/PAS/AFFICHER'));
+});
+await scenario('export relit le serveur et conserve provenance sans jeton', async({w,host,appels,button,reponse})=>{
+  let blob, nom;
+  w.URL.createObjectURL=b=>{blob=b; return 'blob:test';}; w.URL.revokeObjectURL=()=>{};
+  w.HTMLAnchorElement.prototype.click=function(){nom=this.download;};
+  reponse(envelope({version:'ANCIENNE',archive:{manifest_sha256:'a'.repeat(64)}}));
+  button('Contrôler').click(); await tick(); const chemin=appels.at(-1).url;
+  reponse(envelope({version:'FRAICHE',archive:{manifest_sha256:'b'.repeat(64)}}));
+  button('Exporter ce rapport').click(); await tick();
+  assert.equal(appels.at(-1).url,chemin); assert.equal(nom,'uniocr-revue-non-validee.json'); assert(blob);
+  const texte=await new Promise((resolve,reject)=>{const r=new w.FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsText(blob);});
+  const rep=JSON.parse(texte); assert.equal(rep.resultat.version,'FRAICHE'); assert.equal(rep.publication_active,false);
+  assert.equal(rep.validation_juridique,'non_validee'); assert(!texte.includes('JETON-TEST-NON-PRODUCTION'));
+});
+await scenario('export refusé par audit ou droits sans fichier', async({w,host,button,reponse})=>{
+  let fichiers=0; w.URL.createObjectURL=()=>{fichiers++; return 'blob:test';};
+  reponse(envelope({rapport:'TEST'})); button('Contrôler').click(); await tick();
+  reponse({detail:'INTERNE SECRET'},503); button('Exporter ce rapport').click(); await tick();
+  assert.equal(fichiers,0); assert.equal(host.querySelector('[data-review-actions]').textContent,'');
+});
+await scenario('ancien bouton export inerte après remplacement', async({host,appels,button,reponse})=>{
+  reponse(envelope({rapport:'TEST'})); button('Contrôler').click(); await tick(); const ancien=button('Exporter ce rapport');
+  button('Contrôler').click(); await tick(); const n=appels.length; ancien.click(); await tick(); assert.equal(appels.length,n);
 });
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

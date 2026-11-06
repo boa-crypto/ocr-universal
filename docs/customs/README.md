@@ -1,4 +1,4 @@
-# Mission référentiels douaniers — lots 1–15 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–16 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
@@ -249,6 +249,12 @@ URL source suivie ou validation implicite. Pas de corpus de démonstration insta
 Un résultat HTTP réussi exige l’écriture/synchronisation locale de son événement
 et de ses épingles ; sinon 503 sans contenu métier. Refus/middleware toujours
 best-effort. Ni WORM, ni exactly-once ou validation juridique.
+
+## Export de rapport non validé (lot 16)
+
+[Guide](EXPORT_REVUE.md), [rapport](RAPPORT_LOT16.md).
+Export JSON du rapport/page courant après relecture par l’API et audit obligatoire.
+Aucun export complet du corpus, original PDF, validation ou publication implicite.
 
 ## Intégration future, sans double source de vérité
 

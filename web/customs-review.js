@@ -78,6 +78,26 @@
           throw new Error("Réponse de revue inattendue, non affichée.");
         }
         recevoir(donnees.resultat);
+        if (chemin !== "/lots") {
+          actions.append(bouton("Exporter ce rapport JSON non validé", function () {
+            if (!actuel() || numero !== requete) return;
+            lire(chemin, function (rep) {
+              afficher(rep);
+              var contenu = JSON.stringify({schema_version: "1", type_export: "rapport_revue_documentaire_non_valide",
+                lecture_seule: true, publication_active: false, validation_juridique: "non_validee",
+                perimetre: "rapport_ou_page_uniquement_pas_corpus_complet", horodatage_client_non_certifie: new Date().toISOString(),
+                requete_relative: BASE + chemin, resultat: rep}, null, 2);
+              var blob = new Blob([contenu], {type: "application/json;charset=utf-8"});
+              if (blob.size > 10 * 1024 * 1024) throw new Error("Rapport trop volumineux pour cet export (10 Mio maximum).");
+              var url = URL.createObjectURL(blob);
+              try {
+                var lien = element("a"); lien.href = url; lien.download = "uniocr-revue-non-validee.json";
+                host.append(lien); try { lien.click(); } finally { lien.remove(); }
+              } finally { window.setTimeout(function () { URL.revokeObjectURL(url); }, 1000); }
+              statut.textContent = "Téléchargement demandé — rapport non validé, non publié, pas corpus complet.";
+            });
+          }));
+        }
       } catch (e) {
         if (!actuel() || numero !== requete) return;
         if (e.acces) effacer();

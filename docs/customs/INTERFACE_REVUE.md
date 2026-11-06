@@ -1,4 +1,4 @@
-# Interface de revue douanière — lots 8 à 15
+# Interface de revue douanière — lots 8 à 16
 
 2026-11-06. **Lecture seule, quarantaine, non validée juridiquement, non publiée.**
 
@@ -38,12 +38,13 @@ Le texte est inséré comme texte DOM, pas comme HTML ; les résultats ont une
 direction automatique FR/AR et une zone défilable. Ce premier écran n’est pas
 un éditeur ou une visionneuse du PDF, ni une restitution consolidée à date.
 Aucun bouton d’import, de validation humaine, de publication ou de calcul.
-Pas d’export documentaire ajouté.
+[Export du rapport/page non validé ajouté au lot 16](EXPORT_REVUE.md), après
+relecture protégée ; aucun export complet ou publication.
 
 L’[historique documentaire du lot 9](HISTORIQUE_DOCUMENTAIRE.md) ajoute un bouton
 pour le numéro d’article exact, les sources/dates déclarées et les relations
 justifiées. Paginations indépendantes pour versions et relations ; aucun texte
-applicable ou lien juridique inféré. Coque service worker désormais version 47.
+applicable ou lien juridique inféré. Coque service worker désormais version 48.
 
 La [fiche tarifaire du lot 10](FICHE_TARIFAIRE.md) présente un code dix chiffres
 exact, sa hiérarchie reçue et ses mesures déclarées. Aucun taux applicable n’est
@@ -79,7 +80,7 @@ Requêtes relatives de même origine, GET uniquement, jeton personnel existant,
 `cache: no-store`. Pas de nouvelle persistance des documents dans localStorage,
 sessionStorage ou un cache applicatif. Le service worker conserve seulement la
 coque et continue d’exclure les API. La nouvelle ressource statique est incluse
-au précache de coque version 47. Une panne réseau ne donne aucun résultat métier
+au précache de coque version 48. Une panne réseau ne donne aucun résultat métier
 hors ligne.
 
 Navigation/départ de page : la zone documentaire est vidée ; les réponses
@@ -97,7 +98,7 @@ best-effort, aucun WORM ; stockage et gouvernance du serveur à sécuriser sépa
 
 ## Qualification reproductible
 
-- `npm ci` puis `npm run ui:customs-review` : **37 scénarios JSDOM** de contrat,
+- `npm ci` puis `npm run ui:customs-review` : **40 scénarios JSDOM** de contrat,
   avec réponses explicitement NON OFFICIELLES, isolées et jamais livrées au client.
 - `pytest tests/test_customs_review_ui.py` : intégration JSDOM → pont HTTP éphémère
   → véritable TestClient/middleware/API, avec lots et comptes de test temporaires.
