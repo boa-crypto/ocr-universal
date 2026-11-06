@@ -1,4 +1,4 @@
-# Mission référentiels douaniers — lots 1–16 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–17 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
@@ -255,6 +255,13 @@ best-effort. Ni WORM, ni exactly-once ou validation juridique.
 [Guide](EXPORT_REVUE.md), [rapport](RAPPORT_LOT16.md).
 Export JSON du rapport/page courant après relecture par l’API et audit obligatoire.
 Aucun export complet du corpus, original PDF, validation ou publication implicite.
+
+## Contrôle hors ligne des exports (lot 17)
+
+[Guide CLI](CONTROLE_EXPORT_REVUE.md), [rapport](RAPPORT_LOT17.md),
+[schéma d’enveloppe](schemas/ExportRevue.schema.json).
+`customs-review-export-check FICHIER` : structure compatible ou refus, sans import,
+authentification du document ou validation juridique.
 
 ## Intégration future, sans double source de vérité
 

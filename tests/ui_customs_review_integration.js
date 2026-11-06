@@ -95,6 +95,7 @@ const {JSDOM} = require('jsdom');
   const avantExport=appels.length; bouton('Exporter ce rapport').click(); await attendre(()=>!!exportBlob);
   assert.equal(appels.length,avantExport+1);
   const texteExport=await new Promise((resolve,reject)=>{const r=new w.FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsText(exportBlob);});
+  console.log('EXPORT_REEL_JSON='+JSON.stringify(JSON.parse(texteExport)));
   const rapportExporte=JSON.parse(texteExport);
   assert.equal(rapportExporte.resultat.ligne_declaree.code_tarifaire_10,'0101000000');
   assert.equal(rapportExporte.publication_active,false); assert(rapportExporte.resultat.archive.manifest_sha256);

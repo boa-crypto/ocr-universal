@@ -9,6 +9,7 @@ import pytest
 
 from tests import test_customs_review
 from tests.test_customs_reference import snapshot
+from unocr.customs_reference.review_export import analyser_export
 
 revue = test_customs_review.revue
 
@@ -42,6 +43,12 @@ def test_interface_revue_sur_api_reelle(revue):
             cwd=root, capture_output=True, text=True, timeout=30,
         )
         assert resultat.returncode == 0, resultat.stdout + resultat.stderr
+        exports = [ligne.removeprefix("EXPORT_REEL_JSON=") for ligne in resultat.stdout.splitlines()
+                   if ligne.startswith("EXPORT_REEL_JSON=")]
+        assert len(exports) == 1
+        constat = analyser_export(exports[0].encode("utf-8"))
+        assert constat["statut"] == "structure_compatible"
+        assert constat["authenticite_verifiee"] is False
         assert snapshot(racine) == avant
     finally:
         serveur.shutdown()

@@ -39,6 +39,12 @@ avec leurs compteurs/décalages. Aucune pagination automatique, concaténation g
 collecte de tous les lots ou téléchargement d’originaux/PDF. Ce fichier n’est pas
 une sauvegarde/reprise de quarantaine ; utiliser le guide du lot 7 pour cela.
 
+## Contrôle local après téléchargement (lot 17)
+
+[CLI et schéma de contrôle](CONTROLE_EXPORT_REVUE.md) : contrôle de structure
+sans import, comparaison aux archives ou authentification du fichier. Un code 0
+ne certifie ni son origine, ni sa remise, ni sa validité réglementaire.
+
 ## Audit, stockage et limites
 
 La relecture est auditée sous son opération existante. Il n’y a pas de nouvel

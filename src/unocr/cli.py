@@ -268,6 +268,10 @@ def main(argv=None) -> int:
     ca.add_argument("--offset", type=int, default=0)
     ca.set_defaults(func=cmd_customs_code_read)
 
+    ve = sub.add_parser("customs-review-export-check", help="contrôler hors ligne la structure d'un export, sans authentification")
+    ve.add_argument("file", help="export JSON non validé de 10 Mio maximum")
+    ve.set_defaults(func=cmd_customs_review_export_check)
+
     args = parser.parse_args(argv)
     return args.func(args)
 
@@ -322,6 +326,12 @@ def cmd_customs_code_search(args) -> int:
 
     return _afficher_lecture_douaniere(lambda chemin: rechercher_code(chemin, args.query, args.limit, args.offset,
                                        args.article, args.source, args.nature), args.lot)
+
+
+def cmd_customs_review_export_check(args) -> int:
+    from .customs_reference.review_export import verifier_export
+
+    return _afficher_lecture_douaniere(verifier_export, args.file)
 
 
 def cmd_customs_code_read(args) -> int:
