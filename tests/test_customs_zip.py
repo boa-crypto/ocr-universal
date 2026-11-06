@@ -93,7 +93,7 @@ def test_membre_dangereux_meme_non_selectionne(nom):
 
 
 @pytest.mark.parametrize("options", [{}, {"membre_zip": "absent", "format_contenu": "csv"},
-    {"membre_zip": "source.csv", "format_contenu": "zip"}, {"membre_zip": "source.csv", "format_contenu": "xls"},
+    {"membre_zip": "source.csv", "format_contenu": "zip"}, {"membre_zip": "source.csv", "format_contenu": "xlsb"},
     {"membre_zip": "source.csv", "format_contenu": "pdf"}, {"membre_zip": "source.csv", "format_contenu": None},
     {"membre_zip": "../source.csv", "format_contenu": "csv"}, {"membre_zip": True, "format_contenu": "csv"}])
 def test_selection_explicitement_requise(options):

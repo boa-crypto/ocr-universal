@@ -11,7 +11,7 @@ MAX_MEMBRES = 256
 MAX_MEMBRE = 64 * 1024 * 1024
 MAX_TOTAL = 128 * 1024 * 1024
 MAX_RATIO = 200
-FORMATS = {"csv", "json", "xlsx", "xml"}
+FORMATS = {"csv", "json", "xlsx", "xls", "xml"}
 
 
 class ZIPRefuse(ValueError):
@@ -32,7 +32,7 @@ def lire_zip(original: bytes, configuration: dict) -> tuple[bytes, dict]:
     membre, format_contenu = configuration.get("membre_zip"), configuration.get("format_contenu")
     _nom(membre)
     if not isinstance(format_contenu, str) or format_contenu not in FORMATS:
-        raise ZIPRefuse("Format du membre requis : csv, json, xlsx ou xml")
+        raise ZIPRefuse("Format du membre requis : csv, json, xlsx, xls ou xml")
     if type(original) is not bytes or not 0 < len(original) <= MAX_ARCHIVE:
         raise ZIPRefuse("Archive ZIP vide ou dépassant 64 Mio")
     # Pas d'auto-détection d'un exécutable auto-extractible ou d'un autre format.

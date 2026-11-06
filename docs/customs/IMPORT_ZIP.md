@@ -8,7 +8,7 @@ Le sidecar de `customs-prepare` déclare `lot.source.format="zip"` et le SHA256
 exact du **ZIP reçu**. Deux options sont obligatoires :
 
 - `membre_zip` : nom relatif exact dans l’archive (sensible à la casse), sans glob ;
-- `format_contenu` : `csv`, `json`, `xlsx` ou `xml`.
+- `format_contenu` : `csv`, `json`, `xlsx`, `xls` ou `xml`.
 
 Le mapping et les options s’appliquent au format du membre : `colonnes`/délimiteur
 pour CSV, lignes structurées avec références déjà présentes pour JSON, feuille et
@@ -63,8 +63,8 @@ Les tailles/ratios déclarés ne garantissent pas une consommation globale de m�
 ou temps constante. Le ZIP original est conservé comme source non fiable, pas
 assaini. Le lecteur n’est pas un antivirus, bac à sable OS, déchiffreur ou preuve
 éditeur. Le XLSX sélectionné reste un paquet interne contrôlé par son adaptateur ;
-aucune récursion générique ZIP→ZIP n’est permise. XLS et PDF tarifaire ne sont pas
-qualifiés. Une archive nationale réelle pourra nécessiter un autre contrat explicite.
+aucune récursion générique ZIP→ZIP n’est permise. Le [XLS textuel BIFF8](IMPORT_XLS.md) est pris en charge au lot 20 ; le PDF
+tarifaire reste non qualifié. Une archive nationale réelle pourra nécessiter un autre contrat explicite.
 
 **Code retour 0 = préparation techniquement admissible seulement**, ni officiel,
 complet, applicable ou juridiquement validé. [Qualification](RAPPORT_LOT19.md).

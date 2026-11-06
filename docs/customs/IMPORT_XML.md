@@ -42,7 +42,7 @@ mapping (null pour certains champs facultatifs, refus pour un code obligatoire).
 L’adaptateur est volontairement **non générique** : pas de XSD officiel, XPath,
 XML hiérarchique national, transformation XSLT ou archive ZIP. Un document officiel
 hors contrat devra faire l’objet d’un adaptateur explicite et de tests sur ce format,
-pas d’une conversion silencieuse. XLS et PDF tarifaire restent non qualifiés. Au lot 19, un XML peut être sélectionné
+pas d’une conversion silencieuse. Le [XLS textuel BIFF8](IMPORT_XLS.md) est ajouté au lot 20 ; le PDF tarifaire reste non qualifié. Au lot 19, un XML peut être sélectionné
 explicitement dans un [ZIP reçu](IMPORT_ZIP.md), sans extraction sur disque.
 
 ## Commandes et conservation
