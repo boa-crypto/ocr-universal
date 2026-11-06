@@ -30,7 +30,7 @@ mapping (null pour certains champs facultatifs, refus pour un code obligatoire).
 - DTD, entités **déclarées**, références externes, commentaires et instructions de
   traitement refusés ; aucune résolution réseau ou lecture d’une cible externe.
 - Attributs, espaces de noms, champs imbriqués, contenu mixte et autre encodage
-  refusés. Options CSV/XLSX interdites pour XML ; options XML interdites hors XML.
+  refusés. Options CSV/XLSX interdites pour la lecture XML ; options XML interdites hors lecture XML.
 - Entités XML prédéfinies (`&amp;`, etc.), références numériques et CDATA sont
   interprétées comme texte par XML 1.0. Les fins de ligne suivent la normalisation
   XML : les valeurs ne prétendent donc pas être des sous-chaînes octet à octet.
@@ -42,7 +42,8 @@ mapping (null pour certains champs facultatifs, refus pour un code obligatoire).
 L’adaptateur est volontairement **non générique** : pas de XSD officiel, XPath,
 XML hiérarchique national, transformation XSLT ou archive ZIP. Un document officiel
 hors contrat devra faire l’objet d’un adaptateur explicite et de tests sur ce format,
-pas d’une conversion silencieuse. XLS, PDF tarifaire et ZIP restent non qualifiés.
+pas d’une conversion silencieuse. XLS et PDF tarifaire restent non qualifiés. Au lot 19, un XML peut être sélectionné
+explicitement dans un [ZIP reçu](IMPORT_ZIP.md), sans extraction sur disque.
 
 ## Commandes et conservation
 

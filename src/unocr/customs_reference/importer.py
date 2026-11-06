@@ -1,4 +1,4 @@
-"""Préparation locale CSV/JSON/XLSX/XML, sans activation ni inférence réglementaire."""
+"""Préparation locale CSV/JSON/XLSX/XML/ZIP, sans activation ni inférence réglementaire."""
 from __future__ import annotations
 
 import csv
@@ -11,6 +11,7 @@ from pathlib import Path
 from .models import LigneTarifaire, TariffBatch
 from .tabular import lire_xlsx
 from .xml_table import lire_xml
+from .zip_source import lire_zip
 
 MAX_SOURCE = 64 * 1024 * 1024
 
@@ -84,7 +85,7 @@ def _analyser_tarif(source: Path, metadata: Path):
 
 def _analyser_contenu(original: bytes, metadata_original: bytes):
     configuration = _json(metadata_original)
-    if not isinstance(configuration, dict) or set(configuration) - {"lot", "colonnes", "delimiteur", "feuille", "ligne_entete", "racine_xml", "ligne_xml"}:
+    if not isinstance(configuration, dict) or set(configuration) - {"lot", "colonnes", "delimiteur", "feuille", "ligne_entete", "racine_xml", "ligne_xml", "membre_zip", "format_contenu"}:
         raise ImportRefuse("Métadonnées attendues : lot, colonnes et options de lecteur déclarées")
     lot = configuration["lot"]
     if "lignes" in lot:
@@ -95,21 +96,28 @@ def _analyser_contenu(original: bytes, metadata_original: bytes):
     format_source = lot["source"]["format"]
     colonnes_non_importees = []
     perimetre = {"format": format_source}
-    if format_source != "xlsx" and ({"feuille", "ligne_entete"} & set(configuration)):
-        raise ImportRefuse("Options de feuille interdites hors XLSX")
-    if format_source != "xml" and ({"racine_xml", "ligne_xml"} & set(configuration)):
+    format_lecture, contenu_source = format_source, original
+    if format_source == "zip":
+        contenu_source, perimetre_zip = lire_zip(original, configuration)
+        perimetre.update(perimetre_zip)
+        format_lecture = perimetre_zip["format_contenu"]
+    elif {"membre_zip", "format_contenu"} & set(configuration):
+        raise ImportRefuse("Options ZIP interdites hors ZIP")
+    if format_lecture != "xlsx" and ({"feuille", "ligne_entete"} & set(configuration)):
+        raise ImportRefuse("Options de feuille interdites hors lecture XLSX")
+    if format_lecture != "xml" and ({"racine_xml", "ligne_xml"} & set(configuration)):
         raise ImportRefuse("Options XML interdites hors XML")
-    if format_source == "json":
+    if format_lecture == "json":
         if configuration.get("colonnes") or configuration.get("delimiteur"):
             raise ImportRefuse("Mapping CSV interdit pour JSON")
-        lignes = _json(original)
+        lignes = _json(contenu_source)
         if not isinstance(lignes, list):
             raise ImportRefuse("Source JSON : tableau de lignes attendu")
-    elif format_source == "csv":
+    elif format_lecture == "csv":
         delimiteur = configuration.get("delimiteur", ";")
         if not isinstance(delimiteur, str) or len(delimiteur) != 1:
             raise ImportRefuse("Délimiteur CSV unique requis")
-        lecteur = csv.DictReader(io.StringIO(original.decode("utf-8-sig"), newline=""), delimiter=delimiteur, strict=True)
+        lecteur = csv.DictReader(io.StringIO(contenu_source.decode("utf-8-sig"), newline=""), delimiter=delimiteur, strict=True)
         mapping, colonnes_non_importees = _mapping(configuration, lecteur.fieldnames)
         lignes = []
         try:
@@ -120,20 +128,23 @@ def _analyser_contenu(original: bytes, metadata_original: bytes):
                                      f"CSV, fin de ligne physique {lecteur.line_num}"))
         except csv.Error as exc:
             raise ImportRefuse("CSV mal formé ou cellule trop volumineuse") from exc
-    elif format_source == "xlsx":
-        rows, perimetre_xlsx = lire_xlsx(original, configuration)
+    elif format_lecture == "xlsx":
+        rows, perimetre_xlsx = lire_xlsx(contenu_source, configuration)
         mapping, colonnes_non_importees = _mapping(configuration, perimetre_xlsx.pop("headers"))
         perimetre.update(perimetre_xlsx)
         lignes = [_ligne(row, mapping, lot["source"]["id"],
                          f"XLSX, feuille {configuration['feuille']}, ligne {numero}") for numero, row in rows]
-    elif format_source == "xml":
-        rows, perimetre_xml = lire_xml(original, configuration)
+    elif format_lecture == "xml":
+        rows, perimetre_xml = lire_xml(contenu_source, configuration)
         mapping, colonnes_non_importees = _mapping(configuration, perimetre_xml.pop("headers"))
         perimetre.update(perimetre_xml)
         lignes = [_ligne(row, mapping, lot["source"]["id"],
                          f"XML, élément {configuration['ligne_xml']}, ligne physique {numero}") for numero, row in rows]
     else:
-        raise ImportRefuse("Adaptateurs disponibles : CSV/JSON/XLSX/XML. XLS, PDF et ZIP non encore qualifiés")
+        raise ImportRefuse("Adaptateurs disponibles : CSV/JSON/XLSX/XML et ZIP explicite. XLS et PDF non encore qualifiés")
+    if format_source == "zip" and format_lecture != "json":
+        for entree in lignes:
+            entree["reference"]["localisateur"] = f"ZIP, membre {configuration['membre_zip']}, " + entree["reference"]["localisateur"]
     # Validation JSON stricte : les dates ISO sont des dates, jamais les codes
     # numériques transformés en chaînes ou des zéros ajoutés par l'importateur.
     donnees = TariffBatch.model_validate_json(json.dumps({**lot, "lignes": lignes}, ensure_ascii=False, allow_nan=False))

@@ -1,4 +1,4 @@
-# Mission référentiels douaniers — lots 1–18 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–19 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
@@ -20,7 +20,7 @@ Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md)
 - Mesures distinctes de la nomenclature ; champs inconnus = null, pas zéro ni
   absence certaine de restriction. Références/localisateurs requis, mais leur
   existence syntaxique ne prouve pas leur authenticité réglementaire.
-- Préparation locale CSV UTF-8/JSON/XLSX/XML tabulaire, plan sans écriture par défaut ; archive des
+- Préparation locale CSV UTF-8/JSON/XLSX/XML tabulaire et ZIP explicite, plan sans écriture par défaut ; archive des
   octets **reçus**, du sidecar, du lot normalisé et de leurs empreintes dans un
   répertoire neuf. Ce n'est pas encore l'archivage certifié d'un fichier éditeur.
 - Comparaison de lots en quarantaine : empreintes, rejeu de la source et du mapping,
@@ -75,7 +75,7 @@ La source déclare son format, sa version et son SHA256 exact. Taille de chaque
 fichier ≤64 Mio. Les URL HTTPS sont limitées aux domaines documentaires prévus,
 **mais ce contrôle ne certifie pas l'origine des octets remis**.
 
-Fichiers de sortie : `source_recue.csv`, `.json`, `.xlsx` ou `.xml`, `metadata_original.json`,
+Fichiers de sortie : `source_recue.csv`, `.json`, `.xlsx`, `.xml` ou `.zip`, `metadata_original.json`,
 `lot.json`, `rapport.json`, puis `manifest.json` en dernier, avec date d'import UTC
 et empreintes de chaque fichier. Les sources d'origine de l'éditeur qui auraient
 servi à une conversion externe doivent aussi être acquises et liées avant toute
@@ -268,6 +268,12 @@ authentification du document ou validation juridique.
 [Contrat du lecteur XML](IMPORT_XML.md), [rapport](RAPPORT_LOT18.md).
 Même commande `customs-prepare`, mapping et quarantaine ; `racine_xml`/`ligne_xml`
 obligatoires. Pas de DTD, namespace, XSD ou import de prétendu tarif national complet.
+
+## Membre ZIP explicite (lot 19)
+
+[Contrat ZIP](IMPORT_ZIP.md), [rapport](RAPPORT_LOT19.md).
+`membre_zip` et `format_contenu` obligatoires : un membre CSV/JSON/XLSX/XML sans
+extraction sur disque, ZIP reçu archivé et rejoué. Autres membres non validés.
 
 ## Intégration future, sans double source de vérité
 

@@ -186,7 +186,7 @@ def main(argv=None) -> int:
     pa.add_argument("--json", action="store_true", dest="json_output", help="rapport structuré")
     pa.set_defaults(func=cmd_pieces_audit)
 
-    cr = sub.add_parser("customs-prepare", help="préparer un tarif CSV/JSON/XLSX/XML en quarantaine, jamais l'activer")
+    cr = sub.add_parser("customs-prepare", help="préparer un tarif CSV/JSON/XLSX/XML/ZIP en quarantaine, jamais l'activer")
     cr.add_argument("source", help="fichier source local")
     cr.add_argument("--metadata", required=True, help="provenance, hiérarchie et mapping explicites")
     cr.add_argument("--out", default="", help="nouveau répertoire de préparation")
