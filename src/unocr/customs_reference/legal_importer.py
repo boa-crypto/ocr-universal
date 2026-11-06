@@ -11,8 +11,7 @@ from .legal_models import CodeDocumentaireBatch, MetadataCode
 MAX_TOTAL = 128 * 1024 * 1024
 
 
-def preparer_code(transcription: Path, metadata: Path, sortie: Path | None = None) -> dict:
-    texte_recu, metadata_recu = _lire(transcription), _lire(metadata)
+def _analyser_code_contenu(texte_recu: bytes, metadata_recu: bytes, lire_document):
     brut = _json(texte_recu)
     if not isinstance(brut, dict) or set(brut) != {"articles", "relations"}:
         raise ImportRefuse("Transcription JSON attendue : articles et relations, sans source ni activation inline")
@@ -29,7 +28,7 @@ def preparer_code(transcription: Path, metadata: Path, sortie: Path | None = Non
         if nom in noms:
             raise ImportRefuse("Même fichier local déclaré plusieurs fois")
         noms.add(nom)
-        contenu = _lire(metadata.parent / nom)
+        contenu = lire_document(numero, nom)
         taille += len(contenu)
         if taille > MAX_TOTAL:
             raise ImportRefuse("Lot reçu trop volumineux (128 Mio maximum)")
@@ -58,8 +57,15 @@ def preparer_code(transcription: Path, metadata: Path, sortie: Path | None = Non
                            "Signature PDF et SHA256 ne prouvent ni authenticité ni validité structurelle du PDF.",
                            "Relations et chronologie déclarées : aucune portée juridique déduite.",
                            "Aucune consolidation, traduction, abrogation ou date d'effet automatique."],
-        "ecrit": sortie is not None,
+        "ecrit": False,
     }
+    return lot, rapport, fichiers, archives
+
+
+def preparer_code(transcription: Path, metadata: Path, sortie: Path | None = None) -> dict:
+    lot, rapport, fichiers, archives = _analyser_code_contenu(
+        _lire(transcription), _lire(metadata), lambda numero, nom: _lire(metadata.parent / nom))
+    rapport["ecrit"] = sortie is not None
     if sortie is not None:
         fichiers["lot_code.json"] = lot.model_dump_json(indent=2).encode("utf-8")
         fichiers["rapport.json"] = json.dumps(rapport, ensure_ascii=False, indent=2).encode("utf-8")

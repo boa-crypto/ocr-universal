@@ -1,9 +1,9 @@
-# Mission référentiels douaniers — lots 1–3 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–4 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
-[le lot 2](RAPPORT_LOT2.md), [le lot 3 du 6 novembre 2026](RAPPORT_LOT3.md)
-et [le registre documentaire](SOURCES_RECHERCHE.json).
+[le lot 2](RAPPORT_LOT2.md), [le lot 3](RAPPORT_LOT3.md),
+[le lot 4 du 6 novembre 2026](RAPPORT_LOT4.md) et [le registre documentaire](SOURCES_RECHERCHE.json).
 
 ## Livré
 
@@ -155,6 +155,10 @@ Aucun OCR, téléchargement, consolidation ni rapprochement transcription/PDF
 n’est effectué. Les relations doivent être justifiées et sourcées ; aucun lien
 n’est inféré à partir d’une ressemblance ou d’un numéro d’article identique.
 L’archivage seul, avec zéro article transcrit, est possible et signalé comme tel.
+`customs-code-check` vérifie et rejoue un lot archivé ; `customs-code-diff`
+compare ses articles, documents et relations avec un second lot vérifié, sans
+modifier les archives. L’appariement est fondé sur les IDs déclarés, pas sur
+les numéros ni une similarité de texte. Une absence ne signifie pas abrogation.
 **Les octets reçus ne sont pas certifiés originaux de l’éditeur.** Le résultat
 n’est pas une source de vérité applicable et n’est exposé par aucune API métier.
 

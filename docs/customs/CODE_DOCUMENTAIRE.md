@@ -122,6 +122,75 @@ nettoyage automatique. Pas de garantie de coupure électrique, de journal WORM o
 d’immutabilité contre un administrateur. Aucun chargement en référentiel actif.
 
 `customs-diff` est réservé aux lots **tarifaires** et refuse ces lots de Code.
-Le vérificateur/rejeu et le diff des lots de Code, la déduplication inter-lots,
-la reconstruction, la sélection à date et les API de consultation/validation
-ne sont pas livrés dans cette étape. Le manifeste seul ne suffit pas à publier.
+Le vérificateur/rejeu et le diff des lots de Code sont maintenant disponibles
+(lot 4, ci-dessous). La déduplication inter-lots, la reconstruction, la sélection
+à date et les API de consultation/validation restent à développer.
+Le manifeste seul ne suffit pas à publier.
+
+## Vérification et comparaison des archives (lot 4)
+
+```sh
+# Vérifier un lot existant, sans écrire ni modifier les stores :
+PYTHONPATH=src python -m unocr.cli customs-code-check /chemin/lot-code
+
+# Comparer deux lots Code ; les deux doivent passer la vérification complète :
+PYTHONPATH=src python -m unocr.cli customs-code-diff /chemin/code-avant /chemin/code-apres
+```
+
+Le lecteur exige un manifeste Code en quarantaine, `publication_active` exactement
+false, `validation_juridique=non_validee`, un nom de transcription et une date
+machine UTC. Il refuse les archives partielles, liens symboliques directs,
+fichiers manquants ou inattendus, indices de PDF discontinus, chemins non
+reconnus et empreintes invalides. Tous les JSON sont lus avec refus des clés
+dupliquées et constantes non standard. Les modèles sont stricts.
+
+Les octets de chaque archive sont vérifiés puis utilisés **en mémoire** pour
+rejouer la préparation, sans résolution des noms reçus contre le disque d’origine.
+Le lot est donc portable : les originaux hors archive ne sont pas relus. Le rejeu
+contrôle le lot normalisé, le rapport complet (types imbriqués compris) et les
+correspondances de documents du manifeste. Une altération du lot normalisé,
+même re-haché, est refusée si elle diverge de la transcription/sidecar archivés.
+
+La limite de lecture est 64 Mio par fichier et 256 Mio pour l’ensemble des
+archives, manifeste compris, au plus 64 PDF et quatre fichiers de préparation
+plus le manifeste. Un export exceptionnellement volumineux peut dépasser ces
+bornes et sera refusé ; aucune troncature ou admission partielle automatique.
+Le contrôle s’appuie sur les contrats et le lecteur **courants** du dépôt, pas
+sur un certificat de provenance ou un moteur juridique historique.
+
+`customs-code-check` renvoie les compteurs recalculés et
+`integrite_locale=coherente_au_rejeu`, avec `lecture_seule=true`, `ecrit=false`,
+`transcription_verification=non_verifiee` et les empreintes de l’archive.
+Cela signifie seulement que les fichiers concordent localement. Une personne
+capable de modifier et re-hacher **tous** les fichiers peut produire un nouveau
+lot cohérent ; ni authenticité, ni correspondance transcription/PDF, ni WORM
+ne sont établis. La date machine n’est pas un horodatage certifié.
+
+### Lecture du diff
+
+L’appariement se fait par **ID exact déclaré**, séparément pour documents,
+articles et relations. Les numéros d’articles, suffixes, langues et ressemblances
+ne servent jamais à fusionner des versions. Un ID renommé apparaît comme
+ajout/retrait technique, même si les textes ou numéros sont identiques. Un ID
+conservé avec numéro, nature ou version juridique différents est signalé pour revue.
+
+La sortie donne :
+
+- `documents`, `articles`, `relations` : IDs ajoutés/retirés et champs modifiés ;
+- `details_ajouts_retraits` : articles/relations complets, avec références ;
+- `provenances_modifiees` : références primaires déplacées, séparées du contenu ;
+- `sources_declarees`, `archives`, `perimetres` : documents, empreintes et périmètres ;
+- `versions_documentaires_ambigues` : même ID/version documentaire avec PDF différents ;
+- `identites_articles_a_revoir`, `avertissements` : ambiguïtés et limites.
+
+Le texte est comparé exactement, y compris espaces, sauts de ligne et arabe.
+Les changements d’`historique_modifications`, de statut juridique **déclaré** et
+d’`articles_lies` restent des champs documentaires, pas des conclusions juridiques.
+Les périmètres différents déclenchent un avertissement. Une source ou une relation
+retirée n’est pas automatiquement une abrogation. Les verbes des relations restent
+des assertions non validées ; aucune date d’effet ni version applicable n’est choisie.
+
+Code 0 = vérification/comparaison technique effectuée ; code 2 = refus intégral.
+Une comparaison est interrompue si l’un des deux lots échoue, sans résultat partiel
+présenté comme valide. Aucun lot, document, rapport, manifeste ni store n’est modifié.
+Pas de publication, de validation humaine simulée ou de nouvel accès HTTP.

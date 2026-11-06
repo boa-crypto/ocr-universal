@@ -203,6 +203,15 @@ def main(argv=None) -> int:
     cc.add_argument("--write", action="store_true", help="écrire explicitement, sans publication")
     cc.set_defaults(func=cmd_customs_code_prepare)
 
+    ck = sub.add_parser("customs-code-check", help="vérifier et rejouer un lot Code sans le modifier")
+    ck.add_argument("lot", help="répertoire du lot Code préparé")
+    ck.set_defaults(func=cmd_customs_code_check)
+
+    dc = sub.add_parser("customs-code-diff", help="comparer deux lots Code vérifiés sans modification")
+    dc.add_argument("avant", help="premier lot Code")
+    dc.add_argument("apres", help="second lot Code")
+    dc.set_defaults(func=cmd_customs_code_diff)
+
     args = parser.parse_args(argv)
     return args.func(args)
 
@@ -233,6 +242,29 @@ def cmd_pieces_check(args) -> int:
         for anomalie in resultat["anomalies"]:
             print(f"  {anomalie['categorie']} : {anomalie['cible']} — {anomalie['detail']}")
     return {"conforme": 0, "anomalies": 1, "indisponible": 2}[resultat["etat"]]
+
+
+def _afficher_lecture_code(operation, *chemins) -> int:
+    try:
+        resultat = operation(*(Path(chemin) for chemin in chemins))
+    except (OSError, ValueError, KeyError, TypeError, RecursionError) as exc:
+        print(json.dumps({"statut": "refuse", "lecture_seule": True, "publication_active": False,
+                          "validation_juridique": "non_validee", "detail": str(exc)}, ensure_ascii=False))
+        return 2
+    print(json.dumps(resultat, ensure_ascii=False, indent=2))
+    return 0
+
+
+def cmd_customs_code_check(args) -> int:
+    from .customs_reference.legal_comparison import charger_lot_code
+
+    return _afficher_lecture_code(lambda chemin: charger_lot_code(chemin)[1], args.lot)
+
+
+def cmd_customs_code_diff(args) -> int:
+    from .customs_reference.legal_comparison import comparer_lots_code
+
+    return _afficher_lecture_code(comparer_lots_code, args.avant, args.apres)
 
 
 def cmd_customs_code_prepare(args) -> int:
