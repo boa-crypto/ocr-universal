@@ -1,4 +1,4 @@
-# Interface de revue douanière — lots 8 à 12
+# Interface de revue douanière — lots 8 à 13
 
 2026-11-06. **Lecture seule, quarantaine, non validée juridiquement, non publiée.**
 
@@ -43,7 +43,7 @@ Pas d’export documentaire ajouté.
 L’[historique documentaire du lot 9](HISTORIQUE_DOCUMENTAIRE.md) ajoute un bouton
 pour le numéro d’article exact, les sources/dates déclarées et les relations
 justifiées. Paginations indépendantes pour versions et relations ; aucun texte
-applicable ou lien juridique inféré. Coque service worker désormais version 44.
+applicable ou lien juridique inféré. Coque service worker désormais version 45.
 
 La [fiche tarifaire du lot 10](FICHE_TARIFAIRE.md) présente un code dix chiffres
 exact, sa hiérarchie reçue et ses mesures déclarées. Aucun taux applicable n’est
@@ -56,6 +56,10 @@ de publication. Il s’applique aux deux types de lots et ignore les filtres sai
 La [navigation tarifaire du lot 12](NAVIGATION_TARIFAIRE.md) présente les enfants
 directs reçus à chaque niveau, avec parent exact et pagination indépendante.
 Rapport JSON à parcourir par sélection/copie d’ID, pas encore arbre graphique.
+
+La [lecture individuelle du lot 13](LECTURE_ARTICLE.md) affiche une version par
+ID exact et champ explicite, avec métadonnées et fragments textuels FR/AR sans
+interprétation HTML. Plage indépendante et absence de langue conservée sans repli.
 
 ## Erreurs et confidentialité
 
@@ -70,7 +74,7 @@ Requêtes relatives de même origine, GET uniquement, jeton personnel existant,
 `cache: no-store`. Pas de nouvelle persistance des documents dans localStorage,
 sessionStorage ou un cache applicatif. Le service worker conserve seulement la
 coque et continue d’exclure les API. La nouvelle ressource statique est incluse
-au précache de coque version 44. Une panne réseau ne donne aucun résultat métier
+au précache de coque version 45. Une panne réseau ne donne aucun résultat métier
 hors ligne.
 
 Navigation/départ de page : la zone documentaire est vidée ; les réponses
@@ -88,7 +92,7 @@ existant, non WORM ; stockage et gouvernance du serveur à sécuriser séparéme
 
 ## Qualification reproductible
 
-- `npm ci` puis `npm run ui:customs-review` : **26 scénarios JSDOM** de contrat,
+- `npm ci` puis `npm run ui:customs-review` : **28 scénarios JSDOM** de contrat,
   avec réponses explicitement NON OFFICIELLES, isolées et jamais livrées au client.
 - `pytest tests/test_customs_review_ui.py` : intégration JSDOM → pont HTTP éphémère
   → véritable TestClient/middleware/API, avec lots et comptes de test temporaires.

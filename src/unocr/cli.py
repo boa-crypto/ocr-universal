@@ -260,6 +260,14 @@ def main(argv=None) -> int:
     tr.add_argument("--offset", type=int, default=0)
     tr.set_defaults(func=cmd_customs_tariff_tree)
 
+    ca = sub.add_parser("customs-code-read", help="lire une transcription exacte par fragments, sans droit applicable")
+    ca.add_argument("lot", help="lot Code en quarantaine")
+    ca.add_argument("--id", required=True, dest="article_id", help="identifiant exact de version, pas numéro d’article")
+    ca.add_argument("--field", choices=["texte_integral", "texte_francais", "texte_arabe", "texte_origine", "texte_modificatif"], default="texte_integral")
+    ca.add_argument("--limit", type=int, default=4000)
+    ca.add_argument("--offset", type=int, default=0)
+    ca.set_defaults(func=cmd_customs_code_read)
+
     args = parser.parse_args(argv)
     return args.func(args)
 
@@ -314,6 +322,13 @@ def cmd_customs_code_search(args) -> int:
 
     return _afficher_lecture_douaniere(lambda chemin: rechercher_code(chemin, args.query, args.limit, args.offset,
                                        args.article, args.source, args.nature), args.lot)
+
+
+def cmd_customs_code_read(args) -> int:
+    from .customs_reference.article_detail import consulter_article
+
+    return _afficher_lecture_douaniere(lambda chemin: consulter_article(
+        chemin, args.article_id, args.field, args.limit, args.offset), args.lot)
 
 
 def cmd_customs_tariff_tree(args) -> int:

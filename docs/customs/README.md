@@ -1,4 +1,4 @@
-# Mission référentiels douaniers — lots 1–12 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–13 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
@@ -228,6 +228,13 @@ pourcentage de complétude réglementaire ou autorisation de publication/calcul.
 sections → chapitres → positions → SH6 → codes10 reçus, parents exacts et
 pagination. Parent absent et parent présent sans enfant distingués, sans
 complétude nationale ou subdivision intermédiaire inventée.
+
+## Lecture individuelle d’article (lot 13)
+
+[Guide](LECTURE_ARTICLE.md), [rapport](RAPPORT_LOT13.md).
+`customs-code-read`, route de revue `/lots/{id}/article` et groupe intégré :
+version par ID exact, source/métadonnées et texte reçu par fragments. Champs
+FR/AR absents conservés ; aucune traduction, consolidation ou applicabilité inférée.
 
 ## Intégration future, sans double source de vérité
 

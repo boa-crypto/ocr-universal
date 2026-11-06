@@ -5,6 +5,12 @@ from pathlib import Path
 from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import JSONResponse
 
+from ..customs_reference.article_detail import (
+    MAX_DECALAGE_TEXTE,
+    MAX_FRAGMENT,
+    ParamArticleInvalide,
+    consulter_article,
+)
 from ..customs_reference.comparison import charger_lot, comparer_lots
 from ..customs_reference.coverage import diagnostiquer_couverture
 from ..customs_reference.history import ParamHistoriqueInvalide, historique_article
@@ -54,6 +60,8 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
             return JSONResponse({"lecture_seule": True, "publication_active": False,
                                  "validation_juridique": "non_validee", "perimetre": "revue_administrative_quarantaine",
                                  "resultat": resultat}, headers=NO_STORE)
+        except ParamArticleInvalide:
+            statut, code = 422, "parametres_lecture_article_invalides"
         except ParamArbreTarifInvalide:
             statut, code = 422, "parametres_navigation_tarif_invalides"
         except ParamFicheTarifInvalide:
@@ -134,6 +142,17 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 raise HTTPException(422, {"code": "navigation_tarif_non_applicable_au_code_documentaire"}, headers=NO_STORE)
             return parcourir_tarif(p[0], level, parent, limit, offset)
         return executer(utilisateur, "navigation_tarif", [lot_id], lire_arbre)
+
+    @router.get("/lots/{lot_id}/article")
+    def lire_article(lot_id: str, article_id: str = Query(..., min_length=1, max_length=256),
+                     field: str = Query("texte_integral", max_length=32),
+                     limit: int = Query(4000, ge=1, le=MAX_FRAGMENT),
+                     offset: int = Query(0, ge=0, le=MAX_DECALAGE_TEXTE), utilisateur=Depends(autoriser)):
+        def lire_version(e, p, registre):
+            if e[0].type_lot != "code":
+                raise HTTPException(422, {"code": "lecture_article_non_applicable_au_tarif"}, headers=NO_STORE)
+            return consulter_article(p[0], article_id, field, limit, offset)
+        return executer(utilisateur, "lecture_article", [lot_id], lire_version)
 
     @router.get("/diff")
     def comparer(avant: str = Query(..., pattern=IDENTIFIANT), apres: str = Query(..., pattern=IDENTIFIANT),

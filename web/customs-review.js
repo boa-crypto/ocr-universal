@@ -27,11 +27,15 @@
     var resultat = element("pre", "", "customs-review-result");
     resultat.setAttribute("dir", "auto");
     resultat.tabIndex = 0;
+    var extrait = element("pre", "", "customs-review-result");
+    extrait.setAttribute("dir", "auto"); extrait.setAttribute("data-article-fragment", "");
+    extrait.tabIndex = 0; extrait.hidden = true;
     var outils = element("div", undefined, "ecran__formulaire");
     var recharger = bouton("Actualiser les lots", ouvrir);
-    host.append(recharger, statut, outils, resultat);
+    host.append(recharger, statut, outils, resultat, extrait);
+    function viderResultat() { resultat.textContent = ""; extrait.textContent = ""; extrait.hidden = true; }
     function actuel() { return tour === generation && window.location.hash === ROUTE; }
-    function effacer() { outils.replaceChildren(); resultat.textContent = ""; }
+    function effacer() { outils.replaceChildren(); viderResultat(); }
     function bouton(texte, action) {
       var b = element("button", texte, "btn ghost sm");
       b.type = "button";
@@ -49,7 +53,7 @@
     var requete = 0;
     async function lire(chemin, recevoir) {
       var numero = ++requete;
-      resultat.textContent = "";
+      viderResultat();
       statut.textContent = "Chargement…";
       try {
         if (courant !== token()) { effacer(); throw new Error("Compte modifié : actualisez les lots."); }
@@ -87,6 +91,9 @@
     }
     function afficher(rep) {
       resultat.textContent = JSON.stringify(rep, null, 2);
+      if (rep.type_rapport === "lecture_article_documentaire" && typeof rep.fragment === "string") {
+        extrait.textContent = rep.fragment; extrait.hidden = false;
+      }
       statut.textContent = "Résultat technique — non validé juridiquement, non publié.";
     }
     lire("/lots", function (rep) {
@@ -123,7 +130,7 @@
         var a = rep.lots.find(function (v) { return v.id === lot.value; });
         var b = rep.lots.find(function (v) { return v.id === apres.value; });
         if (!a || !b || a.type_lot !== b.type_lot) {
-          ++requete; resultat.textContent = "";
+          ++requete; viderResultat();
           statut.textContent = "Comparaison refusée : choisissez deux lots de même type."; return;
         }
         lire("/diff?" + new URLSearchParams({avant: lot.value, apres: apres.value}), afficher);
@@ -144,7 +151,8 @@
         histoire.disabled = filtres.disabled;
         fiche.disabled = !filtres.disabled;
         arbre.disabled = !filtres.disabled;
-        ++requete; resultat.textContent = "";
+        lecture.disabled = filtres.disabled;
+        ++requete; viderResultat();
       }
       var limit = champ(form, "Limite (1–100)", "input", "number");
       limit.min = 1; limit.max = 100; limit.value = 20; limit.required = true;
@@ -172,7 +180,7 @@
       histoire.append(bouton("Afficher l’historique documentaire", function () {
         if (histoire.disabled || !form.reportValidity()) return;
         if (!article.value.trim()) {
-          ++requete; resultat.textContent = "";
+          ++requete; viderResultat();
           statut.textContent = "Numéro d’article exact requis pour l’historique."; return;
         }
         var params = new URLSearchParams({article: article.value, limit: limit.value, offset: offset.value,
@@ -194,7 +202,7 @@
       fiche.append(bouton("Consulter la fiche tarifaire", function () {
         if (fiche.disabled) return;
         if (!/^[0-9]{10}$/.test(code10.value)) {
-          ++requete; resultat.textContent = "";
+          ++requete; viderResultat();
           statut.textContent = "Code exact de dix chiffres ASCII requis, sans conversion."; return;
         }
         if (!measureLimit.reportValidity() || !measureOffset.reportValidity()) return;
@@ -215,7 +223,7 @@
       treeParent.setAttribute("data-tree-parent", "");
       function adapterNiveau() {
         treeParent.disabled = level.value === "sections";
-        ++requete; resultat.textContent = "";
+        ++requete; viderResultat();
       }
       level.addEventListener("change", adapterNiveau); adapterNiveau();
       var treeLimit = champ(arbre, "Enfants par page (1–100)", "input", "number");
@@ -225,15 +233,37 @@
       arbre.append(bouton("Parcourir la hiérarchie tarifaire", function () {
         if (arbre.disabled || !treeLimit.reportValidity() || !treeOffset.reportValidity()) return;
         if (level.value !== "sections" && !treeParent.value.trim()) {
-          ++requete; resultat.textContent = "";
+          ++requete; viderResultat();
           statut.textContent = "ID ou code parent exact requis pour ce niveau."; return;
         }
         var params = new URLSearchParams({level: level.value, limit: treeLimit.value, offset: treeOffset.value});
         if (level.value !== "sections") params.set("parent", treeParent.value);
         lire("/lots/" + encodeURIComponent(lot.value) + "/tree?" + params, afficher);
       }));
+      var lecture = element("fieldset");
+      lecture.append(element("legend", "Lire une version d’article — Code seulement"));
+      lecture.append(element("p", "ID exact de version issu de la recherche/histoire, pas numéro d’article. " +
+        "Un champ de langue absent reste absent. Utiliser le décalage suivant retourné, sans compter en unités UTF-16."));
+      var readId = champ(lecture, "Identifiant exact de version"); readId.maxLength = 256; readId.setAttribute("data-read-id", "");
+      var readField = champ(lecture, "Champ transcrit", "select"); readField.setAttribute("data-read-field", "");
+      ["texte_integral", "texte_francais", "texte_arabe", "texte_origine", "texte_modificatif"].forEach(function (v) {
+        var option = element("option", v); option.value = v; readField.append(option);
+      });
+      var readLimit = champ(lecture, "Caractères par fragment (1–16000)", "input", "number");
+      readLimit.min = 1; readLimit.max = 16000; readLimit.value = 4000; readLimit.required = true;
+      var readOffset = champ(lecture, "Décalage du texte (0–67108864)", "input", "number");
+      readOffset.min = 0; readOffset.max = 67108864; readOffset.value = 0; readOffset.required = true;
+      lecture.append(bouton("Lire le fragment d’article", function () {
+        if (lecture.disabled || !readLimit.reportValidity() || !readOffset.reportValidity()) return;
+        if (!readId.value.trim()) {
+          ++requete; viderResultat(); statut.textContent = "Identifiant exact de version requis."; return;
+        }
+        var params = new URLSearchParams({article_id: readId.value, field: readField.value,
+          limit: readLimit.value, offset: readOffset.value});
+        lire("/lots/" + encodeURIComponent(lot.value) + "/article?" + params, afficher);
+      }));
       lot.addEventListener("change", adapter); adapter();
-      outils.append(form, fiche, arbre);
+      outils.append(form, fiche, arbre, lecture);
     });
   }
   function demarrer() {

@@ -182,5 +182,25 @@ await scenario('navigation indisponible sur Code et parent requis hors racine', 
   const level=host.querySelector('[data-tree-level]'); level.value='chapitres'; level.dispatchEvent(new w.Event('change'));
   button('Parcourir la hiérarchie').click(); assert.equal(appels.length,1); assert(status().includes('parent exact requis'));
 });
+await scenario('lecture exacte FR/AR et fragment non interprété en HTML', async({w,host,appels,button,reponse})=>{
+  host.querySelector('[data-read-id]').value='TEST_O_A'; host.querySelector('[data-read-field]').value='texte_arabe';
+  const texte='<img src=x onerror=alert(1)>\nنص 😀';
+  reponse(envelope({type_rapport:'lecture_article_documentaire',fragment:texte}));
+  button('Lire le fragment').click(); await tick();
+  const u=new URL(appels.at(-1).url,'https://test.invalid');
+  assert.equal(u.searchParams.get('article_id'),'TEST_O_A'); assert.equal(u.searchParams.get('field'),'texte_arabe');
+  assert.equal(u.searchParams.get('limit'),'4000');
+  assert.equal(host.querySelector('[data-article-fragment]').textContent,texte);
+  assert.equal(host.querySelector('[data-article-fragment]').hidden,false); assert.equal(host.querySelector('img'),null);
+  reponse(envelope({type_rapport:'lecture_article_documentaire',fragment:null}));
+  button('Lire le fragment').click(); await tick();
+  assert.equal(host.querySelector('[data-article-fragment]').textContent,''); assert.equal(host.querySelector('[data-article-fragment]').hidden,true);
+});
+await scenario('lecture refusée sans ID ou sur tarif', async({w,host,appels,button,status})=>{
+  button('Lire le fragment').click(); assert.equal(appels.length,1); assert(status().includes('version requis'));
+  const select=host.querySelector('select'); select.value='test-tarif'; select.dispatchEvent(new w.Event('change'));
+  assert.equal(host.querySelector('[data-read-id]').closest('fieldset').disabled,true);
+  button('Lire le fragment').click(); assert.equal(appels.length,1);
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});
