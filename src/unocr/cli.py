@@ -184,12 +184,17 @@ def main(argv=None) -> int:
     pa.add_argument("--json", action="store_true", dest="json_output", help="rapport structuré")
     pa.set_defaults(func=cmd_pieces_audit)
 
-    cr = sub.add_parser("customs-prepare", help="préparer un tarif CSV/JSON en quarantaine, jamais l'activer")
+    cr = sub.add_parser("customs-prepare", help="préparer un tarif CSV/JSON/XLSX en quarantaine, jamais l'activer")
     cr.add_argument("source", help="fichier source local")
     cr.add_argument("--metadata", required=True, help="provenance, hiérarchie et mapping explicites")
     cr.add_argument("--out", default="", help="nouveau répertoire de préparation")
     cr.add_argument("--write", action="store_true", help="écrire explicitement le lot en quarantaine")
     cr.set_defaults(func=cmd_customs_prepare)
+
+    cd = sub.add_parser("customs-diff", help="comparer deux lots en quarantaine sans modification")
+    cd.add_argument("avant", help="répertoire du premier lot préparé")
+    cd.add_argument("apres", help="répertoire du second lot préparé")
+    cd.set_defaults(func=cmd_customs_diff)
 
     args = parser.parse_args(argv)
     return args.func(args)
@@ -221,6 +226,18 @@ def cmd_pieces_check(args) -> int:
         for anomalie in resultat["anomalies"]:
             print(f"  {anomalie['categorie']} : {anomalie['cible']} — {anomalie['detail']}")
     return {"conforme": 0, "anomalies": 1, "indisponible": 2}[resultat["etat"]]
+
+
+def cmd_customs_diff(args) -> int:
+    from .customs_reference.comparison import comparer_lots
+
+    try:
+        resultat = comparer_lots(Path(args.avant), Path(args.apres))
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        print(json.dumps({"statut": "refuse", "lecture_seule": True, "publication_active": False, "detail": str(exc)}, ensure_ascii=False))
+        return 2
+    print(json.dumps(resultat, ensure_ascii=False, indent=2))
+    return 0
 
 
 def cmd_customs_prepare(args) -> int:
