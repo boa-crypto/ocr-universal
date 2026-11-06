@@ -156,3 +156,11 @@ compare deux IDs exacts d’un même lot Code, sans succession juridique déduit
 Même autorisation/épingle/audit/no-store ; tarif et paramètres invalides 422.
 Voir [COMPARAISON_ARTICLES.md](COMPARAISON_ARTICLES.md) pour le contrat des blocs,
 les absences, la pagination indépendante et les limites.
+
+### Hiérarchie déclarée du Code (lot 26)
+
+`GET /lots/{lot_id}/code-tree?source_id=…&path=…&limit=20&offset=0`.
+Sans source et avec chemin `[]`, liste les documents. Avec source, parcourt les
+couples `niveau`/`identifiant` transcrits, puis ouvre les versions exactes.
+Même autorisation/épingle/audit/no-store ; tarif et sélecteurs invalides 422.
+Contrat et limites : [NAVIGATION_CODE.md](NAVIGATION_CODE.md).

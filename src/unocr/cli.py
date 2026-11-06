@@ -268,6 +268,14 @@ def main(argv=None) -> int:
     ca.add_argument("--offset", type=int, default=0)
     ca.set_defaults(func=cmd_customs_code_read)
 
+    ct = sub.add_parser("customs-code-tree", help="parcourir les chemins Code déclarés sans consolidation")
+    ct.add_argument("lot")
+    ct.add_argument("--source", default=None)
+    ct.add_argument("--path", default="[]", help="JSON des couples niveau/identifiant exacts")
+    ct.add_argument("--limit", type=int, default=20)
+    ct.add_argument("--offset", type=int, default=0)
+    ct.set_defaults(func=cmd_customs_code_tree)
+
     ad = sub.add_parser("customs-code-article-diff", help="écart littéral de deux versions exactes, sans consolidation")
     ad.add_argument("lot")
     ad.add_argument("--before-id", required=True)
@@ -350,6 +358,13 @@ def cmd_customs_review_export_check(args) -> int:
     from .customs_reference.review_export import verifier_export
 
     return _afficher_lecture_douaniere(verifier_export, args.file)
+
+
+def cmd_customs_code_tree(args) -> int:
+    from .customs_reference.code_tree import parcourir_code
+
+    return _afficher_lecture_douaniere(lambda chemin: parcourir_code(
+        chemin, args.source, args.path, args.limit, args.offset), args.lot)
 
 
 def cmd_customs_code_article_diff(args) -> int:

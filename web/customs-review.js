@@ -177,7 +177,7 @@
         histoire.disabled = filtres.disabled;
         fiche.disabled = !filtres.disabled;
         arbre.disabled = !filtres.disabled;
-        lecture.disabled = filtres.disabled; diffArticle.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
+        codeArbre.disabled = filtres.disabled; lecture.disabled = filtres.disabled; diffArticle.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
         ++requete; viderResultat();
       }
       var limit = champ(form, "Limite (1–100)", "input", "number");
@@ -269,6 +269,38 @@
         lire("/lots/" + encodeURIComponent(lot.value) + "/tree?" + params, afficher);
       }
       arbre.append(bouton("Parcourir la hiérarchie tarifaire", chargerArbre));
+      var codeArbre = element("fieldset");
+      codeArbre.append(element("legend", "Navigation hiérarchique déclarée — Code seulement"));
+      codeArbre.append(element("p", "Racine : documents séparés. Chemin JSON exact des couples niveau/identifiant ; aucun niveau manquant reconstitué."));
+      var codeSource = champ(codeArbre, "ID source exact (vide à la racine)"); codeSource.maxLength = 256;
+      codeSource.setAttribute("data-code-tree-source", "");
+      var codePath = champ(codeArbre, "Chemin JSON déclaré"); codePath.value = "[]"; codePath.maxLength = 8192;
+      codePath.setAttribute("data-code-tree-path", "");
+      var codeTreeLimit = champ(codeArbre, "Enfants Code par page (1–100)", "input", "number");
+      codeTreeLimit.min = 1; codeTreeLimit.max = 100; codeTreeLimit.value = 20; codeTreeLimit.required = true;
+      var codeTreeOffset = champ(codeArbre, "Décalage enfants Code (0–1000000)", "input", "number");
+      codeTreeOffset.min = 0; codeTreeOffset.max = 1000000; codeTreeOffset.value = 0; codeTreeOffset.required = true;
+      var niveauxCode = ["texte_legislatif", "livre", "titre", "chapitre", "section", "sous_section", "article", "paragraphe", "alinea", "annexe"];
+      function cheminCodeValide(v) {
+        return Array.isArray(v) && v.length <= 10 && v.every(function (n, i) {
+          return n && Object.keys(n).length === 2 && niveauxCode.includes(n.niveau) &&
+            typeof n.identifiant === "string" && Array.from(n.identifiant).length <= 256 &&
+            (i === 0 || niveauxCode.indexOf(n.niveau) > niveauxCode.indexOf(v[i - 1].niveau));
+        });
+      }
+      function cleCheminCode(v) { return JSON.stringify(v.map(function (n) { return [n.niveau, n.identifiant]; })); }
+      function chargerCodeArbre() {
+        if (codeArbre.disabled || !codeTreeLimit.reportValidity() || !codeTreeOffset.reportValidity()) return;
+        var chemin;
+        try { chemin = JSON.parse(codePath.value); } catch (_) { chemin = null; }
+        if (!cheminCodeValide(chemin) || (!codeSource.value && chemin.length) || (codeSource.value && !idValide(codeSource.value))) {
+          ++requete; viderResultat(); statut.textContent = "Source et chemin JSON déclaré valides requis."; return;
+        }
+        var params = new URLSearchParams({path: codePath.value, limit: codeTreeLimit.value, offset: codeTreeOffset.value});
+        if (codeSource.value) params.set("source_id", codeSource.value);
+        lire("/lots/" + encodeURIComponent(lot.value) + "/code-tree?" + params, afficher);
+      }
+      codeArbre.append(bouton("Parcourir la hiérarchie du Code", chargerCodeArbre));
       var lecture = element("fieldset");
       lecture.append(element("legend", "Lire une version d’article — Code seulement"));
       lecture.append(element("p", "ID exact de version issu de la recherche/histoire, pas numéro d’article. " +
@@ -421,6 +453,35 @@
             }));
           }
         }
+        if (rapport.type_rapport === "navigation_code_documentaire" && !codeArbre.disabled &&
+            cheminCodeValide(rapport.chemin_exact) && (rapport.source_id_exact === null ? rapport.chemin_exact.length === 0 : idValide(rapport.source_id_exact))) {
+          var pathCode = rapport.chemin_exact, sourceCode = rapport.source_id_exact;
+          function ouvrirCode(source, chemin, limite, decalage) {
+            codeSource.value = source || ""; codePath.value = JSON.stringify(chemin);
+            codeTreeLimit.value = limite; codeTreeOffset.value = decalage; chargerCodeArbre();
+          }
+          if (sourceCode !== null) actions.append(actionDocumentaire("Remonter la hiérarchie du Code", function () {
+            ouvrirCode(pathCode.length ? sourceCode : null, pathCode.slice(0, -1), 20, 0);
+          }));
+          if (Array.isArray(rapport.enfants_declares)) rapport.enfants_declares.slice(0, 100).forEach(function (v) {
+            if (!v) return;
+            if (sourceCode === null && v.type_noeud === "document" && idValide(v.source_id)) {
+              actions.append(actionDocumentaire("Parcourir le document " + v.source_id, function () { ouvrirCode(v.source_id, [], 20, 0); }));
+            } else if (sourceCode !== null && rapport.parent_trouve === true && v.type_noeud === "niveau_declare" &&
+                       cheminCodeValide(v.chemin) && v.chemin.length === pathCode.length + 1 &&
+                       cleCheminCode(v.chemin.slice(0, -1)) === cleCheminCode(pathCode)) {
+              actions.append(actionDocumentaire("Parcourir le niveau " + v.chemin.at(-1).identifiant, function () { ouvrirCode(sourceCode, v.chemin, 20, 0); }));
+            } else if (sourceCode !== null && rapport.parent_trouve === true && v.type_noeud === "version_article" &&
+                       v.version_declaree && v.version_declaree.reference && v.version_declaree.reference.source_id === sourceCode) {
+              proposerVersion(v.version_declaree.id);
+            }
+          });
+          if (entier(rapport.limite, 1, 100) && entier(rapport.decalage, 0, 1000000) &&
+              entier(rapport.decalage_suivant, rapport.decalage + 1, 1000000) &&
+              entier(rapport.total_enfants_declares, rapport.decalage_suivant + 1, Number.MAX_SAFE_INTEGER)) {
+            actions.append(actionDocumentaire("Page suivante des enfants Code", function () { ouvrirCode(sourceCode, pathCode, rapport.limite, rapport.decalage_suivant); }));
+          }
+        }
         if (rapport.type_rapport === "comparaison_litterale_versions_article" && !diffArticle.disabled &&
             rapport.champs_comparables === true && rapport.unite_decalage === "points_de_code_unicode_python" &&
             idValide(rapport.avant_id_exact) && idValide(rapport.apres_id_exact) &&
@@ -483,7 +544,7 @@
         }
       };
       lot.addEventListener("change", adapter); adapter();
-      outils.append(form, fiche, arbre, lecture, pdfLecture, diffArticle);
+      outils.append(form, fiche, arbre, codeArbre, lecture, pdfLecture, diffArticle);
     });
   }
   function demarrer() {

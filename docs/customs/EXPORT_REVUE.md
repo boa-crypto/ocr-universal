@@ -73,3 +73,7 @@ Lot 25 : `/lots/{lot_id}/article-diff` est également admise dans l’enveloppe
 partielle version 1 ; comparaison littérale et provenance déclarée seulement,
 jamais consolidation ou validation juridique. Les anciens contrôleurs stricts
 peuvent refuser cette nouvelle route.
+
+Lot 26 : `/lots/{lot_id}/code-tree` est admise dans l’enveloppe partielle
+version 1 ; navigation des chemins transcrits uniquement, pas hiérarchie
+juridique validée. Les anciens contrôleurs stricts peuvent refuser cette route.

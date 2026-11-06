@@ -48,7 +48,7 @@ MARQUEURS = {
     "perimetre": "rapport_ou_page_uniquement_pas_corpus_complet",
 }
 ROUTE = (r"^/api/v1/customs-review/(?:diff|lots/[A-Za-z0-9][A-Za-z0-9_-]{0,63}/"
-         r"(?:check|search|history|coverage|tree|article|article-diff|pdf|tariff/[0-9]{10}))(?:\?[^#\x00-\x20]*)?$")
+         r"(?:check|search|history|coverage|tree|article|article-diff|code-tree|pdf|tariff/[0-9]{10}))(?:\?[^#\x00-\x20]*)?$")
 
 
 class ExportRevue(StrictModel):

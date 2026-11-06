@@ -203,3 +203,9 @@ avant tout résultat. Elle reste en quarantaine, sans sélection juridique à da
 La revue sait comparer deux IDs exacts explicitement choisis dans le même lot,
 sans filiation inférée ni consolidation. CLI/API/interface et export partiel :
 [COMPARAISON_ARTICLES.md](COMPARAISON_ARTICLES.md).
+
+## Navigation hiérarchique — lot 26
+
+La revue parcourt désormais les chemins déclarés, document par document,
+sans fusion de sources ou reconstruction de niveaux absents. CLI/API/interface,
+pagination, remontée et export partiel : [NAVIGATION_CODE.md](NAVIGATION_CODE.md).

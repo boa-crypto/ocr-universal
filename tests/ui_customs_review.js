@@ -433,5 +433,46 @@ await scenario('diff articles : audit indisponible efface le rapport',async({hos
   reponse({detail:{code:'audit_revue_indisponible'}},503);button('Comparer les deux versions exactes').click();await tick();
   assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
 });
+const codeRapport = (source, chemin, enfants, extra={}) => envelope({type_rapport:'navigation_code_documentaire',source_id_exact:source,
+  chemin_exact:chemin,parent_trouve:source===null?null:true,enfants_declares:enfants,limite:20,decalage:0,decalage_suivant:null,...extra});
+await scenario('Code hiérarchie : documents puis niveaux exacts puis lecture',async({host,appels,button,reponse})=>{
+  reponse(codeRapport(null,[],[{type_noeud:'document',source_id:'SRC & عربي'}]));
+  button('Parcourir la hiérarchie du Code').click();await tick();
+  reponse(codeRapport('SRC & عربي',[],[{type_noeud:'niveau_declare',chemin:[{niveau:'texte_legislatif',identifiant:'T'}]}]));
+  button('Parcourir le document SRC').click();await tick();assert.equal(new URL(appels.at(-1).url,'https://x').searchParams.get('source_id'),'SRC & عربي');
+  reponse(codeRapport('SRC & عربي',[{niveau:'texte_legislatif',identifiant:'T'}],[{type_noeud:'version_article',version_declaree:{id:'VERSION',reference:{source_id:'SRC & عربي'}}}]));
+  button('Parcourir le niveau T').click();await tick();button('Lire la version VERSION').click();await tick();
+  assert.equal(new URL(appels.at(-1).url,'https://x').searchParams.get('article_id'),'VERSION');
+});
+await scenario('Code hiérarchie : pagination et remontée conservent chemin et source',async({host,appels,button,reponse})=>{
+  const chemin=[{niveau:'texte_legislatif',identifiant:'T'},{niveau:'article',identifiant:'5 bis'}];
+  reponse(codeRapport('SRC',chemin,[],{limite:1,decalage:0,decalage_suivant:1,total_enfants_declares:3}));
+  button('Parcourir la hiérarchie du Code').click();await tick();button('Page suivante des enfants Code').click();await tick();
+  let u=new URL(appels.at(-1).url,'https://x');assert.equal(u.searchParams.get('offset'),'1');assert.deepEqual(JSON.parse(u.searchParams.get('path')),chemin);
+  button('Remonter la hiérarchie du Code').click();await tick();u=new URL(appels.at(-1).url,'https://x');
+  assert.equal(u.searchParams.get('offset'),'0');assert.deepEqual(JSON.parse(u.searchParams.get('path')),chemin.slice(0,1));
+});
+await scenario('Code hiérarchie : chemins incohérents et source étrangère sans action',async({button,reponse})=>{
+  reponse(codeRapport('SRC',[{niveau:'titre',identifiant:'I'}],[
+    {type_noeud:'niveau_declare',chemin:[{niveau:'titre',identifiant:'II'},{niveau:'article',identifiant:'1'}]},
+    {type_noeud:'version_article',version_declaree:{id:'ETRANGER',reference:{source_id:'AUTRE'}}}]));
+  button('Parcourir la hiérarchie du Code').click();await tick();assert(!button('Parcourir le niveau'));assert(!button('Lire la version'));
+});
+await scenario('Code hiérarchie : JSON invalide, source manquante et tarif sans lecture',async({w,host,appels,button})=>{
+  let n=appels.length;host.querySelector('[data-code-tree-path]').value='{';button('Parcourir la hiérarchie du Code').click();await tick();assert.equal(appels.length,n);
+  host.querySelector('[data-code-tree-path]').value='[{"niveau":"titre","identifiant":"I"}]';button('Parcourir la hiérarchie du Code').click();await tick();assert.equal(appels.length,n);
+  const lot=host.querySelector('select');lot.value='test-tarif';lot.dispatchEvent(new w.Event('change'));
+  button('Parcourir la hiérarchie du Code').click();await tick();assert.equal(appels.length,n);
+});
+await scenario('Code hiérarchie : ancienne action inerte après changement de lot',async({w,host,appels,button,reponse})=>{
+  reponse(codeRapport(null,[],[{type_noeud:'document',source_id:'SRC'}]));button('Parcourir la hiérarchie du Code').click();await tick();
+  const ancien=button('Parcourir le document SRC');let n=appels.length;const lot=host.querySelector('select');lot.value='test-tarif';lot.dispatchEvent(new w.Event('change'));
+  ancien.click();await tick();assert.equal(appels.length,n);assert.equal(host.querySelector('[data-review-actions]').textContent,'');
+});
+await scenario('Code hiérarchie : audit 503 efface rapport et actions',async({host,button,reponse})=>{
+  reponse(codeRapport(null,[],[{type_noeud:'document',source_id:'SRC'}]));button('Parcourir la hiérarchie du Code').click();await tick();
+  reponse({detail:{code:'audit_revue_indisponible'}},503);button('Parcourir la hiérarchie du Code').click();await tick();
+  assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

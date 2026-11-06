@@ -12,6 +12,7 @@ from ..customs_reference.article_detail import (
     consulter_article,
 )
 from ..customs_reference.article_diff import ParamDiffArticleInvalide, comparer_versions_article
+from ..customs_reference.code_tree import ParamArbreCodeInvalide, parcourir_code
 from ..customs_reference.comparison import charger_lot, comparer_lots
 from ..customs_reference.coverage import diagnostiquer_couverture
 from ..customs_reference.history import ParamHistoriqueInvalide, historique_article
@@ -70,6 +71,8 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
             reponse = JSONResponse({"lecture_seule": True, "publication_active": False,
                                  "validation_juridique": "non_validee", "perimetre": "revue_administrative_quarantaine",
                                  "resultat": resultat}, headers=NO_STORE)
+        except ParamArbreCodeInvalide:
+            statut, code = 422, "parametres_navigation_code_invalides"
         except ParamDiffArticleInvalide:
             statut, code = 422, "parametres_diff_articles_invalides"
         except ParamPDFInvalide:
@@ -175,6 +178,16 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 raise HTTPException(422, {"code": "lecture_article_non_applicable_au_tarif"}, headers=NO_STORE)
             return consulter_article(p[0], article_id, field, limit, offset)
         return executer(utilisateur, "lecture_article", [lot_id], lire_version)
+
+    @router.get("/lots/{lot_id}/code-tree")
+    def arbre_code(lot_id: str, source_id: str | None = Query(None, max_length=256),
+                   path: str = Query("[]", max_length=8192), limit: int = Query(20, ge=1, le=100),
+                   offset: int = Query(0, ge=0, le=1_000_000), utilisateur=Depends(autoriser)):
+        def parcourir(e, p, registre):
+            if e[0].type_lot != "code":
+                raise HTTPException(422, {"code": "navigation_code_non_applicable_au_tarif"}, headers=NO_STORE)
+            return parcourir_code(p[0], source_id, path, limit, offset)
+        return executer(utilisateur, "navigation_code", [lot_id], parcourir)
 
     @router.get("/lots/{lot_id}/article-diff")
     def diff_articles(lot_id: str, avant_id: str = Query(..., min_length=1, max_length=256),
