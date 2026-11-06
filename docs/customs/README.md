@@ -1,4 +1,4 @@
-# Mission référentiels douaniers — lots 1–11 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–12 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
@@ -220,6 +220,14 @@ paginées. Taux inconnus conservés ; aucun taux applicable ou calcul inféré.
 `customs-coverage`, route de revue `/lots/{id}/coverage` et bouton intégré :
 compteurs du lot, champs non renseignés et sources/limites explicites. Aucun
 pourcentage de complétude réglementaire ou autorisation de publication/calcul.
+
+## Navigation tarifaire documentaire (lot 12)
+
+[Guide](NAVIGATION_TARIFAIRE.md), [rapport](RAPPORT_LOT12.md).
+`customs-tariff-tree`, route de revue `/lots/{id}/tree` et contrôles intégrés :
+sections → chapitres → positions → SH6 → codes10 reçus, parents exacts et
+pagination. Parent absent et parent présent sans enfant distingués, sans
+complétude nationale ou subdivision intermédiaire inventée.
 
 ## Intégration future, sans double source de vérité
 

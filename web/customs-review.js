@@ -143,6 +143,7 @@
         filtres.disabled = rep.lots.find(function (v) { return v.id === lot.value; }).type_lot !== "code";
         histoire.disabled = filtres.disabled;
         fiche.disabled = !filtres.disabled;
+        arbre.disabled = !filtres.disabled;
         ++requete; resultat.textContent = "";
       }
       var limit = champ(form, "Limite (1–100)", "input", "number");
@@ -200,8 +201,39 @@
         var params = new URLSearchParams({measures_limit: measureLimit.value, measures_offset: measureOffset.value});
         lire("/lots/" + encodeURIComponent(lot.value) + "/tariff/" + encodeURIComponent(code10.value) + "?" + params, afficher);
       }));
+      var arbre = element("fieldset");
+      arbre.append(element("legend", "Navigation hiérarchique — tarif seulement"));
+      arbre.append(element("p", "Parcourir les enfants directs reçus. Copier l’ID/code parent exact depuis le rapport. " +
+        "Ni nomenclature exhaustive ni subdivision nationale intermédiaire inventée."));
+      var level = champ(arbre, "Niveau à consulter", "select"); level.setAttribute("data-tree-level", "");
+      [["sections", "Sections / racine"], ["chapitres", "Chapitres (parent : section)"],
+        ["positions", "Positions (parent : chapitre)"], ["sh6", "SH6 (parent : position)"],
+        ["codes", "Codes dix chiffres (parent : SH6)"]].forEach(function (paire) {
+        var option = element("option", paire[1]); option.value = paire[0]; level.append(option);
+      });
+      var treeParent = champ(arbre, "ID / code parent exact"); treeParent.maxLength = 256; treeParent.dir = "auto";
+      treeParent.setAttribute("data-tree-parent", "");
+      function adapterNiveau() {
+        treeParent.disabled = level.value === "sections";
+        ++requete; resultat.textContent = "";
+      }
+      level.addEventListener("change", adapterNiveau); adapterNiveau();
+      var treeLimit = champ(arbre, "Enfants par page (1–100)", "input", "number");
+      treeLimit.min = 1; treeLimit.max = 100; treeLimit.value = 20; treeLimit.required = true;
+      var treeOffset = champ(arbre, "Décalage enfants (0–1000000)", "input", "number");
+      treeOffset.min = 0; treeOffset.max = 1000000; treeOffset.value = 0; treeOffset.required = true;
+      arbre.append(bouton("Parcourir la hiérarchie tarifaire", function () {
+        if (arbre.disabled || !treeLimit.reportValidity() || !treeOffset.reportValidity()) return;
+        if (level.value !== "sections" && !treeParent.value.trim()) {
+          ++requete; resultat.textContent = "";
+          statut.textContent = "ID ou code parent exact requis pour ce niveau."; return;
+        }
+        var params = new URLSearchParams({level: level.value, limit: treeLimit.value, offset: treeOffset.value});
+        if (level.value !== "sections") params.set("parent", treeParent.value);
+        lire("/lots/" + encodeURIComponent(lot.value) + "/tree?" + params, afficher);
+      }));
       lot.addEventListener("change", adapter); adapter();
-      outils.append(form, fiche);
+      outils.append(form, fiche, arbre);
     });
   }
   function demarrer() {

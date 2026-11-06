@@ -252,6 +252,14 @@ def main(argv=None) -> int:
     cv.add_argument("--type", required=True, choices=["tarif", "code"], dest="type_lot")
     cv.set_defaults(func=cmd_customs_coverage)
 
+    tr = sub.add_parser("customs-tariff-tree", help="parcourir les parents/enfants tarifaires déclarés")
+    tr.add_argument("lot", help="lot tarifaire en quarantaine")
+    tr.add_argument("--level", choices=["sections", "chapitres", "positions", "sh6", "codes"], default="sections")
+    tr.add_argument("--parent", default=None, help="ID ou code parent exact ; absent pour la racine")
+    tr.add_argument("--limit", type=int, default=20)
+    tr.add_argument("--offset", type=int, default=0)
+    tr.set_defaults(func=cmd_customs_tariff_tree)
+
     args = parser.parse_args(argv)
     return args.func(args)
 
@@ -306,6 +314,13 @@ def cmd_customs_code_search(args) -> int:
 
     return _afficher_lecture_douaniere(lambda chemin: rechercher_code(chemin, args.query, args.limit, args.offset,
                                        args.article, args.source, args.nature), args.lot)
+
+
+def cmd_customs_tariff_tree(args) -> int:
+    from .customs_reference.tariff_tree import parcourir_tarif
+
+    return _afficher_lecture_douaniere(lambda chemin: parcourir_tarif(
+        chemin, args.level, args.parent, args.limit, args.offset), args.lot)
 
 
 def cmd_customs_coverage(args) -> int:

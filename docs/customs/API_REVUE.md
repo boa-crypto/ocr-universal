@@ -1,4 +1,4 @@
-# API de revue administrative — lots 6 à 11
+# API de revue administrative — lots 6 à 12
 
 2026-11-06. **Lecture seule de lots en quarantaine ; ni validation ni publication.**
 
@@ -84,6 +84,7 @@ ayant les mêmes droits système ; ce n’est pas un verrouillage transactionnel
 | `/api/v1/customs-review/lots/{lot_id}/history?article=NUMERO` | Historique documentaire du numéro exact et relations déclarées, pour un lot Code seulement |
 | `/api/v1/customs-review/lots/{lot_id}/tariff/{code10}` | Fiche du code exact, parents et mesures déclarés du lot tarifaire |
 | `/api/v1/customs-review/lots/{lot_id}/coverage` | Diagnostic descriptif du lot reçu, sans score de complétude réglementaire |
+| `/api/v1/customs-review/lots/{lot_id}/tree` | Enfants tarifaires directs d’un parent exact, sans reconstruction normative |
 | `/api/v1/customs-review/diff?avant=ID&apres=ID` | Contrôle et comparaison de deux lots de même type |
 
 Recherche : `q` (256 caractères maximum), `limit` (1–100), `offset` (0–1000000).
@@ -97,6 +98,8 @@ mesures paginées séparées des taux inconnus de ligne. Une ligne absente est
 annoncée explicitement avec statut 200, sans conclure à une absence nationale.
 [Couverture (lot 11)](COUVERTURE_DOCUMENTAIRE.md) : compteurs du seul lot reçu,
 champs non renseignés et limites ; aucun dénominateur national ou seuil de publication.
+[Navigation (lot 12)](NAVIGATION_TARIFAIRE.md) : `level`, parent exact, `limit` et
+`offset` ; sections → chapitres → positions → SH6 → codes10 déclarés.
 Aucun paramètre ne permet de choisir un chemin local ou une URL source.
 
 Les réponses métier réussies sont en JSON, `Cache-Control: no-store`, avec

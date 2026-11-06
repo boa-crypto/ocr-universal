@@ -163,5 +163,24 @@ await scenario('diagnostic de couverture sans pourcentage inventé', async({w,ho
     assert.equal(rep.pourcentage_completude_reglementaire,null); assert.equal(rep.nombre_officiel_attendu,null);
   }
 });
+await scenario('navigation racine et SH6, parent exact conservé', async({w,host,appels,button,reponse})=>{
+  const select=host.querySelector('select'); select.value='test-tarif'; select.dispatchEvent(new w.Event('change'));
+  const level=host.querySelector('[data-tree-level]'), parent=host.querySelector('[data-tree-parent]');
+  assert.equal(parent.disabled,true); parent.value='IGNORÉ_RACINE';
+  reponse(envelope({type_rapport:'navigation_tarifaire_documentaire',enfants_declares:[]}));
+  button('Parcourir la hiérarchie').click(); await tick();
+  assert.equal(appels.at(-1).url,'/api/v1/customs-review/lots/test-tarif/tree?level=sections&limit=20&offset=0');
+  level.value='codes'; level.dispatchEvent(new w.Event('change')); assert.equal(parent.disabled,false);
+  parent.value='010100'; button('Parcourir la hiérarchie').click(); await tick();
+  const u=new URL(appels.at(-1).url,'https://test.invalid');
+  assert.equal(u.searchParams.get('parent'),'010100'); assert.equal(u.searchParams.get('level'),'codes');
+});
+await scenario('navigation indisponible sur Code et parent requis hors racine', async({w,host,appels,button,status})=>{
+  assert.equal(host.querySelector('[data-tree-level]').closest('fieldset').disabled,true);
+  button('Parcourir la hiérarchie').click(); assert.equal(appels.length,1);
+  const select=host.querySelector('select'); select.value='test-tarif'; select.dispatchEvent(new w.Event('change'));
+  const level=host.querySelector('[data-tree-level]'); level.value='chapitres'; level.dispatchEvent(new w.Event('change'));
+  button('Parcourir la hiérarchie').click(); assert.equal(appels.length,1); assert(status().includes('parent exact requis'));
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});
