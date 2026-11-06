@@ -202,5 +202,80 @@ await scenario('lecture refusée sans ID ou sur tarif', async({w,host,appels,but
   assert.equal(host.querySelector('[data-read-id]').closest('fieldset').disabled,true);
   button('Lire le fragment').click(); assert.equal(appels.length,1);
 });
+await scenario('recherche Code ouvre la version exacte sans URL source', async({w,host,appels,button,reponse})=>{
+  const id='ID/<img src=x>';
+  reponse(envelope({type_recherche:'code_documentaire',resultats:[{id, url:'https://externe.invalid/secret'}]}));
+  host.querySelector('input').value='texte'; host.querySelector('form').dispatchEvent(new w.Event('submit',{cancelable:true})); await tick();
+  const lien=button('Lire la version '+id); assert(lien); assert.equal(host.querySelector('img'),null);
+  reponse(envelope({type_rapport:'lecture_article_documentaire',fragment:'TRANSCRIPTION TEST NON OFFICIELLE'}));
+  lien.click(); await tick();
+  const u=new URL(appels.at(-1).url,'https://test.invalid');
+  assert.equal(u.pathname,'/api/v1/customs-review/lots/test-code/article'); assert.equal(u.searchParams.get('article_id'),id);
+  assert.equal(u.searchParams.get('field'),'texte_integral'); assert.equal(u.searchParams.get('offset'),'0');
+});
+await scenario('histoire propose versions et contexte sans doublon', async({host,button,reponse})=>{
+  host.querySelectorAll('input')[1].value='5 bis';
+  reponse(envelope({type_rapport:'historique_documentaire_article',versions_meme_numero:[{id:'V1'}],
+    articles_contexte_relations:[{id:'V1'},{id:'MODIF_7'}]}));
+  button('Afficher l’historique').click(); await tick();
+  const textes=[...host.querySelector('[data-review-actions]').querySelectorAll('button')].map(b=>b.textContent);
+  assert.deepEqual(textes,['Lire la version V1','Lire la version MODIF_7']);
+});
+await scenario('résultat tarifaire ouvre une fiche sans perdre les zéros', async({w,host,appels,button,reponse})=>{
+  const lot=host.querySelector('select'); lot.value='test-tarif'; lot.dispatchEvent(new w.Event('change'));
+  reponse(envelope({type_recherche:'tarif_documentaire',resultats:[{ligne:{code_tarifaire_10:'0101000000'}}]}));
+  host.querySelector('input').value='010100'; host.querySelector('form').dispatchEvent(new w.Event('submit',{cancelable:true})); await tick();
+  reponse(envelope({type_rapport:'fiche_tarifaire_documentaire'})); button('Fiche documentaire 0101000000').click(); await tick();
+  assert(appels.at(-1).url.includes('/tariff/0101000000?')); assert.equal(host.querySelector('[data-code10]').value,'0101000000');
+});
+await scenario('descente hiérarchique par enfant déclaré et pagination', async({w,host,appels,button,reponse})=>{
+  const lot=host.querySelector('select'); lot.value='test-tarif'; lot.dispatchEvent(new w.Event('change'));
+  reponse(envelope({type_rapport:'navigation_tarifaire_documentaire',niveau:'sections',niveau_suivant:'chapitres',
+    parent_exact:null,enfants_declares:[{id:'SECTION_AR'}],limite:1,decalage:0,decalage_suivant:1,total_enfants_declares:2}));
+  button('Parcourir la hiérarchie').click(); await tick();
+  const page=button('Page suivante des enfants'); assert(page);
+  reponse(envelope({type_rapport:'navigation_tarifaire_documentaire',niveau:'sections',niveau_suivant:'chapitres',
+    parent_exact:null,enfants_declares:[{id:'SECTION_AR'}],limite:1,decalage:1,decalage_suivant:null,total_enfants_declares:2}));
+  page.click(); await tick(); assert(appels.at(-1).url.includes('offset=1'));
+  reponse(envelope({type_rapport:'navigation_tarifaire_documentaire',niveau:'chapitres',niveau_suivant:'positions',enfants_declares:[]}));
+  button('Enfants de SECTION_AR').click(); await tick();
+  const u=new URL(appels.at(-1).url,'https://test.invalid'); assert.equal(u.searchParams.get('level'),'chapitres');
+  assert.equal(u.searchParams.get('parent'),'SECTION_AR'); assert.equal(u.searchParams.get('offset'),'0');
+});
+await scenario('fragment suivant reprend points de code et identité de réponse', async({host,appels,button,reponse})=>{
+  host.querySelector('[data-read-id]').value='V1';
+  reponse(envelope({type_rapport:'lecture_article_documentaire',article_trouve:true,texte_renseigne:true,
+    unite_decalage:'points_de_code_unicode_python',article_id_exact:'V1',champ_texte:'texte_arabe',fragment:'😀ع',limite:2,decalage:0,decalage_suivant:2,total_caracteres:4}));
+  button('Lire le fragment').click(); await tick();
+  reponse(envelope({type_rapport:'lecture_article_documentaire',fragment:'SUITE'}));
+  button('Fragment suivant de l’article').click(); await tick();
+  const u=new URL(appels.at(-1).url,'https://test.invalid'); assert.equal(u.searchParams.get('offset'),'2');
+  assert.equal(u.searchParams.get('field'),'texte_arabe'); assert.equal(u.searchParams.get('article_id'),'V1');
+});
+await scenario('actions effacées et boutons détachés inertes après changement de lot', async({w,host,appels,button,reponse})=>{
+  host.querySelector('[data-read-id]').value='V1';
+  reponse(envelope({type_rapport:'lecture_article_documentaire',article_trouve:true,texte_renseigne:true,
+    unite_decalage:'points_de_code_unicode_python',article_id_exact:'V1',champ_texte:'texte_integral',fragment:'AA',limite:2,decalage:0,decalage_suivant:2,total_caracteres:4}));
+  button('Lire le fragment').click(); await tick();
+  const ancien=button('Fragment suivant de l’article'), n=appels.length;
+  const lot=host.querySelector('select'); lot.value='test-tarif'; lot.dispatchEvent(new w.Event('change'));
+  assert.equal(host.querySelector('[data-review-actions]').textContent,''); ancien.click(); await tick(); assert.equal(appels.length,n);
+});
+await scenario('offset de retour invalide et faux niveau suivant ne créent pas d’action', async({w,host,button,reponse})=>{
+  host.querySelector('[data-read-id]').value='V1';
+  reponse(envelope({type_rapport:'lecture_article_documentaire',article_trouve:true,texte_renseigne:true,
+    unite_decalage:'points_de_code_unicode_python',article_id_exact:'V1',champ_texte:'texte_arabe',fragment:'AA',limite:2,decalage:0,decalage_suivant:0,total_caracteres:4}));
+  button('Lire le fragment').click(); await tick(); assert.equal(button('Fragment suivant de l’article'),undefined);
+  const lot=host.querySelector('select'); lot.value='test-tarif'; lot.dispatchEvent(new w.Event('change'));
+  reponse(envelope({type_rapport:'navigation_tarifaire_documentaire',niveau:'sections',niveau_suivant:'codes',enfants_declares:[{id:'FAUX'}]}));
+  button('Parcourir la hiérarchie').click(); await tick(); assert.equal(button('Enfants de FAUX'),undefined);
+});
+await scenario('action après changement de jeton refuse sans nouveau fetch', async({w,host,appels,button,reponse,status})=>{
+  host.querySelectorAll('input')[1].value='5 bis';
+  reponse(envelope({type_rapport:'historique_documentaire_article',versions_meme_numero:[{id:'V1'}]}));
+  button('Afficher l’historique').click(); await tick(); const n=appels.length;
+  w.sessionStorage.removeItem('uniocr_token'); button('Lire la version V1').click(); await tick();
+  assert.equal(appels.length,n); assert.equal(host.querySelector('select'),null); assert(status().includes('Compte modifié'));
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

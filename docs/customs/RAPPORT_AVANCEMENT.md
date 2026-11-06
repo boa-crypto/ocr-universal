@@ -15,6 +15,7 @@
 [Lot 11 : diagnostic de couverture documentaire](RAPPORT_LOT11.md), 2026-11-06.
 [Lot 12 : navigation hiérarchique tarifaire documentaire](RAPPORT_LOT12.md), 2026-11-06.
 [Lot 13 : lecture individuelle des versions d’articles](RAPPORT_LOT13.md), 2026-11-06.
+[Lot 14 : navigation assistée dans les résultats](RAPPORT_LOT14.md), 2026-11-06.
 Le présent document conserve les résultats historiques du lot 1.
 
 ## Complétude réelle

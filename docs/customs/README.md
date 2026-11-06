@@ -1,4 +1,4 @@
-# Mission référentiels douaniers — lots 1–13 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–14 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
@@ -235,6 +235,13 @@ complétude nationale ou subdivision intermédiaire inventée.
 `customs-code-read`, route de revue `/lots/{id}/article` et groupe intégré :
 version par ID exact, source/métadonnées et texte reçu par fragments. Champs
 FR/AR absents conservés ; aucune traduction, consolidation ou applicabilité inférée.
+
+## Navigation assistée des résultats (lot 14)
+
+[Guide](NAVIGATION_ASSISTEE.md), [rapport](RAPPORT_LOT14.md).
+Boutons de consultation depuis recherche/historique/arbre, descente par enfant
+reçu, page suivante et fragment suivant. Même API de revue et droits, aucune
+URL source suivie ou validation implicite. Pas de corpus de démonstration installé.
 
 ## Intégration future, sans double source de vérité
 

@@ -69,7 +69,8 @@ Dans Administration → Revue douanière · quarantaine : choisir un lot Code pu
 le groupe **Lire une version d’article**, saisir son ID exact, choisir le champ
 et la plage, puis **Lire le fragment d’article**. Le rapport JSON garde provenance,
 statuts et plage ; une zone distincte affiche le fragment comme texte avec direction
-automatique FR/AR, sans interprétation HTML. Copier le décalage suivant pour continuer.
+automatique FR/AR, sans interprétation HTML. Copier le décalage suivant pour continuer, ou utiliser le bouton « Fragment
+suivant de l’article » du [lot 14](NAVIGATION_ASSISTEE.md).
 Les paramètres sont indépendants de la recherche/histoire et le groupe est désactivé
 sur un lot tarifaire. Toute nouvelle requête efface le fragment précédent ; les erreurs de réponse
 et la navigation le laissent effacé. Protections des réponses tardives conservées.

@@ -72,7 +72,8 @@ un niveau et, hors racine, un ID/code parent exact puis **Parcourir la hiérarch
 tarifaire**. Le champ parent est désactivé à la racine et n’est pas transmis ;
 le groupe est désactivé pour les lots Code juridiques. Limite/décalage indépendants
 de ceux des autres consultations. Les enfants sont présentés en JSON lisible :
-copier l’ID/code choisi puis sélectionner le niveau suivant. Il ne s’agit pas encore
+copier l’ID/code choisi puis sélectionner le niveau suivant, ou utiliser les
+boutons « Enfants de… » ajoutés au [lot 14](NAVIGATION_ASSISTEE.md). Il ne s’agit pas encore
 d’un arbre graphique dépliable. Mêmes protections de rendu texte/réponses tardives
 que le reste de la revue. Coque service worker v44 ; API toujours hors cache.
 

@@ -2994,3 +2994,8 @@ dialog::backdrop { background: rgba(1, 4, 13, 0.72); backdrop-filter: blur(4px);
 #customs-review-host input, #customs-review-host select { display: block; max-width: 100%; }
 #customs-review-host li { overflow-wrap: anywhere; }
 .customs-review-result { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 65vh; overflow: auto; }
+
+/* Actions de lecture issues d'un résultat, sans HTML fourni par les documents. */
+[data-review-actions] { display: flex; flex-wrap: wrap; gap: .5rem; }
+[data-review-actions]:not(:empty) { margin-block: .75rem; }
+[data-review-actions] button { max-width: 100%; white-space: normal; overflow-wrap: anywhere; text-align: start; }

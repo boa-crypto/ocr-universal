@@ -30,10 +30,13 @@
     var extrait = element("pre", "", "customs-review-result");
     extrait.setAttribute("dir", "auto"); extrait.setAttribute("data-article-fragment", "");
     extrait.tabIndex = 0; extrait.hidden = true;
+    var actions = element("div"); actions.setAttribute("data-review-actions", "");
+    actions.setAttribute("role", "group"); actions.setAttribute("aria-label", "Navigation documentaire des résultats");
+    var rendreActions = function () {};
     var outils = element("div", undefined, "ecran__formulaire");
     var recharger = bouton("Actualiser les lots", ouvrir);
-    host.append(recharger, statut, outils, resultat, extrait);
-    function viderResultat() { resultat.textContent = ""; extrait.textContent = ""; extrait.hidden = true; }
+    host.append(recharger, statut, outils, actions, resultat, extrait);
+    function viderResultat() { actions.replaceChildren(); resultat.textContent = ""; extrait.textContent = ""; extrait.hidden = true; }
     function actuel() { return tour === generation && window.location.hash === ROUTE; }
     function effacer() { outils.replaceChildren(); viderResultat(); }
     function bouton(texte, action) {
@@ -94,6 +97,7 @@
       if (rep.type_rapport === "lecture_article_documentaire" && typeof rep.fragment === "string") {
         extrait.textContent = rep.fragment; extrait.hidden = false;
       }
+      rendreActions(rep);
       statut.textContent = "Résultat technique — non validé juridiquement, non publié.";
     }
     lire("/lots", function (rep) {
@@ -199,7 +203,7 @@
       measureLimit.min = 1; measureLimit.max = 100; measureLimit.value = 20; measureLimit.required = true;
       var measureOffset = champ(fiche, "Décalage mesures (0–1000000)", "input", "number");
       measureOffset.min = 0; measureOffset.max = 1000000; measureOffset.value = 0; measureOffset.required = true;
-      fiche.append(bouton("Consulter la fiche tarifaire", function () {
+      function chargerFiche() {
         if (fiche.disabled) return;
         if (!/^[0-9]{10}$/.test(code10.value)) {
           ++requete; viderResultat();
@@ -208,7 +212,8 @@
         if (!measureLimit.reportValidity() || !measureOffset.reportValidity()) return;
         var params = new URLSearchParams({measures_limit: measureLimit.value, measures_offset: measureOffset.value});
         lire("/lots/" + encodeURIComponent(lot.value) + "/tariff/" + encodeURIComponent(code10.value) + "?" + params, afficher);
-      }));
+      }
+      fiche.append(bouton("Consulter la fiche tarifaire", chargerFiche));
       var arbre = element("fieldset");
       arbre.append(element("legend", "Navigation hiérarchique — tarif seulement"));
       arbre.append(element("p", "Parcourir les enfants directs reçus. Copier l’ID/code parent exact depuis le rapport. " +
@@ -230,7 +235,7 @@
       treeLimit.min = 1; treeLimit.max = 100; treeLimit.value = 20; treeLimit.required = true;
       var treeOffset = champ(arbre, "Décalage enfants (0–1000000)", "input", "number");
       treeOffset.min = 0; treeOffset.max = 1000000; treeOffset.value = 0; treeOffset.required = true;
-      arbre.append(bouton("Parcourir la hiérarchie tarifaire", function () {
+      function chargerArbre() {
         if (arbre.disabled || !treeLimit.reportValidity() || !treeOffset.reportValidity()) return;
         if (level.value !== "sections" && !treeParent.value.trim()) {
           ++requete; viderResultat();
@@ -239,7 +244,8 @@
         var params = new URLSearchParams({level: level.value, limit: treeLimit.value, offset: treeOffset.value});
         if (level.value !== "sections") params.set("parent", treeParent.value);
         lire("/lots/" + encodeURIComponent(lot.value) + "/tree?" + params, afficher);
-      }));
+      }
+      arbre.append(bouton("Parcourir la hiérarchie tarifaire", chargerArbre));
       var lecture = element("fieldset");
       lecture.append(element("legend", "Lire une version d’article — Code seulement"));
       lecture.append(element("p", "ID exact de version issu de la recherche/histoire, pas numéro d’article. " +
@@ -253,7 +259,7 @@
       readLimit.min = 1; readLimit.max = 16000; readLimit.value = 4000; readLimit.required = true;
       var readOffset = champ(lecture, "Décalage du texte (0–67108864)", "input", "number");
       readOffset.min = 0; readOffset.max = 67108864; readOffset.value = 0; readOffset.required = true;
-      lecture.append(bouton("Lire le fragment d’article", function () {
+      function chargerArticle() {
         if (lecture.disabled || !readLimit.reportValidity() || !readOffset.reportValidity()) return;
         if (!readId.value.trim()) {
           ++requete; viderResultat(); statut.textContent = "Identifiant exact de version requis."; return;
@@ -261,7 +267,93 @@
         var params = new URLSearchParams({article_id: readId.value, field: readField.value,
           limit: readLimit.value, offset: readOffset.value});
         lire("/lots/" + encodeURIComponent(lot.value) + "/article?" + params, afficher);
-      }));
+      }
+      lecture.append(bouton("Lire le fragment d’article", chargerArticle));
+      function idValide(id) {
+        return typeof id === "string" && id.trim() && Array.from(id).length <= 256 && !/[\u0000-\u001f\u007f-\u009f]/.test(id);
+      }
+      function entier(v, min, max) { return Number.isInteger(v) && v >= min && v <= max; }
+      function actionDocumentaire(titre, action) {
+        var sequence = requete, selectionLot = lot.value;
+        return bouton(titre, function () {
+          if (!actuel() || sequence !== requete || selectionLot !== lot.value) return;
+          if (courant !== token()) {
+            ++requete; effacer(); statut.textContent = "Compte modifié : actualisez les lots."; return;
+          }
+          action();
+        });
+      }
+      function proposerVersion(id) {
+        if (!idValide(id) || lecture.disabled) return;
+        actions.append(actionDocumentaire("Lire la version " + id, function () {
+          readId.value = id; readField.value = "texte_integral"; readLimit.value = 4000; readOffset.value = 0;
+          chargerArticle();
+        }));
+      }
+      function proposerCode(code) {
+        if (typeof code !== "string" || !/^[0-9]{10}$/.test(code) || fiche.disabled) return;
+        actions.append(actionDocumentaire("Fiche documentaire " + code, function () {
+          code10.value = code; measureLimit.value = 20; measureOffset.value = 0; chargerFiche();
+        }));
+      }
+      rendreActions = function (rapport) {
+        // Les boutons ne reprennent aucune URL source. Seuls des IDs/codes déclarés
+        // alimentent les champs des lectures déjà protégées par le serveur.
+        if (rapport.type_recherche === "code_documentaire" && Array.isArray(rapport.resultats)) {
+          rapport.resultats.slice(0, 100).forEach(function (v) { if (v) proposerVersion(v.id); });
+        }
+        if (rapport.type_recherche === "tarif_documentaire" && Array.isArray(rapport.resultats)) {
+          rapport.resultats.slice(0, 100).forEach(function (v) { if (v && v.ligne) proposerCode(v.ligne.code_tarifaire_10); });
+        }
+        if (rapport.type_rapport === "historique_documentaire_article") {
+          var vus = new Set();
+          [rapport.versions_meme_numero, rapport.articles_contexte_relations].forEach(function (liste) {
+            if (!Array.isArray(liste)) return;
+            liste.slice(0, 200).forEach(function (v) {
+              if (v && !vus.has(v.id)) { vus.add(v.id); proposerVersion(v.id); }
+            });
+          });
+        }
+        if (rapport.type_rapport === "navigation_tarifaire_documentaire" && !arbre.disabled) {
+          var suites = {sections: "chapitres", chapitres: "positions", positions: "sh6", sh6: "codes", codes: null};
+          if (Object.prototype.hasOwnProperty.call(suites, rapport.niveau) && rapport.niveau_suivant === suites[rapport.niveau] &&
+              Array.isArray(rapport.enfants_declares)) {
+            rapport.enfants_declares.slice(0, 100).forEach(function (v) {
+              if (!v) return;
+              if (rapport.niveau === "codes") { proposerCode(v.code_tarifaire_10); return; }
+              var id = rapport.niveau === "sections" ? v.id : v.code;
+              var largeur = {chapitres: 2, positions: 4, sh6: 6}[rapport.niveau];
+              if (!idValide(id) || (largeur && !new RegExp("^[0-9]{" + largeur + "}$").test(id))) return;
+              actions.append(actionDocumentaire("Enfants de " + id, function () {
+                level.value = rapport.niveau_suivant; treeParent.value = id; adapterNiveau();
+                treeLimit.value = 20; treeOffset.value = 0; chargerArbre();
+              }));
+            });
+          }
+          if (Object.prototype.hasOwnProperty.call(suites, rapport.niveau) &&
+              (rapport.niveau === "sections" ? rapport.parent_exact === null : idValide(rapport.parent_exact)) &&
+              entier(rapport.limite, 1, 100) && entier(rapport.decalage, 0, 1000000) &&
+              entier(rapport.decalage_suivant, rapport.decalage + 1, 1000000) &&
+              entier(rapport.total_enfants_declares, rapport.decalage_suivant + 1, Number.MAX_SAFE_INTEGER)) {
+            actions.append(actionDocumentaire("Page suivante des enfants", function () {
+              level.value = rapport.niveau; treeParent.value = rapport.parent_exact || ""; adapterNiveau();
+              treeLimit.value = rapport.limite; treeOffset.value = rapport.decalage_suivant; chargerArbre();
+            }));
+          }
+        }
+        if (rapport.type_rapport === "lecture_article_documentaire" && !lecture.disabled &&
+            rapport.article_trouve === true && rapport.texte_renseigne === true &&
+            rapport.unite_decalage === "points_de_code_unicode_python" && idValide(rapport.article_id_exact) &&
+            ["texte_integral", "texte_francais", "texte_arabe", "texte_origine", "texte_modificatif"].includes(rapport.champ_texte) &&
+            entier(rapport.limite, 1, 16000) && entier(rapport.decalage, 0, 67108864) &&
+            entier(rapport.decalage_suivant, rapport.decalage + 1, 67108864) &&
+            entier(rapport.total_caracteres, rapport.decalage_suivant + 1, 67108864)) {
+          actions.append(actionDocumentaire("Fragment suivant de l’article", function () {
+            readId.value = rapport.article_id_exact; readField.value = rapport.champ_texte;
+            readLimit.value = rapport.limite; readOffset.value = rapport.decalage_suivant; chargerArticle();
+          }));
+        }
+      };
       lot.addEventListener("change", adapter); adapter();
       outils.append(form, fiche, arbre, lecture);
     });
