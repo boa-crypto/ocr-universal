@@ -134,5 +134,23 @@ await scenario('historique vide et tarif refusés côté interface', async({w,ho
   assert.equal(host.querySelectorAll('fieldset')[1].disabled,true);
   button('Afficher l’historique').click(); assert.equal(appels.length,1);
 });
+await scenario('fiche tarif exacte, zéros conservés et pagination', async({w,host,appels,button,reponse})=>{
+  const select=host.querySelector('select'); select.value='test-tarif'; select.dispatchEvent(new w.Event('change'));
+  const fiche=host.querySelector('[data-code10]').closest('fieldset');
+  assert.equal(fiche.disabled,false);
+  const inputs=fiche.querySelectorAll('input'); inputs[0].value='0101000000'; inputs[1].value='2'; inputs[2].value='1';
+  reponse(envelope({type_rapport:'fiche_tarifaire_documentaire',ligne_trouvee:true}));
+  button('Consulter la fiche').click(); await tick();
+  assert.equal(appels.at(-1).url,'/api/v1/customs-review/lots/test-tarif/tariff/0101000000?measures_limit=2&measures_offset=1');
+});
+await scenario('fiche désactivée sur Code et numéros invalides refusés', async({w,host,appels,button,status})=>{
+  assert.equal(host.querySelector('[data-code10]').closest('fieldset').disabled,true);
+  button('Consulter la fiche').click(); assert.equal(appels.length,1);
+  const select=host.querySelector('select'); select.value='test-tarif'; select.dispatchEvent(new w.Event('change'));
+  for(const value of ['', '010100', '٠١٠١٠٠٠٠٠٠']) {
+    host.querySelector('[data-code10]').value=value; button('Consulter la fiche').click();
+    assert.equal(appels.length,1); assert(status().includes('dix chiffres ASCII'));
+  }
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

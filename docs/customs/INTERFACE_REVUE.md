@@ -1,4 +1,4 @@
-# Interface de revue douanière — lots 8 et 9
+# Interface de revue douanière — lots 8 à 10
 
 2026-11-06. **Lecture seule, quarantaine, non validée juridiquement, non publiée.**
 
@@ -43,7 +43,11 @@ Pas d’export documentaire ajouté.
 L’[historique documentaire du lot 9](HISTORIQUE_DOCUMENTAIRE.md) ajoute un bouton
 pour le numéro d’article exact, les sources/dates déclarées et les relations
 justifiées. Paginations indépendantes pour versions et relations ; aucun texte
-applicable ou lien juridique inféré. Coque service worker désormais version 41.
+applicable ou lien juridique inféré. Coque service worker désormais version 42.
+
+La [fiche tarifaire du lot 10](FICHE_TARIFAIRE.md) présente un code dix chiffres
+exact, sa hiérarchie reçue et ses mesures déclarées. Aucun taux applicable n’est
+choisi. Absence de mesure ≠ exonération ; taux null ≠ zéro.
 
 ## Erreurs et confidentialité
 
@@ -58,7 +62,7 @@ Requêtes relatives de même origine, GET uniquement, jeton personnel existant,
 `cache: no-store`. Pas de nouvelle persistance des documents dans localStorage,
 sessionStorage ou un cache applicatif. Le service worker conserve seulement la
 coque et continue d’exclure les API. La nouvelle ressource statique est incluse
-au précache de coque version 41. Une panne réseau ne donne aucun résultat métier
+au précache de coque version 42. Une panne réseau ne donne aucun résultat métier
 hors ligne.
 
 Navigation/départ de page : la zone documentaire est vidée ; les réponses
@@ -76,11 +80,11 @@ existant, non WORM ; stockage et gouvernance du serveur à sécuriser séparéme
 
 ## Qualification reproductible
 
-- `npm ci` puis `npm run ui:customs-review` : **21 scénarios JSDOM** de contrat,
+- `npm ci` puis `npm run ui:customs-review` : **23 scénarios JSDOM** de contrat,
   avec réponses explicitement NON OFFICIELLES, isolées et jamais livrées au client.
 - `pytest tests/test_customs_review_ui.py` : intégration JSDOM → pont HTTP éphémère
   → véritable TestClient/middleware/API, avec lots et comptes de test temporaires.
-  Vérifie navigation réelle, liste, contrôle, recherche filtrée, comparaison, historique et
+  Vérifie navigation réelle, liste, contrôle, recherche filtrée, comparaison, historique, fiche tarifaire et
   refus d’un compte lecteur ; les fichiers du corpus temporaire restent inchangés.
   Nécessite Node et jsdom, sinon test marqué ignoré explicitement.
 - Non-régression douane/RBAC/sauvegarde/coque : voir [rapport lot 8](RAPPORT_LOT8.md).

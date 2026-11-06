@@ -139,6 +139,7 @@
       function adapter() {
         filtres.disabled = rep.lots.find(function (v) { return v.id === lot.value; }).type_lot !== "code";
         histoire.disabled = filtres.disabled;
+        fiche.disabled = !filtres.disabled;
         ++requete; resultat.textContent = "";
       }
       var limit = champ(form, "Limite (1–100)", "input", "number");
@@ -175,8 +176,29 @@
         lire("/lots/" + encodeURIComponent(lot.value) + "/history?" + params, afficher);
       }));
       form.append(histoire);
+      var fiche = element("fieldset");
+      fiche.append(element("legend", "Fiche tarifaire documentaire — tarif seulement"));
+      fiche.append(element("p", "Code exact à dix chiffres ASCII. Parents et mesures déclarés, sans taux applicable ou calcul. " +
+        "Aucune mesure ne signifie pas exonération."));
+      var code10 = champ(fiche, "Code tarifaire exact (10 chiffres)");
+      code10.inputMode = "numeric"; code10.maxLength = 10; code10.pattern = "[0-9]{10}";
+      code10.setAttribute("data-code10", "");
+      var measureLimit = champ(fiche, "Mesures par page (1–100)", "input", "number");
+      measureLimit.min = 1; measureLimit.max = 100; measureLimit.value = 20; measureLimit.required = true;
+      var measureOffset = champ(fiche, "Décalage mesures (0–1000000)", "input", "number");
+      measureOffset.min = 0; measureOffset.max = 1000000; measureOffset.value = 0; measureOffset.required = true;
+      fiche.append(bouton("Consulter la fiche tarifaire", function () {
+        if (fiche.disabled) return;
+        if (!/^[0-9]{10}$/.test(code10.value)) {
+          ++requete; resultat.textContent = "";
+          statut.textContent = "Code exact de dix chiffres ASCII requis, sans conversion."; return;
+        }
+        if (!measureLimit.reportValidity() || !measureOffset.reportValidity()) return;
+        var params = new URLSearchParams({measures_limit: measureLimit.value, measures_offset: measureOffset.value});
+        lire("/lots/" + encodeURIComponent(lot.value) + "/tariff/" + encodeURIComponent(code10.value) + "?" + params, afficher);
+      }));
       lot.addEventListener("change", adapter); adapter();
-      outils.append(form);
+      outils.append(form, fiche);
     });
   }
   function demarrer() {

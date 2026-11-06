@@ -240,6 +240,13 @@ def main(argv=None) -> int:
     ch.add_argument("--relations-offset", type=int, default=0)
     ch.set_defaults(func=cmd_customs_code_history)
 
+    tf = sub.add_parser("customs-tariff-show", help="fiche documentaire d'un code exact, sans droits applicables")
+    tf.add_argument("lot", help="lot tarifaire contrôlé en quarantaine")
+    tf.add_argument("--code", required=True, help="chaîne exacte de dix chiffres ASCII")
+    tf.add_argument("--measures-limit", type=int, default=20)
+    tf.add_argument("--measures-offset", type=int, default=0)
+    tf.set_defaults(func=cmd_customs_tariff_show)
+
     args = parser.parse_args(argv)
     return args.func(args)
 
@@ -294,6 +301,13 @@ def cmd_customs_code_search(args) -> int:
 
     return _afficher_lecture_douaniere(lambda chemin: rechercher_code(chemin, args.query, args.limit, args.offset,
                                        args.article, args.source, args.nature), args.lot)
+
+
+def cmd_customs_tariff_show(args) -> int:
+    from .customs_reference.tariff_detail import consulter_code
+
+    return _afficher_lecture_douaniere(lambda chemin: consulter_code(
+        chemin, args.code, args.measures_limit, args.measures_offset), args.lot)
 
 
 def cmd_customs_code_history(args) -> int:

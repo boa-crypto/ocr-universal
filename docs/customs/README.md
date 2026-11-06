@@ -1,4 +1,4 @@
-# Mission référentiels douaniers — lots 1–9 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–10 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
@@ -206,6 +206,13 @@ Rapports JSON sûrs, pas de corpus de démonstration ou d’édition réglementa
 `customs-code-history`, route de revue `/lots/{id}/history` et bouton intégré :
 versions du numéro exact, sources/dates déclarées et relations justifiées à un
 saut, paginées indépendamment. Pas de succession juridique ou droit à date inféré.
+
+## Fiche tarifaire documentaire (lot 10)
+
+[Guide](FICHE_TARIFAIRE.md), [rapport](RAPPORT_LOT10.md).
+`customs-tariff-show`, route de revue `/lots/{id}/tariff/{code10}` et bouton
+intégré : code exact dix chiffres ASCII, parents reçus, source et mesures
+paginées. Taux inconnus conservés ; aucun taux applicable ou calcul inféré.
 
 ## Intégration future, sans double source de vérité
 

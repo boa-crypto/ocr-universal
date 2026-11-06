@@ -15,6 +15,7 @@ from ..customs_reference.review_registry import (
     charger_registre,
 )
 from ..customs_reference.search import ParamRechercheInvalide, rechercher_code, rechercher_tarif
+from ..customs_reference.tariff_detail import ParamFicheTarifInvalide, consulter_code
 
 NO_STORE = {"Cache-Control": "no-store"}
 
@@ -51,6 +52,8 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
             return JSONResponse({"lecture_seule": True, "publication_active": False,
                                  "validation_juridique": "non_validee", "perimetre": "revue_administrative_quarantaine",
                                  "resultat": resultat}, headers=NO_STORE)
+        except ParamFicheTarifInvalide:
+            statut, code = 422, "parametres_fiche_tarif_invalides"
         except ParamHistoriqueInvalide:
             statut, code = 422, "parametres_historique_invalides"
         except ParamRechercheInvalide:
@@ -102,6 +105,15 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 raise HTTPException(422, {"code": "historique_code_non_applicable_au_tarif"}, headers=NO_STORE)
             return historique_article(p[0], article, limit, offset, relations_limit, relations_offset)
         return executer(utilisateur, "historique", [lot_id], lire_historique)
+
+    @router.get("/lots/{lot_id}/tariff/{code10}")
+    def fiche_tarif(lot_id: str, code10: str, measures_limit: int = Query(20, ge=1, le=100),
+                    measures_offset: int = Query(0, ge=0, le=1_000_000), utilisateur=Depends(autoriser)):
+        def lire_fiche(e, p, registre):
+            if e[0].type_lot != "tarif":
+                raise HTTPException(422, {"code": "fiche_tarif_non_applicable_au_code_documentaire"}, headers=NO_STORE)
+            return consulter_code(p[0], code10, measures_limit, measures_offset)
+        return executer(utilisateur, "fiche_tarif", [lot_id], lire_fiche)
 
     @router.get("/diff")
     def comparer(avant: str = Query(..., pattern=IDENTIFIANT), apres: str = Query(..., pattern=IDENTIFIANT),
