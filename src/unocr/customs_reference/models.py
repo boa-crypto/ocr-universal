@@ -85,10 +85,25 @@ class SousPosition(StrictModel):
     reference: SourceRef
 
 
+class SubdivisionNationale(StrictModel):
+    code: str = Field(pattern=r"^[0-9]{7,9}$")
+    code_parent: str = Field(pattern=r"^[0-9]{6,8}$")
+    designation: str = Field(min_length=1)
+    reference: SourceRef
+
+    @model_validator(mode="after")
+    def parent_declare(self):
+        if (len(self.code_parent) >= len(self.code) or not self.code.startswith(self.code_parent)
+                or not self.designation.strip() or not self.reference.localisateur.strip()):
+            raise ValueError("Subdivision : parent préfixe plus court et preuve/libellé non blancs requis")
+        return self
+
+
 class LigneTarifaire(Periode):
     id: str = Field(min_length=1)
     code_tarifaire_10: str = Field(pattern=r"^[0-9]{10}$")
     code_sh_6: str = Field(pattern=r"^[0-9]{6}$")
+    code_subdivision_nationale: str | None = Field(default=None, pattern=r"^[0-9]{7,9}$")
     chapitre: str = Field(pattern=r"^[0-9]{2}$")
     position: str = Field(pattern=r"^[0-9]{4}$")
     sous_position: str = Field(pattern=r"^[0-9]{6}$")
@@ -150,6 +165,7 @@ class TariffBatch(StrictModel):
     chapitres: list[Chapitre]
     positions: list[Position]
     sous_positions: list[SousPosition]
+    subdivisions_nationales: list[SubdivisionNationale] = Field(default_factory=list)
     lignes: list[LigneTarifaire] = Field(min_length=1)
     mesures: list[Mesure] = Field(default_factory=list)
     statut: Literal["quarantaine"] = "quarantaine"
@@ -168,10 +184,11 @@ class TariffBatch(StrictModel):
         chapitres = index(self.chapitres, "code")
         positions = index(self.positions, "code")
         sh6 = index(self.sous_positions, "code")
+        subdivisions = index(self.subdivisions_nationales, "code")
         codes = index(self.lignes, "code_tarifaire_10")
         index(self.lignes, "id")
         index(self.mesures, "id")
-        for item in [*self.sections, *self.chapitres, *self.positions, *self.sous_positions, *self.lignes, *self.mesures]:
+        for item in [*self.sections, *self.chapitres, *self.positions, *self.sous_positions, *self.subdivisions_nationales, *self.lignes, *self.mesures]:
             if item.reference.source_id != self.source.id:
                 raise ValueError("Source référencée absente du lot ; utiliser un lot distinct pour une autre source")
         for c in chapitres.values():
@@ -183,7 +200,14 @@ class TariffBatch(StrictModel):
         for s in sh6.values():
             if s.position not in positions or s.code[:4] != s.position:
                 raise ValueError("Position parente absente ou incohérente")
+        for subdivision in subdivisions.values():
+            parent = subdivision.code_parent
+            if (len(parent) == 6 and parent not in sh6) or (len(parent) > 6 and parent not in subdivisions):
+                raise ValueError("Subdivision : parent explicitement déclaré absent")
         for ligne in self.lignes:
+            subdivision = ligne.code_subdivision_nationale
+            if subdivision is not None and (subdivision not in subdivisions or not ligne.code_tarifaire_10.startswith(subdivision)):
+                raise ValueError("Subdivision de ligne absente ou incohérente avec le code10")
             if ligne.code_sh_6 not in sh6 or ligne.chapitre not in chapitres:
                 raise ValueError("Parent SH6/chapitre absent")
             if ligne.section_id != chapitres[ligne.chapitre].section_id:

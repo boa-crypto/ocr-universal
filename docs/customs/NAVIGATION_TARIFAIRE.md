@@ -86,3 +86,7 @@ non vérifiées ; SHA/rejeu ne prouvent pas authenticité/exactitude/exhaustivit
 Les limites de taille, de charge et de concurrence des lecteurs s’appliquent.
 Qualification JSDOM/backend isolé, pas homologation visuelle/accessibilité complète
 ou benchmark sur tarif national réel. [Rapport](RAPPORT_LOT12.md).
+
+Lot 23 : cette navigation reste une projection SH6→code10. Les [subdivisions
+intermédiaires explicitement déclarées](SUBDIVISIONS_NATIONALES.md) sont restituées
+dans la fiche, sans nouveau niveau de navigation ajouté ici.

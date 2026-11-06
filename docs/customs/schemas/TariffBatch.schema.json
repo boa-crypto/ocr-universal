@@ -74,6 +74,19 @@
           "title": "Code Sh 6",
           "type": "string"
         },
+        "code_subdivision_nationale": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9]{7,9}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Code Subdivision Nationale"
+        },
         "chapitre": {
           "pattern": "^[0-9]{2}$",
           "title": "Chapitre",
@@ -499,6 +512,37 @@
       ],
       "title": "SousPosition",
       "type": "object"
+    },
+    "SubdivisionNationale": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[0-9]{7,9}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "code_parent": {
+          "pattern": "^[0-9]{6,8}$",
+          "title": "Code Parent",
+          "type": "string"
+        },
+        "designation": {
+          "minLength": 1,
+          "title": "Designation",
+          "type": "string"
+        },
+        "reference": {
+          "$ref": "#/$defs/SourceRef"
+        }
+      },
+      "required": [
+        "code",
+        "code_parent",
+        "designation",
+        "reference"
+      ],
+      "title": "SubdivisionNationale",
+      "type": "object"
     }
   },
   "additionalProperties": false,
@@ -538,6 +582,13 @@
         "$ref": "#/$defs/SousPosition"
       },
       "title": "Sous Positions",
+      "type": "array"
+    },
+    "subdivisions_nationales": {
+      "items": {
+        "$ref": "#/$defs/SubdivisionNationale"
+      },
+      "title": "Subdivisions Nationales",
       "type": "array"
     },
     "lignes": {

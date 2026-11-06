@@ -28,7 +28,8 @@ def diagnostiquer_couverture(repertoire: Path, type_lot: str) -> dict:
         indicateurs = {
             "compteurs": {"sections": len(lot.sections), "chapitres": len(lot.chapitres),
                           "positions": len(lot.positions), "sh6": len(lot.sous_positions),
-                          "lignes_code10": len(lot.lignes), "mesures": len(lot.mesures)},
+                          "lignes_code10": len(lot.lignes), "mesures": len(lot.mesures),
+                          "subdivisions_nationales": len(lot.subdivisions_nationales)},
             "lignes_champs_non_renseignes": _absents(lot.lignes, (
                 "designation_officielle_fr", "designation_officielle_ar", "unite_statistique", "unite_supplementaire",
                 "date_entree_vigueur", "date_fin_validite", "taux_droits_douane", "taux_tva")),
@@ -42,7 +43,8 @@ def diagnostiquer_couverture(repertoire: Path, type_lot: str) -> dict:
                 "positions": len({v.code for v in lot.positions} - {v.position for v in lot.lignes}),
                 "sh6": len({v.code for v in lot.sous_positions} - {v.code_sh_6 for v in lot.lignes}),
             },
-            "subdivision_nationale_intermediaire": "non_decrite_par_le_contrat",
+            "subdivision_nationale_intermediaire": "declaration_explicite_facultative_sans_inference",
+            "lignes_sans_subdivision_nationale_declaree": sum(v.code_subdivision_nationale is None for v in lot.lignes),
             "rapprochement_fiscal_multi_source": "non_effectue",
         }
     else:

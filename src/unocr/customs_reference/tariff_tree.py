@@ -62,7 +62,7 @@ def parcourir_tarif(repertoire: Path, niveau: str = "sections", parent: str | No
         "avertissements": [
             "Navigation des seuls parents/enfants reçus et contrôlés, pas nomenclature nationale exhaustive.",
             "Un parent absent ou sans enfant dans ce lot ne prouve pas absence nationale ou abrogation.",
-            "Aucune subdivision nationale intermédiaire inventée entre SH6 et code dix chiffres.",
+            "Projection SH6 vers code10 ; subdivisions explicites consultables dans la fiche, aucune subdivision inventée.",
             "Libellés, codes et références reçus conservés sans traduction ni correction.",
             "Aucun taux ou mesure fiscale rapproché ; aucune classification, applicabilité ou validation officielle.",
             "Empreintes et rejeu ne prouvent ni authenticité des sources ni exactitude réglementaire.",

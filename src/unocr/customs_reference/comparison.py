@@ -157,12 +157,12 @@ def comparer_lots(avant: Path, apres: Path) -> dict:
             "archives": {"avant": rapport_a["archive"], "apres": rapport_b["archive"]},
             "lignes": _diff_collection(a.lignes, b.lignes, "code_tarifaire_10"),
             "hierarchie": {nom: _diff_collection(getattr(a, nom), getattr(b, nom), "id" if nom == "sections" else "code")
-                           for nom in ("sections", "chapitres", "positions", "sous_positions")},
+                           for nom in ("sections", "chapitres", "positions", "sous_positions", "subdivisions_nationales")},
             "mesures_modifiees": mesures,
             "provenances_modifiees": {
                 "lignes": _provenances(a.lignes, b.lignes, "code_tarifaire_10"),
                 "hierarchie": {nom: _provenances(getattr(a, nom), getattr(b, nom), "id" if nom == "sections" else "code")
-                               for nom in ("sections", "chapitres", "positions", "sous_positions")},
+                               for nom in ("sections", "chapitres", "positions", "sous_positions", "subdivisions_nationales")},
                 "mesures": [{"code_tarifaire_10": code, "avant": details_a.get(code, []), "apres": details_b.get(code, [])}
                             for code in sorted(mesures_a.keys() & mesures_b.keys())
                             if mesures_a[code] == mesures_b[code] and origines_a[code] != origines_b[code]],

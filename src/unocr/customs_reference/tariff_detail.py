@@ -19,6 +19,15 @@ def consulter_code(repertoire: Path, code10: str, limite_mesures: int = 20, deca
     lot, rapport = charger_lot(repertoire)
     ligne = next((v for v in lot.lignes if v.code_tarifaire_10 == code10), None)
     hierarchie = None
+    chemin_subdivisions = []
+    if ligne is not None:
+        par_code = {v.code: v for v in lot.subdivisions_nationales}
+        parent = ligne.code_subdivision_nationale
+        while parent in par_code:
+            subdivision = par_code[parent]
+            chemin_subdivisions.append(subdivision.model_dump(mode="json"))
+            parent = subdivision.code_parent
+        chemin_subdivisions.reverse()
     if ligne is not None:
         # Les parents sont ceux déclarés et contrôlés au rejeu, pas des libellés reconstruits.
         hierarchie = {
@@ -26,7 +35,8 @@ def consulter_code(repertoire: Path, code10: str, limite_mesures: int = 20, deca
             "chapitre": next(v for v in lot.chapitres if v.code == ligne.chapitre).model_dump(mode="json"),
             "position": next(v for v in lot.positions if v.code == ligne.position).model_dump(mode="json"),
             "sh6": next(v for v in lot.sous_positions if v.code == ligne.code_sh_6).model_dump(mode="json"),
-            "subdivision_nationale_intermediaire": None,
+            "subdivision_nationale_intermediaire": chemin_subdivisions[-1] if chemin_subdivisions else None,
+            "subdivisions_nationales": chemin_subdivisions,
         }
     mesures = sorted((m for m in lot.mesures if m.code_tarifaire_10 == code10), key=lambda m: m.id)
     page = mesures[decalage_mesures:decalage_mesures + limite_mesures]
@@ -47,7 +57,7 @@ def consulter_code(repertoire: Path, code10: str, limite_mesures: int = 20, deca
         "avertissements": [
             "Fiche d'un seul lot en quarantaine, pas du tarif national officiel courant ou exhaustif.",
             "Absence dans ce lot ne signifie ni inexistence nationale du code ni interdiction de classement.",
-            "Parents déclarés conservés ; aucune subdivision intermédiaire nationale n'est documentée par ce contrat.",
+            "Parents explicitement déclarés conservés ; aucune subdivision n'est déduite d'un préfixe de code.",
             "Mesures de la même source seulement ; fiscalité d'autres sources/dates non rapprochée ici.",
             "Dates, unités et mesures restent déclarées non validées ; aucune applicabilité à date choisie.",
             "Aucune mesure ou taux null ne signifie pas exonération ou taux zéro ; aucun calcul de droits.",

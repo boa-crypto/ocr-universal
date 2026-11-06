@@ -30,9 +30,9 @@ mesures par type ; nombre de lignes sans mesure ; parents déclarés sans ligne 
 
 Un parent sans ligne peut simplement appartenir à une hiérarchie plus large que
 le fichier reçu : il n’est pas déclaré erroné. Les mesures sont mono-source ; aucun
-rapprochement fiscal externe n’est effectué. L’absence de subdivision nationale
-intermédiaire est signalée comme **non décrite par le contrat**, pas comme code
-à huit chiffres reconstruit.
+rapprochement fiscal externe n’est effectué. Depuis le lot 23, les subdivisions nationales sont facultatives et explicitement
+déclarées. Le compteur de lignes sans lien est descriptif, pas preuve d’absence
+nationale ; aucun code à huit chiffres n’est reconstruit.
 
 Les taux inconnus de ligne restent comptés comme inconnus, sans copie des mesures.
 Une mesure à taux déclaré zéro est bien renseignée : elle n’est pas comptée comme
@@ -98,3 +98,5 @@ la qualification complète d’un navigateur/lecteur d’écran ou d’un déplo
 
 [Rapport et qualification](RAPPORT_LOT11.md). Les originaux, modifications,
 tarif national et sources fiscales restent à acquérir et vérifier humainement.
+
+[Subdivisions nationales déclarées et compatibilité](SUBDIVISIONS_NATIONALES.md).

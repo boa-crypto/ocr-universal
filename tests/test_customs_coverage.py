@@ -45,7 +45,7 @@ def test_compteurs_tarif_et_champs_non_renseignes_sans_ecriture(tmp_path):
     assert indicateurs["mesures_par_type"]["restriction"] == 1
     assert indicateurs["mesures_par_type"]["droit"] == 0
     assert indicateurs["lignes_sans_mesure_declaree"] == 4
-    assert indicateurs["subdivision_nationale_intermediaire"] == "non_decrite_par_le_contrat"
+    assert indicateurs["subdivision_nationale_intermediaire"] == "declaration_explicite_facultative_sans_inference"
     assert not any(indicateurs["parents_sans_ligne_code10"].values())
     assert snapshot(tmp_path) == avant
 

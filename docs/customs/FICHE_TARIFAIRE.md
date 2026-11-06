@@ -16,8 +16,9 @@ La fiche fournit :
   dates déclarées et localisateur, sans traduction ni correction ;
 - `hierarchie_declaree` : section, chapitre, position et SH6 réellement déclarés et
   contrôlés, avec leurs propres références ;
-- `subdivision_nationale_intermediaire: null` : ce contrat ne décrit aucune
-  subdivision nationale intermédiaire ; un préfixe à huit chiffres n’est pas créé ;
+- `subdivision_nationale_intermediaire` : parent intermédiaire explicitement
+  déclaré ou null ; depuis le lot 23, `subdivisions_nationales` restitue la chaîne
+  sourcée reçue. Aucun préfixe à huit chiffres n’est créé automatiquement ;
 - `source_declaree` : document, URL déclarée, version, SHA256 et date source ;
 - `mesures_declarees` : mesures explicitement liées au code dans ce même lot,
   avec références, taux/unité éventuels, descriptions, dates et statut `a_verifier`.
@@ -80,3 +81,5 @@ globale mémoire/temps. Pas de qualification navigateur visuelle complète : JSD
 et intégration HTTP/backend isolée, pas homologation juridique ou ergonomique.
 
 [Tests, résultats et état du corpus](RAPPORT_LOT10.md).
+
+[Contrat et compatibilité du lot 23](SUBDIVISIONS_NATIONALES.md).
