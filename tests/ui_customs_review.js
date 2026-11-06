@@ -404,5 +404,34 @@ await scenario('SH6 propose le niveau détaillé sans changer la projection disp
   assert.equal(new URL(appels.at(-1).url,'https://test.invalid').searchParams.get('level'),'subdivisions');
   assert([...host.querySelector('[data-tree-level]').options].some(o=>o.value==='codes'));
 });
+await scenario('diff articles : IDs/champ exacts et suites indépendantes Unicode',async({host,appels,button,reponse})=>{
+  host.querySelector('[data-diff-before]').value='AV & عربي';host.querySelector('[data-diff-after]').value='AP';
+  const bloc=(texte)=>({decalage_dans_bloc:0,fragment_bloc_different:texte,total_caracteres_bloc_different:9,decalage_suivant:Array.from(texte).length});
+  reponse(envelope({type_rapport:'comparaison_litterale_versions_article',champs_comparables:true,
+    avant_id_exact:'AV & عربي',apres_id_exact:'AP',champ_texte:'texte_arabe',unite_decalage:'points_de_code_unicode_python',
+    limite:4,avant:bloc('أ😀'),apres:bloc('TEST')}));
+  button('Comparer les deux versions exactes').click();await tick();
+  let u=new URL(appels.at(-1).url,'https://test.invalid');assert.equal(u.searchParams.get('avant_id'),'AV & عربي');
+  button('Suite du bloc avant').click();await tick();u=new URL(appels.at(-1).url,'https://test.invalid');
+  assert.equal(u.searchParams.get('offset_avant'),'2');assert.equal(u.searchParams.get('offset_apres'),'0');assert.equal(u.searchParams.get('field'),'texte_arabe');
+});
+await scenario('diff articles : absence de champ ne propose pas de suite',async({host,button,reponse})=>{
+  host.querySelector('[data-diff-before]').value='AV';host.querySelector('[data-diff-after]').value='AP';
+  reponse(envelope({type_rapport:'comparaison_litterale_versions_article',champs_comparables:false,textes_identiques:null}));
+  button('Comparer les deux versions exactes').click();await tick();assert(!button('Suite du bloc'));
+});
+await scenario('diff articles : IDs requis et tarif refusé sans lecture',async({w,host,appels,button})=>{
+  let n=appels.length;button('Comparer les deux versions exactes').click();await tick();assert.equal(appels.length,n);
+  const lot=host.querySelector('select');lot.value='test-tarif';lot.dispatchEvent(new w.Event('change'));
+  host.querySelector('[data-diff-before]').value='AV';host.querySelector('[data-diff-after]').value='AP';
+  button('Comparer les deux versions exactes').click();await tick();assert.equal(appels.length,n);
+});
+await scenario('diff articles : audit indisponible efface le rapport',async({host,button,reponse})=>{
+  host.querySelector('[data-diff-before]').value='AV';host.querySelector('[data-diff-after]').value='AP';
+  reponse(envelope({type_rapport:'comparaison_litterale_versions_article',texte:'NON OFFICIEL'}));
+  button('Comparer les deux versions exactes').click();await tick();
+  reponse({detail:{code:'audit_revue_indisponible'}},503);button('Comparer les deux versions exactes').click();await tick();
+  assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

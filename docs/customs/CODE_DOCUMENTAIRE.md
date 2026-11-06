@@ -197,3 +197,9 @@ Pas de publication, de validation humaine simulée ou de nouvel accès HTTP.
 
 La [recherche locale FR/AR du lot 5](RECHERCHE_LOCALE.md) réutilise ce contrôle
 avant tout résultat. Elle reste en quarantaine, sans sélection juridique à date.
+
+## Comparaison littérale — lot 25
+
+La revue sait comparer deux IDs exacts explicitement choisis dans le même lot,
+sans filiation inférée ni consolidation. CLI/API/interface et export partiel :
+[COMPARAISON_ARTICLES.md](COMPARAISON_ARTICLES.md).

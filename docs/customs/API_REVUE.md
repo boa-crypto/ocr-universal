@@ -148,3 +148,11 @@ des versions, ni la revue réglementaire qui devront précéder toute publicatio
 Code seulement ; texte natif en fragment, aucun binaire ou chemin client. Succès
 soumis aux mêmes épingles et audit obligatoire, opération `lecture_pdf`.
 [Contrat, refus et limites](LECTURE_PDF.md). Pas d’OCR ou validation juridique.
+
+### Comparaison littérale de versions (lot 25)
+
+`GET /lots/{lot_id}/article-diff?avant_id=…&apres_id=…&field=texte_integral&limit=4000&offset_avant=0&offset_apres=0`
+compare deux IDs exacts d’un même lot Code, sans succession juridique déduite.
+Même autorisation/épingle/audit/no-store ; tarif et paramètres invalides 422.
+Voir [COMPARAISON_ARTICLES.md](COMPARAISON_ARTICLES.md) pour le contrat des blocs,
+les absences, la pagination indépendante et les limites.

@@ -68,3 +68,8 @@ humaine restent nécessaires ; aucun calcul réglementaire n’est autorisé.
 
 [Lot 22 : export JSON du fragment de texte natif PDF](INTERFACE_PDF.md), après
 relecture protégée. Pas d’export du binaire PDF ou de toutes ses pages.
+
+Lot 25 : `/lots/{lot_id}/article-diff` est également admise dans l’enveloppe
+partielle version 1 ; comparaison littérale et provenance déclarée seulement,
+jamais consolidation ou validation juridique. Les anciens contrôleurs stricts
+peuvent refuser cette nouvelle route.

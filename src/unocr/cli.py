@@ -268,6 +268,16 @@ def main(argv=None) -> int:
     ca.add_argument("--offset", type=int, default=0)
     ca.set_defaults(func=cmd_customs_code_read)
 
+    ad = sub.add_parser("customs-code-article-diff", help="écart littéral de deux versions exactes, sans consolidation")
+    ad.add_argument("lot")
+    ad.add_argument("--before-id", required=True)
+    ad.add_argument("--after-id", required=True)
+    ad.add_argument("--field", choices=["texte_integral", "texte_francais", "texte_arabe", "texte_origine", "texte_modificatif"], default="texte_integral")
+    ad.add_argument("--limit", type=int, default=4000)
+    ad.add_argument("--before-offset", type=int, default=0)
+    ad.add_argument("--after-offset", type=int, default=0)
+    ad.set_defaults(func=cmd_customs_code_article_diff)
+
     cp = sub.add_parser("customs-code-pdf-read", help="lire le texte natif d'une page PDF reçue, sans validation")
     cp.add_argument("lot")
     cp.add_argument("--document", required=True)
@@ -340,6 +350,13 @@ def cmd_customs_review_export_check(args) -> int:
     from .customs_reference.review_export import verifier_export
 
     return _afficher_lecture_douaniere(verifier_export, args.file)
+
+
+def cmd_customs_code_article_diff(args) -> int:
+    from .customs_reference.article_diff import comparer_versions_article
+
+    return _afficher_lecture_douaniere(lambda chemin: comparer_versions_article(
+        chemin, args.before_id, args.after_id, args.field, args.limit, args.before_offset, args.after_offset), args.lot)
 
 
 def cmd_customs_code_pdf_read(args) -> int:

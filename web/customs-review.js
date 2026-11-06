@@ -177,7 +177,7 @@
         histoire.disabled = filtres.disabled;
         fiche.disabled = !filtres.disabled;
         arbre.disabled = !filtres.disabled;
-        lecture.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
+        lecture.disabled = filtres.disabled; diffArticle.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
         ++requete; viderResultat();
       }
       var limit = champ(form, "Limite (1–100)", "input", "number");
@@ -313,6 +313,24 @@
           page: pdfPage.value, limit: pdfLimit.value, offset: pdfOffset.value}), afficher);
       }
       pdfLecture.append(bouton("Lire le texte natif PDF", chargerPDF));
+      var diffArticle = element("fieldset");
+      diffArticle.append(element("legend", "Comparer deux versions transcrites — Code seulement"));
+      diffArticle.append(element("p", "Ordre avant/après choisi, pas succession juridique. Champ/limite de lecture d’article utilisés. Aucun alignement par similarité."));
+      var diffAvant = champ(diffArticle, "ID exact avant"); diffAvant.maxLength = 256; diffAvant.setAttribute("data-diff-before", "");
+      var diffApres = champ(diffArticle, "ID exact après"); diffApres.maxLength = 256; diffApres.setAttribute("data-diff-after", "");
+      var diffOffsetAvant = champ(diffArticle, "Décalage bloc avant", "input", "number");
+      var diffOffsetApres = champ(diffArticle, "Décalage bloc après", "input", "number");
+      [diffOffsetAvant, diffOffsetApres].forEach(function (v) { v.min = 0; v.max = 67108864; v.value = 0; v.required = true; });
+      diffOffsetAvant.setAttribute("data-diff-offset-before", ""); diffOffsetApres.setAttribute("data-diff-offset-after", "");
+      function chargerDiffArticle() {
+        if (diffArticle.disabled) return;
+        if (!idValide(diffAvant.value) || !idValide(diffApres.value) || !readLimit.reportValidity() || !diffOffsetAvant.reportValidity() || !diffOffsetApres.reportValidity()) {
+          ++requete; viderResultat(); statut.textContent = "Deux identifiants exacts et une limite valides requis."; return;
+        }
+        lire("/lots/" + encodeURIComponent(lot.value) + "/article-diff?" + new URLSearchParams({avant_id: diffAvant.value,
+          apres_id: diffApres.value, field: readField.value, limit: readLimit.value, offset_avant: diffOffsetAvant.value, offset_apres: diffOffsetApres.value}), afficher);
+      }
+      diffArticle.append(bouton("Comparer les deux versions exactes", chargerDiffArticle));
       function idValide(id) {
         return typeof id === "string" && id.trim() && Array.from(id).length <= 256 && !/[\u0000-\u001f\u007f-\u009f]/.test(id);
       }
@@ -403,6 +421,27 @@
             }));
           }
         }
+        if (rapport.type_rapport === "comparaison_litterale_versions_article" && !diffArticle.disabled &&
+            rapport.champs_comparables === true && rapport.unite_decalage === "points_de_code_unicode_python" &&
+            idValide(rapport.avant_id_exact) && idValide(rapport.apres_id_exact) &&
+            ["texte_integral", "texte_francais", "texte_arabe", "texte_origine", "texte_modificatif"].includes(rapport.champ_texte) &&
+            entier(rapport.limite, 1, 16000) && rapport.avant && rapport.apres &&
+            entier(rapport.avant.decalage_dans_bloc, 0, 67108864) && entier(rapport.apres.decalage_dans_bloc, 0, 67108864)) {
+          ["avant", "apres"].forEach(function (cote) {
+            var bloc = rapport[cote];
+            if (typeof bloc.fragment_bloc_different !== "string" || Array.from(bloc.fragment_bloc_different).length > rapport.limite ||
+                !entier(bloc.total_caracteres_bloc_different, 0, 67108864) ||
+                bloc.decalage_suivant !== bloc.decalage_dans_bloc + Array.from(bloc.fragment_bloc_different).length ||
+                !entier(bloc.decalage_suivant, bloc.decalage_dans_bloc + 1, bloc.total_caracteres_bloc_different - 1)) return;
+            actions.append(actionDocumentaire("Suite du bloc " + cote, function () {
+              diffAvant.value = rapport.avant_id_exact; diffApres.value = rapport.apres_id_exact;
+              readField.value = rapport.champ_texte; readLimit.value = rapport.limite;
+              diffOffsetAvant.value = cote === "avant" ? bloc.decalage_suivant : rapport.avant.decalage_dans_bloc;
+              diffOffsetApres.value = cote === "apres" ? bloc.decalage_suivant : rapport.apres.decalage_dans_bloc;
+              chargerDiffArticle();
+            }));
+          });
+        }
         var docPDF = rapport.document_declare;
         if (!pdfLecture.disabled && docPDF && idValide(docPDF.id) && typeof docPDF.sha256 === "string" && /^[a-f0-9]{64}$/.test(docPDF.sha256)) {
           actions.append(actionDocumentaire("Lire le PDF reçu " + docPDF.id + " — page 1", function () {
@@ -444,7 +483,7 @@
         }
       };
       lot.addEventListener("change", adapter); adapter();
-      outils.append(form, fiche, arbre, lecture, pdfLecture);
+      outils.append(form, fiche, arbre, lecture, pdfLecture, diffArticle);
     });
   }
   function demarrer() {

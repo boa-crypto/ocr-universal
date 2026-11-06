@@ -11,6 +11,7 @@ from ..customs_reference.article_detail import (
     ParamArticleInvalide,
     consulter_article,
 )
+from ..customs_reference.article_diff import ParamDiffArticleInvalide, comparer_versions_article
 from ..customs_reference.comparison import charger_lot, comparer_lots
 from ..customs_reference.coverage import diagnostiquer_couverture
 from ..customs_reference.history import ParamHistoriqueInvalide, historique_article
@@ -69,6 +70,8 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
             reponse = JSONResponse({"lecture_seule": True, "publication_active": False,
                                  "validation_juridique": "non_validee", "perimetre": "revue_administrative_quarantaine",
                                  "resultat": resultat}, headers=NO_STORE)
+        except ParamDiffArticleInvalide:
+            statut, code = 422, "parametres_diff_articles_invalides"
         except ParamPDFInvalide:
             statut, code = 422, "parametres_lecture_pdf_invalides"
         except LecturePDFRefusee:
@@ -172,6 +175,18 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 raise HTTPException(422, {"code": "lecture_article_non_applicable_au_tarif"}, headers=NO_STORE)
             return consulter_article(p[0], article_id, field, limit, offset)
         return executer(utilisateur, "lecture_article", [lot_id], lire_version)
+
+    @router.get("/lots/{lot_id}/article-diff")
+    def diff_articles(lot_id: str, avant_id: str = Query(..., min_length=1, max_length=256),
+                      apres_id: str = Query(..., min_length=1, max_length=256), field: str = Query("texte_integral", max_length=32),
+                      limit: int = Query(4000, ge=1, le=MAX_FRAGMENT),
+                      offset_avant: int = Query(0, ge=0, le=MAX_DECALAGE_TEXTE),
+                      offset_apres: int = Query(0, ge=0, le=MAX_DECALAGE_TEXTE), utilisateur=Depends(autoriser)):
+        def comparer(e, p, registre):
+            if e[0].type_lot != "code":
+                raise HTTPException(422, {"code": "diff_articles_non_applicable_au_tarif"}, headers=NO_STORE)
+            return comparer_versions_article(p[0], avant_id, apres_id, field, limit, offset_avant, offset_apres)
+        return executer(utilisateur, "diff_articles", [lot_id], comparer)
 
     @router.get("/lots/{lot_id}/pdf")
     def lire_pdf(lot_id: str, document_id: str = Query(..., min_length=1, max_length=256),
