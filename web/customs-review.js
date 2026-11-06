@@ -116,6 +116,9 @@
       outils.append(bouton("Contrôler l’intégrité / rejouer", function () {
         lire("/lots/" + encodeURIComponent(lot.value) + "/check", afficher);
       }));
+      outils.append(bouton("Diagnostiquer la couverture documentaire", function () {
+        lire("/lots/" + encodeURIComponent(lot.value) + "/coverage", afficher);
+      }));
       outils.append(bouton("Comparer avant / après", function () {
         var a = rep.lots.find(function (v) { return v.id === lot.value; });
         var b = rep.lots.find(function (v) { return v.id === apres.value; });

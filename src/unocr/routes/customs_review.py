@@ -6,6 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import JSONResponse
 
 from ..customs_reference.comparison import charger_lot, comparer_lots
+from ..customs_reference.coverage import diagnostiquer_couverture
 from ..customs_reference.history import ParamHistoriqueInvalide, historique_article
 from ..customs_reference.importer import _lire
 from ..customs_reference.legal_comparison import charger_lot_code, comparer_lots_code
@@ -80,6 +81,11 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
     def controler(lot_id: str, utilisateur=Depends(autoriser)):
         return executer(utilisateur, "controle", [lot_id], lambda e, p, registre:
                         (charger_lot(p[0]) if e[0].type_lot == "tarif" else charger_lot_code(p[0]))[1])
+
+    @router.get("/lots/{lot_id}/coverage")
+    def couverture(lot_id: str, utilisateur=Depends(autoriser)):
+        return executer(utilisateur, "couverture", [lot_id], lambda e, p, registre:
+                        diagnostiquer_couverture(p[0], e[0].type_lot))
 
     @router.get("/lots/{lot_id}/search")
     def chercher(lot_id: str, q: str = Query("", max_length=256),

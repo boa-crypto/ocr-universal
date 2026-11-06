@@ -152,5 +152,16 @@ await scenario('fiche désactivée sur Code et numéros invalides refusés', asy
     assert.equal(appels.length,1); assert(status().includes('dix chiffres ASCII'));
   }
 });
+await scenario('diagnostic de couverture sans pourcentage inventé', async({w,host,appels,button,reponse})=>{
+  for(const id of ['test-code','test-tarif']) {
+    const select=host.querySelector('select'); select.value=id; select.dispatchEvent(new w.Event('change'));
+    reponse(envelope({type_rapport:'couverture_documentaire_declaree',nombre_officiel_attendu:null,
+      pourcentage_completude_reglementaire:null,completude_reglementaire:'non_etablie'}));
+    button('Diagnostiquer la couverture').click(); await tick();
+    assert.equal(appels.at(-1).url,'/api/v1/customs-review/lots/'+id+'/coverage');
+    const rep=JSON.parse(host.querySelector('pre').textContent);
+    assert.equal(rep.pourcentage_completude_reglementaire,null); assert.equal(rep.nombre_officiel_attendu,null);
+  }
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

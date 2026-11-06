@@ -247,6 +247,11 @@ def main(argv=None) -> int:
     tf.add_argument("--measures-offset", type=int, default=0)
     tf.set_defaults(func=cmd_customs_tariff_show)
 
+    cv = sub.add_parser("customs-coverage", help="compteurs documentaires, jamais complétude réglementaire")
+    cv.add_argument("lot", help="lot en quarantaine")
+    cv.add_argument("--type", required=True, choices=["tarif", "code"], dest="type_lot")
+    cv.set_defaults(func=cmd_customs_coverage)
+
     args = parser.parse_args(argv)
     return args.func(args)
 
@@ -301,6 +306,12 @@ def cmd_customs_code_search(args) -> int:
 
     return _afficher_lecture_douaniere(lambda chemin: rechercher_code(chemin, args.query, args.limit, args.offset,
                                        args.article, args.source, args.nature), args.lot)
+
+
+def cmd_customs_coverage(args) -> int:
+    from .customs_reference.coverage import diagnostiquer_couverture
+
+    return _afficher_lecture_douaniere(lambda chemin: diagnostiquer_couverture(chemin, args.type_lot), args.lot)
 
 
 def cmd_customs_tariff_show(args) -> int:

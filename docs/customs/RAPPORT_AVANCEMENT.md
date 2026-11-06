@@ -12,6 +12,7 @@
 [Lot 8 : interface de revue intégrée en lecture seule](RAPPORT_LOT8.md), 2026-11-06.
 [Lot 9 : historique documentaire des articles](RAPPORT_LOT9.md), 2026-11-06.
 [Lot 10 : fiche tarifaire documentaire](RAPPORT_LOT10.md), 2026-11-06.
+[Lot 11 : diagnostic de couverture documentaire](RAPPORT_LOT11.md), 2026-11-06.
 Le présent document conserve les résultats historiques du lot 1.
 
 ## Complétude réelle
