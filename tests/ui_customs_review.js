@@ -371,5 +371,38 @@ await scenario('PDF 503 audit efface fragment et actions',async({host,button,rep
   assert.equal(host.querySelector('pre').textContent,''); assert.equal(host.querySelector('[data-article-fragment]').textContent,'');
   assert.equal(host.querySelector('[data-review-actions]').textContent,'');
 });
+const enfantsMixtes = (extra={})=>({type_rapport:'navigation_tarifaire_documentaire',niveau:'subdivisions',niveau_suivant:'subdivisions',
+  parent_exact:'010100',limite:20,decalage:0,decalage_suivant:null,total_enfants_declares:2,enfants_declares:[
+    {type_noeud:'subdivision_nationale',code:'0101000',code_parent:'010100'},
+    {type_noeud:'code10',code_tarifaire_10:'0101000001',code_sh_6:'010100',code_subdivision_nationale:null}],...extra});
+await scenario('subdivisions : enfants mixtes subdivision et code direct',async({w,host,appels,button,reponse})=>{
+  const lot=host.querySelector('select'); lot.value='test-tarif'; lot.dispatchEvent(new w.Event('change'));
+  const niveau=host.querySelector('[data-tree-level]'); niveau.value='subdivisions'; niveau.dispatchEvent(new w.Event('change'));
+  host.querySelector('[data-tree-parent]').value='010100'; reponse(envelope(enfantsMixtes()));
+  button('Parcourir la hiérarchie').click(); await tick(); assert(button('Fiche documentaire 0101000001'));
+  button('Enfants de 0101000').click(); await tick();
+  const u=new URL(appels.at(-1).url,'https://test.invalid'); assert.equal(u.searchParams.get('level'),'subdivisions'); assert.equal(u.searchParams.get('parent'),'0101000');
+});
+await scenario('subdivisions : aucune action pour rattachement incohérent',async({w,host,button,reponse})=>{
+  const lot=host.querySelector('select');lot.value='test-tarif';lot.dispatchEvent(new w.Event('change'));
+  reponse(envelope(enfantsMixtes({enfants_declares:[
+    {type_noeud:'subdivision_nationale',code:'0201000',code_parent:'010100'},
+    {type_noeud:'subdivision_nationale',code:'0101000',code_parent:'010101'},
+    {type_noeud:'code10',code_tarifaire_10:'0201000000',code_sh_6:'010100',code_subdivision_nationale:null}]})));
+  button('Contrôler').click(); await tick(); assert(!button('Enfants de')); assert(!button('Fiche documentaire'));
+});
+await scenario('subdivisions : pagination conserve niveau et parent',async({w,host,appels,button,reponse})=>{
+  const lot=host.querySelector('select');lot.value='test-tarif';lot.dispatchEvent(new w.Event('change'));
+  reponse(envelope(enfantsMixtes({limite:1,decalage_suivant:1})));
+  button('Contrôler').click(); await tick();button('Page suivante des enfants').click();await tick();
+  const u=new URL(appels.at(-1).url,'https://test.invalid');assert.equal(u.searchParams.get('level'),'subdivisions');assert.equal(u.searchParams.get('parent'),'010100');assert.equal(u.searchParams.get('offset'),'1');
+});
+await scenario('SH6 propose le niveau détaillé sans changer la projection disponible',async({w,host,appels,button,reponse})=>{
+  const lot=host.querySelector('select');lot.value='test-tarif';lot.dispatchEvent(new w.Event('change'));
+  reponse(envelope({type_rapport:'navigation_tarifaire_documentaire',niveau:'sh6',niveau_suivant:'codes',niveau_suivant_detaille:'subdivisions',enfants_declares:[{code:'010100'}]}));
+  button('Contrôler').click();await tick();button('Enfants de 010100').click();await tick();
+  assert.equal(new URL(appels.at(-1).url,'https://test.invalid').searchParams.get('level'),'subdivisions');
+  assert([...host.querySelector('[data-tree-level]').options].some(o=>o.value==='codes'));
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

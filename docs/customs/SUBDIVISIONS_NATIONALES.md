@@ -36,8 +36,8 @@ Null ne démontre ni inexistence d’un niveau national ni erreur du fichier.
 - Couverture : nombre de subdivisions et de lignes sans lien déclaré. Aucun
   dénominateur national, pourcentage, code inventé ou conclusion réglementaire.
 - API et affichage JSON réutilisent les services, habilitations, épingles et audit.
-  Aucun nouveau bouton/niveau de navigation n’est ajouté : l’arbre actuel reste
-  une **projection SH6→code10**, avec renvoi à la fiche pour les intermédiaires.
+  Au lot 23, la navigation restait une projection SH6→code10. Le [lot 24](NAVIGATION_SUBDIVISIONS.md)
+  ajoute les enfants directs détaillés tout en conservant cette projection.
 
 ## Compatibilité et limites
 

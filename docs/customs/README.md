@@ -1,4 +1,4 @@
-# Mission référentiels douaniers — lots 1–23 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–24 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
@@ -292,6 +292,12 @@ import tarifaire PDF. [Commandes UI ajoutées au lot 22](INTERFACE_PDF.md).
 [Contrat et compatibilité](SUBDIVISIONS_NATIONALES.md), [rapport](RAPPORT_LOT23.md).
 Intermédiaires facultatifs sourcés, parent explicite, aucun niveau inventé ;
 restitution dans la fiche, couverture et diff. Archives anciennes non réécrites.
+
+## Navigation détaillée des subdivisions (lot 24)
+
+[Guide CLI/API/UI](NAVIGATION_SUBDIVISIONS.md), [rapport](RAPPORT_LOT24.md).
+Enfants directs mixtes subdivisions/codes10, pagination commune, liens déclarés
+uniquement ; projection historique SH6→codes10 conservée.
 
 ## Intégration future, sans double source de vérité
 

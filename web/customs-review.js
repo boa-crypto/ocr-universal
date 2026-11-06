@@ -243,7 +243,8 @@
       var level = champ(arbre, "Niveau à consulter", "select"); level.setAttribute("data-tree-level", "");
       [["sections", "Sections / racine"], ["chapitres", "Chapitres (parent : section)"],
         ["positions", "Positions (parent : chapitre)"], ["sh6", "SH6 (parent : position)"],
-        ["codes", "Codes dix chiffres (parent : SH6)"]].forEach(function (paire) {
+        ["codes", "Codes dix chiffres projetés (parent : SH6)"],
+        ["subdivisions", "Enfants directs (parent : SH6 / subdivision)"]].forEach(function (paire) {
         var option = element("option", paire[1]); option.value = paire[0]; level.append(option);
       });
       var treeParent = champ(arbre, "ID / code parent exact"); treeParent.maxLength = 256; treeParent.dir = "auto";
@@ -358,17 +359,35 @@
           });
         }
         if (rapport.type_rapport === "navigation_tarifaire_documentaire" && !arbre.disabled) {
-          var suites = {sections: "chapitres", chapitres: "positions", positions: "sh6", sh6: "codes", codes: null};
+          var suites = {sections: "chapitres", chapitres: "positions", positions: "sh6", sh6: "codes", codes: null, subdivisions: "subdivisions"};
           if (Object.prototype.hasOwnProperty.call(suites, rapport.niveau) && rapport.niveau_suivant === suites[rapport.niveau] &&
               Array.isArray(rapport.enfants_declares)) {
             rapport.enfants_declares.slice(0, 100).forEach(function (v) {
               if (!v) return;
               if (rapport.niveau === "codes") { proposerCode(v.code_tarifaire_10); return; }
+              if (rapport.niveau === "subdivisions") {
+                var parentDirect = rapport.parent_exact;
+                if (typeof parentDirect !== "string" || !/^[0-9]{6,9}$/.test(parentDirect)) return;
+                if (v.type_noeud === "code10" && typeof v.code_tarifaire_10 === "string" && /^[0-9]{10}$/.test(v.code_tarifaire_10) &&
+                    v.code_tarifaire_10.startsWith(parentDirect) && v.code_sh_6 === parentDirect.slice(0, 6) &&
+                    ((parentDirect.length > 6 && v.code_subdivision_nationale === parentDirect) ||
+                    (parentDirect.length === 6 && v.code_sh_6 === parentDirect && v.code_subdivision_nationale === null))) {
+                  proposerCode(v.code_tarifaire_10); return;
+                }
+                if (v.type_noeud !== "subdivision_nationale" || typeof v.code !== "string" || !/^[0-9]{7,9}$/.test(v.code) ||
+                    v.code_parent !== parentDirect || v.code.length <= parentDirect.length || !v.code.startsWith(parentDirect)) return;
+                actions.append(actionDocumentaire("Enfants de " + v.code, function () {
+                  level.value = "subdivisions"; treeParent.value = v.code; adapterNiveau();
+                  treeLimit.value = 20; treeOffset.value = 0; chargerArbre();
+                }));
+                return;
+              }
               var id = rapport.niveau === "sections" ? v.id : v.code;
               var largeur = {chapitres: 2, positions: 4, sh6: 6}[rapport.niveau];
               if (!idValide(id) || (largeur && !new RegExp("^[0-9]{" + largeur + "}$").test(id))) return;
               actions.append(actionDocumentaire("Enfants de " + id, function () {
-                level.value = rapport.niveau_suivant; treeParent.value = id; adapterNiveau();
+                level.value = rapport.niveau === "sh6" && rapport.niveau_suivant_detaille === "subdivisions" ? "subdivisions" : rapport.niveau_suivant;
+                treeParent.value = id; adapterNiveau();
                 treeLimit.value = 20; treeOffset.value = 0; chargerArbre();
               }));
             });

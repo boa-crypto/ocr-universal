@@ -13,6 +13,8 @@ from reportlab.pdfgen import canvas
 
 from tests import test_customs_review
 from tests.test_customs_reference import snapshot
+from tests.test_customs_subdivisions import subdivisions
+from unocr.customs_reference.importer import preparer_tarif
 from unocr.customs_reference.legal_importer import preparer_code
 from unocr.customs_reference.review_export import analyser_export
 
@@ -49,6 +51,24 @@ def test_interface_revue_sur_api_reelle(revue):
         if entree["id"] == "code_a":
             entree["dossier"] = "code_pdf_ui"
             entree["manifest_sha256"] = hashlib.sha256((racine / "code_pdf_ui" / "manifest.json").read_bytes()).hexdigest()
+    registre.write_text(json.dumps(reg))
+    entrees_tarif = cfg.root / "subdivisions_ui"
+    entrees_tarif.mkdir()
+    source = entrees_tarif / "source.json"
+    lignes = json.loads((racine / "tarif_a" / "source_recue.json").read_text())
+    lignes[0]["code_subdivision_nationale"] = "010100000"
+    source.write_text(json.dumps(lignes))
+    meta = json.loads((racine / "tarif_a" / "metadata_original.json").read_text())
+    meta["lot"]["subdivisions_nationales"] = subdivisions()
+    meta["lot"]["source"]["sha256"] = hashlib.sha256(source.read_bytes()).hexdigest()
+    metadata = entrees_tarif / "metadata.json"
+    metadata.write_text(json.dumps(meta))
+    preparer_tarif(source, metadata, racine / "tarif_sub_ui")
+    reg = json.loads(registre.read_text())
+    for entree in reg["lots"]:
+        if entree["id"] == "tarif_a":
+            entree["dossier"] = "tarif_sub_ui"
+            entree["manifest_sha256"] = hashlib.sha256((racine / "tarif_sub_ui" / "manifest.json").read_bytes()).hexdigest()
     registre.write_text(json.dumps(reg))
     cfg.web_dir.mkdir(parents=True, exist_ok=True)
     shutil.copy2(root / "web/index.html", cfg.web_dir / "index.html")

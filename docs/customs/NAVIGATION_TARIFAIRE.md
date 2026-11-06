@@ -90,3 +90,7 @@ ou benchmark sur tarif national réel. [Rapport](RAPPORT_LOT12.md).
 Lot 23 : cette navigation reste une projection SH6→code10. Les [subdivisions
 intermédiaires explicitement déclarées](SUBDIVISIONS_NATIONALES.md) sont restituées
 dans la fiche, sans nouveau niveau de navigation ajouté ici.
+
+[Lot 24 : niveau subdivisions et enfants directs mixtes](NAVIGATION_SUBDIVISIONS.md).
+La projection historique reste disponible ; la vue détaillée préserve les liens
+explicitement déclarés, sans déduire de parent par préfixe.

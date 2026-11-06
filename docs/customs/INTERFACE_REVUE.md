@@ -1,4 +1,4 @@
-# Interface de revue douanière — lots 8 à 22
+# Interface de revue douanière — lots 8 à 24
 
 2026-11-06. **Lecture seule, quarantaine, non validée juridiquement, non publiée.**
 
@@ -44,7 +44,7 @@ relecture protégée ; aucun export complet ou publication.
 L’[historique documentaire du lot 9](HISTORIQUE_DOCUMENTAIRE.md) ajoute un bouton
 pour le numéro d’article exact, les sources/dates déclarées et les relations
 justifiées. Paginations indépendantes pour versions et relations ; aucun texte
-applicable ou lien juridique inféré. Coque service worker désormais version 49.
+applicable ou lien juridique inféré. Coque service worker désormais version 50.
 
 La [fiche tarifaire du lot 10](FICHE_TARIFAIRE.md) présente un code dix chiffres
 exact, sa hiérarchie reçue et ses mesures déclarées. Aucun taux applicable n’est
@@ -80,7 +80,7 @@ Requêtes relatives de même origine, GET uniquement, jeton personnel existant,
 `cache: no-store`. Pas de nouvelle persistance des documents dans localStorage,
 sessionStorage ou un cache applicatif. Le service worker conserve seulement la
 coque et continue d’exclure les API. La nouvelle ressource statique est incluse
-au précache de coque version 49. Une panne réseau ne donne aucun résultat métier
+au précache de coque version 50. Une panne réseau ne donne aucun résultat métier
 hors ligne.
 
 Navigation/départ de page : la zone documentaire est vidée ; les réponses
@@ -98,7 +98,7 @@ best-effort, aucun WORM ; stockage et gouvernance du serveur à sécuriser sépa
 
 ## Qualification reproductible
 
-- `npm ci` puis `npm run ui:customs-review` : **48 scénarios JSDOM** de contrat,
+- `npm ci` puis `npm run ui:customs-review` : **52 scénarios JSDOM** de contrat,
   avec réponses explicitement NON OFFICIELLES, isolées et jamais livrées au client.
 - `pytest tests/test_customs_review_ui.py` : intégration JSDOM → pont HTTP éphémère
   → véritable TestClient/middleware/API, avec lots et comptes de test temporaires.
@@ -115,3 +115,5 @@ les lecteurs d’écran ou la charge d’un corpus national. Ces validations res
 [Lecture native des pages PDF dans la même interface, lot 22](INTERFACE_PDF.md) :
 fragment/page suivante, export JSON partiel et relecture protégée. Pas de rendu PDF
 graphique ou de transcription juridiquement vérifiée.
+
+[Lot 24 : subdivisions et codes10 directement déclarés, sans inférence](NAVIGATION_SUBDIVISIONS.md).

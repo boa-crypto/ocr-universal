@@ -96,10 +96,15 @@ const {JSDOM} = require('jsdom');
     bouton('Enfants de '+id).click();
     await attendre(()=>host.querySelector('pre').textContent.includes('navigation_tarifaire_documentaire'));
   }
-  assert.equal(level.value,'codes');
+  assert.equal(level.value,'subdivisions');
   await attendre(()=>host.querySelector('pre').textContent.includes('navigation_tarifaire_documentaire'));
   const tree=JSON.parse(host.querySelector('pre').textContent);
-  assert.equal(tree.total_enfants_declares,5); assert.equal(tree.enfants_declares[0].code_tarifaire_10,'0101000000');
+  assert.equal(tree.total_enfants_declares,5); assert.equal(tree.enfants_declares[0].code,'0101000');
+  for (const parent of ['0101000','01010000','010100000']) {
+    bouton('Enfants de '+parent).click();
+    await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').parent_exact===parent);
+  }
+  assert.equal(JSON.parse(host.querySelector('pre').textContent).enfants_declares[0].code_tarifaire_10,'0101000000');
   assert.equal(tree.parent_trouve,true);
   bouton('Fiche documentaire 0101000000').click();
   await attendre(()=>host.querySelector('pre').textContent.includes('fiche_tarifaire_documentaire'));

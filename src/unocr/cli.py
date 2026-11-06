@@ -254,7 +254,7 @@ def main(argv=None) -> int:
 
     tr = sub.add_parser("customs-tariff-tree", help="parcourir les parents/enfants tarifaires déclarés")
     tr.add_argument("lot", help="lot tarifaire en quarantaine")
-    tr.add_argument("--level", choices=["sections", "chapitres", "positions", "sh6", "codes"], default="sections")
+    tr.add_argument("--level", choices=["sections", "chapitres", "positions", "sh6", "codes", "subdivisions"], default="sections")
     tr.add_argument("--parent", default=None, help="ID ou code parent exact ; absent pour la racine")
     tr.add_argument("--limit", type=int, default=20)
     tr.add_argument("--offset", type=int, default=0)
