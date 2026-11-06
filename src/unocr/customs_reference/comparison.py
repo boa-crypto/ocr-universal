@@ -37,7 +37,7 @@ def charger_lot(repertoire: Path) -> tuple[TariffBatch, dict]:
     empreintes = manifest.get("fichiers_sha256")
     if not isinstance(empreintes, dict):
         raise LotRefuse("Table d'empreintes absente")
-    sources = [nom for nom in empreintes if nom in {"source_recue.json", "source_recue.csv", "source_recue.xlsx"}]
+    sources = [nom for nom in empreintes if nom in {"source_recue.json", "source_recue.csv", "source_recue.xlsx", "source_recue.xml"}]
     if len(sources) != 1:
         raise LotRefuse("Une source reçue prise en charge est requise")
     attendus = {sources[0], "metadata_original.json", "lot.json", "rapport.json"}

@@ -19,6 +19,7 @@
 [Lot 15 : audit obligatoire des succès de revue](RAPPORT_LOT15.md), 2026-11-06.
 [Lot 16 : export du rapport/page non validé](RAPPORT_LOT16.md), 2026-11-06.
 [Lot 17 : contrôle hors ligne des exports](RAPPORT_LOT17.md), 2026-11-06.
+[Lot 18 : préparation XML tabulaire explicite](RAPPORT_LOT18.md), 2026-11-06.
 Le présent document conserve les résultats historiques du lot 1.
 
 ## Complétude réelle
