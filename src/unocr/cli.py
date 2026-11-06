@@ -196,6 +196,13 @@ def main(argv=None) -> int:
     cd.add_argument("apres", help="répertoire du second lot préparé")
     cd.set_defaults(func=cmd_customs_diff)
 
+    cc = sub.add_parser("customs-code-prepare", help="archiver PDF et transcriptions du Code en quarantaine")
+    cc.add_argument("transcription", help="JSON déclaré : articles et relations, éventuellement vides")
+    cc.add_argument("--metadata", required=True, help="documents, empreintes et noms locaux des PDF reçus")
+    cc.add_argument("--out", default="", help="nouveau répertoire de préparation")
+    cc.add_argument("--write", action="store_true", help="écrire explicitement, sans publication")
+    cc.set_defaults(func=cmd_customs_code_prepare)
+
     args = parser.parse_args(argv)
     return args.func(args)
 
@@ -226,6 +233,21 @@ def cmd_pieces_check(args) -> int:
         for anomalie in resultat["anomalies"]:
             print(f"  {anomalie['categorie']} : {anomalie['cible']} — {anomalie['detail']}")
     return {"conforme": 0, "anomalies": 1, "indisponible": 2}[resultat["etat"]]
+
+
+def cmd_customs_code_prepare(args) -> int:
+    from .customs_reference.legal_importer import preparer_code
+
+    if args.write and not args.out:
+        print("--out est requis avec --write", file=sys.stderr)
+        return 2
+    try:
+        resultat = preparer_code(Path(args.transcription), Path(args.metadata), Path(args.out) if args.write else None)
+    except (OSError, ValueError, KeyError, TypeError, RecursionError) as exc:
+        print(json.dumps({"statut": "refuse", "publication_active": False, "detail": str(exc)}, ensure_ascii=False))
+        return 2
+    print(json.dumps(resultat, ensure_ascii=False, indent=2))
+    return 0
 
 
 def cmd_customs_diff(args) -> int:

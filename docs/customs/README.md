@@ -1,8 +1,8 @@
-# Mission référentiels douaniers — lots 1–2 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–3 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
-[le lot 2 du 6 novembre 2026](RAPPORT_LOT2.md)
+[le lot 2](RAPPORT_LOT2.md), [le lot 3 du 6 novembre 2026](RAPPORT_LOT3.md)
 et [le registre documentaire](SOURCES_RECHERCHE.json).
 
 ## Livré
@@ -142,6 +142,21 @@ même si `statut_juridique_declare` contient « applicable ». Ce dernier est un
 assertion à contrôler, pas une autorisation d'usage. Les notes non officielles
 sont stockées séparément du texte. **Aucun consolidateur ni sélecteur à date
 juridiquement validé n'est encore livré.**
+
+## Code des douanes : archivage documentaire en quarantaine (lot 3)
+
+[Guide du format et des commandes](CODE_DOCUMENTAIRE.md), schémas
+[CodeDocumentaireBatch](schemas/CodeDocumentaireBatch.schema.json) et
+[MetadataCode](schemas/MetadataCode.schema.json).
+
+`customs-code-prepare` archive des PDF reçus et une transcription JSON explicite,
+avec versions originales, modificatives et compilations provisoires séparées.
+Aucun OCR, téléchargement, consolidation ni rapprochement transcription/PDF
+n’est effectué. Les relations doivent être justifiées et sourcées ; aucun lien
+n’est inféré à partir d’une ressemblance ou d’un numéro d’article identique.
+L’archivage seul, avec zéro article transcrit, est possible et signalé comme tel.
+**Les octets reçus ne sont pas certifiés originaux de l’éditeur.** Le résultat
+n’est pas une source de vérité applicable et n’est exposé par aucune API métier.
 
 ## Intégration future, sans double source de vérité
 

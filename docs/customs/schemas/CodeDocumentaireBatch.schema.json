@@ -1,0 +1,487 @@
+{
+  "$defs": {
+    "ArticleVersion": {
+      "additionalProperties": false,
+      "properties": {
+        "date_entree_vigueur": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date Entree Vigueur"
+        },
+        "date_fin_validite": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date Fin Validite"
+        },
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "numero_article": {
+          "minLength": 1,
+          "title": "Numero Article",
+          "type": "string"
+        },
+        "intitule": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Intitule"
+        },
+        "hierarchie": {
+          "items": {
+            "$ref": "#/$defs/NiveauJuridique"
+          },
+          "title": "Hierarchie",
+          "type": "array"
+        },
+        "nature_version": {
+          "enum": [
+            "originale",
+            "modificative",
+            "consolidee_provisoire"
+          ],
+          "title": "Nature Version",
+          "type": "string"
+        },
+        "texte_integral": {
+          "minLength": 1,
+          "title": "Texte Integral",
+          "type": "string"
+        },
+        "texte_francais": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Texte Francais"
+        },
+        "texte_arabe": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Texte Arabe"
+        },
+        "texte_origine": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Texte Origine"
+        },
+        "texte_modificatif": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Texte Modificatif"
+        },
+        "date_publication": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date Publication"
+        },
+        "date_abrogation": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date Abrogation"
+        },
+        "reference_jo": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reference Jo"
+        },
+        "numero_jo": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Numero Jo"
+        },
+        "reference": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "version_juridique": {
+          "minLength": 1,
+          "title": "Version Juridique",
+          "type": "string"
+        },
+        "statut_juridique_declare": {
+          "default": "a_verifier",
+          "enum": [
+            "applicable",
+            "modifie",
+            "abroge",
+            "suspendu",
+            "a_verifier"
+          ],
+          "title": "Statut Juridique Declare",
+          "type": "string"
+        },
+        "validation_juridique": {
+          "const": "non_validee",
+          "default": "non_validee",
+          "title": "Validation Juridique",
+          "type": "string"
+        },
+        "articles_lies": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Articles Lies",
+          "type": "array"
+        },
+        "historique_modifications": {
+          "items": {
+            "$ref": "#/$defs/SourceRef"
+          },
+          "title": "Historique Modifications",
+          "type": "array"
+        },
+        "notes_explicatives_non_officielles": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes Explicatives Non Officielles",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "numero_article",
+        "hierarchie",
+        "nature_version",
+        "texte_integral",
+        "reference",
+        "version_juridique"
+      ],
+      "title": "ArticleVersion",
+      "type": "object"
+    },
+    "DocumentJuridique": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "titre": {
+          "minLength": 1,
+          "title": "Titre",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "organisme": {
+          "minLength": 1,
+          "title": "Organisme",
+          "type": "string"
+        },
+        "version_source": {
+          "minLength": 1,
+          "title": "Version Source",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "format": {
+          "const": "pdf",
+          "title": "Format",
+          "type": "string"
+        },
+        "date_publication": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date Publication"
+        },
+        "verification": {
+          "const": "non_verifiee",
+          "default": "non_verifiee",
+          "title": "Verification",
+          "type": "string"
+        },
+        "nature_document": {
+          "enum": [
+            "code_original",
+            "acte_modificatif",
+            "compilation"
+          ],
+          "title": "Nature Document",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "titre",
+        "url",
+        "organisme",
+        "version_source",
+        "sha256",
+        "format",
+        "nature_document"
+      ],
+      "title": "DocumentJuridique",
+      "type": "object"
+    },
+    "NiveauJuridique": {
+      "additionalProperties": false,
+      "properties": {
+        "niveau": {
+          "enum": [
+            "texte_legislatif",
+            "livre",
+            "titre",
+            "chapitre",
+            "section",
+            "sous_section",
+            "article",
+            "paragraphe",
+            "alinea",
+            "annexe"
+          ],
+          "title": "Niveau",
+          "type": "string"
+        },
+        "identifiant": {
+          "title": "Identifiant",
+          "type": "string"
+        },
+        "intitule": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Intitule"
+        }
+      },
+      "required": [
+        "niveau",
+        "identifiant"
+      ],
+      "title": "NiveauJuridique",
+      "type": "object"
+    },
+    "RelationJuridique": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "origine_id": {
+          "title": "Origine Id",
+          "type": "string"
+        },
+        "cible_id": {
+          "title": "Cible Id",
+          "type": "string"
+        },
+        "type_relation": {
+          "enum": [
+            "modifie",
+            "complete",
+            "abroge",
+            "rectifie",
+            "renvoie_a"
+          ],
+          "title": "Type Relation",
+          "type": "string"
+        },
+        "justification": {
+          "minLength": 1,
+          "title": "Justification",
+          "type": "string"
+        },
+        "reference": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "validation_juridique": {
+          "const": "non_validee",
+          "default": "non_validee",
+          "title": "Validation Juridique",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "origine_id",
+        "cible_id",
+        "type_relation",
+        "justification",
+        "reference"
+      ],
+      "title": "RelationJuridique",
+      "type": "object"
+    },
+    "SourceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "localisateur": {
+          "description": "Page, article, feuille/cellules ou ligne source",
+          "minLength": 1,
+          "title": "Localisateur",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "localisateur"
+      ],
+      "title": "SourceRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "documents": {
+      "items": {
+        "$ref": "#/$defs/DocumentJuridique"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Documents",
+      "type": "array"
+    },
+    "articles": {
+      "items": {
+        "$ref": "#/$defs/ArticleVersion"
+      },
+      "maxItems": 50000,
+      "title": "Articles",
+      "type": "array"
+    },
+    "relations": {
+      "items": {
+        "$ref": "#/$defs/RelationJuridique"
+      },
+      "maxItems": 100000,
+      "title": "Relations",
+      "type": "array"
+    },
+    "statut": {
+      "const": "quarantaine",
+      "default": "quarantaine",
+      "title": "Statut",
+      "type": "string"
+    },
+    "validation_juridique": {
+      "const": "non_validee",
+      "default": "non_validee",
+      "title": "Validation Juridique",
+      "type": "string"
+    },
+    "publication_active": {
+      "const": false,
+      "default": false,
+      "title": "Publication Active",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "documents"
+  ],
+  "title": "CodeDocumentaireBatch",
+  "type": "object"
+}

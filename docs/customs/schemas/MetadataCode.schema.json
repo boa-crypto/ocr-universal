@@ -1,0 +1,119 @@
+{
+  "$defs": {
+    "DocumentJuridique": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "titre": {
+          "minLength": 1,
+          "title": "Titre",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "organisme": {
+          "minLength": 1,
+          "title": "Organisme",
+          "type": "string"
+        },
+        "version_source": {
+          "minLength": 1,
+          "title": "Version Source",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "format": {
+          "const": "pdf",
+          "title": "Format",
+          "type": "string"
+        },
+        "date_publication": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date Publication"
+        },
+        "verification": {
+          "const": "non_verifiee",
+          "default": "non_verifiee",
+          "title": "Verification",
+          "type": "string"
+        },
+        "nature_document": {
+          "enum": [
+            "code_original",
+            "acte_modificatif",
+            "compilation"
+          ],
+          "title": "Nature Document",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "titre",
+        "url",
+        "organisme",
+        "version_source",
+        "sha256",
+        "format",
+        "nature_document"
+      ],
+      "title": "DocumentJuridique",
+      "type": "object"
+    },
+    "EntreeDocument": {
+      "additionalProperties": false,
+      "properties": {
+        "document": {
+          "$ref": "#/$defs/DocumentJuridique"
+        },
+        "fichier_recu": {
+          "minLength": 1,
+          "title": "Fichier Recu",
+          "type": "string"
+        }
+      },
+      "required": [
+        "document",
+        "fichier_recu"
+      ],
+      "title": "EntreeDocument",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "documents": {
+      "items": {
+        "$ref": "#/$defs/EntreeDocument"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "title": "Documents",
+      "type": "array"
+    }
+  },
+  "required": [
+    "documents"
+  ],
+  "title": "MetadataCode",
+  "type": "object"
+}
