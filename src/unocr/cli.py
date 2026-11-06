@@ -212,6 +212,23 @@ def main(argv=None) -> int:
     dc.add_argument("apres", help="second lot Code")
     dc.set_defaults(func=cmd_customs_code_diff)
 
+    ts = sub.add_parser("customs-tariff-search", help="rechercher des désignations ou préfixes dans un lot tarifaire contrôlé")
+    ts.add_argument("lot", help="lot tarifaire en quarantaine")
+    ts.add_argument("--query", required=True, help="texte FR/AR ou préfixe de 1 à 10 chiffres ASCII")
+    ts.add_argument("--limit", type=int, default=20, help="résultats par page, 1 à 100")
+    ts.add_argument("--offset", type=int, default=0, help="décalage, 0 à 1000000")
+    ts.set_defaults(func=cmd_customs_tariff_search)
+
+    cs = sub.add_parser("customs-code-search", help="rechercher des textes ou filtrer les articles d'un lot Code contrôlé")
+    cs.add_argument("lot", help="lot documentaire Code en quarantaine")
+    cs.add_argument("--query", default="", help="texte FR/AR, ou filtre explicite requis")
+    cs.add_argument("--article", default=None, help="numéro d'article exactement tel que déclaré")
+    cs.add_argument("--source", default=None, help="ID exact du document déclaré")
+    cs.add_argument("--nature", choices=["originale", "modificative", "consolidee_provisoire"], default=None)
+    cs.add_argument("--limit", type=int, default=20)
+    cs.add_argument("--offset", type=int, default=0)
+    cs.set_defaults(func=cmd_customs_code_search)
+
     args = parser.parse_args(argv)
     return args.func(args)
 
@@ -244,7 +261,7 @@ def cmd_pieces_check(args) -> int:
     return {"conforme": 0, "anomalies": 1, "indisponible": 2}[resultat["etat"]]
 
 
-def _afficher_lecture_code(operation, *chemins) -> int:
+def _afficher_lecture_douaniere(operation, *chemins) -> int:
     try:
         resultat = operation(*(Path(chemin) for chemin in chemins))
     except (OSError, ValueError, KeyError, TypeError, RecursionError) as exc:
@@ -255,16 +272,29 @@ def _afficher_lecture_code(operation, *chemins) -> int:
     return 0
 
 
+def cmd_customs_tariff_search(args) -> int:
+    from .customs_reference.search import rechercher_tarif
+
+    return _afficher_lecture_douaniere(lambda chemin: rechercher_tarif(chemin, args.query, args.limit, args.offset), args.lot)
+
+
+def cmd_customs_code_search(args) -> int:
+    from .customs_reference.search import rechercher_code
+
+    return _afficher_lecture_douaniere(lambda chemin: rechercher_code(chemin, args.query, args.limit, args.offset,
+                                       args.article, args.source, args.nature), args.lot)
+
+
 def cmd_customs_code_check(args) -> int:
     from .customs_reference.legal_comparison import charger_lot_code
 
-    return _afficher_lecture_code(lambda chemin: charger_lot_code(chemin)[1], args.lot)
+    return _afficher_lecture_douaniere(lambda chemin: charger_lot_code(chemin)[1], args.lot)
 
 
 def cmd_customs_code_diff(args) -> int:
     from .customs_reference.legal_comparison import comparer_lots_code
 
-    return _afficher_lecture_code(comparer_lots_code, args.avant, args.apres)
+    return _afficher_lecture_douaniere(comparer_lots_code, args.avant, args.apres)
 
 
 def cmd_customs_code_prepare(args) -> int:

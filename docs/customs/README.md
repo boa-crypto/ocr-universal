@@ -1,9 +1,9 @@
-# Mission référentiels douaniers — lots 1–4 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–5 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
 [le lot 2](RAPPORT_LOT2.md), [le lot 3](RAPPORT_LOT3.md),
-[le lot 4 du 6 novembre 2026](RAPPORT_LOT4.md) et [le registre documentaire](SOURCES_RECHERCHE.json).
+[le lot 4](RAPPORT_LOT4.md), [le lot 5 du 6 novembre 2026](RAPPORT_LOT5.md) et [le registre documentaire](SOURCES_RECHERCHE.json).
 
 ## Livré
 
@@ -162,6 +162,15 @@ les numéros ni une similarité de texte. Une absence ne signifie pas abrogation
 **Les octets reçus ne sont pas certifiés originaux de l’éditeur.** Le résultat
 n’est pas une source de vérité applicable et n’est exposé par aucune API métier.
 
+## Recherche locale FR/AR en quarantaine (lot 5)
+
+[Guide de la recherche](RECHERCHE_LOCALE.md) et [résultats/limites](RAPPORT_LOT5.md).
+`customs-tariff-search` retrouve des désignations déclarées ou préfixes ASCII ;
+`customs-code-search` retrouve des textes et filtre des numéros/sources/natures
+exacts, sans fusionner les versions. Contrôle complet du lot, pagination bornée,
+références, champs correspondants et textes reçus conservés. Aucune IA, synonymie
+inventée, interprétation juridique ou suggestion de classement officiel.
+
 ## Intégration future, sans double source de vérité
 
 Le module `customs_reference` ne consomme pas CODES_SH_ALGERIE et ne publie pas ses
@@ -171,7 +180,7 @@ humaine habilitée et tracée. Les modules marchandise/transit devront référen
 une version publiée ; l'IA ne pourra proposer que des candidats sourcés et devra
 s'abstenir lorsqu'aucune version validée n'est disponible.
 
-Les API v1, l'import administrateur sécurisé, la recherche multilingue, la
+Les API v1, l'import administrateur sécurisé, la recherche sur versions publiées, la
 classification tarifaire et l'extension du DS seront développés sur ce domaine,
 pas sur les exemples legacy. Aucun endpoint de validation ne doit être ouvert
 simplement parce que le RBAC historique est désactivé.

@@ -194,3 +194,6 @@ Code 0 = vérification/comparaison technique effectuée ; code 2 = refus intégr
 Une comparaison est interrompue si l’un des deux lots échoue, sans résultat partiel
 présenté comme valide. Aucun lot, document, rapport, manifeste ni store n’est modifié.
 Pas de publication, de validation humaine simulée ou de nouvel accès HTTP.
+
+La [recherche locale FR/AR du lot 5](RECHERCHE_LOCALE.md) réutilise ce contrôle
+avant tout résultat. Elle reste en quarantaine, sans sélection juridique à date.
