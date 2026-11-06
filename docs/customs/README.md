@@ -1,4 +1,4 @@
-# Mission référentiels douaniers — lots 1–8 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–9 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
@@ -180,7 +180,8 @@ liste des lots inscrits côté serveur, contrôle, recherche et diff. Administra
 RBAC nominatif **et** habilitation explicite dans le registre local ; mode ouvert
 et passe-partout d’environnement refusés. Aucun chemin choisi par HTTP ; manifeste
 épinglé avant et après le traitement. Audit existant, pas de nouvel index métier.
-**Aucune écriture, validation juridique, publication ou administration graphique.**
+**Aucune écriture, validation juridique ou publication.** Interface de lecture
+ajoutée au lot 8, historique documentaire au lot 9.
 Aucun compte ni registre n’est créé automatiquement sur le poste.
 
 ## Sauvegarde et reprise locale (lot 7)
@@ -198,6 +199,13 @@ Dans Administration → Revue douanière · quarantaine : liste, contrôle, rech
 et comparaison via l’API stricte existante. Lecture seule ; aucune habilitation
 accordée par le menu. [Guide](INTERFACE_REVUE.md), [rapport](RAPPORT_LOT8.md).
 Rapports JSON sûrs, pas de corpus de démonstration ou d’édition réglementaire.
+
+## Historique documentaire (lot 9)
+
+[Guide](HISTORIQUE_DOCUMENTAIRE.md), [rapport](RAPPORT_LOT9.md).
+`customs-code-history`, route de revue `/lots/{id}/history` et bouton intégré :
+versions du numéro exact, sources/dates déclarées et relations justifiées à un
+saut, paginées indépendamment. Pas de succession juridique ou droit à date inféré.
 
 ## Intégration future, sans double source de vérité
 

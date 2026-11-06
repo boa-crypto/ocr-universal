@@ -1,4 +1,4 @@
-# API de revue administrative — lot 6
+# API de revue administrative — lots 6 à 9
 
 2026-11-06. **Lecture seule de lots en quarantaine ; ni validation ni publication.**
 
@@ -81,12 +81,15 @@ ayant les mêmes droits système ; ce n’est pas un verrouillage transactionnel
 | `/api/v1/customs-review/lots` | Liste des IDs/types/empreintes attendues autorisés dans le registre ; pas de validation des contenus par cette liste |
 | `/api/v1/customs-review/lots/{lot_id}/check` | Contrôle/rejeu complet du lot épinglé |
 | `/api/v1/customs-review/lots/{lot_id}/search` | Recherche du lot 5 dans le lot épinglé |
+| `/api/v1/customs-review/lots/{lot_id}/history?article=NUMERO` | Historique documentaire du numéro exact et relations déclarées, pour un lot Code seulement |
 | `/api/v1/customs-review/diff?avant=ID&apres=ID` | Contrôle et comparaison de deux lots de même type |
 
 Recherche : `q` (256 caractères maximum), `limit` (1–100), `offset` (0–1000000).
 Pour le Code seulement : `article`, `source` (256 caractères maximum) et `nature`
 (`originale`, `modificative`, `consolidee_provisoire`). Au moins une requête ou un
 filtre Code explicite. [Sémantique, limites et champs recherchés](RECHERCHE_LOCALE.md).
+[Historique (lot 9)](HISTORIQUE_DOCUMENTAIRE.md) : article exact requis ; versions
+et relations paginées indépendamment, sans choix de droit applicable.
 Aucun paramètre ne permet de choisir un chemin local ou une URL source.
 
 Les réponses métier réussies sont en JSON, `Cache-Control: no-store`, avec

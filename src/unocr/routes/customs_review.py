@@ -6,6 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import JSONResponse
 
 from ..customs_reference.comparison import charger_lot, comparer_lots
+from ..customs_reference.history import ParamHistoriqueInvalide, historique_article
 from ..customs_reference.importer import _lire
 from ..customs_reference.legal_comparison import charger_lot_code, comparer_lots_code
 from ..customs_reference.review_registry import (
@@ -50,6 +51,8 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
             return JSONResponse({"lecture_seule": True, "publication_active": False,
                                  "validation_juridique": "non_validee", "perimetre": "revue_administrative_quarantaine",
                                  "resultat": resultat}, headers=NO_STORE)
+        except ParamHistoriqueInvalide:
+            statut, code = 422, "parametres_historique_invalides"
         except ParamRechercheInvalide:
             statut, code = 422, "parametres_recherche_invalides"
         except RegistreRevueIndisponible:
@@ -88,6 +91,17 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 return rechercher_tarif(p[0], q, limit, offset)
             return rechercher_code(p[0], q, limit, offset, article, source, nature)
         return executer(utilisateur, "recherche", [lot_id], chercher_lot)
+
+    @router.get("/lots/{lot_id}/history")
+    def historique(lot_id: str, article: str = Query(..., min_length=1, max_length=256),
+                   limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0, le=1_000_000),
+                   relations_limit: int = Query(20, ge=1, le=100),
+                   relations_offset: int = Query(0, ge=0, le=1_000_000), utilisateur=Depends(autoriser)):
+        def lire_historique(e, p, registre):
+            if e[0].type_lot != "code":
+                raise HTTPException(422, {"code": "historique_code_non_applicable_au_tarif"}, headers=NO_STORE)
+            return historique_article(p[0], article, limit, offset, relations_limit, relations_offset)
+        return executer(utilisateur, "historique", [lot_id], lire_historique)
 
     @router.get("/diff")
     def comparer(avant: str = Query(..., pattern=IDENTIFIANT), apres: str = Query(..., pattern=IDENTIFIANT),

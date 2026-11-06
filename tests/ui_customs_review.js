@@ -117,5 +117,22 @@ await scenario('retour depuis cache de navigation relit le registre', async({w,h
   w.dispatchEvent(event); await tick();
   assert.equal(appels.length,2); assert.equal(host.querySelectorAll('li').length,2);
 });
+await scenario('historique avec numéro exact et paginations indépendantes', async({host,appels,button,reponse})=>{
+  host.querySelectorAll('input')[1].value='5 bis';
+  host.querySelectorAll('input')[2].value='SOURCE_IGNOREE';
+  host.querySelectorAll('input')[5].value='10'; host.querySelectorAll('input')[6].value='20';
+  reponse(envelope({type_rapport:'historique_documentaire_article',versions_meme_numero:[]}));
+  button('Afficher l’historique').click(); await tick();
+  const u=new URL(appels.at(-1).url,'https://test.invalid');
+  assert.equal(u.pathname,'/api/v1/customs-review/lots/test-code/history');
+  assert.equal(u.searchParams.get('article'),'5 bis'); assert.equal(u.searchParams.get('source'),null);
+  assert.equal(u.searchParams.get('relations_limit'),'10'); assert.equal(u.searchParams.get('relations_offset'),'20');
+});
+await scenario('historique vide et tarif refusés côté interface', async({w,host,appels,button,status})=>{
+  button('Afficher l’historique').click(); assert.equal(appels.length,1); assert(status().includes('requis'));
+  const select=host.querySelector('select'); select.value='test-tarif'; select.dispatchEvent(new w.Event('change'));
+  assert.equal(host.querySelectorAll('fieldset')[1].disabled,true);
+  button('Afficher l’historique').click(); assert.equal(appels.length,1);
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

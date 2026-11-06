@@ -231,6 +231,15 @@ def main(argv=None) -> int:
     cs.add_argument("--offset", type=int, default=0)
     cs.set_defaults(func=cmd_customs_code_search)
 
+    ch = sub.add_parser("customs-code-history", help="historique documentaire d'un article, sans droit applicable")
+    ch.add_argument("lot", help="lot Code en quarantaine")
+    ch.add_argument("--article", required=True, help="numéro exactement tel que déclaré")
+    ch.add_argument("--limit", type=int, default=20)
+    ch.add_argument("--offset", type=int, default=0)
+    ch.add_argument("--relations-limit", type=int, default=20)
+    ch.add_argument("--relations-offset", type=int, default=0)
+    ch.set_defaults(func=cmd_customs_code_history)
+
     args = parser.parse_args(argv)
     return args.func(args)
 
@@ -285,6 +294,13 @@ def cmd_customs_code_search(args) -> int:
 
     return _afficher_lecture_douaniere(lambda chemin: rechercher_code(chemin, args.query, args.limit, args.offset,
                                        args.article, args.source, args.nature), args.lot)
+
+
+def cmd_customs_code_history(args) -> int:
+    from .customs_reference.history import historique_article
+
+    return _afficher_lecture_douaniere(lambda chemin: historique_article(
+        chemin, args.article, args.limit, args.offset, args.relations_limit, args.relations_offset), args.lot)
 
 
 def cmd_customs_code_check(args) -> int:

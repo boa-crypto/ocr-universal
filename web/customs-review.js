@@ -138,9 +138,9 @@
       form.append(filtres);
       function adapter() {
         filtres.disabled = rep.lots.find(function (v) { return v.id === lot.value; }).type_lot !== "code";
+        histoire.disabled = filtres.disabled;
         ++requete; resultat.textContent = "";
       }
-      lot.addEventListener("change", adapter); adapter();
       var limit = champ(form, "Limite (1–100)", "input", "number");
       limit.min = 1; limit.max = 100; limit.value = 20; limit.required = true;
       var offset = champ(form, "Décalage (0–1000000)", "input", "number");
@@ -156,6 +156,26 @@
         }
         lire("/lots/" + encodeURIComponent(lot.value) + "/search?" + params, afficher);
       });
+      var histoire = element("fieldset");
+      histoire.append(element("legend", "Historique documentaire — Code seulement"));
+      histoire.append(element("p", "Utilise le numéro d’article exact et les paginations ; texte recherché, source et nature ignorés. " +
+        "Même numéro ne prouve pas une succession juridique. Aucune restitution à date."));
+      var relationLimit = champ(histoire, "Relations par page (1–100)", "input", "number");
+      relationLimit.min = 1; relationLimit.max = 100; relationLimit.value = 20; relationLimit.required = true;
+      var relationOffset = champ(histoire, "Décalage relations (0–1000000)", "input", "number");
+      relationOffset.min = 0; relationOffset.max = 1000000; relationOffset.value = 0; relationOffset.required = true;
+      histoire.append(bouton("Afficher l’historique documentaire", function () {
+        if (histoire.disabled || !form.reportValidity()) return;
+        if (!article.value.trim()) {
+          ++requete; resultat.textContent = "";
+          statut.textContent = "Numéro d’article exact requis pour l’historique."; return;
+        }
+        var params = new URLSearchParams({article: article.value, limit: limit.value, offset: offset.value,
+          relations_limit: relationLimit.value, relations_offset: relationOffset.value});
+        lire("/lots/" + encodeURIComponent(lot.value) + "/history?" + params, afficher);
+      }));
+      form.append(histoire);
+      lot.addEventListener("change", adapter); adapter();
       outils.append(form);
     });
   }
