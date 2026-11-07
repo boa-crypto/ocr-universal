@@ -18,6 +18,7 @@ from tests.test_customs_fiscal_xls import fichiers as fichiers_mesures_xls
 from tests.test_customs_fiscal_xlsx import fichiers as fichiers_mesures_xlsx
 from tests.test_customs_reference import snapshot
 from tests.test_customs_subdivisions import subdivisions
+from unocr.customs_reference.export_replay import verifier_rejeu_criteres
 from unocr.customs_reference.fiscal_importer import preparer_mesures_autonomes
 from unocr.customs_reference.importer import preparer_tarif
 from unocr.customs_reference.legal_importer import preparer_code
@@ -123,10 +124,20 @@ def test_interface_revue_sur_api_reelle(revue,format_mesures):
         assert len(exports) == (19 if format_mesures == "pdf" else 17)
         copies = [v.removeprefix("PDF_SOURCE_SHA256=") for v in resultat.stdout.splitlines() if v.startswith("PDF_SOURCE_SHA256=")]
         assert copies == [hashlib.sha256((racine / "code_pdf_ui/document_0001.pdf").read_bytes()).hexdigest()]
+        rejeux = 0
         for texte in exports:
             constat = analyser_export(texte.encode("utf-8"))
             assert constat["statut"] == "structure_compatible"
             assert constat["authenticite_verifiee"] is False
+            objet = json.loads(texte)
+            if objet["requete_relative"].split("?",1)[0].endswith("/tariff-criteria"):
+                fichier = cfg.root / "export_criteres_ui.json"
+                fichier.write_text(texte,encoding="utf-8")
+                rejeu = verifier_rejeu_criteres(fichier,racine / "tarif_sub_ui","tarif_a")
+                assert rejeu["rapport_identique"] is True
+                assert rejeu["authenticite_verifiee"] is False
+                rejeux += 1
+        assert rejeux == 1
         assert json.loads(exports[0])["resultat"]["type_rapport"] == "lecture_page_pdf_recu"
         assert snapshot(racine) == avant
     finally:

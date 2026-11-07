@@ -83,3 +83,8 @@ conservé. Même mode pour preuves, positions et pagination ; cache v68.
 [Diagnostic documentaire des critères](DIAGNOSTIC_CRITERES_TARIF.md) : compteurs
 par terme/critère avant pagination, absence de conjonction distinguée du périmètre
 vide et de la page hors résultats. Pas cause métier ou attribut produit déduit.
+
+## Complément lot 50
+
+[Rejeu local des exports](REJEU_EXPORT_CRITERES.md) contre archive explicite par
+CLI ; compare le rapport entier sans authentifier source, registre ou utilisateur.

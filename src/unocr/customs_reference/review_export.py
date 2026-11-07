@@ -147,7 +147,7 @@ def analyser_export(contenu: bytes) -> dict:
                                "Aucun import, publication, calcul, requête réseau ou horodatage certifié."]}
 
 
-def verifier_export(chemin: Path) -> dict:
+def _lire_export(chemin: Path) -> bytes:
     """Lecture bornée d'un fichier régulier ; pas de suivi d'un symlink final."""
     flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
     try:
@@ -160,4 +160,8 @@ def verifier_export(chemin: Path) -> dict:
             contenu = fichier.read(MAX_EXPORT + 1)
     except OSError:
         raise ExportRefuse("Export illisible ou absent") from None
-    return analyser_export(contenu)
+    return contenu
+
+
+def verifier_export(chemin: Path) -> dict:
+    return analyser_export(_lire_export(chemin))

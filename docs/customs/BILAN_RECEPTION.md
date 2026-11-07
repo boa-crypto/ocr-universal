@@ -7,6 +7,20 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
+## État actuel — lot 50
+
+[Rejeu local d'exports multicritères](REJEU_EXPORT_CRITERES.md) ajouté contre une
+archive fournie explicitement : comparaison complète du résultat, sans authenticité,
+registre, signature ou audit serveur attestés. Sélection : **1 853 tests Python**,
+**186 scénarios JSDOM** réussis ; quatre exports réels UI/API rejoués identiquement.
+
+**Nouvelle suite complète exécutée au lot 50 : 2 885 réussis, 18 échecs, 11 ignorés,
+2 avertissements, 208,03 s.** Mêmes 18 identifiants d'échec qu'au lot 45, tous
+conservés ; Tesseract/Indra non provisionnés. Détail machine actuel :
+[RECETTE_LOT50.json](RECETTE_LOT50.json), [rapport](RAPPORT_LOT50.md).
+Les sections suivantes conservent l'historique ; les chiffres 45 ne sont pas la
+nouvelle recette. Mission toujours partielle et non recevable en production fiscale.
+
 ## Complément lot 46
 
 [Recherche tarifaire multicritère explicite](RECHERCHE_TARIF_CRITERES.md) ajoutée
