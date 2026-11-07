@@ -8,13 +8,15 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "tests"))
 
-from make_fixtures import FIXTURES, make_all
+from make_fixtures import make_all
 
 
 @pytest.fixture(scope="session")
-def fixtures_dir() -> Path:
-    make_all()
-    return FIXTURES
+def fixtures_dir(tmp_path_factory) -> Path:
+    """Documents réellement générés hors du corpus suivi par Git."""
+    destination = tmp_path_factory.mktemp("documents-synthetiques")
+    make_all(destination)
+    return destination
 
 
 @pytest.fixture(scope="session")

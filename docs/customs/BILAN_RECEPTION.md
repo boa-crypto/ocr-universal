@@ -7,7 +7,18 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 55
+## État actuel — lot 56
+
+[Isolation des générations de documents de test](RECETTE_ISOLEE.md) : génération
+pytest dans des répertoires temporaires, sans réécrire les fixtures suivies.
+**27/27 empreintes inchangées après suite complète, sans restauration**.
+Sélection : **2 025 tests Python et 186 scénarios JSDOM** réussis. Suite complète
+actuelle : **3 057 réussis, 18 échecs, 11 ignorés, 1 avertissement, 211,56 s**.
+Même liste de 18 échecs qu'au lot 55. Aucun code de production modifié.
+[Résultats machine actuels](RECETTE_LOT56.json), [rapport](RAPPORT_LOT56.md).
+Les recettes antérieures sont conservées comme historiques. Mission partielle.
+
+## Complément — lot 55
 
 [Références d’empreintes fournies séparément](EMPREINTES_ATTENDUES_REJEU.md) pour
 exports et manifestes : préconditions de rejeu, pas authenticité des références.

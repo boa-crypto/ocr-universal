@@ -36,8 +36,8 @@ def _attendre(client, job_id, timeout=120):
 
 
 @pytest.fixture()
-def document_importe(client):
-    fichiers = creer_fixtures()
+def document_importe(client, tmp_path):
+    fichiers = creer_fixtures(tmp_path / "documents-parcours")
     with open(fichiers["facture"], "rb") as fh:
         r = client.post("/api/documents",
                         files={"file": ("facture.pdf", fh, "application/pdf")},

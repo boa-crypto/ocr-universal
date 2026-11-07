@@ -39,7 +39,7 @@ def _attendre(client, job_id, timeout=120):
 
 def _importer(client, tmp_path, nom, motif):
     """Importe un document et attend la fin du traitement."""
-    fichiers = creer_fixtures()
+    fichiers = creer_fixtures(tmp_path / "documents-parcours")
     with open(fichiers[nom], "rb") as fh:
         r = client.post("/api/documents", files={"file": (fichiers[nom].name, fh,
                                                           "application/pdf")},
