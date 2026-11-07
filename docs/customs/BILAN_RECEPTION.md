@@ -7,7 +7,24 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 65
+## État actuel — lot 66
+
+[Scores Baidu sans valeur inventée](SCORES_BAIDU_SANS_VALEUR_INVENTEE.md) :
+plus de constante 0,95 sans score fournisseur ; valeur déclarée finie conservée,
+sinon zéro conservateur, pas score mesuré. **30 nouveaux cas**, 90 tests Baidu
+hors réseau réussis, 30/30 contre-épreuves négatives attendues sur l'ancien code.
+Mots/runs/qualité restent à zéro et page à revoir lorsque le score manque.
+Compteurs de provenance sur `EngineOutput.raw`, **non persistés par le pipeline**.
+Sélection documentaire **2 160 Python / 212 JSDOM**. Complète : **3 343 réussis,
+2 échecs Indra, 1 ignoré Indra, 1 avertissement, 353,43 s**.
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42400091694),
+pas suite OCR complète en CI. **26/27 empreintes historiques conformes**,
+écart partagé et dossiers du lot 64 conservés hors commit. Pas probabilité
+calibrée, nouvelle UI de provenance ou fournisseur réel qualifié.
+[Rapport](RAPPORT_LOT66.md), [recette actuelle](RECETTE_LOT66.json).
+Mission réglementaire inchangée, partielle et non recevable pour production fiscale.
+
+## Complément — lot 65
 
 [Transport Baidu et diagnostics privés](CONFIDENTIALITE_TRANSPORT_BAIDU.md) :
 **59 nouveaux tests**, 60/60 hors réseau réussis. Réponses bornées, TLS vérifié,

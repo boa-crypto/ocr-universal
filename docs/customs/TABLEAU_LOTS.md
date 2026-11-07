@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État au 7 novembre 2026 après le lot 65. **Terminé = périmètre technique livré et
+État au 7 novembre 2026 après le lot 66. **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -70,6 +70,7 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 63 | Modules UI chargés par HTTP, rendu isolé et erreurs non masquées | Terminé, local et CI rendu/documentaire | 2 échecs + 1 ignoré Indra ; DOM simulé, pas navigateur réel |
 | 64 | PDFium sérialisé, fermeture native et dépôts concurrents testés | Terminé, local et CI ciblée | Pas garantie zéro crash/charge ; 2 échecs Indra ; intégrité 26/27, données partagées préservées |
 | 65 | Diagnostics Baidu privés, réponses bornées, TLS et refus des redirections | Terminé, doubles HTTP et CI ciblée | Pas appel fournisseur ; secrets query résiduels ; 2 échecs Indra, intégrité 26/27 |
+| 66 | Suppression du score Baidu inventé, repli zéro et contrôle qualité | Terminé, doubles HTTP et CI ciblée | Zéro non mesuré ; provenance raw non persistée ; Indra absent, intégrité 26/27 |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
 `RAPPORT_LOT61.md`. Les limites historiques des rapports précédents sont à lire
@@ -96,7 +97,7 @@ mais pas une validation des transcriptions.
 
 ## Bilan
 
-65 lots techniques livrés ; dernière sélection : **2 160 tests Python / 212 scénarios
+66 lots techniques livrés ; dernière sélection : **2 160 tests Python / 212 scénarios
 JSDOM réussis**. Ce n’est ni la totalité de la suite OCR ni une recette nationale.
 Données historiques conservées. **0 nouvel original officiel acquis, 0 article/code
 national officiellement validé, 0 publication active ; mission globale partielle.**
@@ -104,10 +105,10 @@ Aucun pourcentage de complétude réglementaire ou de progression globale n’es
 du nombre de lots. Références non vérifiées interdites pour calcul douanier réel.
 
 Réception technique : [bilan des dix phases](BILAN_RECEPTION.md),
-[recette complète actuelle du lot 65](RECETTE_LOT65.json) : **3 313 réussis,
+[recette complète actuelle du lot 66](RECETTE_LOT66.json) : **3 343 réussis,
 2 échecs OCR, 1 ignoré, 1 avertissement**. **26/27 empreintes historiques conformes** ;
 référentiels et quatre dossiers partagés modifiés sont préservés hors commit,
-voir [rapport 65](RAPPORT_LOT65.md). ; ne pas confondre avec la sélection
+voir [rapport 66](RAPPORT_LOT66.md). ; ne pas confondre avec la sélection
 verte. Recettes historiques : [45](RECETTE_FINALE.json), [50](RECETTE_LOT50.json), [55](RECETTE_LOT55.json).
 
 Lot 57 : [lanceur local/CI](LANCEUR_RECETTE_CIBLEE.md) et
