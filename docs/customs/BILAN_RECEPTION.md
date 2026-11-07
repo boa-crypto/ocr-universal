@@ -7,7 +7,23 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 74
+## État actuel — lot 75
+
+[Acteur des audits OCR](ACTEUR_AUDIT_OCR.md) : validation/correction transmettent
+le nom du principal autorisé, et non plus la chaîne générique `utilisateur`. Entrées
+client ignorées pour l'identité ; jeton global actif `environnement`, sans RBAC
+`local`, pas preuve d'une personne authentifiée. Gardes 73/74 conservées.
+**33 nouveaux cas / 250 attribution-corrections-cloisonnement-RBAC réussis** ;
+contre-épreuve anciens handlers : 20 échecs attendus, 13 réussis. Documentaire
+**2 160 Python / 212 JSDOM historiques**. Complète : **3 670 réussis, 2 échecs
+Indra, 1 ignoré, 1 avertissement, 382,88 s**.
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42412823043),
+pas suite OCR complète en CI. **26/27 empreintes conformes** ; données et journaux
+conservés hors commit. Pas identité civile, journal signé/WORM, réattribution
+historique ou refonte des autres routes. Aperçu toujours sans RBAC configuré.
+[Rapport](RAPPORT_LOT75.md), [recette actuelle](RECETTE_LOT75.json).
+
+## Complément historique — lot 74
 
 [Correction OCR sans champ](CORRECTION_OCR_CHAMP_ABSENT.md) : plus de succès,
 datation, écriture ou audit de correction pour un champ absent ; service False,

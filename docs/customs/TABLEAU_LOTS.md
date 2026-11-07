@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État au 7 novembre 2026 après le lot 74. **Terminé = périmètre technique livré et
+État au 7 novembre 2026 après le lot 75. **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -79,6 +79,7 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 72 | Correction/annulation de champs : visibilité documentaire avant résultat | Terminé, 44 nouveaux cas et CI ciblée | RBAC inactif non protégé ; non classés/partagés/jeton global inchangés ; pas audit exhaustif ; Indra absent, intégrité 26/27 |
 | 73 | Sept routes OCR dossiers : périmètre, appartenance et source job contrôlée | Terminé, 59 nouveaux cas et CI ciblée | Pas transaction/concurrence ni activation RBAC ; contre-épreuve création exclue ; Indra absent, intégrité 26/27 |
 | 74 | Correction OCR : champ absent refusé sans mutation ni audit de succès | Terminé, 38 nouveaux cas et CI ciblée | Audit legacy best-effort ; pas historique/transaction ni invalidation globale ; Indra absent, intégrité 26/27 |
+| 75 | Acteur serveur des audits de validation/correction OCR | Terminé, 33 nouveaux cas et CI ciblée | Nom local sans preuve civile, audit legacy best-effort ; autres routes non refondues ; Indra absent, intégrité 26/27 |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
 `RAPPORT_LOT61.md`. Les limites historiques des rapports précédents sont à lire
@@ -113,10 +114,10 @@ Aucun pourcentage de complétude réglementaire ou de progression globale n’es
 du nombre de lots. Références non vérifiées interdites pour calcul douanier réel.
 
 Réception technique : [bilan des dix phases](BILAN_RECEPTION.md),
-[recette complète actuelle du lot 74](RECETTE_LOT74.json) : **3 637 réussis,
+[recette complète actuelle du lot 75](RECETTE_LOT75.json) : **3 670 réussis,
 2 échecs OCR, 1 ignoré, 1 avertissement**. **26/27 empreintes historiques conformes** ;
 référentiels et quatre dossiers partagés modifiés sont préservés hors commit,
-voir [rapport 74](RAPPORT_LOT74.md) ; ne pas confondre avec la sélection
+voir [rapport 75](RAPPORT_LOT75.md) ; ne pas confondre avec la sélection
 verte. Recettes historiques : [45](RECETTE_FINALE.json), [50](RECETTE_LOT50.json), [55](RECETTE_LOT55.json).
 
 Lot 57 : [lanceur local/CI](LANCEUR_RECETTE_CIBLEE.md) et
