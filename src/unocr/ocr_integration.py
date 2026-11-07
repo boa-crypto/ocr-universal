@@ -314,6 +314,9 @@ class OCRTransitIntegration:
                 champ.origine = "corrected"
                 champ.statut = "corrected"
                 break
+        else:
+            # Aucune correction : ne pas dater, persister ou auditer un succès.
+            return False
 
         extraction.modifie_le = time.strftime("%Y-%m-%d %H:%M:%S")
         self.extraction_store._ecrire(extraction)
