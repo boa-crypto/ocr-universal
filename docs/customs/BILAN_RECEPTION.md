@@ -7,7 +7,18 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 58
+## État actuel — lot 59
+
+[API des pistes documentaires et rejeu](API_PISTES_TARIFAIRES.md), nominatif,
+allowlist, provenance épinglée, audit de succès obligatoire ; aucun classement ou
+publication. **2 124 tests Python / 186 scénarios JSDOM** réussis ; cinq rapports
+API de pistes contrôlés/rejoués en plus des 70 exports UI/API existants. Pas UI de
+pistes ajoutée. Complète non relancée : dernière complète lot 58 ci-dessous,
+18 échecs OCR toujours ouverts.
+[Rapport](RAPPORT_LOT59.md), [recette ciblée actuelle](RECETTE_LOT59.json).
+CI ciblée du code 59 réussie : [run 42391189119](https://github.com/boa-crypto/ocr-universal/actions/runs/42391189119).
+
+## Complément — lot 58
 
 [Pistes documentaires partielles](PISTES_TARIFAIRES.md) Python/CLI explicites,
 tri de correspondances vérifiable ; pas IA, confiance, attribut produit ou

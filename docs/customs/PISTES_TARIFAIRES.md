@@ -83,7 +83,8 @@ Il n'y a pas de code « candidat validé ». `publication_active`,
 `candidat_retenu_automatiquement`, `probabilite_classement_etablie`,
 `attributs_techniques_certifies`, `taux_calcules` restent false.
 
-**Python/CLI uniquement pour cette nouvelle lecture** : pas endpoint, UI,
-import/export/rejeu de rapport candidat, cache ou publication ajoutés. L'API et
-l'interface de recherche stricte existantes ne changent pas de contrat. Le lot
-avance l'exploration documentaire de la phase 4, sans prétendre livrer l'IA métier.
+Portée initiale du lot 58 : Python/CLI. **Complément lot 59** :
+[API privée et rejeu typé](API_PISTES_TARIFAIRES.md) des rapports de pistes,
+sans UI nouvelle, cache ou publication. La recherche stricte existante ne change
+pas de contrat. Ces lots avancent l'exploration documentaire de la phase 4,
+sans prétendre livrer l'IA métier.

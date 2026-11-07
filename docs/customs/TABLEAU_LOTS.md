@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État au 7 novembre 2026 après le lot 58. **Terminé = périmètre technique livré et
+État au 7 novembre 2026 après le lot 59. **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -63,9 +63,10 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 56 | Génération des fixtures pytest hors des fichiers suivis, recette complète sans restauration | Terminé | Pas sandbox ou déterminisme binaire ; 18 échecs OCR conservés |
 | 57 | Lanceur local/CI documentaire ciblé, journaux/JUnit et codes non masqués | Terminé, local et CI ciblée | Ne remplace pas la suite OCR complète ; 18 échecs OCR ouverts |
 | 58 | Pistes documentaires littérales partielles, tri explicite, preuves/termes non retrouvés, Python/CLI | Terminé, local et CI ciblée | Pas IA, pertinence juridique, UI de pistes ou classement validé |
+| 59 | API nominative/auditée et rejeu typé des pistes, paramètres stricts et schéma export | Terminé, local et CI ciblée | Pas UI de pistes, émission certifiée de reçu, IA ou publication |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
-`RAPPORT_LOT58.md`. Les limites historiques des rapports précédents sont à lire
+`RAPPORT_LOT59.md`. Les limites historiques des rapports précédents sont à lire
 avec les ajouts suivants ; par exemple le lot 27 ajoute un rapprochement littéral,
 mais pas une validation des transcriptions.
 
@@ -89,7 +90,7 @@ mais pas une validation des transcriptions.
 
 ## Bilan
 
-58 lots techniques livrés ; dernière sélection : **2 079 tests Python / 186 scénarios
+59 lots techniques livrés ; dernière sélection : **2 124 tests Python / 186 scénarios
 JSDOM réussis**. Ce n’est ni la totalité de la suite OCR ni une recette nationale.
 Données historiques conservées. **0 nouvel original officiel acquis, 0 article/code
 national officiellement validé, 0 publication active ; mission globale partielle.**
