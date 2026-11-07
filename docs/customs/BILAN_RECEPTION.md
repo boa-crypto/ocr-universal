@@ -7,7 +7,25 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 70
+## État actuel — lot 71
+
+[Revue des champs à zéro et rapport final](REVUE_CHAMPS_CONFIANCE_NULLE.md) :
+filtre sans test de vérité, seuil strict configuré et exclusion `NOT_DETECTED`
+conservés ; rapport construit après recalcul final des champs par le pipeline.
+Aucune valeur confirmée, origine ou statut humain révoqué. **27 nouveaux cas /
+241 qualité-Baidu réussis** ; contre-épreuve ancien couple qualité/pipeline :
+16 échecs attendus, 11 réussis. Stockage/API/export JSON et quatre scénarios de
+recalcul vérifiés sur contrats injectés, pas OCR réel qualifié. Documentaire
+**2 160 Python / 212 JSDOM historiques**. Complète : **3 496 réussis,
+2 échecs Indra, 1 ignoré Indra, 1 avertissement, 498,24 s**.
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42404996500),
+pas suite OCR complète en CI. **26/27 empreintes historiques conformes**, même
+écart partagé et données/journaux préservés hors commit. Pas calibration, migration
+historique, garantie après toute édition API ou verrou fiscal.
+[Rapport](RAPPORT_LOT71.md), [recette actuelle](RECETTE_LOT71.json).
+Mission réglementaire inchangée, partielle et non recevable pour production fiscale.
+
+## Complément historique — lot 70
 
 [Pages sans sortie dans la qualité](PAGES_SANS_SORTIE_DANS_QUALITE.md) : la limite
 constatée au lot 69 est corrigée. Sans mots, non déclarée vide et texte blanc après

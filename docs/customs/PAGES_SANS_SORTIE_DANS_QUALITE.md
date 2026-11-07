@@ -1,5 +1,7 @@
 # Pages sans sortie dans la qualité — lot 70
 
+> Complément au lot 71 : [revue des champs à zéro et rapport après recalcul final](REVUE_CHAMPS_CONFIANCE_NULLE.md). Les mentions de politique des champs inchangée ci-dessous décrivent le périmètre du lot 70.
+
 7 novembre 2026. Corrige la limite constatée au [lot 69](LOCALISATIONS_BAIDU_DECLAREES.md), sans modifier la reconnaissance ni la géométrie.
 
 ## Convention conservatrice
