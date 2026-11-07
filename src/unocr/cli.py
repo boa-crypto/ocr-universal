@@ -268,6 +268,15 @@ def main(argv=None) -> int:
     ca.add_argument("--offset", type=int, default=0)
     ca.set_defaults(func=cmd_customs_code_read)
 
+    ap = sub.add_parser("customs-code-article-pdf-match", help="présence littérale d'un fragment dans sa page PDF source")
+    ap.add_argument("lot")
+    ap.add_argument("--id", required=True, dest="article_id")
+    ap.add_argument("--page", required=True, type=int)
+    ap.add_argument("--field", choices=["texte_integral", "texte_francais", "texte_arabe", "texte_origine", "texte_modificatif"], default="texte_integral")
+    ap.add_argument("--limit", type=int, default=4000)
+    ap.add_argument("--offset", type=int, default=0)
+    ap.set_defaults(func=cmd_customs_code_article_pdf_match)
+
     ct = sub.add_parser("customs-code-tree", help="parcourir les chemins Code déclarés sans consolidation")
     ct.add_argument("lot")
     ct.add_argument("--source", default=None)
@@ -358,6 +367,13 @@ def cmd_customs_review_export_check(args) -> int:
     from .customs_reference.review_export import verifier_export
 
     return _afficher_lecture_douaniere(verifier_export, args.file)
+
+
+def cmd_customs_code_article_pdf_match(args) -> int:
+    from .customs_reference.article_pdf_match import rapprocher_fragment_article_pdf
+
+    return _afficher_lecture_douaniere(lambda chemin: rapprocher_fragment_article_pdf(
+        chemin, args.article_id, args.page, args.field, args.limit, args.offset), args.lot)
 
 
 def cmd_customs_code_tree(args) -> int:

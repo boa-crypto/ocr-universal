@@ -31,6 +31,34 @@ def lire_page_pdf(repertoire: Path, document_id: str, page: int = 1, limite: int
     if type(decalage) is not int or not 0 <= decalage <= MAX_DECALAGE_TEXTE:
         raise ParamPDFInvalide("Décalage entier de 0 à 67108864 requis")
     lot, rapport = charger_lot_code(repertoire)
+    texte, nombre, sha, document = extraire_page_controlee(repertoire, lot, rapport, document_id, page)
+    fragment = texte[decalage:decalage + limite]
+    suivant = decalage + len(fragment)
+    return {"type_rapport": "lecture_page_pdf_recu", "lecture_seule": True, "publication_active": False,
+            "validation_juridique": "non_validee", "validation_humaine_requise": True,
+            "archive": rapport["archive"], "document_declare": document.model_dump(mode="json"),
+            "sha256_pdf_lu": sha, "page_physique": page, "nombre_pages_pdf": nombre,
+            "page_physique_suivante": page + 1 if page < nombre else None,
+            "methode": "texte_natif_pdfium_sans_ocr", "texte_natif_non_vide": bool(texte.strip()),
+            "transcription_verification": "non_verifiee", "authenticite_documentaire": "non_etablie",
+            "completude_reglementaire": "non_etablie", "restitution_juridique_a_date": False,
+            "unite_decalage": "points_de_code_unicode_python", "total_caracteres": len(texte),
+            "limite": limite, "decalage": decalage, "fragment": fragment,
+            "decalage_suivant": suivant if suivant < len(texte) else None,
+            "avertissements": ["Texte natif extrait par le moteur PDF, pas transcription juridiquement vérifiée.",
+                               "Sans texte natif ne signifie ni PDF vide ni absence de droit ; aucun OCR automatique.",
+                               "Page physique à partir de 1, pas numéro imprimé du JO ; aucun article localisé automatiquement.",
+                               "Ordre visuel, caractères et retours à la ligne peuvent différer du document affiché.",
+                               "Aucune URL distante suivie, aucun PDF source remis au navigateur ou rendu graphique.",
+                               "Processus séparé et bornes, pas antivirus ni bac à sable OS ou garantie matérielle."]}
+
+
+def extraire_page_controlee(repertoire, lot, rapport, document_id, page):
+    """Interne : lot déjà contrôlé et page validée par l'appelant ; texte entier borné.
+
+    Réutilise l'extraction du lecteur sans second rejeu ni limite de fragment levée
+    dans le contrat public. Les octets remis au worker sont revérifiés au manifeste.
+    """
     selection = next(((i, d) for i, d in enumerate(lot.documents, 1) if d.id == document_id), None)
     if selection is None:
         raise LecturePDFRefusee("Document absent du lot contrôlé")
@@ -52,22 +80,4 @@ def lire_page_pdf(repertoire: Path, document_id: str, page: int = 1, limite: int
             raise ValueError("Réponse extracteur invalide")
     except (OSError, subprocess.TimeoutExpired, ValueError, KeyError, TypeError):
         raise LecturePDFRefusee("PDF non lisible ou extracteur indisponible/hors limites") from None
-    fragment = texte[decalage:decalage + limite]
-    suivant = decalage + len(fragment)
-    return {"type_rapport": "lecture_page_pdf_recu", "lecture_seule": True, "publication_active": False,
-            "validation_juridique": "non_validee", "validation_humaine_requise": True,
-            "archive": rapport["archive"], "document_declare": document.model_dump(mode="json"),
-            "sha256_pdf_lu": sha, "page_physique": page, "nombre_pages_pdf": nombre,
-            "page_physique_suivante": page + 1 if page < nombre else None,
-            "methode": "texte_natif_pdfium_sans_ocr", "texte_natif_non_vide": bool(texte.strip()),
-            "transcription_verification": "non_verifiee", "authenticite_documentaire": "non_etablie",
-            "completude_reglementaire": "non_etablie", "restitution_juridique_a_date": False,
-            "unite_decalage": "points_de_code_unicode_python", "total_caracteres": len(texte),
-            "limite": limite, "decalage": decalage, "fragment": fragment,
-            "decalage_suivant": suivant if suivant < len(texte) else None,
-            "avertissements": ["Texte natif extrait par le moteur PDF, pas transcription juridiquement vérifiée.",
-                               "Sans texte natif ne signifie ni PDF vide ni absence de droit ; aucun OCR automatique.",
-                               "Page physique à partir de 1, pas numéro imprimé du JO ; aucun article localisé automatiquement.",
-                               "Ordre visuel, caractères et retours à la ligne peuvent différer du document affiché.",
-                               "Aucune URL distante suivie, aucun PDF source remis au navigateur ou rendu graphique.",
-                               "Processus séparé et bornes, pas antivirus ni bac à sable OS ou garantie matérielle."]}
+    return texte, nombre, sha, document

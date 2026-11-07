@@ -474,5 +474,47 @@ await scenario('Code hiérarchie : audit 503 efface rapport et actions',async({h
   reponse({detail:{code:'audit_revue_indisponible'}},503);button('Parcourir la hiérarchie du Code').click();await tick();
   assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
 });
+const matchRapport = extra => envelope({type_rapport:'rapprochement_litteral_fragment_article_pdf',
+  article_id_exact:'VERSION',article_trouve:true,texte_renseigne:true,champ_texte:'texte_integral',
+  unite_decalage:'points_de_code_unicode_python',limite:4,decalage:0,decalage_suivant:null,total_caracteres_article:2,
+  fragment_article:'أ😀',page_physique_demandee:2,extraction_effectuee:true,fragment_present_litteralement:true,
+  document_declare:{id:'SRC',sha256:'b'.repeat(64)},sha256_pdf_lu:'b'.repeat(64),position_debut_pdf:5,...extra});
+await scenario('Rapprochement : paramètres exacts, source imposée et lecture de la page',async({host,appels,button,reponse})=>{
+  host.querySelector('[data-read-id]').value='VERSION عربي';host.querySelector('[data-match-page]').value='2';
+  host.querySelector('[data-pdf-id]').value='AUTRE';reponse(matchRapport({}));
+  button('Rapprocher le fragment').click();await tick();let u=new URL(appels.at(-1).url,'https://x');
+  assert.equal(u.searchParams.get('article_id'),'VERSION عربي');assert.equal(u.searchParams.get('page'),'2');assert(!u.searchParams.has('document_id'));
+  button('Lire la page PDF rapprochée').click();await tick();u=new URL(appels.at(-1).url,'https://x');
+  assert.equal(u.searchParams.get('document_id'),'SRC');assert.equal(u.searchParams.get('page'),'2');assert.equal(u.searchParams.get('offset'),'5');
+});
+await scenario('Rapprochement : suite Unicode conserve page et fragment',async({host,appels,button,reponse})=>{
+  host.querySelector('[data-read-id]').value='VERSION';reponse(matchRapport({decalage_suivant:2,total_caracteres_article:8}));
+  button('Rapprocher le fragment').click();await tick();button('Fragment suivant à rapprocher').click();await tick();
+  const u=new URL(appels.at(-1).url,'https://x');assert.equal(u.searchParams.get('offset'),'2');assert.equal(u.searchParams.get('page'),'2');assert.equal(u.searchParams.get('limit'),'4');
+});
+await scenario('Rapprochement : indisponibilité reste indéterminée et rendu sans HTML',async({host,button,reponse})=>{
+  host.querySelector('[data-read-id]').value='VERSION';
+  reponse(matchRapport({fragment_article:'<img src=x onerror=alert(1)>',fragment_present_litteralement:null,
+    extraction_effectuee:false,sha256_pdf_lu:null,constat:'champ_absent',transcription_verification:'non_verifiee'}));
+  button('Rapprocher le fragment').click();await tick();assert(!button('Lire la page PDF rapprochée'));
+  assert(!host.querySelector('img'));assert(host.querySelector('pre').textContent.includes('non_verifiee'));
+});
+await scenario('Rapprochement : IDs/page invalides et tarif sans requête',async({w,host,appels,button})=>{
+  const n=appels.length;button('Rapprocher le fragment').click();await tick();assert.equal(appels.length,n);
+  host.querySelector('[data-read-id]').value='VERSION';host.querySelector('[data-match-page]').value='0';
+  button('Rapprocher le fragment').click();await tick();assert.equal(appels.length,n);
+  const lot=host.querySelector('select');lot.value='test-tarif';lot.dispatchEvent(new w.Event('change'));
+  host.querySelector('[data-match-page]').value='1';button('Rapprocher le fragment').click();await tick();assert.equal(appels.length,n);
+});
+await scenario('Rapprochement : ancienne action inerte après changement de lot',async({w,host,appels,button,reponse})=>{
+  host.querySelector('[data-read-id]').value='VERSION';reponse(matchRapport({}));button('Rapprocher le fragment').click();await tick();
+  const ancien=button('Lire la page PDF rapprochée'),n=appels.length;const lot=host.querySelector('select');lot.value='test-tarif';lot.dispatchEvent(new w.Event('change'));
+  ancien.click();await tick();assert.equal(appels.length,n);assert.equal(host.querySelector('[data-review-actions]').textContent,'');
+});
+await scenario('Rapprochement : panne audit efface fragment et actions',async({host,button,reponse})=>{
+  host.querySelector('[data-read-id]').value='VERSION';reponse(matchRapport({}));button('Rapprocher le fragment').click();await tick();
+  reponse({detail:{code:'audit_revue_indisponible'}},503);button('Rapprocher le fragment').click();await tick();
+  assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

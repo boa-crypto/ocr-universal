@@ -77,3 +77,7 @@ peuvent refuser cette nouvelle route.
 Lot 26 : `/lots/{lot_id}/code-tree` est admise dans l’enveloppe partielle
 version 1 ; navigation des chemins transcrits uniquement, pas hiérarchie
 juridique validée. Les anciens contrôleurs stricts peuvent refuser cette route.
+
+Lot 27 : `/lots/{lot_id}/article-pdf-match` est admise dans l’enveloppe partielle
+version 1. Constat littéral d’un fragment seulement, sans attestation humaine.
+Les anciens contrôleurs stricts peuvent refuser cette nouvelle route.

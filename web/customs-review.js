@@ -177,7 +177,7 @@
         histoire.disabled = filtres.disabled;
         fiche.disabled = !filtres.disabled;
         arbre.disabled = !filtres.disabled;
-        codeArbre.disabled = filtres.disabled; lecture.disabled = filtres.disabled; diffArticle.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
+        matchLecture.disabled = filtres.disabled; codeArbre.disabled = filtres.disabled; lecture.disabled = filtres.disabled; diffArticle.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
         ++requete; viderResultat();
       }
       var limit = champ(form, "Limite (1–100)", "input", "number");
@@ -311,8 +311,10 @@
         var option = element("option", v); option.value = v; readField.append(option);
       });
       var readLimit = champ(lecture, "Caractères par fragment (1–16000)", "input", "number");
+      readLimit.setAttribute("data-read-limit", "");
       readLimit.min = 1; readLimit.max = 16000; readLimit.value = 4000; readLimit.required = true;
       var readOffset = champ(lecture, "Décalage du texte (0–67108864)", "input", "number");
+      readOffset.setAttribute("data-read-offset", "");
       readOffset.min = 0; readOffset.max = 67108864; readOffset.value = 0; readOffset.required = true;
       function chargerArticle() {
         if (lecture.disabled || !readLimit.reportValidity() || !readOffset.reportValidity()) return;
@@ -363,6 +365,23 @@
           apres_id: diffApres.value, field: readField.value, limit: readLimit.value, offset_avant: diffOffsetAvant.value, offset_apres: diffOffsetApres.value}), afficher);
       }
       diffArticle.append(bouton("Comparer les deux versions exactes", chargerDiffArticle));
+      var matchLecture = element("fieldset");
+      matchLecture.append(element("legend", "Rapprochement littéral article / PDF — Code seulement"));
+      matchLecture.append(element("p", "Utilise l’ID, le champ, la limite et le décalage du formulaire de lecture d’article. " +
+        "Source PDF imposée par la référence de l’article. Présence ≠ validation ; absence ≠ erreur de transcription. Sans OCR."));
+      var matchPage = champ(matchLecture, "Page physique source choisie (1–10000)", "input", "number");
+      matchPage.min = 1; matchPage.max = 10000; matchPage.value = 1; matchPage.required = true;
+      matchPage.setAttribute("data-match-page", "");
+      function chargerRapprochement() {
+        if (matchLecture.disabled) return;
+        if (!idValide(readId.value) || !readLimit.reportValidity() || !readOffset.reportValidity() ||
+            !entier(Number(matchPage.value), 1, 10000) || !matchPage.reportValidity()) {
+          ++requete; viderResultat(); statut.textContent = "ID, fragment d’article et page physique source valides requis."; return;
+        }
+        lire("/lots/" + encodeURIComponent(lot.value) + "/article-pdf-match?" + new URLSearchParams({article_id: readId.value,
+          field: readField.value, page: matchPage.value, limit: readLimit.value, offset: readOffset.value}), afficher);
+      }
+      matchLecture.append(bouton("Rapprocher le fragment avec sa page PDF", chargerRapprochement));
       function idValide(id) {
         return typeof id === "string" && id.trim() && Array.from(id).length <= 256 && !/[\u0000-\u001f\u007f-\u009f]/.test(id);
       }
@@ -503,7 +522,31 @@
             }));
           });
         }
+        if (rapport.type_rapport === "rapprochement_litteral_fragment_article_pdf" && !matchLecture.disabled &&
+            rapport.article_trouve === true && rapport.texte_renseigne === true && idValide(rapport.article_id_exact) &&
+            rapport.unite_decalage === "points_de_code_unicode_python" && entier(rapport.page_physique_demandee, 1, 10000) &&
+            ["texte_integral", "texte_francais", "texte_arabe", "texte_origine", "texte_modificatif"].includes(rapport.champ_texte) &&
+            entier(rapport.limite, 1, 16000) && entier(rapport.decalage, 0, 67108864) &&
+            typeof rapport.fragment_article === "string" && Array.from(rapport.fragment_article).length <= rapport.limite &&
+            rapport.decalage_suivant === rapport.decalage + Array.from(rapport.fragment_article).length &&
+            entier(rapport.decalage_suivant, rapport.decalage + 1, 67108864) &&
+            entier(rapport.total_caracteres_article, rapport.decalage_suivant + 1, 67108864)) {
+          actions.append(actionDocumentaire("Fragment suivant à rapprocher", function () {
+            readId.value = rapport.article_id_exact; readField.value = rapport.champ_texte;
+            readLimit.value = rapport.limite; readOffset.value = rapport.decalage_suivant;
+            matchPage.value = rapport.page_physique_demandee; chargerRapprochement();
+          }));
+        }
         var docPDF = rapport.document_declare;
+        if (!pdfLecture.disabled && rapport.type_rapport === "rapprochement_litteral_fragment_article_pdf" &&
+            rapport.extraction_effectuee === true && docPDF && idValide(docPDF.id) &&
+            typeof docPDF.sha256 === "string" && /^[a-f0-9]{64}$/.test(docPDF.sha256) && rapport.sha256_pdf_lu === docPDF.sha256 &&
+            entier(rapport.page_physique_demandee, 1, 10000)) {
+          actions.append(actionDocumentaire("Lire la page PDF rapprochée", function () {
+            pdfId.value = docPDF.id; pdfPage.value = rapport.page_physique_demandee; pdfLimit.value = 4000;
+            pdfOffset.value = entier(rapport.position_debut_pdf, 0, 199999) ? rapport.position_debut_pdf : 0; chargerPDF();
+          }));
+        }
         if (!pdfLecture.disabled && docPDF && idValide(docPDF.id) && typeof docPDF.sha256 === "string" && /^[a-f0-9]{64}$/.test(docPDF.sha256)) {
           actions.append(actionDocumentaire("Lire le PDF reçu " + docPDF.id + " — page 1", function () {
             pdfId.value = docPDF.id; pdfPage.value = 1; pdfLimit.value = 4000; pdfOffset.value = 0; chargerPDF();
@@ -544,7 +587,7 @@
         }
       };
       lot.addEventListener("change", adapter); adapter();
-      outils.append(form, fiche, arbre, codeArbre, lecture, pdfLecture, diffArticle);
+      outils.append(form, fiche, arbre, codeArbre, lecture, pdfLecture, diffArticle, matchLecture);
     });
   }
   function demarrer() {

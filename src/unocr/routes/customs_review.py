@@ -12,6 +12,10 @@ from ..customs_reference.article_detail import (
     consulter_article,
 )
 from ..customs_reference.article_diff import ParamDiffArticleInvalide, comparer_versions_article
+from ..customs_reference.article_pdf_match import (
+    ParamRapprochementInvalide,
+    rapprocher_fragment_article_pdf,
+)
 from ..customs_reference.code_tree import ParamArbreCodeInvalide, parcourir_code
 from ..customs_reference.comparison import charger_lot, comparer_lots
 from ..customs_reference.coverage import diagnostiquer_couverture
@@ -71,6 +75,8 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
             reponse = JSONResponse({"lecture_seule": True, "publication_active": False,
                                  "validation_juridique": "non_validee", "perimetre": "revue_administrative_quarantaine",
                                  "resultat": resultat}, headers=NO_STORE)
+        except ParamRapprochementInvalide:
+            statut, code = 422, "parametres_rapprochement_article_pdf_invalides"
         except ParamArbreCodeInvalide:
             statut, code = 422, "parametres_navigation_code_invalides"
         except ParamDiffArticleInvalide:
@@ -178,6 +184,17 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 raise HTTPException(422, {"code": "lecture_article_non_applicable_au_tarif"}, headers=NO_STORE)
             return consulter_article(p[0], article_id, field, limit, offset)
         return executer(utilisateur, "lecture_article", [lot_id], lire_version)
+
+    @router.get("/lots/{lot_id}/article-pdf-match")
+    def rapprochement(lot_id: str, article_id: str = Query(..., min_length=1, max_length=256),
+                      page: int = Query(..., ge=1, le=10000), field: str = Query("texte_integral", max_length=32),
+                      limit: int = Query(4000, ge=1, le=MAX_FRAGMENT),
+                      offset: int = Query(0, ge=0, le=MAX_DECALAGE_TEXTE), utilisateur=Depends(autoriser)):
+        def constater(e, p, registre):
+            if e[0].type_lot != "code":
+                raise HTTPException(422, {"code": "rapprochement_article_pdf_non_applicable_au_tarif"}, headers=NO_STORE)
+            return rapprocher_fragment_article_pdf(p[0], article_id, page, field, limit, offset)
+        return executer(utilisateur, "rapprochement_article_pdf", [lot_id], constater)
 
     @router.get("/lots/{lot_id}/code-tree")
     def arbre_code(lot_id: str, source_id: str | None = Query(None, max_length=256),

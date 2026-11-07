@@ -313,3 +313,9 @@ sur versions publiées, la
 classification tarifaire et l'extension du DS seront développés sur ce domaine,
 pas sur les exemples legacy. Aucun endpoint de validation ne doit être ouvert
 simplement parce que le RBAC historique est désactivé.
+
+## État récapitulatif
+
+[Tableau des lots 1–27 et chantiers restants](TABLEAU_LOTS.md).
+Dernier ajout : [rapprochement littéral d’un fragment d’article avec une page PDF
+source](RAPPROCHEMENT_ARTICLE_PDF.md), sans validation juridique.

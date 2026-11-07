@@ -164,3 +164,11 @@ Sans source et avec chemin `[]`, liste les documents. Avec source, parcourt les
 couples `niveau`/`identifiant` transcrits, puis ouvre les versions exactes.
 Même autorisation/épingle/audit/no-store ; tarif et sélecteurs invalides 422.
 Contrat et limites : [NAVIGATION_CODE.md](NAVIGATION_CODE.md).
+
+### Rapprochement littéral article / PDF (lot 27)
+
+`GET /lots/{lot_id}/article-pdf-match?article_id=…&page=1&field=texte_integral&limit=4000&offset=0`.
+Page obligatoire et source imposée par la référence de l’article ; recherche du
+fragment dans le texte natif de cette page. Présence ≠ validation ; absence ≠ erreur.
+Même autorisation/épingle/audit/no-store ; 422 paramètres/tarif, 409 PDF refusé,
+503 audit indisponible. [Contrat et limites](RAPPROCHEMENT_ARTICLE_PDF.md).

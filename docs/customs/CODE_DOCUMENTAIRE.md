@@ -209,3 +209,9 @@ sans filiation inférée ni consolidation. CLI/API/interface et export partiel :
 La revue parcourt désormais les chemins déclarés, document par document,
 sans fusion de sources ou reconstruction de niveaux absents. CLI/API/interface,
 pagination, remontée et export partiel : [NAVIGATION_CODE.md](NAVIGATION_CODE.md).
+
+## Rapprochement littéral avec le PDF — lot 27
+
+Un fragment peut être recherché tel quel dans une page physique explicitement
+choisie de sa source déclarée. Ce constat ne vérifie pas l’intégralité de l’article
+ni son statut juridique : [RAPPROCHEMENT_ARTICLE_PDF.md](RAPPROCHEMENT_ARTICLE_PDF.md).
