@@ -7,7 +7,24 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 79
+## État actuel — lot 80
+
+[Révision des classifications](REVISION_CLASSIFICATIONS.md) : snapshot JSON/SHA-256,
+comparaison + sauvegarde sous verrou de résultats commun au processus ; conflit
+409 sans écrasement ni audit de succès. Entrelacement automatique/manuel vérifié.
+**21 nouveaux cas / 485 ciblés réussis** ; témoin anciens handlers avec nouveau
+store conservé : 5 échecs attendus, 16 réussis. Documentaire **2 160 Python /
+212 JSDOM historiques**. Complète : **3 881 réussis, 2 échecs Indra, 1 ignoré,
+2 avertissement(s), 366,84 s**.
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42417828157),
+pas suite OCR complète en CI. **26/27 empreintes conformes**, même écart partagé ;
+données/journaux préservés hors commit. Pas multiprocessus, transaction globale,
+monotonicité ou protection de tous les autres écrivains périmés.
+**Aperçu backend76 maintenu**, code77–80 poussé/testé mais non chargé pour préserver
+les traitements ; RBAC non configuré. [Rapport](RAPPORT_LOT80.md),
+[recette actuelle](RECETTE_LOT80.json).
+
+## Complément historique — lot 79
 
 [Reclassement automatique persistant](RECLASSEMENT_AUTOMATIQUE_PERSISTE.md) :
 sauvegarde avant audit/réponse, rôle et visibilité en amont, refus 409 des décisions
