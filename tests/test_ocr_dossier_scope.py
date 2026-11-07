@@ -15,7 +15,7 @@ DETAIL = ["get", "update", "validate", "correct"]
 
 
 def headers(user="a"):
-    return {"Authorization": "Bearer FAKE73-" + user}
+    return {"Authorization": "Bearer FAKE73-" + user} if user is not None else {}
 
 
 def perform(client, folder, extraction, job, action, user="a", body_folder=None):
@@ -200,5 +200,5 @@ def test_rbac_disabled_does_not_activate_implicit_permissions(scoped, monkeypatc
     empty = tmp_path / "without-rbac"
     empty.mkdir()
     monkeypatch.setattr(api, "_rbac", RegistreRBAC.charger(empty))
-    # Le jeton global donne aussi le comportement ouvert historique sans rôles.
-    assert perform(client, f["b"], e["b"], j["b"], action, "master").status_code == 200
+    monkeypatch.setattr(api, "_AUTH_TOKEN", None)
+    assert perform(client, f["b"], e["b"], j["b"], action, user=None).status_code == 200
