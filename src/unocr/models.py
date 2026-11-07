@@ -373,6 +373,7 @@ class FieldStatus(str, Enum):
     AMBIGUOUS = "ambiguous"
     INVALID = "invalid"
     VALIDATED = "validated"
+    CORRECTED = "corrected"
 
 
 class ValueOrigin(str, Enum):
@@ -404,12 +405,10 @@ class FieldValue(BaseModel):
     @property
     def value(self) -> Optional[str]:
         """Valeur finale : confirmée > corrigée > normalisée > brute."""
-        return (
-            self.confirmed_value
-            or self.corrected_value
-            or self.normalized_value
-            or self.raw_value
-        )
+        return next((value for value in (
+            self.confirmed_value, self.corrected_value,
+            self.normalized_value, self.raw_value,
+        ) if value is not None), None)
 
 
 # ---------------------------------------------------------------- qualité

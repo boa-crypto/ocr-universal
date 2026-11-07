@@ -1840,8 +1840,9 @@ def _etat_champ(fv: dict) -> dict:
     brute. C'est cet état qu'une annulation doit restituer, pas la valeur
     brute — sinon annuler ferait perdre la normalisation déjà faite.
     """
-    valeur = (fv.get("confirmed_value") or fv.get("corrected_value")
-              or fv.get("normalized_value") or fv.get("raw_value"))
+    valeur = next((fv.get(key) for key in (
+        "confirmed_value", "corrected_value", "normalized_value", "raw_value"
+    ) if fv.get(key) is not None), None)
     return {"valeur": valeur,
             "origine": fv.get("value_origin"),
             "statut": fv.get("status")}
@@ -1868,7 +1869,7 @@ def annuler_correction(job_id: str, name: str, request: Request,
     if name not in fields:
         raise HTTPException(404, f"champ '{name}' introuvable")
     fv = fields[name]
-    if not (fv.get("confirmed_value") or fv.get("corrected_value")):
+    if fv.get("confirmed_value") is None and fv.get("corrected_value") is None:
         raise HTTPException(409, "aucune correction humaine à annuler sur ce champ")
 
     precedent = _derniere_correction(job_id, name)
@@ -1912,8 +1913,8 @@ def _derniere_correction(job_id: str, name: str) -> dict | None:
             continue
         if entree.get("job_id") != job_id or entree.get("field") != name:
             continue
-        entree["valeur_apres"] = (entree.get("confirmed")
-                                  or entree.get("corrected"))
+        entree["valeur_apres"] = (entree.get("confirmed") if entree.get("confirmed") is not None
+                                  else entree.get("corrected"))
         return entree
     return None
 
