@@ -5,6 +5,7 @@ from pathlib import Path
 
 from .comparison import charger_lot
 from .search import ParamRechercheInvalide, _normaliser, _parametres, _rapport
+from .tariff_excerpt import MAX_EXTRAITS_TARIF, localiser_criteres
 
 CRITERES = ("designation", "matiere", "fonction", "usage", "caracteristiques")
 
@@ -38,15 +39,19 @@ def rechercher_tarif_criteres(repertoire: Path, *, designation: str | None = Non
         if not all(noms for critere in preuves.values() for noms in critere.values()):
             continue
         if decalage <= total < decalage+limite:
-            resultats.append({"ligne":ligne.model_dump(mode="json"),"correspondances_par_critere":preuves})
+            resultats.append({"ligne":ligne.model_dump(mode="json"),"correspondances_par_critere":preuves,
+                              **localiser_criteres(ligne,preuves)})
         total += 1
     rep = _rapport("tarif_criteres_documentaires"," ; ".join(f"{k}={v}" for k,v in criteres.items() if v is not None),
         list(dict.fromkeys(t for mots in termes.values() for t in mots)),"conjonction_criteres_sous_chaines",
         {"criteres":criteres,"code_prefix":code_prefix},rapport,total,resultats,limite,decalage)
     rep.update(source_declaree=lot.source.model_dump(mode="json"),perimetre_lecture=rapport["perimetre_lecture"],
                termes_normalises_par_critere=termes,attributs_techniques_certifies=False,
-               classement_ia_effectue=False,taux_calcules=False)
+               classement_ia_effectue=False,taux_calcules=False,
+               occurrences_denombrees=False,maximum_extraits_par_ligne=MAX_EXTRAITS_TARIF,
+               politique_localisation="premiere_occurrence_par_critere_terme_et_libelle")
     rep["avertissements"].extend([
+        "Positions dans les libellés reçus, pas preuve PDF ; première occurrence seulement, extraits limités à 16 par ligne.",
         "Matière, fonction, usage et caractéristiques sont des étiquettes de requête, pas des attributs produits certifiés.",
         "Chaque terme doit apparaître dans au moins un libellé FR/AR de la ligne ; les critères sont tous requis.",
         "Pas de synonymes, traduction FR/AR, raisonnement RGI, notes/exclusions ou score de confiance inventés.",

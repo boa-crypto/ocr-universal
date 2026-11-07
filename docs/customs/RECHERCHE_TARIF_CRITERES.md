@@ -65,3 +65,9 @@ fixtures NON OFFICIELLES ne qualifient aucune source nationale. Cette étape
 structure les requêtes métier, mais ne livre pas la compréhension technique,
 l'IA de classement, les synonymes sourcés, les notes/exclusions, la consolidation
 à date, la validation humaine ou la fiscalité applicable.
+
+## Complément lot 47
+
+[Positions Unicode et extraits originaux par critère](EXTRAITS_TARIF_CRITERES.md) :
+positions de chaque terme/libellé, 16 extraits au plus par ligne, affichage intégré
+et cache v67. Contrat de sélection ci-dessus inchangé ; aucune validation ajoutée.

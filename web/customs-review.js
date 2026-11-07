@@ -787,6 +787,26 @@
         if (["tarif_documentaire","tarif_criteres_documentaires"].includes(rapport.type_recherche) && Array.isArray(rapport.resultats)) {
           rapport.resultats.slice(0, 100).forEach(function (v) { if (v && v.ligne) proposerCode(v.ligne.code_tarifaire_10); });
         }
+        if (!criteresTarif.disabled && rapport.type_recherche === "tarif_criteres_documentaires" && Array.isArray(rapport.resultats)) {
+          rapport.resultats.slice(0,100).forEach(function(v){
+            if(!v || !v.ligne || !/^[0-9]{10}$/.test(v.ligne.code_tarifaire_10) || !Array.isArray(v.extraits_correspondants))return;
+            var textesTarif={};
+            v.extraits_correspondants.slice(0,16).forEach(function(ex){
+              if(!ex || !nomsCriteres.includes(ex.critere) || !["designation_officielle_fr","designation_officielle_ar"].includes(ex.champ_texte) ||
+                 ex.unite_decalage!=="points_de_code_unicode_python" || typeof ex.fragment!=="string" || typeof ex.terme_normalise!=="string" || !ex.terme_normalise ||
+                 !rapport.termes_normalises_par_critere || !Array.isArray(rapport.termes_normalises_par_critere[ex.critere]) ||
+                 !rapport.termes_normalises_par_critere[ex.critere].includes(ex.terme_normalise) || typeof v.ligne[ex.champ_texte]!=="string")return;
+              if(!Object.prototype.hasOwnProperty.call(textesTarif,ex.champ_texte))textesTarif[ex.champ_texte]=Array.from(v.ligne[ex.champ_texte]);
+              var texte=textesTarif[ex.champ_texte], longueur=Array.from(ex.fragment).length;
+              if(ex.total_caracteres!==texte.length || longueur<1 || longueur>384 || !entier(ex.decalage,0,texte.length-1) ||
+                 ex.fragment!==texte.slice(ex.decalage,ex.decalage+longueur).join("") ||
+                 !entier(ex.correspondance_debut,ex.decalage,ex.decalage+longueur-1) || !entier(ex.correspondance_fin,ex.correspondance_debut+1,texte.length) ||
+                 ex.correspondance_entierement_visible!==(ex.correspondance_fin<=ex.decalage+longueur))return;
+              var contexte=element("blockquote",ex.fragment);contexte.dir="auto";
+              actions.append(element("p","Extrait tarifaire non validé — "+v.ligne.code_tarifaire_10+" — "+ex.critere+" — "+ex.champ_texte+" — "+ex.terme_normalise+" — positions Unicode "+ex.correspondance_debut+"–"+ex.correspondance_fin+" (fin exclusive)"+(ex.correspondance_entierement_visible ? "" : " — correspondance partiellement visible")),contexte);
+            });
+          });
+        }
         if(!criteresTarif.disabled && rapport.type_recherche === "tarif_criteres_documentaires" && rapport.filtres && rapport.filtres.criteres &&
            Object.keys(rapport.filtres.criteres).length === nomsCriteres.length && nomsCriteres.every(function(nom){var v=rapport.filtres.criteres[nom];return v===null || (typeof v === "string" && v.trim() && Array.from(v).length<=256);}) &&
            (rapport.filtres.code_prefix===null || (typeof rapport.filtres.code_prefix === "string" && /^[0-9]{1,10}$/.test(rapport.filtres.code_prefix))) &&

@@ -39,21 +39,44 @@ def extraits_correspondants(champs, termes):
             continue
         terme, index = trouve
         del normalise
-        debut_match = fin_match = None
-        for n, origine in enumerate(_indices_normalises(texte)):
-            if n == index:
-                debut_match = origine
-            if n == index + len(terme) - 1:
-                fin_match = origine + 1
-                break
-        if debut_match is None or fin_match is None:
-            raise ValueError("Impossible de localiser la correspondance normalisée dans le texte original")
-        debut = max(0, debut_match - CONTEXTE_AVANT)
-        fin = min(len(texte), debut + MAX_EXTRAIT)
-        extraits.append({"champ_texte": champ, "terme_normalise": terme,
-                         "unite_decalage": "points_de_code_unicode_python", "decalage": debut,
-                         "fragment": texte[debut:fin], "total_caracteres": len(texte),
-                         "correspondance_debut": debut_match, "correspondance_fin": fin_match,
-                         "correspondance_entierement_visible": fin_match <= fin,
-                         "tronque_debut": debut > 0, "tronque_fin": fin < len(texte)})
+        debut_match, fin_match = _localiser_indices(texte, {terme: index})[terme]
+        extraits.append(extrait_original(texte, champ, terme, debut_match, fin_match))
     return extraits
+
+
+def localiser_termes(texte, termes):
+    """Première occurrence par terme ; une projection Unicode pour tous les spans."""
+    from .search import _normaliser
+
+    normalise = _normaliser(texte)
+    recherches = {t: normalise.find(t) for t in termes if t}
+    recherches = {t: i for t, i in recherches.items() if i >= 0}
+    del normalise
+    return _localiser_indices(texte, recherches)
+
+
+def _localiser_indices(texte, recherches):
+    bornes = {n for t, i in recherches.items() for n in (i, i + len(t) - 1)}
+    positions = {}
+    if not bornes:
+        return {}
+    for n, origine in enumerate(_indices_normalises(texte)):
+        if n in bornes:
+            positions[n] = origine
+            if len(positions) == len(bornes):
+                break
+    if any(n not in positions for n in bornes):
+        raise ValueError("Impossible de localiser la correspondance normalisée dans le texte original")
+    return {t: (positions[i], positions[i + len(t) - 1] + 1) for t, i in recherches.items()}
+
+
+def extrait_original(texte, champ, terme, debut_match, fin_match):
+    """Contexte borné, offsets en points de code du texte original reçu."""
+    debut = max(0, debut_match - CONTEXTE_AVANT)
+    fin = min(len(texte), debut + MAX_EXTRAIT)
+    return {"champ_texte": champ, "terme_normalise": terme,
+            "unite_decalage": "points_de_code_unicode_python", "decalage": debut,
+            "fragment": texte[debut:fin], "total_caracteres": len(texte),
+            "correspondance_debut": debut_match, "correspondance_fin": fin_match,
+            "correspondance_entierement_visible": fin_match <= fin,
+            "tronque_debut": debut > 0, "tronque_fin": fin < len(texte)}

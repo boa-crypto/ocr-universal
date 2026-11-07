@@ -15,6 +15,14 @@ JSON contrôlés sur quatre parcours réels. Pas de matière/fonction/usage cert
 synonymes ou IA de classement. La matrice et la suite complète ci-dessous décrivent
 la réception 45 ; ses 18 échecs OCR ne sont ni corrigés ni masqués par cet ajout.
 
+## Complément lot 47
+
+[Positions et extraits tarifaires](EXTRAITS_TARIF_CRITERES.md) : chaque terme est
+localisé dans le libellé original ; 16 contextes maximum par ligne et affichage
+Unicode contrôlé. Sélection : 1 782 tests Python et 169 scénarios JSDOM réussis.
+Pas de preuve PDF ou classement validé ajouté. La recette globale reste celle
+du lot 45 ; aucun échec OCR annoncé comme résolu.
+
 ## Résultats vérifiés au lot 45
 
 | Recette | Résultat |
