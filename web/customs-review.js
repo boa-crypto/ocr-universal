@@ -233,17 +233,22 @@
       var criteresPrefix=champ(criteresTarif,"Préfixe de code ASCII (facultatif)");criteresPrefix.maxLength=10;criteresPrefix.setAttribute("data-tariff-criteria-prefix","");
       var criteresLimit=champ(criteresTarif,"Limite multicritère (1–100)","input","number");criteresLimit.value=20;criteresLimit.min=1;criteresLimit.max=100;criteresLimit.setAttribute("data-tariff-criteria-limit","");
       var criteresOffset=champ(criteresTarif,"Décalage multicritère","input","number");criteresOffset.value=0;criteresOffset.min=0;criteresOffset.max=1000000;criteresOffset.setAttribute("data-tariff-criteria-offset","");
-      function chargerCriteresTarif(){
+      function chargerCriteresTarif(pistes){
+        pistes=pistes===true;
         if(criteresTarif.disabled)return;
         var params=new URLSearchParams({limit:criteresLimit.value,offset:criteresOffset.value,match_mode:criteresMode.value}),present=false;
         nomsCriteres.forEach(function(nom){if(champsCriteres[nom].value.trim()){params.set(nom,champsCriteres[nom].value);present=true;}});
+        var textePresent=present;
         if(criteresPrefix.value){params.set("code_prefix",criteresPrefix.value);present=true;}
-        if(!["sous_chaine","mots_entiers"].includes(criteresMode.value) || !present || (criteresPrefix.value && !/^[0-9]{1,10}$/.test(criteresPrefix.value)) || !entier(Number(criteresLimit.value),1,100) || !entier(Number(criteresOffset.value),0,1000000)){
-          statut.textContent="Critère ou préfixe explicite et pagination valides requis.";return;
+        if(!["sous_chaine","mots_entiers"].includes(criteresMode.value) || !present || (pistes && (!textePresent || !/^[0-9]{1,7}$/.test(criteresLimit.value) || !/^[0-9]{1,7}$/.test(criteresOffset.value))) || (criteresPrefix.value && !/^[0-9]{1,10}$/.test(criteresPrefix.value)) || !entier(Number(criteresLimit.value),1,100) || !entier(Number(criteresOffset.value),0,1000000)){
+          ++requete;viderResultat();statut.textContent="Critère textuel requis pour les pistes ; critère ou préfixe pour la recherche stricte, pagination valide.";return;
         }
-        lire("/lots/"+encodeURIComponent(lot.value)+"/tariff-criteria?"+params,afficher);
+        lire("/lots/"+encodeURIComponent(lot.value)+(pistes?"/tariff-candidates?":"/tariff-criteria?")+params,afficher);
       }
       criteresTarif.append(bouton("Rechercher les critères tarifaires",chargerCriteresTarif));
+      criteresTarif.append(element("p","Pistes partielles : au moins un terme retrouvé, critères non tous requis. Tri documentaire, pas confiance, IA ou classement validé. Un terme non retrouvé ne prouve pas un attribut manquant."));
+      var pistesBouton=bouton("Explorer les pistes documentaires partielles",function(){chargerCriteresTarif(true);});
+      pistesBouton.setAttribute("data-tariff-candidates","");criteresTarif.append(pistesBouton);
       var fiche = element("fieldset");
       fiche.append(element("legend", "Fiche tarifaire documentaire — tarif seulement"));
       fiche.append(element("p", "Code exact à dix chiffres ASCII. Parents et mesures déclarés, sans taux applicable ou calcul. " +
@@ -638,7 +643,44 @@
           code10.value = code; measureLimit.value = 20; measureOffset.value = 0; chargerFiche();
         }));
       }
+      function pistesValides(r){
+        if(criteresTarif.disabled || r.type_recherche!=="pistes_tarifaires_documentaires_non_validees" ||
+           !["attributs_techniques_certifies","classement_ia_effectue","classement_douanier_valide","candidat_retenu_automatiquement","probabilite_classement_etablie","taux_calcules","publication_active"].every(function(c){return r[c]===false;}) ||
+           r.validation_juridique!=="non_validee" || !r.filtres || !r.filtres.criteres ||
+           !["sous_chaine","mots_entiers"].includes(r.filtres.match_mode) ||
+           Object.keys(r.filtres.criteres).length!==5 || !nomsCriteres.every(function(c){var v=r.filtres.criteres[c];return v===null || (typeof v==="string" && v.trim() && Array.from(v).length<=256);}) ||
+           !(r.filtres.code_prefix===null || (typeof r.filtres.code_prefix==="string" && /^[0-9]{1,10}$/.test(r.filtres.code_prefix))) ||
+           JSON.stringify(r.politique_tri)!==JSON.stringify(["nombre_criteres_complets_decroissant","nombre_paires_critere_terme_retrouvees_decroissant","code_tarifaire_10_croissant"]) ||
+           !entier(r.limite,1,100) || !entier(r.decalage,0,1000000) || !entier(r.total_correspondances,0,Number.MAX_SAFE_INTEGER) ||
+           !Array.isArray(r.resultats) || r.resultats.length!==Math.max(0,Math.min(r.limite,r.total_correspondances-r.decalage)))return false;
+        var criteres=nomsCriteres.filter(function(c){return r.filtres.criteres[c]!==null;}), termes=r.termes_normalises_par_critere;
+        if(!criteres.length || !termes || Object.keys(termes).length!==criteres.length || !criteres.every(function(c){return Array.isArray(termes[c]) && termes[c].length>=1 && termes[c].length<=16 && new Set(termes[c]).size===termes[c].length && termes[c].every(function(t){return typeof t==="string" && t.length>0;});}))return false;
+        var suite=r.decalage+r.resultats.length;
+        if(r.decalage_suivant!==(suite<r.total_correspondances?suite:null))return false;
+        var vus=new Set(),precedent=null;
+        return r.resultats.every(function(v,i){
+          if(!v || !v.ligne || typeof v.ligne.code_tarifaire_10!=="string" || !/^[0-9]{10}$/.test(v.ligne.code_tarifaire_10) || vus.has(v.ligne.code_tarifaire_10) ||
+             v.statut!=="piste_documentaire_non_validee" || v.rang_documentaire!==r.decalage+i+1 || !v.indicateurs_tri ||
+             !v.termes_non_retrouves_par_critere || !v.correspondances_par_critere)return false;
+          vus.add(v.ligne.code_tarifaire_10);
+          var complets=[],trouves=0;
+          if(!criteres.every(function(c){
+            var preuves=v.correspondances_par_critere[c],absents=v.termes_non_retrouves_par_critere[c];
+            if(!preuves || Object.keys(preuves).length!==termes[c].length || !Array.isArray(absents))return false;
+            var nonRetrouves=[];
+            if(!termes[c].every(function(t){var champs=preuves[t];if(!Array.isArray(champs) || new Set(champs).size!==champs.length || !champs.every(function(ch){return ["designation_officielle_fr","designation_officielle_ar"].includes(ch) && typeof v.ligne[ch]==="string";}))return false;if(champs.length)trouves++;else nonRetrouves.push(t);return true;}))return false;
+            if(JSON.stringify(nonRetrouves)!==JSON.stringify(absents))return false;
+            if(!absents.length)complets.push(c);return true;
+          }))return false;
+          var ordre=!precedent || precedent[0]>complets.length || (precedent[0]===complets.length && (precedent[1]>trouves || (precedent[1]===trouves && precedent[2]<v.ligne.code_tarifaire_10)));
+          precedent=[complets.length,trouves,v.ligne.code_tarifaire_10];
+          return ordre && trouves>0 && JSON.stringify(complets)===JSON.stringify(v.criteres_documentairement_complets) &&
+            v.conjonction_documentaire_complete===(complets.length===criteres.length) &&
+            v.indicateurs_tri.nombre_criteres_complets===complets.length && v.indicateurs_tri.nombre_paires_critere_terme_retrouvees===trouves;
+        });
+      }
       rendreActions = function (rapport) {
+        var pistes=pistesValides(rapport);
         if (rapport.type_rapport === "consultation_documentaire_tarif_mesures_autonomes" && !tarifMesuresLecture.disabled &&
             rapport.rattachement_juridique_etabli === false && rapport.mesures_fusionnees === false &&
             typeof rapport.code_tarifaire_10_exact === "string" && /^[0-9]{10}$/.test(rapport.code_tarifaire_10_exact) &&
@@ -785,10 +827,10 @@
             });
           });
         }
-        if (["tarif_documentaire","tarif_criteres_documentaires"].includes(rapport.type_recherche) && Array.isArray(rapport.resultats)) {
+        if ((pistes || ["tarif_documentaire","tarif_criteres_documentaires"].includes(rapport.type_recherche)) && Array.isArray(rapport.resultats)) {
           rapport.resultats.slice(0, 100).forEach(function (v) { if (v && v.ligne) proposerCode(v.ligne.code_tarifaire_10); });
         }
-        if (!criteresTarif.disabled && rapport.type_recherche === "tarif_criteres_documentaires" && Array.isArray(rapport.resultats)) {
+        if (!criteresTarif.disabled && (pistes || rapport.type_recherche === "tarif_criteres_documentaires") && Array.isArray(rapport.resultats)) {
           rapport.resultats.slice(0,100).forEach(function(v){
             if(!v || !v.ligne || !/^[0-9]{10}$/.test(v.ligne.code_tarifaire_10) || !Array.isArray(v.extraits_correspondants))return;
             var textesTarif={};
@@ -797,6 +839,7 @@
                  ex.unite_decalage!=="points_de_code_unicode_python" || typeof ex.fragment!=="string" || typeof ex.terme_normalise!=="string" || !ex.terme_normalise ||
                  !rapport.termes_normalises_par_critere || !Array.isArray(rapport.termes_normalises_par_critere[ex.critere]) ||
                  !rapport.termes_normalises_par_critere[ex.critere].includes(ex.terme_normalise) || typeof v.ligne[ex.champ_texte]!=="string")return;
+              if(pistes && !v.correspondances_par_critere[ex.critere][ex.terme_normalise].includes(ex.champ_texte))return;
               if(!Object.prototype.hasOwnProperty.call(textesTarif,ex.champ_texte))textesTarif[ex.champ_texte]=Array.from(v.ligne[ex.champ_texte]);
               var texte=textesTarif[ex.champ_texte], longueur=Array.from(ex.fragment).length;
               if(ex.total_caracteres!==texte.length || longueur<1 || longueur>384 || !entier(ex.decalage,0,texte.length-1) ||
@@ -807,6 +850,23 @@
               actions.append(element("p","Extrait tarifaire non validé — "+v.ligne.code_tarifaire_10+" — "+ex.critere+" — "+ex.champ_texte+" — "+ex.terme_normalise+" — positions Unicode "+ex.correspondance_debut+"–"+ex.correspondance_fin+" (fin exclusive)"+(ex.correspondance_entierement_visible ? "" : " — correspondance partiellement visible")),contexte);
             });
           });
+        }
+        if(pistes){
+          var resumePistes=element("section");resumePistes.setAttribute("data-tariff-candidates-results","");resumePistes.dir="auto";
+          resumePistes.append(element("h3","Pistes documentaires non validées — pas un classement douanier"));
+          resumePistes.append(element("p","Tri : critères complets, puis paires critère-terme retrouvées, puis code. Compteurs non indépendants, pas probabilités. Aucun candidat retenu automatiquement."));
+          if(!rapport.resultats.length)resumePistes.append(element("p",rapport.total_correspondances?"Page hors résultats ; aucune absence de droit déduite.":"Aucune piste dans ces libellés ; aucun attribut produit ni droit déduit."));
+          rapport.resultats.forEach(function(v){
+            resumePistes.append(element("h4","Rang documentaire "+v.rang_documentaire+" — "+v.ligne.code_tarifaire_10),
+              element("p",v.indicateurs_tri.nombre_criteres_complets+" critère(s) complet(s), "+v.indicateurs_tri.nombre_paires_critere_terme_retrouvees+" paire(s) retrouvée(s). "+(v.conjonction_documentaire_complete?"Conjonction littérale complète, pas validation.":"Correspondance partielle, pas validation.")));
+            nomsCriteres.forEach(function(c){if(Array.isArray(v.termes_non_retrouves_par_critere[c]))resumePistes.append(element("p",c+" — termes non retrouvés dans ces libellés : "+(v.termes_non_retrouves_par_critere[c].join(" · ")||"aucun")));});
+          });
+          actions.append(resumePistes);
+          if(rapport.decalage_suivant!==null)actions.append(actionDocumentaire("Page suivante des pistes documentaires",function(){
+            nomsCriteres.forEach(function(c){champsCriteres[c].value=rapport.filtres.criteres[c]===null?"":rapport.filtres.criteres[c];});
+            criteresMode.value=rapport.filtres.match_mode;criteresPrefix.value=rapport.filtres.code_prefix===null?"":rapport.filtres.code_prefix;
+            criteresLimit.value=rapport.limite;criteresOffset.value=rapport.decalage_suivant;chargerCriteresTarif(true);
+          }));
         }
         if(!criteresTarif.disabled && rapport.type_recherche === "tarif_criteres_documentaires" && rapport.diagnostic_recherche){
           var d=rapport.diagnostic_recherche, constats={aucune_ligne_dans_prefixe:"Aucune ligne dans le périmètre de ce lot après filtre éventuel de préfixe.",aucune_conjonction_sur_meme_ligne:"Aucune ligne ne réunit tous les termes de tous les critères.",page_hors_resultats:"Des correspondances existent, mais cette page est au-delà des résultats.",correspondances_documentaires:"Correspondances documentaires trouvées, non validées."};

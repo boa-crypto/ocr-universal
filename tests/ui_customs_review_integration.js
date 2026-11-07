@@ -210,6 +210,16 @@ const {JSDOM} = require('jsdom');
   const exportCriteres=await new Promise((resolve,reject)=>{const r=new w.FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsText(exportBlob);});console.log('EXPORT_REEL_JSON='+JSON.stringify(JSON.parse(exportCriteres)));
 
 
+  host.querySelector('[data-tariff-criteria-matiere]').value='acier';host.querySelector('[data-tariff-criteria-offset]').value=0;
+  bouton('Explorer les pistes documentaires').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_recherche==='pistes_tarifaires_documentaires_non_validees');
+  const pistes=JSON.parse(host.querySelector('pre').textContent);assert.equal(pistes.total_correspondances,2);assert.equal(pistes.candidat_retenu_automatiquement,false);
+  assert.equal(pistes.resultats[0].conjonction_documentaire_complete,false);assert.deepEqual(pistes.resultats[0].termes_non_retrouves_par_critere.matiere,['acier']);
+  assert(host.querySelector('[data-tariff-candidates-results]'));assert(host.querySelector('blockquote'));
+  host.querySelector('[data-tariff-criteria-matiere]').value='AUTRE';bouton('Page suivante des pistes documentaires').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').decalage===1);
+  assert.equal(JSON.parse(host.querySelector('pre').textContent).filtres.criteres.matiere,'acier');assert.equal(JSON.parse(host.querySelector('pre').textContent).resultats[0].rang_documentaire,2);
+  exportBlob=null;bouton('Exporter ce rapport').click();await attendre(()=>!!exportBlob);
+  const exportPistes=await new Promise((resolve,reject)=>{const r=new w.FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsText(exportBlob);});console.log('EXPORT_REEL_JSON='+JSON.stringify(JSON.parse(exportPistes)));
+
   host.querySelector('[data-measure-query]').value='TERME_MESURE_EXCLU';host.querySelector('[data-measure-code]').value='0101000000';
   host.querySelector('[data-measure-type]').value='restriction';bouton('Rechercher dans les mesures').click();
   await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_recherche==='mesures_tarifaires_documentaires');
