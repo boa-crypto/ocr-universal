@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État au 7 novembre 2026 après le lot 72. **Terminé = périmètre technique livré et
+État au 7 novembre 2026 après le lot 73. **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -77,6 +77,7 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 70 | Pages sans sortie incluses dans moyennes et revue, blancs déclarés exclus | Terminé, 27 nouveaux cas et CI ciblée | Zéro conservateur ; pas migration ou verrou fiscal ; repli texte 0,95 inchangé ; Indra absent, intégrité 26/27 |
 | 71 | Champs à zéro recensés et rapport après confiances finales du pipeline | Terminé, 27 nouveaux cas et CI ciblée | Seuil strict, NOT_DETECTED exclu ; pas révocation humaine/migration/verrou fiscal ; Indra absent, intégrité 26/27 |
 | 72 | Correction/annulation de champs : visibilité documentaire avant résultat | Terminé, 44 nouveaux cas et CI ciblée | RBAC inactif non protégé ; non classés/partagés/jeton global inchangés ; pas audit exhaustif ; Indra absent, intégrité 26/27 |
+| 73 | Sept routes OCR dossiers : périmètre, appartenance et source job contrôlée | Terminé, 59 nouveaux cas et CI ciblée | Pas transaction/concurrence ni activation RBAC ; contre-épreuve création exclue ; Indra absent, intégrité 26/27 |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
 `RAPPORT_LOT61.md`. Les limites historiques des rapports précédents sont à lire
@@ -111,10 +112,10 @@ Aucun pourcentage de complétude réglementaire ou de progression globale n’es
 du nombre de lots. Références non vérifiées interdites pour calcul douanier réel.
 
 Réception technique : [bilan des dix phases](BILAN_RECEPTION.md),
-[recette complète actuelle du lot 72](RECETTE_LOT72.json) : **3 540 réussis,
+[recette complète actuelle du lot 73](RECETTE_LOT73.json) : **3 599 réussis,
 2 échecs OCR, 1 ignoré, 1 avertissement**. **26/27 empreintes historiques conformes** ;
 référentiels et quatre dossiers partagés modifiés sont préservés hors commit,
-voir [rapport 72](RAPPORT_LOT72.md) ; ne pas confondre avec la sélection
+voir [rapport 73](RAPPORT_LOT73.md) ; ne pas confondre avec la sélection
 verte. Recettes historiques : [45](RECETTE_FINALE.json), [50](RECETTE_LOT50.json), [55](RECETTE_LOT55.json).
 
 Lot 57 : [lanceur local/CI](LANCEUR_RECETTE_CIBLEE.md) et
