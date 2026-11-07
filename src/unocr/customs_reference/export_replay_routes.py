@@ -21,6 +21,7 @@ from .relation_pdf_match import rapprocher_justification_pdf
 from .review_export import ExportRefuse
 from .search import rechercher_code, rechercher_tarif
 from .source_catalog import inventorier_sources
+from .tariff_candidates import rechercher_pistes_tarifaires
 from .tariff_criteria import rechercher_tarif_criteres
 from .tariff_detail import consulter_code
 from .tariff_tree import parcourir_tarif
@@ -57,6 +58,9 @@ def preparer_rejeu(requete, lot_id, type_lot, *, autoriser_pdf=False):
                    "relation-pdf-match":rapprocher_justification_pdf,
                    "measure-pdf-match":rapprocher_description_mesure_pdf}[route]
         return lambda p: service(p,**params)
+    if route == "tariff-candidates" and type_lot == "tarif":
+        params = _parametres_export(requete,lot_id,route=route)
+        return lambda p: rechercher_pistes_tarifaires(p,**params)
     if route == "tariff-criteria" and type_lot == "tarif":
         params = _parametres_export(requete,lot_id)
         return lambda p: rechercher_tarif_criteres(p,**params)

@@ -1,9 +1,11 @@
 """Revue administrative en lecture seule ; aucun chemin fourni par HTTP."""
 import hashlib
+import re
 from pathlib import Path
 from typing import Literal
+from urllib.parse import parse_qsl
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from fastapi.responses import JSONResponse, Response
 
 from ..customs_reference.article_detail import (
@@ -47,6 +49,7 @@ from ..customs_reference.review_registry import (
 from ..customs_reference.search import ParamRechercheInvalide, rechercher_code, rechercher_tarif
 from ..customs_reference.source_catalog import inventorier_sources
 from ..customs_reference.source_pdf import copier_pdf_source
+from ..customs_reference.tariff_candidates import rechercher_pistes_tarifaires
 from ..customs_reference.tariff_criteria import rechercher_tarif_criteres
 from ..customs_reference.tariff_detail import ParamFicheTarifInvalide, consulter_code
 from ..customs_reference.tariff_measures import juxtaposer_tarif_mesures
@@ -206,6 +209,34 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
     def couverture(lot_id: str, utilisateur=Depends(autoriser)):
         return executer(utilisateur, "couverture", [lot_id], lambda e, p, registre:
                         diagnostiquer_couverture(p[0], e[0].type_lot))
+
+    @router.get("/lots/{lot_id}/tariff-candidates")
+    def pistes_tarif(lot_id: str, request: Request, designation: str | None = Query(None,max_length=256),
+                     matiere: str | None = Query(None,max_length=256), fonction: str | None = Query(None,max_length=256),
+                     usage: str | None = Query(None,max_length=256), caracteristiques: str | None = Query(None,max_length=256),
+                     code_prefix: str | None = Query(None,max_length=10),
+                     match_mode: Literal["sous_chaine", "mots_entiers"] = Query("sous_chaine"),
+                     limit: int = Query(20,ge=1,le=100), offset: int = Query(0,ge=0,le=1_000_000),
+                     utilisateur=Depends(autoriser)):
+        def chercher(e,p,registre):
+            if e[0].type_lot != "tarif":
+                raise HTTPException(422, {"code":"pistes_tarif_uniquement"},headers=NO_STORE)
+            autorises = {"designation","matiere","fonction","usage","caracteristiques",
+                         "code_prefix","match_mode","limit","offset"}
+            try:
+                brut = request.scope["query_string"].decode("ascii")
+                if re.search(r"%(?![0-9a-fA-F]{2})",brut):
+                    raise ValueError("Encodage incompatible")
+                paires = parse_qsl(brut,keep_blank_values=True,strict_parsing=True,
+                                   max_num_fields=9,encoding="utf-8",errors="strict")
+            except (ValueError,UnicodeError):
+                raise ParamRechercheInvalide("Requête explicite compatible requise") from None
+            if (any(c not in autorises for c,v in paires) or len({c for c,v in paires}) != len(paires)
+                    or any(re.fullmatch(r"[0-9]{1,7}",v) is None for c,v in paires if c in {"limit","offset"})):
+                raise ParamRechercheInvalide("Paramètres explicites uniques requis")
+            return rechercher_pistes_tarifaires(p[0],designation=designation,matiere=matiere,fonction=fonction,
+                usage=usage,caracteristiques=caracteristiques,code_prefix=code_prefix,limite=limit,decalage=offset,match_mode=match_mode)
+        return executer(utilisateur,"recherche_pistes_tarifaires",[lot_id],chercher)
 
     @router.get("/lots/{lot_id}/tariff-criteria")
     def criteres_tarif(lot_id: str, designation: str | None = Query(None,max_length=256),
