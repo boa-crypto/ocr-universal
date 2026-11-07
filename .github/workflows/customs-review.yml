@@ -31,7 +31,7 @@ jobs:
       - name: PDFium concurrent et duree de vie native (serveur isole)
         run: |
           mkdir -p "$RUNNER_TEMP/customs-review"
-          python -m pytest tests/test_pdf_ingest_lifecycle.py tests/test_pdf_ingest_concurrency.py tests/test_pdf_upload_concurrency.py -q --junitxml="$RUNNER_TEMP/customs-review/pdf-concurrency.xml"
+          python -m pytest tests/test_ingest.py tests/test_pdf_ingest_lifecycle.py tests/test_pdf_ingest_concurrency.py tests/test_pdf_upload_concurrency.py -q --junitxml="$RUNNER_TEMP/customs-review/pdf-concurrency.xml"
       - name: Rendu des modules servis et refus des faux succes (serveur isole)
         run: |
           mkdir -p "$RUNNER_TEMP/customs-review"
