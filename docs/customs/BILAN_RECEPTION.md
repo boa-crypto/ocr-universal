@@ -30,6 +30,14 @@ par défaut, localisation et pagination cohérentes. Correctif de retrait comple
 outils lors des refus 401/403/503. Sélection : 1 806 tests Python et 178 scénarios
 JSDOM réussis ; aucune qualification OCR ou sémantique ajoutée.
 
+## Complément lot 49
+
+[Diagnostic documentaire des critères](DIAGNOSTIC_CRITERES_TARIF.md) : compteurs
+par terme et critère ; distingue périmètre vide, absence de conjonction et page
+hors résultats. Sélection : 1 820 tests Python et 186 scénarios JSDOM réussis.
+Ne déduit aucun attribut technique manquant ou absence de droit. Recette complète
+et échecs OCR restent ceux du lot 45.
+
 ## Résultats vérifiés au lot 45
 
 | Recette | Résultat |

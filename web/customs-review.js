@@ -808,6 +808,16 @@
             });
           });
         }
+        if(!criteresTarif.disabled && rapport.type_recherche === "tarif_criteres_documentaires" && rapport.diagnostic_recherche){
+          var d=rapport.diagnostic_recherche, constats={aucune_ligne_dans_prefixe:"Aucune ligne dans le périmètre de ce lot après filtre éventuel de préfixe.",aucune_conjonction_sur_meme_ligne:"Aucune ligne ne réunit tous les termes de tous les critères.",page_hors_resultats:"Des correspondances existent, mais cette page est au-delà des résultats.",correspondances_documentaires:"Correspondances documentaires trouvées, non validées."};
+          if(d.perimetre === "lignes_du_lot_apres_filtre_prefixe_avant_pagination" && d.absence_de_droit_deduite === false && d.attributs_manquants_deduits === false &&
+             Array.isArray(rapport.resultats) && Object.prototype.hasOwnProperty.call(constats,d.constat) &&
+             d.constat === (!d.lignes_dans_prefixe ? "aucune_ligne_dans_prefixe" : !d.lignes_tous_criteres ? "aucune_conjonction_sur_meme_ligne" : !rapport.resultats.length ? "page_hors_resultats" : "correspondances_documentaires") && entier(d.lignes_dans_prefixe,0,Number.MAX_SAFE_INTEGER) &&
+             d.lignes_tous_criteres === rapport.total_correspondances && entier(d.lignes_tous_criteres,0,d.lignes_dans_prefixe)){
+            actions.append(element("p","Diagnostic documentaire — "+constats[d.constat]+" Aucun droit ni attribut produit déduit."));
+            nomsCriteres.forEach(function(c){var v=d.par_critere && d.par_critere[c];if(v && entier(v.lignes_tous_termes,0,d.lignes_dans_prefixe))actions.append(element("p",c+" : "+v.lignes_tous_termes+" ligne(s) contenant tous ses termes (sur "+d.lignes_dans_prefixe+" après préfixe)."));});
+          }
+        }
         if(!criteresTarif.disabled && rapport.type_recherche === "tarif_criteres_documentaires" && rapport.filtres && rapport.filtres.criteres &&
            (rapport.filtres.match_mode===undefined || ["sous_chaine","mots_entiers"].includes(rapport.filtres.match_mode)) &&
            Object.keys(rapport.filtres.criteres).length === nomsCriteres.length && nomsCriteres.every(function(nom){var v=rapport.filtres.criteres[nom];return v===null || (typeof v === "string" && v.trim() && Array.from(v).length<=256);}) &&

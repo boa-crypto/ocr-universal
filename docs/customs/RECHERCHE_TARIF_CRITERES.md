@@ -77,3 +77,9 @@ et cache v67. Contrat de sélection ci-dessus inchangé ; aucune validation ajou
 [Mode mots entiers normalisés](MODES_CORRESPONDANCE_TARIF.md) optionnel :
 `match_mode=mots_entiers` / CLI `--match-mode mots_entiers`. Défaut sous-chaînes
 conservé. Même mode pour preuves, positions et pagination ; cache v68.
+
+## Complément lot 49
+
+[Diagnostic documentaire des critères](DIAGNOSTIC_CRITERES_TARIF.md) : compteurs
+par terme/critère avant pagination, absence de conjonction distinguée du périmètre
+vide et de la page hors résultats. Pas cause métier ou attribut produit déduit.

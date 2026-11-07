@@ -32,13 +32,22 @@ def rechercher_tarif_criteres(repertoire: Path, *, designation: str | None = Non
         raise ParamRechercheInvalide("Au moins un critère ou un préfixe explicite requis")
     lot,rapport = charger_lot(repertoire)
     resultats,total = [],0
+    lignes_prefixe = 0
+    par_critere = {c:{"lignes_tous_termes":0,"lignes_par_terme":dict.fromkeys(mots,0)} for c,mots in termes.items()}
     for ligne in sorted(lot.lignes,key=lambda valeur:valeur.code_tarifaire_10):
         if code_prefix is not None and not ligne.code_tarifaire_10.startswith(code_prefix):
             continue
+        lignes_prefixe += 1
         champs = {cle:_normaliser(getattr(ligne,cle)) for cle in ("designation_officielle_fr","designation_officielle_ar")
                   if getattr(ligne,cle) is not None}
         preuves = {critere:{t:sorted(c for c,v in champs.items() if indice_terme(v,t,match_mode) >= 0) for t in mots}
                    for critere,mots in termes.items()}
+        for critere,mots in preuves.items():
+            for terme,noms in mots.items():
+                if noms:
+                    par_critere[critere]["lignes_par_terme"][terme] += 1
+            if all(mots.values()):
+                par_critere[critere]["lignes_tous_termes"] += 1
         if not all(noms for critere in preuves.values() for noms in critere.values()):
             continue
         if decalage <= total < decalage+limite:
@@ -52,10 +61,20 @@ def rechercher_tarif_criteres(repertoire: Path, *, designation: str | None = Non
                termes_normalises_par_critere=termes,attributs_techniques_certifies=False,
                classement_ia_effectue=False,taux_calcules=False,
                occurrences_denombrees=False,maximum_extraits_par_ligne=MAX_EXTRAITS_TARIF,
-               politique_localisation="premiere_occurrence_par_critere_terme_et_libelle")
+               politique_localisation="premiere_occurrence_par_critere_terme_et_libelle",
+               diagnostic_recherche={
+                   "perimetre":"lignes_du_lot_apres_filtre_prefixe_avant_pagination",
+                   "lignes_dans_prefixe":lignes_prefixe,"par_critere":par_critere,
+                   "criteres_sans_ligne_complete":[c for c,v in par_critere.items() if not v["lignes_tous_termes"]],
+                   "lignes_tous_criteres":total,
+                   "constat":("aucune_ligne_dans_prefixe" if not lignes_prefixe else
+                              "aucune_conjonction_sur_meme_ligne" if not total else
+                              "page_hors_resultats" if not resultats else "correspondances_documentaires"),
+                   "absence_de_droit_deduite":False,"attributs_manquants_deduits":False})
     if match_mode == "mots_entiers":
         rep["avertissements"] = [a.replace("Sous-chaînes littérales de tous les termes", "Mots entiers normalisés de tous les termes") for a in rep["avertissements"]]
     rep["avertissements"].extend([
+        "Diagnostic : nombres de lignes dans ce lot et ces filtres, pas occurrences, causes métier ou absence de droit.",
         "Positions dans les libellés reçus, pas preuve PDF ; première occurrence seulement, extraits limités à 16 par ligne.",
         "Matière, fonction, usage et caractéristiques sont des étiquettes de requête, pas des attributs produits certifiés.",
         "Chaque terme doit apparaître dans au moins un libellé FR/AR de la ligne ; les critères sont tous requis.",
