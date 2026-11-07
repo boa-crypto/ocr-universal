@@ -3022,12 +3022,21 @@ def document_types() -> dict:
 
 @app.post("/api/jobs/{job_id}/classify")
 def classify_job(job_id: str, request: Request) -> dict:
-    """Classe un document traité et consigne le résultat."""
+    """Classe un document traité sans écraser une décision manuelle."""
+    _exige(OPERATEUR)(request)
     _exige_job(request, job_id)
+    if store.get(job_id) is None:
+        raise HTTPException(404, "job introuvable")
     result = store.load_result(job_id)
     if result is None:
         raise HTTPException(404, "résultat introuvable : traitez d'abord le document")
+    precedente = result.get("classification")
+    if precedente is not None and (not isinstance(precedente, dict)
+            or precedente.get("manual", False) is not False):
+        raise HTTPException(409, "classification manuelle ou non interprétable : reclassement automatique refusé")
     res = _classifier.classify(_texte_resultat(result))
+    result["classification"] = res.as_dict()
+    store.save_result(job_id, result)
     consigne_classification(cfg.log_dir, job_id, res)
     return {"job_id": job_id, "classification": res.as_dict(),
             "profile_suggere": _classifier.profil_pour(res.category)}
