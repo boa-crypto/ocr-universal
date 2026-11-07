@@ -133,5 +133,5 @@ def test_failed_geometry_reaches_run_and_review_without_partial_words(recognize,
     report = build_quality_report(DocumentResult(pages=[result]))
     assert report.mean_global_confidence == 0
     assert any(anomaly.code == "OCR_FAILED" and anomaly.page_num == 1 for anomaly in report.anomalies)
-    # La liste existante ne comprend pas les pages sans mots/texte : pas corrigé ici.
-    assert report.pages_low_confidence == []
+    # Lot 70 : une page échouée sans mots/texte est aussi recensée pour revue.
+    assert report.pages_low_confidence == [1]

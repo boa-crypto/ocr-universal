@@ -58,9 +58,16 @@ def build_quality_report(result: DocumentResult,
                 low_pages.append(p.page_num)
         elif p.blank:
             continue
-        elif p.text:  # texte numérique sans mots OCR
+        elif p.text.strip():  # texte numérique sans mots OCR (politique historique)
             engine_confs.append(0.95)
             global_confs.append(0.95)
+        else:
+            # Page non déclarée vide sans sortie exploitable : ne pas masquer
+            # cet échec dans la moyenne d'un document mixte. Zéro conservateur,
+            # pas score mesuré. Revue requise même si le seuil vaut zéro.
+            engine_confs.append(0.0)
+            global_confs.append(0.0)
+            low_pages.append(p.page_num)
 
     low_fields = [k for k, v in result.fields.items()
                   if v.confidence and v.confidence < review_threshold
