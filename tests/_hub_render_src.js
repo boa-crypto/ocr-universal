@@ -1,8 +1,9 @@
 
-const fs = require("fs");
-const html = fs.readFileSync("/home/user/ocr-universal/web/index.html", "utf8");
-const blocks = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]);
-const hub = blocks[blocks.length - 1];
+const {loadServedModules} = require("./served_modules");
+const PORT = process.env.PORT || "8000";
+(async function servedHarness() {
+const {html, sources} = await loadServedModules(PORT, ["/connectors.js"]);
+const hub = sources["/connectors.js"];
 
 function mkEl(tag) {
   return {
@@ -63,7 +64,7 @@ global.window = { addEventListener(){}, location: { hostname: "localhost" } };
 global.localStorage = { getItem: () => null, setItem(){}, removeItem(){} };
 const _fetch = globalThis.fetch.bind(globalThis);
 global.fetch = async (path, opts) => {
-  const r = await _fetch("http://127.0.0.1:8000" + path, opts);
+  const r = await _fetch("http://127.0.0.1:" + PORT + path, opts);
   const t = await r.text();
   return { ok: r.ok, status: r.status, text: async () => t,
            json: async () => JSON.parse(t) };
@@ -87,7 +88,7 @@ global.Event = class { constructor(t){ this.type=t; } };
 
   // ── 12 sous-menus ──
   console.log("=== rendu des 12 sous-menus (JS reel, API reelle) ===");
-  CnxHub.loadAll();
+  await CnxHub.loadAll();
   let ko = 0;
   const SECTIONS = ["overview","catalog","active","add","config","mapping",
                     "forms","flow","history","errors","security","audit"];
@@ -134,3 +135,5 @@ global.Event = class { constructor(t){ this.type=t; } };
   console.log("\n" + ((ko || ko2) ? "ECHEC" : "TOUS LES CONTROLES PASSENT"));
   process.exit((ko || ko2) ? 1 : 0);
 })();
+
+})().catch(error => { console.error(error); process.exitCode = 2; });

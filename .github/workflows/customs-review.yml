@@ -28,6 +28,10 @@ jobs:
         run: |
           python -m pip install -e ".[dev]"
           npm ci
+      - name: Rendu des modules servis et refus des faux succes (serveur isole)
+        run: |
+          mkdir -p "$RUNNER_TEMP/customs-review"
+          python -m pytest tests/test_ui_render_contract.py tests/test_ui_dossier.py -q --junitxml="$RUNNER_TEMP/customs-review/ui-served.xml"
       - name: Recette ciblee avec donnees temporaires
         run: python scripts/customs_review_recipe.py --artifacts "$RUNNER_TEMP/customs-review"
       - name: Journaux, JUnit et bilan cible (meme en echec)

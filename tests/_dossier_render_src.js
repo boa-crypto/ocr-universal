@@ -3,7 +3,7 @@
  * Pourquoi ce fichier existe. Aucun navigateur headless n'est disponible ici :
  * le rendu visuel, le clavier et les lecteurs d'écran ne peuvent pas être
  * contrôlés. Ce harnais fait le reste — il charge le module *servi* (extrait de
- * web/index.html, pas de web/dossier.js, pour tester ce qui est réellement
+ * la page et ses modules externes par HTTP, pour tester ce qui est réellement
  * livré), le pose sur un DOM simulé, et le fait tourner contre l'API réelle.
  *
  * Pièges déjà rencontrés, à ne pas re-découvrir :
@@ -20,11 +20,11 @@
  */
 "use strict";
 
-const fs = require("fs");
+const {loadServedModules} = require("./served_modules");
 
 const PORT = process.argv[2] || "8123";
 const BASE = "http://127.0.0.1:" + PORT;
-const INDEX = "/home/user/ocr-universal/web/index.html";
+
 
 let echecs = 0, passes = 0;
 function ok(cond, msg, detail) {
@@ -34,28 +34,13 @@ function ok(cond, msg, detail) {
 
 /* ─────────────────────────── extraction du module servi ─────────────────────────── */
 
-const html = fs.readFileSync(INDEX, "utf8");
-const i = html.indexOf("/* ═══ DOSSIER:BEGIN");
-const j = html.indexOf("/* ═══ DOSSIER:END");
-if (i === -1 || j === -1) {
-  console.error("région DOSSIER introuvable dans web/index.html");
-  process.exit(2);
-}
-// on retire l'en-tête de commentaire pour ne garder que le code
-const codeModule = html.slice(i, j)
-  .replace(/^\/\* ═══ DOSSIER:BEGIN[\s\S]*?\*\/\s*/, "");
-const iT = html.indexOf("/* ═══ TRACABILITE:BEGIN");
-const jT = html.indexOf("/* ═══ TRACABILITE:END");
-const codeTracabilite = (iT === -1 || jT === -1) ? ""
-  : html.slice(iT, jT).replace(/^\/\* ═══ TRACABILITE:BEGIN[\s\S]*?\*\/\s*/, "");
-const iX = html.indexOf("/* ═══ TRANSMISSION:BEGIN");
-const jX = html.indexOf("/* ═══ TRANSMISSION:END");
-const codeTransmission = (iX === -1 || jX === -1) ? ""
-  : html.slice(iX, jX).replace(/^\/\* ═══ TRANSMISSION:BEGIN[\s\S]*?\*\/\s*/, "");
-const iF = html.indexOf("/* ═══ FORMULAIRE:BEGIN");
-const jF = html.indexOf("/* ═══ FORMULAIRE:END");
-const codeFormulaire = (iF === -1 || jF === -1) ? ""
-  : html.slice(iF, jF).replace(/^\/\* ═══ FORMULAIRE:BEGIN[\s\S]*?\*\/\s*/, "");
+(async function servedHarness() {
+const {html, sources} = await loadServedModules(PORT,
+  ["/dossier.js", "/tracabilite.js", "/transmission.js", "/formulaire.js"]);
+const codeModule = sources["/dossier.js"];
+const codeTracabilite = sources["/tracabilite.js"];
+const codeTransmission = sources["/transmission.js"];
+const codeFormulaire = sources["/formulaire.js"];
 
 /* ─────────────────────────── DOM simulé ─────────────────────────── */
 
@@ -515,3 +500,5 @@ if (!DossierUI) {
   console.error("erreur fatale du harnais :", e);
   process.exit(2);
 });
+
+})().catch(error => { console.error(error); process.exitCode = 2; });

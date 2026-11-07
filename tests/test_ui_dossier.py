@@ -1,11 +1,9 @@
 """L'interface du parcours documentaire doit rendre du contenu réel.
 
-**Pourquoi ce test existe.** Aucun navigateur headless n'est disponible ici : le
-rendu visuel, le clavier et les lecteurs d'écran ne peuvent pas être contrôlés.
-Ce test fait ce qui reste possible — il exécute le module *servi* (extrait de
-`web/index.html`, pas de `web/dossier.js`, pour tester ce qui est réellement
-livré) sur un DOM simulé branché sur l'API réelle, et vérifie qu'il produit des
-éléments et des données, pas seulement du texte.
+Le contrôle statique est indépendant du serveur. Le rendu charge par HTTP la
+page et les modules externes qu'elle référence, sur un serveur éphémère isolé.
+Deux PDF synthétiques sont réellement déposés et traités en lecture native,
+sans exiger Tesseract/Indra ni modifier le magasin de l'aperçu.
 
 Le rendu visuel, le clavier et l'accessibilité restent **non contrôlés** ici :
 c'est dit dans le rapport de phase, pas masqué.
@@ -15,10 +13,11 @@ from __future__ import annotations
 import os
 import shutil
 import subprocess
-import sys
 from pathlib import Path
 
 import pytest
+
+pytest_plugins = ["ui_render_server"]
 
 RACINE = Path(__file__).resolve().parent.parent
 CONTROLE = RACINE / "tests" / "ui_stub_check.js"
@@ -39,29 +38,28 @@ def _api_vivante(port: str) -> bool:
 @pytest.mark.skipif(not shutil.which("node"), reason="node absent de l'environnement")
 def test_controle_statique_de_l_interface() -> None:
     """Syntaxe, DOM simulé, identifiants, taille, aucune ressource externe."""
-    r = subprocess.run([sys.executable and "node", str(CONTROLE)],
+    r = subprocess.run(["node", str(CONTROLE), "--static"],
                        capture_output=True, text=True, cwd=RACINE, timeout=300,
                        encoding="utf-8", errors="replace")
     sortie = r.stdout + r.stderr
     assert r.returncode == 0, sortie
-    # les contrôles de rendu peuvent être ignorés faute de serveur ; les
-    # contrôles statiques, eux, doivent passer
+    # Ce mode ne sonde pas de serveur et n’exécute aucun rendu.
     assert "Tous les contrôles statiques de l'interface passent." in sortie
 
 
 @pytest.mark.skipif(not shutil.which("node"), reason="node absent de l'environnement")
-def test_rendu_du_parcours_documentaire() -> None:
+def test_rendu_du_parcours_documentaire(ui_render_port) -> None:
     """Le module Dossier rend ses blocs et ses constats, API réelle.
 
-    Sauté si aucun serveur ne tourne : le contrôle statique reste exécuté, et
-    le rendu est vérifié dès qu'un serveur est disponible.
+    Un démarrage/chargement/rendu défaillant est un échec, pas un test ignoré.
     """
-    port = os.environ.get("UNIOCR_TEST_PORT", "8123")
-    if not _api_vivante(port):
-        pytest.skip(f"aucun serveur sur le port {port}")
-    r = subprocess.run([sys.executable and "node", str(CONTROLE)],
+    port = ui_render_port
+    assert _api_vivante(port)
+    r = subprocess.run(["node", str(CONTROLE), "--require-render"],
                        capture_output=True, text=True, cwd=RACINE, timeout=600,
                        env={**os.environ, "PORT": port})
     sortie = r.stdout + r.stderr
+    assert r.returncode == 0, sortie
+    assert "Connecteur Hub : 21 controles de rendu executes" in sortie, sortie
     assert "Parcours documentaire : 55 controles de rendu executes" in sortie, sortie
     assert "[FAIL]" not in sortie, sortie
