@@ -41,7 +41,7 @@ Cela ne constitue pas un sandbox OS ni une garantie de l'absence de toute écrit
 
 ## GitHub Actions
 
-`.github/workflows/customs-review.yml` utilise Python 3.11, Node 20, installation
+`.github/workflows/customs-review.yml` utilise Ubuntu 24.04, Python 3.11, Node 24, installation
 Python stricte et `npm ci`, permissions `contents:read`, limite de 15 minutes et
 upload des journaux/JUnit/bilan même si le lanceur échoue. Il se déclenche sur PR,
 déclenchement manuel, et push main/master/branche Arena actuelle.
@@ -51,8 +51,24 @@ OCR complet ne devient pas vert parce que ce job ciblé réussit. Le nouveau job
 n'installe ou ne certifie pas Tesseract/Indra, ne valide pas les benchmarks, Docker,
 les navigateurs réels ou la réglementation.
 
-**Validation locale effectuée ; exécution distante non attestée au lot 57.**
-Après le premier push, `gh run list` ne retourne aucun run de cette branche. La
-lecture des permissions Actions renvoie HTTP 403 « Resource not accessible by
-integration ». Cause de l'absence de run indéterminée ; aucune permission du dépôt
-n'a été modifiée et aucune réussite Actions n'est revendiquée.
+**Validation locale et distante effectuées.** Le premier run
+[42370343103](https://github.com/boa-crypto/ocr-universal/actions/runs/42370343103)
+a réussi après un délai d'apparition. Son avertissement Node 20 a conduit à
+actualiser les actions vers les releases publiées vérifiées utilisant Node 24 :
+checkout v7.0.1, setup-python v7.1.0, setup-node v7.1.0, upload-artifact v7.0.2.
+Le runner a aussi été fixé à Ubuntu 24.04 pour ne pas subir une migration implicite.
+
+Le run final
+[42370535241](https://github.com/boa-crypto/ocr-universal/actions/runs/42370535241)
+du commit `f4eb0b79` est **terminé avec succès** : installation stricte, recette et
+upload des artefacts réussis. Le statut a été vérifié avec `gh run watch --exit-status`
+puis `gh run view`, pas déduit de la seule création du workflow. Les nouvelles
+versions n'ont pas produit l'annotation Node 20 observée au premier run.
+
+L'API administrative de lecture des permissions Actions reste inaccessible à
+l'intégration (HTTP 403), mais cela n'empêche pas les runs observés et réussis.
+Aucune permission du dépôt n'a été modifiée. Le téléchargement CLI des artefacts
+du premier run a échoué sur sa redirection vers un hôte de stockage hors de
+l'allowlist réseau du sandbox ; leur upload est attesté par le job, **pas une
+relecture locale de leur contenu**. Les métriques chiffrées du rapport proviennent
+de l'exécution locale ; les journaux/JUnit locaux sont conservés hors Git.

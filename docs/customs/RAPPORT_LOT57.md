@@ -28,12 +28,24 @@ succès annoncé à partir d'un JUnit absent, malformé, vide ou avec tests igno
   `/home/user/recettes-unocr/lot57` : JUnit, trois journaux, bilan du lanceur.
   Leurs chemins d'exécution d'origine peuvent mentionner `/tmp`.
 
-## CI distante : non attestée
+## CI distante ciblée : réussite observée
 
-Code poussé au commit `505481a8`. Aucun run Actions observé sur la branche après
-ce push ; endpoint de lecture des permissions Actions inaccessible à l'intégration
-(HTTP 403). Aucune cause affirmée, aucune permission modifiée, aucun succès distant
-inventé. Le workflow est livré mais reste à qualifier sur un runner GitHub réel.
+Lanceur/test au commit `505481a8`. Le run initial a réussi après un délai
+d'apparition ; ses annotations de dépréciation Node 20 ont été traitées. Workflow
+final au commit **`f4eb0b79`** : **Ubuntu 24.04, Node 24**, actions publiées à runtime
+Node 24 vérifiées (checkout v7.0.1, setup-python/node v7.1.0, upload-artifact v7.0.2).
+
+Run final **[42370535241](https://github.com/boa-crypto/ocr-universal/actions/runs/42370535241)** :
+**success**, job de **1 min 9 s**, installation stricte, recette et upload des
+artefacts réussis ; `gh run watch --exit-status` code 0, état confirmé par API.
+Pas annotation Node 20 sur ce run final. Les chiffres détaillés ci-dessus sont
+mesurés localement, pas annoncés comme extraits du JUnit distant.
+
+Le 403 initial concernait la lecture des permissions administratives Actions,
+pas un refus d'exécuter le workflow. Aucune permission du dépôt modifiée. La
+redirection de téléchargement des artefacts du premier run est bloquée par le
+réseau du sandbox ; aucune relecture locale de ces artefacts distants revendiquée.
+La copie locale du statut final est conservée avec les artefacts locaux.
 
 **Suite complète non relancée pour le lot 57.** Dernière complète exécutée : lot 56,
 **3 057 réussis, 18 échecs, 11 ignorés, 211,56 s**. Les 18 échecs OCR restent ouverts.

@@ -12,8 +12,8 @@ une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 [Lanceur commun local/CI](LANCEUR_RECETTE_CIBLEE.md) : Ruff, sélection Python,
 JSDOM, journaux et JUnit séparés ; codes non masqués, aucun succès avec JUnit absent
 ou tests ignorés. **2 043 tests Python / 186 scénarios JSDOM réussis localement**.
-**Workflow distant livré, exécution GitHub Actions non attestée** : aucun run
-observé après premier push, lecture des permissions HTTP 403. Suite complète non
+**Workflow ciblé réussi sur GitHub Actions**, run [42370535241](https://github.com/boa-crypto/ocr-universal/actions/runs/42370535241),
+Ubuntu 24.04 / Node 24. Cela ne rend pas la CI générale verte. Suite complète non
 relancée : dernière complète du lot 56 ci-dessous, 18 échecs toujours ouverts.
 [Rapport](RAPPORT_LOT57.md), [recette ciblée actuelle](RECETTE_LOT57.json).
 

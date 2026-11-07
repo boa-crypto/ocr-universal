@@ -61,7 +61,7 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 54 | Rejeu des comparaisons à deux archives, identités/types/rôles explicitement ordonnés | Terminé | Pas transaction multi-dossiers, consolidation juridique ou fusion fiscale |
 | 55 | Références d’empreintes séparées pour rejeux simples/paires et nouvelle recette complète | Terminé | Pas authenticité des références, signature ou transaction ; 18 échecs OCR globaux |
 | 56 | Génération des fixtures pytest hors des fichiers suivis, recette complète sans restauration | Terminé | Pas sandbox ou déterminisme binaire ; 18 échecs OCR conservés |
-| 57 | Lanceur local/CI documentaire ciblé, journaux/JUnit et codes non masqués | Terminé localement | Workflow distant non attesté ; ne remplace pas la suite OCR complète |
+| 57 | Lanceur local/CI documentaire ciblé, journaux/JUnit et codes non masqués | Terminé, local et CI ciblée | Ne remplace pas la suite OCR complète ; 18 échecs OCR ouverts |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
 `RAPPORT_LOT57.md`. Les limites historiques des rapports précédents sont à lire
@@ -101,5 +101,5 @@ Réception technique : [bilan des dix phases](BILAN_RECEPTION.md),
 verte. Recettes historiques : [45](RECETTE_FINALE.json), [50](RECETTE_LOT50.json), [55](RECETTE_LOT55.json).
 
 Lot 57 : [lanceur local/CI](LANCEUR_RECETTE_CIBLEE.md) et
-[recette ciblée](RECETTE_LOT57.json). Réussite locale, pas réussite GitHub Actions
-attestée ; suite complète non relancée pour ce lot.
+[recette ciblée](RECETTE_LOT57.json). Réussite locale et job GitHub Actions ciblé
+attestés (run 42370535241) ; suite complète non relancée pour ce lot.

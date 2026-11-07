@@ -126,11 +126,22 @@
   "echecs_ocr_derniere_complete_non_resolus": 18,
   "github_actions": {
     "workflow_livre": true,
-    "reussite_distante_attestee": false,
-    "run_observe_apres_premier_push": false,
+    "reussite_distante_attestee": true,
+    "run_observe_apres_premier_push": true,
     "lecture_permissions_http": 403,
     "permissions_du_depot_modifiees": false,
-    "cause_absence_run": "indeterminee"
+    "cause_absence_run_initiale": "delai_apparition_puis_succes_observe",
+    "revision_workflow_testee": "f4eb0b79",
+    "run_id": 42370535241,
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42370535241",
+    "statut": "completed",
+    "conclusion": "success",
+    "duree_job_secondes": 69,
+    "node": "24",
+    "runner": "ubuntu-24.04",
+    "artefacts_distants_retelecharges": false,
+    "metriques_detaillees_du_rapport": "execution_locale",
+    "annotation_node20_sur_run_final": false
   },
   "limites": [
     "Pas une exécution de la suite OCR complète.",
