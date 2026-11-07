@@ -3,6 +3,8 @@
 import argparse
 import json
 import os
+import re
+import stat
 import subprocess
 import sys
 import tempfile
@@ -42,19 +44,97 @@ def executer(nom, commande, destination, environnement):
     return {"nom": nom, "commande": commande, "code_sortie": code, "journal": journal.name}
 
 
+MAX_JUNIT = 32 * 1024 * 1024
+COMPTEURS_JUNIT = ("tests", "failures", "errors", "skipped")
+
+
+def _entier_junit(valeur):
+    if not isinstance(valeur,str) or re.fullmatch(r"[0-9]{1,9}",valeur) is None:
+        raise ValueError("Compteur décimal ASCII requis")
+    return int(valeur)
+
+
+def _racine_junit(fichier):
+    if fichier.is_symlink():
+        raise ValueError("Lien symbolique refusé")
+    flags = os.O_RDONLY | getattr(os,"O_NOFOLLOW",0) | getattr(os,"O_NONBLOCK",0)
+    with os.fdopen(os.open(fichier,flags),"rb") as entree:
+        infos = os.fstat(entree.fileno())
+        if not stat.S_ISREG(infos.st_mode) or infos.st_size > MAX_JUNIT:
+            raise ValueError("JUnit non régulier ou trop volumineux")
+        contenu = entree.read(MAX_JUNIT+1)
+    contenu.decode("utf-8")
+    if not contenu or len(contenu)>MAX_JUNIT or b"\x00" in contenu or b"<!DOCTYPE" in contenu or b"<!ENTITY" in contenu:
+        raise ValueError("JUnit vide, trop volumineux ou DTD interdit")
+    # Contrôle de profondeur pendant l'analyse, avant de construire une arborescence
+    # arbitrairement profonde. Pas validation XSD ni bac à sable OS.
+    analyseur = ET.XMLPullParser(events=("start","end"))
+    racine, profondeur = None,0
+    for debut in range(0,len(contenu),4096):
+        analyseur.feed(contenu[debut:debut+4096])
+        for evenement,element in analyseur.read_events():
+            if evenement == "start":
+                profondeur += 1
+                if profondeur > 16:
+                    raise ValueError("JUnit trop profond")
+                if racine is None:
+                    racine = element
+            else:
+                profondeur -= 1
+    analyseur.close()
+    return racine
+
+
+def _metadata_junit(element):
+    if element.tag == "properties":
+        if any(p.tag != "property" or len(p) for p in element):
+            raise ValueError("Propriétés JUnit incompatibles")
+    elif len(element):
+        raise ValueError("Contenu imbriqué incompatible")
+
+
 def bilan_junit(fichier):
     try:
-        racine = ET.parse(fichier).getroot()
-        suites = [racine] if racine.tag == "testsuite" else list(racine.iter("testsuite"))
-        if not suites or any(list(s.iter("testsuite"))[1:] for s in suites):
-            raise ValueError("Suites imbriquées non prises en charge")
-        comptes = {cle: sum(int(s.attrib[cle]) for s in suites)
-                   for cle in ("tests", "failures", "errors", "skipped")}
-        valide = comptes["tests"] > 0 and all(v >= 0 for v in comptes.values())
-        valide = valide and all(comptes[c] == 0 for c in ("failures", "errors", "skipped"))
-        return {"lisible": True, "selection_sans_echec_ni_ignore": valide, **comptes}
+        racine = _racine_junit(fichier)
+        if racine.tag not in {"testsuite","testsuites"}:
+            raise ValueError("Racine JUnit incompatible")
+        suites = [racine] if racine.tag == "testsuite" else list(racine)
+        if not suites or any(s.tag != "testsuite" for s in suites) or list(racine.iter("testsuite")) != suites:
+            raise ValueError("Suites absentes, imbriquées ou masquées")
+        comptes = dict.fromkeys(COMPTEURS_JUNIT,0)
+        for suite in suites:
+            declares = {c:_entier_junit(suite.attrib[c]) for c in COMPTEURS_JUNIT}
+            mesures = dict.fromkeys(COMPTEURS_JUNIT,0)
+            if any(e.tag not in {"testcase","properties","system-out","system-err"} for e in suite):
+                raise ValueError("Enfant de suite incompatible")
+            for element in suite:
+                if element.tag != "testcase":
+                    _metadata_junit(element)
+            cas = list(suite.findall("testcase"))
+            if list(suite.iter("testcase")) != cas:
+                raise ValueError("Cas imbriqués ou masqués")
+            mesures["tests"] = len(cas)
+            for cas_test in cas:
+                if any(e.tag not in {"failure","error","skipped","properties","system-out","system-err"} for e in cas_test):
+                    raise ValueError("Statut de cas incompatible")
+                for element in cas_test:
+                    _metadata_junit(element)
+                statuts = [e.tag for e in cas_test if e.tag in {"failure","error","skipped"}]
+                if len(statuts)>1:
+                    raise ValueError("Statuts de cas contradictoires")
+                if statuts:
+                    mesures[{"failure":"failures","error":"errors","skipped":"skipped"}[statuts[0]]] += 1
+            if declares != mesures:
+                raise ValueError("Compteurs de suite différents des cas réels")
+            for cle in comptes:
+                comptes[cle] += mesures[cle]
+        if racine.tag == "testsuites" and any(_entier_junit(racine.attrib[c]) != comptes[c] for c in COMPTEURS_JUNIT if c in racine.attrib):
+            raise ValueError("Compteurs globaux différents des suites")
+        valide = comptes["tests"]>0 and all(comptes[c]==0 for c in ("failures","errors","skipped"))
+        return {"lisible":True,"compteurs_coherents_avec_cas":True,
+                "selection_sans_echec_ni_ignore":valide,**comptes}
     except (OSError, ET.ParseError, KeyError, ValueError):
-        return {"lisible": False, "selection_sans_echec_ni_ignore": False}
+        return {"lisible":False,"compteurs_coherents_avec_cas":False,"selection_sans_echec_ni_ignore":False}
 
 
 def recette(destination):
