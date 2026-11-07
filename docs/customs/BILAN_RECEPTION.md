@@ -7,7 +7,24 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 80
+## État actuel — lot 81
+
+[Révision des corrections/annulations](REVISION_CORRECTIONS_CHAMPS.md) : PATCH
+champ et POST undo refusent une sauvegarde périmée avec 409, sans écrasement
+ou audit de succès. Gardes et effets métier hors conflit conservés.
+**20 nouveaux cas / 505 ciblés réussis** ; témoin anciens handlers avec store80 :
+10 échecs attendus, 10 réussis. Deux entrelacements HTTP vérifiés.
+Documentaire **2 160 Python / 212 JSDOM historiques**. Complète : **3 901 réussis,
+2 échecs Indra, 1 ignoré, 1 avertissement(s), 368,47 s**.
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42418513586),
+pas suite OCR complète en CI. **26/27 empreintes conformes**, même écart partagé ;
+données/journaux préservés hors commit. Pas multiprocessus, transaction globale,
+refonte multi-niveau undo ou protection de tous les autres écrivains.
+**Aperçu backend76 maintenu**, code77–81 poussé/testé mais non chargé pour préserver
+les traitements ; RBAC non configuré. [Rapport](RAPPORT_LOT81.md),
+[recette actuelle](RECETTE_LOT81.json).
+
+## Complément historique — lot 80
 
 [Révision des classifications](REVISION_CLASSIFICATIONS.md) : snapshot JSON/SHA-256,
 comparaison + sauvegarde sous verrou de résultats commun au processus ; conflit
