@@ -9,9 +9,10 @@ from .review_export import ExportRefuse, _lire_export, analyser_export
 from .tariff_criteria import CRITERES, rechercher_tarif_criteres
 
 
-def _parametres_export(requete, lot_id, *, route="tariff-criteria", autorises=None, numeriques=None):
+def _parametres_export(requete, lot_id, *, route="tariff-criteria", autorises=None, numeriques=None, chemin_attendu=None):
     url = urlsplit(requete)
-    if url.scheme or url.netloc or url.fragment or url.path != f"/api/v1/customs-review/lots/{lot_id}/{route}":
+    attendu = chemin_attendu or f"/api/v1/customs-review/lots/{lot_id}/{route}"
+    if url.scheme or url.netloc or url.fragment or url.path != attendu:
         raise ExportRefuse("Route et identité de lot explicites requises")
     if re.search(r"%(?![0-9a-fA-F]{2})", url.query):
         raise ExportRefuse("Encodage de requête incompatible")
@@ -60,9 +61,20 @@ def _verifier_rejeu(chemin_export: Path, repertoire: Path, lot_id: str, preparer
         reproduit = operation(repertoire)
     except (OSError, ValueError, KeyError, TypeError, RecursionError):
         raise ExportRefuse("Archive fournie ou paramètres de recherche incompatibles") from None
-    manifeste = reproduit["archive"]["manifest_sha256"]
-    manifeste_identique = controle["manifestes_declares"] == [manifeste]
-    original = _canonique(objet["resultat"])
+    return _constat_rejeu(controle,objet["resultat"],reproduit)
+
+
+def _constat_rejeu(controle,exporte,reproduit):
+    if "archive" in reproduit:
+        manifeste = reproduit["archive"]["manifest_sha256"]
+        manifestes = [manifeste]
+        provenance = {"manifest_sha256_archive_fournie":manifeste,"archive_fournie_coherente_au_rejeu":True}
+    else:
+        par_role = {c:reproduit["archives"][c]["manifest_sha256"] for c in ("avant","apres")}
+        manifestes = list(par_role.values())
+        provenance = {"manifestes_archives_fournies":par_role,"archives_fournies_coherentes_au_rejeu":True}
+    manifeste_identique = controle["manifestes_declares"] == manifestes
+    original = _canonique(exporte)
     rejeu = _canonique(reproduit)
     identique = original == rejeu
     return {
@@ -70,8 +82,7 @@ def _verifier_rejeu(chemin_export: Path, repertoire: Path, lot_id: str, preparer
         "statut":"rejeu_identique" if identique else "rejeu_different",
         "lecture_seule":True,"publication_active":False,"validation_juridique":"non_validee",
         "sha256_fichier_export":controle["sha256_fichier"],
-        "manifest_sha256_archive_fournie":manifeste,"manifest_export_correspond":manifeste_identique,
-        "archive_fournie_coherente_au_rejeu":True,"rapport_identique":identique,
+        **provenance,"manifest_export_correspond":manifeste_identique,"rapport_identique":identique,
         "sha256_resultat_export_canonique":hashlib.sha256(original).hexdigest(),
         "sha256_resultat_rejoue_canonique":hashlib.sha256(rejeu).hexdigest(),
         "authenticite_verifiee":False,"identite_registre_verifiee":False,"audit_serveur_verifie":False,

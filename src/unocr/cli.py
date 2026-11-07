@@ -406,6 +406,14 @@ def main(argv=None) -> int:
     fp.add_argument("--offset", type=int, default=0)
     fp.set_defaults(func=cmd_customs_fiscal_pdf_read)
 
+    vp = sub.add_parser("customs-review-export-replay-pair", help="rejouer une comparaison contre deux archives explicitement ordonnées")
+    vp.add_argument("file")
+    for cote in ("before","after"):
+        vp.add_argument("--"+cote+"-lot", required=True)
+        vp.add_argument("--"+cote+"-id", required=True)
+        vp.add_argument("--"+cote+"-type", required=True, choices=("code","tarif","mesures"))
+    vp.set_defaults(func=cmd_customs_review_export_replay_pair)
+
     vr = sub.add_parser("customs-review-export-replay", help="rejouer un export documentaire pris en charge contre une archive explicite, sans authentification")
     vr.add_argument("file")
     vr.add_argument("--lot", required=True)
@@ -472,6 +480,20 @@ def cmd_customs_code_search(args) -> int:
 
     return _afficher_lecture_douaniere(lambda chemin: rechercher_code(chemin, args.query, args.limit, args.offset,
                                        args.article, args.source, args.nature), args.lot)
+
+
+def cmd_customs_review_export_replay_pair(args) -> int:
+    from .customs_reference.export_replay_pair import verifier_rejeu_paire
+
+    constats = []
+    def operation(fichier, avant, apres):
+        resultat = verifier_rejeu_paire(fichier,avant,apres,args.before_id,args.after_id,args.before_type,args.after_type)
+        constats.append(resultat)
+        return resultat
+    code = _afficher_lecture_douaniere(operation,args.file,args.before_lot,args.after_lot)
+    if code:
+        return code
+    return 0 if constats[0]["rapport_identique"] else 1
 
 
 def cmd_customs_review_export_replay(args) -> int:

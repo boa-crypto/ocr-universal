@@ -7,7 +7,16 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## Complément actuel — lot 53
+## Complément actuel — lot 54
+
+[Rejeu de comparaisons à deux archives](REJEU_DEUX_ARCHIVES.md), dossiers/IDs/types
+explicitement ordonnés, sans consolidation ou fusion fiscale. Sélection : **1 989
+tests Python et 186 scénarios JSDOM** réussis. Les quatre parcours UI/API ont
+produit **70 exports contrôlés structurellement et rejoués identiquement** (58
+simples, 12 comparaisons), pas un corpus national ou une conformité intégrale.
+Dernière suite complète : lot 50, 18 échecs OCR non résolus.
+
+## Complément — lot 53
 
 [Rejeu natif PDF sur opt-in local](REJEU_EXPORTS_PDF.md), désactivé par défaut,
 sans OCR ou droit juridique/fiscal déduit. Sélection : **1 958 tests Python**,

@@ -17,8 +17,10 @@ from tests.test_customs_fiscal_pdf import fichiers as fichiers_mesures_pdf
 from tests.test_customs_fiscal_xls import fichiers as fichiers_mesures_xls
 from tests.test_customs_fiscal_xlsx import fichiers as fichiers_mesures_xlsx
 from tests.test_customs_reference import snapshot
+from tests.test_customs_review import BASE
 from tests.test_customs_subdivisions import subdivisions
 from unocr.customs_reference.export_replay import verifier_rejeu_criteres, verifier_rejeu_export
+from unocr.customs_reference.export_replay_pair import verifier_rejeu_paire
 from unocr.customs_reference.fiscal_importer import preparer_mesures_autonomes
 from unocr.customs_reference.importer import preparer_tarif
 from unocr.customs_reference.legal_importer import preparer_code
@@ -127,11 +129,26 @@ def test_interface_revue_sur_api_reelle(revue,format_mesures):
         rejeux = 0
         rejeux_types = 0
         rejeux_pdf = 0
+        rejeux_paires = 0
         for texte in exports:
             constat = analyser_export(texte.encode("utf-8"))
             assert constat["statut"] == "structure_compatible"
             assert constat["authenticite_verifiee"] is False
             objet = json.loads(texte)
+            if objet["requete_relative"].split("?",1)[0] in {BASE+"/diff",BASE+"/article-diff",BASE+"/tariff-compare",BASE+"/tariff-measures"}:
+                from urllib.parse import parse_qs, urlsplit
+                u = urlsplit(objet["requete_relative"])
+                q = parse_qs(u.query)
+                noms = ("tarif","mesures") if u.path==BASE+"/tariff-measures" else ("avant","apres")
+                ia,ib = q[noms[0]][0],q[noms[1]][0]
+                correspondances = {"code_a":("code","code_pdf_ui"),"code_b":("code","code_a"),
+                    "tarif_a":("tarif","tarif_sub_ui"),"tarif_b":("tarif","tarif_b"),"mesures_a":("mesures","mesures_ui")}
+                ta,da = correspondances[ia]
+                tb,db = correspondances[ib]
+                fichier_paire = cfg.root / "export_paire_ui.json"
+                fichier_paire.write_text(texte,encoding="utf-8")
+                assert verifier_rejeu_paire(fichier_paire,racine/da,racine/db,ia,ib,ta,tb)["rapport_identique"] is True
+                rejeux_paires += 1
             morceaux = objet["requete_relative"].split("?",1)[0].split("/")
             route = "/".join(morceaux[6:])
             if len(morceaux)>6 and morceaux[4]=="lots" and (route in {"search","article","measure-search","tariff-criteria","sources","coverage","check","history","article-relations","article-diff","tree","code-tree","pdf","article-pdf-match","relation-pdf-match","fiscal-pdf","measure-pdf-match"} or route.startswith("tariff/")):
@@ -153,6 +170,8 @@ def test_interface_revue_sur_api_reelle(revue,format_mesures):
                 assert rejeu["rapport_identique"] is True
                 assert rejeu["authenticite_verifiee"] is False
                 rejeux += 1
+        assert rejeux_paires == 3
+        assert rejeux_paires+rejeux_types == len(exports)
         assert rejeux == 1
         assert rejeux_types == (16 if format_mesures == "pdf" else 14)
         assert rejeux_pdf == (5 if format_mesures == "pdf" else 3)

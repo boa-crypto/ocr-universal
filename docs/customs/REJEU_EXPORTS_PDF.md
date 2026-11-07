@@ -73,3 +73,9 @@ Copies PDF brutes (`pdf-source`) et comparaisons multi-archives toujours exclues
 du rejeu JSON. Interface, cache v69 et droits HTTP inchangés ; aucune nouvelle
 fonction de rejeu navigateur revendiquée. Les tests UI/API alimentent un contrôle
 local hors ligne sur archives temporaires NON OFFICIELLES.
+
+## Extension lot 54
+
+[Comparaisons à deux archives](REJEU_DEUX_ARCHIVES.md) prises en charge par une
+commande distincte à dossiers/IDs/types ordonnés. Cette commande ne lance pas de
+worker PDF ; la permission locale PDF décrite ci-dessus reste propre au rejeu simple.
