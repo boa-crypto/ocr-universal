@@ -1,0 +1,104 @@
+{
+  "type_rapport": "recette_lot65_technique_non_validation_reglementaire",
+  "date": "2026-11-07",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "revision_code": "c66551e255d0f8357d3d4c5f4e2966d3beeccb2e",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_originaux_officiels": 0,
+  "articles_codes_officiellement_valides": 0,
+  "nouveaux_tests_python": 59,
+  "tests_baidu": {
+    "reussis": 60,
+    "echecs": 0,
+    "ignores": 0,
+    "duree_secondes": 0.52,
+    "requêtes_fournisseur_reelles": 0,
+    "identifiants_factices_seulement": true,
+    "transport": "requests avec doubles HTTP",
+    "absence_de_secrets_dans_erreurs_retournees_et_logs_captures": true,
+    "absence_de_secrets_dans_toutes_traces_externes_non_garantie": true
+  },
+  "durcissement": {
+    "messages_erreur_locaux_constants": true,
+    "tls_verify": true,
+    "redirections": false,
+    "http_accepte": 200,
+    "reponse_max_octets": 4194304,
+    "jeton_max_caracteres": 8192,
+    "mots_max": 10000,
+    "connexion_timeout_secondes": 5,
+    "lecture_oauth_timeout_secondes": 10,
+    "lecture_ocr_timeout_secondes": 15,
+    "timeout_mural_garanti": false,
+    "parametres_oauth_query_toujours_presents": true,
+    "probabilite_conventionnelle_095_preexistante_non_qualifiee": true
+  },
+  "recette_documentaire_ciblee": {
+    "fichiers": 66,
+    "reussis": 2160,
+    "echecs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_secondes": 55.11,
+    "jsdom": 212,
+    "exports_existants": 74
+  },
+  "suite_complete": {
+    "tests": 3316,
+    "reussis": 3313,
+    "echecs": 2,
+    "ignores": 1,
+    "avertissements": 1,
+    "duree_console_secondes": 342.37,
+    "duree_junit_secondes": 342.284,
+    "code_sortie": 1,
+    "identifiants_echecs": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ],
+    "identiques_lot64": true,
+    "ignore": "tests.test_indra_ocr::test_indra_engine_recognize",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 3316,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 1
+    }
+  },
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "ecarts": {
+      "data/referentiels.json": {
+        "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+        "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d"
+      }
+    },
+    "requests": "2.34.2",
+    "urllib3": "2.8.0"
+  },
+  "donnees_partagees_modifiees_lot64_preservees_hors_commit": true,
+  "aucune_restauration_pour_forcer_sha_reference": true,
+  "ci": {
+    "run": 42399498261,
+    "statut": "success",
+    "revision": "c66551e255d0f8357d3d4c5f4e2966d3beeccb2e",
+    "etapes": "60 Baidu hors reseau + 24 ingestion/PDF + 8 UI + selection documentaire",
+    "ocr_complet_execute_en_ci": false,
+    "junit_distant_telecharge": false,
+    "premier_run_code_reussi": 42399333425
+  },
+  "artefacts_locaux": "/home/user/recettes-unocr/lot65",
+  "limites": [
+    "Aucun appel reel Baidu, pas compatibilite fournisseur attestée",
+    "Query OAuth sensible encore presente ; logs externes/debug/proxy non couverts",
+    "Disponibilite locale ne prouve ni autorisation ni consentement ni sante fournisseur",
+    "Plafonds reponse/entrees, pas sandbox ni timeout mural ni precision OCR validee",
+    "Indra toujours absent",
+    "26/27 empreintes historiques conformes ; referentiels modifies lors lot64 conserves"
+  ]
+}

@@ -7,7 +7,21 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 64
+## État actuel — lot 65
+
+[Transport Baidu et diagnostics privés](CONFIDENTIALITE_TRANSPORT_BAIDU.md) :
+**59 nouveaux tests**, 60/60 hors réseau réussis. Réponses bornées, TLS vérifié,
+redirections refusées, erreurs distantes/exceptions non réémises. **Secrets OAuth
+encore présents dans la query envoyée**, traces externes et connectivité réelle
+non qualifiées. Sélection documentaire **2 160 Python / 212 JSDOM**. Complète :
+**3 313 réussis, 2 échecs Indra, 1 ignoré Indra, 1 avertissement, 342,37 s**.
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42399498261),
+avec nouvelles étapes Baidu/PDF/UI, pas suite OCR complète en CI. **26/27 empreintes
+historiques conformes**, écart partagé du lot 64 et dossiers conservés hors commit.
+[Rapport](RAPPORT_LOT65.md), [recette actuelle](RECETTE_LOT65.json).
+Mission réglementaire inchangée, partielle et non recevable pour production fiscale.
+
+## Complément — lot 64
 
 [Concurrence PDFium et durée de vie native](CONCURRENCE_INGESTION_PDF.md) : crash
 natif reproduit en processus isolé, ingestion désormais sérialisée par processus,
