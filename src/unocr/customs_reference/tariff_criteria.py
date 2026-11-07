@@ -11,13 +11,9 @@ from .tariff_excerpt import MAX_EXTRAITS_TARIF, localiser_criteres
 CRITERES = ("designation", "matiere", "fonction", "usage", "caracteristiques")
 
 
-def rechercher_tarif_criteres(repertoire: Path, *, designation: str | None = None, matiere: str | None = None,
-                              fonction: str | None = None, usage: str | None = None,
-                              caracteristiques: str | None = None, code_prefix: str | None = None,
-                              limite: int = 20, decalage: int = 0, match_mode: str = "sous_chaine") -> dict:
+def _valider_criteres(criteres, code_prefix, limite, decalage, match_mode):
     if not isinstance(match_mode,str) or match_mode not in MODES_CORRESPONDANCE:
         raise ParamRechercheInvalide("Mode sous_chaine ou mots_entiers requis")
-    criteres = dict(zip(CRITERES,(designation,matiere,fonction,usage,caracteristiques)))
     # Pagination contrôlée même pour une recherche par préfixe seul.
     _parametres("",limite,decalage,filtre=True)
     if code_prefix is not None and (not isinstance(code_prefix,str) or re.fullmatch(r"[0-9]{1,10}",code_prefix) is None):
@@ -30,6 +26,22 @@ def rechercher_tarif_criteres(repertoire: Path, *, designation: str | None = Non
             termes[cle] = _parametres(valeur,limite,decalage)
     if not termes and code_prefix is None:
         raise ParamRechercheInvalide("Au moins un critère ou un préfixe explicite requis")
+    return termes
+
+
+def _preuves_criteres(ligne, termes, match_mode):
+    champs = {cle:_normaliser(getattr(ligne,cle)) for cle in ("designation_officielle_fr","designation_officielle_ar")
+              if getattr(ligne,cle) is not None}
+    return {critere:{t:sorted(c for c,v in champs.items() if indice_terme(v,t,match_mode) >= 0) for t in mots}
+            for critere,mots in termes.items()}
+
+
+def rechercher_tarif_criteres(repertoire: Path, *, designation: str | None = None, matiere: str | None = None,
+                              fonction: str | None = None, usage: str | None = None,
+                              caracteristiques: str | None = None, code_prefix: str | None = None,
+                              limite: int = 20, decalage: int = 0, match_mode: str = "sous_chaine") -> dict:
+    criteres = dict(zip(CRITERES,(designation,matiere,fonction,usage,caracteristiques)))
+    termes = _valider_criteres(criteres,code_prefix,limite,decalage,match_mode)
     lot,rapport = charger_lot(repertoire)
     resultats,total = [],0
     lignes_prefixe = 0
@@ -38,10 +50,7 @@ def rechercher_tarif_criteres(repertoire: Path, *, designation: str | None = Non
         if code_prefix is not None and not ligne.code_tarifaire_10.startswith(code_prefix):
             continue
         lignes_prefixe += 1
-        champs = {cle:_normaliser(getattr(ligne,cle)) for cle in ("designation_officielle_fr","designation_officielle_ar")
-                  if getattr(ligne,cle) is not None}
-        preuves = {critere:{t:sorted(c for c,v in champs.items() if indice_terme(v,t,match_mode) >= 0) for t in mots}
-                   for critere,mots in termes.items()}
+        preuves = _preuves_criteres(ligne,termes,match_mode)
         for critere,mots in preuves.items():
             for terme,noms in mots.items():
                 if noms:
