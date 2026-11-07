@@ -105,7 +105,7 @@
       "title": "Mesure",
       "type": "object"
     },
-    "SourceMesuresJSON": {
+    "SourceMesuresDocumentaires": {
       "additionalProperties": false,
       "properties": {
         "id": {
@@ -138,7 +138,10 @@
           "type": "string"
         },
         "format": {
-          "const": "json",
+          "enum": [
+            "json",
+            "csv"
+          ],
           "title": "Format",
           "type": "string"
         },
@@ -171,7 +174,7 @@
         "sha256",
         "format"
       ],
-      "title": "SourceMesuresJSON",
+      "title": "SourceMesuresDocumentaires",
       "type": "object"
     },
     "SourceRef": {
@@ -206,7 +209,7 @@
       "type": "string"
     },
     "source": {
-      "$ref": "#/$defs/SourceMesuresJSON"
+      "$ref": "#/$defs/SourceMesuresDocumentaires"
     },
     "statut": {
       "const": "quarantaine",

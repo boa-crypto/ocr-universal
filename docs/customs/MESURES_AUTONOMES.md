@@ -1,4 +1,4 @@
-# Préparation de mesures autonomes — lot 36
+# Préparation de mesures autonomes — JSON (36), CSV (39)
 
 Premier contrat indépendant d'une nomenclature : droits, TVA, autres taxes,
 restrictions, autorisations et régimes reçus avec leur propre source, références
@@ -21,7 +21,9 @@ Le fichier source est un **tableau JSON de Mesure**, pas un objet contenant une
 nomenclature. Le sidecar suit `MetadataMesuresAutonomes` : source requise, version
 1/statut quarantaine/validation non validée/publication false par défaut. Il ne
 peut contenir de mesures, lignes ou autres champs inconnus. Sa source suit
-SourceDocument, format **json uniquement** et empreinte exacte du fichier reçu.
+SourceDocument, format **json ou csv** et empreinte exacte du fichier reçu.
+Pour CSV, le sidecar suit `ConfigurationMesuresAutonomes` : voir le
+[contrat CSV](MESURES_AUTONOMES_CSV.md), mapping explicite requis.
 Les schémas `MetadataMesuresAutonomes.schema.json` et
 `MesuresAutonomesBatch.schema.json` sont dans `schemas/`.
 
@@ -31,7 +33,8 @@ Les schémas `MetadataMesuresAutonomes.schema.json` et
   ID/titre/organisme/version non blancs. Cela ne prouve pas l'authenticité.
 - Chaque mesure fournit ID unique local au lot, type connu, description, code10
   chaîne exacte de dix chiffres ASCII, référence à la source du même lot et
-  localisateur non blanc. Aucun ID, code, taux ou localisateur n'est généré.
+  localisateur non blanc. En JSON aucun ID, code, taux ou localisateur n'est généré ;
+  en CSV seul le localisateur physique est généré, sans signification juridique.
 - **Taux JSON uniquement en chaîne décimale ou null**, jamais nombre JSON converti
   via float. Zéro déclaré distinct de null. Taux non négatif, fini ; unité
   `pourcent` obligatoire avec un taux et interdite seule ; aucun taux sur une
@@ -47,7 +50,8 @@ Les schémas `MetadataMesuresAutonomes.schema.json` et
 
 ## Archive et contrôle
 
-Source et sidecar conservés octet pour octet : `source_mesures_recue.json`,
+Source et sidecar conservés octet pour octet : `source_mesures_recue.json` ou
+`source_mesures_recue.csv` selon le format (jamais les deux),
 `metadata_original.json`, puis `lot_mesures.json`, `rapport.json`, `manifest.json`.
 Le manifeste est écrit en dernier ; une interruption peut laisser un dossier
 incomplet, non rejouable, jamais réutilisé silencieusement. Pas de transaction FS,
@@ -72,7 +76,8 @@ de mesures, inventaire de source, couverture et exports. Pas de diff/fiche de
 nomenclature, PDF, rapprochement fiscal ou publication pour ce type ; les anciennes
 routes incompatibles sont refusées, jamais détournées vers un chargeur tarif/Code.
 
-JSON strict seulement : pas d'import fiscal autonome CSV/XLSX/PDF qualifié, pas de
+JSON strict et CSV textuel à mapping explicite : pas de XLSX/PDF fiscal autonome
+ni de fichier fiscal officiel qualifié, pas de
 transcription automatique de texte fiscal. Aucun exemple de taux de production,
 fichier officiel national, validation humaine, droit à date, publication ou calcul.
 Les schémas et tests ne démontrent pas la complétude réglementaire. Les tests utilisent

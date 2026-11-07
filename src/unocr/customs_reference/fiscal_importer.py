@@ -1,11 +1,12 @@
-"""Préparation/rejeu de mesures JSON autonomes, sans écrasement ou activation."""
+"""Préparation/rejeu de mesures JSON/CSV autonomes, sans écrasement ou activation."""
 import hashlib
 import json
 import re
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from .fiscal_models import MesuresAutonomesBatch, MetadataMesuresAutonomes
+from .fiscal_csv import lire_mesures_csv
+from .fiscal_models import ConfigurationMesuresAutonomes, MesuresAutonomesBatch
 from .importer import MAX_SOURCE, ImportRefuse, _json, _lire
 from .measure_search import TYPES_MESURES
 
@@ -14,13 +15,20 @@ FICHIERS = {"source_mesures_recue.json", "metadata_original.json", "lot_mesures.
 
 
 def _analyser_mesures(original: bytes, metadata_original: bytes):
-    meta = MetadataMesuresAutonomes.model_validate_json(json.dumps(_json(metadata_original), ensure_ascii=False))
+    brut_meta = _json(metadata_original)
+    meta = ConfigurationMesuresAutonomes.model_validate_json(json.dumps(brut_meta, ensure_ascii=False))
     sha = hashlib.sha256(original).hexdigest()
     if sha != meta.source.sha256:
         raise ImportRefuse("Empreinte de source de mesures différente de la déclaration")
-    mesures = _json(original)
-    if not isinstance(mesures, list):
-        raise ImportRefuse("Source JSON : tableau de mesures autonome attendu")
+    if meta.source.format == "csv":
+        mesures,perimetre = lire_mesures_csv(original,meta)
+    else:
+        if {"colonnes", "delimiteur"} & set(brut_meta):
+            raise ImportRefuse("Options CSV interdites sur une source JSON")
+        mesures = _json(original)
+        if not isinstance(mesures, list):
+            raise ImportRefuse("Source JSON : tableau de mesures autonome attendu")
+        perimetre = {"format":"json", "contenu":"tableau_mesures_autonomes", "taux":"chaines_decimales_ou_null"}
     # Contrat de taux volontairement restreint, pour ne jamais lire un nombre
     # JSON via float puis faire passer son arrondi pour une valeur source exacte.
     for m in mesures:
@@ -28,7 +36,7 @@ def _analyser_mesures(original: bytes, metadata_original: bytes):
             raise ImportRefuse("Chaque mesure doit être un objet JSON")
         if m.get("taux") is not None and not isinstance(m["taux"], str):
             raise ImportRefuse("Taux JSON : chaîne décimale exacte ou null requis, jamais nombre converti")
-    lot = MesuresAutonomesBatch.model_validate_json(json.dumps({**meta.model_dump(mode="json"), "mesures":mesures},
+    lot = MesuresAutonomesBatch.model_validate_json(json.dumps({**meta.model_dump(mode="json", exclude={"colonnes", "delimiteur"}), "mesures":mesures},
                                                                ensure_ascii=False, allow_nan=False))
     rapport = {"type_lot":TYPE_LOT, "statut":"quarantaine", "publication_active":False,
         "validation_juridique":"non_validee", "validation_humaine":"requise",
@@ -39,14 +47,15 @@ def _analyser_mesures(original: bytes, metadata_original: bytes):
         "existence_codes_dans_nomenclature":"non_verifiee", "nomenclature_incluse":False,
         "completude_reglementaire":"non_etablie", "fiscalite_applicable_etablie":False,
         "restitution_juridique_a_date":False, "utilisable_pour_calcul_douanier":False,
-        "perimetre_lecture":{"format":"json", "contenu":"tableau_mesures_autonomes", "taux":"chaines_decimales_ou_null"},
+        "perimetre_lecture":perimetre,
         "avertissements":[
             "Mesures autonomes reçues, sans lignes tarifaires inventées ni rapprochement avec une nomenclature.",
             "Codes syntaxiquement contrôlés seulement ; existence nationale et rattachement non vérifiés.",
             "Source, périodes et références propres conservées ; aucune date héritée d'un tarif ou d'une publication.",
             "Taux inconnus distincts du zéro ; aucune mesure ne prouve ni exonération ni absence de restriction.",
             "Intégrité locale et rejeu ne prouvent ni authenticité, exhaustivité, portée juridique ou applicabilité.",
-            "Format JSON strict seulement ; aucun CSV/XLSX/PDF autonome qualifié ici.",
+            "Format JSON strict seulement ; aucun CSV/XLSX/PDF autonome qualifié ici." if meta.source.format == "json" else
+            "Format CSV textuel à mapping explicite ; aucun XLSX/PDF autonome qualifié ici.",
         ], "ecrit":False}
     return lot,rapport
 
@@ -56,7 +65,7 @@ def preparer_mesures_autonomes(source: Path, metadata: Path, sortie: Path | None
     lot,rapport = _analyser_mesures(original,meta)
     rapport["ecrit"] = sortie is not None
     if sortie is not None:
-        fichiers = {"source_mesures_recue.json":original, "metadata_original.json":meta,
+        fichiers = {"source_mesures_recue."+lot.source.format:original, "metadata_original.json":meta,
                     "lot_mesures.json":lot.model_dump_json(indent=2).encode("utf-8"),
                     "rapport.json":json.dumps(rapport,ensure_ascii=False,indent=2).encode("utf-8")}
         manifest = {"type_lot":TYPE_LOT, "schema_version":"1", "statut":"quarantaine", "publication_active":False,
@@ -90,11 +99,17 @@ def charger_lot_mesures(repertoire: Path) -> tuple[MesuresAutonomesBatch,dict]:
     if date_import.utcoffset() != timedelta(0) or not isinstance(m["source_nom_recu"],str) or not m["source_nom_recu"].strip():
         raise ImportRefuse("Date UTC et nom reçu requis")
     empreintes = m["fichiers_sha256"]
-    if (not isinstance(empreintes,dict) or set(empreintes) != FICHIERS
-            or {p.name for p in repertoire.iterdir()} != FICHIERS | {"manifest.json"}):
+    if not isinstance(empreintes,dict):
+        raise ImportRefuse("Table d'empreintes de mesures attendue")
+    sources = [nom for nom in empreintes if nom in {"source_mesures_recue.json", "source_mesures_recue.csv"}]
+    if len(sources) != 1:
+        raise ImportRefuse("Une seule source JSON/CSV de mesures requise")
+    attendus = (FICHIERS - {"source_mesures_recue.json"}) | {sources[0]}
+    if (set(empreintes) != attendus
+            or {p.name for p in repertoire.iterdir()} != attendus | {"manifest.json"}):
         raise ImportRefuse("Fichiers de mesures absents ou inattendus")
     fichiers = {}
-    for nom in sorted(FICHIERS):
+    for nom in sorted(attendus):
         sha = empreintes[nom]
         if not isinstance(sha,str) or re.fullmatch(r"[a-f0-9]{64}",sha) is None:
             raise ImportRefuse("Empreinte de fichier invalide")
@@ -102,7 +117,9 @@ def charger_lot_mesures(repertoire: Path) -> tuple[MesuresAutonomesBatch,dict]:
         if hashlib.sha256(contenu).hexdigest() != sha:
             raise ImportRefuse("Empreinte de fichier de mesures différente")
         fichiers[nom] = contenu
-    lot,rapport = _analyser_mesures(fichiers["source_mesures_recue.json"],fichiers["metadata_original.json"])
+    lot,rapport = _analyser_mesures(fichiers[sources[0]],fichiers["metadata_original.json"])
+    if sources[0] != "source_mesures_recue."+lot.source.format:
+        raise ImportRefuse("Format déclaré différent du nom d'archive source")
     recu = MesuresAutonomesBatch.model_validate_json(json.dumps(_json(fichiers["lot_mesures.json"]),ensure_ascii=False))
     if lot.model_dump(mode="json") != recu.model_dump(mode="json"):
         raise ImportRefuse("Lot de mesures non reproductible depuis la source et les métadonnées")

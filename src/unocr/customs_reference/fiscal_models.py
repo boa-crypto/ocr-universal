@@ -7,13 +7,17 @@ from pydantic import Field, field_validator, model_validator
 from .models import Mesure, SourceDocument, StrictModel
 
 
-class SourceMesuresJSON(SourceDocument):
-    format: Literal["json"]
+class SourceMesuresDocumentaires(SourceDocument):
+    format: Literal["json", "csv"]
+
+
+# Alias conservé pour les utilisateurs Python du premier contrat (lot 36).
+SourceMesuresJSON = SourceMesuresDocumentaires
 
 
 class MetadataMesuresAutonomes(StrictModel):
     schema_version: Literal["1"] = "1"
-    source: SourceMesuresJSON
+    source: SourceMesuresDocumentaires
     statut: Literal["quarantaine"] = "quarantaine"
     validation_juridique: Literal["non_validee"] = "non_validee"
     publication_active: Literal[False] = False
@@ -49,3 +53,8 @@ class MesuresAutonomesBatch(MetadataMesuresAutonomes):
             if re.fullmatch(r"[0-9]{10}", m.code_tarifaire_10) is None:
                 raise ValueError("Code déclaré exact de dix chiffres ASCII requis")
         return self
+
+
+class ConfigurationMesuresAutonomes(MetadataMesuresAutonomes):
+    colonnes: dict[str, str] | None = None
+    delimiteur: str = ";"

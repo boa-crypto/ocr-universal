@@ -12,7 +12,7 @@ import pytest
 from reportlab.pdfgen import canvas
 
 from tests import test_customs_review
-from tests.test_customs_fiscal_import import fichiers as fichiers_mesures
+from tests.test_customs_fiscal_csv import fichiers as fichiers_mesures
 from tests.test_customs_reference import snapshot
 from tests.test_customs_subdivisions import subdivisions
 from unocr.customs_reference.fiscal_importer import preparer_mesures_autonomes
