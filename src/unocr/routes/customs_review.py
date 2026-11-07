@@ -3,7 +3,7 @@ import hashlib
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 
 from ..customs_reference.article_detail import (
     MAX_DECALAGE_TEXTE,
@@ -39,6 +39,7 @@ from ..customs_reference.review_registry import (
 )
 from ..customs_reference.search import ParamRechercheInvalide, rechercher_code, rechercher_tarif
 from ..customs_reference.source_catalog import inventorier_sources
+from ..customs_reference.source_pdf import copier_pdf_source
 from ..customs_reference.tariff_detail import ParamFicheTarifInvalide, consulter_code
 from ..customs_reference.tariff_pair import juxtaposer_fiches_tarifaires
 from ..customs_reference.tariff_tree import ParamArbreTarifInvalide, parcourir_tarif
@@ -58,7 +59,7 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 raise HTTPException(503, {"code": "audit_revue_indisponible"}, headers=NO_STORE) from None
             # Ne pas transformer un refus d'accès ou de lot en succès si l'audit échoue.
 
-    def executer(utilisateur, operation, ids, action):
+    def executer(utilisateur, operation, ids, action, preparer_reponse=None):
         try:
             path = Path(chemin_registre())
             registre = charger_registre(path)
@@ -83,7 +84,7 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                             else [resultat["archives"]["avant"], resultat["archives"]["apres"]])
                 if any(archive["manifest_sha256"] != entree.manifest_sha256 for archive, entree in zip(archives, entrees)):
                     raise ValueError("Manifeste lu différent de l'empreinte épinglée")
-            reponse = JSONResponse({"lecture_seule": True, "publication_active": False,
+            reponse = preparer_reponse(resultat) if preparer_reponse else JSONResponse({"lecture_seule": True, "publication_active": False,
                                  "validation_juridique": "non_validee", "perimetre": "revue_administrative_quarantaine",
                                  "resultat": resultat}, headers=NO_STORE)
         except ParamRapprochementInvalide:
@@ -148,6 +149,32 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 raise HTTPException(422, {"code": "recherche_mesures_non_applicable_au_code"}, headers=NO_STORE)
             return rechercher_mesures_tarif(p[0], q, code10, measure_type, limit, offset)
         return executer(utilisateur, "recherche_mesures", [lot_id], chercher)
+
+    @router.get("/lots/{lot_id}/pdf-source")
+    def fichier_pdf(lot_id: str, document_id: str = Query(..., min_length=1, max_length=256), utilisateur=Depends(autoriser)):
+        fichier = {}
+
+        def lire_fichier(e, p, registre):
+            if e[0].type_lot != "code":
+                raise HTTPException(422, {"code": "copie_pdf_code_uniquement"}, headers=NO_STORE)
+            resultat, contenu = copier_pdf_source(p[0], document_id)
+            fichier["octets"] = contenu
+            return resultat
+
+        def reponse_fichier(resultat):
+            contenu = fichier["octets"]
+            sha = hashlib.sha256(contenu).hexdigest()
+            nom = f"uniocr-source-non-validee-{sha}.pdf"
+            if (sha != resultat["sha256_pdf_copie"] or sha != resultat["document_declare"]["sha256"]
+                    or len(contenu) != resultat["taille_octets"] or nom != resultat["nom_telechargement"]):
+                raise ValueError("Copie binaire différente du rapport contrôlé")
+            return Response(contenu, media_type="application/pdf", headers={**NO_STORE,
+                "Content-Disposition": f'attachment; filename="{nom}"', "X-Content-Type-Options": "nosniff",
+                "Content-Security-Policy": "sandbox; default-src 'none'",
+                "X-UniOCR-Source-SHA256": sha, "X-UniOCR-Manifest-SHA256": resultat["archive"]["manifest_sha256"],
+                "X-UniOCR-Validation": "non_validee"})
+
+        return executer(utilisateur, "copie_pdf_source", [lot_id], lire_fichier, reponse_fichier)
 
     @router.get("/lots/{lot_id}/sources")
     def sources(lot_id: str, q: str = Query("", max_length=256),

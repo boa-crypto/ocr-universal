@@ -65,3 +65,5 @@ nouvelle route. Validation hors ligne structurelle uniquement, pas authenticité
 Le lot entier est chargé/rejoué avant pagination et comptage ; aucune garantie
 mémoire constante ou performance nationale. Tests sur fixtures NON OFFICIELLES,
 JSDOM et API réelle isolée, pas recette visuelle/accessibilité Chrome/Firefox.
+
+Lot 35 : [téléchargement contrôlé du PDF archivé](COPIE_PDF_SOURCE.md) via `GET /lots/{lot_id}/pdf-source?document_id=…`, audit obligatoire et SHA navigateur, pièce jointe non validée (pas antivirus).

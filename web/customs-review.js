@@ -482,7 +482,7 @@
       mesuresRecherche.append(bouton("Rechercher dans les mesures déclarées", chargerRechercheMesures));
       var sourcesLecture = element("fieldset");
       sourcesLecture.append(element("legend", "Inventaire des sources déclarées du lot"));
-      sourcesLecture.append(element("p", "Métadonnées reçues seulement : titre, organisme, version. Aucun accès réseau, authenticité ou corpus exhaustif attesté. Requête vide = toutes les sources du lot."));
+      sourcesLecture.append(element("p", "Métadonnées reçues seulement : titre, organisme, version. Aucun accès réseau, authenticité ou corpus exhaustif attesté. Requête vide = toutes les sources du lot. PDF téléchargeables non validés, sans antivirus : ouvrir uniquement dans un lecteur sécurisé."));
       var sourcesQuery = champ(sourcesLecture, "Recherche FR / AR des métadonnées"); sourcesQuery.maxLength = 256; sourcesQuery.dir = "auto"; sourcesQuery.setAttribute("data-sources-query", "");
       var sourcesId = champ(sourcesLecture, "ID source exact facultatif"); sourcesId.maxLength = 256; sourcesId.setAttribute("data-sources-id", "");
       var sourcesNature = champ(sourcesLecture, "Nature déclarée — Code seulement", "select"); sourcesNature.setAttribute("data-sources-nature", "");
@@ -498,6 +498,41 @@
         lire("/lots/" + encodeURIComponent(lot.value) + "/sources?" + p, afficher);
       }
       sourcesLecture.append(bouton("Inventorier les sources déclarées", chargerSources));
+      async function telechargerPDF(id, shaAttendu) {
+        var numero = ++requete, selection = lot.value;
+        var manifeste = rep.lots.find(function (v) { return v.id === selection; }).manifest_sha256_attendu;
+        viderResultat(); statut.textContent = "Contrôle et téléchargement du PDF reçu…";
+        function toujoursActuel() { return actuel() && numero === requete && selection === lot.value; }
+        try {
+          if (courant !== token()) { effacer(); throw new Error("Compte modifié : actualisez les lots."); }
+          if (!window.crypto || !window.crypto.subtle) throw new Error("Vérification SHA256 navigateur indisponible : téléchargement refusé.");
+          var headers = {Accept: "application/pdf"}; if (courant) headers.Authorization = "Bearer " + courant;
+          var r = await fetch(BASE + "/lots/" + encodeURIComponent(selection) + "/pdf-source?" + new URLSearchParams({document_id: id}),
+            {method: "GET", headers: headers, credentials: "same-origin", cache: "no-store"});
+          if (!r.ok) { var erreur = new Error(erreurs[r.status] || "Téléchargement de source refusé."); erreur.acces = [401, 403, 503].includes(r.status); throw erreur; }
+          if (r.headers.get("Content-Type") !== "application/pdf" || r.headers.get("X-UniOCR-Source-SHA256") !== shaAttendu ||
+              r.headers.get("X-UniOCR-Manifest-SHA256") !== manifeste || r.headers.get("X-UniOCR-Validation") !== "non_validee") throw new Error("Provenance du PDF incohérente, téléchargement refusé.");
+          var taille = r.headers.get("Content-Length");
+          if (!taille || !/^[0-9]+$/.test(taille) || Number(taille) < 1 || Number(taille) > 64 * 1024 * 1024) throw new Error("Taille PDF hors limites, téléchargement refusé.");
+          var octets = await r.arrayBuffer();
+          if (!toujoursActuel()) return;
+          if (octets.byteLength !== Number(taille)) throw new Error("Taille PDF incohérente, téléchargement refusé.");
+          var empreinte = Array.from(new Uint8Array(await window.crypto.subtle.digest("SHA-256", octets))).map(function (v) { return v.toString(16).padStart(2, "0"); }).join("");
+          if (!toujoursActuel()) return;
+          if (courant !== token()) { effacer(); throw new Error("Compte modifié : actualisez les lots."); }
+          if (empreinte !== shaAttendu) throw new Error("Empreinte PDF différente, téléchargement refusé.");
+          var url = URL.createObjectURL(new Blob([octets], {type: "application/pdf"}));
+          try {
+            var lien = element("a"); lien.href = url; lien.download = "uniocr-source-non-validee-" + empreinte + ".pdf";
+            host.append(lien); try { lien.click(); } finally { lien.remove(); }
+          } finally { window.setTimeout(function () { URL.revokeObjectURL(url); }, 1000); }
+          statut.textContent = "Téléchargement demandé — PDF reçu non validé. Intégrité contrôlée, pas authenticité ou innocuité : ouvrir dans un lecteur sécurisé.";
+        } catch (e) {
+          if (!toujoursActuel()) return;
+          if (e.acces) effacer();
+          statut.textContent = e.message && !/fetch|network/i.test(e.message) ? e.message : "Source PDF inaccessible.";
+        }
+      }
       function idValide(id) {
         return typeof id === "string" && id.trim() && Array.from(id).length <= 256 && !/[\u0000-\u001f\u007f-\u009f]/.test(id);
       }
@@ -539,6 +574,9 @@
               sourcesVues.add(d.id);
               actions.append(actionDocumentaire("Articles de la source " + d.id, function () {
                 codeSource.value = d.id; codePath.value = "[]"; codeTreeLimit.value = 20; codeTreeOffset.value = 0; chargerCodeArbre();
+              }));
+              if (d.format === "pdf") actions.append(actionDocumentaire("Télécharger le PDF reçu " + d.id + " — non validé", function () {
+                telechargerPDF(d.id, d.sha256);
               }));
               if (d.format === "pdf") actions.append(actionDocumentaire("Lire la source PDF " + d.id + " — page 1", function () {
                 pdfId.value = d.id; pdfPage.value = 1; pdfLimit.value = 4000; pdfOffset.value = 0; chargerPDF();

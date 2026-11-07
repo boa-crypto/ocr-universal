@@ -82,7 +82,9 @@ def test_interface_revue_sur_api_reelle(revue):
         def do_GET(self):
             reponse = client.get(self.path, headers=dict(self.headers))
             self.send_response(reponse.status_code)
-            self.send_header("Content-Type", reponse.headers.get("content-type", "application/octet-stream"))
+            for cle,valeur in reponse.headers.items():
+                if cle.lower() not in {"connection", "transfer-encoding"}:
+                    self.send_header(cle,valeur)
             self.end_headers()
             self.wfile.write(reponse.content)
 
@@ -101,6 +103,8 @@ def test_interface_revue_sur_api_reelle(revue):
         exports = [ligne.removeprefix("EXPORT_REEL_JSON=") for ligne in resultat.stdout.splitlines()
                    if ligne.startswith("EXPORT_REEL_JSON=")]
         assert len(exports) == 12
+        copies = [v.removeprefix("PDF_SOURCE_SHA256=") for v in resultat.stdout.splitlines() if v.startswith("PDF_SOURCE_SHA256=")]
+        assert copies == [hashlib.sha256((racine / "code_pdf_ui/document_0001.pdf").read_bytes()).hexdigest()]
         for texte in exports:
             constat = analyser_export(texte.encode("utf-8"))
             assert constat["statut"] == "structure_compatible"

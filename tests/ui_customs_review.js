@@ -784,5 +784,46 @@ await scenario('Sources : ancienne action inerte après changement de lot',async
 await scenario('Sources : panne audit efface inventaire et actions',async({host,button,reponse})=>{
  reponse(catalogueSources({}));button('Inventorier les sources').click();await tick();reponse({detail:{code:'audit_revue_indisponible'}},503);button('Inventorier les sources').click();await tick();assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
 });
+async function preparerCopiePDF(ctx) {
+ const {w,host,button,reponse,attendre}=ctx,cryptoNode=require('node:crypto');
+ const octets=Buffer.from('%PDF-1.7\nFIXTURE NON OFFICIELLE\n%%EOF');const sha=cryptoNode.createHash('sha256').update(octets).digest('hex');
+ Object.defineProperty(w.crypto,'subtle',{value:cryptoNode.webcrypto.subtle,configurable:true});
+ const fichiers=[];w.URL.createObjectURL=b=>{fichiers.push(b);return 'blob:source-test';};w.URL.revokeObjectURL=()=>{};
+ let nom;w.HTMLAnchorElement.prototype.click=function(){nom=this.download;};
+ reponse(catalogueSources({resultats:[{source_declaree:{id:'SOURCE_1',sha256:sha,nature_document:'code_original',format:'pdf'}}]}));button('Inventorier les sources').click();await tick();
+ const entetes={'content-type':'application/pdf','content-length':String(octets.length),'x-uniocr-source-sha256':sha,'x-uniocr-manifest-sha256':'a'.repeat(64),'x-uniocr-validation':'non_validee'};
+ const r={ok:true,status:200,headers:{get:k=>entetes[k.toLowerCase()] ?? null},arrayBuffer:async()=>octets.buffer.slice(octets.byteOffset,octets.byteOffset+octets.length)};
+ attendre(()=>Promise.resolve(r));return {r,entetes,octets,sha,fichiers,nom:()=>nom};
+}
+const finirCopie=async()=>{for(let i=0;i<8;i++)await new Promise(r=>setTimeout(r,3));};
+await scenario('Copie PDF : octets SHA256, nom sûr et requête locale',async ctx=>{
+ const t=await preparerCopiePDF(ctx);ctx.button('Télécharger le PDF reçu').click();await finirCopie();assert.equal(t.fichiers.length,1);
+ assert.equal(t.nom(),'uniocr-source-non-validee-'+t.sha+'.pdf');assert.equal(t.fichiers[0].size,t.octets.length);
+ const u=new URL(ctx.appels.at(-1).url,'https://x');assert.equal(u.pathname,'/api/v1/customs-review/lots/test-code/pdf-source');assert.equal(u.searchParams.get('document_id'),'SOURCE_1');assert.equal(ctx.appels.at(-1).opts.headers.Accept,'application/pdf');
+});
+await scenario('Copie PDF : provenance étrangère sans téléchargement',async ctx=>{
+ const t=await preparerCopiePDF(ctx);t.entetes['x-uniocr-manifest-sha256']='b'.repeat(64);ctx.button('Télécharger le PDF reçu').click();await finirCopie();assert.equal(t.fichiers.length,0);assert(ctx.status().includes('Provenance'));
+});
+await scenario('Copie PDF : contenu altéré malgré entêtes sans téléchargement',async ctx=>{
+ const t=await preparerCopiePDF(ctx);t.octets[0]=33;ctx.button('Télécharger le PDF reçu').click();await finirCopie();assert.equal(t.fichiers.length,0);assert(ctx.status().includes('Empreinte PDF différente'));
+});
+await scenario('Copie PDF : limite annoncée refusée avant lecture',async ctx=>{
+ const t=await preparerCopiePDF(ctx);t.entetes['content-length']=String(64*1024*1024+1);let lu=false;t.r.arrayBuffer=async()=>{lu=true;return new ArrayBuffer(1);};
+ ctx.button('Télécharger le PDF reçu').click();await finirCopie();assert.equal(t.fichiers.length,0);assert.equal(lu,false);
+});
+await scenario('Copie PDF : audit 503 sans fichier ni ancien résultat',async ctx=>{
+ const t=await preparerCopiePDF(ctx);t.r.ok=false;t.r.status=503;ctx.button('Télécharger le PDF reçu').click();await finirCopie();assert.equal(t.fichiers.length,0);assert.equal(ctx.host.querySelector('pre').textContent,'');assert(ctx.status().includes('audit'));
+});
+await scenario('Copie PDF : changement de lot pendant réception annule fichier',async ctx=>{
+ const t=await preparerCopiePDF(ctx);let terminer;t.r.arrayBuffer=()=>new Promise(resolve=>{terminer=resolve;});ctx.button('Télécharger le PDF reçu').click();await tick();
+ const l=ctx.host.querySelector('select');l.value='test-tarif';l.dispatchEvent(new ctx.w.Event('change'));terminer(new ArrayBuffer(t.octets.length));await finirCopie();assert.equal(t.fichiers.length,0);
+});
+await scenario('Copie PDF : changement de compte pendant réception annule fichier',async ctx=>{
+ const t=await preparerCopiePDF(ctx);let terminer;t.r.arrayBuffer=()=>new Promise(resolve=>{terminer=resolve;});ctx.button('Télécharger le PDF reçu').click();await tick();
+ ctx.w.sessionStorage.setItem('uniocr_token','AUTRE');terminer(t.octets.buffer.slice(t.octets.byteOffset,t.octets.byteOffset+t.octets.length));await finirCopie();assert.equal(t.fichiers.length,0);assert(ctx.status().includes('Compte modifié'));
+});
+await scenario('Copie PDF : navigateur sans SHA256 refuse avant fetch',async ctx=>{
+ const t=await preparerCopiePDF(ctx);Object.defineProperty(ctx.w.crypto,'subtle',{value:undefined});const n=ctx.appels.length;ctx.button('Télécharger le PDF reçu').click();await finirCopie();assert.equal(t.fichiers.length,0);assert.equal(ctx.appels.length,n);assert(ctx.status().includes('SHA256 navigateur indisponible'));
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

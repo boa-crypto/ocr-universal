@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État au 7 novembre 2026 après le lot 34. **Terminé = périmètre technique livré et
+État au 7 novembre 2026 après le lot 35. **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -39,9 +39,10 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 32 | Recherche FR/AR des descriptions de mesures, filtres code10/type exacts | Terminé | Pas de recherche métier sémantique ou fiscalité applicable |
 | 33 | Extraits FR/AR contextualisés et lecture du passage exact | Terminé | Ni occurrences exhaustives ni fidélité PDF établie |
 | 34 | Inventaire des sources reçues, recherche métadonnées et rattachements | Terminé | Pas d’acquisition, authenticité ou corpus exhaustif attestés |
+| 35 | Copie binaire contrôlée du PDF reçu, audit et SHA navigateur | Terminé | Ni authenticité/innocuité PDF ni validation humaine attestées |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
-`RAPPORT_LOT34.md`. Les limites historiques des rapports précédents sont à lire
+`RAPPORT_LOT35.md`. Les limites historiques des rapports précédents sont à lire
 avec les ajouts suivants ; par exemple le lot 27 ajoute un rapprochement littéral,
 mais pas une validation des transcriptions.
 
@@ -65,7 +66,7 @@ mais pas une validation des transcriptions.
 
 ## Bilan
 
-34 lots techniques livrés ; dernière sélection : **1 373 tests Python / 114 scénarios
+35 lots techniques livrés ; dernière sélection : **1 395 tests Python / 122 scénarios
 JSDOM réussis**. Ce n’est ni la totalité de la suite OCR ni une recette nationale.
 Données historiques conservées. **0 nouvel original officiel acquis, 0 article/code
 national officiellement validé, 0 publication active ; mission globale partielle.**

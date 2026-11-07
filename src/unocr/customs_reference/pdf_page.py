@@ -49,7 +49,7 @@ def lire_page_pdf(repertoire: Path, document_id: str, page: int = 1, limite: int
                                "Sans texte natif ne signifie ni PDF vide ni absence de droit ; aucun OCR automatique.",
                                "Page physique à partir de 1, pas numéro imprimé du JO ; aucun article localisé automatiquement.",
                                "Ordre visuel, caractères et retours à la ligne peuvent différer du document affiché.",
-                               "Aucune URL distante suivie, aucun PDF source remis au navigateur ou rendu graphique.",
+                               "Cette route de texte natif ne suit aucune URL distante et ne remet pas de PDF source ou rendu graphique.",
                                "Processus séparé et bornes, pas antivirus ni bac à sable OS ou garantie matérielle."]}
 
 
