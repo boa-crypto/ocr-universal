@@ -7,7 +7,18 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 57
+## État actuel — lot 58
+
+[Pistes documentaires partielles](PISTES_TARIFAIRES.md) Python/CLI explicites,
+tri de correspondances vérifiable ; pas IA, confiance, attribut produit ou
+classement validé. Recherche AND conservée, sans fallback. **2 079 tests Python /
+186 scénarios JSDOM** réussis. Nouvelle suite complète : **3 111 réussis,
+18 échecs, 11 ignorés, 1 avertissement, 214,61 s** ; mêmes 18 échecs qu'au lot 56.
+[Rapport](RAPPORT_LOT58.md), [recette complète actuelle](RECETTE_LOT58.json).
+CI ciblée du code 58 réussie : [run 42390539305](https://github.com/boa-crypto/ocr-universal/actions/runs/42390539305),
+pas une CI OCR globale verte.
+
+## Complément — lot 57
 
 [Lanceur commun local/CI](LANCEUR_RECETTE_CIBLEE.md) : Ruff, sélection Python,
 JSDOM, journaux et JUnit séparés ; codes non masqués, aucun succès avec JUnit absent
@@ -142,7 +153,7 @@ réglementaire national ni des connexions administratives réellement qualifiée
 | 1 — Audit préalable | Architecture, stocks historiques, blocages et provenance documentés | StarterPack original absent ; audit officiel national impossible à conclure |
 | 2 — Code douanier | Modèles de versions/sources, import PDF + transcriptions, historique, navigation et relations déclarées | Corpus FR/AR exhaustif, modifications/rectificatifs et fidélité non constitués/validés |
 | 3 — Tarif et fiscalité séparée | Code10 textuel, hiérarchies, mesures autonomes JSON/CSV/XLSX/XLS/PDF transcrit, consultation séparée | Nomenclature nationale intégrale et sources fiscales réelles non acquises/qualifiées ; rattachements non validés |
-| 4 — Recherche et IA | Recherche littérale normalisée FR/AR, filtres et extraits contextualisés | Recherche métier technique/sémantique et IA de classement sourcée non livrées ; pas de candidats juridiquement validés |
+| 4 — Recherche et IA | Recherche littérale normalisée FR/AR, filtres, extraits et pistes documentaires partielles explicites | Recherche métier technique/sémantique et IA de classement sourcée non livrées ; pas de candidats juridiquement validés |
 | 5 — Relations prouvées | Relations déclarées, inspection des justifications et constats littéraux PDF | Liens juridiques transversaux prouvés entre articles, codes, notes, taxes/régimes/procédures non établis |
 | 6 — Administration existante | Revue intégrée, RBAC/allowlist, types explicites, audit, exports, sauvegarde/reprise | Décisions humaines habilitées, contrôle de fidélité complet et workflow de publication non réalisés |
 | 7 — API centrales | API privée de quarantaine et adaptateur douanier explicite, refus hors contrat | Connexion administrative réelle autorisée/testée et API métier sur corpus validé non qualifiées |

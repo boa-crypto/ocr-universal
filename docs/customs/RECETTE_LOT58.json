@@ -1,0 +1,166 @@
+{
+  "type_rapport": "recette_lot58_pistes_documentaires_non_validation_reglementaire",
+  "date": "2026-11-07",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "revision_code_testee": "3de68f4a",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "pret_pour_calcul_douanier_reel": false,
+  "recette_selectionnee": {
+    "fichiers": 65,
+    "reussis": 2079,
+    "echecs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_secondes": 52.78
+  },
+  "nouveaux_tests_pistes": 36,
+  "interface": {
+    "scenarios_jsdom_reussis": 186,
+    "nouveaux_scenarios_jsdom": 0,
+    "parcours_api_reelle": 4,
+    "exports_rejoues_identiques": 70,
+    "rejeux_simples": 58,
+    "rejeux_paires": 12,
+    "rejeux_pdf_sur_opt_in": 14,
+    "copies_pdf_code_controlees": 4,
+    "parcours_pistes_nouvelle_commande_uniquement": true
+  },
+  "suite_complete": {
+    "tests_total": 3140,
+    "reussis": 3111,
+    "echecs": 18,
+    "ignores": 11,
+    "avertissements": 1,
+    "duree_secondes": 214.61,
+    "statut": "non_verte",
+    "code_sortie": 1,
+    "echecs_identiques_a_recette56": true,
+    "echecs_detail": [
+      {
+        "test": "tests.test_api::test_health",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_api::test_engines_and_languages",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_indra_ocr::test_indra_engine_availability",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_ocr::test_tesseract_available",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_ocr::test_tesseract_recognize_real",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_ocr::test_registry_reports_availability_honestly",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_ocr::test_selection_prefers_native_when_present",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestEngineOption::test_engine_tesseract_force",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestEngineOption::test_engine_native_repli_sur_scan",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestPreprocessOptions::test_aggressive_existe",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestPreprocessOptions::test_variant_comparison_off",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestPreprocessOptions::test_variant_comparison_on",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_pipeline::test_end_to_end_scanned_pdf_ocr",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_pipeline::test_end_to_end_skewed_image",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_resources::test_registry_never_activates_unloadable_engine",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_resources::test_light_engines_always_available",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_routing_and_security::test_intelligent_routing_blurry",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_wave4::test_engines_endpoint_reports_reasons",
+        "statut": "echec"
+      }
+    ]
+  },
+  "integrite": {
+    "empreintes_conformes_a_recette56_apres_suite_complete": 27,
+    "restauration_effectuee": false
+  },
+  "lanceur_cible": {
+    "code_sortie": 0,
+    "junit": {
+      "lisible": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 2079,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "etapes": [
+      {
+        "nom": "ruff",
+        "code_sortie": 0
+      },
+      {
+        "nom": "pytest",
+        "code_sortie": 0
+      },
+      {
+        "nom": "interface",
+        "code_sortie": 0
+      }
+    ]
+  },
+  "github_actions": {
+    "revision_code_poussee": "3de68f4a",
+    "reussite_distante_lot58_attestee": true,
+    "run_id": 42390539305,
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42390539305",
+    "statut": "completed",
+    "conclusion": "success",
+    "duree_job_secondes": 75,
+    "code_gh_watch": 0,
+    "node": "24",
+    "python": "3.11",
+    "runner": "ubuntu-24.04",
+    "junit_distant_relu_localement": false
+  },
+  "artefacts_locaux": "/home/user/recettes-unocr/lot58",
+  "limites": [
+    "Pistes partielles littérales, pas IA ou score de confiance",
+    "Critères = étiquettes de requête, pas attributs produits certifiés",
+    "Pas API/UI/export/rejeu de cette nouvelle commande",
+    "Recherche AND existante conservée sans fallback automatique",
+    "Pas authenticité de source, classement RGI, notes/exclusions ou fiscalité applicable attestés",
+    "36 nouveaux tests sur fixtures NON OFFICIELLES, pas référentiel national complet"
+  ]
+}

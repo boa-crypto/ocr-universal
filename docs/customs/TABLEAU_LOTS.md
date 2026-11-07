@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État au 7 novembre 2026 après le lot 57. **Terminé = périmètre technique livré et
+État au 7 novembre 2026 après le lot 58. **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -62,9 +62,10 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 55 | Références d’empreintes séparées pour rejeux simples/paires et nouvelle recette complète | Terminé | Pas authenticité des références, signature ou transaction ; 18 échecs OCR globaux |
 | 56 | Génération des fixtures pytest hors des fichiers suivis, recette complète sans restauration | Terminé | Pas sandbox ou déterminisme binaire ; 18 échecs OCR conservés |
 | 57 | Lanceur local/CI documentaire ciblé, journaux/JUnit et codes non masqués | Terminé, local et CI ciblée | Ne remplace pas la suite OCR complète ; 18 échecs OCR ouverts |
+| 58 | Pistes documentaires littérales partielles, tri explicite, preuves/termes non retrouvés, Python/CLI | Terminé, local et CI ciblée | Pas IA, pertinence juridique, UI de pistes ou classement validé |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
-`RAPPORT_LOT57.md`. Les limites historiques des rapports précédents sont à lire
+`RAPPORT_LOT58.md`. Les limites historiques des rapports précédents sont à lire
 avec les ajouts suivants ; par exemple le lot 27 ajoute un rapprochement littéral,
 mais pas une validation des transcriptions.
 
@@ -88,7 +89,7 @@ mais pas une validation des transcriptions.
 
 ## Bilan
 
-57 lots techniques livrés ; dernière sélection : **2 043 tests Python / 186 scénarios
+58 lots techniques livrés ; dernière sélection : **2 079 tests Python / 186 scénarios
 JSDOM réussis**. Ce n’est ni la totalité de la suite OCR ni une recette nationale.
 Données historiques conservées. **0 nouvel original officiel acquis, 0 article/code
 national officiellement validé, 0 publication active ; mission globale partielle.**
@@ -96,7 +97,7 @@ Aucun pourcentage de complétude réglementaire ou de progression globale n’es
 du nombre de lots. Références non vérifiées interdites pour calcul douanier réel.
 
 Réception technique : [bilan des dix phases](BILAN_RECEPTION.md),
-[recette complète actuelle du lot 56](RECETTE_LOT56.json) : **3 057 réussis,
+[recette complète actuelle du lot 58](RECETTE_LOT58.json) : **3 111 réussis,
 18 échecs OCR, 11 ignorés, 1 avertissement** ; ne pas confondre avec la sélection
 verte. Recettes historiques : [45](RECETTE_FINALE.json), [50](RECETTE_LOT50.json), [55](RECETTE_LOT55.json).
 
