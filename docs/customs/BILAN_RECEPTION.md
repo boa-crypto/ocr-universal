@@ -7,7 +7,23 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 75
+## État actuel — lot 76
+
+[Valeurs humaines vides](VALEURS_CHAMPS_VIDES.md) : premier emplacement non None
+au lieu d'un repli booléen, traces et garde d'annulation compatibles avec `""`.
+Statut `corrected` déjà émis par l'API reconnu par le modèle ; export JSON vérifié.
+**106 nouveaux cas + 2 cas existants induits / 392 ciblés réussis** ; témoins :
+43 échecs attendus/63 réussis, puis annulation seule 4/102. Documentaire
+**2 160 Python / 212 JSDOM historiques**. Complète : **3 778 réussis, 2 échecs
+Indra, 1 ignoré, 1 avertissement, 472,85 s**.
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42414044174),
+pas suite OCR complète en CI. **26/27 empreintes conformes**, même écart partagé ;
+données et journaux préservés hors commit. Pas refonte multi-niveau undo,
+audit exhaustif des replis JavaScript ou migration des anciennes traces.
+Aperçu toujours sans RBAC configuré. [Rapport](RAPPORT_LOT76.md),
+[recette actuelle](RECETTE_LOT76.json).
+
+## Complément historique — lot 75
 
 [Acteur des audits OCR](ACTEUR_AUDIT_OCR.md) : validation/correction transmettent
 le nom du principal autorisé, et non plus la chaîne générique `utilisateur`. Entrées

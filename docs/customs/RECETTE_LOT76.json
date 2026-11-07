@@ -1,0 +1,190 @@
+{
+  "type_rapport": "recette_lot76_technique_non_validation_reglementaire",
+  "date": "2026-11-07",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "revision_code": "b13ebccc03c8d1b1419bf471b118ce8b206a7295",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_originaux_officiels": 0,
+  "articles_codes_officiellement_valides": 0,
+  "nouveaux_tests_python": 106,
+  "cas_existants_supplementaires_parametrisation_statuts": 2,
+  "selection_valeurs_annulation_rbac_qualite": {
+    "tests": 392,
+    "reussis": 392,
+    "echecs": 0,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 7.5,
+    "duree_junit_secondes": 7.452,
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 392,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "contre_epreuve_corps75": {
+    "tests": 106,
+    "reussis": 63,
+    "echecs": 43,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 6.14,
+    "duree_junit_secondes": 5.477,
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 106,
+      "failures": 43,
+      "errors": 0,
+      "skipped": 0
+    },
+    "code_sortie": 1,
+    "revision_chargee": "91a7955a3ae6f90cb2400370d72a0ba26af20832",
+    "sources_checkout_non_remplacees": true,
+    "apercu_non_remplace": true,
+    "enumeration_corrected_nouvelle_conservee": true,
+    "corps_reinjectes": [
+      "FieldValue.value",
+      "_etat_champ",
+      "annuler_correction",
+      "_derniere_correction"
+    ]
+  },
+  "contre_epreuve_annulation_seule75": {
+    "tests": 106,
+    "reussis": 102,
+    "echecs": 4,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 5.01,
+    "duree_junit_secondes": 5.011,
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 106,
+      "failures": 4,
+      "errors": 0,
+      "skipped": 0
+    },
+    "code_sortie": 1,
+    "revision_chargee": "91a7955a3ae6f90cb2400370d72a0ba26af20832",
+    "sources_checkout_non_remplacees": true,
+    "apercu_non_remplace": true,
+    "enumeration_corrected_nouvelle_conservee": true,
+    "corps_reinjectes": [
+      "annuler_correction"
+    ]
+  },
+  "recette_documentaire_ciblee": {
+    "tests": 2160,
+    "reussis": 2160,
+    "echecs": 0,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 113.94,
+    "duree_junit_secondes": 113.888,
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 2160,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "fichiers": 66,
+    "jsdom_existants": 212
+  },
+  "suite_complete": {
+    "tests": 3781,
+    "reussis": 3778,
+    "echecs": 2,
+    "erreurs": 0,
+    "ignores": 1,
+    "avertissements": 2,
+    "duree_console_secondes": 472.85,
+    "duree_junit_secondes": 472.677,
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 3781,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 1
+    },
+    "identifiants_echecs": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ],
+    "ignores_detail": [
+      "tests.test_indra_ocr::test_indra_engine_recognize"
+    ],
+    "code_sortie": 1,
+    "identiques_lot75": true,
+    "avertissements_detail": [
+      "StarletteDeprecationWarning TestClient/httpx",
+      "UnsupportedFieldAttributeWarning alias liquidation_id dans test_creation_et_suppression_concurrentes_sans_orphelin ; cause non attribuée"
+    ]
+  },
+  "politique": {
+    "priorite": "confirmed > corrected > normalized > raw, premier non None",
+    "chaine_vide_conservee": true,
+    "zero_chaine_inchange": true,
+    "etat_audit_et_valeur_apres_non_null": true,
+    "annulation_saisie_vide_possible_avec_trace": true,
+    "statut_corrected_reconnu_par_modele": true,
+    "export_json_apres_correction_verifie": true,
+    "annulation_multiniveau_refondue": false,
+    "replis_javascript_audites": false,
+    "anciens_journaux_repares": false
+  },
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "referentiels": {
+      "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+      "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d",
+      "conforme": false
+    },
+    "ecart_identique_lot75": true,
+    "restauration_effectuee": false,
+    "donnees_journaux_exploratoires_preserves_hors_commit": true
+  },
+  "ci": {
+    "run": 42414044174,
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42414044174",
+    "statut": "success",
+    "revision": "b13ebccc03c8d1b1419bf471b118ce8b206a7295",
+    "portee": "363 valeurs/annulation/attribution/cloisonnement/RBAC + 243 qualité/Baidu + 24 ingestion/PDF + 10 UI + documentaire ; sélections se recouvrant",
+    "ocr_complet_execute_en_ci": false,
+    "junit_distant_telecharge": false
+  },
+  "apercu": {
+    "backend_lot": 76,
+    "port": 8000,
+    "rbac_json_absent": true,
+    "protection_par_roles_inactive": true
+  },
+  "artefacts_locaux": "/home/user/recettes-unocr/lot76",
+  "limites": [
+    "Pas refonte multi-niveau annulation ni restauration de tous emplacements manuels antérieurs",
+    "Pas audit exhaustif des replis booléens UI/autres consommateurs",
+    "Pas migration/réparation des journaux ayant déjà perdu un vide",
+    "Acteur client des champs de jobs et audit best-effort inchangés",
+    "Pas transaction/concurrence ou recalcul qualité après chaque édition",
+    "Deux échecs Indra persistants ; intégrité 26/27",
+    "Aucun nouvel original officiel ou validation réglementaire"
+  ]
+}
