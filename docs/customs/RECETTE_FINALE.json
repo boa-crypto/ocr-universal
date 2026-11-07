@@ -1,0 +1,128 @@
+{
+  "type_rapport": "recette_finale_technique_non_validation_reglementaire",
+  "date": "2026-11-07",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "mission_globale": "partielle",
+  "pret_pour_calcul_douanier_reel": false,
+  "publication_active": false,
+  "recette_douaniere": {
+    "fichiers": 52,
+    "tests_reussis": 1741,
+    "echecs": 0,
+    "duree_secondes": 43.01,
+    "avertissements": 1
+  },
+  "interface": {
+    "scenarios_jsdom_reussis": 152,
+    "parcours_api_reelle": 4,
+    "exports_json_controles_hors_ligne": 66,
+    "copies_pdf_code_controlees": 4,
+    "navigateurs_reels_qualifies": false
+  },
+  "suite_complete": {
+    "tests_total": 2802,
+    "reussis": 2773,
+    "echecs": 18,
+    "ignores": 11,
+    "avertissements": 1,
+    "duree_secondes": 204.32,
+    "statut": "non_verte",
+    "echecs_detail": [
+      {
+        "test": "tests.test_api::test_health",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_api::test_engines_and_languages",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_indra_ocr::test_indra_engine_availability",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_ocr::test_tesseract_available",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_ocr::test_tesseract_recognize_real",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_ocr::test_registry_reports_availability_honestly",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_ocr::test_selection_prefers_native_when_present",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestEngineOption::test_engine_tesseract_force",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestEngineOption::test_engine_native_repli_sur_scan",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestPreprocessOptions::test_aggressive_existe",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestPreprocessOptions::test_variant_comparison_off",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestPreprocessOptions::test_variant_comparison_on",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_pipeline::test_end_to_end_scanned_pdf_ocr",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_pipeline::test_end_to_end_skewed_image",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_resources::test_registry_never_activates_unloadable_engine",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_resources::test_light_engines_always_available",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_routing_and_security::test_intelligent_routing_blurry",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_wave4::test_engines_endpoint_reports_reasons",
+        "statut": "echec"
+      }
+    ]
+  },
+  "environnement_ocr": {
+    "binaire_tesseract_present": false,
+    "module_indra_ocr_present": false
+  },
+  "inventaire_local": {
+    "quarantaine_locale_presente": false,
+    "nouveaux_originaux_officiels_acquis": 0,
+    "codes_articles_officiels_valides": 0,
+    "codes_legacy": 9,
+    "regles_legacy": 9,
+    "certificats_legacy": 4,
+    "collections_referentiels_vides": 11
+  },
+  "empreintes_historiques": {
+    "data/reglementation/base.json": "688cb720eaeeddd8a88ea2e47021b6b9b17192d7226cc9e5218006b5adcb961f",
+    "data/referentiels.json": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b"
+  },
+  "limites": [
+    "Tests techniques sur fixtures NON OFFICIELLES, pas recette nationale",
+    "Origine officielle, exhaustivité, fidélité et droit à date non établis",
+    "Classification IA métier, validation/publication et intégration sur référentiels validés restent à développer/qualifier",
+    "Aucune connexion administrative réelle ni calcul douanier validés par ce rapport"
+  ]
+}

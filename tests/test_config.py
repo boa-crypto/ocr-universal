@@ -11,13 +11,15 @@ def _cfg(root, **overrides):
     return Config(data, root)
 
 
-def test_data_dir_default_relative_to_root(tmp_path):
+def test_data_dir_default_relative_to_root(tmp_path, monkeypatch):
+    monkeypatch.delenv("UNOCR_DATA_DIR", raising=False)
     cfg = _cfg(tmp_path)
     assert cfg.data_dir == tmp_path / "data"
     assert cfg.data_dir.is_dir()
 
 
-def test_log_dir_default_relative_to_root(tmp_path):
+def test_log_dir_default_relative_to_root(tmp_path, monkeypatch):
+    monkeypatch.delenv("UNOCR_LOG_DIR", raising=False)
     cfg = _cfg(tmp_path)
     assert cfg.log_dir == tmp_path / "logs"
     assert cfg.log_dir.is_dir()
