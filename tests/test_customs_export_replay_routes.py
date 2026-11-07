@@ -58,7 +58,7 @@ def test_rejeu_api_complet_sans_mutation(fiscal,identite,type_lot,route,params):
     ('code','search?q=x&q=y'),('code','search?q=x&source=%FF'),
     ('code','article?article_id=X&field=texte_integral&offset=1e3'),
     ('tarif','tariff/0101000000?measures_limit=1&measures_limit=2'),
-    ('code','pdf?document_id=TEST_O'),('code','history?article=5'),
+    ('code','pdf?document_id=TEST_O'),('code','fiscal-pdf?document_id=TEST_O'),
 ])
 def test_hors_contrat_avant_archive(fiscal,type_lot,route):
     client,racine,registre,cfg = fiscal

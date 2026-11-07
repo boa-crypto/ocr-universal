@@ -7,7 +7,15 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## Complément actuel — lot 51
+## Complément actuel — lot 52
+
+[Rejeu de provenance et relations déclarées](REJEU_PROVENANCE.md) : contrôles,
+sources, couverture, historique, relations, écarts du même lot et navigations,
+sans interprétation juridique. Sélection : **1 924 tests Python**, **186 scénarios
+JSDOM** réussis ; **44 exports réels UI/API rejoués identiquement**. Aucune nouvelle
+fonction UI. Dernière suite complète : lot 50, toujours non verte.
+
+## Complément — lot 51
 
 [Rejeu typé des lectures documentaires](REJEU_EXPORTS_TYPES.md) : Code, tarif et
 mesures selon matrice fermée, type non deviné. Sélection : **1 888 tests Python**

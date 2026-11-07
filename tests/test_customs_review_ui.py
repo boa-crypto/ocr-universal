@@ -133,7 +133,7 @@ def test_interface_revue_sur_api_reelle(revue,format_mesures):
             objet = json.loads(texte)
             morceaux = objet["requete_relative"].split("?",1)[0].split("/")
             route = "/".join(morceaux[6:])
-            if len(morceaux)>6 and morceaux[4]=="lots" and (route in {"search","article","measure-search","tariff-criteria"} or route.startswith("tariff/")):
+            if len(morceaux)>6 and morceaux[4]=="lots" and (route in {"search","article","measure-search","tariff-criteria","sources","coverage","check","history","article-relations","article-diff","tree","code-tree"} or route.startswith("tariff/")):
                 identite = morceaux[5]
                 type_rejeu,dossier = {"code_a":("code","code_pdf_ui"),"code_b":("code","code_a"),
                     "tarif_a":("tarif","tarif_sub_ui"),"tarif_b":("tarif","tarif_b"),"mesures_a":("mesures","mesures_ui")}[identite]
@@ -149,7 +149,7 @@ def test_interface_revue_sur_api_reelle(revue,format_mesures):
                 assert rejeu["authenticite_verifiee"] is False
                 rejeux += 1
         assert rejeux == 1
-        assert rejeux_types == 5
+        assert rejeux_types == 11
         assert json.loads(exports[0])["resultat"]["type_rapport"] == "lecture_page_pdf_recu"
         assert snapshot(racine) == avant
     finally:

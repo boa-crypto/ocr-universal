@@ -66,3 +66,10 @@ filesystem ou garantie contre modification concurrente après lecture.
 Pas de modification de l'interface ni du cache v69. Les exports réellement
 produits par quatre parcours UI/HTTP/API sont contrôlés hors ligne par ces mêmes
 services, pas par une réponse de rejeu simulée dans le navigateur.
+
+## Extension lot 52
+
+[Provenance, historique et navigation](REJEU_PROVENANCE.md) : huit familles de
+routes supplémentaires, dont l’écart de versions du même lot. La liste des routes
+non prises en charge ci-dessus décrit le périmètre historique 51 ; voir la matrice
+complémentaire 52 pour les nouvelles lectures. PDF et multi-archives restent exclus.
