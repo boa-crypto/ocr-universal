@@ -8,7 +8,7 @@ from .models import Mesure, SourceDocument, StrictModel
 
 
 class SourceMesuresDocumentaires(SourceDocument):
-    format: Literal["json", "csv", "xlsx"]
+    format: Literal["json", "csv", "xlsx", "xls"]
 
 
 # Alias conservé pour les utilisateurs Python du premier contrat (lot 36).

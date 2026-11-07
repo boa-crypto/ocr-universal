@@ -193,7 +193,7 @@ def main(argv=None) -> int:
     cr.add_argument("--write", action="store_true", help="écrire explicitement le lot en quarantaine")
     cr.set_defaults(func=cmd_customs_prepare)
 
-    fm = sub.add_parser("customs-fiscal-prepare", help="préparer des mesures JSON/CSV/XLSX autonomes sans nomenclature ni activation")
+    fm = sub.add_parser("customs-fiscal-prepare", help="préparer des mesures JSON/CSV/XLSX/XLS autonomes sans nomenclature ni activation")
     fm.add_argument("source")
     fm.add_argument("--metadata", required=True)
     fm.add_argument("--out", default="")

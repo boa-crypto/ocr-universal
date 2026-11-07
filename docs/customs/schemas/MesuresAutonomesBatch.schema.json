@@ -141,7 +141,8 @@
           "enum": [
             "json",
             "csv",
-            "xlsx"
+            "xlsx",
+            "xls"
           ],
           "title": "Format",
           "type": "string"
