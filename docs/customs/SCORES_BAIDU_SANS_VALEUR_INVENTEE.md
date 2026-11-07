@@ -1,5 +1,7 @@
 # Lot 66 — confiance Baidu absente ou invalide
 
+> Évolution au lot 67 : [compteurs désormais persistés par run](PROVENANCE_SCORES_PERSISTEE.md). Les limites de persistance ci-dessous décrivent l’état au lot 66 ; la politique numérique reste inchangée.
+
 7 novembre 2026. Contrat de conversion de réponse testé hors réseau, pas mesure
 de précision OCR ni validation juridique des mots reconnus.
 

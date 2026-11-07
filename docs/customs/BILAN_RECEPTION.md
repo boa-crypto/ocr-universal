@@ -7,7 +7,23 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 66
+## État actuel — lot 67
+
+[Provenance des scores persistée](PROVENANCE_SCORES_PERSISTEE.md) : compteurs
+Baidu typés, associés au run et conservés dans résultat/API/export JSON ; pas
+copie du raw, pas statut individuel par mot ni provenance inventée pour les
+anciens résultats. **43 nouveaux cas**, sélection Baidu/provenance **133 réussis**,
+contre-épreuve ancien pipeline **3 échecs attendus sur 3**. Scores et revue humaine
+inchangés. Sélection documentaire **2 160 Python / 212 JSDOM**. Complète :
+**3 386 réussis, 2 échecs Indra, 1 ignoré Indra, 1 avertissement, 354,33 s**.
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42401056646),
+pas suite OCR complète en CI. **26/27 empreintes historiques conformes**, même
+écart partagé ; données et journaux préservés hors commit. Pas fournisseur réel,
+calibration, nouvelle UI ou correction de la géométrie Baidu.
+[Rapport](RAPPORT_LOT67.md), [recette actuelle](RECETTE_LOT67.json).
+Mission réglementaire inchangée, partielle et non recevable pour production fiscale.
+
+## Complément historique — lot 66
 
 [Scores Baidu sans valeur inventée](SCORES_BAIDU_SANS_VALEUR_INVENTEE.md) :
 plus de constante 0,95 sans score fournisseur ; valeur déclarée finie conservée,
