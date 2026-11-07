@@ -1796,7 +1796,7 @@ def patch_field(job_id: str, name: str, patch: FieldPatch, request: Request) -> 
     # rôle exigé : valider/corriger un champ. RBAC inactif = contrôle sans effet.
     _exige(OPERATEUR)(request)
     _exige_job(request, job_id)
-    result = store.load_result(job_id)
+    result, revision = store.load_result_revision(job_id)
     if result is None:
         raise HTTPException(409, "résultat pas encore disponible")
     fields = result.get("fields", {})
@@ -1822,7 +1822,8 @@ def patch_field(job_id: str, name: str, patch: FieldPatch, request: Request) -> 
         fv["status"] = patch.status
     fields[name] = fv
     result["fields"] = fields
-    store.save_result(job_id, result)
+    if not store.replace_result_revision(job_id, revision, result):
+        raise HTTPException(409, "résultat modifié pendant la correction : relisez avant de réessayer")
     acteur = str(getattr(patch, "user", None) or "utilisateur")
     audit(cfg.log_dir, "field_validated", job_id=job_id, field=name,
           confirmed=patch.confirmed_value, corrected=patch.corrected_value,
@@ -1862,7 +1863,7 @@ def annuler_correction(job_id: str, name: str, request: Request,
     _exige(OPERATEUR)(request)
     _exige_job(request, job_id)
     body = body or {}
-    result = store.load_result(job_id)
+    result, revision = store.load_result_revision(job_id)
     if result is None:
         raise HTTPException(409, "résultat pas encore disponible")
     fields = result.get("fields", {})
@@ -1882,7 +1883,8 @@ def annuler_correction(job_id: str, name: str, request: Request,
     fv["status"] = precedent.get("ancien_statut") or "detected"
     fields[name] = fv
     result["fields"] = fields
-    store.save_result(job_id, result)
+    if not store.replace_result_revision(job_id, revision, result):
+        raise HTTPException(409, "résultat modifié pendant la correction : relisez avant de réessayer")
     acteur = str(body.get("user") or "utilisateur")
     motif = str(body.get("motif") or "").strip()
     audit(cfg.log_dir, "field_correction_annulee", job_id=job_id, field=name,
