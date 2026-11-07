@@ -39,7 +39,7 @@ jobs:
       - name: Rendu des modules servis et refus des faux succes (serveur isole)
         run: |
           mkdir -p "$RUNNER_TEMP/customs-review"
-          python -m pytest tests/test_ui_render_contract.py tests/test_ui_dossier.py -q --junitxml="$RUNNER_TEMP/customs-review/ui-served.xml"
+          python -m pytest tests/test_ui_render_contract.py tests/test_ui_dossier.py tests/test_ui_engine_provenance.py -q --junitxml="$RUNNER_TEMP/customs-review/ui-served.xml"
       - name: Diagnostic des echecs PDF et rendu (annotations GitHub)
         if: failure()
         run: |

@@ -390,24 +390,10 @@ function renderResult() {
 
   // moteurs
   const ev = document.getElementById("enginesView");
-  const runs = (res.pages || []).flatMap(p => p.engine_runs || []);
-  const byEngine = {};
-  runs.forEach(r => {
-    byEngine[r.engine] = byEngine[r.engine] || { conf: [], words: 0, ms: 0 };
-    byEngine[r.engine].conf.push(r.mean_confidence);
-    byEngine[r.engine].words += r.word_count; byEngine[r.engine].ms += r.duration_ms;
-  });
-  const names = Object.keys(byEngine);
-  if (names.length > 1) {
-    ev.innerHTML = names.map(n => {
-      const v = byEngine[n];
-      const c = Math.round(v.conf.reduce((a, b) => a + b, 0) / v.conf.length * 100);
-      return `<div class="engine-row"><span class="stat up"></span><b>${esc(n)}</b>
-        <span class="meter hi"><i style="width:${c}%"></i></span>
-        <div class="meta">${v.words} mots · ${Math.round(v.ms)} ms</div></div>`;
-    }).join("");
+  if (window.UniOCREngineRuns) {
+    ev.innerHTML = window.UniOCREngineRuns.render(res.pages);
   } else {
-    ev.innerHTML = '<div class="empty">Comparaison indisponible : un seul moteur OCR actif dans cet environnement.<br>L\'architecture multi-moteurs s\'active dès qu\'EasyOCR/PaddleOCR est installé.</div>';
+    ev.textContent = "Détails des exécutions indisponibles : module de provenance non chargé.";
   }
 
   // qualité
