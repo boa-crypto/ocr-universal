@@ -21,7 +21,7 @@ def run(*args, port):
 
 
 def test_node_loader_and_output_contracts():
-    result = subprocess.run([NODE, "--test", "tests/ui_served_modules.test.js"],
+    result = subprocess.run([NODE, "--test", "--test-reporter=tap", "tests/ui_served_modules.test.js"],
                             cwd=ROOT, capture_output=True, text=True, timeout=30)
     assert result.returncode == 0, result.stdout + result.stderr
     assert "# fail 0" in result.stdout
