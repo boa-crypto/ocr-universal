@@ -7,7 +7,23 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 73
+## État actuel — lot 74
+
+[Correction OCR sans champ](CORRECTION_OCR_CHAMP_ABSENT.md) : plus de succès,
+datation, écriture ou audit de correction pour un champ absent ; service False,
+API 404. Corrections réelles et contrôles de rôle/dossier/appartenance conservés.
+**38 nouveaux cas / 217 corrections-cloisonnement-RBAC réussis** ; contre-épreuve
+ancienne méthode : 20 échecs attendus, 18 réussis. Documentaire **2 160 Python /
+212 JSDOM historiques**. Complète : **3 637 réussis, 2 échecs Indra, 1 ignoré,
+1 avertissement, 361,72 s**.
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42411808580),
+pas suite OCR complète en CI. **26/27 empreintes historiques conformes** ;
+données et journaux conservés hors commit. Pas transaction, audit signé/WORM,
+invalidations de validation ou requalification des faux événements passés.
+Aperçu toujours sans RBAC configuré. [Rapport](RAPPORT_LOT74.md),
+[recette actuelle](RECETTE_LOT74.json).
+
+## Complément historique — lot 73
 
 [Cloisonnement des routes OCR de dossiers](CLOISONNEMENT_OCR_DOSSIERS.md) :
 sept opérations avec rôle/périmètre avant service, appartenance des extractions,
