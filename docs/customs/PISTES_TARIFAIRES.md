@@ -85,6 +85,7 @@ Il n'y a pas de code « candidat validé ». `publication_active`,
 
 Portée initiale du lot 58 : Python/CLI. **Complément lot 59** :
 [API privée et rejeu typé](API_PISTES_TARIFAIRES.md) des rapports de pistes,
-sans UI nouvelle, cache ou publication. La recherche stricte existante ne change
+puis [interface de revue au lot 60](INTERFACE_PISTES_TARIFAIRES.md), sans publication
+ou classement validé. La recherche stricte existante ne change
 pas de contrat. Ces lots avancent l'exploration documentaire de la phase 4,
 sans prétendre livrer l'IA métier.

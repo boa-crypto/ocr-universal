@@ -60,7 +60,8 @@ référence externe digne de confiance ; le résultat identique n'établit pas u
 Pistes littérales partielles d'un lot en quarantaine, pas IA, pertinence juridique,
 probabilité, RGI, notes/exclusions ou validation de matière/fonction/usage. Pas taux,
 dates applicables, publication, écriture métier ou sélection automatique. Une
-conjonction complète est documentaire seulement. Aucun nouveau contrôle UI ou SW
-n'est livré ici ; les parcours JSDOM existants sont des tests de non-régression.
+conjonction complète est documentaire seulement. Le lot 59 ne livrait pas de contrôle UI. Le
+[complément du lot 60](INTERFACE_PISTES_TARIFAIRES.md) ajoute l’action explicite dans
+la revue, avec cache de coquille v70 sans mise en cache des réponses API.
 La qualification des nouvelles lectures HTTP porte sur cinq rapports API réels
 NON OFFICIELS (dont cas vide, FR/AR, pagination, mot entier), pas un corpus national.

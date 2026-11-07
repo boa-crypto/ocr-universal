@@ -7,7 +7,18 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 59
+## État actuel — lot 60
+
+[Interface des pistes documentaires](INTERFACE_PISTES_TARIFAIRES.md), action
+explicite distincte de la recherche stricte, résumé non validé, fiches/pagination
+et export relu/audité. **2 124 tests Python / 212 scénarios JSDOM** réussis,
+**74 exports UI/API contrôlés/rejoués**. SW v70 et aperçu actualisés.
+Nouvelle suite complète : **3 156 réussis, 18 échecs, 11 ignorés,
+1 avertissement, 220,78 s**, mêmes 18 échecs qu'au lot 58 ; suite non verte.
+CI ciblée réussie : [run 42391862178](https://github.com/boa-crypto/ocr-universal/actions/runs/42391862178).
+[Rapport](RAPPORT_LOT60.md), [recette complète actuelle](RECETTE_LOT60.json).
+
+## Complément — lot 59
 
 [API des pistes documentaires et rejeu](API_PISTES_TARIFAIRES.md), nominatif,
 allowlist, provenance épinglée, audit de succès obligatoire ; aucun classement ou
@@ -170,7 +181,7 @@ réglementaire national ni des connexions administratives réellement qualifiée
 | 7 — API centrales | API privée de quarantaine et adaptateur douanier explicite, refus hors contrat | Connexion administrative réelle autorisée/testée et API métier sur corpus validé non qualifiées |
 | 8 — Intégrité et humain | SHA, rejeu, provenance épinglée, audit obligatoire et refus fermés | Authenticité, WORM/signature, attestation humaine et transaction multi-dossiers non établis |
 | 9 — Tests réels | Tests isolés, PDFium réel et HTTP/API réels, suite complète exécutée | OCR système non provisionné, charge nationale, navigateurs/accessibilité, cas juridiques et recette métier non qualifiés |
-| 10 — Livrables | Code, schémas, CLI/API/UI, contrats et rapports 1–45, bilan et résultats JSON | Corpus officiel, qualification juridique et réception de production non fournis |
+| 10 — Livrables | Code, schémas, CLI/API/UI, contrats et rapports 1–60, bilan et résultats JSON | Corpus officiel, qualification juridique et réception de production non fournis |
 
 Il reste **du développement** (notamment IA métier, consolidation, validation et
 publication), pas seulement des pièces externes. L'absence d'originaux ne permet
@@ -188,8 +199,9 @@ applicable n'est choisi automatiquement.
   0 publication active** au titre de ces travaux.
 - SHA base : `688cb720eaeeddd8a88ea2e47021b6b9b17192d7226cc9e5218006b5adcb961f`.
 - SHA référentiels : `b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b`.
-- Fixtures binaires régénérées par la suite complète rétablies vers Git ; journaux
-  préexistants préservés hors commit. Aucun corpus ou artefact lourd ajouté.
+- Les anciennes recettes régénéraient des fixtures suivies, restaurées après
+  vérification. Depuis le lot 56, générations pytest hors corpus suivi ; recettes
+  58/60 sans restauration. Journaux préexistants hors commit ; aucun corpus lourd ajouté.
 
 ## Conditions de clôture globale non satisfaites
 
