@@ -1,0 +1,137 @@
+{
+  "type_rapport": "recette_lot64_technique_non_validation_reglementaire",
+  "date": "2026-11-07",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "revision_code": "4028202ac34980e2044673af199e79650c0923d2",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_originaux_officiels": 0,
+  "articles_codes_officiellement_valides": 0,
+  "nouveaux_tests_python": 16,
+  "selection_pdf_ui": {
+    "reussis": 32,
+    "echecs": 0,
+    "ignores": 0,
+    "duree_secondes": 44.69,
+    "nouveaux_tests_pdf": 16,
+    "tests_ingestion_existants": 8,
+    "tests_ui_existants": 8
+  },
+  "preflight": {
+    "python": "3.11.2",
+    "pypdfium2": "5.15.0",
+    "pdfminer.six": "20260107",
+    "Pillow": "13.0.0",
+    "preflight_avant": {
+      "revision": "6019fea5575764f71d6ed8a2c8e47156677037da",
+      "code_shell": 134,
+      "programme_sha256": "b8fa65a072e4a8e732ac17c7e22b4382f40f63d2cf05847d2cf7ee4d3e9b8d2c"
+    },
+    "preflight_apres": {
+      "loads": 20,
+      "code_shell": 0
+    },
+    "revision_finale": "4028202ac34980e2044673af199e79650c0923d2"
+  },
+  "stress_pdfium_reel": {
+    "processus": 3,
+    "threads_par_processus": 4,
+    "dpi": [
+      72,
+      100,
+      144
+    ],
+    "chargements_totaux": 60,
+    "pages_totales": 90,
+    "ocr_non_execute": true
+  },
+  "api_concurrente": {
+    "requêtes_simultanees": 4,
+    "jobs_distincts": 4,
+    "tous_done": true,
+    "tentatives_par_job": 1,
+    "source_hash_et_pages_verifies": true,
+    "serveur_isole": true,
+    "rendu_natif_serialise_intentionnellement": true
+  },
+  "recette_documentaire_ciblee": {
+    "fichiers": 66,
+    "reussis": 2160,
+    "echecs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_secondes": 55.19,
+    "jsdom": 212,
+    "exports_existants": 74
+  },
+  "suite_complete_finale": {
+    "tests": 3257,
+    "reussis": 3254,
+    "echecs": 2,
+    "ignores": 1,
+    "avertissements": 1,
+    "duree_console_secondes": 333.52,
+    "duree_junit_secondes": 332.356,
+    "code_sortie": 1,
+    "identifiants_echecs": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ],
+    "identiques_lot63": true,
+    "ignore": "tests.test_indra_ocr::test_indra_engine_recognize",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 3257,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 1
+    }
+  },
+  "premiere_complete": {
+    "reussis": 3253,
+    "echecs": 3,
+    "ignores": 1,
+    "duree_secondes": 340.86,
+    "cause_echec_supplementaire": "double test limite pages sans protocole de contexte ; adapte avec assertion fermeture sans relacher refus pages"
+  },
+  "integrite": {
+    "empreintes_historiques_conformes": 26,
+    "total": 27,
+    "ecarts": {
+      "data/referentiels.json": {
+        "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+        "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d"
+      }
+    },
+    "sans_restauration_apres_tests": true,
+    "benchmark16_et_cache_suivis_propres": true,
+    "dossiers_historiques_modifies_dans_espace_partage": [
+      "data/dossiers/dos_85b0f264dc36.json",
+      "data/dossiers/dos_bc3ee32380d9.json",
+      "data/dossiers/dos_c43ad60245d4.json",
+      "data/dossiers/dos_f76099842795.json"
+    ],
+    "modifications_partagees_non_attribuees_avec_certitude": true,
+    "donnees_partagees_preservees_hors_commit": true,
+    "integrite_globale_des_donnees_non_attestee": true
+  },
+  "ci": {
+    "run": 42398432474,
+    "statut": "success",
+    "revision": "4028202ac34980e2044673af199e79650c0923d2",
+    "portee": "24 PDF/ingestion + 8 UI + selection documentaire ; pas OCR complet",
+    "junit_distant_telecharge": false,
+    "premier_run_code_initial_egalement_reussi": 42398005189
+  },
+  "limites": [
+    "Verrou par processus : ingestion PDF serialisee, pas garantie FIFO ou zero crash",
+    "Pas timeout natif principal ni sandbox OS ajoute",
+    "SDK tiers appele ailleurs ou fork pendant verrou non couvert",
+    "Donnees synthetiques, pas qualification documents hostiles ou charge nationale",
+    "Indra indisponible, deux echecs et un ignore persistent",
+    "Ecart empreinte referentiels dans espace partage conserve et non masque"
+  ],
+  "artefacts_locaux": "/home/user/recettes-unocr/lot64"
+}

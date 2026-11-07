@@ -7,7 +7,23 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 63
+## État actuel — lot 64
+
+[Concurrence PDFium et durée de vie native](CONCURRENCE_INGESTION_PDF.md) : crash
+natif reproduit en processus isolé, ingestion désormais sérialisée par processus,
+fermeture des documents/pages/bitmaps sous verrou. **16 nouveaux tests**, 60
+chargements/90 pages et quatre dépôts HTTP concurrents réels sur PDF synthétiques.
+Sélection PDF/ingestion/UI **32/32**, documentaire **2 160 Python / 212 JSDOM**.
+Complète finale : **3 254 réussis, 2 échecs Indra, 1 ignoré Indra,
+1 avertissement, 333,52 s**. [CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42398432474),
+pas suite OCR complète en CI. **Intégrité : 26/27 empreintes historiques conformes**,
+écart `data/referentiels.json` et quatre dossiers partagés modifiés, préservés hors
+commit sans restauration ni attribution certaine. Pas certificat d'intégrité du
+magasin ni qualification de charge/PDF hostiles.
+[Rapport](RAPPORT_LOT64.md), [recette actuelle](RECETTE_LOT64.json).
+Mission réglementaire inchangée, partielle et non recevable pour production fiscale.
+
+## Complément — lot 63
 
 [Contrôle des modules réellement servis](RENDU_MODULES_SERVIS.md) : le test de
 rendu en échec au lot 62 passe maintenant sur serveur isolé, **55 assertions
