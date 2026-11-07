@@ -7,7 +7,17 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 56
+## État actuel — lot 57
+
+[Lanceur commun local/CI](LANCEUR_RECETTE_CIBLEE.md) : Ruff, sélection Python,
+JSDOM, journaux et JUnit séparés ; codes non masqués, aucun succès avec JUnit absent
+ou tests ignorés. **2 043 tests Python / 186 scénarios JSDOM réussis localement**.
+**Workflow distant livré, exécution GitHub Actions non attestée** : aucun run
+observé après premier push, lecture des permissions HTTP 403. Suite complète non
+relancée : dernière complète du lot 56 ci-dessous, 18 échecs toujours ouverts.
+[Rapport](RAPPORT_LOT57.md), [recette ciblée actuelle](RECETTE_LOT57.json).
+
+## Complément — lot 56
 
 [Isolation des générations de documents de test](RECETTE_ISOLEE.md) : génération
 pytest dans des répertoires temporaires, sans réécrire les fixtures suivies.
