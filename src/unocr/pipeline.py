@@ -16,6 +16,7 @@ from PIL import Image
 
 from .calibration import Calibration
 from .classification import DocumentClassifier, consigne_classification
+from .confidence_provenance import attach_confidence_provenance
 from .config import Config, get_config
 from .direction import detect_direction, dominant_direction
 from .extract_fields import extract_generic_fields, locate_value
@@ -434,11 +435,12 @@ class Pipeline:
                     calibrated = self._calibration.apply(out.mean_confidence)
                 else:
                     calibrated = out.mean_confidence
-                engine_runs.append(EngineRun(
+                run = EngineRun(
                     engine=eng.name, page_num=lpage.page_num,
                     languages=languages, mean_confidence=out.mean_confidence,
                     word_count=len(out.words),
-                    duration_ms=out.duration_ms, ok=out.ok, error=out.error))
+                    duration_ms=out.duration_ms, ok=out.ok, error=out.error)
+                engine_runs.append(attach_confidence_provenance(run, out))
                 if out.ok:
                     outputs.append(out)
                 # Fallback intelligent : si Indra échoue ou confiance trop faible, tenter Tesseract

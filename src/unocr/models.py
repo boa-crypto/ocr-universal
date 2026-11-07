@@ -8,10 +8,18 @@ from __future__ import annotations
 import time
 import uuid
 from enum import Enum
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 from fastapi import Body
-from pydantic import AliasChoices, BaseModel, Field
+from pydantic import (
+    AliasChoices,
+    BaseModel,
+    ConfigDict,
+    Field,
+    field_validator,
+    model_serializer,
+    model_validator,
+)
 
 
 def new_id(prefix: str = "") -> str:
@@ -424,6 +432,24 @@ class PreprocessOp(BaseModel):
     reason: str = ""
 
 
+class ConfidenceProvenance(BaseModel):
+    """Compteurs de scores Baidu déclarés/absents/invalides, pas calibration."""
+    model_config = ConfigDict(extra="forbid", strict=True)
+
+    policy: Literal["provider_average_else_zero"]
+    calibrated: Literal[False]
+    reported: int = Field(ge=0, le=10_000)
+    missing: int = Field(ge=0, le=10_000)
+    invalid: int = Field(ge=0, le=10_000)
+
+    @field_validator("calibrated", mode="before")
+    @classmethod
+    def calibrated_must_be_false(cls, value):
+        if value is not False:
+            raise ValueError("provenance non calibrée requise")
+        return value
+
+
 class EngineRun(BaseModel):
     engine: str
     page_num: int
@@ -433,6 +459,27 @@ class EngineRun(BaseModel):
     duration_ms: float = 0.0
     ok: bool = True
     error: Optional[str] = None
+    confidence_provenance: Optional[ConfidenceProvenance] = None
+
+    @model_validator(mode="after")
+    def check_confidence_provenance(self):
+        provenance = self.confidence_provenance
+        if provenance is not None:
+            total = provenance.reported + provenance.missing + provenance.invalid
+            if (self.engine != "baidu" or not self.ok or total != self.word_count
+                    or total > 10_000):
+                raise ValueError("provenance incompatible avec le run")
+            ceiling = provenance.reported / total if total else 0.0
+            if not 0 <= self.mean_confidence <= ceiling:
+                raise ValueError("moyenne incompatible avec les compteurs")
+        return self
+
+    @model_serializer(mode="wrap")
+    def serialize_without_absent_provenance(self, handler):
+        data = handler(self)
+        if self.confidence_provenance is None:
+            data.pop("confidence_provenance", None)
+        return data
 
 
 class Anomaly(BaseModel):
