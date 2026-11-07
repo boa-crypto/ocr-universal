@@ -14,6 +14,41 @@ class ParamRapprochementInvalide(ValueError):
 
 def rapprocher_fragment_article_pdf(repertoire: Path, article_id: str, page: int,
                                     champ: str = "texte_integral", limite: int = 4000, decalage: int = 0) -> dict:
+    verifier_parametres_fragment(article_id, page, champ, limite, decalage)
+    lot, rapport = charger_lot_code(repertoire)
+    article = next((a for a in lot.articles if a.id == article_id), None)
+    document = next((d for d in lot.documents if article and d.id == article.reference.source_id), None)
+    texte = getattr(article, champ) if article else None
+    fragment = texte[decalage:decalage + limite] if texte is not None else None
+    suivant = decalage + len(fragment) if fragment is not None else None
+    constat = constater_fragment_pdf(repertoire, lot, rapport, document, texte, fragment, page,
+                                     "article_absent_du_lot" if article is None else None)
+    return {"type_rapport": "rapprochement_litteral_fragment_article_pdf", "lecture_seule": True,
+            "publication_active": False, "validation_juridique": "non_validee", "validation_humaine_requise": True,
+            "archive": rapport["archive"], "article_id_exact": article_id, "article_trouve": article is not None,
+            "version_declaree": article.model_dump(mode="json", include={"id", "numero_article", "nature_version",
+                "version_juridique", "reference", "validation_juridique"}) if article else None,
+            "document_declare": document.model_dump(mode="json") if document else None,
+            "champ_texte": champ, "texte_renseigne": texte is not None,
+            "fragment_article": fragment, "limite": limite, "decalage": decalage,
+            "total_caracteres_article": len(texte) if texte is not None else None,
+            "decalage_suivant": suivant if texte is not None and suivant < len(texte) else None,
+            **constat,
+            "transcription_verification": "non_verifiee", "authenticite_documentaire": "non_etablie",
+            "completude_reglementaire": "non_etablie", "restitution_juridique_a_date": False,
+            "avertissements": [
+                "Recherche littérale d'un seul fragment dans une seule page explicitement choisie de sa source déclarée.",
+                "Aucune localisation automatique depuis le numéro d'article ou le localisateur libre ; page physique, pas page imprimée.",
+                "Sans normalisation, traduction ou OCR ; ordre, espaces, retours et glyphes extraits peuvent différer de l'affichage.",
+                "Présence ne prouve ni unicité, emplacement juridique, fidélité du reste de l'article ou authenticité du document.",
+                "Absence de correspondance ne prouve pas erreur de transcription ; absence de texte natif reste indéterminée.",
+                "Fragment vide/blanc ou champ absent : aucune extraction, aucune correspondance positive déduite.",
+                "Aucune attestation humaine, consolidation, publication ou donnée applicable à un calcul douanier réel.",
+            ]}
+
+
+def verifier_parametres_fragment(article_id, page, champ, limite, decalage):
+    """Validation commune avant lecture ; le champ est celui de la transcription."""
     if (not isinstance(article_id, str) or not article_id.strip() or len(article_id) > 256
             or any(unicodedata.category(c) in {"Cc", "Cs"} for c in article_id)):
         raise ParamRapprochementInvalide("ID exact non blanc sans contrôle de 256 caractères maximum requis")
@@ -25,16 +60,14 @@ def rapprocher_fragment_article_pdf(repertoire: Path, article_id: str, page: int
         raise ParamRapprochementInvalide("Limite entière de 1 à 16000 requise")
     if type(decalage) is not int or not 0 <= decalage <= MAX_DECALAGE_TEXTE:
         raise ParamRapprochementInvalide("Décalage entier de 0 à 67108864 requis")
-    lot, rapport = charger_lot_code(repertoire)
-    article = next((a for a in lot.articles if a.id == article_id), None)
-    document = next((d for d in lot.documents if article and d.id == article.reference.source_id), None)
-    texte = getattr(article, champ) if article else None
-    fragment = texte[decalage:decalage + limite] if texte is not None else None
-    suivant = decalage + len(fragment) if fragment is not None else None
+
+
+def constater_fragment_pdf(repertoire, lot, rapport, document, texte, fragment, page, absence=None):
+    """Noyau partagé : une page de la source déclarée, aucune validation juridique."""
     natif, nombre, sha, debut = None, None, None, None
     correspondance = None
-    if article is None:
-        constat = "article_absent_du_lot"
+    if absence is not None:
+        constat = absence
     elif texte is None:
         constat = "champ_absent"
     elif not fragment:
@@ -50,32 +83,11 @@ def rapprocher_fragment_article_pdf(repertoire: Path, article_id: str, page: int
             correspondance = position >= 0
             debut = position if correspondance else None
             constat = "correspondance_litterale_trouvee" if correspondance else "correspondance_litterale_non_trouvee"
-    return {"type_rapport": "rapprochement_litteral_fragment_article_pdf", "lecture_seule": True,
-            "publication_active": False, "validation_juridique": "non_validee", "validation_humaine_requise": True,
-            "archive": rapport["archive"], "article_id_exact": article_id, "article_trouve": article is not None,
-            "version_declaree": article.model_dump(mode="json", include={"id", "numero_article", "nature_version",
-                "version_juridique", "reference", "validation_juridique"}) if article else None,
-            "document_declare": document.model_dump(mode="json") if document else None,
-            "champ_texte": champ, "texte_renseigne": texte is not None,
-            "fragment_article": fragment, "limite": limite, "decalage": decalage,
-            "total_caracteres_article": len(texte) if texte is not None else None,
-            "decalage_suivant": suivant if texte is not None and suivant < len(texte) else None,
-            "page_physique_demandee": page, "page_choisie_explicitement": True,
+    return {"page_physique_demandee": page, "page_choisie_explicitement": True,
             "extraction_effectuee": natif is not None, "sha256_pdf_lu": sha, "nombre_pages_pdf": nombre,
             "total_caracteres_page": len(natif) if natif is not None else None,
             "texte_natif_non_vide": bool(natif.strip()) if natif is not None else None,
             "constat": constat, "fragment_present_litteralement": correspondance,
             "position_debut_pdf": debut, "position_fin_pdf_exclusive": debut + len(fragment) if debut is not None else None,
             "occurrence_restituee": "premiere_uniquement_sans_denombrement",
-            "unite_decalage": "points_de_code_unicode_python", "methode": "texte_natif_pdfium_sans_ocr",
-            "transcription_verification": "non_verifiee", "authenticite_documentaire": "non_etablie",
-            "completude_reglementaire": "non_etablie", "restitution_juridique_a_date": False,
-            "avertissements": [
-                "Recherche littérale d'un seul fragment dans une seule page explicitement choisie de sa source déclarée.",
-                "Aucune localisation automatique depuis le numéro d'article ou le localisateur libre ; page physique, pas page imprimée.",
-                "Sans normalisation, traduction ou OCR ; ordre, espaces, retours et glyphes extraits peuvent différer de l'affichage.",
-                "Présence ne prouve ni unicité, emplacement juridique, fidélité du reste de l'article ou authenticité du document.",
-                "Absence de correspondance ne prouve pas erreur de transcription ; absence de texte natif reste indéterminée.",
-                "Fragment vide/blanc ou champ absent : aucune extraction, aucune correspondance positive déduite.",
-                "Aucune attestation humaine, consolidation, publication ou donnée applicable à un calcul douanier réel.",
-            ]}
+            "unite_decalage": "points_de_code_unicode_python", "methode": "texte_natif_pdfium_sans_ocr"}

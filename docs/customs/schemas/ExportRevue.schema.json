@@ -105,7 +105,7 @@
     },
     "requete_relative": {
       "maxLength": 16384,
-      "pattern": "^/api/v1/customs-review/(?:diff|article-diff|lots/[A-Za-z0-9][A-Za-z0-9_-]{0,63}/(?:check|search|history|coverage|tree|article|article-diff|article-pdf-match|article-relations|code-tree|pdf|tariff/[0-9]{10}))(?:\\?[^#\\x00-\\x20]*)?$",
+      "pattern": "^/api/v1/customs-review/(?:diff|article-diff|lots/[A-Za-z0-9][A-Za-z0-9_-]{0,63}/(?:check|search|history|coverage|tree|article|article-diff|article-pdf-match|article-relations|relation-pdf-match|code-tree|pdf|tariff/[0-9]{10}))(?:\\?[^#\\x00-\\x20]*)?$",
       "title": "Requete Relative",
       "type": "string"
     },

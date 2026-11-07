@@ -27,6 +27,10 @@ from ..customs_reference.history import ParamHistoriqueInvalide, historique_arti
 from ..customs_reference.importer import _lire
 from ..customs_reference.legal_comparison import charger_lot_code, comparer_lots_code
 from ..customs_reference.pdf_page import LecturePDFRefusee, ParamPDFInvalide, lire_page_pdf
+from ..customs_reference.relation_pdf_match import (
+    ParamJustificationPDFInvalide,
+    rapprocher_justification_pdf,
+)
 from ..customs_reference.review_registry import (
     IDENTIFIANT,
     RegistreRevueIndisponible,
@@ -81,6 +85,8 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                                  "resultat": resultat}, headers=NO_STORE)
         except ParamRapprochementInvalide:
             statut, code = 422, "parametres_rapprochement_article_pdf_invalides"
+        except ParamJustificationPDFInvalide:
+            statut, code = 422, "parametres_justification_pdf_invalides"
         except ParamRelationsArticleInvalide:
             statut, code = 422, "parametres_relations_article_invalides"
         except ParamArbreCodeInvalide:
@@ -190,6 +196,16 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 raise HTTPException(422, {"code": "lecture_article_non_applicable_au_tarif"}, headers=NO_STORE)
             return consulter_article(p[0], article_id, field, limit, offset)
         return executer(utilisateur, "lecture_article", [lot_id], lire_version)
+
+    @router.get("/lots/{lot_id}/relation-pdf-match")
+    def justification_pdf(lot_id: str, relation_id: str = Query(..., min_length=1, max_length=256),
+                          page: int = Query(..., ge=1, le=10000), limit: int = Query(4000, ge=1, le=MAX_FRAGMENT),
+                          offset: int = Query(0, ge=0, le=MAX_DECALAGE_TEXTE), utilisateur=Depends(autoriser)):
+        def constater(e, p, registre):
+            if e[0].type_lot != "code":
+                raise HTTPException(422, {"code": "justification_pdf_non_applicable_au_tarif"}, headers=NO_STORE)
+            return rapprocher_justification_pdf(p[0], relation_id, page, limit, offset)
+        return executer(utilisateur, "rapprochement_justification_pdf", [lot_id], constater)
 
     @router.get("/lots/{lot_id}/article-relations")
     def relations_article(lot_id: str, article_id: str = Query(..., min_length=1, max_length=256),

@@ -611,5 +611,44 @@ await scenario('Relations exactes : lecture d’article propose inspection puis 
   reponse({detail:{code:'audit_revue_indisponible'}},503);button('Inspecter les relations déclarées').click();await tick();
   assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
 });
+const justificationRapport=extra=>envelope({type_rapport:'rapprochement_litteral_justification_relation_pdf',relation_id_exact:'R',relation_trouvee:true,
+  fragment_justification:'أ😀',limite:4,decalage:0,decalage_suivant:2,total_caracteres_justification:8,page_physique_demandee:2,
+  unite_decalage:'points_de_code_unicode_python',extraction_effectuee:true,document_declare:{id:'SRC',sha256:'a'.repeat(64)},
+  sha256_pdf_lu:'a'.repeat(64),position_debut_pdf:5,preuve_juridique_verifiee:false,...extra});
+await scenario('Justification : préparation depuis relation sans extraction ni page déduite',async({host,appels,button,reponse})=>{
+  host.querySelector('[data-relations-id]').value='V';reponse(relationsRapport({}));button('Inspecter les relations déclarées').click();await tick();
+  const n=appels.length;button('Préparer le rapprochement de justification R').click();await tick();assert.equal(appels.length,n);
+  assert.equal(host.querySelector('[data-justification-id]').value,'R');assert.equal(host.querySelector('[data-justification-page]').value,'1');
+});
+await scenario('Justification : paramètres exacts, source imposée et page rapprochée',async({host,appels,button,reponse})=>{
+  host.querySelector('[data-justification-id]').value='R & عربي';host.querySelector('[data-justification-page]').value='2';
+  reponse(justificationRapport({}));button('Rapprocher la justification avec').click();await tick();let u=new URL(appels.at(-1).url,'https://x');
+  assert.equal(u.searchParams.get('relation_id'),'R & عربي');assert.equal(u.searchParams.get('page'),'2');assert(!u.searchParams.has('document_id'));
+  button('Lire la page PDF rapprochée').click();await tick();u=new URL(appels.at(-1).url,'https://x');
+  assert.equal(u.searchParams.get('document_id'),'SRC');assert.equal(u.searchParams.get('offset'),'5');assert.equal(u.searchParams.get('page'),'2');
+});
+await scenario('Justification : suite Unicode conserve relation et page',async({host,appels,button,reponse})=>{
+  host.querySelector('[data-justification-id]').value='R';reponse(justificationRapport({}));button('Rapprocher la justification avec').click();await tick();
+  button('Justification suivante à rapprocher').click();await tick();const u=new URL(appels.at(-1).url,'https://x');
+  assert.equal(u.searchParams.get('offset'),'2');assert.equal(u.searchParams.get('page'),'2');assert.equal(u.searchParams.get('relation_id'),'R');
+});
+await scenario('Justification : indisponibilité et HTML sans preuve validée',async({host,button,reponse})=>{
+  host.querySelector('[data-justification-id]').value='R';reponse(justificationRapport({fragment_justification:'<img src=x onerror=alert(1)>',
+    extraction_effectuee:false,sha256_pdf_lu:null,fragment_present_litteralement:null,decalage_suivant:null}));
+  button('Rapprocher la justification avec').click();await tick();assert(!host.querySelector('img'));assert(!button('Lire la page PDF rapprochée'));
+  assert(host.querySelector('pre').textContent.includes('"preuve_juridique_verifiee": false'));
+});
+await scenario('Justification : invalides, tarif et anciennes actions sans lecture',async({w,host,appels,button,reponse})=>{
+  let n=appels.length;button('Rapprocher la justification avec').click();await tick();assert.equal(appels.length,n);
+  host.querySelector('[data-justification-id]').value='R';host.querySelector('[data-justification-page]').value='0';button('Rapprocher la justification avec').click();await tick();assert.equal(appels.length,n);
+  host.querySelector('[data-justification-page]').value='1';reponse(justificationRapport({}));button('Rapprocher la justification avec').click();await tick();
+  const ancien=button('Justification suivante');n=appels.length;const lot=host.querySelector('select');lot.value='test-tarif';lot.dispatchEvent(new w.Event('change'));
+  ancien.click();button('Rapprocher la justification avec').click();await tick();assert.equal(appels.length,n);
+});
+await scenario('Justification : panne audit efface résultat et actions',async({host,button,reponse})=>{
+  host.querySelector('[data-justification-id]').value='R';reponse(justificationRapport({}));button('Rapprocher la justification avec').click();await tick();
+  reponse({detail:{code:'audit_revue_indisponible'}},503);button('Rapprocher la justification avec').click();await tick();
+  assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

@@ -98,3 +98,9 @@ globale. Export navigateur limité à 10 Mio selon les règles existantes. Pas d
 relations inter-lots ou articles↔tarif/taxes/régimes, de création/édition de liens,
 validation humaine signée, consolidation ou restitution de droit applicable à date.
 Aucune référence non vérifiée autorisée pour un calcul douanier réel.
+
+## Extension lot 30
+
+Un fragment de justification peut désormais être recherché littéralement dans une
+page explicitement choisie de sa source, sans que l’inspection seule ne déclenche
+ce contrôle ou ne valide le lien : [RAPPROCHEMENT_JUSTIFICATION_PDF.md](RAPPROCHEMENT_JUSTIFICATION_PDF.md).

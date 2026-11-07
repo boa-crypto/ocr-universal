@@ -91,3 +91,7 @@ Lot 29 : `/lots/{lot_id}/article-relations` admise dans l’enveloppe partielle
 version 1 avec provenance simple. Relations/justifications déclarées seulement,
 aucune validation de preuve ou authenticité. Anciens contrôleurs stricts susceptibles
 de refuser cette nouvelle route.
+
+Lot 30 : `/lots/{lot_id}/relation-pdf-match` admise dans l’enveloppe partielle
+version 1 avec provenance simple. Constat littéral d’un fragment de justification,
+non preuve juridique. Anciens contrôleurs stricts susceptibles de refuser l’ajout.

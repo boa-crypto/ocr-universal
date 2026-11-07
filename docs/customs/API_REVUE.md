@@ -187,3 +187,11 @@ relation juridique déduite. Route intra-lot conservée.
 Un seul saut incident à l’ID exact, types/sens déclarés, sources de preuve de la page.
 Type absent = tous ; même autorisation/épingle/audit/no-store. Tarif/paramètres
 invalides 422 ; aucun lien juridique inféré. [Guide](RELATIONS_ARTICLE.md).
+
+### Justification d’une relation / PDF (lot 30)
+
+`GET /lots/{lot_id}/relation-pdf-match?relation_id=…&page=1&limit=4000&offset=0`.
+Page obligatoire, fragment de justification et source imposée par la relation.
+Constat littéral uniquement ; même autorisation/épingle/audit/no-store. Paramètres/
+tarif 422 ; PDF refusé 409 ; audit indisponible 503.
+[Guide](RAPPROCHEMENT_JUSTIFICATION_PDF.md).

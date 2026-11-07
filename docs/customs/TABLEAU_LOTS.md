@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État au 7 novembre 2026 après le lot 29. **Terminé = périmètre technique livré et
+État au 7 novembre 2026 après le lot 30. **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -33,10 +33,11 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 26 | Navigation Code par source et chemin déclaré | Terminé | Hiérarchie nationale exhaustive non constituée |
 | 27 | Présence littérale d’un fragment dans une page PDF source | Terminé | Pas de fidélité intégrale, OCR ou attestation humaine |
 | 28 | Comparaison littérale d’articles entre deux lots Code, sources séparées | Terminé | Pas de filiation juridique ou consolidation |
-| 29 | Inspection des relations déclarées d’une version exacte, filtres et preuves | Terminé | Justifications non rapprochées/validées juridiquement |
+| 29 | Inspection des relations déclarées d’une version exacte, filtres et preuves | Terminé | Pas de validation juridique des liens |
+| 30 | Présence littérale d’un fragment de justification dans sa page PDF source | Terminé | Présence ne prouve pas le lien ou sa portée juridique |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
-`RAPPORT_LOT29.md`. Les limites historiques des rapports précédents sont à lire
+`RAPPORT_LOT30.md`. Les limites historiques des rapports précédents sont à lire
 avec les ajouts suivants ; par exemple le lot 27 ajoute un rapprochement littéral,
 mais pas une validation des transcriptions.
 
@@ -60,7 +61,7 @@ mais pas une validation des transcriptions.
 
 ## Bilan
 
-29 lots techniques livrés ; dernière sélection : **1 232 tests Python / 81 scénarios
+30 lots techniques livrés ; dernière sélection : **1 258 tests Python / 87 scénarios
 JSDOM réussis**. Ce n’est ni la totalité de la suite OCR ni une recette nationale.
 Données historiques conservées. **0 nouvel original officiel acquis, 0 article/code
 national officiellement validé, 0 publication active ; mission globale partielle.**

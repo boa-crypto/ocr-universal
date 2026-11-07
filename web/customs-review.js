@@ -179,7 +179,7 @@
         histoire.disabled = filtres.disabled;
         fiche.disabled = !filtres.disabled;
         arbre.disabled = !filtres.disabled;
-        relationsLecture.disabled = filtres.disabled; matchLecture.disabled = filtres.disabled; codeArbre.disabled = filtres.disabled; lecture.disabled = filtres.disabled; diffArticle.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
+        justificationLecture.disabled = filtres.disabled; relationsLecture.disabled = filtres.disabled; matchLecture.disabled = filtres.disabled; codeArbre.disabled = filtres.disabled; lecture.disabled = filtres.disabled; diffArticle.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
         ++requete; viderResultat();
       }
       var limit = champ(form, "Limite (1–100)", "input", "number");
@@ -416,6 +416,27 @@
         lire("/lots/" + encodeURIComponent(lot.value) + "/article-relations?" + p, afficher);
       }
       relationsLecture.append(bouton("Inspecter les relations déclarées", chargerRelations));
+      var justificationLecture = element("fieldset");
+      justificationLecture.append(element("legend", "Rapprochement littéral justification / PDF — Code seulement"));
+      justificationLecture.append(element("p", "Justification déclarée, pas forcément citation. Source imposée par la relation ; page physique à choisir. Présence ≠ preuve juridique, absence ≠ erreur."));
+      var justificationId = champ(justificationLecture, "ID exact de relation"); justificationId.maxLength = 256; justificationId.setAttribute("data-justification-id", "");
+      var justificationPage = champ(justificationLecture, "Page physique explicitement choisie (1–10000)", "input", "number");
+      justificationPage.min = 1; justificationPage.max = 10000; justificationPage.value = 1; justificationPage.required = true; justificationPage.setAttribute("data-justification-page", "");
+      var justificationLimit = champ(justificationLecture, "Caractères de justification (1–16000)", "input", "number");
+      justificationLimit.setAttribute("data-justification-limit", "");
+      justificationLimit.min = 1; justificationLimit.max = 16000; justificationLimit.value = 4000; justificationLimit.required = true;
+      var justificationOffset = champ(justificationLecture, "Décalage justification (0–67108864)", "input", "number");
+      justificationOffset.setAttribute("data-justification-offset", "");
+      justificationOffset.min = 0; justificationOffset.max = 67108864; justificationOffset.value = 0; justificationOffset.required = true;
+      function chargerJustification() {
+        if (justificationLecture.disabled) return;
+        if (!idValide(justificationId.value) || !justificationPage.reportValidity() || !justificationLimit.reportValidity() || !justificationOffset.reportValidity()) {
+          ++requete; viderResultat(); statut.textContent = "Relation exacte, page et fragment de justification valides requis."; return;
+        }
+        lire("/lots/" + encodeURIComponent(lot.value) + "/relation-pdf-match?" + new URLSearchParams({relation_id: justificationId.value,
+          page: justificationPage.value, limit: justificationLimit.value, offset: justificationOffset.value}), afficher);
+      }
+      justificationLecture.append(bouton("Rapprocher la justification avec sa page PDF", chargerJustification));
       function idValide(id) {
         return typeof id === "string" && id.trim() && Array.from(id).length <= 256 && !/[\u0000-\u001f\u007f-\u009f]/.test(id);
       }
@@ -609,6 +630,10 @@
                 v.sens_par_rapport_a_version !== (sortante ? "sortante" : "entrante") ||
                 autre.id !== (sortante ? r.cible_id : r.origine_id) || !idValide(autre.id)) return;
             if (!versionsVues.has(autre.id)) { versionsVues.add(autre.id); proposerVersion(autre.id); }
+            actions.append(actionDocumentaire("Préparer le rapprochement de justification " + r.id, function () {
+              justificationId.value = r.id; justificationPage.value = 1; justificationLimit.value = 4000; justificationOffset.value = 0;
+              statut.textContent = "Relation préparée : choisissez explicitement la page physique puis lancez le rapprochement.";
+            }));
             var origine = sortante ? rapport.version_declaree : autre;
             if (!r.reference || !origine || !origine.reference || r.reference.source_id !== origine.reference.source_id ||
                 !Array.isArray(rapport.documents_declares_page)) return;
@@ -629,8 +654,21 @@
             }));
           }
         }
+        if (rapport.type_rapport === "rapprochement_litteral_justification_relation_pdf" && !justificationLecture.disabled &&
+            rapport.relation_trouvee === true && idValide(rapport.relation_id_exact) &&
+            rapport.unite_decalage === "points_de_code_unicode_python" && entier(rapport.page_physique_demandee, 1, 10000) &&
+            entier(rapport.limite, 1, 16000) && entier(rapport.decalage, 0, 67108864) &&
+            typeof rapport.fragment_justification === "string" && Array.from(rapport.fragment_justification).length <= rapport.limite &&
+            rapport.decalage_suivant === rapport.decalage + Array.from(rapport.fragment_justification).length &&
+            entier(rapport.decalage_suivant, rapport.decalage + 1, 67108864) &&
+            entier(rapport.total_caracteres_justification, rapport.decalage_suivant + 1, 67108864)) {
+          actions.append(actionDocumentaire("Justification suivante à rapprocher", function () {
+            justificationId.value = rapport.relation_id_exact; justificationPage.value = rapport.page_physique_demandee;
+            justificationLimit.value = rapport.limite; justificationOffset.value = rapport.decalage_suivant; chargerJustification();
+          }));
+        }
         var docPDF = rapport.document_declare;
-        if (!pdfLecture.disabled && rapport.type_rapport === "rapprochement_litteral_fragment_article_pdf" &&
+        if (!pdfLecture.disabled && ["rapprochement_litteral_fragment_article_pdf", "rapprochement_litteral_justification_relation_pdf"].includes(rapport.type_rapport) &&
             rapport.extraction_effectuee === true && docPDF && idValide(docPDF.id) &&
             typeof docPDF.sha256 === "string" && /^[a-f0-9]{64}$/.test(docPDF.sha256) && rapport.sha256_pdf_lu === docPDF.sha256 &&
             entier(rapport.page_physique_demandee, 1, 10000)) {
@@ -679,7 +717,7 @@
         }
       };
       lot.addEventListener("change", adapter); adapter();
-      outils.append(form, fiche, arbre, codeArbre, lecture, pdfLecture, diffArticle, matchLecture, relationsLecture);
+      outils.append(form, fiche, arbre, codeArbre, lecture, pdfLecture, diffArticle, matchLecture, relationsLecture, justificationLecture);
     });
   }
   function demarrer() {

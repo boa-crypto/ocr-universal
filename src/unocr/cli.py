@@ -268,6 +268,14 @@ def main(argv=None) -> int:
     ca.add_argument("--offset", type=int, default=0)
     ca.set_defaults(func=cmd_customs_code_read)
 
+    rp = sub.add_parser("customs-code-relation-pdf-match", help="présence littérale d'une justification dans sa page source")
+    rp.add_argument("lot")
+    rp.add_argument("--id", required=True, dest="relation_id")
+    rp.add_argument("--page", required=True, type=int)
+    rp.add_argument("--limit", type=int, default=4000)
+    rp.add_argument("--offset", type=int, default=0)
+    rp.set_defaults(func=cmd_customs_code_relation_pdf_match)
+
     ar = sub.add_parser("customs-code-article-relations", help="liens déclarés d'une version exacte, sans graphe inféré")
     ar.add_argument("lot")
     ar.add_argument("--id", required=True, dest="article_id")
@@ -377,6 +385,13 @@ def cmd_customs_review_export_check(args) -> int:
     from .customs_reference.review_export import verifier_export
 
     return _afficher_lecture_douaniere(verifier_export, args.file)
+
+
+def cmd_customs_code_relation_pdf_match(args) -> int:
+    from .customs_reference.relation_pdf_match import rapprocher_justification_pdf
+
+    return _afficher_lecture_douaniere(lambda chemin: rapprocher_justification_pdf(
+        chemin, args.relation_id, args.page, args.limit, args.offset), args.lot)
 
 
 def cmd_customs_code_article_relations(args) -> int:
