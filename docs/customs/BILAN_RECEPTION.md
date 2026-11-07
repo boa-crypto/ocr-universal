@@ -7,7 +7,25 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 68
+## État actuel — lot 69
+
+[Localisations Baidu fournies contrôlées](LOCALISATIONS_BAIDU_DECLAREES.md) :
+coordonnées requises numériques finies, boîtes positives dans l'image envoyée,
+sans clipping, sortie invalide entièrement refusée avec erreur neutre.
+**Sans `location`, approximation pleine image conservée**, pas géométrie mesurée.
+**54 nouveaux cas / 187 Baidu-provenance réussis** ; contre-épreuve ancien adaptateur :
+41 écarts attendus, 6 réussis, 7 désélectionnés. Documentaire **2 160 Python /
+212 JSDOM historiques**. Complète : **3 442 réussis, 2 échecs Indra, 1 ignoré Indra,
+1 avertissement, 363,12 s**.
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42402932739),
+pas suite OCR complète en CI. **26/27 empreintes historiques conformes**, même
+écart partagé ; données et journaux préservés hors commit. Page échouée sans texte :
+anomalie `OCR_FAILED`, mais toujours absente de `pages_low_confidence` et des
+moyennes mixtes — limite non corrigée. Pas fournisseur réel ou précision qualifiée.
+[Rapport](RAPPORT_LOT69.md), [recette actuelle](RECETTE_LOT69.json).
+Mission réglementaire inchangée, partielle et non recevable pour production fiscale.
+
+## Complément historique — lot 68
 
 [Provenance visible dans le panneau moteurs](AFFICHAGE_PROVENANCE_SCORES.md) :
 exécutions séparées, même avec un seul moteur, compteurs Baidu cohérents affichés
