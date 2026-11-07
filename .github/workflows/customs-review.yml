@@ -32,6 +32,22 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/customs-review"
           python -m pytest tests/test_ui_render_contract.py tests/test_ui_dossier.py -q --junitxml="$RUNNER_TEMP/customs-review/ui-served.xml"
+      - name: Diagnostic des echecs de rendu (annotations GitHub)
+        if: failure()
+        run: |
+          python - <<'PYCODE'
+          import os
+          import pathlib
+          import xml.etree.ElementTree as ET
+          path = pathlib.Path(os.environ["RUNNER_TEMP"]) / "customs-review/ui-served.xml"
+          if path.is_file():
+              for case in ET.parse(path).iter("testcase"):
+                  for failure in list(case):
+                      if failure.tag in {"error", "failure"}:
+                          text = (case.get("name", "") + "\n" + (failure.text or ""))[-12000:]
+                          text = text.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+                          print("::error::" + text)
+          PYCODE
       - name: Recette ciblee avec donnees temporaires
         run: python scripts/customs_review_recipe.py --artifacts "$RUNNER_TEMP/customs-review"
       - name: Journaux, JUnit et bilan cible (meme en echec)
