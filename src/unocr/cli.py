@@ -406,10 +406,11 @@ def main(argv=None) -> int:
     fp.add_argument("--offset", type=int, default=0)
     fp.set_defaults(func=cmd_customs_fiscal_pdf_read)
 
-    vr = sub.add_parser("customs-review-export-replay", help="rejouer un export de critères contre une archive explicite, sans authentification")
+    vr = sub.add_parser("customs-review-export-replay", help="rejouer un export documentaire pris en charge contre une archive explicite, sans authentification")
     vr.add_argument("file")
     vr.add_argument("--lot", required=True)
     vr.add_argument("--lot-id", required=True)
+    vr.add_argument("--type-lot", choices=("tarif","code","mesures"), default="tarif")
     vr.set_defaults(func=cmd_customs_review_export_replay)
 
     ve = sub.add_parser("customs-review-export-check", help="contrôler hors ligne la structure d'un export, sans authentification")
@@ -473,11 +474,11 @@ def cmd_customs_code_search(args) -> int:
 
 
 def cmd_customs_review_export_replay(args) -> int:
-    from .customs_reference.export_replay import verifier_rejeu_criteres
+    from .customs_reference.export_replay import verifier_rejeu_export
 
     constats = []
     def operation(fichier, lot):
-        constat = verifier_rejeu_criteres(fichier, lot, args.lot_id)
+        constat = verifier_rejeu_export(fichier, lot, args.lot_id, args.type_lot)
         constats.append(constat)
         return constat
     code = _afficher_lecture_douaniere(operation, args.file, args.lot)

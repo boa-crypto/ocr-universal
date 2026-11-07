@@ -1,4 +1,4 @@
-"""Rejeu local d'un export de critères ; aucune identité officielle ou signature."""
+"""Rejeu local typé d’exports documentaires ; aucune identité officielle ou signature."""
 import hashlib
 import json
 import re
@@ -9,10 +9,10 @@ from .review_export import ExportRefuse, _lire_export, analyser_export
 from .tariff_criteria import CRITERES, rechercher_tarif_criteres
 
 
-def _parametres_export(requete, lot_id):
+def _parametres_export(requete, lot_id, *, route="tariff-criteria", autorises=None, numeriques=None):
     url = urlsplit(requete)
-    if url.scheme or url.netloc or url.fragment or url.path != f"/api/v1/customs-review/lots/{lot_id}/tariff-criteria":
-        raise ExportRefuse("Route de critères et identité de lot explicites requises")
+    if url.scheme or url.netloc or url.fragment or url.path != f"/api/v1/customs-review/lots/{lot_id}/{route}":
+        raise ExportRefuse("Route et identité de lot explicites requises")
     if re.search(r"%(?![0-9a-fA-F]{2})", url.query):
         raise ExportRefuse("Encodage de requête incompatible")
     try:
@@ -21,16 +21,19 @@ def _parametres_export(requete, lot_id):
     except ValueError:
         raise ExportRefuse("Requête de critères incompatible") from None
     params = {}
-    autorises = {*CRITERES,"code_prefix","match_mode","limit","offset"}
+    if autorises is None:
+        autorises = {*CRITERES,"code_prefix","match_mode","limit","offset"}
+    if numeriques is None:
+        numeriques = {"limit":("limite",7),"offset":("decalage",7)}
     for cle,valeur in paires:
         if cle not in autorises or cle in params:
             raise ExportRefuse("Paramètre inconnu ou dupliqué")
         params[cle] = valeur
-    for cle in ("limit","offset"):
+    for cle,(destination,chiffres) in numeriques.items():
         if cle in params:
-            if re.fullmatch(r"[0-9]{1,7}",params[cle]) is None:
+            if re.fullmatch(r"[0-9]{1,"+str(chiffres)+"}",params[cle]) is None:
                 raise ExportRefuse("Pagination décimale ASCII explicite requise")
-            params["limite" if cle == "limit" else "decalage"] = int(params.pop(cle))
+            params[destination] = int(params.pop(cle))
     return params
 
 
@@ -39,7 +42,7 @@ def _canonique(objet):
     return json.dumps(objet,ensure_ascii=False,sort_keys=True,separators=(",",":"),allow_nan=False).encode("utf-8")
 
 
-def verifier_rejeu_criteres(chemin_export: Path, repertoire: Path, lot_id: str) -> dict:
+def _verifier_rejeu(chemin_export: Path, repertoire: Path, lot_id: str, preparer=None) -> dict:
     if not isinstance(lot_id,str) or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,63}",lot_id) is None:
         raise ExportRefuse("Identité locale de lot explicite requise")
     contenu = _lire_export(chemin_export)
@@ -47,9 +50,14 @@ def verifier_rejeu_criteres(chemin_export: Path, repertoire: Path, lot_id: str) 
     # Un seul fichier lu ; le contenu déjà contrôlé (doublons, bornes et Unicode)
     # est reparsé sans rouvrir le chemin. Aucun paramètre n'est un chemin local.
     objet = json.loads(contenu)
-    params = _parametres_export(objet["requete_relative"],lot_id)
+    if preparer is None:
+        params = _parametres_export(objet["requete_relative"],lot_id)
+        def operation(p):
+            return rechercher_tarif_criteres(p,**params)
+    else:
+        operation = preparer(objet["requete_relative"],lot_id)
     try:
-        reproduit = rechercher_tarif_criteres(repertoire,**params)
+        reproduit = operation(repertoire)
     except (OSError, ValueError, KeyError, TypeError, RecursionError):
         raise ExportRefuse("Archive fournie ou paramètres de recherche incompatibles") from None
     manifeste = reproduit["archive"]["manifest_sha256"]
@@ -74,3 +82,20 @@ def verifier_rejeu_criteres(chemin_export: Path, repertoire: Path, lot_id: str) 
             "Différence peut provenir d'une autre archive, d'une modification ou d'une version logicielle différente, pas preuve de fraude.",
             "Horodatage client et enveloppe ne sont pas rejoués ; aucune signature, identité humaine ou validation juridique attestée.",
             "Contrôle en lecture seule, pas transaction filesystem ni garantie contre mutation concurrente après lecture."]}
+
+
+def verifier_rejeu_criteres(chemin_export: Path, repertoire: Path, lot_id: str) -> dict:
+    """Contrat lot 50 conservé : critères tarifaires uniquement."""
+    return _verifier_rejeu(chemin_export,repertoire,lot_id)
+
+
+def verifier_rejeu_export(chemin_export: Path, repertoire: Path, lot_id: str, type_lot: str) -> dict:
+    """Rejeu typé des seules lectures explicitement prises en charge."""
+    if not isinstance(type_lot,str) or type_lot not in {"code","tarif","mesures"}:
+        raise ExportRefuse("Type explicite code, tarif ou mesures requis")
+    from .export_replay_routes import preparer_rejeu
+
+    resultat = _verifier_rejeu(chemin_export,repertoire,lot_id,
+                              lambda requete,identite: preparer_rejeu(requete,identite,type_lot))
+    resultat.update(type_controle="rejeu_local_export_documentaire",type_lot_explicite=type_lot)
+    return resultat

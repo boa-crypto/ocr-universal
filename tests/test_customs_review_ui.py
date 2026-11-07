@@ -18,7 +18,7 @@ from tests.test_customs_fiscal_xls import fichiers as fichiers_mesures_xls
 from tests.test_customs_fiscal_xlsx import fichiers as fichiers_mesures_xlsx
 from tests.test_customs_reference import snapshot
 from tests.test_customs_subdivisions import subdivisions
-from unocr.customs_reference.export_replay import verifier_rejeu_criteres
+from unocr.customs_reference.export_replay import verifier_rejeu_criteres, verifier_rejeu_export
 from unocr.customs_reference.fiscal_importer import preparer_mesures_autonomes
 from unocr.customs_reference.importer import preparer_tarif
 from unocr.customs_reference.legal_importer import preparer_code
@@ -125,11 +125,22 @@ def test_interface_revue_sur_api_reelle(revue,format_mesures):
         copies = [v.removeprefix("PDF_SOURCE_SHA256=") for v in resultat.stdout.splitlines() if v.startswith("PDF_SOURCE_SHA256=")]
         assert copies == [hashlib.sha256((racine / "code_pdf_ui/document_0001.pdf").read_bytes()).hexdigest()]
         rejeux = 0
+        rejeux_types = 0
         for texte in exports:
             constat = analyser_export(texte.encode("utf-8"))
             assert constat["statut"] == "structure_compatible"
             assert constat["authenticite_verifiee"] is False
             objet = json.loads(texte)
+            morceaux = objet["requete_relative"].split("?",1)[0].split("/")
+            route = "/".join(morceaux[6:])
+            if len(morceaux)>6 and morceaux[4]=="lots" and (route in {"search","article","measure-search","tariff-criteria"} or route.startswith("tariff/")):
+                identite = morceaux[5]
+                type_rejeu,dossier = {"code_a":("code","code_pdf_ui"),"code_b":("code","code_a"),
+                    "tarif_a":("tarif","tarif_sub_ui"),"tarif_b":("tarif","tarif_b"),"mesures_a":("mesures","mesures_ui")}[identite]
+                fichier_type = cfg.root / "export_type_ui.json"
+                fichier_type.write_text(texte,encoding="utf-8")
+                assert verifier_rejeu_export(fichier_type,racine / dossier,identite,type_rejeu)["rapport_identique"] is True
+                rejeux_types += 1
             if objet["requete_relative"].split("?",1)[0].endswith("/tariff-criteria"):
                 fichier = cfg.root / "export_criteres_ui.json"
                 fichier.write_text(texte,encoding="utf-8")
@@ -138,6 +149,7 @@ def test_interface_revue_sur_api_reelle(revue,format_mesures):
                 assert rejeu["authenticite_verifiee"] is False
                 rejeux += 1
         assert rejeux == 1
+        assert rejeux_types == 5
         assert json.loads(exports[0])["resultat"]["type_rapport"] == "lecture_page_pdf_recu"
         assert snapshot(racine) == avant
     finally:

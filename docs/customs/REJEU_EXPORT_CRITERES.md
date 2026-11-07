@@ -73,3 +73,9 @@ contrôle : il prouve la reproductibilité technique locale, **pas l'origine**.
 Aucune écriture, publication, transaction multi-fichiers, protection WORM ou
 garantie contre modification concurrente après lecture. Même limites de mémoire,
 rejeu intégral et corpus non exhaustif que le moteur existant.
+
+## Extension lot 51
+
+[Rejeu typé documentaire](REJEU_EXPORTS_TYPES.md) : la même commande accepte aussi
+les recherches/lectures listées dans la matrice fermée, avec `--type-lot` (défaut
+tarif). La fonction Python historique décrite ci-dessus reste limitée aux critères.

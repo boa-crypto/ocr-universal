@@ -7,7 +7,16 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 50
+## Complément actuel — lot 51
+
+[Rejeu typé des lectures documentaires](REJEU_EXPORTS_TYPES.md) : Code, tarif et
+mesures selon matrice fermée, type non deviné. Sélection : **1 888 tests Python**
+et **186 scénarios JSDOM** réussis ; 20 exports des quatre parcours UI/API rejoués
+identiquement. Pas authenticité, registre ou validation juridique attestés.
+La dernière suite complète demeure celle du lot 50 ci-dessous, non relancée
+intégralement pour cette extension.
+
+## Dernière recette complète — lot 50
 
 [Rejeu local d'exports multicritères](REJEU_EXPORT_CRITERES.md) ajouté contre une
 archive fournie explicitement : comparaison complète du résultat, sans authenticité,
