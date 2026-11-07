@@ -23,6 +23,13 @@ Unicode contrôlé. Sélection : 1 782 tests Python et 169 scénarios JSDOM réu
 Pas de preuve PDF ou classement validé ajouté. La recette globale reste celle
 du lot 45 ; aucun échec OCR annoncé comme résolu.
 
+## Complément lot 48
+
+[Mode mots entiers normalisés](MODES_CORRESPONDANCE_TARIF.md) optionnel, sous-chaînes
+par défaut, localisation et pagination cohérentes. Correctif de retrait complet des
+outils lors des refus 401/403/503. Sélection : 1 806 tests Python et 178 scénarios
+JSDOM réussis ; aucune qualification OCR ou sémantique ajoutée.
+
 ## Résultats vérifiés au lot 45
 
 | Recette | Résultat |

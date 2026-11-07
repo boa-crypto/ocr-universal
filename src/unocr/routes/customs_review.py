@@ -1,6 +1,7 @@
 """Revue administrative en lecture seule ; aucun chemin fourni par HTTP."""
 import hashlib
 from pathlib import Path
+from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import JSONResponse, Response
@@ -210,13 +211,15 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
     def criteres_tarif(lot_id: str, designation: str | None = Query(None,max_length=256),
                       matiere: str | None = Query(None,max_length=256), fonction: str | None = Query(None,max_length=256),
                       usage: str | None = Query(None,max_length=256), caracteristiques: str | None = Query(None,max_length=256),
-                      code_prefix: str | None = Query(None,max_length=10), limit: int = Query(20,ge=1,le=100),
+                      code_prefix: str | None = Query(None,max_length=10),
+                      match_mode: Literal["sous_chaine", "mots_entiers"] = Query("sous_chaine"),
+                      limit: int = Query(20,ge=1,le=100),
                       offset: int = Query(0,ge=0,le=1_000_000), utilisateur=Depends(autoriser)):
         def chercher(e,p,registre):
             if e[0].type_lot != "tarif":
                 raise HTTPException(422, {"code":"criteres_tarif_uniquement"},headers=NO_STORE)
             return rechercher_tarif_criteres(p[0],designation=designation,matiere=matiere,fonction=fonction,
-                usage=usage,caracteristiques=caracteristiques,code_prefix=code_prefix,limite=limit,decalage=offset)
+                usage=usage,caracteristiques=caracteristiques,code_prefix=code_prefix,limite=limit,decalage=offset,match_mode=match_mode)
         return executer(utilisateur,"recherche_tarif_criteres",[lot_id],chercher)
 
     @router.get("/lots/{lot_id}/search")

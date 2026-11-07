@@ -228,20 +228,22 @@
       criteresTarif.append(element("p","Tous les termes doivent apparaître dans les désignations FR/AR reçues. Matière, fonction et usage sont des critères saisis, pas des attributs certifiés ; aucun classement IA ou taux calculé."));
       var nomsCriteres=["designation","matiere","fonction","usage","caracteristiques"],champsCriteres={};
       nomsCriteres.forEach(function(nom){var c=champ(criteresTarif,{designation:"Termes de désignation",matiere:"Termes de matière (non certifiée)",fonction:"Termes de fonction",usage:"Termes d’usage",caracteristiques:"Termes de caractéristiques"}[nom]);c.maxLength=256;c.dir="auto";c.setAttribute("data-tariff-criteria-"+nom,"");champsCriteres[nom]=c;});
+      var criteresMode=champ(criteresTarif,"Mode littéral de correspondance","select");criteresMode.setAttribute("data-tariff-criteria-mode","");
+      [["sous_chaine","Sous-chaînes (défaut)"],["mots_entiers","Mots entiers normalisés"]].forEach(function(v){var o=element("option",v[1]);o.value=v[0];criteresMode.append(o);});
       var criteresPrefix=champ(criteresTarif,"Préfixe de code ASCII (facultatif)");criteresPrefix.maxLength=10;criteresPrefix.setAttribute("data-tariff-criteria-prefix","");
       var criteresLimit=champ(criteresTarif,"Limite multicritère (1–100)","input","number");criteresLimit.value=20;criteresLimit.min=1;criteresLimit.max=100;criteresLimit.setAttribute("data-tariff-criteria-limit","");
       var criteresOffset=champ(criteresTarif,"Décalage multicritère","input","number");criteresOffset.value=0;criteresOffset.min=0;criteresOffset.max=1000000;criteresOffset.setAttribute("data-tariff-criteria-offset","");
       function chargerCriteresTarif(){
         if(criteresTarif.disabled)return;
-        var params=new URLSearchParams({limit:criteresLimit.value,offset:criteresOffset.value}),present=false;
+        var params=new URLSearchParams({limit:criteresLimit.value,offset:criteresOffset.value,match_mode:criteresMode.value}),present=false;
         nomsCriteres.forEach(function(nom){if(champsCriteres[nom].value.trim()){params.set(nom,champsCriteres[nom].value);present=true;}});
         if(criteresPrefix.value){params.set("code_prefix",criteresPrefix.value);present=true;}
-        if(!present || (criteresPrefix.value && !/^[0-9]{1,10}$/.test(criteresPrefix.value)) || !entier(Number(criteresLimit.value),1,100) || !entier(Number(criteresOffset.value),0,1000000)){
+        if(!["sous_chaine","mots_entiers"].includes(criteresMode.value) || !present || (criteresPrefix.value && !/^[0-9]{1,10}$/.test(criteresPrefix.value)) || !entier(Number(criteresLimit.value),1,100) || !entier(Number(criteresOffset.value),0,1000000)){
           statut.textContent="Critère ou préfixe explicite et pagination valides requis.";return;
         }
         lire("/lots/"+encodeURIComponent(lot.value)+"/tariff-criteria?"+params,afficher);
       }
-      criteresTarif.append(bouton("Rechercher les critères tarifaires",chargerCriteresTarif));host.append(criteresTarif);
+      criteresTarif.append(bouton("Rechercher les critères tarifaires",chargerCriteresTarif));
       var fiche = element("fieldset");
       fiche.append(element("legend", "Fiche tarifaire documentaire — tarif seulement"));
       fiche.append(element("p", "Code exact à dix chiffres ASCII. Parents et mesures déclarés, sans taux applicable ou calcul. " +
@@ -370,7 +372,7 @@
         }
         lire("/lots/"+encodeURIComponent(lot.value)+"/measure-pdf-match?"+new URLSearchParams({mesure_id:mesurePdfId.value,page:mesurePdfPage.value,limit:mesurePdfLimit.value,offset:mesurePdfOffset.value}),afficher);
       }
-      mesurePdfMatch.append(bouton("Vérifier la présence du fragment de description",chargerMesurePDF));host.append(mesurePdfMatch);
+      mesurePdfMatch.append(bouton("Vérifier la présence du fragment de description",chargerMesurePDF));
       var fiscalPdfLecture = element("fieldset");
       fiscalPdfLecture.append(element("legend", "Texte natif PDF fiscal reçu — mesures autonomes"));
       fiscalPdfLecture.append(element("p", "Archive PDF avec transcription requise. Lecture native d’une page physique, sans OCR, taux extrait ou fidélité de transcription vérifiée. Aucun PDF brut ouvert."));
@@ -388,7 +390,6 @@
           page:fiscalPdfPage.value,limit:fiscalPdfLimit.value,offset:fiscalPdfOffset.value}),afficher);
       }
       fiscalPdfLecture.append(bouton("Lire le PDF fiscal natif",chargerPDFFiscal));
-      host.append(fiscalPdfLecture);
       var pdfLecture = element("fieldset");
       pdfLecture.append(element("legend", "Texte natif PDF reçu — Code seulement"));
       pdfLecture.append(element("p", "Page physique, pas numéro imprimé du JO. Sans OCR ni transcription vérifiée. Aucun PDF brut ou lien distant ouvert."));
@@ -808,6 +809,7 @@
           });
         }
         if(!criteresTarif.disabled && rapport.type_recherche === "tarif_criteres_documentaires" && rapport.filtres && rapport.filtres.criteres &&
+           (rapport.filtres.match_mode===undefined || ["sous_chaine","mots_entiers"].includes(rapport.filtres.match_mode)) &&
            Object.keys(rapport.filtres.criteres).length === nomsCriteres.length && nomsCriteres.every(function(nom){var v=rapport.filtres.criteres[nom];return v===null || (typeof v === "string" && v.trim() && Array.from(v).length<=256);}) &&
            (rapport.filtres.code_prefix===null || (typeof rapport.filtres.code_prefix === "string" && /^[0-9]{1,10}$/.test(rapport.filtres.code_prefix))) &&
            rapport.attributs_techniques_certifies===false && rapport.classement_ia_effectue===false &&
@@ -815,6 +817,7 @@
            entier(rapport.total_correspondances,rapport.decalage_suivant+1,Number.MAX_SAFE_INTEGER)){
           actions.append(actionDocumentaire("Page suivante des critères tarifaires",function(){
             nomsCriteres.forEach(function(nom){champsCriteres[nom].value=rapport.filtres.criteres[nom]===null?"":rapport.filtres.criteres[nom];});
+            criteresMode.value=rapport.filtres.match_mode===undefined?"sous_chaine":rapport.filtres.match_mode;
             criteresPrefix.value=rapport.filtres.code_prefix===null?"":rapport.filtres.code_prefix;criteresLimit.value=rapport.limite;criteresOffset.value=rapport.decalage_suivant;chargerCriteresTarif();
           }));
         }
@@ -1091,7 +1094,7 @@
         }
       };
       lot.addEventListener("change", adapter); adapter();
-      outils.append(form, fiche, arbre, codeArbre, lecture, pdfLecture, diffArticle, matchLecture, relationsLecture, justificationLecture, paireTarif, tarifMesuresLecture, mesuresRecherche, sourcesLecture);
+      outils.append(form, criteresTarif, fiche, arbre, codeArbre, lecture, pdfLecture, fiscalPdfLecture, mesurePdfMatch, diffArticle, matchLecture, relationsLecture, justificationLecture, paireTarif, tarifMesuresLecture, mesuresRecherche, sourcesLecture);
     });
   }
   function demarrer() {

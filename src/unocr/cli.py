@@ -385,6 +385,7 @@ def main(argv=None) -> int:
     tc.add_argument("lot")
     for nom in ("designation", "matiere", "fonction", "usage", "caracteristiques", "code-prefix"):
         tc.add_argument("--"+nom, default=None)
+    tc.add_argument("--match-mode", choices=("sous_chaine", "mots_entiers"), default="sous_chaine")
     tc.add_argument("--limit", type=int, default=20)
     tc.add_argument("--offset", type=int, default=0)
     tc.set_defaults(func=cmd_customs_tariff_criteria)
@@ -533,7 +534,7 @@ def cmd_customs_tariff_criteria(args) -> int:
 
     return _afficher_lecture_douaniere(lambda p: rechercher_tarif_criteres(p,designation=args.designation,
         matiere=args.matiere,fonction=args.fonction,usage=args.usage,caracteristiques=args.caracteristiques,
-        code_prefix=args.code_prefix,limite=args.limit,decalage=args.offset),args.lot)
+        code_prefix=args.code_prefix,limite=args.limit,decalage=args.offset,match_mode=args.match_mode),args.lot)
 
 
 def cmd_customs_measure_pdf_match(args) -> int:

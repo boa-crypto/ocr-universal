@@ -4,7 +4,7 @@
  * importé, un export ou un résultat doit toujours venir du serveur local.
  * La coquille HTML et ses modules locaux sont stockés, pour que l'app
  * s'ouvre sans réseau. */
-const CACHE = "unocr-shell-v67-tariff-excerpts";
+const CACHE = "unocr-shell-v68-whole-word-criteria";
 const SHELL = [
   "./",
   "./index.html",

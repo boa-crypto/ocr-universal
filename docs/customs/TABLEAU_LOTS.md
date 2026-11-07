@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État au 7 novembre 2026 après le lot 47. **Terminé = périmètre technique livré et
+État au 7 novembre 2026 après le lot 48. **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -52,9 +52,10 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 45 | Recette transversale complète, corrections de tests et bilan des dix phases | Terminé | Suite OCR globale non verte ; mission réglementaire toujours partielle |
 | 46 | Recherche tarifaire par critères explicites FR/AR et préfixe, preuves séparées | Terminé | Étiquettes de requête, pas attributs certifiés, synonymes ou IA juridique |
 | 47 | Positions Unicode originales par critère/terme/libellé et extraits tarifaires intégrés | Terminé | Premières occurrences reçues, pas preuve PDF, attribut produit ou validation juridique |
+| 48 | Mode mots entiers normalisés, positions cohérentes et retrait complet des outils sur refus | Terminé | Pas morphologie, traduction ou attribut certifié ; sous-chaînes conservées par défaut |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
-`RAPPORT_LOT47.md`. Les limites historiques des rapports précédents sont à lire
+`RAPPORT_LOT48.md`. Les limites historiques des rapports précédents sont à lire
 avec les ajouts suivants ; par exemple le lot 27 ajoute un rapprochement littéral,
 mais pas une validation des transcriptions.
 
@@ -78,7 +79,7 @@ mais pas une validation des transcriptions.
 
 ## Bilan
 
-47 lots techniques livrés ; dernière sélection : **1 782 tests Python / 169 scénarios
+48 lots techniques livrés ; dernière sélection : **1 806 tests Python / 178 scénarios
 JSDOM réussis**. Ce n’est ni la totalité de la suite OCR ni une recette nationale.
 Données historiques conservées. **0 nouvel original officiel acquis, 0 article/code
 national officiellement validé, 0 publication active ; mission globale partielle.**
@@ -86,5 +87,5 @@ Aucun pourcentage de complétude réglementaire ou de progression globale n’es
 du nombre de lots. Références non vérifiées interdites pour calcul douanier réel.
 
 Réception technique : [bilan des dix phases](BILAN_RECEPTION.md),
-[résultats machine](RECETTE_FINALE.json). Suite complète du lot 45 (non relancée intégralement au lot 47) : **2 773 réussis,
+[résultats machine](RECETTE_FINALE.json). Suite complète du lot 45 (non relancée intégralement au lot 48) : **2 773 réussis,
 18 échecs OCR, 11 ignorés** ; ne pas confondre avec la sélection douanière verte.

@@ -1,6 +1,8 @@
 """Fragments originaux de recherche ; offsets Unicode, aucune attestation PDF."""
 import unicodedata
 
+from .match_mode import indice_terme
+
 MAX_EXTRAIT = 384
 CONTEXTE_AVANT = 40
 CHAMPS_EXTRAITS = ("intitule", "texte_integral", "texte_francais", "texte_arabe")
@@ -44,12 +46,12 @@ def extraits_correspondants(champs, termes):
     return extraits
 
 
-def localiser_termes(texte, termes):
+def localiser_termes(texte, termes, match_mode="sous_chaine"):
     """Première occurrence par terme ; une projection Unicode pour tous les spans."""
     from .search import _normaliser
 
     normalise = _normaliser(texte)
-    recherches = {t: normalise.find(t) for t in termes if t}
+    recherches = {t: indice_terme(normalise,t,match_mode) for t in termes if t}
     recherches = {t: i for t, i in recherches.items() if i >= 0}
     del normalise
     return _localiser_indices(texte, recherches)

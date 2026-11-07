@@ -71,3 +71,9 @@ l'IA de classement, les synonymes sourcés, les notes/exclusions, la consolidati
 [Positions Unicode et extraits originaux par critère](EXTRAITS_TARIF_CRITERES.md) :
 positions de chaque terme/libellé, 16 extraits au plus par ligne, affichage intégré
 et cache v67. Contrat de sélection ci-dessus inchangé ; aucune validation ajoutée.
+
+## Complément lot 48
+
+[Mode mots entiers normalisés](MODES_CORRESPONDANCE_TARIF.md) optionnel :
+`match_mode=mots_entiers` / CLI `--match-mode mots_entiers`. Défaut sous-chaînes
+conservé. Même mode pour preuves, positions et pagination ; cache v68.

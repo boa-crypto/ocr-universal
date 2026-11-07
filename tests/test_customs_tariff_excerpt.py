@@ -84,9 +84,9 @@ def test_extraits_produits_seulement_pour_page_retenue(tmp_path,monkeypatch):
     lot = lot_tarif(tmp_path)
     origine = tariff_criteria.localiser_criteres
     appels = []
-    def compter(ligne,preuves):
+    def compter(ligne,preuves,match_mode="sous_chaine"):
         appels.append(ligne.code_tarifaire_10)
-        return origine(ligne,preuves)
+        return origine(ligne,preuves,match_mode)
     monkeypatch.setattr(tariff_criteria,"localiser_criteres",compter)
     rep = rechercher_tarif_criteres(lot,designation="équipement",limite=1,decalage=1)
     assert appels == [rep["resultats"][0]["ligne"]["code_tarifaire_10"]]
