@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État au 7 novembre 2026 après le lot 77. **Terminé = périmètre technique livré et
+État au 7 novembre 2026 après le lot 78. **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -82,6 +82,7 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 75 | Acteur serveur des audits de validation/correction OCR | Terminé, 33 nouveaux cas et CI ciblée | Nom local sans preuve civile, audit legacy best-effort ; autres routes non refondues ; Indra absent, intégrité 26/27 |
 | 76 | Valeurs vides : sélection, traces, annulation simple et statut corrected relisible | Terminé, 106 nouveaux cas + 2 induits, CI ciblée | Pas multi-niveau undo ni audit UI exhaustif ; Indra absent, intégrité 26/27 |
 | 77 | Classification manuelle sauvegardée avant audit et réponse | Terminé, 31 nouveaux cas et CI ciblée | Pas historique complet ni identité prouvée ; aperçu76 maintenu ; Indra absent, intégrité26/27 |
+| 78 | GET classification : décision stockée et timestamp concordant, événement exact | Terminé, 22 nouveaux cas et CI ciblée | Égalité déclarative, pas révision signée ; aperçu76 maintenu ; Indra absent, intégrité26/27 |
 | 76 | Valeurs vides : sélection, traces, annulation simple et statut corrected relisible | Terminé, 106 nouveaux cas + 2 induits, CI ciblée | Pas multi-niveau undo ni audit UI exhaustif ; Indra absent, intégrité 26/27 |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
@@ -117,10 +118,10 @@ Aucun pourcentage de complétude réglementaire ou de progression globale n’es
 du nombre de lots. Références non vérifiées interdites pour calcul douanier réel.
 
 Réception technique : [bilan des dix phases](BILAN_RECEPTION.md),
-[recette complète actuelle du lot 77](RECETTE_LOT77.json) : **3 809 réussis,
+[recette complète actuelle du lot 78](RECETTE_LOT78.json) : **3 831 réussis,
 2 échecs OCR, 1 ignoré, 1 avertissement(s)**. **26/27 empreintes historiques conformes** ;
 référentiels et quatre dossiers partagés modifiés sont préservés hors commit,
-voir [rapport 77](RAPPORT_LOT77.md) ; ne pas confondre avec la sélection
+voir [rapport 78](RAPPORT_LOT78.md) ; ne pas confondre avec la sélection
 verte. Recettes historiques : [45](RECETTE_FINALE.json), [50](RECETTE_LOT50.json), [55](RECETTE_LOT55.json).
 
 Lot 57 : [lanceur local/CI](LANCEUR_RECETTE_CIBLEE.md) et
