@@ -3038,8 +3038,8 @@ def get_classification(job_id: str, request: Request) -> dict:
     """Classification retenue pour un document, avec ses preuves.
 
     La valeur affichée est celle du résultat (donc après correction manuelle
-    éventuelle) ; le journal d'audit n'apporte que l'horodatage et le fait
-    qu'une décision humaine soit intervenue. Renvoyer le seul journal ferait
+    éventuelle) ; le journal d'audit n'apporte qu'un horodatage déclaratif
+    si ses champs de décision concordent avec le résultat. Renvoyer le seul journal ferait
     disparaître libellé, preuves et alternatives — soit les sources mêmes qui
     permettent de contester une classification.
     """
@@ -3056,7 +3056,8 @@ def get_classification(job_id: str, request: Request) -> dict:
                 entree = _json.loads(ligne)
             except ValueError:
                 continue
-            if entree.get("job_id") == job_id:
+            if (isinstance(entree, dict) and entree.get("event") == "document_classified"
+                    and entree.get("job_id") == job_id):
                 trace = entree
     resultat = store.load_result(job_id)
     retenue = (resultat or {}).get("classification")
@@ -3067,10 +3068,11 @@ def get_classification(job_id: str, request: Request) -> dict:
                    ("category", "confidence", "classifier_version",
                     "needs_review", "manual")}
     payload = dict(retenue)
-    if trace is not None:
+    if trace is not None and all(trace.get(key) == payload.get(key) for key in (
+        "category", "confidence", "classifier_version", "needs_review", "manual"
+    )):
+        # Concordance déclarative, pas identité de révision ni preuve d'authenticité.
         payload["ts"] = trace.get("ts")
-        # une correction humaine consignée après coup reste une correction
-        payload["manual"] = bool(payload.get("manual")) or bool(trace.get("manual"))
     return {"job_id": job_id, "classification": payload}
 
 
