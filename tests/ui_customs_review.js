@@ -894,5 +894,31 @@ await scenario('Tarif/mesures : provenance de rôles incohérente sans action',a
 await scenario('Tarif/mesures : panne audit efface les deux côtés',async ctx=>{
  choisirMixte(ctx);ctx.reponse(rapportMixte({}));ctx.button('Consulter nomenclature et mesures').click();await tick();ctx.reponse({detail:{code:'audit_revue_indisponible'}},503);ctx.button('Consulter nomenclature et mesures').click();await tick();assert.equal(ctx.host.querySelector('pre').textContent,'');assert.equal(ctx.host.querySelector('[data-review-actions]').textContent,'');
 },lotsMixtes);
+const fiscalPDFRapport=(extra={})=>pdfRapport({type_rapport:'lecture_page_pdf_mesures_recu',type_lot:'mesures',document_declare:{id:'DOC_TEST',format:'pdf',sha256:'a'.repeat(64)},transcription_verification:'non_verifiee',mesures_transcrites_comparees:false,...extra});
+function ouvrirFiscal(ctx,extra={}){choisirMesures(ctx);ctx.host.querySelector('[data-fiscal-pdf-id]').value='DOC_TEST';ctx.reponse(envelope(fiscalPDFRapport(extra)));ctx.button('Lire le PDF fiscal natif').click();}
+await scenario('PDF fiscal : champ réservé aux mesures',async ctx=>{
+ const f=ctx.host.querySelector('[data-fiscal-pdf-id]').closest('fieldset');assert(f.disabled);choisirMesures(ctx);assert(!f.disabled);assert(ctx.host.querySelector('[data-pdf-id]').closest('fieldset').disabled);
+},lotsAvecMesures);
+await scenario('PDF fiscal : route dédiée et texte hostile littéral',async ctx=>{
+ ouvrirFiscal(ctx,{fragment:'<img src=x onerror=alert(1)>',decalage_suivant:null});await tick();const u=new URL(ctx.appels.at(-1).url,'https://x');assert(u.pathname.endsWith('/test-mesures/fiscal-pdf'));assert.equal(u.searchParams.get('document_id'),'DOC_TEST');assert(!ctx.host.querySelector('img'));assert(ctx.host.querySelector('[data-article-fragment]').textContent.includes('<img'));
+},lotsAvecMesures);
+await scenario('PDF fiscal : paramètres invalides sans appel',async ctx=>{
+ choisirMesures(ctx);ctx.host.querySelector('[data-fiscal-pdf-id]').value='DOC_TEST';ctx.host.querySelector('[data-fiscal-pdf-page]').value='0';const n=ctx.appels.length;ctx.button('Lire le PDF fiscal natif').click();await tick();assert.equal(ctx.appels.length,n);
+},lotsAvecMesures);
+await scenario('PDF fiscal : pagination Unicode et page physique',async ctx=>{
+ ouvrirFiscal(ctx);await tick();ctx.button('Fragment suivant du PDF fiscal').click();await tick();assert.equal(new URL(ctx.appels.at(-1).url,'https://x').searchParams.get('offset'),'4');ctx.button('Page physique fiscale suivante').click();await tick();const u=new URL(ctx.appels.at(-1).url,'https://x');assert.equal(u.searchParams.get('page'),'2');assert.equal(u.searchParams.get('offset'),'0');
+},lotsAvecMesures);
+await scenario('PDF fiscal : mauvaise empreinte sans suite',async ctx=>{
+ ouvrirFiscal(ctx,{sha256_pdf_lu:'b'.repeat(64)});await tick();assert(!ctx.button('Page physique fiscale suivante'));assert(!ctx.button('Fragment suivant du PDF fiscal'));
+},lotsAvecMesures);
+await scenario('PDF fiscal : page sans texte ne déclenche pas OCR',async ctx=>{
+ ouvrirFiscal(ctx,{fragment:'',texte_natif_non_vide:false,decalage_suivant:null});await tick();assert(ctx.status().includes('aucun OCR'));assert.equal(ctx.host.querySelector('[data-article-fragment]').textContent,'');
+},lotsAvecMesures);
+await scenario('PDF fiscal : changement de lot invalide ancien bouton',async ctx=>{
+ ouvrirFiscal(ctx);await tick();const ancien=ctx.button('Page physique fiscale suivante');const l=ctx.host.querySelector('select');l.value='test-code';l.dispatchEvent(new ctx.w.Event('change'));const n=ctx.appels.length;ancien.click();await tick();assert.equal(ctx.appels.length,n);
+},lotsAvecMesures);
+await scenario('PDF fiscal : panne audit efface réponse et suites',async ctx=>{
+ ouvrirFiscal(ctx);await tick();ctx.reponse({detail:{code:'audit_revue_indisponible'}},503);ctx.button('Lire le PDF fiscal natif').click();await tick();assert.equal(ctx.host.querySelector('pre').textContent,'');assert(!ctx.button('Page physique fiscale suivante'));
+},lotsAvecMesures);
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

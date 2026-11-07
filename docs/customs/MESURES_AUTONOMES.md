@@ -82,7 +82,7 @@ exécuté, sans changement de leur contrat ni activation du lot repris.
 Depuis le [lot 37](REVUE_MESURES_AUTONOMES.md), le type `mesures` peut être inscrit
 explicitement au registre et consulté dans la revue centrale : contrôle, recherche
 de mesures, inventaire de source, couverture et exports. Pas de diff/fiche de
-nomenclature, lecture/téléchargement PDF, rapprochement fiscal ou publication pour ce type ; les anciennes
+nomenclature, téléchargement PDF, rapprochement fiscal ou publication pour ce type ; les anciennes
 routes incompatibles sont refusées, jamais détournées vers un chargeur tarif/Code.
 
 JSON strict, CSV/XLSX/XLS textuels à mapping explicite et PDF opaque avec
@@ -93,3 +93,6 @@ Les schémas et tests ne démontrent pas la complétude réglementaire. Les test
 exclusivement des fixtures explicitement NON OFFICIELLES.
 
 Lot 38 : [consultation nomenclature et mesures autonomes](CONSULTATION_TARIF_MESURES.md), CLI `customs-tariff-measures`, API racine `/tariff-measures`. Paire tarif/mesures explicitement autorisée pour cette seule opération, sources/paginations séparées et export à double provenance. Aucun rattachement juridique établi.
+
+Lot 43 : [lecture native d’une page du PDF fiscal reçu](LECTURE_PDF_MESURES.md)
+par opération dédiée, sans modifier le rapport d’import ni vérifier les mesures.

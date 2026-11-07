@@ -98,8 +98,11 @@ recherche des **descriptions transcrites**, sources, couverture, consultation
 séparée avec tarif et exports déjà autorisés. Sauvegarde avec quarantaine/reprise
 neuve conserve les six fichiers et permet leur rejeu.
 
-**Pas de nouvelle route de lecture/téléchargement du PDF fiscal** : routes PDF
+**Au lot 42, pas de route de lecture/téléchargement du PDF fiscal** : routes PDF
 Code refusées sur ces archives, sans détournement de chargeur. Pas de rapprochement
 littéral PDF/transcription, validation humaine, consolidation à date, fusion
 fiscale, publication ou calcul. Aucun original officiel acquis ou qualifié par les
 fixtures PDF/JSON explicitement NON OFFICIELLES de la recette.
+
+Lot 43 : [lecture native dédiée](LECTURE_PDF_MESURES.md) désormais disponible,
+sans téléchargement binaire ni validation des mesures ; l’import reste opaque.

@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État au 7 novembre 2026 après le lot 42. **Terminé = périmètre technique livré et
+État au 7 novembre 2026 après le lot 43. **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -46,10 +46,11 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 39 | CSV textuel de mesures autonomes, mapping explicite et rejeu | Terminé | Aucun fichier fiscal officiel qualifié ; XLSX ajouté au lot 40 |
 | 40 | XLSX textuel autonome, feuille/mapping déclarés, cellules et archive contrôlées | Terminé | Aucun original fiscal officiel qualifié, pas de PDF autonome ou calcul |
 | 41 | XLS OLE/BIFF8 textuel autonome, gardes binaires et rejeu | Terminé | Sous-ensemble strict, aucun fichier fiscal officiel qualifié ou rattachement établi |
-| 42 | PDF fiscal opaque + transcription JSON déclarée, SHA et rejeu séparés | Terminé | Pas de lecture/OCR ni fidélité de transcription ou source officielle qualifiée |
+| 42 | PDF fiscal opaque + transcription JSON déclarée, SHA et rejeu séparés | Terminé | Import sans lecture/OCR ; fidélité de transcription non vérifiée |
+| 43 | Lecture native paginée du PDF fiscal reçu, CLI/API/UI et export audité | Terminé | Pas d’OCR, rapprochement des mesures, fidélité ou applicabilité attestés |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
-`RAPPORT_LOT42.md`. Les limites historiques des rapports précédents sont à lire
+`RAPPORT_LOT43.md`. Les limites historiques des rapports précédents sont à lire
 avec les ajouts suivants ; par exemple le lot 27 ajoute un rapprochement littéral,
 mais pas une validation des transcriptions.
 
@@ -73,7 +74,7 @@ mais pas une validation des transcriptions.
 
 ## Bilan
 
-42 lots techniques livrés ; dernière sélection : **1 683 tests Python / 138 scénarios
+43 lots techniques livrés ; dernière sélection : **1 719 tests Python / 146 scénarios
 JSDOM réussis**. Ce n’est ni la totalité de la suite OCR ni une recette nationale.
 Données historiques conservées. **0 nouvel original officiel acquis, 0 article/code
 national officiellement validé, 0 publication active ; mission globale partielle.**

@@ -24,6 +24,7 @@ from ..customs_reference.code_tree import ParamArbreCodeInvalide, parcourir_code
 from ..customs_reference.comparison import charger_lot, comparer_lots
 from ..customs_reference.coverage import diagnostiquer_couverture
 from ..customs_reference.fiscal_importer import charger_lot_mesures
+from ..customs_reference.fiscal_pdf_page import lire_page_pdf_mesures
 from ..customs_reference.history import ParamHistoriqueInvalide, historique_article
 from ..customs_reference.importer import _lire
 from ..customs_reference.legal_comparison import charger_lot_code, comparer_lots_code
@@ -75,7 +76,7 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
             if operation == "consultation_tarif_mesures" and not paire_mesures:
                 raise HTTPException(422, {"code":"paire_tarif_mesures_requise"}, headers=NO_STORE)
             if any(lot.type_lot == "mesures" for lot in entrees) and not paire_mesures and operation not in {
-                    "controle", "recherche_mesures", "inventaire_sources", "couverture"}:
+                    "controle", "recherche_mesures", "inventaire_sources", "couverture", "lecture_pdf_mesures"}:
                 raise HTTPException(422, {"code":"operation_non_applicable_aux_mesures_autonomes"}, headers=NO_STORE)
             if len({lot.type_lot for lot in entrees}) > 1 and not paire_mesures:
                 raise HTTPException(422, {"code": "types_lots_incompatibles"}, headers=NO_STORE)
@@ -317,6 +318,16 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 raise HTTPException(422, {"code": "lecture_pdf_non_applicable_au_tarif"}, headers=NO_STORE)
             return lire_page_pdf(p[0], document_id, page, limit, offset)
         return executer(utilisateur, "lecture_pdf", [lot_id], lire_document)
+
+    @router.get("/lots/{lot_id}/fiscal-pdf")
+    def lire_pdf_fiscal(lot_id: str, document_id: str = Query(..., min_length=1, max_length=256),
+                       page: int = Query(1, ge=1, le=10000), limit: int = Query(4000, ge=1, le=MAX_FRAGMENT),
+                       offset: int = Query(0, ge=0, le=MAX_DECALAGE_TEXTE), utilisateur=Depends(autoriser)):
+        def lire_document(e, p, registre):
+            if e[0].type_lot != "mesures":
+                raise HTTPException(422, {"code":"lecture_pdf_mesures_uniquement"}, headers=NO_STORE)
+            return lire_page_pdf_mesures(p[0],document_id,page,limit,offset)
+        return executer(utilisateur,"lecture_pdf_mesures",[lot_id],lire_document)
 
     @router.get("/tariff-measures")
     def tarif_mesures(tarif: str = Query(..., pattern=IDENTIFIANT), mesures: str = Query(..., pattern=IDENTIFIANT),

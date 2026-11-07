@@ -271,6 +271,13 @@ const {JSDOM} = require('jsdom');
   assert.equal(JSON.parse(host.querySelector('pre').textContent).type_lot,'mesures');assert(!bouton('Télécharger le PDF reçu'));
   exportBlob=null;bouton('Exporter ce rapport').click();await attendre(()=>!!exportBlob);
   const exportSourceMesures=await new Promise((resolve,reject)=>{const r=new w.FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsText(exportBlob);});console.log('EXPORT_REEL_JSON='+JSON.stringify(JSON.parse(exportSourceMesures)));
+  if(process.argv[3]==='pdf'){
+    bouton('Lire le PDF fiscal reçu').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_rapport==='lecture_page_pdf_mesures_recu');
+    const fiscalPDF=JSON.parse(host.querySelector('pre').textContent);assert(fiscalPDF.fragment.includes('aucun taux national'));assert.equal(fiscalPDF.transcription_verification,'non_verifiee');assert.equal(fiscalPDF.mesures_transcrites_comparees,false);
+    bouton('Page physique fiscale suivante').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').page_physique===2);assert(host.querySelector('[data-article-fragment]').textContent.includes('technique 2'));
+    exportBlob=null;bouton('Exporter ce rapport').click();await attendre(()=>!!exportBlob);
+    const exportPDF=await new Promise((resolve,reject)=>{const r=new w.FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsText(exportBlob);});console.log('EXPORT_REEL_JSON='+JSON.stringify(JSON.parse(exportPDF)));
+  }
   bouton('Diagnostiquer la couverture').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_rapport==='couverture_documentaire_declaree');
   assert.equal(JSON.parse(host.querySelector('pre').textContent).indicateurs.nomenclature_incluse,false);
   exportBlob=null;bouton('Exporter ce rapport').click();await attendre(()=>!!exportBlob);

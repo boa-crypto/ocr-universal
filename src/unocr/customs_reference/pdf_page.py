@@ -20,7 +20,7 @@ class LecturePDFRefusee(ValueError):
     """PDF absent, illisible, chiffré ou hors limites de l'extracteur."""
 
 
-def lire_page_pdf(repertoire: Path, document_id: str, page: int = 1, limite: int = 4000, decalage: int = 0) -> dict:
+def valider_parametres_pdf(document_id, page, limite, decalage):
     if (not isinstance(document_id, str) or not document_id.strip() or len(document_id) > 256
             or any(unicodedata.category(c) == "Cc" for c in document_id)):
         raise ParamPDFInvalide("ID documentaire exact de 256 caractères maximum sans contrôle requis")
@@ -30,6 +30,10 @@ def lire_page_pdf(repertoire: Path, document_id: str, page: int = 1, limite: int
         raise ParamPDFInvalide("Limite entière de 1 à 16000 requise")
     if type(decalage) is not int or not 0 <= decalage <= MAX_DECALAGE_TEXTE:
         raise ParamPDFInvalide("Décalage entier de 0 à 67108864 requis")
+
+
+def lire_page_pdf(repertoire: Path, document_id: str, page: int = 1, limite: int = 4000, decalage: int = 0) -> dict:
+    valider_parametres_pdf(document_id,page,limite,decalage)
     lot, rapport = charger_lot_code(repertoire)
     texte, nombre, sha, document = extraire_page_controlee(repertoire, lot, rapport, document_id, page)
     fragment = texte[decalage:decalage + limite]
@@ -68,6 +72,12 @@ def extraire_page_controlee(repertoire, lot, rapport, document_id, page):
     sha = hashlib.sha256(contenu).hexdigest()
     if sha != document.sha256 or sha != rapport["archive"]["fichiers_sha256"][nom]:
         raise LecturePDFRefusee("Empreinte du document différente après contrôle")
+    texte,nombre = extraire_octets_pdf(contenu,page)
+    return texte, nombre, sha, document
+
+
+def extraire_octets_pdf(contenu, page):
+    """Octets déjà contrôlés par l’appelant ; worker et bornes communs."""
     try:
         resultat = subprocess.run([sys.executable, str(Path(__file__).with_name("pdf_worker.py")), str(page)],
                                   input=contenu, capture_output=True, timeout=15)
@@ -80,4 +90,4 @@ def extraire_page_controlee(repertoire, lot, rapport, document_id, page):
             raise ValueError("Réponse extracteur invalide")
     except (OSError, subprocess.TimeoutExpired, ValueError, KeyError, TypeError):
         raise LecturePDFRefusee("PDF non lisible ou extracteur indisponible/hors limites") from None
-    return texte, nombre, sha, document
+    return texte,nombre
