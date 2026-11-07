@@ -42,6 +42,7 @@ from ..customs_reference.search import ParamRechercheInvalide, rechercher_code, 
 from ..customs_reference.source_catalog import inventorier_sources
 from ..customs_reference.source_pdf import copier_pdf_source
 from ..customs_reference.tariff_detail import ParamFicheTarifInvalide, consulter_code
+from ..customs_reference.tariff_measures import juxtaposer_tarif_mesures
 from ..customs_reference.tariff_pair import juxtaposer_fiches_tarifaires
 from ..customs_reference.tariff_tree import ParamArbreTarifInvalide, parcourir_tarif
 from ..logging_setup import AuditIndisponible
@@ -70,10 +71,13 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
             if any(identifiant not in par_id for identifiant in ids):
                 raise HTTPException(404, {"code": "lot_revue_inconnu"}, headers=NO_STORE)
             entrees = [par_id[identifiant] for identifiant in ids]
-            if any(lot.type_lot == "mesures" for lot in entrees) and operation not in {
+            paire_mesures = operation == "consultation_tarif_mesures" and [v.type_lot for v in entrees] == ["tarif", "mesures"]
+            if operation == "consultation_tarif_mesures" and not paire_mesures:
+                raise HTTPException(422, {"code":"paire_tarif_mesures_requise"}, headers=NO_STORE)
+            if any(lot.type_lot == "mesures" for lot in entrees) and not paire_mesures and operation not in {
                     "controle", "recherche_mesures", "inventaire_sources", "couverture"}:
                 raise HTTPException(422, {"code":"operation_non_applicable_aux_mesures_autonomes"}, headers=NO_STORE)
-            if len({lot.type_lot for lot in entrees}) > 1:
+            if len({lot.type_lot for lot in entrees}) > 1 and not paire_mesures:
                 raise HTTPException(422, {"code": "types_lots_incompatibles"}, headers=NO_STORE)
             # dossier est un nom simple strictement validé dans la configuration.
             dossiers = [path.parent / lot.dossier for lot in entrees]
@@ -313,6 +317,18 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 raise HTTPException(422, {"code": "lecture_pdf_non_applicable_au_tarif"}, headers=NO_STORE)
             return lire_page_pdf(p[0], document_id, page, limit, offset)
         return executer(utilisateur, "lecture_pdf", [lot_id], lire_document)
+
+    @router.get("/tariff-measures")
+    def tarif_mesures(tarif: str = Query(..., pattern=IDENTIFIANT), mesures: str = Query(..., pattern=IDENTIFIANT),
+                      code10: str = Query(..., min_length=10, max_length=10),
+                      tariff_limit: int = Query(20, ge=1, le=100), tariff_offset: int = Query(0, ge=0, le=1_000_000),
+                      measures_limit: int = Query(20, ge=1, le=100), measures_offset: int = Query(0, ge=0, le=1_000_000),
+                      utilisateur=Depends(autoriser)):
+        def consulter(e, p, registre):
+            resultat = juxtaposer_tarif_mesures(p[0], p[1], code10, tariff_limit, tariff_offset, measures_limit, measures_offset)
+            resultat["lots_exacts"] = {"tarif":tarif, "mesures":mesures}
+            return resultat
+        return executer(utilisateur, "consultation_tarif_mesures", [tarif, mesures], consulter)
 
     @router.get("/tariff-compare")
     def fiches_tarifaires(avant: str = Query(..., pattern=IDENTIFIANT), apres: str = Query(..., pattern=IDENTIFIANT),

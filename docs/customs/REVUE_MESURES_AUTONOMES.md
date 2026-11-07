@@ -74,3 +74,5 @@ applicable ou calcul n'est inféré. Import JSON strict seulement ; qualificatio
 sur sources officielles, CSV/XLSX/PDF autonomes, rapprochement avec le tarif,
 validation humaine et publication restent ouverts. Le lot entier est chargé/rejoué
 avant pagination ; pas de garantie mémoire constante ou charge nationale.
+
+Lot 38 : [consultation nomenclature et mesures autonomes](CONSULTATION_TARIF_MESURES.md), CLI `customs-tariff-measures`, API racine `/tariff-measures`. Paire tarif/mesures explicitement autorisée pour cette seule opération, sources/paginations séparées et export à double provenance. Aucun rattachement juridique établi.

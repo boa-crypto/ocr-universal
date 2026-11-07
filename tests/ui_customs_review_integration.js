@@ -274,6 +274,14 @@ const {JSDOM} = require('jsdom');
   assert.equal(JSON.parse(host.querySelector('pre').textContent).indicateurs.nomenclature_incluse,false);
   exportBlob=null;bouton('Exporter ce rapport').click();await attendre(()=>!!exportBlob);
   const exportCouvertureMesures=await new Promise((resolve,reject)=>{const r=new w.FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsText(exportBlob);});console.log('EXPORT_REEL_JSON='+JSON.stringify(JSON.parse(exportCouvertureMesures)));
+  lot.value='tarif_a';lot.dispatchEvent(new w.Event('change'));host.querySelector('[data-code10]').value='0000000001';
+  bouton('Consulter nomenclature et mesures autonomes').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_rapport==='consultation_documentaire_tarif_mesures_autonomes');
+  const consultationMixte=JSON.parse(host.querySelector('pre').textContent);assert.equal(consultationMixte.fiche_nomenclature.ligne_trouvee,false);assert.equal(consultationMixte.mesures_autonomes.total_correspondances,3);
+  assert.equal(consultationMixte.rattachement_juridique_etabli,false);assert.equal(consultationMixte.mesures_fusionnees,false);
+  assert(consultationMixte.archives.avant.manifest_sha256);assert(consultationMixte.archives.apres.manifest_sha256);
+  exportBlob=null;bouton('Exporter ce rapport').click();await attendre(()=>!!exportBlob);
+  const exportMixte=await new Promise((resolve,reject)=>{const r=new w.FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsText(exportBlob);});console.log('EXPORT_REEL_JSON='+JSON.stringify(JSON.parse(exportMixte)));
+  bouton('Consulter ce lot de mesures autonomes').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_recherche==='mesures_autonomes_documentaires');assert.equal(lot.value,'mesures_a');
   // Un vrai compte lecteur ne peut rien lire, même par le lien direct.
   w.sessionStorage.setItem('uniocr_token','TEST_LECTEUR_NON_PRODUCTION'); bouton('Actualiser').click();
   await attendre(()=>host.textContent.includes('Accès refusé'));

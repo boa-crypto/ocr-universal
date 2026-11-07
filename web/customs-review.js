@@ -181,7 +181,7 @@
         histoire.disabled = filtres.disabled; sourcesNature.disabled = filtres.disabled;
         fiche.disabled = typeSelection !== "tarif"; paireTarif.disabled = fiche.disabled;
         mesuresRecherche.disabled = typeSelection === "code";
-        arbre.disabled = fiche.disabled;
+        arbre.disabled = fiche.disabled; tarifMesuresLecture.disabled = fiche.disabled || !lotMesures.value;
         justificationLecture.disabled = filtres.disabled; relationsLecture.disabled = filtres.disabled; matchLecture.disabled = filtres.disabled; codeArbre.disabled = filtres.disabled; lecture.disabled = filtres.disabled; diffArticle.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
         ++requete; viderResultat();
       }
@@ -459,6 +459,24 @@
           before_limit: measureLimit.value, before_offset: measureOffset.value, after_limit: paireLimit.value, after_offset: paireOffset.value}), afficher);
       }
       paireTarif.append(bouton("Consulter les deux fiches tarifaires séparées", chargerPaireTarif));
+      var tarifMesuresLecture = element("fieldset");
+      tarifMesuresLecture.append(element("legend", "Nomenclature et mesures autonomes — sources séparées"));
+      tarifMesuresLecture.append(element("p", "Utilise le lot tarifaire sélectionné et le code exact de la fiche. Égalité de code seulement, sans rattachement juridique, fusion ou taux applicable. Pagination nomenclature = formulaire de fiche."));
+      var lotMesures = champ(tarifMesuresLecture, "Lot de mesures autonome inscrit", "select"); lotMesures.setAttribute("data-autonomous-lot", "");
+      rep.lots.filter(function (v) { return v.type_lot === "mesures"; }).forEach(function (v) { var o = element("option", v.id); o.value = v.id; lotMesures.append(o); });
+      lotMesures.addEventListener("change", function () { ++requete; viderResultat(); });
+      var autonomeLimit = champ(tarifMesuresLecture, "Mesures autonomes par page (1–100)", "input", "number"); autonomeLimit.min = 1; autonomeLimit.max = 100; autonomeLimit.value = 20; autonomeLimit.required = true; autonomeLimit.setAttribute("data-autonomous-limit", "");
+      var autonomeOffset = champ(tarifMesuresLecture, "Décalage mesures autonomes (0–1000000)", "input", "number"); autonomeOffset.min = 0; autonomeOffset.max = 1000000; autonomeOffset.value = 0; autonomeOffset.required = true; autonomeOffset.setAttribute("data-autonomous-offset", "");
+      function chargerTarifMesures() {
+        if (tarifMesuresLecture.disabled) return;
+        if (!/^[0-9]{10}$/.test(code10.value) || !rep.lots.some(function (v) { return v.id === lotMesures.value && v.type_lot === "mesures"; })) {
+          ++requete; viderResultat(); statut.textContent = "Code10 exact et lot de mesures autonome inscrit requis."; return;
+        }
+        if (!measureLimit.reportValidity() || !measureOffset.reportValidity() || !autonomeLimit.reportValidity() || !autonomeOffset.reportValidity()) return;
+        lire("/tariff-measures?" + new URLSearchParams({tarif:lot.value, mesures:lotMesures.value, code10:code10.value,
+          tariff_limit:measureLimit.value, tariff_offset:measureOffset.value, measures_limit:autonomeLimit.value, measures_offset:autonomeOffset.value}), afficher);
+      }
+      tarifMesuresLecture.append(bouton("Consulter nomenclature et mesures autonomes", chargerTarifMesures));
       var mesuresRecherche = element("fieldset");
       mesuresRecherche.append(element("legend", "Rechercher les descriptions de mesures — tarif ou lot autonome"));
       mesuresRecherche.append(element("p", "Descriptions déclarées uniquement, pas désignations ou taux. Sans synonymes/traduction/IA ni droit applicable. Requête ou filtre exact requis."));
@@ -564,6 +582,35 @@
         }));
       }
       rendreActions = function (rapport) {
+        if (rapport.type_rapport === "consultation_documentaire_tarif_mesures_autonomes" && !tarifMesuresLecture.disabled &&
+            rapport.rattachement_juridique_etabli === false && rapport.mesures_fusionnees === false &&
+            typeof rapport.code_tarifaire_10_exact === "string" && /^[0-9]{10}$/.test(rapport.code_tarifaire_10_exact) &&
+            rapport.lots_exacts && rapport.lots_exacts.tarif === lot.value && rapport.lots_exacts.mesures === lotMesures.value &&
+            rapport.roles_archives && rapport.roles_archives.avant === "nomenclature" && rapport.roles_archives.apres === "mesures_autonomes") {
+          var n = rapport.fiche_nomenclature, m = rapport.mesures_autonomes;
+          if (n && n.code_tarifaire_10_exact === rapport.code_tarifaire_10_exact && m && m.type_lot === "mesures" &&
+              m.filtres && m.filtres.code10_exact === rapport.code_tarifaire_10_exact && m.filtres.type_mesure === null) {
+            if (n.ligne_trouvee === true && n.ligne_declaree && n.ligne_declaree.code_tarifaire_10 === rapport.code_tarifaire_10_exact) proposerCode(rapport.code_tarifaire_10_exact);
+            actions.append(actionDocumentaire("Consulter ce lot de mesures autonomes", function () {
+              lot.value = rapport.lots_exacts.mesures; adapter(); mesuresQuery.value = ""; mesuresCode.value = rapport.code_tarifaire_10_exact;
+              mesuresType.value = ""; mesuresLimit.value = 20; mesuresOffset.value = 0; chargerRechercheMesures();
+            }));
+            if (entier(n.limite_mesures, 1, 100) && entier(n.decalage_mesures, 0, 1000000) && entier(m.limite, 1, 100) && entier(m.decalage, 0, 1000000)) {
+              ["nomenclature", "autonomes"].forEach(function (cote) {
+                var suivant = cote === "nomenclature" ? n.decalage_mesures_suivant : m.decalage_suivant;
+                var position = cote === "nomenclature" ? n.decalage_mesures : m.decalage;
+                var total = cote === "nomenclature" ? n.total_mesures_declarees : m.total_correspondances;
+                if (!entier(suivant, position + 1, 1000000) || !entier(total, suivant + 1, Number.MAX_SAFE_INTEGER)) return;
+                actions.append(actionDocumentaire(cote === "nomenclature" ? "Mesures suivantes de la nomenclature" : "Mesures autonomes suivantes", function () {
+                  code10.value = rapport.code_tarifaire_10_exact; lotMesures.value = rapport.lots_exacts.mesures;
+                  measureLimit.value = n.limite_mesures; autonomeLimit.value = m.limite;
+                  measureOffset.value = cote === "nomenclature" ? suivant : n.decalage_mesures;
+                  autonomeOffset.value = cote === "autonomes" ? suivant : m.decalage; chargerTarifMesures();
+                }));
+              });
+            }
+          }
+        }
         if (rapport.type_recherche === "sources_documentaires" && rapport.type_lot === rep.lots.find(function (v) { return v.id === lot.value; }).type_lot) {
           var fs = rapport.filtres, naturesSources = ["code_original", "acte_modificatif", "compilation"];
           if (fs && (fs.source_id_exact === null || idValide(fs.source_id_exact)) &&
@@ -919,7 +966,7 @@
         }
       };
       lot.addEventListener("change", adapter); adapter();
-      outils.append(form, fiche, arbre, codeArbre, lecture, pdfLecture, diffArticle, matchLecture, relationsLecture, justificationLecture, paireTarif, mesuresRecherche, sourcesLecture);
+      outils.append(form, fiche, arbre, codeArbre, lecture, pdfLecture, diffArticle, matchLecture, relationsLecture, justificationLecture, paireTarif, tarifMesuresLecture, mesuresRecherche, sourcesLecture);
     });
   }
   function demarrer() {

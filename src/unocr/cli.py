@@ -209,6 +209,16 @@ def main(argv=None) -> int:
     fs.add_argument("--offset", type=int, default=0)
     fs.set_defaults(func=cmd_customs_fiscal_search)
 
+    tm = sub.add_parser("customs-tariff-measures", help="consulter tarif et mesures autonomes sans fusion ou règle applicable")
+    tm.add_argument("tarif")
+    tm.add_argument("mesures")
+    tm.add_argument("--code", required=True)
+    tm.add_argument("--tariff-limit", type=int, default=20)
+    tm.add_argument("--tariff-offset", type=int, default=0)
+    tm.add_argument("--measures-limit", type=int, default=20)
+    tm.add_argument("--measures-offset", type=int, default=0)
+    tm.set_defaults(func=cmd_customs_tariff_measures)
+
     fc = sub.add_parser("customs-fiscal-check", help="contrôler et rejouer un lot autonome de mesures")
     fc.add_argument("lot")
     fc.set_defaults(func=cmd_customs_fiscal_check)
@@ -588,6 +598,14 @@ def cmd_customs_fiscal_search(args) -> int:
 
     return _afficher_lecture_douaniere(lambda p: rechercher_mesures_tarif(
         p, args.query, args.code, args.measure_type, args.limit, args.offset, "mesures"), args.lot)
+
+
+def cmd_customs_tariff_measures(args) -> int:
+    from .customs_reference.tariff_measures import juxtaposer_tarif_mesures
+
+    return _afficher_lecture_douaniere(lambda a, b: juxtaposer_tarif_mesures(
+        a, b, args.code, args.tariff_limit, args.tariff_offset, args.measures_limit, args.measures_offset),
+        args.tarif, args.mesures)
 
 
 def cmd_customs_fiscal_check(args) -> int:

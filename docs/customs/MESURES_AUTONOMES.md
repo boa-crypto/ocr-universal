@@ -77,3 +77,5 @@ transcription automatique de texte fiscal. Aucun exemple de taux de production,
 fichier officiel national, validation humaine, droit à date, publication ou calcul.
 Les schémas et tests ne démontrent pas la complétude réglementaire. Les tests utilisent
 exclusivement des fixtures explicitement NON OFFICIELLES.
+
+Lot 38 : [consultation nomenclature et mesures autonomes](CONSULTATION_TARIF_MESURES.md), CLI `customs-tariff-measures`, API racine `/tariff-measures`. Paire tarif/mesures explicitement autorisée pour cette seule opération, sources/paginations séparées et export à double provenance. Aucun rattachement juridique établi.

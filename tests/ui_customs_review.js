@@ -857,5 +857,42 @@ await scenario('Mesures autonomes : ancienne suite inerte après changement de l
 await scenario('Mesures autonomes : panne audit sans données ni actions',async ctx=>{
  choisirMesures(ctx);ctx.host.querySelector('[data-measure-type]').value='restriction';ctx.reponse(rapportMesuresAutonomes());ctx.button('Rechercher dans les mesures').click();await tick();ctx.reponse({detail:{code:'audit_revue_indisponible'}},503);ctx.button('Rechercher dans les mesures').click();await tick();assert.equal(ctx.host.querySelector('pre').textContent,'');assert.equal(ctx.host.querySelector('[data-review-actions]').textContent,'');
 },lotsAvecMesures);
+const lotsMixtes=[...lotsAvecMesures,lot('mesures-b','mesures')];
+function choisirMixte(ctx){const l=ctx.host.querySelector('select');l.value='test-tarif';l.dispatchEvent(new ctx.w.Event('change'));ctx.host.querySelector('[data-code10]').value='0101000000';}
+const rapportMixte=extra=>envelope({type_rapport:'consultation_documentaire_tarif_mesures_autonomes',rattachement_juridique_etabli:false,mesures_fusionnees:false,
+ code_tarifaire_10_exact:'0101000000',lots_exacts:{tarif:'test-tarif',mesures:'test-mesures'},roles_archives:{avant:'nomenclature',apres:'mesures_autonomes'},
+ fiche_nomenclature:{code_tarifaire_10_exact:'0101000000',ligne_trouvee:true,ligne_declaree:{code_tarifaire_10:'0101000000'},limite_mesures:2,decalage_mesures:0,decalage_mesures_suivant:2,total_mesures_declarees:7},
+ mesures_autonomes:{type_lot:'mesures',filtres:{code10_exact:'0101000000',type_mesure:null},limite:3,decalage:3,decalage_suivant:6,total_correspondances:10},...extra});
+await scenario('Tarif/mesures : paramètres exacts et sources distinctes',async ctx=>{
+ choisirMixte(ctx);ctx.host.querySelector('[data-autonomous-limit]').value=3;ctx.host.querySelector('[data-autonomous-offset]').value=3;
+ ctx.reponse(rapportMixte({}));ctx.button('Consulter nomenclature et mesures').click();await tick();const u=new URL(ctx.appels.at(-1).url,'https://x');
+ assert.equal(u.pathname,'/api/v1/customs-review/tariff-measures');assert.equal(u.searchParams.get('tarif'),'test-tarif');assert.equal(u.searchParams.get('mesures'),'test-mesures');assert.equal(u.searchParams.get('code10'),'0101000000');assert.equal(u.searchParams.get('measures_offset'),'3');
+},lotsMixtes);
+await scenario('Tarif/mesures : suite autonome conserve pagination nomenclature',async ctx=>{
+ choisirMixte(ctx);ctx.reponse(rapportMixte({}));ctx.button('Consulter nomenclature et mesures').click();await tick();ctx.button('Mesures autonomes suivantes').click();await tick();const u=new URL(ctx.appels.at(-1).url,'https://x');
+ assert.equal(u.searchParams.get('tariff_limit'),'2');assert.equal(u.searchParams.get('tariff_offset'),'0');assert.equal(u.searchParams.get('measures_limit'),'3');assert.equal(u.searchParams.get('measures_offset'),'6');
+},lotsMixtes);
+await scenario('Tarif/mesures : suite nomenclature conserve pagination autonome',async ctx=>{
+ choisirMixte(ctx);ctx.reponse(rapportMixte({}));ctx.button('Consulter nomenclature et mesures').click();await tick();ctx.button('Mesures suivantes de la nomenclature').click();await tick();const u=new URL(ctx.appels.at(-1).url,'https://x');
+ assert.equal(u.searchParams.get('tariff_offset'),'2');assert.equal(u.searchParams.get('measures_offset'),'3');
+},lotsMixtes);
+await scenario('Tarif/mesures : ouvrir le lot autonome ne fabrique pas une fiche',async ctx=>{
+ choisirMixte(ctx);ctx.reponse(rapportMixte({}));ctx.button('Consulter nomenclature et mesures').click();await tick();ctx.button('Consulter ce lot de mesures autonomes').click();await tick();const u=new URL(ctx.appels.at(-1).url,'https://x');
+ assert.equal(u.pathname,'/api/v1/customs-review/lots/test-mesures/measure-search');assert.equal(u.searchParams.get('code10'),'0101000000');assert.equal(ctx.host.querySelector('select').value,'test-mesures');
+},lotsMixtes);
+await scenario('Tarif/mesures : code invalide ou sélection Code sans lecture',async ctx=>{
+ let n=ctx.appels.length;ctx.button('Consulter nomenclature et mesures').click();await tick();assert.equal(ctx.appels.length,n);
+ choisirMixte(ctx);ctx.host.querySelector('[data-code10]').value='010100';ctx.button('Consulter nomenclature et mesures').click();await tick();assert.equal(ctx.appels.length,n);
+},lotsMixtes);
+await scenario('Tarif/mesures : changement de lot autonome invalide ancienne suite',async ctx=>{
+ choisirMixte(ctx);ctx.reponse(rapportMixte({}));ctx.button('Consulter nomenclature et mesures').click();await tick();const ancien=ctx.button('Mesures autonomes suivantes'),n=ctx.appels.length,s=ctx.host.querySelector('[data-autonomous-lot]');
+ s.value='mesures-b';s.dispatchEvent(new ctx.w.Event('change'));ancien.click();await tick();assert.equal(ctx.appels.length,n);assert.equal(ctx.host.querySelector('pre').textContent,'');
+},lotsMixtes);
+await scenario('Tarif/mesures : provenance de rôles incohérente sans action',async ctx=>{
+ choisirMixte(ctx);ctx.reponse(rapportMixte({roles_archives:{avant:'mesures_autonomes',apres:'nomenclature'}}));ctx.button('Consulter nomenclature et mesures').click();await tick();assert(!ctx.button('Mesures autonomes suivantes'));assert(!ctx.button('Consulter ce lot'));
+},lotsMixtes);
+await scenario('Tarif/mesures : panne audit efface les deux côtés',async ctx=>{
+ choisirMixte(ctx);ctx.reponse(rapportMixte({}));ctx.button('Consulter nomenclature et mesures').click();await tick();ctx.reponse({detail:{code:'audit_revue_indisponible'}},503);ctx.button('Consulter nomenclature et mesures').click();await tick();assert.equal(ctx.host.querySelector('pre').textContent,'');assert.equal(ctx.host.querySelector('[data-review-actions]').textContent,'');
+},lotsMixtes);
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

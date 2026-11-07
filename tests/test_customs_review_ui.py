@@ -112,7 +112,7 @@ def test_interface_revue_sur_api_reelle(revue):
         assert resultat.returncode == 0, resultat.stdout + resultat.stderr
         exports = [ligne.removeprefix("EXPORT_REEL_JSON=") for ligne in resultat.stdout.splitlines()
                    if ligne.startswith("EXPORT_REEL_JSON=")]
-        assert len(exports) == 15
+        assert len(exports) == 16
         copies = [v.removeprefix("PDF_SOURCE_SHA256=") for v in resultat.stdout.splitlines() if v.startswith("PDF_SOURCE_SHA256=")]
         assert copies == [hashlib.sha256((racine / "code_pdf_ui/document_0001.pdf").read_bytes()).hexdigest()]
         for texte in exports:

@@ -136,3 +136,5 @@ Lot 35 : [téléchargement contrôlé du PDF archivé](docs/customs/COPIE_PDF_SO
 Lot 36 : [préparer/rejouer des mesures JSON indépendantes de la nomenclature](docs/customs/MESURES_AUTONOMES.md) via CLI explicite, sans activation ni calcul.
 
 Lot 37 : [revue intégrée des mesures autonomes](docs/customs/REVUE_MESURES_AUTONOMES.md), type de registre `mesures`. Contrôle/recherche de mesures/sources/couverture et exports existants, autres opérations explicitement refusées ; aucun rapprochement fiscal.
+
+Lot 38 : [consultation nomenclature et mesures autonomes](docs/customs/CONSULTATION_TARIF_MESURES.md), CLI `customs-tariff-measures`, API racine `/tariff-measures`. Paire tarif/mesures explicitement autorisée pour cette seule opération, sources/paginations séparées et export à double provenance. Aucun rattachement juridique établi.
