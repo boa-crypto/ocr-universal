@@ -720,5 +720,35 @@ await scenario('Recherche mesures : audit indisponible sans ancien résultat',as
  reponse(mesuresRapport({}));button('Rechercher dans les mesures').click();await tick();reponse({detail:{code:'audit_revue_indisponible'}},503);
  button('Rechercher dans les mesures').click();await tick();assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
 });
+const extraitRecherche=extra=>({champ_texte:'texte_francais',terme_normalise:'equipement',unite_decalage:'points_de_code_unicode_python',
+ decalage:700,fragment:'😀 Équipement <img src=x>',total_caracteres:1200,correspondance_debut:702,correspondance_fin:712,correspondance_entierement_visible:true,...extra});
+const rechercheExtraits=extraits=>envelope({type_recherche:'code_documentaire',termes_normalises:['equipement'],resultats:[{id:'VERSION_EXACTE',extraits_correspondants:extraits}]});
+await scenario('Extraits Code : contexte sûr et ouverture Unicode exacte',async({w,host,appels,button,reponse})=>{
+ const ex=extraitRecherche({});reponse(rechercheExtraits([ex]));host.querySelector('input').value='equipement';host.querySelector('form').dispatchEvent(new w.Event('submit',{cancelable:true}));await tick();
+ assert.equal(host.querySelector('blockquote').textContent,ex.fragment);assert(!host.querySelector('img'));assert.equal(host.querySelector('blockquote').dir,'auto');
+ button('Lire le passage VERSION_EXACTE').click();await tick();const u=new URL(appels.at(-1).url,'https://x');
+ assert.equal(u.searchParams.get('article_id'),'VERSION_EXACTE');assert.equal(u.searchParams.get('field'),'texte_francais');assert.equal(u.searchParams.get('offset'),'700');assert.equal(u.searchParams.get('limit'),String(Array.from(ex.fragment).length));
+});
+await scenario('Extraits Code : titre visible mais sans lecture de champ interdit',async({w,host,button,reponse})=>{
+ reponse(rechercheExtraits([extraitRecherche({champ_texte:'intitule'})]));host.querySelector('input').value='equipement';host.querySelector('form').dispatchEvent(new w.Event('submit',{cancelable:true}));await tick();
+ assert(host.querySelector('blockquote'));assert(!button('Lire le passage'));assert(button('Lire la version VERSION_EXACTE'));
+});
+await scenario('Extraits Code : positions incohérentes et terme étranger ignorés',async({w,host,button,reponse})=>{
+ reponse(rechercheExtraits([extraitRecherche({decalage:'700'}),extraitRecherche({unite_decalage:'UTF16'}),extraitRecherche({terme_normalise:'invente'}),extraitRecherche({correspondance_fin:701})]));
+ host.querySelector('input').value='equipement';host.querySelector('form').dispatchEvent(new w.Event('submit',{cancelable:true}));await tick();assert(!host.querySelector('blockquote'));assert(!button('Lire le passage'));
+});
+await scenario('Extraits Code : un seul contexte par champ et limite de taille',async({w,host,button,reponse})=>{
+ reponse(rechercheExtraits([extraitRecherche({fragment:'x'.repeat(385)}),extraitRecherche({}),extraitRecherche({})]));
+ host.querySelector('input').value='equipement';host.querySelector('form').dispatchEvent(new w.Event('submit',{cancelable:true}));await tick();assert.equal(host.querySelectorAll('blockquote').length,1);
+ assert.equal([...host.querySelectorAll('button')].filter(b=>b.textContent.includes('Lire le passage')).length,1);
+});
+await scenario('Extraits Code : ancienne ouverture inerte après changement de lot',async({w,host,appels,button,reponse})=>{
+ reponse(rechercheExtraits([extraitRecherche({})]));host.querySelector('input').value='equipement';host.querySelector('form').dispatchEvent(new w.Event('submit',{cancelable:true}));await tick();
+ const ancien=button('Lire le passage'),n=appels.length,l=host.querySelector('select');l.value='test-tarif';l.dispatchEvent(new w.Event('change'));ancien.click();await tick();assert.equal(appels.length,n);assert(!host.querySelector('blockquote'));
+});
+await scenario('Extraits Code : audit indisponible efface contextes et actions',async({w,host,button,reponse})=>{
+ reponse(rechercheExtraits([extraitRecherche({})]));host.querySelector('input').value='equipement';host.querySelector('form').dispatchEvent(new w.Event('submit',{cancelable:true}));await tick();
+ reponse({detail:{code:'audit_revue_indisponible'}},503);button('Lire le passage').click();await tick();assert(!host.querySelector('blockquote'));assert.equal(host.querySelector('pre').textContent,'');
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

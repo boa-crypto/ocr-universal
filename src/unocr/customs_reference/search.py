@@ -5,6 +5,7 @@ from pathlib import Path
 
 from .comparison import charger_lot
 from .legal_comparison import charger_lot_code
+from .search_excerpt import extraits_correspondants
 
 MAX_REQUETE = 256
 MAX_TERMES = 16
@@ -128,11 +129,16 @@ def rechercher_code(repertoire: Path, requete: str = "", limite: int = 20, decal
                               "date_entree_vigueur_declaree": article.date_entree_vigueur.isoformat() if article.date_entree_vigueur else None,
                               "date_fin_validite_declaree": article.date_fin_validite.isoformat() if article.date_fin_validite else None,
                               "apercus": {cle: _apercu(getattr(article, cle)) for cle in ("texte_integral", "texte_francais", "texte_arabe")},
-                              "champs_correspondants": preuves})
+                              "champs_correspondants": preuves,
+                              "extraits_correspondants": extraits_correspondants({cle: getattr(article, cle) for cle in (
+                                  "intitule", "texte_integral", "texte_francais", "texte_arabe")}, termes)})
         total += 1
     resultat = _rapport("code_documentaire", requete, termes, "texte_normalise_et_filtres_exacts", filtres,
                         rapport, total, resultats, limite, decalage)
+    resultat["strategie_extraits"] = "un_par_champ_premier_terme_de_requete_present_premiere_occurrence"
+    resultat["limite_caracteres_extrait"] = 384
+    resultat["occurrences_denombrees"] = False
     resultat["transcription_verification"] = "non_verifiee"
     resultat["documents_declares"] = [d.model_dump(mode="json") for d in lot.documents]
-    resultat["avertissements"].append("Aperçus initiaux de 512 caractères au maximum, non centrés sur les correspondances ; aucune version applicable choisie.")
+    resultat["avertissements"].append("Aperçus initiaux conservés ; extraits originaux de 384 points de code maximum, un par champ correspondant, sans dénombrement des occurrences ni version applicable choisie.")
     return resultat

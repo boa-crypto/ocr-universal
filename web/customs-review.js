@@ -559,7 +559,30 @@
         // Les boutons ne reprennent aucune URL source. Seuls des IDs/codes déclarés
         // alimentent les champs des lectures déjà protégées par le serveur.
         if (rapport.type_recherche === "code_documentaire" && Array.isArray(rapport.resultats)) {
-          rapport.resultats.slice(0, 100).forEach(function (v) { if (v) proposerVersion(v.id); });
+          rapport.resultats.slice(0, 100).forEach(function (v) {
+            if (!v) return;
+            proposerVersion(v.id);
+            if (!idValide(v.id) || lecture.disabled || !Array.isArray(v.extraits_correspondants) || !Array.isArray(rapport.termes_normalises)) return;
+            var champsVus = new Set();
+            v.extraits_correspondants.slice(0, 4).forEach(function (ex) {
+              if (!ex || !["intitule", "texte_integral", "texte_francais", "texte_arabe"].includes(ex.champ_texte) || champsVus.has(ex.champ_texte) ||
+                  ex.unite_decalage !== "points_de_code_unicode_python" || typeof ex.fragment !== "string" ||
+                  !rapport.termes_normalises.includes(ex.terme_normalise) || typeof ex.terme_normalise !== "string" || !ex.terme_normalise ||
+                  !entier(ex.decalage, 0, 67108864) || !entier(ex.total_caracteres, 1, 67108864)) return;
+              var longueur = Array.from(ex.fragment).length;
+              if (longueur < 1 || longueur > 384 || ex.decalage + longueur > ex.total_caracteres ||
+                  !entier(ex.correspondance_debut, ex.decalage, ex.decalage + longueur - 1) ||
+                  !entier(ex.correspondance_fin, ex.correspondance_debut + 1, ex.total_caracteres) ||
+                  ex.correspondance_entierement_visible !== (ex.correspondance_fin <= ex.decalage + longueur)) return;
+              champsVus.add(ex.champ_texte);
+              var contexte = element("blockquote", ex.fragment); contexte.dir = "auto";
+              actions.append(element("p", "Extrait non validé — " + v.id + " — " + ex.champ_texte), contexte);
+              if (ex.champ_texte === "intitule") return;
+              actions.append(actionDocumentaire("Lire le passage " + v.id + " — " + ex.champ_texte, function () {
+                readId.value = v.id; readField.value = ex.champ_texte; readLimit.value = longueur; readOffset.value = ex.decalage; chargerArticle();
+              }));
+            });
+          });
         }
         if (rapport.type_recherche === "tarif_documentaire" && Array.isArray(rapport.resultats)) {
           rapport.resultats.slice(0, 100).forEach(function (v) { if (v && v.ligne) proposerCode(v.ligne.code_tarifaire_10); });

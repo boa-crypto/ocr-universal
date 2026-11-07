@@ -226,6 +226,18 @@ const {JSDOM} = require('jsdom');
   await attendre(()=>host.querySelector('pre').textContent.includes('archives'));
   const diff=JSON.parse(host.querySelector('pre').textContent);
   assert(diff.archives.avant.manifest_sha256); assert(diff.archives.apres.manifest_sha256);
+  lot.value='code_a';lot.dispatchEvent(new w.Event('change'));
+  const formulaireRecherche=host.querySelector('form'),champsRecherche=formulaireRecherche.querySelectorAll('input');
+  champsRecherche[0].value='equipement';champsRecherche[1].value='';champsRecherche[2].value='';champsRecherche[3].value=20;champsRecherche[4].value=0;
+  formulaireRecherche.querySelector('select').value='';formulaireRecherche.dispatchEvent(new w.Event('submit',{cancelable:true}));
+  await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_recherche==='code_documentaire');
+  const rechercheContextuelle=JSON.parse(host.querySelector('pre').textContent);
+  const exContexte=rechercheContextuelle.resultats[0].extraits_correspondants.find(e=>e.champ_texte==='texte_integral');assert(exContexte);
+  assert(host.querySelector('blockquote'));exportBlob=null;bouton('Exporter ce rapport').click();await attendre(()=>!!exportBlob);
+  const contexteExporte=await new Promise((resolve,reject)=>{const r=new w.FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsText(exportBlob);});
+  console.log('EXPORT_REEL_JSON='+JSON.stringify(JSON.parse(contexteExporte)));
+  bouton('Lire le passage TEST_O_A — texte_integral').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_rapport==='lecture_article_documentaire');
+  const passageExact=JSON.parse(host.querySelector('pre').textContent);assert.equal(passageExact.fragment,exContexte.fragment);assert.equal(passageExact.decalage,exContexte.decalage);
   // Un vrai compte lecteur ne peut rien lire, même par le lien direct.
   w.sessionStorage.setItem('uniocr_token','TEST_LECTEUR_NON_PRODUCTION'); bouton('Actualiser').click();
   await attendre(()=>host.textContent.includes('Accès refusé'));
