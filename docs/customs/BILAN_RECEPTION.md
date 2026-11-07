@@ -7,7 +7,26 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 69
+## État actuel — lot 70
+
+[Pages sans sortie dans la qualité](PAGES_SANS_SORTIE_DANS_QUALITE.md) : la limite
+constatée au lot 69 est corrigée. Sans mots, non déclarée vide et texte blanc après
+`str.strip()`, la page contribue zéro aux moyennes et figure dans
+`pages_low_confidence`, même au seuil zéro, avec `OCR_FAILED` conservé.
+**27 nouveaux cas / 214 qualité-Baidu réussis** ; contre-épreuve ancien calcul :
+24 échecs attendus, 3 réussis. Stockage/API/export JSON et pipeline PNG vérifiés,
+registre explicitement vide dans le test, pas faux OCR. Documentaire **2 160 Python /
+212 JSDOM historiques**. Complète : **3 469 réussis, 2 échecs Indra, 1 ignoré Indra,
+1 avertissement, 429,96 s**.
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42403664023),
+pas suite OCR complète en CI. **26/27 empreintes historiques conformes**, même
+écart partagé et données/journaux préservés hors commit. Pas calibration, migration
+historique, changement des champs ou verrou fiscal. Le repli texte sans mots 0,95
+reste historique et non requalifié. [Rapport](RAPPORT_LOT70.md),
+[recette actuelle](RECETTE_LOT70.json).
+Mission réglementaire inchangée, partielle et non recevable pour production fiscale.
+
+## Complément historique — lot 69
 
 [Localisations Baidu fournies contrôlées](LOCALISATIONS_BAIDU_DECLAREES.md) :
 coordonnées requises numériques finies, boîtes positives dans l'image envoyée,

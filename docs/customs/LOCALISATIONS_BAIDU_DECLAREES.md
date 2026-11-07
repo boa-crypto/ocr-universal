@@ -1,5 +1,7 @@
 # Localisations Baidu fournies : validation bornée — lot 69
 
+> Complément au lot 70 : [pages sans sortie incluses dans moyennes et revue](PAGES_SANS_SORTIE_DANS_QUALITE.md). La limite `pages_low_confidence` décrite ci-dessous est historique au lot 69 et désormais corrigée pour ce périmètre.
+
 7 novembre 2026. Complète les lots 65–68 ; pas de changement d'endpoint,
 d'option, d'autorisation ou de clé fournisseur.
 
