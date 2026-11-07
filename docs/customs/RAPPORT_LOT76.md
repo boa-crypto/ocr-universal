@@ -79,7 +79,11 @@ leurs modifications aux présents tests.
 
 Aperçu redémarré avec le backend 76, port 8000. `data/rbac.json` toujours absent :
 **rôles et cloisonnement inactifs dans cet aperçu historique ouvert**. Aucune
-création automatique de compte, jeton ou RBAC.
+création automatique de compte, jeton ou RBAC. Les journaux précédant l'arrêt
+signalaient des tentatives de traitement et une limite de concurrence atteinte ;
+la continuité des traitements en cours n'est pas garantie par ce redémarrage.
+L'API existante `/api/jobs/stale` expose les jobs détectés comme interrompus ;
+aucune reprise fournisseur automatique supplémentaire n'a été déclenchée par ce lot.
 
 Le cycle testé revient à un champ de base sans valeur manuelle antérieure.
 **Pas refonte multi-niveau de l'annulation**, restauration exacte des quatre

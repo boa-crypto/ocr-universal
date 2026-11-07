@@ -15,7 +15,7 @@ Statut `corrected` déjà émis par l'API reconnu par le modèle ; export JSON v
 **106 nouveaux cas + 2 cas existants induits / 392 ciblés réussis** ; témoins :
 43 échecs attendus/63 réussis, puis annulation seule 4/102. Documentaire
 **2 160 Python / 212 JSDOM historiques**. Complète : **3 778 réussis, 2 échecs
-Indra, 1 ignoré, 1 avertissement, 472,85 s**.
+Indra, 1 ignoré, 2 avertissements, 472,85 s**.
 [CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42414044174),
 pas suite OCR complète en CI. **26/27 empreintes conformes**, même écart partagé ;
 données et journaux préservés hors commit. Pas refonte multi-niveau undo,
