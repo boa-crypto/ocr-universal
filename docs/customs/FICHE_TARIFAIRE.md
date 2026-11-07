@@ -83,3 +83,9 @@ et intégration HTTP/backend isolée, pas homologation juridique ou ergonomique.
 [Tests, résultats et état du corpus](RAPPORT_LOT10.md).
 
 [Contrat et compatibilité du lot 23](SUBDIVISIONS_NATIONALES.md).
+
+## Consultation séparée de deux lots — lot 31
+
+La fiche simple conserve son contrat. Une nouvelle lecture juxtapose deux fiches
+d’un code exact, avec sources et mesures indépendantes, sans taux applicable ou
+fusion fiscale : [FICHES_TARIFAIRES_SEPAREES.md](FICHES_TARIFAIRES_SEPAREES.md).

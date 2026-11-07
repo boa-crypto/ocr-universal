@@ -316,7 +316,7 @@ simplement parce que le RBAC historique est désactivé.
 
 ## État récapitulatif
 
-[Tableau des lots 1–30 et chantiers restants](TABLEAU_LOTS.md).
+[Tableau des lots 1–31 et chantiers restants](TABLEAU_LOTS.md).
 Dernier ajout : [rapprochement littéral d’un fragment d’article avec une page PDF
 source](RAPPROCHEMENT_ARTICLE_PDF.md), sans validation juridique.
 
@@ -328,3 +328,6 @@ liens entrants/sortants et preuves déclarées, sans validation juridique.
 
 Lot 30 : [rapprochement littéral des justifications avec leur PDF](RAPPROCHEMENT_JUSTIFICATION_PDF.md),
 sans validation de preuve ou portée juridique.
+
+Lot 31 : [deux fiches tarifaires à sources/mesures séparées](FICHES_TARIFAIRES_SEPAREES.md),
+consultation ciblée sans fusion fiscale ou droit applicable.

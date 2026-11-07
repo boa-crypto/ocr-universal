@@ -38,6 +38,7 @@ from ..customs_reference.review_registry import (
 )
 from ..customs_reference.search import ParamRechercheInvalide, rechercher_code, rechercher_tarif
 from ..customs_reference.tariff_detail import ParamFicheTarifInvalide, consulter_code
+from ..customs_reference.tariff_pair import juxtaposer_fiches_tarifaires
 from ..customs_reference.tariff_tree import ParamArbreTarifInvalide, parcourir_tarif
 from ..logging_setup import AuditIndisponible
 
@@ -260,6 +261,20 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 raise HTTPException(422, {"code": "lecture_pdf_non_applicable_au_tarif"}, headers=NO_STORE)
             return lire_page_pdf(p[0], document_id, page, limit, offset)
         return executer(utilisateur, "lecture_pdf", [lot_id], lire_document)
+
+    @router.get("/tariff-compare")
+    def fiches_tarifaires(avant: str = Query(..., pattern=IDENTIFIANT), apres: str = Query(..., pattern=IDENTIFIANT),
+                         code10: str = Query(..., min_length=10, max_length=10),
+                         before_limit: int = Query(20, ge=1, le=100), before_offset: int = Query(0, ge=0, le=1_000_000),
+                         after_limit: int = Query(20, ge=1, le=100), after_offset: int = Query(0, ge=0, le=1_000_000),
+                         utilisateur=Depends(autoriser)):
+        def juxtaposer(e, p, registre):
+            if e[0].type_lot != "tarif":
+                raise HTTPException(422, {"code": "fiches_tarifaires_non_applicables_au_code"}, headers=NO_STORE)
+            resultat = juxtaposer_fiches_tarifaires(p[0], p[1], code10, before_limit, before_offset, after_limit, after_offset)
+            resultat["lots_exacts"] = {"avant": avant, "apres": apres}
+            return resultat
+        return executer(utilisateur, "juxtaposition_fiches_tarifaires", [avant, apres], juxtaposer)
 
     @router.get("/article-diff")
     def diff_articles_inter_lots(avant: str = Query(..., pattern=IDENTIFIANT), apres: str = Query(..., pattern=IDENTIFIANT),

@@ -268,6 +268,16 @@ def main(argv=None) -> int:
     ca.add_argument("--offset", type=int, default=0)
     ca.set_defaults(func=cmd_customs_code_read)
 
+    tf = sub.add_parser("customs-tariff-compare", help="juxtaposer deux fiches sans fusion fiscale ou version applicable")
+    tf.add_argument("avant")
+    tf.add_argument("apres")
+    tf.add_argument("--code", required=True)
+    tf.add_argument("--before-limit", type=int, default=20)
+    tf.add_argument("--before-offset", type=int, default=0)
+    tf.add_argument("--after-limit", type=int, default=20)
+    tf.add_argument("--after-offset", type=int, default=0)
+    tf.set_defaults(func=cmd_customs_tariff_compare)
+
     rp = sub.add_parser("customs-code-relation-pdf-match", help="présence littérale d'une justification dans sa page source")
     rp.add_argument("lot")
     rp.add_argument("--id", required=True, dest="relation_id")
@@ -385,6 +395,13 @@ def cmd_customs_review_export_check(args) -> int:
     from .customs_reference.review_export import verifier_export
 
     return _afficher_lecture_douaniere(verifier_export, args.file)
+
+
+def cmd_customs_tariff_compare(args) -> int:
+    from .customs_reference.tariff_pair import juxtaposer_fiches_tarifaires
+
+    return _afficher_lecture_douaniere(lambda a, b: juxtaposer_fiches_tarifaires(
+        a, b, args.code, args.before_limit, args.before_offset, args.after_limit, args.after_offset), args.avant, args.apres)
 
 
 def cmd_customs_code_relation_pdf_match(args) -> int:

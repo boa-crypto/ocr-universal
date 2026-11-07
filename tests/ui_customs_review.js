@@ -650,5 +650,40 @@ await scenario('Justification : panne audit efface résultat et actions',async({
   reponse({detail:{code:'audit_revue_indisponible'}},503);button('Rapprocher la justification avec').click();await tick();
   assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
 });
+const scenarioPaire=(nom,action)=>scenario(nom,action,[lot('test-code'),lot('test-tarif','tarif'),lot('tarif-b','tarif')]);
+function choisirPaire(w,host) {const a=host.querySelector('select'),b=host.querySelector('[data-comparison-after-lot]');
+ a.value='test-tarif';a.dispatchEvent(new w.Event('change'));b.value='tarif-b';b.dispatchEvent(new w.Event('change'));host.querySelector('[data-code10]').value='0101000000';}
+const paireRapport=extra=>envelope({type_rapport:'juxtaposition_documentaire_fiches_tarifaires',code_tarifaire_10_exact:'0101000000',
+ lots_exacts:{avant:'test-tarif',apres:'tarif-b'},avant:{ligne_trouvee:true,ligne_declaree:{code_tarifaire_10:'0101000000'},limite_mesures:1,decalage_mesures:0,decalage_mesures_suivant:1,total_mesures_declarees:4},
+ apres:{ligne_trouvee:true,ligne_declaree:{code_tarifaire_10:'0101000000'},limite_mesures:2,decalage_mesures:2,decalage_mesures_suivant:null,total_mesures_declarees:4},...extra});
+await scenarioPaire('Fiches séparées : code chaîne et paginations exactes',async({w,host,appels,button,reponse})=>{
+ choisirPaire(w,host);host.querySelector('[data-measures-limit]').value='1';host.querySelector('[data-pair-after-limit]').value='2';host.querySelector('[data-pair-after-offset]').value='2';
+ reponse(paireRapport({}));button('Consulter les deux fiches').click();await tick();const u=new URL(appels.at(-1).url,'https://x');
+ assert.equal(u.pathname,'/api/v1/customs-review/tariff-compare');assert.equal(u.searchParams.get('code10'),'0101000000');assert.equal(u.searchParams.get('apres'),'tarif-b');assert.equal(u.searchParams.get('before_limit'),'1');assert.equal(u.searchParams.get('after_offset'),'2');
+});
+await scenarioPaire('Fiches séparées : suite avant conserve pagination après',async({w,host,appels,button,reponse})=>{
+ choisirPaire(w,host);reponse(paireRapport({}));button('Consulter les deux fiches').click();await tick();button('Mesures suivantes côté avant').click();await tick();
+ const u=new URL(appels.at(-1).url,'https://x');assert.equal(u.searchParams.get('before_offset'),'1');assert.equal(u.searchParams.get('after_offset'),'2');assert.equal(u.searchParams.get('after_limit'),'2');
+});
+await scenarioPaire('Fiches séparées : ouvrir côté après respecte lot et code',async({w,host,appels,button,reponse})=>{
+ choisirPaire(w,host);reponse(paireRapport({}));button('Consulter les deux fiches').click();await tick();button('Fiche apres du lot tarif-b').click();await tick();
+ const u=new URL(appels.at(-1).url,'https://x');assert.equal(u.pathname,'/api/v1/customs-review/lots/tarif-b/tariff/0101000000');assert.equal(host.querySelector('select').value,'tarif-b');
+});
+await scenarioPaire('Fiches séparées : code invalide ou lot Code sans requête',async({w,host,appels,button})=>{
+ choisirPaire(w,host);host.querySelector('[data-code10]').value='٠١٠١٠٠٠٠٠٠';let n=appels.length;button('Consulter les deux fiches').click();await tick();assert.equal(appels.length,n);
+ host.querySelector('[data-code10]').value='0101000000';host.querySelector('[data-comparison-after-lot]').value='test-code';button('Consulter les deux fiches').click();await tick();assert.equal(appels.length,n);
+});
+await scenarioPaire('Fiches séparées : paire incohérente et code numérique sans actions',async({w,host,button,reponse})=>{
+ choisirPaire(w,host);reponse(paireRapport({lots_exacts:{avant:'test-tarif',apres:'test-code'}}));button('Consulter les deux fiches').click();await tick();assert(!button('Fiche apres du lot'));assert(!button('Mesures suivantes côté'));
+ reponse(paireRapport({code_tarifaire_10_exact:1010000000}));button('Consulter les deux fiches').click();await tick();assert(!button('Mesures suivantes côté'));
+});
+await scenarioPaire('Fiches séparées : changement du lot après invalide la suite',async({w,host,appels,button,reponse})=>{
+ choisirPaire(w,host);reponse(paireRapport({}));button('Consulter les deux fiches').click();await tick();const ancien=button('Mesures suivantes côté avant'),n=appels.length;
+ const b=host.querySelector('[data-comparison-after-lot]');b.value='test-tarif';b.dispatchEvent(new w.Event('change'));ancien.click();await tick();assert.equal(appels.length,n);assert.equal(host.querySelector('pre').textContent,'');
+});
+await scenarioPaire('Fiches séparées : audit 503 efface les deux fiches',async({w,host,button,reponse})=>{
+ choisirPaire(w,host);reponse(paireRapport({}));button('Consulter les deux fiches').click();await tick();reponse({detail:{code:'audit_revue_indisponible'}},503);
+ button('Consulter les deux fiches').click();await tick();assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

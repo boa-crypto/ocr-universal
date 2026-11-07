@@ -177,7 +177,7 @@
       function adapter() {
         filtres.disabled = rep.lots.find(function (v) { return v.id === lot.value; }).type_lot !== "code";
         histoire.disabled = filtres.disabled;
-        fiche.disabled = !filtres.disabled;
+        fiche.disabled = !filtres.disabled; paireTarif.disabled = fiche.disabled;
         arbre.disabled = !filtres.disabled;
         justificationLecture.disabled = filtres.disabled; relationsLecture.disabled = filtres.disabled; matchLecture.disabled = filtres.disabled; codeArbre.disabled = filtres.disabled; lecture.disabled = filtres.disabled; diffArticle.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
         ++requete; viderResultat();
@@ -224,8 +224,10 @@
       code10.inputMode = "numeric"; code10.maxLength = 10; code10.pattern = "[0-9]{10}";
       code10.setAttribute("data-code10", "");
       var measureLimit = champ(fiche, "Mesures par page (1–100)", "input", "number");
+      measureLimit.setAttribute("data-measures-limit", "");
       measureLimit.min = 1; measureLimit.max = 100; measureLimit.value = 20; measureLimit.required = true;
       var measureOffset = champ(fiche, "Décalage mesures (0–1000000)", "input", "number");
+      measureOffset.setAttribute("data-measures-offset", "");
       measureOffset.min = 0; measureOffset.max = 1000000; measureOffset.value = 0; measureOffset.required = true;
       function chargerFiche() {
         if (fiche.disabled) return;
@@ -437,6 +439,23 @@
           page: justificationPage.value, limit: justificationLimit.value, offset: justificationOffset.value}), afficher);
       }
       justificationLecture.append(bouton("Rapprocher la justification avec sa page PDF", chargerJustification));
+      var paireTarif = element("fieldset");
+      paireTarif.append(element("legend", "Deux fiches tarifaires séparées — tarif seulement"));
+      paireTarif.append(element("p", "Utilise les lots avant/après en haut et le code exact de la fiche. Pagination avant = formulaire de fiche. Aucune fusion de taux, succession juridique ou fiscalité applicable déduite."));
+      var paireLimit = champ(paireTarif, "Mesures après par page (1–100)", "input", "number");
+      paireLimit.min = 1; paireLimit.max = 100; paireLimit.value = 20; paireLimit.required = true; paireLimit.setAttribute("data-pair-after-limit", "");
+      var paireOffset = champ(paireTarif, "Décalage mesures après (0–1000000)", "input", "number");
+      paireOffset.min = 0; paireOffset.max = 1000000; paireOffset.value = 0; paireOffset.required = true; paireOffset.setAttribute("data-pair-after-offset", "");
+      function chargerPaireTarif() {
+        if (paireTarif.disabled) return;
+        if (!/^[0-9]{10}$/.test(code10.value) || !rep.lots.some(function (v) { return v.id === apres.value && v.type_lot === "tarif"; })) {
+          ++requete; viderResultat(); statut.textContent = "Deux lots tarifaires et un code exact à dix chiffres ASCII requis."; return;
+        }
+        if (!measureLimit.reportValidity() || !measureOffset.reportValidity() || !paireLimit.reportValidity() || !paireOffset.reportValidity()) return;
+        lire("/tariff-compare?" + new URLSearchParams({avant: lot.value, apres: apres.value, code10: code10.value,
+          before_limit: measureLimit.value, before_offset: measureOffset.value, after_limit: paireLimit.value, after_offset: paireOffset.value}), afficher);
+      }
+      paireTarif.append(bouton("Consulter les deux fiches tarifaires séparées", chargerPaireTarif));
       function idValide(id) {
         return typeof id === "string" && id.trim() && Array.from(id).length <= 256 && !/[\u0000-\u001f\u007f-\u009f]/.test(id);
       }
@@ -465,6 +484,33 @@
         }));
       }
       rendreActions = function (rapport) {
+        if (rapport.type_rapport === "juxtaposition_documentaire_fiches_tarifaires" && !paireTarif.disabled &&
+            typeof rapport.code_tarifaire_10_exact === "string" && /^[0-9]{10}$/.test(rapport.code_tarifaire_10_exact) && rapport.lots_exacts && rapport.lots_exacts.avant === lot.value &&
+            [rapport.lots_exacts.avant, rapport.lots_exacts.apres].every(function (id) {
+              return rep.lots.some(function (v) { return v.id === id && v.type_lot === "tarif"; });
+            }) && rapport.avant && rapport.apres) {
+          ["avant", "apres"].forEach(function (cote) {
+            var f = rapport[cote];
+            if (f.ligne_trouvee === true && f.ligne_declaree && f.ligne_declaree.code_tarifaire_10 === rapport.code_tarifaire_10_exact) {
+              actions.append(actionDocumentaire("Fiche " + cote + " du lot " + rapport.lots_exacts[cote], function () {
+                lot.value = rapport.lots_exacts[cote]; adapter();
+                code10.value = rapport.code_tarifaire_10_exact; measureLimit.value = 20; measureOffset.value = 0; chargerFiche();
+              }));
+            }
+            if (!entier(f.limite_mesures, 1, 100) || !entier(f.decalage_mesures, 0, 1000000) ||
+                !entier(f.decalage_mesures_suivant, f.decalage_mesures + 1, 1000000) ||
+                !entier(f.total_mesures_declarees, f.decalage_mesures_suivant + 1, Number.MAX_SAFE_INTEGER)) return;
+            var autre = rapport[cote === "avant" ? "apres" : "avant"];
+            if (!entier(autre.limite_mesures, 1, 100) || !entier(autre.decalage_mesures, 0, 1000000)) return;
+            actions.append(actionDocumentaire("Mesures suivantes côté " + cote, function () {
+              code10.value = rapport.code_tarifaire_10_exact; apres.value = rapport.lots_exacts.apres;
+              measureLimit.value = rapport.avant.limite_mesures; paireLimit.value = rapport.apres.limite_mesures;
+              measureOffset.value = cote === "avant" ? f.decalage_mesures_suivant : rapport.avant.decalage_mesures;
+              paireOffset.value = cote === "apres" ? f.decalage_mesures_suivant : rapport.apres.decalage_mesures;
+              chargerPaireTarif();
+            }));
+          });
+        }
         // Les boutons ne reprennent aucune URL source. Seuls des IDs/codes déclarés
         // alimentent les champs des lectures déjà protégées par le serveur.
         if (rapport.type_recherche === "code_documentaire" && Array.isArray(rapport.resultats)) {
@@ -717,7 +763,7 @@
         }
       };
       lot.addEventListener("change", adapter); adapter();
-      outils.append(form, fiche, arbre, codeArbre, lecture, pdfLecture, diffArticle, matchLecture, relationsLecture, justificationLecture);
+      outils.append(form, fiche, arbre, codeArbre, lecture, pdfLecture, diffArticle, matchLecture, relationsLecture, justificationLecture, paireTarif);
     });
   }
   function demarrer() {

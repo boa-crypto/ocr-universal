@@ -95,3 +95,8 @@ de refuser cette nouvelle route.
 Lot 30 : `/lots/{lot_id}/relation-pdf-match` admise dans l’enveloppe partielle
 version 1 avec provenance simple. Constat littéral d’un fragment de justification,
 non preuve juridique. Anciens contrôleurs stricts susceptibles de refuser l’ajout.
+
+Lot 31 : `/api/v1/customs-review/tariff-compare` admise avec provenance double
+`archives.avant/apres` ; pas de provenance simple/ambiguë. Deux fiches documentaires
+séparées, pas fiscalité applicable. Anciens contrôleurs stricts susceptibles de
+refuser la nouvelle route d’enveloppe version 1.

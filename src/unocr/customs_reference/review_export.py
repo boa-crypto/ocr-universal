@@ -47,7 +47,7 @@ MARQUEURS = {
     "lecture_seule": True, "publication_active": False, "validation_juridique": "non_validee",
     "perimetre": "rapport_ou_page_uniquement_pas_corpus_complet",
 }
-ROUTE = (r"^/api/v1/customs-review/(?:diff|article-diff|lots/[A-Za-z0-9][A-Za-z0-9_-]{0,63}/"
+ROUTE = (r"^/api/v1/customs-review/(?:diff|article-diff|tariff-compare|lots/[A-Za-z0-9][A-Za-z0-9_-]{0,63}/"
          r"(?:check|search|history|coverage|tree|article|article-diff|article-pdf-match|article-relations|relation-pdf-match|code-tree|pdf|tariff/[0-9]{10}))(?:\?[^#\x00-\x20]*)?$")
 
 
@@ -73,7 +73,8 @@ class ExportRevue(StrictModel):
     def coherence(self):
         datetime.strptime(self.horodatage_client_non_certifie, "%Y-%m-%dT%H:%M:%S.%fZ")
         # Le pattern JSON Schema seul ne vérifie ni le calendrier ni ce lien.
-        diff = self.requete_relative.split("?", 1)[0] in {"/api/v1/customs-review/diff", "/api/v1/customs-review/article-diff"}
+        diff = self.requete_relative.split("?", 1)[0] in {"/api/v1/customs-review/diff", "/api/v1/customs-review/article-diff",
+                "/api/v1/customs-review/tariff-compare"}
         if diff != isinstance(self.resultat, RapportDiffExport):
             raise ValueError("Provenance incompatible avec la route")
         extras = self.resultat.__pydantic_extra__

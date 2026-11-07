@@ -10,12 +10,7 @@ class ParamFicheTarifInvalide(ValueError):
 
 
 def consulter_code(repertoire: Path, code10: str, limite_mesures: int = 20, decalage_mesures: int = 0) -> dict:
-    if not isinstance(code10, str) or re.fullmatch(r"[0-9]{10}", code10) is None:
-        raise ParamFicheTarifInvalide("Code exact : chaîne de dix chiffres ASCII requise, sans conversion")
-    if type(limite_mesures) is not int or not 1 <= limite_mesures <= 100:
-        raise ParamFicheTarifInvalide("Limite entière de 1 à 100 requise")
-    if type(decalage_mesures) is not int or not 0 <= decalage_mesures <= 1_000_000:
-        raise ParamFicheTarifInvalide("Décalage entier de 0 à 1000000 requis")
+    verifier_parametres_fiche(code10, limite_mesures, decalage_mesures)
     lot, rapport = charger_lot(repertoire)
     ligne = next((v for v in lot.lignes if v.code_tarifaire_10 == code10), None)
     hierarchie = None
@@ -65,3 +60,13 @@ def consulter_code(repertoire: Path, code10: str, limite_mesures: int = 20, deca
             "Empreintes et rejeu ne prouvent ni authenticité de la source ni exactitude ou exhaustivité réglementaire.",
         ],
     }
+
+
+def verifier_parametres_fiche(code10, limite_mesures, decalage_mesures):
+    """Validation partagée des sélections exactes avant chargement des lots."""
+    if not isinstance(code10, str) or re.fullmatch(r"[0-9]{10}", code10) is None:
+        raise ParamFicheTarifInvalide("Code exact : chaîne de dix chiffres ASCII requise, sans conversion")
+    if type(limite_mesures) is not int or not 1 <= limite_mesures <= 100:
+        raise ParamFicheTarifInvalide("Limite entière de 1 à 100 requise")
+    if type(decalage_mesures) is not int or not 0 <= decalage_mesures <= 1_000_000:
+        raise ParamFicheTarifInvalide("Décalage entier de 0 à 1000000 requis")

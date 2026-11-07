@@ -195,3 +195,10 @@ Page obligatoire, fragment de justification et source imposée par la relation.
 Constat littéral uniquement ; même autorisation/épingle/audit/no-store. Paramètres/
 tarif 422 ; PDF refusé 409 ; audit indisponible 503.
 [Guide](RAPPROCHEMENT_JUSTIFICATION_PDF.md).
+
+### Deux fiches tarifaires séparées (lot 31)
+
+`GET /tariff-compare?avant=…&apres=…&code10=…&before_limit=20&before_offset=0&after_limit=20&after_offset=0`.
+Deux lots tarifaires inscrits/épinglés, code10 exact, mesures indépendamment paginées,
+provenance double `archives.avant/apres`. Même autorisation/audit/no-store ; pas de
+fusion fiscale. [Contrat et limites](FICHES_TARIFAIRES_SEPAREES.md).
