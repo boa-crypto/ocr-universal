@@ -7,7 +7,25 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 71
+## État actuel — lot 72
+
+[Cloisonnement corrections et annulations](CLOISONNEMENT_CORRECTIONS_CHAMPS.md) :
+rôle et visibilité documentaire contrôlés avant lecture/réécriture du résultat
+sur PATCH champ et POST annulation. Refus hors périmètre 403, résultat inchangé,
+refus audité sans correction réussie. Politique partagée/non classée et jeton global
+conservés ; **sans RBAC actif, pas nouvelle protection automatique**.
+**44 nouveaux cas / 120 cloisonnement-RBAC réussis** ; contre-épreuve anciens
+handlers : 12 échecs attendus, 32 réussis. Documentaire **2 160 Python /
+212 JSDOM historiques**. Complète : **3 540 réussis, 2 échecs Indra,
+1 ignoré Indra, 1 avertissement, 351,22 s**.
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42409835955),
+nouvelle étape cloisonnement, pas suite OCR complète en CI. **26/27 empreintes
+historiques conformes**, même écart partagé ; données et journaux préservés hors
+commit. Pas audit exhaustif des rattachements, transaction ou verrou fiscal.
+[Rapport](RAPPORT_LOT72.md), [recette actuelle](RECETTE_LOT72.json).
+Mission réglementaire inchangée, partielle et non recevable pour production fiscale.
+
+## Complément historique — lot 71
 
 [Revue des champs à zéro et rapport final](REVUE_CHAMPS_CONFIANCE_NULLE.md) :
 filtre sans test de vérité, seuil strict configuré et exclusion `NOT_DETECTED`
