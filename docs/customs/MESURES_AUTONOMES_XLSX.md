@@ -99,9 +99,12 @@ vérifiés. Aucun upload administratif, calcul ou publication ajouté.
 Tests exclusivement NON OFFICIELS, pas d'original fiscal national acquis ou
 qualifié. Ni style Excel, date reçue, SHA ou égalité de code ne prouvent
 rattachement, authenticité, exhaustivité ou applicabilité. Pas de choix de taux,
-consolidation à date, validation humaine, PDF autonome,
+consolidation à date, validation humaine, extraction fiscale PDF automatique,
 WORM ou transaction multi-dossiers. La recette technique ne remplace pas la
 qualification de fichiers fiscaux officiels et la recette nationale.
 
 Lot 41 : [XLS OLE/BIFF8 autonome restreint](MESURES_AUTONOMES_XLS.md) également
 disponible. Ce n’est pas un lecteur XLS universel ; les contraintes diffèrent de XLSX.
+
+Lot 42 : [PDF opaque et transcription JSON déclarée](MESURES_AUTONOMES_PDF.md)
+archivables séparément, sans extraction ou fidélité au document vérifiée.

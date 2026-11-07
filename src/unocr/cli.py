@@ -193,9 +193,10 @@ def main(argv=None) -> int:
     cr.add_argument("--write", action="store_true", help="écrire explicitement le lot en quarantaine")
     cr.set_defaults(func=cmd_customs_prepare)
 
-    fm = sub.add_parser("customs-fiscal-prepare", help="préparer des mesures JSON/CSV/XLSX/XLS autonomes sans nomenclature ni activation")
+    fm = sub.add_parser("customs-fiscal-prepare", help="préparer des mesures autonomes JSON/CSV/XLSX/XLS ou PDF avec transcription explicite")
     fm.add_argument("source")
     fm.add_argument("--metadata", required=True)
+    fm.add_argument("--transcription", default="", help="tableau JSON de mesures déclarées, requis seulement avec un PDF")
     fm.add_argument("--out", default="")
     fm.add_argument("--write", action="store_true")
     fm.set_defaults(func=cmd_customs_fiscal_prepare)
@@ -590,7 +591,8 @@ def cmd_customs_fiscal_prepare(args) -> int:
         print("--out est requis avec --write", file=sys.stderr)
         return 2
     return _afficher_lecture_douaniere(lambda s, m: preparer_mesures_autonomes(
-        s, m, Path(args.out) if args.write else None), args.source, args.metadata)
+        s, m, Path(args.out) if args.write else None,
+        transcription=Path(args.transcription) if args.transcription else None), args.source, args.metadata)
 
 
 def cmd_customs_fiscal_search(args) -> int:

@@ -89,9 +89,12 @@ le rejeu. Pas de réécriture des anciens dossiers.
 Aucun fichier fiscal officiel national acquis ou qualifié par ces tests.
 Codes syntaxiques ≠ codes officiels existants ; égalité de code ≠ rattachement
 juridique. Dates non héritées, sources non fusionnées, aucun taux applicable choisi.
-Pas de PDF autonome, OCR fiscal, consolidation à date, validation humaine,
+Pas d’extraction fiscale PDF automatique, OCR fiscal, consolidation à date, validation humaine,
 publication, signature d'authenticité, WORM ou transaction multi-dossiers.
 Tests sur fixtures explicitement NON OFFICIELLES, pas recette nationale.
 
 Lot 40 : [XLSX textuel à feuille et mapping déclarés](MESURES_AUTONOMES_XLSX.md)
 également disponible ; ce contrat CSV et les sorties des archives 39 sont conservés.
+
+Lot 42 : [PDF opaque et transcription JSON déclarée](MESURES_AUTONOMES_PDF.md)
+archivables séparément, sans extraction ou fidélité au document vérifiée.

@@ -13,6 +13,7 @@ from reportlab.pdfgen import canvas
 
 from tests import test_customs_review
 from tests.test_customs_fiscal_csv import fichiers as fichiers_mesures
+from tests.test_customs_fiscal_pdf import fichiers as fichiers_mesures_pdf
 from tests.test_customs_fiscal_xls import fichiers as fichiers_mesures_xls
 from tests.test_customs_fiscal_xlsx import fichiers as fichiers_mesures_xlsx
 from tests.test_customs_reference import snapshot
@@ -25,7 +26,7 @@ from unocr.customs_reference.review_export import analyser_export
 revue = test_customs_review.revue
 
 
-@pytest.mark.parametrize("format_mesures", ["csv", "xlsx", "xls"])
+@pytest.mark.parametrize("format_mesures", ["csv", "xlsx", "xls", "pdf"])
 def test_interface_revue_sur_api_reelle(revue,format_mesures):
     root = Path(__file__).resolve().parents[1]
     if not shutil.which("node") or not (root / "node_modules/jsdom").is_dir():
@@ -81,8 +82,12 @@ def test_interface_revue_sur_api_reelle(revue,format_mesures):
     registre.write_text(json.dumps(reg))
     entrees_mesures = cfg.root / "mesures_ui"
     entrees_mesures.mkdir()
-    source_mesures,metadata_mesures = {"csv":fichiers_mesures,"xlsx":fichiers_mesures_xlsx,"xls":fichiers_mesures_xls}[format_mesures](entrees_mesures)
-    preparer_mesures_autonomes(source_mesures,metadata_mesures,racine / "mesures_ui")
+    transcription_mesures = None
+    if format_mesures == "pdf":
+        source_mesures,metadata_mesures,transcription_mesures = fichiers_mesures_pdf(entrees_mesures)
+    else:
+        source_mesures,metadata_mesures = {"csv":fichiers_mesures,"xlsx":fichiers_mesures_xlsx,"xls":fichiers_mesures_xls}[format_mesures](entrees_mesures)
+    preparer_mesures_autonomes(source_mesures,metadata_mesures,racine / "mesures_ui",transcription=transcription_mesures)
     reg = json.loads(registre.read_text())
     reg["lots"].append({"id":"mesures_a","dossier":"mesures_ui","type_lot":"mesures",
                         "manifest_sha256":hashlib.sha256((racine / "mesures_ui/manifest.json").read_bytes()).hexdigest()})

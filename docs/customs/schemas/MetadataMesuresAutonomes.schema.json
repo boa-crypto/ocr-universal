@@ -37,7 +37,8 @@
             "json",
             "csv",
             "xlsx",
-            "xls"
+            "xls",
+            "pdf"
           ],
           "title": "Format",
           "type": "string"

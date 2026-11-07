@@ -1,4 +1,4 @@
-"""Préparation/rejeu de mesures JSON/CSV/XLSX/XLS autonomes, sans écrasement ou activation."""
+"""Préparation/rejeu de mesures JSON/CSV/XLSX/XLS et PDF transcrit autonomes, sans écrasement ou activation."""
 import hashlib
 import json
 import re
@@ -7,23 +7,36 @@ from pathlib import Path
 
 from .fiscal_csv import lire_mesures_csv
 from .fiscal_models import ConfigurationMesuresAutonomes, MesuresAutonomesBatch
+from .fiscal_pdf import lire_transcription_pdf
 from .fiscal_xlsx import lire_mesures_tableur
 from .importer import MAX_SOURCE, ImportRefuse, _json, _lire
 from .measure_search import TYPES_MESURES
 
 TYPE_LOT = "mesures_autonomes_documentaires"
+MAX_TOTAL_PDF = 128 * 1024 * 1024
+TRANSCRIPTION_PDF = "transcription_mesures_recue.json"
 FICHIERS = {"source_mesures_recue.json", "metadata_original.json", "lot_mesures.json", "rapport.json"}
 
 
-def _analyser_mesures(original: bytes, metadata_original: bytes):
+def _analyser_mesures(original: bytes, metadata_original: bytes, transcription_original: bytes | None = None):
     brut_meta = _json(metadata_original)
     meta = ConfigurationMesuresAutonomes.model_validate_json(json.dumps(brut_meta, ensure_ascii=False))
     sha = hashlib.sha256(original).hexdigest()
     if sha != meta.source.sha256:
         raise ImportRefuse("Empreinte de source de mesures différente de la déclaration")
+    if meta.source.format != "pdf" and transcription_original is not None:
+        raise ImportRefuse("Transcription séparée interdite hors source PDF")
     if meta.source.format not in {"xlsx", "xls"} and {"feuille", "ligne_entete"} & set(brut_meta):
         raise ImportRefuse("Options de feuille interdites hors XLSX/XLS")
-    if meta.source.format in {"xlsx", "xls"}:
+    if meta.source.format == "pdf":
+        if {"colonnes", "delimiteur"} & set(brut_meta):
+            raise ImportRefuse("Options tabulaires interdites sur une source PDF")
+        if transcription_original is None:
+            raise ImportRefuse("Transcription JSON explicite requise avec une source PDF")
+        if len(original) + len(metadata_original) + len(transcription_original) > MAX_TOTAL_PDF:
+            raise ImportRefuse("PDF, sidecar et transcription reçus : 128 Mio maximum")
+        mesures,perimetre = lire_transcription_pdf(original,transcription_original)
+    elif meta.source.format in {"xlsx", "xls"}:
         if "delimiteur" in brut_meta:
             raise ImportRefuse("Délimiteur CSV interdit sur une source XLSX/XLS")
         mesures,perimetre = lire_mesures_tableur(original,meta)
@@ -64,19 +77,28 @@ def _analyser_mesures(original: bytes, metadata_original: bytes):
             "Format JSON strict seulement ; aucun CSV/XLSX/PDF autonome qualifié ici." if meta.source.format == "json" else
             "Format CSV textuel à mapping explicite ; aucun XLSX/PDF autonome qualifié ici." if meta.source.format == "csv" else
             "Format XLSX textuel à feuille et mapping explicites ; aucun PDF autonome qualifié ici." if meta.source.format == "xlsx" else
-            "Sous-ensemble XLS OLE/BIFF8 textuel à feuille et mapping explicites ; aucun PDF autonome qualifié ici.",
+            "Sous-ensemble XLS OLE/BIFF8 textuel à feuille et mapping explicites ; aucun PDF autonome qualifié ici." if meta.source.format == "xls" else
+            "PDF archivé opaque et transcription JSON déclarée ; aucun texte ou taux extrait ni fidélité au PDF vérifiée.",
         ], "ecrit":False}
+    if meta.source.format == "pdf":
+        rapport.update(mesures_source_lues=None, mesures_transcription_lues=len(mesures),
+                       transcription_verification="non_verifiee", lecture_pdf_effectuee=False,
+                       structure_pdf_verifiee=False, transcription_sha256=perimetre["transcription_sha256"])
     return lot,rapport
 
 
-def preparer_mesures_autonomes(source: Path, metadata: Path, sortie: Path | None = None) -> dict:
+def preparer_mesures_autonomes(source: Path, metadata: Path, sortie: Path | None = None,
+                               *, transcription: Path | None = None) -> dict:
     original,meta = _lire(source),_lire(metadata)
-    lot,rapport = _analyser_mesures(original,meta)
+    transcrit = _lire(transcription) if transcription is not None else None
+    lot,rapport = _analyser_mesures(original,meta,transcrit)
     rapport["ecrit"] = sortie is not None
     if sortie is not None:
         fichiers = {"source_mesures_recue."+lot.source.format:original, "metadata_original.json":meta,
                     "lot_mesures.json":lot.model_dump_json(indent=2).encode("utf-8"),
                     "rapport.json":json.dumps(rapport,ensure_ascii=False,indent=2).encode("utf-8")}
+        if transcrit is not None:
+            fichiers[TRANSCRIPTION_PDF] = transcrit
         manifest = {"type_lot":TYPE_LOT, "schema_version":"1", "statut":"quarantaine", "publication_active":False,
                     "validation_juridique":"non_validee", "date_importation":datetime.now(timezone.utc).isoformat(),
                     "source_nom_recu":source.name,
@@ -110,10 +132,12 @@ def charger_lot_mesures(repertoire: Path) -> tuple[MesuresAutonomesBatch,dict]:
     empreintes = m["fichiers_sha256"]
     if not isinstance(empreintes,dict):
         raise ImportRefuse("Table d'empreintes de mesures attendue")
-    sources = [nom for nom in empreintes if nom in {"source_mesures_recue.json", "source_mesures_recue.csv", "source_mesures_recue.xlsx", "source_mesures_recue.xls"}]
+    sources = [nom for nom in empreintes if nom in {"source_mesures_recue.json", "source_mesures_recue.csv", "source_mesures_recue.xlsx", "source_mesures_recue.xls", "source_mesures_recue.pdf"}]
     if len(sources) != 1:
-        raise ImportRefuse("Une seule source JSON/CSV/XLSX/XLS de mesures requise")
+        raise ImportRefuse("Une seule source JSON/CSV/XLSX/XLS/PDF de mesures requise")
     attendus = (FICHIERS - {"source_mesures_recue.json"}) | {sources[0]}
+    if sources[0] == "source_mesures_recue.pdf":
+        attendus.add(TRANSCRIPTION_PDF)
     if (set(empreintes) != attendus
             or {p.name for p in repertoire.iterdir()} != attendus | {"manifest.json"}):
         raise ImportRefuse("Fichiers de mesures absents ou inattendus")
@@ -126,7 +150,7 @@ def charger_lot_mesures(repertoire: Path) -> tuple[MesuresAutonomesBatch,dict]:
         if hashlib.sha256(contenu).hexdigest() != sha:
             raise ImportRefuse("Empreinte de fichier de mesures différente")
         fichiers[nom] = contenu
-    lot,rapport = _analyser_mesures(fichiers[sources[0]],fichiers["metadata_original.json"])
+    lot,rapport = _analyser_mesures(fichiers[sources[0]],fichiers["metadata_original.json"],fichiers.get(TRANSCRIPTION_PDF))
     if sources[0] != "source_mesures_recue."+lot.source.format:
         raise ImportRefuse("Format déclaré différent du nom d'archive source")
     recu = MesuresAutonomesBatch.model_validate_json(json.dumps(_json(fichiers["lot_mesures.json"]),ensure_ascii=False))

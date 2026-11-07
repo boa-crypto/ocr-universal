@@ -101,7 +101,10 @@ Aucun upload administratif ou API de publication ajouté.
 ## Non établi
 
 Aucun fichier fiscal officiel qualifié ou original national acquis par ces tests.
-XLS universel, PDF fiscal autonome, authenticité, exhaustivité, rapprochement
+XLS universel, extraction fiscale PDF automatique, authenticité, exhaustivité, rapprochement
 juridique, droit à date, contrôle humain, publication et calcul restent hors
 périmètre. Égalité de code ou SHA/rejeu ne déterminent jamais le taux applicable.
 Fixtures exclusivement NON OFFICIELLES ; pas recette nationale ou de charge.
+
+Lot 42 : [PDF opaque et transcription JSON déclarée](MESURES_AUTONOMES_PDF.md)
+archivables séparément, sans extraction ou fidélité au document vérifiée.
