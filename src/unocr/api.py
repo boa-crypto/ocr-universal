@@ -1795,6 +1795,7 @@ def patch_field(job_id: str, name: str, patch: FieldPatch, request: Request) -> 
     """Validation/correction humaine d'un champ. Tout est tracé (audit)."""
     # rôle exigé : valider/corriger un champ. RBAC inactif = contrôle sans effet.
     _exige(OPERATEUR)(request)
+    _exige_job(request, job_id)
     result = store.load_result(job_id)
     if result is None:
         raise HTTPException(409, "résultat pas encore disponible")
@@ -1858,6 +1859,7 @@ def annuler_correction(job_id: str, name: str, request: Request,
     """
     # rôle exigé : annuler une correction. RBAC inactif = contrôle sans effet.
     _exige(OPERATEUR)(request)
+    _exige_job(request, job_id)
     body = body or {}
     result = store.load_result(job_id)
     if result is None:
