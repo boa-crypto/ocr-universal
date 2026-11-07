@@ -7,7 +7,23 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 61
+## État actuel — lot 62
+
+[Tesseract local réel et suspension du cache non contextuel](OCR_LOCAL_ET_CACHE.md).
+**14 nouveaux tests**, 88 régressions réussies ; sélection documentaire inchangée
+**2 160 Python / 212 JSDOM**. Complète finale : **3 231 réussis, 2 échecs OCR,
+2 ignorés, 1 avertissement, 313,01 s** ; 16 des 18 échecs du lot 61 passent.
+Les deux échecs concernent Indra absent. Un contrôle supplémentaire du rendu UI,
+forcé séparément sur le port 8000, **échoue aussi** : helper inline historique
+incompatible avec les modules externes. Ce résultat n'est pas caché ni inclus
+artificiellement dans les totaux de la complète. Cache conservateur désactivé,
+pas purgé ; binaire local PNG/PNM seulement, pas déploiement de production.
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42395442147)
+(ne qualifie ni OCR complet ni les nouveaux tests unitaires hors sélection).
+[Rapport](RAPPORT_LOT62.md), [recette actuelle](RECETTE_LOT62.json).
+Mission réglementaire inchangée, partielle et non recevable pour production fiscale.
+
+## Complément — lot 61
 
 [Cohérence JUnit](COHERENCE_JUNIT.md) vérifiée sur les cas/statuts réels avant
 bilan positif ; pas seulement les totaux déclarés. **2 160 tests Python / 212

@@ -1,0 +1,109 @@
+{
+  "type_rapport": "recette_lot62_technique_non_validation_reglementaire",
+  "date": "2026-11-07",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "revision_code": "db864999d2ace05ae4863423bb44247e5f233612",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_originaux_officiels": 0,
+  "articles_codes_officiellement_valides": 0,
+  "nouveaux_tests": 14,
+  "regressions": {
+    "tests": 88,
+    "reussis": 88,
+    "echecs": 0,
+    "avertissements": 1,
+    "duree_secondes": 15.92,
+    "doubles_unitaires_non_preuve_ocr": true
+  },
+  "contre_epreuve_cache_lot61": {
+    "tests": 12,
+    "echecs_attendus_observes": 12,
+    "code_sortie": 1
+  },
+  "recette_ciblee": {
+    "fichiers": 66,
+    "reussis": 2160,
+    "echecs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_secondes": 59.22,
+    "jsdom": 212,
+    "exports_existants": 74
+  },
+  "suite_complete": {
+    "tests": 3235,
+    "reussis": 3231,
+    "ignores": 2,
+    "avertissements": 1,
+    "duree_secondes": 313.01,
+    "code_sortie": 1,
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 3235,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 2
+    },
+    "nombre_echecs": 2,
+    "echecs_lot61_desormais_reussis": [
+      "tests.test_api::test_engines_and_languages",
+      "tests.test_api::test_health",
+      "tests.test_ocr::test_registry_reports_availability_honestly",
+      "tests.test_ocr::test_tesseract_available",
+      "tests.test_ocr::test_tesseract_recognize_real",
+      "tests.test_options.TestEngineOption::test_engine_native_repli_sur_scan",
+      "tests.test_options.TestEngineOption::test_engine_tesseract_force",
+      "tests.test_options.TestPreprocessOptions::test_aggressive_existe",
+      "tests.test_options.TestPreprocessOptions::test_variant_comparison_off",
+      "tests.test_options.TestPreprocessOptions::test_variant_comparison_on",
+      "tests.test_pipeline::test_end_to_end_scanned_pdf_ocr",
+      "tests.test_pipeline::test_end_to_end_skewed_image",
+      "tests.test_resources::test_light_engines_always_available",
+      "tests.test_resources::test_registry_never_activates_unloadable_engine",
+      "tests.test_routing_and_security::test_intelligent_routing_blurry",
+      "tests.test_wave4::test_engines_endpoint_reports_reasons"
+    ],
+    "nouveaux_identifiants_echecs": [],
+    "ignores_identifiants": [
+      "tests.test_indra_ocr::test_indra_engine_recognize",
+      "tests.test_ui_dossier::test_rendu_du_parcours_documentaire"
+    ],
+    "identifiants_echecs": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ],
+    "echecs": 2
+  },
+  "fixtures56": {
+    "conformes": 27,
+    "total": 27,
+    "sans_restauration_apres_complete_finale": true
+  },
+  "benchmarks16_et_cache_suivis": "restaures apres premiere complete ; propres apres finale sans nouvelle restauration",
+  "ci": {
+    "run": 42395442147,
+    "statut": "success",
+    "portee": "selection documentaire ; pas OCR complet ni les 14 nouveaux tests unitaires"
+  },
+  "artefacts_locaux": "/home/user/recettes-unocr/lot62",
+  "provisionnement": "PROVISIONNEMENT_OCR_LOT62.json",
+  "cache_page_pipeline": "desactive_sans_purge",
+  "avertissements_environnement": [
+    "OpenCV headless local en substitution de opencv-python (lot61)",
+    "Leptonica PNG/PNM seulement ; avertissements TIFF visibles",
+    "Indra absent ; pas contournement reseau vers Hugging Face"
+  ],
+  "controle_ui_supplementaire": {
+    "commande": "UNIOCR_TEST_PORT=8000 pytest tests/test_ui_dossier.py::test_rendu_du_parcours_documentaire",
+    "echecs": 1,
+    "reussis": 0,
+    "ignores": 0,
+    "duree_secondes": 0.32,
+    "cause": "Controle legacy cherche une region inline DOSSIER absente ; CnxHub aussi non defini dans helper historique",
+    "corrige_dans_ce_lot": false,
+    "fusionne_aux_totaux_complete": false
+  }
+}
