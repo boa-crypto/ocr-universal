@@ -132,3 +132,5 @@ Lot 33 : la recherche Code conserve ses aperçus et ajoute des [extraits context
 Lot 34 : [inventaire local des sources déclarées](docs/customs/INVENTAIRE_SOURCES.md) via `customs-sources` et `GET /lots/{lot_id}/sources`, filtres/recherche métadonnées et export partiel audité. Aucun corpus exhaustif ou document authentifié déduit.
 
 Lot 35 : [téléchargement contrôlé du PDF archivé](docs/customs/COPIE_PDF_SOURCE.md) via `GET /lots/{lot_id}/pdf-source?document_id=…`, audit obligatoire et SHA navigateur, pièce jointe non validée (pas antivirus).
+
+Lot 36 : [préparer/rejouer des mesures JSON indépendantes de la nomenclature](docs/customs/MESURES_AUTONOMES.md) via CLI explicite, sans activation ni calcul.

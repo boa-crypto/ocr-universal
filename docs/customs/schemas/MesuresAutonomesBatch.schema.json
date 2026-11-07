@@ -1,0 +1,245 @@
+{
+  "$defs": {
+    "Mesure": {
+      "additionalProperties": false,
+      "properties": {
+        "date_entree_vigueur": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date Entree Vigueur"
+        },
+        "date_fin_validite": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date Fin Validite"
+        },
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "code_tarifaire_10": {
+          "pattern": "^[0-9]{10}$",
+          "title": "Code Tarifaire 10",
+          "type": "string"
+        },
+        "type_mesure": {
+          "enum": [
+            "droit",
+            "tva",
+            "autre_taxe",
+            "restriction",
+            "autorisation",
+            "regime"
+          ],
+          "title": "Type Mesure",
+          "type": "string"
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "taux": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Taux"
+        },
+        "unite_taux": {
+          "anyOf": [
+            {
+              "const": "pourcent",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unite Taux"
+        },
+        "reference": {
+          "$ref": "#/$defs/SourceRef"
+        },
+        "statut": {
+          "const": "a_verifier",
+          "default": "a_verifier",
+          "title": "Statut",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "code_tarifaire_10",
+        "type_mesure",
+        "description",
+        "reference"
+      ],
+      "title": "Mesure",
+      "type": "object"
+    },
+    "SourceMesuresJSON": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "titre": {
+          "minLength": 1,
+          "title": "Titre",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "organisme": {
+          "minLength": 1,
+          "title": "Organisme",
+          "type": "string"
+        },
+        "version_source": {
+          "minLength": 1,
+          "title": "Version Source",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "format": {
+          "const": "json",
+          "title": "Format",
+          "type": "string"
+        },
+        "date_publication": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date Publication"
+        },
+        "verification": {
+          "const": "non_verifiee",
+          "default": "non_verifiee",
+          "title": "Verification",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "titre",
+        "url",
+        "organisme",
+        "version_source",
+        "sha256",
+        "format"
+      ],
+      "title": "SourceMesuresJSON",
+      "type": "object"
+    },
+    "SourceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "localisateur": {
+          "description": "Page, article, feuille/cellules ou ligne source",
+          "minLength": 1,
+          "title": "Localisateur",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "localisateur"
+      ],
+      "title": "SourceRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/SourceMesuresJSON"
+    },
+    "statut": {
+      "const": "quarantaine",
+      "default": "quarantaine",
+      "title": "Statut",
+      "type": "string"
+    },
+    "validation_juridique": {
+      "const": "non_validee",
+      "default": "non_validee",
+      "title": "Validation Juridique",
+      "type": "string"
+    },
+    "publication_active": {
+      "const": false,
+      "default": false,
+      "title": "Publication Active",
+      "type": "boolean"
+    },
+    "mesures": {
+      "items": {
+        "$ref": "#/$defs/Mesure"
+      },
+      "maxItems": 100000,
+      "title": "Mesures",
+      "type": "array"
+    }
+  },
+  "required": [
+    "source"
+  ],
+  "title": "MesuresAutonomesBatch",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Préparation autonome de mesures déclarées, aucune validation ou applicabilité juridique."
+}

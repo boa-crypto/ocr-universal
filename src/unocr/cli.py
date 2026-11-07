@@ -193,6 +193,17 @@ def main(argv=None) -> int:
     cr.add_argument("--write", action="store_true", help="écrire explicitement le lot en quarantaine")
     cr.set_defaults(func=cmd_customs_prepare)
 
+    fm = sub.add_parser("customs-fiscal-prepare", help="préparer des mesures JSON autonomes sans nomenclature ni activation")
+    fm.add_argument("source")
+    fm.add_argument("--metadata", required=True)
+    fm.add_argument("--out", default="")
+    fm.add_argument("--write", action="store_true")
+    fm.set_defaults(func=cmd_customs_fiscal_prepare)
+
+    fc = sub.add_parser("customs-fiscal-check", help="contrôler et rejouer un lot autonome de mesures")
+    fc.add_argument("lot")
+    fc.set_defaults(func=cmd_customs_fiscal_check)
+
     cd = sub.add_parser("customs-diff", help="comparer deux lots en quarantaine sans modification")
     cd.add_argument("avant", help="répertoire du premier lot préparé")
     cd.add_argument("apres", help="répertoire du second lot préparé")
@@ -551,6 +562,22 @@ def cmd_customs_diff(args) -> int:
         return 2
     print(json.dumps(resultat, ensure_ascii=False, indent=2))
     return 0
+
+
+def cmd_customs_fiscal_prepare(args) -> int:
+    from .customs_reference.fiscal_importer import preparer_mesures_autonomes
+
+    if args.write and not args.out:
+        print("--out est requis avec --write", file=sys.stderr)
+        return 2
+    return _afficher_lecture_douaniere(lambda s, m: preparer_mesures_autonomes(
+        s, m, Path(args.out) if args.write else None), args.source, args.metadata)
+
+
+def cmd_customs_fiscal_check(args) -> int:
+    from .customs_reference.fiscal_importer import charger_lot_mesures
+
+    return _afficher_lecture_douaniere(lambda p: charger_lot_mesures(p)[1], args.lot)
 
 
 def cmd_customs_prepare(args) -> int:
