@@ -74,5 +74,13 @@ déclarée dans le lot. Empreintes/rejeu ne certifient ni authenticité ni fidé
 
 Le calcul préfixe/suffixe est linéaire ; le lot et les blocs centraux peuvent être
 chargés/copiés en mémoire. La pagination borne le fragment retourné, **pas la RAM
-globale**. Pas de comparaison inter-lots, restitution juridique à date, validation
-humaine signée ou publication active. Les sources manquantes restent manquantes.
+globale**. Cette route reste intra-lot. Pas de restitution juridique à date,
+validation humaine signée ou publication active. Les sources manquantes restent manquantes.
+
+
+## Extension inter-lots — lot 28
+
+Le périmètre intra-lot décrit ci-dessus est conservé. Une option CLI et une route
+séparée permettent désormais de comparer deux lots explicitement choisis, avec
+double provenance : [COMPARAISON_ARTICLES_INTER_LOTS.md](COMPARAISON_ARTICLES_INTER_LOTS.md).
+Cette extension lève uniquement la limite inter-lots, pas les limites juridiques.

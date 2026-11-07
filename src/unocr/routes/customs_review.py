@@ -228,6 +228,22 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
             return lire_page_pdf(p[0], document_id, page, limit, offset)
         return executer(utilisateur, "lecture_pdf", [lot_id], lire_document)
 
+    @router.get("/article-diff")
+    def diff_articles_inter_lots(avant: str = Query(..., pattern=IDENTIFIANT), apres: str = Query(..., pattern=IDENTIFIANT),
+                                avant_id: str = Query(..., min_length=1, max_length=256),
+                                apres_id: str = Query(..., min_length=1, max_length=256),
+                                field: str = Query("texte_integral", max_length=32),
+                                limit: int = Query(4000, ge=1, le=MAX_FRAGMENT),
+                                offset_avant: int = Query(0, ge=0, le=MAX_DECALAGE_TEXTE),
+                                offset_apres: int = Query(0, ge=0, le=MAX_DECALAGE_TEXTE), utilisateur=Depends(autoriser)):
+        def comparer(e, p, registre):
+            if e[0].type_lot != "code":
+                raise HTTPException(422, {"code": "diff_articles_non_applicable_au_tarif"}, headers=NO_STORE)
+            resultat = comparer_versions_article(p[0], avant_id, apres_id, field, limit, offset_avant, offset_apres, p[1])
+            resultat["lots_exacts"] = {"avant": avant, "apres": apres}
+            return resultat
+        return executer(utilisateur, "diff_articles_inter_lots", [avant, apres], comparer)
+
     @router.get("/diff")
     def comparer(avant: str = Query(..., pattern=IDENTIFIANT), apres: str = Query(..., pattern=IDENTIFIANT),
                  utilisateur=Depends(autoriser)):

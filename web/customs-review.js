@@ -140,6 +140,8 @@
       outils.append(liste);
       var lot = champ(outils, "Lot à contrôler / rechercher", "select");
       var apres = champ(outils, "Lot après (comparaison de même type)", "select");
+      apres.setAttribute("data-comparison-after-lot", "");
+      apres.addEventListener("change", function () { ++requete; viderResultat(); });
       rep.lots.forEach(function (item) {
         [lot, apres].forEach(function (select) {
           var option = element("option", item.id + " · " + item.type_lot);
@@ -356,15 +358,23 @@
       var diffOffsetApres = champ(diffArticle, "Décalage bloc après", "input", "number");
       [diffOffsetAvant, diffOffsetApres].forEach(function (v) { v.min = 0; v.max = 67108864; v.value = 0; v.required = true; });
       diffOffsetAvant.setAttribute("data-diff-offset-before", ""); diffOffsetApres.setAttribute("data-diff-offset-after", "");
-      function chargerDiffArticle() {
+      function chargerDiffArticle(interLots) {
+        interLots = interLots === true;
         if (diffArticle.disabled) return;
+        if (interLots && !rep.lots.some(function (v) { return v.id === apres.value && v.type_lot === "code"; })) {
+          ++requete; viderResultat(); statut.textContent = "Deux lots Code explicitement choisis requis."; return;
+        }
         if (!idValide(diffAvant.value) || !idValide(diffApres.value) || !readLimit.reportValidity() || !diffOffsetAvant.reportValidity() || !diffOffsetApres.reportValidity()) {
           ++requete; viderResultat(); statut.textContent = "Deux identifiants exacts et une limite valides requis."; return;
         }
-        lire("/lots/" + encodeURIComponent(lot.value) + "/article-diff?" + new URLSearchParams({avant_id: diffAvant.value,
-          apres_id: diffApres.value, field: readField.value, limit: readLimit.value, offset_avant: diffOffsetAvant.value, offset_apres: diffOffsetApres.value}), afficher);
+        var paramDiff = new URLSearchParams({avant_id: diffAvant.value, apres_id: diffApres.value,
+          field: readField.value, limit: readLimit.value, offset_avant: diffOffsetAvant.value, offset_apres: diffOffsetApres.value});
+        if (interLots) { paramDiff.set("avant", lot.value); paramDiff.set("apres", apres.value); }
+        lire(interLots ? "/article-diff?" + paramDiff : "/lots/" + encodeURIComponent(lot.value) + "/article-diff?" + paramDiff, afficher);
       }
       diffArticle.append(bouton("Comparer les deux versions exactes", chargerDiffArticle));
+      diffArticle.append(element("p", "Pour comparer entre archives, choisir aussi le lot après en haut. IDs locaux à chaque lot ; aucune identité ou relation juridique déduite."));
+      diffArticle.append(bouton("Comparer les versions entre deux lots Code", function () { chargerDiffArticle(true); }));
       var matchLecture = element("fieldset");
       matchLecture.append(element("legend", "Rapprochement littéral article / PDF — Code seulement"));
       matchLecture.append(element("p", "Utilise l’ID, le champ, la limite et le décalage du formulaire de lecture d’article. " +
@@ -501,7 +511,23 @@
             actions.append(actionDocumentaire("Page suivante des enfants Code", function () { ouvrirCode(sourceCode, pathCode, rapport.limite, rapport.decalage_suivant); }));
           }
         }
-        if (rapport.type_rapport === "comparaison_litterale_versions_article" && !diffArticle.disabled &&
+        var interDiff = rapport.type_rapport === "comparaison_litterale_versions_article_inter_lots";
+        var lotsDiffValides = !interDiff || (rapport.lots_exacts && rapport.lots_exacts.avant === lot.value &&
+          [rapport.lots_exacts.avant, rapport.lots_exacts.apres].every(function (id) {
+            return rep.lots.some(function (v) { return v.id === id && v.type_lot === "code"; });
+          }));
+        if (interDiff && lotsDiffValides && !lecture.disabled) {
+          ["avant", "apres"].forEach(function (cote) {
+            var version = rapport[cote] && rapport[cote].version_declaree;
+            if (!version || version.id !== rapport[cote + "_id_exact"] || !idValide(version.id)) return;
+            actions.append(actionDocumentaire("Lire la version " + cote + " du lot " + rapport.lots_exacts[cote], function () {
+              lot.value = rapport.lots_exacts[cote]; adapter();
+              readId.value = version.id; readField.value = "texte_integral"; readLimit.value = 4000; readOffset.value = 0;
+              chargerArticle();
+            }));
+          });
+        }
+        if ((rapport.type_rapport === "comparaison_litterale_versions_article" || interDiff) && lotsDiffValides && !diffArticle.disabled &&
             rapport.champs_comparables === true && rapport.unite_decalage === "points_de_code_unicode_python" &&
             idValide(rapport.avant_id_exact) && idValide(rapport.apres_id_exact) &&
             ["texte_integral", "texte_francais", "texte_arabe", "texte_origine", "texte_modificatif"].includes(rapport.champ_texte) &&
@@ -518,7 +544,8 @@
               readField.value = rapport.champ_texte; readLimit.value = rapport.limite;
               diffOffsetAvant.value = cote === "avant" ? bloc.decalage_suivant : rapport.avant.decalage_dans_bloc;
               diffOffsetApres.value = cote === "apres" ? bloc.decalage_suivant : rapport.apres.decalage_dans_bloc;
-              chargerDiffArticle();
+              if (interDiff) apres.value = rapport.lots_exacts.apres;
+              chargerDiffArticle(interDiff);
             }));
           });
         }

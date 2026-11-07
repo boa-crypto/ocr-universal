@@ -11,7 +11,8 @@ class ParamDiffArticleInvalide(ValueError):
 
 
 def comparer_versions_article(repertoire: Path, avant_id: str, apres_id: str, champ: str = "texte_integral",
-                              limite: int = 4000, decalage_avant: int = 0, decalage_apres: int = 0) -> dict:
+                              limite: int = 4000, decalage_avant: int = 0, decalage_apres: int = 0,
+                              repertoire_apres: Path | None = None) -> dict:
     for identifiant in (avant_id, apres_id):
         if (not isinstance(identifiant, str) or not identifiant.strip() or len(identifiant) > 256
                 or any(unicodedata.category(c) == "Cc" for c in identifiant)):
@@ -25,7 +26,10 @@ def comparer_versions_article(repertoire: Path, avant_id: str, apres_id: str, ch
     lot, rapport = charger_lot_code(repertoire)
     articles = {a.id: a for a in lot.articles}
     documents = {d.id: d for d in lot.documents}
-    a, b = articles.get(avant_id), articles.get(apres_id)
+    lot_apres, rapport_apres = charger_lot_code(repertoire_apres) if repertoire_apres is not None else (lot, rapport)
+    articles_apres = {a.id: a for a in lot_apres.articles}
+    documents_apres = {d.id: d for d in lot_apres.documents}
+    a, b = articles.get(avant_id), articles_apres.get(apres_id)
     ta, tb = getattr(a, champ) if a else None, getattr(b, champ) if b else None
     comparable = ta is not None and tb is not None
     prefixe, suffixe = None, None
@@ -38,7 +42,7 @@ def comparer_versions_article(repertoire: Path, avant_id: str, apres_id: str, ch
         while suffixe < maximum - prefixe and ta[len(ta) - 1 - suffixe] == tb[len(tb) - 1 - suffixe]:
             suffixe += 1
 
-    def decrire(article, texte, decalage):
+    def decrire(article, texte, decalage, docs):
         fin = len(texte) - suffixe if comparable else None
         milieu = texte[prefixe:fin] if comparable else None
         fragment = milieu[decalage:decalage + limite] if milieu is not None else None
@@ -46,22 +50,22 @@ def comparer_versions_article(repertoire: Path, avant_id: str, apres_id: str, ch
         return {"article_trouve": article is not None,
                 "version_declaree": article.model_dump(mode="json", include={"id", "numero_article", "nature_version",
                     "version_juridique", "reference", "validation_juridique"}) if article else None,
-                "document_declare": documents[article.reference.source_id].model_dump(mode="json") if article else None,
+                "document_declare": docs[article.reference.source_id].model_dump(mode="json") if article else None,
                 "champ_renseigne": texte is not None, "total_caracteres_texte": len(texte) if texte is not None else None,
                 "debut_bloc_different": prefixe, "fin_bloc_different_exclusive": fin,
                 "total_caracteres_bloc_different": len(milieu) if milieu is not None else None,
                 "decalage_dans_bloc": decalage, "fragment_bloc_different": fragment,
                 "decalage_suivant": suivant if milieu is not None and suivant < len(milieu) else None}
 
-    relations = [r.model_dump(mode="json") for r in lot.relations
+    relations = [] if repertoire_apres is not None else [r.model_dump(mode="json") for r in lot.relations
                  if {r.origine_id, r.cible_id} == {avant_id, apres_id}]
-    return {"type_rapport": "comparaison_litterale_versions_article", "lecture_seule": True,
+    resultat = {"type_rapport": "comparaison_litterale_versions_article", "lecture_seule": True,
             "publication_active": False, "validation_juridique": "non_validee", "validation_humaine_requise": True,
             "archive": rapport["archive"], "avant_id_exact": avant_id, "apres_id_exact": apres_id, "champ_texte": champ,
             "champs_comparables": comparable, "textes_identiques": ta == tb if comparable else None,
             "prefixe_commun_caracteres": prefixe, "suffixe_commun_caracteres": suffixe,
             "unite_decalage": "points_de_code_unicode_python", "limite": limite,
-            "avant": decrire(a, ta, decalage_avant), "apres": decrire(b, tb, decalage_apres),
+            "avant": decrire(a, ta, decalage_avant, documents), "apres": decrire(b, tb, decalage_apres, documents_apres),
             "relations_directes_declarees": relations, "relation_juridique_etablie": False,
             "transcription_verification": "non_verifiee", "restitution_juridique_a_date": False,
             "completude_reglementaire": "non_etablie",
@@ -72,3 +76,13 @@ def comparer_versions_article(repertoire: Path, avant_id: str, apres_id: str, ch
                                "Avant/après désigne l'ordre demandé, pas une succession juridique ou chronologie établie.",
                                "Relations reçues à titre documentaire seulement, sans preuve rapprochée du PDF.",
                                "Empreintes et rejeu ne prouvent ni authenticité, fidélité des transcriptions ou droit applicable."]}
+
+    if repertoire_apres is not None:
+        resultat["type_rapport"] = "comparaison_litterale_versions_article_inter_lots"
+        resultat.pop("archive")
+        resultat["archives"] = {"avant": rapport["archive"], "apres": rapport_apres["archive"]}
+        resultat["perimetre"] = "deux_lots_code_explicitement_choisis"
+        resultat["relations_inter_lots_etablies"] = False
+        resultat["avertissements"].append(
+            "IDs et relations sont locaux à chaque lot ; aucune relation inter-lots ou identité juridique n'est déduite.")
+    return resultat

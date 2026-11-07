@@ -316,6 +316,9 @@ simplement parce que le RBAC historique est désactivé.
 
 ## État récapitulatif
 
-[Tableau des lots 1–27 et chantiers restants](TABLEAU_LOTS.md).
+[Tableau des lots 1–28 et chantiers restants](TABLEAU_LOTS.md).
 Dernier ajout : [rapprochement littéral d’un fragment d’article avec une page PDF
 source](RAPPROCHEMENT_ARTICLE_PDF.md), sans validation juridique.
+
+Lot 28 : [comparaison littérale d’articles entre deux lots Code](COMPARAISON_ARTICLES_INTER_LOTS.md),
+sans relation juridique déduite.

@@ -215,3 +215,9 @@ pagination, remontée et export partiel : [NAVIGATION_CODE.md](NAVIGATION_CODE.m
 Un fragment peut être recherché tel quel dans une page physique explicitement
 choisie de sa source déclarée. Ce constat ne vérifie pas l’intégralité de l’article
 ni son statut juridique : [RAPPROCHEMENT_ARTICLE_PDF.md](RAPPROCHEMENT_ARTICLE_PDF.md).
+
+## Comparaison entre archives — lot 28
+
+Deux lots et deux IDs locaux explicitement choisis peuvent être comparés sans
+fusion des sources ou inférence juridique :
+[COMPARAISON_ARTICLES_INTER_LOTS.md](COMPARAISON_ARTICLES_INTER_LOTS.md).

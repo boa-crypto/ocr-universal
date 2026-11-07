@@ -81,3 +81,8 @@ juridique validée. Les anciens contrôleurs stricts peuvent refuser cette route
 Lot 27 : `/lots/{lot_id}/article-pdf-match` est admise dans l’enveloppe partielle
 version 1. Constat littéral d’un fragment seulement, sans attestation humaine.
 Les anciens contrôleurs stricts peuvent refuser cette nouvelle route.
+
+Lot 28 : `/api/v1/customs-review/article-diff` (hors chemin de lot) est admise
+avec provenance double `archives.avant/apres`, comme `/diff`. La route intra-lot
+`/lots/{lot_id}/article-diff` conserve une provenance simple. Une provenance
+ambiguë est refusée ; anciens contrôleurs stricts susceptibles de refuser l’ajout.

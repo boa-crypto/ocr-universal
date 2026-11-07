@@ -10,11 +10,11 @@ const envelope = resultat => ({lecture_seule:true, publication_active:false,
   validation_juridique:'non_validee', perimetre:'revue_administrative_quarantaine', resultat});
 const lot = (id, type_lot='code') => ({id, type_lot, manifest_sha256_attendu:'a'.repeat(64)});
 let compte = 0;
-async function scenario(nom, action) {
+async function scenario(nom, action, lotsInit=[lot('test-code'),lot('test-tarif','tarif')]) {
   const dom = new JSDOM('<div id="customs-review-host"></div>', {
     url:'https://preview.invalid/#admin/revue-douaniere', runScripts:'outside-only'});
   const w = dom.window, appels = [];
-  let repondre = () => Promise.resolve({ok:true, json:async()=>envelope({lots:[lot('test-code'),lot('test-tarif','tarif')]})});
+  let repondre = () => Promise.resolve({ok:true, json:async()=>envelope({lots:lotsInit})});
   w.fetch = (url, opts) => {appels.push({url, opts}); return repondre(url, opts);};
   w.sessionStorage.setItem('uniocr_token', 'JETON-TEST-NON-PRODUCTION');
   w.eval(script); await tick(); await tick();
@@ -515,6 +515,58 @@ await scenario('Rapprochement : panne audit efface fragment et actions',async({h
   host.querySelector('[data-read-id]').value='VERSION';reponse(matchRapport({}));button('Rapprocher le fragment').click();await tick();
   reponse({detail:{code:'audit_revue_indisponible'}},503);button('Rapprocher le fragment').click();await tick();
   assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
+});
+const scenarioInter=(nom,action)=>scenario(nom,action,[lot('test-code'),lot('test-tarif','tarif'),lot('code-b')]);
+const interRapport=extra=>envelope({type_rapport:'comparaison_litterale_versions_article_inter_lots',champs_comparables:true,
+  lots_exacts:{avant:'test-code',apres:'code-b'},avant_id_exact:'AV',apres_id_exact:'AP',champ_texte:'texte_arabe',
+  unite_decalage:'points_de_code_unicode_python',limite:4,
+  avant:{decalage_dans_bloc:0,fragment_bloc_different:'أ😀',total_caracteres_bloc_different:9,decalage_suivant:2},
+  apres:{decalage_dans_bloc:0,fragment_bloc_different:'TEST',total_caracteres_bloc_different:9,decalage_suivant:4},...extra});
+await scenarioInter('Diff inter-lots : deux lots et deux IDs exacts encodés',async({w,host,appels,button,reponse})=>{
+  const b=host.querySelector('[data-comparison-after-lot]');b.value='code-b';b.dispatchEvent(new w.Event('change'));
+  host.querySelector('[data-diff-before]').value='AV & عربي';host.querySelector('[data-diff-after]').value='AP';reponse(interRapport({}));
+  button('Comparer les versions entre deux lots').click();await tick();const u=new URL(appels.at(-1).url,'https://x');
+  assert.equal(u.pathname,'/api/v1/customs-review/article-diff');assert.equal(u.searchParams.get('avant'),'test-code');
+  assert.equal(u.searchParams.get('apres'),'code-b');assert.equal(u.searchParams.get('avant_id'),'AV & عربي');
+});
+await scenarioInter('Diff inter-lots : suite indépendante conserve paire et Unicode',async({w,host,appels,button,reponse})=>{
+  const b=host.querySelector('[data-comparison-after-lot]');b.value='code-b';b.dispatchEvent(new w.Event('change'));
+  host.querySelector('[data-diff-before]').value='AV';host.querySelector('[data-diff-after]').value='AP';reponse(interRapport({}));
+  button('Comparer les versions entre deux lots').click();await tick();button('Suite du bloc avant').click();await tick();
+  const u=new URL(appels.at(-1).url,'https://x');assert.equal(u.searchParams.get('apres'),'code-b');
+  assert.equal(u.searchParams.get('offset_avant'),'2');assert.equal(u.searchParams.get('offset_apres'),'0');assert.equal(u.searchParams.get('field'),'texte_arabe');
+});
+await scenarioInter('Diff inter-lots : tarif et paire incohérente sans action',async({w,host,appels,button,reponse})=>{
+  const b=host.querySelector('[data-comparison-after-lot]');b.value='test-tarif';b.dispatchEvent(new w.Event('change'));
+  host.querySelector('[data-diff-before]').value='AV';host.querySelector('[data-diff-after]').value='AP';let n=appels.length;
+  button('Comparer les versions entre deux lots').click();await tick();assert.equal(appels.length,n);
+  b.value='code-b';b.dispatchEvent(new w.Event('change'));reponse(interRapport({lots_exacts:{avant:'test-code',apres:'test-tarif'}}));
+  button('Comparer les versions entre deux lots').click();await tick();assert(!button('Suite du bloc'));
+});
+await scenarioInter('Diff inter-lots : changement du lot après efface et invalide les suites',async({w,host,appels,button,reponse})=>{
+  const b=host.querySelector('[data-comparison-after-lot]');b.value='code-b';b.dispatchEvent(new w.Event('change'));
+  host.querySelector('[data-diff-before]').value='AV';host.querySelector('[data-diff-after]').value='AP';reponse(interRapport({}));
+  button('Comparer les versions entre deux lots').click();await tick();const ancien=button('Suite du bloc avant'),n=appels.length;
+  b.value='test-code';b.dispatchEvent(new w.Event('change'));ancien.click();await tick();assert.equal(appels.length,n);assert.equal(host.querySelector('pre').textContent,'');
+});
+await scenarioInter('Diff inter-lots : réponse tardive ignorée après changement du lot après',async({w,host,button,attendre})=>{
+  const b=host.querySelector('[data-comparison-after-lot]');b.value='code-b';b.dispatchEvent(new w.Event('change'));
+  host.querySelector('[data-diff-before]').value='AV';host.querySelector('[data-diff-after]').value='AP';let terminer;
+  attendre(()=>new Promise(r=>{terminer=r;}));button('Comparer les versions entre deux lots').click();
+  b.value='test-code';b.dispatchEvent(new w.Event('change'));terminer({ok:true,status:200,json:async()=>interRapport({})});await tick();
+  assert.equal(host.querySelector('pre').textContent,'');assert(!button('Suite du bloc'));
+});
+await scenarioInter('Diff inter-lots : panne audit sans ancien résultat',async({host,button,reponse})=>{
+  host.querySelector('[data-comparison-after-lot]').value='code-b';host.querySelector('[data-diff-before]').value='AV';host.querySelector('[data-diff-after]').value='AP';
+  reponse(interRapport({}));button('Comparer les versions entre deux lots').click();await tick();
+  reponse({detail:{code:'audit_revue_indisponible'}},503);button('Comparer les versions entre deux lots').click();await tick();
+  assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
+});
+await scenarioInter('Diff inter-lots : lecture du côté après utilise son lot et son ID',async({host,appels,button,reponse})=>{
+  host.querySelector('[data-comparison-after-lot]').value='code-b';host.querySelector('[data-diff-before]').value='AV';host.querySelector('[data-diff-after]').value='AP';
+  reponse(interRapport({apres:{version_declaree:{id:'AP'}}}));button('Comparer les versions entre deux lots').click();await tick();
+  button('Lire la version apres du lot code-b').click();await tick();const u=new URL(appels.at(-1).url,'https://x');
+  assert.equal(u.pathname,'/api/v1/customs-review/lots/code-b/article');assert.equal(u.searchParams.get('article_id'),'AP');assert.equal(host.querySelector('select').value,'code-b');
 });
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

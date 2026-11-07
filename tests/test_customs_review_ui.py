@@ -47,6 +47,10 @@ def test_interface_revue_sur_api_reelle(revue):
     transcription.write_bytes((racine / "code_a" / "transcription_recue.json").read_bytes())
     preparer_code(transcription, metadata, racine / "code_pdf_ui")
     reg = json.loads(registre.read_text())
+    # L'ancien lot reste intact et reçoit une identité de revue distincte ; le
+    # lot Code principal pointe ensuite vers la nouvelle archive PDF technique.
+    reg["lots"].append({"id":"code_b", "dossier":"code_a", "type_lot":"code",
+                        "manifest_sha256":hashlib.sha256((racine / "code_a" / "manifest.json").read_bytes()).hexdigest()})
     for entree in reg["lots"]:
         if entree["id"] == "code_a":
             entree["dossier"] = "code_pdf_ui"
@@ -96,7 +100,7 @@ def test_interface_revue_sur_api_reelle(revue):
         assert resultat.returncode == 0, resultat.stdout + resultat.stderr
         exports = [ligne.removeprefix("EXPORT_REEL_JSON=") for ligne in resultat.stdout.splitlines()
                    if ligne.startswith("EXPORT_REEL_JSON=")]
-        assert len(exports) == 5
+        assert len(exports) == 6
         for texte in exports:
             constat = analyser_export(texte.encode("utf-8"))
             assert constat["statut"] == "structure_compatible"

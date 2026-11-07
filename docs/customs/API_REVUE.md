@@ -172,3 +172,11 @@ Page obligatoire et source imposée par la référence de l’article ; recherch
 fragment dans le texte natif de cette page. Présence ≠ validation ; absence ≠ erreur.
 Même autorisation/épingle/audit/no-store ; 422 paramètres/tarif, 409 PDF refusé,
 503 audit indisponible. [Contrat et limites](RAPPROCHEMENT_ARTICLE_PDF.md).
+
+### Articles entre deux lots Code (lot 28)
+
+`GET /article-diff?avant=…&apres=…&avant_id=…&apres_id=…&field=texte_integral&limit=4000&offset_avant=0&offset_apres=0`.
+Deux lots Code inscrits/épinglés, deux IDs locaux, provenance `archives.avant/apres`
+(sans `archive` simple). Même autorisation/audit/no-store ; aucun appariement ou
+relation juridique déduite. Route intra-lot conservée.
+[Contrat et limites](COMPARAISON_ARTICLES_INTER_LOTS.md).
