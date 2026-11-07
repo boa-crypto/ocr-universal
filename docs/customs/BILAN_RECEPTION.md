@@ -7,7 +7,24 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 76
+## État actuel — lot 77
+
+[Classification manuelle persistée](CLASSIFICATION_MANUELLE_PERSISTEE.md) :
+décision sauvegardée avant audit/réponse, rôle et visibilité avant lecture,
+job absent 404 / résultat absent 409. Relecture store neuf et GET cohérents.
+**31 nouveaux cas / 413 ciblés réussis** ; témoin ancien handler : 24 échecs
+attendus, 7 réussis. Documentaire **2 160 Python / 212 JSDOM historiques**.
+Complète : **3 809 réussis, 2 échecs Indra, 1 ignoré,
+1 avertissement(s), 374,14 s**.
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42415489351),
+pas suite OCR complète en CI. **26/27 empreintes conformes**, même écart partagé ;
+données et journaux préservés hors commit. Pas archive complète des décisions,
+transaction ou identité prouvée du `corrected_by` déclaratif.
+**Aperçu maintenu backend76** pour ne pas interrompre les traitements : code77
+poussé/testé, pas chargé dans ce processus. RBAC toujours non configuré.
+[Rapport](RAPPORT_LOT77.md), [recette actuelle](RECETTE_LOT77.json).
+
+## Complément historique — lot 76
 
 [Valeurs humaines vides](VALEURS_CHAMPS_VIDES.md) : premier emplacement non None
 au lieu d'un repli booléen, traces et garde d'annulation compatibles avec `""`.
