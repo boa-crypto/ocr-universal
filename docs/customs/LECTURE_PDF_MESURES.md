@@ -67,3 +67,6 @@ constante, Range ou qualification de charge nationale. Lecture et rejeu complets
 avant pagination ; le fragment ne rend pas le coût proportionnel à sa longueur.
 Aucun original officiel acquis/qualifié, mesure rapprochée, fidélité attestée,
 consolidation à date, décision humaine, publication ou taux applicable établi.
+
+Lot 44 : [constat littéral de description](DESCRIPTION_MESURE_PDF.md) disponible
+séparément ; aucune validation des taux, périodes ou rattachements déduite.

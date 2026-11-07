@@ -381,6 +381,14 @@ def main(argv=None) -> int:
     cp.add_argument("--offset", type=int, default=0)
     cp.set_defaults(func=cmd_customs_code_pdf_read)
 
+    mp = sub.add_parser("customs-measure-pdf-match", help="chercher un fragment de description dans une page PDF source, sans validation")
+    mp.add_argument("lot")
+    mp.add_argument("--measure", required=True)
+    mp.add_argument("--page", type=int, required=True)
+    mp.add_argument("--limit", type=int, default=4000)
+    mp.add_argument("--offset", type=int, default=0)
+    mp.set_defaults(func=cmd_customs_measure_pdf_match)
+
     fp = sub.add_parser("customs-fiscal-pdf-read", help="lire une page native du PDF fiscal reçu, sans vérifier les mesures")
     fp.add_argument("lot")
     fp.add_argument("--document", required=True)
@@ -510,6 +518,13 @@ def cmd_customs_code_article_diff(args) -> int:
     return _afficher_lecture_douaniere(lambda chemin: comparer_versions_article(
         chemin, args.before_id, args.after_id, args.field, args.limit, args.before_offset, args.after_offset,
         Path(args.after_lot) if args.after_lot is not None else None), args.lot)
+
+
+def cmd_customs_measure_pdf_match(args) -> int:
+    from .customs_reference.measure_pdf_match import rapprocher_description_mesure_pdf
+
+    return _afficher_lecture_douaniere(lambda p: rapprocher_description_mesure_pdf(
+        p,args.measure,args.page,args.limit,args.offset),args.lot)
 
 
 def cmd_customs_fiscal_pdf_read(args) -> int:

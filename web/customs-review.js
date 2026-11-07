@@ -117,6 +117,9 @@
       if (["lecture_article_documentaire", "lecture_page_pdf_recu", "lecture_page_pdf_mesures_recu"].includes(rep.type_rapport) && typeof rep.fragment === "string") {
         extrait.textContent = rep.fragment; extrait.hidden = false;
       }
+      if (rep.type_rapport === "rapprochement_litteral_description_mesure_pdf" && typeof rep.fragment_description === "string") {
+        extrait.textContent=rep.fragment_description; extrait.hidden=false;
+      }
       rendreActions(rep);
       statut.textContent = ["lecture_page_pdf_recu", "lecture_page_pdf_mesures_recu"].includes(rep.type_rapport) && rep.texte_natif_non_vide === false ?
         "Aucun texte natif sélectionnable : aucun OCR effectué. Cela ne prouve pas une page vide ou l’absence de droit." :
@@ -179,7 +182,7 @@
         filtres.disabled = typeSelection !== "code";
         q.disabled = limit.disabled = offset.disabled = chercher.disabled = typeSelection === "mesures";
         histoire.disabled = filtres.disabled; sourcesNature.disabled = filtres.disabled;
-        fiscalPdfLecture.disabled = typeSelection !== "mesures";
+        fiscalPdfLecture.disabled = mesurePdfMatch.disabled = typeSelection !== "mesures";
         fiche.disabled = typeSelection !== "tarif"; paireTarif.disabled = fiche.disabled;
         mesuresRecherche.disabled = typeSelection === "code";
         arbre.disabled = fiche.disabled; tarifMesuresLecture.disabled = fiche.disabled || !lotMesures.value;
@@ -334,6 +337,21 @@
         lire("/lots/" + encodeURIComponent(lot.value) + "/article?" + params, afficher);
       }
       lecture.append(bouton("Lire le fragment d’article", chargerArticle));
+      var mesurePdfMatch=element("fieldset");
+      mesurePdfMatch.append(element("legend","Présence littérale d’une description dans son PDF — non validée"));
+      mesurePdfMatch.append(element("p","Choisir explicitement la page physique ; aucune localisation depuis la référence libre. Présence ne prouve ni taux, période, code ou rattachement juridique."));
+      var mesurePdfId=champ(mesurePdfMatch,"ID exact de la mesure");mesurePdfId.maxLength=256;mesurePdfId.setAttribute("data-measure-pdf-id","");
+      var mesurePdfPage=champ(mesurePdfMatch,"Page physique choisie","input","number");mesurePdfPage.min=1;mesurePdfPage.max=10000;mesurePdfPage.value=1;mesurePdfPage.setAttribute("data-measure-pdf-page","");
+      var mesurePdfLimit=champ(mesurePdfMatch,"Caractères de description","input","number");mesurePdfLimit.min=1;mesurePdfLimit.max=16000;mesurePdfLimit.value=4000;mesurePdfLimit.setAttribute("data-measure-pdf-limit","");
+      var mesurePdfOffset=champ(mesurePdfMatch,"Décalage de description","input","number");mesurePdfOffset.min=0;mesurePdfOffset.max=67108864;mesurePdfOffset.value=0;mesurePdfOffset.setAttribute("data-measure-pdf-offset","");
+      function chargerMesurePDF(){
+        if(mesurePdfMatch.disabled)return;
+        if(!idValide(mesurePdfId.value)||!entier(Number(mesurePdfPage.value),1,10000)||!entier(Number(mesurePdfLimit.value),1,16000)||!entier(Number(mesurePdfOffset.value),0,67108864)){
+          statut.textContent="Paramètres de fragment de description/PDF invalides.";return;
+        }
+        lire("/lots/"+encodeURIComponent(lot.value)+"/measure-pdf-match?"+new URLSearchParams({mesure_id:mesurePdfId.value,page:mesurePdfPage.value,limit:mesurePdfLimit.value,offset:mesurePdfOffset.value}),afficher);
+      }
+      mesurePdfMatch.append(bouton("Vérifier la présence du fragment de description",chargerMesurePDF));host.append(mesurePdfMatch);
       var fiscalPdfLecture = element("fieldset");
       fiscalPdfLecture.append(element("legend", "Texte natif PDF fiscal reçu — mesures autonomes"));
       fiscalPdfLecture.append(element("p", "Archive PDF avec transcription requise. Lecture native d’une page physique, sans OCR, taux extrait ou fidélité de transcription vérifiée. Aucun PDF brut ouvert."));
@@ -957,6 +975,16 @@
         if (!pdfLecture.disabled && docPDF && idValide(docPDF.id) && typeof docPDF.sha256 === "string" && /^[a-f0-9]{64}$/.test(docPDF.sha256)) {
           actions.append(actionDocumentaire("Lire le PDF reçu " + docPDF.id + " — page 1", function () {
             pdfId.value = docPDF.id; pdfPage.value = 1; pdfLimit.value = 4000; pdfOffset.value = 0; chargerPDF();
+          }));
+        }
+        if(!mesurePdfMatch.disabled && rapport.type_rapport === "rapprochement_litteral_description_mesure_pdf" && rapport.type_lot === "mesures" &&
+           idValide(rapport.mesure_id_exact) && rapport.champ_texte === "description" && rapport.transcription_verification === "non_verifiee" &&
+           rapport.taux_et_periodes_verifies === false && typeof rapport.fragment_description === "string" &&
+           entier(rapport.page_physique_demandee,1,10000) && entier(rapport.limite,1,16000) && entier(rapport.decalage,0,67108864) &&
+           Array.from(rapport.fragment_description).length<=rapport.limite && rapport.decalage_suivant===rapport.decalage+Array.from(rapport.fragment_description).length &&
+           entier(rapport.decalage_suivant,rapport.decalage+1,rapport.total_caracteres_description-1)){
+          actions.append(actionDocumentaire("Fragment de description suivant",function(){
+            mesurePdfId.value=rapport.mesure_id_exact;mesurePdfPage.value=rapport.page_physique_demandee;mesurePdfLimit.value=rapport.limite;mesurePdfOffset.value=rapport.decalage_suivant;chargerMesurePDF();
           }));
         }
         if (!fiscalPdfLecture.disabled && rapport.type_rapport === "lecture_page_pdf_mesures_recu" && rapport.type_lot === "mesures" &&

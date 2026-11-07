@@ -62,7 +62,7 @@ def verifier_parametres_fragment(article_id, page, champ, limite, decalage):
         raise ParamRapprochementInvalide("Décalage entier de 0 à 67108864 requis")
 
 
-def constater_fragment_pdf(repertoire, lot, rapport, document, texte, fragment, page, absence=None):
+def constater_fragment_pdf(repertoire, lot, rapport, document, texte, fragment, page, absence=None, extracteur=None):
     """Noyau partagé : une page de la source déclarée, aucune validation juridique."""
     natif, nombre, sha, debut = None, None, None, None
     correspondance = None
@@ -75,7 +75,7 @@ def constater_fragment_pdf(repertoire, lot, rapport, document, texte, fragment, 
     elif not fragment.strip():
         constat = "fragment_sans_caractere_non_blanc"
     else:
-        natif, nombre, sha, document = extraire_page_controlee(repertoire, lot, rapport, document.id, page)
+        natif, nombre, sha, document = (extracteur or extraire_page_controlee)(repertoire, lot, rapport, document.id, page)
         if not natif.strip():
             constat = "texte_natif_absent"
         else:

@@ -277,6 +277,12 @@ const {JSDOM} = require('jsdom');
     bouton('Page physique fiscale suivante').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').page_physique===2);assert(host.querySelector('[data-article-fragment]').textContent.includes('technique 2'));
     exportBlob=null;bouton('Exporter ce rapport').click();await attendre(()=>!!exportBlob);
     const exportPDF=await new Promise((resolve,reject)=>{const r=new w.FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsText(exportBlob);});console.log('EXPORT_REEL_JSON='+JSON.stringify(JSON.parse(exportPDF)));
+    host.querySelector('[data-measure-pdf-id]').value='M_0';host.querySelector('[data-measure-pdf-page]').value='1';
+    bouton('Vérifier la présence du fragment de description').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_rapport==='rapprochement_litteral_description_mesure_pdf');
+    const matchMesure=JSON.parse(host.querySelector('pre').textContent);assert.equal(matchMesure.fragment_present_litteralement,false);assert.equal(matchMesure.taux_et_periodes_verifies,false);assert.equal(matchMesure.transcription_verification,'non_verifiee');
+    exportBlob=null;bouton('Exporter ce rapport').click();await attendre(()=>!!exportBlob);
+    const exportMatch=await new Promise((resolve,reject)=>{const r=new w.FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsText(exportBlob);});console.log('EXPORT_REEL_JSON='+JSON.stringify(JSON.parse(exportMatch)));
+
   }
   bouton('Diagnostiquer la couverture').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_rapport==='couverture_documentaire_declaree');
   assert.equal(JSON.parse(host.querySelector('pre').textContent).indicateurs.nomenclature_incluse,false);

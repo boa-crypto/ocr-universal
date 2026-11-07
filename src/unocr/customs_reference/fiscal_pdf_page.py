@@ -11,14 +11,7 @@ def lire_page_pdf_mesures(repertoire: Path, document_id: str, page: int = 1,
                           limite: int = 4000, decalage: int = 0) -> dict:
     valider_parametres_pdf(document_id,page,limite,decalage)
     lot,rapport = charger_lot_mesures(repertoire)
-    if lot.source.format != "pdf" or lot.source.id != document_id:
-        raise LecturePDFRefusee("Source PDF exacte absente du lot de mesures contrôlé")
-    nom = "source_mesures_recue.pdf"
-    contenu = _lire(repertoire / nom)
-    sha = hashlib.sha256(contenu).hexdigest()
-    if sha != lot.source.sha256 or sha != rapport["archive"]["fichiers_sha256"][nom]:
-        raise LecturePDFRefusee("Empreinte PDF différente après rejeu")
-    texte,nombre = extraire_octets_pdf(contenu,page)
+    texte,nombre,sha,_ = extraire_page_mesures_controlee(repertoire,lot,rapport,document_id,page)
     fragment = texte[decalage:decalage+limite]
     suivant = decalage+len(fragment)
     return {"type_rapport":"lecture_page_pdf_mesures_recu", "type_lot":"mesures",
@@ -41,3 +34,16 @@ def lire_page_pdf_mesures(repertoire: Path, document_id: str, page: int = 1,
                 "Sans texte natif ne prouve ni page vide ni absence de droit ; aucun OCR automatique.",
                 "Aucun PDF brut, rendu ou URL distante ouvert ; archive et rapport d'import inchangés.",
                 "Worker séparé borné, pas antivirus, bac à sable OS, mémoire constante ou quota global."]}
+
+
+def extraire_page_mesures_controlee(repertoire,lot,rapport,document_id,page):
+    """Interne : archive et paramètres déjà contrôlés, page native entière bornée."""
+    if lot.source.format != "pdf" or lot.source.id != document_id:
+        raise LecturePDFRefusee("Source PDF exacte absente du lot de mesures contrôlé")
+    nom = "source_mesures_recue.pdf"
+    contenu = _lire(repertoire / nom)
+    sha = hashlib.sha256(contenu).hexdigest()
+    if sha != lot.source.sha256 or sha != rapport["archive"]["fichiers_sha256"][nom]:
+        raise LecturePDFRefusee("Empreinte PDF différente après rejeu")
+    texte,nombre = extraire_octets_pdf(contenu,page)
+    return texte,nombre,sha,lot.source
