@@ -322,18 +322,10 @@ class Pipeline:
                 mean_confidence=0.95, word_count=len(native_words), ok=True))
             return page_res
 
-        # Vérification du cache SQLite
-        import io
-
-        from .cache import PageCache
-        cache = PageCache()
-        buffered = io.BytesIO()
-        lpage.image.save(buffered, format="PNG")
-        img_bytes = buffered.getvalue()
-        cached_res = cache.get(img_bytes)
-        if cached_res is not None:
-            cached_res.page_num = lpage.page_num
-            return cached_res
+        # Le cache historique ne distinguait que les pixels : options, couche
+        # native, moteurs/modèles et pagination pouvaient être réutilisés à tort.
+        # Ne pas le consulter ni l'alimenter tant qu'une identité complète du
+        # calcul n'est pas qualifiée. Les bases existantes restent intactes.
 
         quality = analyze_quality(lpage.image, lpage.estimated_dpi)
         page_res.quality = quality
@@ -499,12 +491,6 @@ class Pipeline:
         if page_res.blocks:
             page_res.text = "\n".join(b.text for b in page_res.blocks)
         page_res.detected_languages = _detect_languages(page_res.text)
-
-        # Stockage dans le cache pour les traitements futurs
-        try:
-            cache.set(img_bytes, page_res)
-        except Exception:
-            pass  # le cache est un optimiseur, jamais un point de défaillance
 
         return page_res
 

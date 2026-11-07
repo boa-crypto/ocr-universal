@@ -1,3 +1,8 @@
+"""Cache historique indexé uniquement par pixels, non utilisé par Pipeline.
+
+Ne pas réactiver sur un traitement OCR sans qualifier son contexte complet.
+Conservé pour compatibilité et lecture des données existantes ; pas de purge.
+"""
 import hashlib
 import json
 import sqlite3

@@ -343,7 +343,7 @@ class TestSecoursVariantePretraitee:
     (l'original) doit être tentée même en mode fast."""
 
     @requires_tesseract
-    def test_field_hard_n_est_plus_perdu(self):
+    def test_field_hard_n_est_plus_perdu(self, tmp_path, tmp_cfg):
         import importlib.util
         from pathlib import Path
         bench = Path(__file__).resolve().parents[1] / "benchmarks"
@@ -351,9 +351,9 @@ class TestSecoursVariantePretraitee:
             "make_field_samples", bench / "make_field_samples.py")
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
-        mod.make_field_samples()
-        sample = bench / "field_samples" / "container__field_hard.png"
-        res = Pipeline().process_file(
+        mod.make_field_samples(tmp_path / "field_samples")
+        sample = tmp_path / "field_samples" / "container__field_hard.png"
+        res = Pipeline(tmp_cfg).process_file(
             sample, JobOptions(profile="container", quality_mode="fast"))
         assert res.pages[0].text.strip(), "aucun texte après secours variante"
         f = res.fields["container_number"]

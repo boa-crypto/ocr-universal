@@ -1,0 +1,96 @@
+{
+  "date": "2026-11-07",
+  "usage": "Qualification locale PNG ; pas un installateur de production",
+  "cmake": "4.4.4",
+  "parallelisme": 2,
+  "prefixe_local": ".venv/ocr-native",
+  "sources": [
+    {
+      "repo": "madler/zlib",
+      "tag": "v1.4",
+      "commit": "99623ef7097352da7993ba614161fd6a311e046e",
+      "archive_sha256": "f0d590dd90243a12f551ee13359bf6c634249c55b316fa2b7dbecabe7ae9a904",
+      "options": [
+        "-DZLIB_BUILD_EXAMPLES=OFF"
+      ]
+    },
+    {
+      "repo": "pnggroup/libpng",
+      "tag": "v1.6.59",
+      "commit": "cd952f49f95bb27154ae77dbb103032d95f6e580",
+      "archive_sha256": "ef1bccad2b2a58eb3c09e06ffe3b72b8604abda8b5011e4c4bb5391989040f26",
+      "options": [
+        "-DPNG_TESTS=OFF",
+        "-DPNG_TOOLS=OFF",
+        "-DPNG_STATIC=OFF"
+      ]
+    },
+    {
+      "repo": "DanBloomberg/leptonica",
+      "tag": "1.87.0",
+      "commit": "13275a278eb55b5746e33f95fbf5a2c8f604b3ab",
+      "archive_sha256": "e72242133adf678e8584081a506ca3a665c8f6f6de8c3fe7b47d1d5fcf9a4ce4",
+      "options": [
+        "-DBUILD_PROG=OFF",
+        "-DENABLE_GIF=OFF",
+        "-DENABLE_JPEG=OFF",
+        "-DENABLE_TIFF=OFF",
+        "-DENABLE_WEBP=OFF",
+        "-DENABLE_OPENJPEG=OFF",
+        "-DSTRICT_CONF=ON"
+      ]
+    },
+    {
+      "repo": "tesseract-ocr/tesseract",
+      "tag": "5.5.4",
+      "commit": "7e548e6eff172f38f97664afe7f7ce40db36c8d6",
+      "archive_sha256": "445603ab1d0a63df552e193a600d9d5c4021aff36e144f3091af149e5efb381a",
+      "options": [
+        "-DBUILD_TRAINING_TOOLS=OFF",
+        "-DBUILD_TESTS=OFF",
+        "-DGRAPHICS_DISABLED=ON",
+        "-DDISABLED_LEGACY_ENGINE=ON",
+        "-DDISABLE_TIFF=ON",
+        "-DDISABLE_ARCHIVE=ON",
+        "-DDISABLE_CURL=ON",
+        "-DENABLE_NATIVE=OFF"
+      ]
+    }
+  ],
+  "modeles": {
+    "repo": "tesseract-ocr/tessdata_fast",
+    "commit": "87416418657359cb625c412a48b6e1d6d41c29bd",
+    "modeles": [
+      {
+        "nom": "eng.traineddata",
+        "git_blob_sha1": "bbef4675053b5b468cdb477053e28b1c698ba08e",
+        "sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+        "octets": 4113088
+      },
+      {
+        "nom": "fra.traineddata",
+        "git_blob_sha1": "d9e2b2160be0d1ca3b8f1bf2730fae476ef3b4a6",
+        "sha256": "ced037562e8c80c13122dece28dd477d399af80911a28791a66a63ac1e3445ca",
+        "octets": 1130365
+      },
+      {
+        "nom": "ara.traineddata",
+        "git_blob_sha1": "c8d129c67821c1592cac46836686b057ecc203dc",
+        "sha256": "e3206d3dc87fd50c24a0fb9f01838615911d25168f4e64415244b67d2bb3e729",
+        "octets": 1432056
+      }
+    ]
+  },
+  "formats_leptonica": [
+    "PNG",
+    "PNM"
+  ],
+  "sans_support": [
+    "JPEG",
+    "TIFF",
+    "GIF",
+    "WebP",
+    "OpenJPEG"
+  ],
+  "models_indra_installes": false
+}
