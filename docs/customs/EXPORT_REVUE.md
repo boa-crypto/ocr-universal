@@ -86,3 +86,8 @@ Lot 28 : `/api/v1/customs-review/article-diff` (hors chemin de lot) est admise
 avec provenance double `archives.avant/apres`, comme `/diff`. La route intra-lot
 `/lots/{lot_id}/article-diff` conserve une provenance simple. Une provenance
 ambiguë est refusée ; anciens contrôleurs stricts susceptibles de refuser l’ajout.
+
+Lot 29 : `/lots/{lot_id}/article-relations` admise dans l’enveloppe partielle
+version 1 avec provenance simple. Relations/justifications déclarées seulement,
+aucune validation de preuve ou authenticité. Anciens contrôleurs stricts susceptibles
+de refuser cette nouvelle route.

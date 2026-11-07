@@ -568,5 +568,48 @@ await scenarioInter('Diff inter-lots : lecture du côté après utilise son lot 
   button('Lire la version apres du lot code-b').click();await tick();const u=new URL(appels.at(-1).url,'https://x');
   assert.equal(u.pathname,'/api/v1/customs-review/lots/code-b/article');assert.equal(u.searchParams.get('article_id'),'AP');assert.equal(host.querySelector('select').value,'code-b');
 });
+const relationsRapport=extra=>envelope({type_rapport:'relations_documentaires_version_article',article_trouve:true,article_id_exact:'V',
+  version_declaree:{id:'V',reference:{source_id:'SEL'}},sens:'tous',type_relation_filtre:null,limite:20,decalage:0,decalage_suivant:null,total_relations_filtrees:1,
+  documents_declares_page:[{id:'SRC',sha256:'a'.repeat(64)}],relations_declarees:[{relation_declaree:{id:'R',origine_id:'AUTRE',cible_id:'V',type_relation:'modifie',
+    justification:'<img src=x onerror=alert(1)>',reference:{source_id:'SRC',localisateur:'Page imprimée 9, pas physique'}},
+    sens_par_rapport_a_version:'entrante',autre_version_declaree:{id:'AUTRE',reference:{source_id:'SRC'}}}],...extra});
+await scenario('Relations exactes : filtres encodés, justification safe et PDF preuve page 1',async({host,appels,button,reponse})=>{
+  host.querySelector('[data-relations-id]').value='V & عربي';host.querySelector('[data-relations-direction]').value='entrantes';host.querySelector('[data-relations-type]').value='modifie';
+  reponse(relationsRapport({}));button('Inspecter les relations déclarées').click();await tick();let u=new URL(appels.at(-1).url,'https://x');
+  assert.equal(u.searchParams.get('article_id'),'V & عربي');assert.equal(u.searchParams.get('direction'),'entrantes');assert.equal(u.searchParams.get('relation_type'),'modifie');
+  assert(!host.querySelector('img'));button('Lire le PDF de preuve SRC').click();await tick();u=new URL(appels.at(-1).url,'https://x');
+  assert.equal(u.searchParams.get('document_id'),'SRC');assert.equal(u.searchParams.get('page'),'1');
+});
+await scenario('Relations exactes : ouverture de l’autre version et dédoublonnage',async({host,appels,button,reponse})=>{
+  host.querySelector('[data-relations-id]').value='V';const r=relationsRapport({}).resultat; r.relations_declarees.push({...r.relations_declarees[0],relation_declaree:{...r.relations_declarees[0].relation_declaree,id:'R2'}});
+  reponse(envelope(r));button('Inspecter les relations déclarées').click();await tick();
+  assert.equal([...host.querySelectorAll('button')].filter(b=>b.textContent==='Lire la version AUTRE').length,1);
+  button('Lire la version AUTRE').click();await tick();assert.equal(new URL(appels.at(-1).url,'https://x').searchParams.get('article_id'),'AUTRE');
+});
+await scenario('Relations exactes : pagination conserve version, direction et type',async({host,appels,button,reponse})=>{
+  host.querySelector('[data-relations-id]').value='V';reponse(relationsRapport({sens:'entrantes',type_relation_filtre:'modifie',limite:1,decalage_suivant:1,total_relations_filtrees:3}));
+  button('Inspecter les relations déclarées').click();await tick();button('Page suivante des relations déclarées').click();await tick();
+  const u=new URL(appels.at(-1).url,'https://x');assert.equal(u.searchParams.get('article_id'),'V');assert.equal(u.searchParams.get('offset'),'1');
+  assert.equal(u.searchParams.get('direction'),'entrantes');assert.equal(u.searchParams.get('relation_type'),'modifie');assert.equal(u.searchParams.get('limit'),'1');
+});
+await scenario('Relations exactes : lien non incident ou filtre contradictoire sans action',async({host,button,reponse})=>{
+  host.querySelector('[data-relations-id]').value='V';reponse(relationsRapport({sens:'sortantes'}));
+  button('Inspecter les relations déclarées').click();await tick();assert(!button('Lire la version AUTRE'));assert(!button('Lire le PDF de preuve'));
+  const r=relationsRapport({}).resultat;r.relations_declarees[0].relation_declaree.cible_id='ETRANGER';reponse(envelope(r));
+  button('Inspecter les relations déclarées').click();await tick();assert(!button('Lire la version AUTRE'));
+});
+await scenario('Relations exactes : ID requis, tarif refusé et ancienne preuve inerte',async({w,host,appels,button,reponse})=>{
+  let n=appels.length;button('Inspecter les relations déclarées').click();await tick();assert.equal(appels.length,n);
+  host.querySelector('[data-relations-id]').value='V';reponse(relationsRapport({}));button('Inspecter les relations déclarées').click();await tick();
+  const ancien=button('Lire le PDF de preuve SRC');n=appels.length;const lot=host.querySelector('select');lot.value='test-tarif';lot.dispatchEvent(new w.Event('change'));
+  ancien.click();button('Inspecter les relations déclarées').click();await tick();assert.equal(appels.length,n);assert.equal(host.querySelector('[data-review-actions]').textContent,'');
+});
+await scenario('Relations exactes : lecture d’article propose inspection puis panne audit efface',async({host,appels,button,reponse})=>{
+  host.querySelector('[data-read-id]').value='V';reponse(envelope({type_rapport:'lecture_article_documentaire',article_trouve:true,article_id_exact:'V'}));
+  button('Lire le fragment').click();await tick();reponse(relationsRapport({}));button('Inspecter les relations de cette version').click();await tick();
+  assert.equal(new URL(appels.at(-1).url,'https://x').searchParams.get('article_id'),'V');
+  reponse({detail:{code:'audit_revue_indisponible'}},503);button('Inspecter les relations déclarées').click();await tick();
+  assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

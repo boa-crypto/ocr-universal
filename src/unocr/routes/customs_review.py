@@ -16,6 +16,10 @@ from ..customs_reference.article_pdf_match import (
     ParamRapprochementInvalide,
     rapprocher_fragment_article_pdf,
 )
+from ..customs_reference.article_relations import (
+    ParamRelationsArticleInvalide,
+    consulter_relations_article,
+)
 from ..customs_reference.code_tree import ParamArbreCodeInvalide, parcourir_code
 from ..customs_reference.comparison import charger_lot, comparer_lots
 from ..customs_reference.coverage import diagnostiquer_couverture
@@ -77,6 +81,8 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                                  "resultat": resultat}, headers=NO_STORE)
         except ParamRapprochementInvalide:
             statut, code = 422, "parametres_rapprochement_article_pdf_invalides"
+        except ParamRelationsArticleInvalide:
+            statut, code = 422, "parametres_relations_article_invalides"
         except ParamArbreCodeInvalide:
             statut, code = 422, "parametres_navigation_code_invalides"
         except ParamDiffArticleInvalide:
@@ -184,6 +190,17 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 raise HTTPException(422, {"code": "lecture_article_non_applicable_au_tarif"}, headers=NO_STORE)
             return consulter_article(p[0], article_id, field, limit, offset)
         return executer(utilisateur, "lecture_article", [lot_id], lire_version)
+
+    @router.get("/lots/{lot_id}/article-relations")
+    def relations_article(lot_id: str, article_id: str = Query(..., min_length=1, max_length=256),
+                          direction: str = Query("tous", max_length=16), relation_type: str | None = Query(None, max_length=16),
+                          limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0, le=1_000_000),
+                          utilisateur=Depends(autoriser)):
+        def consulter(e, p, registre):
+            if e[0].type_lot != "code":
+                raise HTTPException(422, {"code": "relations_article_non_applicables_au_tarif"}, headers=NO_STORE)
+            return consulter_relations_article(p[0], article_id, direction, relation_type, limit, offset)
+        return executer(utilisateur, "relations_article", [lot_id], consulter)
 
     @router.get("/lots/{lot_id}/article-pdf-match")
     def rapprochement(lot_id: str, article_id: str = Query(..., min_length=1, max_length=256),

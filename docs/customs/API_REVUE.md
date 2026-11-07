@@ -180,3 +180,10 @@ Deux lots Code inscrits/épinglés, deux IDs locaux, provenance `archives.avant/
 (sans `archive` simple). Même autorisation/audit/no-store ; aucun appariement ou
 relation juridique déduite. Route intra-lot conservée.
 [Contrat et limites](COMPARAISON_ARTICLES_INTER_LOTS.md).
+
+### Relations d’une version exacte (lot 29)
+
+`GET /lots/{lot_id}/article-relations?article_id=…&direction=tous&relation_type=…&limit=20&offset=0`.
+Un seul saut incident à l’ID exact, types/sens déclarés, sources de preuve de la page.
+Type absent = tous ; même autorisation/épingle/audit/no-store. Tarif/paramètres
+invalides 422 ; aucun lien juridique inféré. [Guide](RELATIONS_ARTICLE.md).

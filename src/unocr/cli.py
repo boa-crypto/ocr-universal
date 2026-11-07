@@ -268,6 +268,15 @@ def main(argv=None) -> int:
     ca.add_argument("--offset", type=int, default=0)
     ca.set_defaults(func=cmd_customs_code_read)
 
+    ar = sub.add_parser("customs-code-article-relations", help="liens déclarés d'une version exacte, sans graphe inféré")
+    ar.add_argument("lot")
+    ar.add_argument("--id", required=True, dest="article_id")
+    ar.add_argument("--direction", choices=["tous", "entrantes", "sortantes"], default="tous")
+    ar.add_argument("--relation-type", choices=["modifie", "complete", "abroge", "rectifie", "renvoie_a"], default=None)
+    ar.add_argument("--limit", type=int, default=20)
+    ar.add_argument("--offset", type=int, default=0)
+    ar.set_defaults(func=cmd_customs_code_article_relations)
+
     ap = sub.add_parser("customs-code-article-pdf-match", help="présence littérale d'un fragment dans sa page PDF source")
     ap.add_argument("lot")
     ap.add_argument("--id", required=True, dest="article_id")
@@ -368,6 +377,13 @@ def cmd_customs_review_export_check(args) -> int:
     from .customs_reference.review_export import verifier_export
 
     return _afficher_lecture_douaniere(verifier_export, args.file)
+
+
+def cmd_customs_code_article_relations(args) -> int:
+    from .customs_reference.article_relations import consulter_relations_article
+
+    return _afficher_lecture_douaniere(lambda chemin: consulter_relations_article(
+        chemin, args.article_id, args.direction, args.relation_type, args.limit, args.offset), args.lot)
 
 
 def cmd_customs_code_article_pdf_match(args) -> int:

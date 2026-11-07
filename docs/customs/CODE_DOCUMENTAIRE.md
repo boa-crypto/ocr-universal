@@ -221,3 +221,9 @@ ni son statut juridique : [RAPPROCHEMENT_ARTICLE_PDF.md](RAPPROCHEMENT_ARTICLE_P
 Deux lots et deux IDs locaux explicitement choisis peuvent être comparés sans
 fusion des sources ou inférence juridique :
 [COMPARAISON_ARTICLES_INTER_LOTS.md](COMPARAISON_ARTICLES_INTER_LOTS.md).
+
+## Relations d’une version exacte — lot 29
+
+L’inspection à un seul saut d’un ID de version complète l’historique par numéro,
+sans élargissement aux versions homonymes ou liens transitifs :
+[RELATIONS_ARTICLE.md](RELATIONS_ARTICLE.md). Justifications/sources restent déclarées.

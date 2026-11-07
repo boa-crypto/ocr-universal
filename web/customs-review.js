@@ -179,7 +179,7 @@
         histoire.disabled = filtres.disabled;
         fiche.disabled = !filtres.disabled;
         arbre.disabled = !filtres.disabled;
-        matchLecture.disabled = filtres.disabled; codeArbre.disabled = filtres.disabled; lecture.disabled = filtres.disabled; diffArticle.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
+        relationsLecture.disabled = filtres.disabled; matchLecture.disabled = filtres.disabled; codeArbre.disabled = filtres.disabled; lecture.disabled = filtres.disabled; diffArticle.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
         ++requete; viderResultat();
       }
       var limit = champ(form, "Limite (1–100)", "input", "number");
@@ -392,6 +392,30 @@
           field: readField.value, page: matchPage.value, limit: readLimit.value, offset: readOffset.value}), afficher);
       }
       matchLecture.append(bouton("Rapprocher le fragment avec sa page PDF", chargerRapprochement));
+      var relationsLecture = element("fieldset");
+      relationsLecture.append(element("legend", "Relations déclarées d’une version exacte — Code seulement"));
+      relationsLecture.append(element("p", "Un seul saut, pas toutes les versions du même numéro. Sens et types déclarés, justification non vérifiée contre le PDF."));
+      var relationsId = champ(relationsLecture, "ID exact de version à inspecter"); relationsId.maxLength = 256;
+      relationsId.setAttribute("data-relations-id", "");
+      var relationsSens = champ(relationsLecture, "Sens des liens", "select"); relationsSens.setAttribute("data-relations-direction", "");
+      ["tous", "entrantes", "sortantes"].forEach(function (v) { var o = element("option", v); o.value = v; relationsSens.append(o); });
+      var relationsType = champ(relationsLecture, "Type déclaré", "select"); relationsType.setAttribute("data-relations-type", "");
+      var typesRelations = ["modifie", "complete", "abroge", "rectifie", "renvoie_a"];
+      [""].concat(typesRelations).forEach(function (v) { var o = element("option", v || "Tous"); o.value = v; relationsType.append(o); });
+      var relationsLimit = champ(relationsLecture, "Relations par page (1–100)", "input", "number");
+      relationsLimit.min = 1; relationsLimit.max = 100; relationsLimit.value = 20; relationsLimit.required = true;
+      var relationsOffset = champ(relationsLecture, "Décalage relations (0–1000000)", "input", "number");
+      relationsOffset.min = 0; relationsOffset.max = 1000000; relationsOffset.value = 0; relationsOffset.required = true;
+      function chargerRelations() {
+        if (relationsLecture.disabled) return;
+        if (!idValide(relationsId.value) || !relationsLimit.reportValidity() || !relationsOffset.reportValidity()) {
+          ++requete; viderResultat(); statut.textContent = "ID exact et pagination des relations valides requis."; return;
+        }
+        var p = new URLSearchParams({article_id: relationsId.value, direction: relationsSens.value, limit: relationsLimit.value, offset: relationsOffset.value});
+        if (relationsType.value) p.set("relation_type", relationsType.value);
+        lire("/lots/" + encodeURIComponent(lot.value) + "/article-relations?" + p, afficher);
+      }
+      relationsLecture.append(bouton("Inspecter les relations déclarées", chargerRelations));
       function idValide(id) {
         return typeof id === "string" && id.trim() && Array.from(id).length <= 256 && !/[\u0000-\u001f\u007f-\u009f]/.test(id);
       }
@@ -564,6 +588,47 @@
             matchPage.value = rapport.page_physique_demandee; chargerRapprochement();
           }));
         }
+        if (rapport.type_rapport === "lecture_article_documentaire" && rapport.article_trouve === true &&
+            !relationsLecture.disabled && idValide(rapport.article_id_exact)) {
+          actions.append(actionDocumentaire("Inspecter les relations de cette version", function () {
+            relationsId.value = rapport.article_id_exact; relationsSens.value = "tous"; relationsType.value = "";
+            relationsLimit.value = 20; relationsOffset.value = 0; chargerRelations();
+          }));
+        }
+        if (rapport.type_rapport === "relations_documentaires_version_article" && !relationsLecture.disabled &&
+            rapport.article_trouve === true && idValide(rapport.article_id_exact) && ["tous", "entrantes", "sortantes"].includes(rapport.sens) &&
+            (rapport.type_relation_filtre === null || typesRelations.includes(rapport.type_relation_filtre))) {
+          var versionsVues = new Set(), preuvesVues = new Set();
+          if (Array.isArray(rapport.relations_declarees)) rapport.relations_declarees.slice(0, 100).forEach(function (v) {
+            if (!v || !v.relation_declaree || !v.autre_version_declaree) return;
+            var r = v.relation_declaree, autre = v.autre_version_declaree;
+            var sortante = r.origine_id === rapport.article_id_exact, entrante = r.cible_id === rapport.article_id_exact;
+            if (sortante === entrante || !idValide(r.id) || !typesRelations.includes(r.type_relation) ||
+                (rapport.sens === "sortantes" && !sortante) || (rapport.sens === "entrantes" && !entrante) ||
+                (rapport.type_relation_filtre !== null && rapport.type_relation_filtre !== r.type_relation) ||
+                v.sens_par_rapport_a_version !== (sortante ? "sortante" : "entrante") ||
+                autre.id !== (sortante ? r.cible_id : r.origine_id) || !idValide(autre.id)) return;
+            if (!versionsVues.has(autre.id)) { versionsVues.add(autre.id); proposerVersion(autre.id); }
+            var origine = sortante ? rapport.version_declaree : autre;
+            if (!r.reference || !origine || !origine.reference || r.reference.source_id !== origine.reference.source_id ||
+                !Array.isArray(rapport.documents_declares_page)) return;
+            var preuve = rapport.documents_declares_page.find(function (d) { return d && d.id === r.reference.source_id; });
+            if (!preuve || !idValide(preuve.id) || typeof preuve.sha256 !== "string" || !/^[a-f0-9]{64}$/.test(preuve.sha256) || preuvesVues.has(preuve.id)) return;
+            preuvesVues.add(preuve.id);
+            actions.append(actionDocumentaire("Lire le PDF de preuve " + preuve.id + " — page 1", function () {
+              pdfId.value = preuve.id; pdfPage.value = 1; pdfLimit.value = 4000; pdfOffset.value = 0; chargerPDF();
+            }));
+          });
+          if (entier(rapport.limite, 1, 100) && entier(rapport.decalage, 0, 1000000) &&
+              entier(rapport.decalage_suivant, rapport.decalage + 1, 1000000) &&
+              entier(rapport.total_relations_filtrees, rapport.decalage_suivant + 1, Number.MAX_SAFE_INTEGER)) {
+            actions.append(actionDocumentaire("Page suivante des relations déclarées", function () {
+              relationsId.value = rapport.article_id_exact; relationsSens.value = rapport.sens;
+              relationsType.value = rapport.type_relation_filtre || ""; relationsLimit.value = rapport.limite;
+              relationsOffset.value = rapport.decalage_suivant; chargerRelations();
+            }));
+          }
+        }
         var docPDF = rapport.document_declare;
         if (!pdfLecture.disabled && rapport.type_rapport === "rapprochement_litteral_fragment_article_pdf" &&
             rapport.extraction_effectuee === true && docPDF && idValide(docPDF.id) &&
@@ -614,7 +679,7 @@
         }
       };
       lot.addEventListener("change", adapter); adapter();
-      outils.append(form, fiche, arbre, codeArbre, lecture, pdfLecture, diffArticle, matchLecture);
+      outils.append(form, fiche, arbre, codeArbre, lecture, pdfLecture, diffArticle, matchLecture, relationsLecture);
     });
   }
   function demarrer() {
