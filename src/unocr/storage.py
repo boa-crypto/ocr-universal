@@ -5,6 +5,7 @@ résultat JSON, exports. Les écritures JSON sont atomiques (temp + rename).
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import shutil
@@ -20,6 +21,7 @@ from .models import Job, JobOptions, JobStatus
 log = get_logger("storage")
 
 _LOCK = threading.Lock()
+_RESULT_LOCK = threading.RLock()
 
 #: Compteur d'unicité pour les noms de fichiers temporaires.
 _COMPTEUR_TMP = count()
@@ -166,7 +168,8 @@ class JobStore:
 
     def save_result(self, job_id: str, result_json: dict) -> Path:
         path = self.job_dir(job_id) / "result.json"
-        _atomic_write_json(path, result_json)
+        with _RESULT_LOCK:
+            _atomic_write_json(path, result_json)
         return path
 
     def load_result(self, job_id: str) -> dict | None:
@@ -174,6 +177,27 @@ class JobStore:
         if not p.is_file():
             return None
         return json.loads(p.read_text(encoding="utf-8"))
+
+    def load_result_revision(self, job_id: str) -> tuple[dict | None, str | None]:
+        """JSON et SHA-256 des mêmes octets ; révision de contenu, pas signature."""
+        path = self.job_dir(job_id) / "result.json"
+        try:
+            raw = path.read_bytes()
+        except FileNotFoundError:
+            return None, None
+        return json.loads(raw), hashlib.sha256(raw).hexdigest()
+
+    def replace_result_revision(self, job_id: str, revision: str, result_json: dict) -> bool:
+        """Compare puis sauve sous verrou partagé par les stores du processus.
+
+        Les écrivains externes/autres processus ne participent pas à ce verrou.
+        """
+        with _RESULT_LOCK:
+            _, current = self.load_result_revision(job_id)
+            if current is None or current != revision:
+                return False
+            self.save_result(job_id, result_json)
+            return True
 
     def original_path(self, job_id: str) -> Path | None:
         od = self.original_dir(job_id)

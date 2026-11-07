@@ -3027,7 +3027,7 @@ def classify_job(job_id: str, request: Request) -> dict:
     _exige_job(request, job_id)
     if store.get(job_id) is None:
         raise HTTPException(404, "job introuvable")
-    result = store.load_result(job_id)
+    result, revision = store.load_result_revision(job_id)
     if result is None:
         raise HTTPException(404, "résultat introuvable : traitez d'abord le document")
     precedente = result.get("classification")
@@ -3036,7 +3036,8 @@ def classify_job(job_id: str, request: Request) -> dict:
         raise HTTPException(409, "classification manuelle ou non interprétable : reclassement automatique refusé")
     res = _classifier.classify(_texte_resultat(result))
     result["classification"] = res.as_dict()
-    store.save_result(job_id, result)
+    if not store.replace_result_revision(job_id, revision, result):
+        raise HTTPException(409, "résultat modifié pendant la classification : relisez avant de réessayer")
     consigne_classification(cfg.log_dir, job_id, res)
     return {"job_id": job_id, "classification": res.as_dict(),
             "profile_suggere": _classifier.profil_pour(res.category)}
@@ -3092,7 +3093,7 @@ def patch_classification(job_id: str, request: Request, body: dict) -> dict:
     _exige_job(request, job_id)
     if store.get(job_id) is None:
         raise HTTPException(404, "job introuvable")
-    resultat = store.load_result(job_id)
+    resultat, revision = store.load_result_revision(job_id)
     if resultat is None:
         raise HTTPException(409, "résultat pas encore disponible")
     categorie = str(body.get("category") or "").strip()
@@ -3105,7 +3106,8 @@ def patch_classification(job_id: str, request: Request, body: dict) -> dict:
     except ValueError as exc:
         raise HTTPException(422, str(exc)) from exc
     resultat["classification"] = res.as_dict()
-    store.save_result(job_id, resultat)
+    if not store.replace_result_revision(job_id, revision, resultat):
+        raise HTTPException(409, "résultat modifié pendant la classification : relisez avant de réessayer")
     consigne_classification(cfg.log_dir, job_id, res, manuel=True)
     return {"job_id": job_id, "classification": res.as_dict(),
             "profile_suggere": _classifier.profil_pour(categorie)}
