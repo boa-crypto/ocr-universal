@@ -268,6 +268,16 @@ def main(argv=None) -> int:
     ca.add_argument("--offset", type=int, default=0)
     ca.set_defaults(func=cmd_customs_code_read)
 
+    sc = sub.add_parser("customs-sources", help="inventorier les seules sources déclarées d'un lot contrôlé")
+    sc.add_argument("lot")
+    sc.add_argument("--type", dest="type_lot", choices=["code", "tarif"], required=True)
+    sc.add_argument("--query", default="")
+    sc.add_argument("--source", default=None)
+    sc.add_argument("--nature", choices=["code_original", "acte_modificatif", "compilation"], default=None)
+    sc.add_argument("--limit", type=int, default=20)
+    sc.add_argument("--offset", type=int, default=0)
+    sc.set_defaults(func=cmd_customs_sources)
+
     ms = sub.add_parser("customs-tariff-measure-search", help="rechercher les descriptions de mesures déclarées, sans droit applicable")
     ms.add_argument("lot")
     ms.add_argument("--query", default="")
@@ -404,6 +414,13 @@ def cmd_customs_review_export_check(args) -> int:
     from .customs_reference.review_export import verifier_export
 
     return _afficher_lecture_douaniere(verifier_export, args.file)
+
+
+def cmd_customs_sources(args) -> int:
+    from .customs_reference.source_catalog import inventorier_sources
+
+    return _afficher_lecture_douaniere(lambda p: inventorier_sources(
+        p, args.type_lot, args.query, args.source, args.nature, args.limit, args.offset), args.lot)
 
 
 def cmd_customs_tariff_measure_search(args) -> int:

@@ -750,5 +750,39 @@ await scenario('Extraits Code : audit indisponible efface contextes et actions',
  reponse(rechercheExtraits([extraitRecherche({})]));host.querySelector('input').value='equipement';host.querySelector('form').dispatchEvent(new w.Event('submit',{cancelable:true}));await tick();
  reponse({detail:{code:'audit_revue_indisponible'}},503);button('Lire le passage').click();await tick();assert(!host.querySelector('blockquote'));assert.equal(host.querySelector('pre').textContent,'');
 });
+const catalogueSources=extra=>envelope({type_recherche:'sources_documentaires',type_lot:'code',requete:'معدات',filtres:{source_id_exact:null,nature_document:null},
+ limite:1,decalage:0,decalage_suivant:1,total_correspondances:3,resultats:[{source_declaree:{id:'SOURCE_1',sha256:'a'.repeat(64),nature_document:'code_original',format:'pdf',titre:'<img src=x>',url:'https://externe.invalid'}}],...extra});
+await scenario('Sources : paramètres FR/AR et filtres encodés sans HTML',async({host,appels,button,reponse})=>{
+ host.querySelector('[data-sources-query]').value='معدات';host.querySelector('[data-sources-id]').value='ID / &';host.querySelector('[data-sources-nature]').value='code_original';
+ reponse(catalogueSources({}));button('Inventorier les sources').click();await tick();const u=new URL(appels.at(-1).url,'https://x');
+ assert.equal(u.pathname,'/api/v1/customs-review/lots/test-code/sources');assert.equal(u.searchParams.get('q'),'معدات');assert.equal(u.searchParams.get('source_id'),'ID / &');assert.equal(u.searchParams.get('nature_document'),'code_original');assert(!host.querySelector('img'));
+});
+await scenario('Sources : suite reprend les filtres de la réponse',async({host,appels,button,reponse})=>{
+ reponse(catalogueSources({filtres:{source_id_exact:'SOURCE_1',nature_document:'code_original'}}));button('Inventorier les sources').click();await tick();host.querySelector('[data-sources-query]').value='AUTRE';
+ button('Page suivante des sources').click();await tick();const u=new URL(appels.at(-1).url,'https://x');assert.equal(u.searchParams.get('q'),'معدات');assert.equal(u.searchParams.get('source_id'),'SOURCE_1');assert.equal(u.searchParams.get('offset'),'1');
+});
+await scenario('Sources : lecture PDF dans le lot local sans URL externe',async({host,appels,button,reponse})=>{
+ reponse(catalogueSources({}));button('Inventorier les sources').click();await tick();button('Lire la source PDF SOURCE_1').click();await tick();const u=new URL(appels.at(-1).url,'https://x');
+ assert.equal(u.pathname,'/api/v1/customs-review/lots/test-code/pdf');assert.equal(u.searchParams.get('document_id'),'SOURCE_1');assert.equal(u.searchParams.get('page'),'1');assert.equal(u.searchParams.get('offset'),'0');
+});
+await scenario('Sources : articles par source et chemin racine exact',async({host,appels,button,reponse})=>{
+ reponse(catalogueSources({}));button('Inventorier les sources').click();await tick();button('Articles de la source SOURCE_1').click();await tick();const u=new URL(appels.at(-1).url,'https://x');
+ assert.equal(u.pathname,'/api/v1/customs-review/lots/test-code/code-tree');assert.equal(u.searchParams.get('source_id'),'SOURCE_1');assert.equal(u.searchParams.get('path'),'[]');assert.equal(u.searchParams.get('offset'),'0');
+});
+await scenario('Sources : tarif sans nature Code ou action PDF',async({w,host,appels,button,reponse})=>{
+ host.querySelector('[data-sources-nature]').value='compilation';const l=host.querySelector('select');l.value='test-tarif';l.dispatchEvent(new w.Event('change'));
+ reponse(catalogueSources({type_lot:'tarif'}));button('Inventorier les sources').click();await tick();const u=new URL(appels.at(-1).url,'https://x');assert(!u.searchParams.has('nature_document'));
+ assert(host.querySelector('[data-sources-nature]').disabled);assert(!button('Lire la source PDF'));assert(!button('Articles de la source'));
+});
+await scenario('Sources : filtre contradictoire et empreinte invalide sans action',async({host,button,reponse})=>{
+ reponse(catalogueSources({filtres:{source_id_exact:'AUTRE',nature_document:null}}));button('Inventorier les sources').click();await tick();assert(!button('Lire la source PDF'));
+ reponse(catalogueSources({resultats:[{source_declaree:{id:'SOURCE_1',sha256:'non_hash',nature_document:'code_original',format:'pdf'}}]}));button('Inventorier les sources').click();await tick();assert(!button('Articles de la source'));
+});
+await scenario('Sources : ancienne action inerte après changement de lot',async({w,host,appels,button,reponse})=>{
+ reponse(catalogueSources({}));button('Inventorier les sources').click();await tick();const ancien=button('Lire la source PDF'),n=appels.length,l=host.querySelector('select');l.value='test-tarif';l.dispatchEvent(new w.Event('change'));ancien.click();await tick();assert.equal(appels.length,n);
+});
+await scenario('Sources : panne audit efface inventaire et actions',async({host,button,reponse})=>{
+ reponse(catalogueSources({}));button('Inventorier les sources').click();await tick();reponse({detail:{code:'audit_revue_indisponible'}},503);button('Inventorier les sources').click();await tick();assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

@@ -176,7 +176,7 @@
       form.append(filtres);
       function adapter() {
         filtres.disabled = rep.lots.find(function (v) { return v.id === lot.value; }).type_lot !== "code";
-        histoire.disabled = filtres.disabled;
+        histoire.disabled = filtres.disabled; sourcesNature.disabled = filtres.disabled;
         fiche.disabled = !filtres.disabled; paireTarif.disabled = fiche.disabled; mesuresRecherche.disabled = fiche.disabled;
         arbre.disabled = !filtres.disabled;
         justificationLecture.disabled = filtres.disabled; relationsLecture.disabled = filtres.disabled; matchLecture.disabled = filtres.disabled; codeArbre.disabled = filtres.disabled; lecture.disabled = filtres.disabled; diffArticle.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
@@ -480,6 +480,24 @@
         lire("/lots/" + encodeURIComponent(lot.value) + "/measure-search?" + p, afficher);
       }
       mesuresRecherche.append(bouton("Rechercher dans les mesures déclarées", chargerRechercheMesures));
+      var sourcesLecture = element("fieldset");
+      sourcesLecture.append(element("legend", "Inventaire des sources déclarées du lot"));
+      sourcesLecture.append(element("p", "Métadonnées reçues seulement : titre, organisme, version. Aucun accès réseau, authenticité ou corpus exhaustif attesté. Requête vide = toutes les sources du lot."));
+      var sourcesQuery = champ(sourcesLecture, "Recherche FR / AR des métadonnées"); sourcesQuery.maxLength = 256; sourcesQuery.dir = "auto"; sourcesQuery.setAttribute("data-sources-query", "");
+      var sourcesId = champ(sourcesLecture, "ID source exact facultatif"); sourcesId.maxLength = 256; sourcesId.setAttribute("data-sources-id", "");
+      var sourcesNature = champ(sourcesLecture, "Nature déclarée — Code seulement", "select"); sourcesNature.setAttribute("data-sources-nature", "");
+      ["", "code_original", "acte_modificatif", "compilation"].forEach(function (v) { var o = element("option", v || "Toutes"); o.value = v; sourcesNature.append(o); });
+      var sourcesLimit = champ(sourcesLecture, "Sources par page (1–100)", "input", "number"); sourcesLimit.min = 1; sourcesLimit.max = 100; sourcesLimit.value = 20; sourcesLimit.required = true;
+      var sourcesOffset = champ(sourcesLecture, "Décalage sources (0–1000000)", "input", "number"); sourcesOffset.min = 0; sourcesOffset.max = 1000000; sourcesOffset.value = 0; sourcesOffset.required = true;
+      function chargerSources() {
+        if (!sourcesLimit.reportValidity() || !sourcesOffset.reportValidity()) return;
+        if (sourcesId.value && !idValide(sourcesId.value)) { ++requete; viderResultat(); statut.textContent = "ID source exact invalide."; return; }
+        var p = new URLSearchParams({q: sourcesQuery.value, limit: sourcesLimit.value, offset: sourcesOffset.value});
+        if (sourcesId.value) p.set("source_id", sourcesId.value);
+        if (!sourcesNature.disabled && sourcesNature.value) p.set("nature_document", sourcesNature.value);
+        lire("/lots/" + encodeURIComponent(lot.value) + "/sources?" + p, afficher);
+      }
+      sourcesLecture.append(bouton("Inventorier les sources déclarées", chargerSources));
       function idValide(id) {
         return typeof id === "string" && id.trim() && Array.from(id).length <= 256 && !/[\u0000-\u001f\u007f-\u009f]/.test(id);
       }
@@ -508,6 +526,35 @@
         }));
       }
       rendreActions = function (rapport) {
+        if (rapport.type_recherche === "sources_documentaires" && rapport.type_lot === (filtres.disabled ? "tarif" : "code")) {
+          var fs = rapport.filtres, naturesSources = ["code_original", "acte_modificatif", "compilation"];
+          if (fs && (fs.source_id_exact === null || idValide(fs.source_id_exact)) &&
+              (fs.nature_document === null || (rapport.type_lot === "code" && naturesSources.includes(fs.nature_document)))) {
+            var sourcesVues = new Set();
+            if (Array.isArray(rapport.resultats)) rapport.resultats.slice(0, 100).forEach(function (r) {
+              var d = r && r.source_declaree;
+              if (!d || !idValide(d.id) || typeof d.sha256 !== "string" || !/^[a-f0-9]{64}$/.test(d.sha256) || sourcesVues.has(d.id) ||
+                  (fs.source_id_exact !== null && fs.source_id_exact !== d.id) || rapport.type_lot !== "code" ||
+                  !naturesSources.includes(d.nature_document) || (fs.nature_document !== null && fs.nature_document !== d.nature_document)) return;
+              sourcesVues.add(d.id);
+              actions.append(actionDocumentaire("Articles de la source " + d.id, function () {
+                codeSource.value = d.id; codePath.value = "[]"; codeTreeLimit.value = 20; codeTreeOffset.value = 0; chargerCodeArbre();
+              }));
+              if (d.format === "pdf") actions.append(actionDocumentaire("Lire la source PDF " + d.id + " — page 1", function () {
+                pdfId.value = d.id; pdfPage.value = 1; pdfLimit.value = 4000; pdfOffset.value = 0; chargerPDF();
+              }));
+            });
+            if (typeof rapport.requete === "string" && Array.from(rapport.requete).length <= 256 &&
+                entier(rapport.limite, 1, 100) && entier(rapport.decalage, 0, 1000000) &&
+                entier(rapport.decalage_suivant, rapport.decalage + 1, 1000000) &&
+                entier(rapport.total_correspondances, rapport.decalage_suivant + 1, Number.MAX_SAFE_INTEGER)) {
+              actions.append(actionDocumentaire("Page suivante des sources déclarées", function () {
+                sourcesQuery.value = rapport.requete; sourcesId.value = fs.source_id_exact || ""; sourcesNature.value = fs.nature_document || "";
+                sourcesLimit.value = rapport.limite; sourcesOffset.value = rapport.decalage_suivant; chargerSources();
+              }));
+            }
+          }
+        }
         if (rapport.type_recherche === "mesures_tarifaires_documentaires" && !mesuresRecherche.disabled) {
           var codesMesures = new Set();
           if (Array.isArray(rapport.resultats)) rapport.resultats.slice(0, 100).forEach(function (r) {
@@ -831,7 +878,7 @@
         }
       };
       lot.addEventListener("change", adapter); adapter();
-      outils.append(form, fiche, arbre, codeArbre, lecture, pdfLecture, diffArticle, matchLecture, relationsLecture, justificationLecture, paireTarif, mesuresRecherche);
+      outils.append(form, fiche, arbre, codeArbre, lecture, pdfLecture, diffArticle, matchLecture, relationsLecture, justificationLecture, paireTarif, mesuresRecherche, sourcesLecture);
     });
   }
   function demarrer() {

@@ -238,6 +238,18 @@ const {JSDOM} = require('jsdom');
   console.log('EXPORT_REEL_JSON='+JSON.stringify(JSON.parse(contexteExporte)));
   bouton('Lire le passage TEST_O_A — texte_integral').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_rapport==='lecture_article_documentaire');
   const passageExact=JSON.parse(host.querySelector('pre').textContent);assert.equal(passageExact.fragment,exContexte.fragment);assert.equal(passageExact.decalage,exContexte.decalage);
+  host.querySelector('[data-sources-id]').value='TEST_O';host.querySelector('[data-sources-nature]').value='code_original';
+  bouton('Inventorier les sources').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_recherche==='sources_documentaires');
+  const inventaireSources=JSON.parse(host.querySelector('pre').textContent);assert.equal(inventaireSources.total_correspondances,1);assert.equal(inventaireSources.total_sources_lot,3);
+  assert.equal(inventaireSources.resultats[0].source_declaree.id,'TEST_O');assert.equal(inventaireSources.authenticite_etablie,false);
+  exportBlob=null;bouton('Exporter ce rapport').click();await attendre(()=>!!exportBlob);
+  const sourcesExportees=await new Promise((resolve,reject)=>{const r=new w.FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsText(exportBlob);});
+  console.log('EXPORT_REEL_JSON='+JSON.stringify(JSON.parse(sourcesExportees)));
+  bouton('Articles de la source TEST_O').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_rapport==='navigation_code_documentaire');
+  assert.equal(host.querySelector('[data-code-tree-source]').value,'TEST_O');assert.equal(host.querySelector('[data-code-tree-path]').value,'[]');
+  bouton('Inventorier les sources').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_recherche==='sources_documentaires');
+  bouton('Lire la source PDF TEST_O').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_rapport==='lecture_page_pdf_recu');
+  assert(host.querySelector('[data-article-fragment]').textContent.includes('TEXTE NATIF PAGE 1'));
   // Un vrai compte lecteur ne peut rien lire, même par le lien direct.
   w.sessionStorage.setItem('uniocr_token','TEST_LECTEUR_NON_PRODUCTION'); bouton('Actualiser').click();
   await attendre(()=>host.textContent.includes('Accès refusé'));

@@ -38,6 +38,7 @@ from ..customs_reference.review_registry import (
     charger_registre,
 )
 from ..customs_reference.search import ParamRechercheInvalide, rechercher_code, rechercher_tarif
+from ..customs_reference.source_catalog import inventorier_sources
 from ..customs_reference.tariff_detail import ParamFicheTarifInvalide, consulter_code
 from ..customs_reference.tariff_pair import juxtaposer_fiches_tarifaires
 from ..customs_reference.tariff_tree import ParamArbreTarifInvalide, parcourir_tarif
@@ -147,6 +148,15 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 raise HTTPException(422, {"code": "recherche_mesures_non_applicable_au_code"}, headers=NO_STORE)
             return rechercher_mesures_tarif(p[0], q, code10, measure_type, limit, offset)
         return executer(utilisateur, "recherche_mesures", [lot_id], chercher)
+
+    @router.get("/lots/{lot_id}/sources")
+    def sources(lot_id: str, q: str = Query("", max_length=256),
+                source_id: str | None = Query(None, min_length=1, max_length=256),
+                nature_document: str | None = Query(None, max_length=32),
+                limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0, le=1_000_000),
+                utilisateur=Depends(autoriser)):
+        return executer(utilisateur, "inventaire_sources", [lot_id], lambda e, p, registre:
+                        inventorier_sources(p[0], e[0].type_lot, q, source_id, nature_document, limit, offset))
 
     @router.get("/lots/{lot_id}/coverage")
     def couverture(lot_id: str, utilisateur=Depends(autoriser)):

@@ -100,7 +100,7 @@ def test_interface_revue_sur_api_reelle(revue):
         assert resultat.returncode == 0, resultat.stdout + resultat.stderr
         exports = [ligne.removeprefix("EXPORT_REEL_JSON=") for ligne in resultat.stdout.splitlines()
                    if ligne.startswith("EXPORT_REEL_JSON=")]
-        assert len(exports) == 11
+        assert len(exports) == 12
         for texte in exports:
             constat = analyser_export(texte.encode("utf-8"))
             assert constat["statut"] == "structure_compatible"

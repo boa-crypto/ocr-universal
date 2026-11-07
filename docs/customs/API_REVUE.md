@@ -211,3 +211,5 @@ Lot tarifaire uniquement ; mêmes droits/empreinte/rejeu/audit/no-store.
 Pas de règle applicable ni calcul. [Contrat et limites](RECHERCHE_MESURES.md).
 
 Lot 33 : la recherche Code conserve ses aperçus et ajoute des [extraits contextualisés](EXTRAITS_RECHERCHE_CODE.md) originaux avec positions Unicode, exportables et ouvrables par lecture exacte. Pas de fidélité PDF ou droit applicable déduits.
+
+Lot 34 : [inventaire local des sources déclarées](INVENTAIRE_SOURCES.md) via `customs-sources` et `GET /lots/{lot_id}/sources`, filtres/recherche métadonnées et export partiel audité. Aucun corpus exhaustif ou document authentifié déduit.
