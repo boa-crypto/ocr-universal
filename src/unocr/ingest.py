@@ -5,8 +5,10 @@ DOCX, ODT, TXT, RTF, CSV, XLSX, XLS.
 """
 from __future__ import annotations
 
+from contextlib import closing
 from dataclasses import dataclass, field
 from pathlib import Path
+from threading import RLock
 from typing import Optional
 
 from PIL import Image, ImageOps
@@ -16,6 +18,11 @@ from .models import BBox, Cell, Table, Word
 from .security import SecurityError, sanitize_text, validate_file
 
 log = get_logger("ingest")
+
+# PDFium ne permet pas les appels concurrents entre threads, même sur des
+# documents distincts. Toute vie native (création, rendu, fermeture) reste sous
+# ce verrou de processus ; les images détachées sortent seules de cette zone.
+_PDFIUM_LOCK = RLock()
 
 # Évite le decompression bomb PIL
 Image.MAX_IMAGE_PIXELS = 200_000_000
@@ -147,36 +154,37 @@ def _load_pdf(path: Path, dpi: int, max_pages: int = 500) -> LoadedDocument:
 
     scale = dpi / 72.0
     doc = LoadedDocument(path=path, format="pdf")
-    pdf = pdfium.PdfDocument(str(path))
-    n_pages = len(pdf)
-    if n_pages > max_pages:
-        raise SecurityError(f"trop de pages ({n_pages} > {max_pages})")
-    layouts = list(extract_pages(str(path), laparams=LAParams()))
+    with _PDFIUM_LOCK, pdfium.PdfDocument(str(path)) as pdf:
+        n_pages = len(pdf)
+        if n_pages > max_pages:
+            raise SecurityError(f"trop de pages ({n_pages} > {max_pages})")
+        layouts = list(extract_pages(str(path), laparams=LAParams()))
 
-    for i in range(n_pages):
-        page = pdf[i]
-        w_pt, h_pt = page.get_size()
-        width, height = w_pt * scale, h_pt * scale
-        native_text, native_words, _ = ("", [], [])
-        if i < len(layouts):
-            native_text, native_words, _ = _pdf_native_words(layouts[i], h_pt, scale)
-        for w in native_words:
-            w.page_num = i + 1
+        for i in range(n_pages):
+            with closing(pdf[i]) as page:
+                w_pt, h_pt = page.get_size()
+                width, height = w_pt * scale, h_pt * scale
+                native_text, native_words, _ = ("", [], [])
+                if i < len(layouts):
+                    native_text, native_words, _ = _pdf_native_words(layouts[i], h_pt, scale)
+                for w in native_words:
+                    w.page_num = i + 1
 
-        pil = page.render(scale=scale).to_pil().convert("RGB")
-        has_text = len(native_text.strip()) >= 5
-        # heuristique hybride : beaucoup de pixels d'encre + peu de texte -> image scannée jointe
-        kind = "pdf_native" if has_text else "pdf_scan"
-        doc.pages.append(LoadedPage(
-            page_num=i + 1,
-            width=width,
-            height=height,
-            image=pil,
-            native_text=native_text,
-            native_words=native_words,
-            kind=kind,
-            estimated_dpi=float(dpi),
-        ))
+                with closing(page.render(scale=scale)) as bitmap:
+                    # convert() copie les pixels avant de libérer le bitmap.
+                    pil = bitmap.to_pil().convert("RGB")
+                has_text = len(native_text.strip()) >= 5
+                kind = "pdf_native" if has_text else "pdf_scan"
+                doc.pages.append(LoadedPage(
+                    page_num=i + 1,
+                    width=width,
+                    height=height,
+                    image=pil,
+                    native_text=native_text,
+                    native_words=native_words,
+                    kind=kind,
+                    estimated_dpi=float(dpi),
+                ))
     # hybride : pages mixtes dans un même document
     kinds = {p.kind for p in doc.pages}
     if kinds == {"pdf_native", "pdf_scan"}:
