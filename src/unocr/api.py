@@ -3077,7 +3077,13 @@ def get_classification(job_id: str, request: Request) -> dict:
 @app.patch("/api/jobs/{job_id}/classification")
 def patch_classification(job_id: str, request: Request, body: dict) -> dict:
     """Correction manuelle de la catégorie (document inconnu classé à la main)."""
+    _exige(OPERATEUR)(request)
     _exige_job(request, job_id)
+    if store.get(job_id) is None:
+        raise HTTPException(404, "job introuvable")
+    resultat = store.load_result(job_id)
+    if resultat is None:
+        raise HTTPException(409, "résultat pas encore disponible")
     categorie = str(body.get("category") or "").strip()
     acteur = str(body.get("user") or "utilisateur")
     if not categorie:
@@ -3087,6 +3093,8 @@ def patch_classification(job_id: str, request: Request, body: dict) -> dict:
                                       categories=set(_classifier.categories))
     except ValueError as exc:
         raise HTTPException(422, str(exc)) from exc
+    resultat["classification"] = res.as_dict()
+    store.save_result(job_id, resultat)
     consigne_classification(cfg.log_dir, job_id, res, manuel=True)
     return {"job_id": job_id, "classification": res.as_dict(),
             "profile_suggere": _classifier.profil_pour(categorie)}
