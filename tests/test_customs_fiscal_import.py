@@ -187,7 +187,7 @@ def test_types_anciens_et_registre_refusent_sans_mauvais_routage(tmp_path):
             chargeur(lot)
     with pytest.raises(ValueError):
         RegistreRevue.model_validate_json(json.dumps({"reviseurs":["TEST"],"lots":[
-            {"id":"TEST_FISCAL","dossier":"lot","type_lot":"mesures","manifest_sha256":"a"*64}]}))
+            {"id":"TEST_FISCAL","dossier":"lot","type_lot":"fiscal_inconnu","manifest_sha256":"a"*64}]}))
 
 
 def test_cli_plan_ecriture_check_refus_et_schema(tmp_path,capsys):

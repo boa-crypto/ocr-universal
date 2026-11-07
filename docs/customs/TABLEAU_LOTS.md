@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État au 7 novembre 2026 après le lot 36. **Terminé = périmètre technique livré et
+État au 7 novembre 2026 après le lot 37. **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -41,9 +41,10 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 34 | Inventaire des sources reçues, recherche métadonnées et rattachements | Terminé | Pas d’acquisition, authenticité ou corpus exhaustif attestés |
 | 35 | Copie binaire contrôlée du PDF reçu, audit et SHA navigateur | Terminé | Ni authenticité/innocuité PDF ni validation humaine attestées |
 | 36 | Préparation/rejeu JSON de mesures autonomes hors nomenclature | Terminé | CLI locale seulement, formats officiels/revue/rapprochement à qualifier |
+| 37 | Revue autorisée des lots de mesures autonomes, sources/recherche/couverture | Terminé | Pas de rapprochement fiscal ou qualification sur source officielle |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
-`RAPPORT_LOT36.md`. Les limites historiques des rapports précédents sont à lire
+`RAPPORT_LOT37.md`. Les limites historiques des rapports précédents sont à lire
 avec les ajouts suivants ; par exemple le lot 27 ajoute un rapprochement littéral,
 mais pas une validation des transcriptions.
 
@@ -54,7 +55,7 @@ mais pas une validation des transcriptions.
 | StarterPack | Absent de l’audit | Retrouver/fournir puis inventorier |
 | Corpus officiel Code FR/AR | Non constitué intégralement | Originaux, modifications, rectificatifs, LF et textes d’application |
 | Tarif national officiel code10 | Export intégral non acquis | Acquisition, import exhaustif et rapprochement des compteurs/sources |
-| Fiscalité et mesures | Non validées ; préparation JSON autonome locale ajoutée | Acquisition/qualification des sources, revue et rapprochement multi-source |
+| Fiscalité et mesures | Non validées ; préparation JSON autonome et revue disponibles | Acquisition/qualification des sources, revue et rapprochement multi-source |
 | Vérification documentaire | Lecture et rapprochement littéral disponibles | Contrôle humain complet de fidélité et provenance |
 | Consolidation/droit à date | Non implémentés | Versions, abrogations, effets et validation juridique |
 | Recherche métier avancée | Recherche littérale normalisée disponible | Synonymes, matière/fonction/usage et critères techniques traçables |
@@ -67,7 +68,7 @@ mais pas une validation des transcriptions.
 
 ## Bilan
 
-36 lots techniques livrés ; dernière sélection : **1 443 tests Python / 122 scénarios
+37 lots techniques livrés ; dernière sélection : **1 473 tests Python / 130 scénarios
 JSDOM réussis**. Ce n’est ni la totalité de la suite OCR ni une recette nationale.
 Données historiques conservées. **0 nouvel original officiel acquis, 0 article/code
 national officiellement validé, 0 publication active ; mission globale partielle.**

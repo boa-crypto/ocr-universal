@@ -1,4 +1,4 @@
-# Mission référentiels douaniers — lots 1–36 : audit, préparation et comparaison
+# Mission référentiels douaniers — lots 1–37 : audit, préparation et comparaison
 
 **État : socle technique, pas source de vérité réglementaire en production.**
 Lire [l'audit](AUDIT_INITIAL.md), [l'avancement du lot 1](RAPPORT_AVANCEMENT.md),
@@ -341,3 +341,5 @@ Lot 34 : [inventaire consultable des sources déclarées](INVENTAIRE_SOURCES.md)
 Lot 35 : [copie du PDF reçu](COPIE_PDF_SOURCE.md), [rapport](RAPPORT_LOT35.md). PDF non validé, intégrité ≠ authenticité/innocuité.
 
 Lot 36 : [préparation JSON de mesures autonomes](MESURES_AUTONOMES.md), [rapport](RAPPORT_LOT36.md). CLI seulement, pas fiscalité applicable ou revue administrative de ce nouveau type.
+
+Lot 37 : [revue centrale des mesures autonomes](REVUE_MESURES_AUTONOMES.md), [rapport](RAPPORT_LOT37.md). Pas de rapprochement, fiscalité applicable ou calcul.

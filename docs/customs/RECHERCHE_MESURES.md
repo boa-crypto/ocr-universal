@@ -54,3 +54,5 @@ sont invalidées après navigation/compte/changement du résultat.
 - Enveloppe export inchangée ; anciens contrôleurs à whitelist stricte peuvent
   refuser la nouvelle route. Contrôle structurel hors ligne ≠ authenticité.
 - Tests sur fixtures explicitement NON OFFICIELLES, sans ajout de données actives.
+
+Lot 37 : [revue intégrée des mesures autonomes](REVUE_MESURES_AUTONOMES.md), type de registre `mesures`. Contrôle/recherche de mesures/sources/couverture et exports existants, autres opérations explicitement refusées ; aucun rapprochement fiscal.

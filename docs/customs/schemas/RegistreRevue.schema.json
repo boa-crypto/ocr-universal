@@ -11,7 +11,8 @@
         "type_lot": {
           "enum": [
             "tarif",
-            "code"
+            "code",
+            "mesures"
           ],
           "title": "Type Lot",
           "type": "string"

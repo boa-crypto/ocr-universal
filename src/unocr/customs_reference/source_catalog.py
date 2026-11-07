@@ -4,6 +4,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from .comparison import charger_lot
+from .fiscal_importer import charger_lot_mesures
 from .legal_comparison import charger_lot_code
 from .search import ParamRechercheInvalide, _correspondances, _parametres, _rapport
 
@@ -12,8 +13,8 @@ NATURES_DOCUMENTS = ("code_original", "acte_modificatif", "compilation")
 
 def inventorier_sources(repertoire: Path, type_lot: str, requete: str = "", source_id: str | None = None,
                         nature_document: str | None = None, limite: int = 20, decalage: int = 0) -> dict:
-    if not isinstance(type_lot, str) or type_lot not in {"code", "tarif"}:
-        raise ParamRechercheInvalide("Type explicite code ou tarif requis")
+    if not isinstance(type_lot, str) or type_lot not in {"code", "tarif", "mesures"}:
+        raise ParamRechercheInvalide("Type explicite code, tarif ou mesures requis")
     if source_id is not None and (not isinstance(source_id, str) or not source_id.strip() or len(source_id) > 256
             or any(unicodedata.category(c) in {"Cc", "Cs"} for c in source_id)):
         raise ParamRechercheInvalide("ID de source exact non blanc, sans contrôle, de 256 caractères maximum requis")
@@ -23,7 +24,7 @@ def inventorier_sources(repertoire: Path, type_lot: str, requete: str = "", sour
     termes = _parametres(requete, limite, decalage, True)
     if any(unicodedata.category(c) == "Cs" for c in requete):
         raise ParamRechercheInvalide("Substitut Unicode isolé interdit")
-    lot, rapport = (charger_lot_code if type_lot == "code" else charger_lot)(repertoire)
+    lot, rapport = {"code":charger_lot_code, "tarif":charger_lot, "mesures":charger_lot_mesures}[type_lot](repertoire)
     sources = lot.documents if type_lot == "code" else [lot.source]
     compteurs = {s.id: Counter() for s in sources}
     if type_lot == "code":
@@ -34,6 +35,9 @@ def inventorier_sources(repertoire: Path, type_lot: str, requete: str = "", sour
         for relation in lot.relations:
             compteurs[relation.reference.source_id]["relations_reference_preuve"] += 1
         cles = ("articles_reference_principale", "articles_historique_declare", "relations_reference_preuve")
+    elif type_lot == "mesures":
+        cles = ("mesures",)
+        compteurs[lot.source.id]["mesures"] = len(lot.mesures)
     else:
         cles = ("sections", "chapitres", "positions", "sous_positions", "subdivisions_nationales", "lignes", "mesures")
         for cle in cles:

@@ -132,7 +132,7 @@
       var liste = element("ul");
       rep.lots.forEach(function (lot) {
         if (!/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(lot.id) ||
-            !["code", "tarif"].includes(lot.type_lot) || !/^[a-f0-9]{64}$/.test(lot.manifest_sha256_attendu)) {
+            !["code", "tarif", "mesures"].includes(lot.type_lot) || !/^[a-f0-9]{64}$/.test(lot.manifest_sha256_attendu)) {
           effacer(); throw new Error("Entrée de registre inattendue.");
         }
         liste.append(element("li", lot.id + " · " + lot.type_lot + " · SHA256 attendu : " + lot.manifest_sha256_attendu));
@@ -157,9 +157,9 @@
       outils.append(bouton("Comparer avant / après", function () {
         var a = rep.lots.find(function (v) { return v.id === lot.value; });
         var b = rep.lots.find(function (v) { return v.id === apres.value; });
-        if (!a || !b || a.type_lot !== b.type_lot) {
+        if (!a || !b || a.type_lot !== b.type_lot || a.type_lot === "mesures") {
           ++requete; viderResultat();
-          statut.textContent = "Comparaison refusée : choisissez deux lots de même type."; return;
+          statut.textContent = "Comparaison refusée : choisissez deux lots Code ou tarif de même type."; return;
         }
         lire("/diff?" + new URLSearchParams({avant: lot.value, apres: apres.value}), afficher);
       }));
@@ -175,10 +175,13 @@
       });
       form.append(filtres);
       function adapter() {
-        filtres.disabled = rep.lots.find(function (v) { return v.id === lot.value; }).type_lot !== "code";
+        var typeSelection = rep.lots.find(function (v) { return v.id === lot.value; }).type_lot;
+        filtres.disabled = typeSelection !== "code";
+        q.disabled = limit.disabled = offset.disabled = chercher.disabled = typeSelection === "mesures";
         histoire.disabled = filtres.disabled; sourcesNature.disabled = filtres.disabled;
-        fiche.disabled = !filtres.disabled; paireTarif.disabled = fiche.disabled; mesuresRecherche.disabled = fiche.disabled;
-        arbre.disabled = !filtres.disabled;
+        fiche.disabled = typeSelection !== "tarif"; paireTarif.disabled = fiche.disabled;
+        mesuresRecherche.disabled = typeSelection === "code";
+        arbre.disabled = fiche.disabled;
         justificationLecture.disabled = filtres.disabled; relationsLecture.disabled = filtres.disabled; matchLecture.disabled = filtres.disabled; codeArbre.disabled = filtres.disabled; lecture.disabled = filtres.disabled; diffArticle.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
         ++requete; viderResultat();
       }
@@ -188,7 +191,7 @@
       offset.min = 0; offset.max = 1000000; offset.value = 0; offset.required = true;
       var chercher = element("button", "Rechercher", "btn primary sm"); chercher.type = "submit"; form.append(chercher);
       form.addEventListener("submit", function (event) {
-        event.preventDefault(); if (!form.reportValidity()) return;
+        event.preventDefault(); if (chercher.disabled || !form.reportValidity()) return;
         var params = new URLSearchParams({q: q.value, limit: limit.value, offset: offset.value});
         if (!filtres.disabled) {
           [["article", article], ["source", source], ["nature", nature]].forEach(function (paire) {
@@ -457,7 +460,7 @@
       }
       paireTarif.append(bouton("Consulter les deux fiches tarifaires séparées", chargerPaireTarif));
       var mesuresRecherche = element("fieldset");
-      mesuresRecherche.append(element("legend", "Rechercher les descriptions de mesures — tarif seulement"));
+      mesuresRecherche.append(element("legend", "Rechercher les descriptions de mesures — tarif ou lot autonome"));
       mesuresRecherche.append(element("p", "Descriptions déclarées uniquement, pas désignations ou taux. Sans synonymes/traduction/IA ni droit applicable. Requête ou filtre exact requis."));
       var mesuresQuery = champ(mesuresRecherche, "Texte FR / AR de description"); mesuresQuery.maxLength = 256; mesuresQuery.dir = "auto"; mesuresQuery.setAttribute("data-measure-query", "");
       var mesuresCode = champ(mesuresRecherche, "Code10 exact facultatif"); mesuresCode.maxLength = 10; mesuresCode.setAttribute("data-measure-code", "");
@@ -561,7 +564,7 @@
         }));
       }
       rendreActions = function (rapport) {
-        if (rapport.type_recherche === "sources_documentaires" && rapport.type_lot === (filtres.disabled ? "tarif" : "code")) {
+        if (rapport.type_recherche === "sources_documentaires" && rapport.type_lot === rep.lots.find(function (v) { return v.id === lot.value; }).type_lot) {
           var fs = rapport.filtres, naturesSources = ["code_original", "acte_modificatif", "compilation"];
           if (fs && (fs.source_id_exact === null || idValide(fs.source_id_exact)) &&
               (fs.nature_document === null || (rapport.type_lot === "code" && naturesSources.includes(fs.nature_document)))) {
@@ -593,10 +596,10 @@
             }
           }
         }
-        if (rapport.type_recherche === "mesures_tarifaires_documentaires" && !mesuresRecherche.disabled) {
+        if (["mesures_tarifaires_documentaires", "mesures_autonomes_documentaires"].includes(rapport.type_recherche) && !mesuresRecherche.disabled) {
           var codesMesures = new Set();
           if (Array.isArray(rapport.resultats)) rapport.resultats.slice(0, 100).forEach(function (r) {
-            if (!r || !r.mesure_declaree || !r.ligne_declaree) return;
+            if (fiche.disabled || !r || !r.mesure_declaree || !r.ligne_declaree) return;
             var code = r.mesure_declaree.code_tarifaire_10;
             if (typeof code !== "string" || !/^[0-9]{10}$/.test(code) || r.ligne_declaree.code_tarifaire_10 !== code || codesMesures.has(code)) return;
             codesMesures.add(code); proposerCode(code);

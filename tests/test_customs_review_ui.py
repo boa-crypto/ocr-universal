@@ -12,8 +12,10 @@ import pytest
 from reportlab.pdfgen import canvas
 
 from tests import test_customs_review
+from tests.test_customs_fiscal_import import fichiers as fichiers_mesures
 from tests.test_customs_reference import snapshot
 from tests.test_customs_subdivisions import subdivisions
+from unocr.customs_reference.fiscal_importer import preparer_mesures_autonomes
 from unocr.customs_reference.importer import preparer_tarif
 from unocr.customs_reference.legal_importer import preparer_code
 from unocr.customs_reference.review_export import analyser_export
@@ -74,6 +76,14 @@ def test_interface_revue_sur_api_reelle(revue):
             entree["dossier"] = "tarif_sub_ui"
             entree["manifest_sha256"] = hashlib.sha256((racine / "tarif_sub_ui" / "manifest.json").read_bytes()).hexdigest()
     registre.write_text(json.dumps(reg))
+    entrees_mesures = cfg.root / "mesures_ui"
+    entrees_mesures.mkdir()
+    source_mesures,metadata_mesures = fichiers_mesures(entrees_mesures)
+    preparer_mesures_autonomes(source_mesures,metadata_mesures,racine / "mesures_ui")
+    reg = json.loads(registre.read_text())
+    reg["lots"].append({"id":"mesures_a","dossier":"mesures_ui","type_lot":"mesures",
+                        "manifest_sha256":hashlib.sha256((racine / "mesures_ui/manifest.json").read_bytes()).hexdigest()})
+    registre.write_text(json.dumps(reg))
     cfg.web_dir.mkdir(parents=True, exist_ok=True)
     shutil.copy2(root / "web/index.html", cfg.web_dir / "index.html")
     avant = snapshot(racine)
@@ -102,7 +112,7 @@ def test_interface_revue_sur_api_reelle(revue):
         assert resultat.returncode == 0, resultat.stdout + resultat.stderr
         exports = [ligne.removeprefix("EXPORT_REEL_JSON=") for ligne in resultat.stdout.splitlines()
                    if ligne.startswith("EXPORT_REEL_JSON=")]
-        assert len(exports) == 12
+        assert len(exports) == 15
         copies = [v.removeprefix("PDF_SOURCE_SHA256=") for v in resultat.stdout.splitlines() if v.startswith("PDF_SOURCE_SHA256=")]
         assert copies == [hashlib.sha256((racine / "code_pdf_ui/document_0001.pdf").read_bytes()).hexdigest()]
         for texte in exports:

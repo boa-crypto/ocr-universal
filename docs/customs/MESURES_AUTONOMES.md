@@ -66,11 +66,11 @@ exécuté, sans changement de leur contrat ni activation du lot repris.
 
 ## Limites de cette livraison
 
-**Pas encore de type autonome dans le registre de revue, d'API/interface de lecture,
-de diff/fiche ou de rapprochement inter-sources pour ces nouveaux lots.** Le registre
-reste strictement code/tarif : ne pas y ajouter une entrée « mesures », ni déclarer
-ce dossier comme tarif ou Code pour contourner le refus. Les anciennes routes,
-fiches et recherches continuent à traiter leurs contrats précédents.
+Depuis le [lot 37](REVUE_MESURES_AUTONOMES.md), le type `mesures` peut être inscrit
+explicitement au registre et consulté dans la revue centrale : contrôle, recherche
+de mesures, inventaire de source, couverture et exports. Pas de diff/fiche de
+nomenclature, PDF, rapprochement fiscal ou publication pour ce type ; les anciennes
+routes incompatibles sont refusées, jamais détournées vers un chargeur tarif/Code.
 
 JSON strict seulement : pas d'import fiscal autonome CSV/XLSX/PDF qualifié, pas de
 transcription automatique de texte fiscal. Aucun exemple de taux de production,

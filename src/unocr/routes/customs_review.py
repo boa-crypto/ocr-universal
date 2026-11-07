@@ -23,6 +23,7 @@ from ..customs_reference.article_relations import (
 from ..customs_reference.code_tree import ParamArbreCodeInvalide, parcourir_code
 from ..customs_reference.comparison import charger_lot, comparer_lots
 from ..customs_reference.coverage import diagnostiquer_couverture
+from ..customs_reference.fiscal_importer import charger_lot_mesures
 from ..customs_reference.history import ParamHistoriqueInvalide, historique_article
 from ..customs_reference.importer import _lire
 from ..customs_reference.legal_comparison import charger_lot_code, comparer_lots_code
@@ -69,6 +70,9 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
             if any(identifiant not in par_id for identifiant in ids):
                 raise HTTPException(404, {"code": "lot_revue_inconnu"}, headers=NO_STORE)
             entrees = [par_id[identifiant] for identifiant in ids]
+            if any(lot.type_lot == "mesures" for lot in entrees) and operation not in {
+                    "controle", "recherche_mesures", "inventaire_sources", "couverture"}:
+                raise HTTPException(422, {"code":"operation_non_applicable_aux_mesures_autonomes"}, headers=NO_STORE)
             if len({lot.type_lot for lot in entrees}) > 1:
                 raise HTTPException(422, {"code": "types_lots_incompatibles"}, headers=NO_STORE)
             # dossier est un nom simple strictement validé dans la configuration.
@@ -138,16 +142,16 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
     @router.get("/lots/{lot_id}/check")
     def controler(lot_id: str, utilisateur=Depends(autoriser)):
         return executer(utilisateur, "controle", [lot_id], lambda e, p, registre:
-                        (charger_lot(p[0]) if e[0].type_lot == "tarif" else charger_lot_code(p[0]))[1])
+                        {"tarif":charger_lot, "code":charger_lot_code, "mesures":charger_lot_mesures}[e[0].type_lot](p[0])[1])
 
     @router.get("/lots/{lot_id}/measure-search")
     def mesures(lot_id: str, q: str = Query("", max_length=256), code10: str | None = Query(None, max_length=10),
                 measure_type: str | None = Query(None, max_length=16), limit: int = Query(20, ge=1, le=100),
                 offset: int = Query(0, ge=0, le=1_000_000), utilisateur=Depends(autoriser)):
         def chercher(e, p, registre):
-            if e[0].type_lot != "tarif":
+            if e[0].type_lot not in {"tarif", "mesures"}:
                 raise HTTPException(422, {"code": "recherche_mesures_non_applicable_au_code"}, headers=NO_STORE)
-            return rechercher_mesures_tarif(p[0], q, code10, measure_type, limit, offset)
+            return rechercher_mesures_tarif(p[0], q, code10, measure_type, limit, offset, e[0].type_lot)
         return executer(utilisateur, "recherche_mesures", [lot_id], chercher)
 
     @router.get("/lots/{lot_id}/pdf-source")

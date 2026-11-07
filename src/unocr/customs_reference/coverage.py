@@ -3,6 +3,7 @@ from collections import Counter
 from pathlib import Path
 
 from .comparison import charger_lot
+from .fiscal_importer import charger_lot_mesures
 from .legal_comparison import charger_lot_code
 from .models import NIVEAUX
 
@@ -19,8 +20,8 @@ def _absents(elements, champs):
 
 
 def diagnostiquer_couverture(repertoire: Path, type_lot: str) -> dict:
-    if not isinstance(type_lot, str) or type_lot not in {"tarif", "code"}:
-        raise ParamCouvertureInvalide("Type de lot explicite tarif ou code requis")
+    if not isinstance(type_lot, str) or type_lot not in {"tarif", "code", "mesures"}:
+        raise ParamCouvertureInvalide("Type de lot explicite tarif, code ou mesures requis")
     if type_lot == "tarif":
         lot, rapport = charger_lot(repertoire)
         sources = [lot.source]
@@ -46,6 +47,16 @@ def diagnostiquer_couverture(repertoire: Path, type_lot: str) -> dict:
             "subdivision_nationale_intermediaire": "declaration_explicite_facultative_sans_inference",
             "lignes_sans_subdivision_nationale_declaree": sum(v.code_subdivision_nationale is None for v in lot.lignes),
             "rapprochement_fiscal_multi_source": "non_effectue",
+        }
+    elif type_lot == "mesures":
+        lot, rapport = charger_lot_mesures(repertoire)
+        sources = [lot.source]
+        indicateurs = {
+            "compteurs":{"sources":1, "mesures":len(lot.mesures),
+                         "codes10_declares_distincts":len({m.code_tarifaire_10 for m in lot.mesures})},
+            "mesures_champs_non_renseignes":_absents(lot.mesures,("taux", "unite_taux", "date_entree_vigueur", "date_fin_validite")),
+            "mesures_par_type":rapport["mesures_par_type"], "nomenclature_incluse":False,
+            "existence_codes_dans_nomenclature":"non_verifiee", "rapprochement_fiscal_multi_source":"non_effectue",
         }
     else:
         lot, rapport = charger_lot_code(repertoire)

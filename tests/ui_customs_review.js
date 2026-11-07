@@ -825,5 +825,37 @@ await scenario('Copie PDF : changement de compte pendant réception annule fichi
 await scenario('Copie PDF : navigateur sans SHA256 refuse avant fetch',async ctx=>{
  const t=await preparerCopiePDF(ctx);Object.defineProperty(ctx.w.crypto,'subtle',{value:undefined});const n=ctx.appels.length;ctx.button('Télécharger le PDF reçu').click();await finirCopie();assert.equal(t.fichiers.length,0);assert.equal(ctx.appels.length,n);assert(ctx.status().includes('SHA256 navigateur indisponible'));
 });
+const lotsAvecMesures=[lot('test-code'),lot('test-tarif','tarif'),lot('test-mesures','mesures')];
+function choisirMesures(ctx){const l=ctx.host.querySelector('select');l.value='test-mesures';l.dispatchEvent(new ctx.w.Event('change'));return l;}
+const rapportMesuresAutonomes=()=>mesuresRapport({type_recherche:'mesures_autonomes_documentaires',type_lot:'mesures',resultats:[{mesure_declaree:{code_tarifaire_10:'0101000000'},ligne_declaree:null}]} );
+await scenario('Mesures autonomes : registre reconnu et outils compatibles seulement',async ctx=>{
+ choisirMesures(ctx);assert(ctx.host.querySelector('[data-read-id]').closest('fieldset').disabled);assert(ctx.host.querySelector('[data-pdf-id]').closest('fieldset').disabled);
+ assert(ctx.host.querySelector('[data-measure-query]').closest('fieldset').disabled===false);assert(ctx.host.querySelector('form button').disabled);assert(ctx.host.querySelector('[data-sources-nature]').disabled);
+},lotsAvecMesures);
+await scenario('Mesures autonomes : recherche FR/AR sans fiche fabriquée',async ctx=>{
+ choisirMesures(ctx);ctx.host.querySelector('[data-measure-query]').value='معدات';ctx.host.querySelector('[data-measure-code]').value='0101000000';ctx.reponse(rapportMesuresAutonomes());ctx.button('Rechercher dans les mesures').click();await tick();
+ assert.equal(new URL(ctx.appels.at(-1).url,'https://x').pathname,'/api/v1/customs-review/lots/test-mesures/measure-search');assert(!ctx.button('Fiche documentaire'));
+},lotsAvecMesures);
+await scenario('Mesures autonomes : suite indépendante conserve filtres',async ctx=>{
+ choisirMesures(ctx);ctx.host.querySelector('[data-measure-type]').value='restriction';ctx.reponse(rapportMesuresAutonomes());ctx.button('Rechercher dans les mesures').click();await tick();ctx.button('Page suivante des mesures trouvées').click();await tick();
+ const u=new URL(ctx.appels.at(-1).url,'https://x');assert.equal(u.searchParams.get('offset'),'1');assert.equal(u.searchParams.get('q'),'معدات');
+},lotsAvecMesures);
+await scenario('Mesures autonomes : comparaisons et recherche de désignations sans appel',async ctx=>{
+ choisirMesures(ctx);ctx.host.querySelector('[data-comparison-after-lot]').value='test-mesures';const n=ctx.appels.length;ctx.button('Comparer avant').click();ctx.host.querySelector('form').dispatchEvent(new ctx.w.Event('submit',{cancelable:true}));await tick();assert.equal(ctx.appels.length,n);
+},lotsAvecMesures);
+await scenario('Mesures autonomes : inventaire sans actions Code/PDF',async ctx=>{
+ choisirMesures(ctx);ctx.reponse(catalogueSources({type_lot:'mesures'}));ctx.button('Inventorier les sources').click();await tick();assert(!ctx.button('Articles de la source'));assert(!ctx.button('Lire la source PDF'));assert(!ctx.button('Télécharger le PDF reçu'));
+},lotsAvecMesures);
+await scenario('Mesures autonomes : retour tarif puis Code restaure les outils',async ctx=>{
+ const l=choisirMesures(ctx);l.value='test-tarif';l.dispatchEvent(new ctx.w.Event('change'));assert(!ctx.host.querySelector('form button').disabled);assert(!ctx.host.querySelector('[data-measure-query]').closest('fieldset').disabled);
+ l.value='test-code';l.dispatchEvent(new ctx.w.Event('change'));assert(!ctx.host.querySelector('[data-read-id]').closest('fieldset').disabled);assert(ctx.host.querySelector('[data-measure-query]').closest('fieldset').disabled);assert(!ctx.host.querySelector('[data-sources-nature]').disabled);
+},lotsAvecMesures);
+await scenario('Mesures autonomes : ancienne suite inerte après changement de lot',async ctx=>{
+ const l=choisirMesures(ctx);ctx.host.querySelector('[data-measure-type]').value='restriction';ctx.reponse(rapportMesuresAutonomes());ctx.button('Rechercher dans les mesures').click();await tick();const ancien=ctx.button('Page suivante des mesures trouvées'),n=ctx.appels.length;
+ l.value='test-code';l.dispatchEvent(new ctx.w.Event('change'));ancien.click();await tick();assert.equal(ctx.appels.length,n);
+},lotsAvecMesures);
+await scenario('Mesures autonomes : panne audit sans données ni actions',async ctx=>{
+ choisirMesures(ctx);ctx.host.querySelector('[data-measure-type]').value='restriction';ctx.reponse(rapportMesuresAutonomes());ctx.button('Rechercher dans les mesures').click();await tick();ctx.reponse({detail:{code:'audit_revue_indisponible'}},503);ctx.button('Rechercher dans les mesures').click();await tick();assert.equal(ctx.host.querySelector('pre').textContent,'');assert.equal(ctx.host.querySelector('[data-review-actions]').textContent,'');
+},lotsAvecMesures);
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

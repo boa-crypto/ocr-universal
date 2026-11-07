@@ -109,3 +109,5 @@ Lot 33 : la recherche Code conserve ses aperçus et ajoute des [extraits context
 Lot 34 : [inventaire local des sources déclarées](INVENTAIRE_SOURCES.md) via `customs-sources` et `GET /lots/{lot_id}/sources`, filtres/recherche métadonnées et export partiel audité. Aucun corpus exhaustif ou document authentifié déduit.
 
 Lot 35 : `pdf-source` remet un binaire séparé et n’est pas un rapport exportable en enveloppe JSON. Conserver le contexte via l’export d’inventaire. [Contrat et risques](COPIE_PDF_SOURCE.md).
+
+Lot 37 : [revue intégrée des mesures autonomes](REVUE_MESURES_AUTONOMES.md), type de registre `mesures`. Contrôle/recherche de mesures/sources/couverture et exports existants, autres opérations explicitement refusées ; aucun rapprochement fiscal.

@@ -200,6 +200,15 @@ def main(argv=None) -> int:
     fm.add_argument("--write", action="store_true")
     fm.set_defaults(func=cmd_customs_fiscal_prepare)
 
+    fs = sub.add_parser("customs-fiscal-search", help="rechercher les descriptions de mesures autonomes contrôlées")
+    fs.add_argument("lot")
+    fs.add_argument("--query", default="")
+    fs.add_argument("--code", default=None)
+    fs.add_argument("--type", dest="measure_type", choices=["droit", "tva", "autre_taxe", "restriction", "autorisation", "regime"], default=None)
+    fs.add_argument("--limit", type=int, default=20)
+    fs.add_argument("--offset", type=int, default=0)
+    fs.set_defaults(func=cmd_customs_fiscal_search)
+
     fc = sub.add_parser("customs-fiscal-check", help="contrôler et rejouer un lot autonome de mesures")
     fc.add_argument("lot")
     fc.set_defaults(func=cmd_customs_fiscal_check)
@@ -260,7 +269,7 @@ def main(argv=None) -> int:
 
     cv = sub.add_parser("customs-coverage", help="compteurs documentaires, jamais complétude réglementaire")
     cv.add_argument("lot", help="lot en quarantaine")
-    cv.add_argument("--type", required=True, choices=["tarif", "code"], dest="type_lot")
+    cv.add_argument("--type", required=True, choices=["tarif", "code", "mesures"], dest="type_lot")
     cv.set_defaults(func=cmd_customs_coverage)
 
     tr = sub.add_parser("customs-tariff-tree", help="parcourir les parents/enfants tarifaires déclarés")
@@ -281,7 +290,7 @@ def main(argv=None) -> int:
 
     sc = sub.add_parser("customs-sources", help="inventorier les seules sources déclarées d'un lot contrôlé")
     sc.add_argument("lot")
-    sc.add_argument("--type", dest="type_lot", choices=["code", "tarif"], required=True)
+    sc.add_argument("--type", dest="type_lot", choices=["code", "tarif", "mesures"], required=True)
     sc.add_argument("--query", default="")
     sc.add_argument("--source", default=None)
     sc.add_argument("--nature", choices=["code_original", "acte_modificatif", "compilation"], default=None)
@@ -572,6 +581,13 @@ def cmd_customs_fiscal_prepare(args) -> int:
         return 2
     return _afficher_lecture_douaniere(lambda s, m: preparer_mesures_autonomes(
         s, m, Path(args.out) if args.write else None), args.source, args.metadata)
+
+
+def cmd_customs_fiscal_search(args) -> int:
+    from .customs_reference.measure_search import rechercher_mesures_tarif
+
+    return _afficher_lecture_douaniere(lambda p: rechercher_mesures_tarif(
+        p, args.query, args.code, args.measure_type, args.limit, args.offset, "mesures"), args.lot)
 
 
 def cmd_customs_fiscal_check(args) -> int:
