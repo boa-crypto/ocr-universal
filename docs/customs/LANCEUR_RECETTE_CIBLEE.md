@@ -72,3 +72,12 @@ du premier run a échoué sur sa redirection vers un hôte de stockage hors de
 l'allowlist réseau du sandbox ; leur upload est attesté par le job, **pas une
 relecture locale de leur contenu**. Les métriques chiffrées du rapport proviennent
 de l'exécution locale ; les journaux/JUnit locaux sont conservés hors Git.
+
+## Complément lot 61 — compteurs vérifiés sur les cas
+
+[Contrôle du JUnit](COHERENCE_JUNIT.md) : comparaison par suite des totaux
+déclarés avec les vrais éléments testcase et statuts, puis agrégation. Un rapport
+cohérent contenant échec/erreur/ignore est lisible, mais jamais vert. Lecture de
+fichier régulier UTF-8 bornée à 32 Mio, DTD/entités/profondeur/structures
+incompatibles refusés. Cela ne certifie pas qu’un auteur a réellement exécuté
+les tests dont il fournit un XML cohérent.

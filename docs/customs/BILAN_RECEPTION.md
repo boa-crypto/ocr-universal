@@ -7,7 +7,18 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 60
+## État actuel — lot 61
+
+[Cohérence JUnit](COHERENCE_JUNIT.md) vérifiée sur les cas/statuts réels avant
+bilan positif ; pas seulement les totaux déclarés. **2 160 tests Python / 212
+scénarios JSDOM** réussis. Nouvelle complète finale avec aperçu actif : **3 192
+réussis, 18 échecs, 11 ignorés, 1 avertissement, 218,99 s**, mêmes 18 échecs que 60.
+CI ciblée réussie : [run 42393053789](https://github.com/boa-crypto/ocr-universal/actions/runs/42393053789).
+Reprise d’environnement et substitution OpenCV headless locale documentées, pas
+modification des dépendances projet. Aucun échec OCR déclaré résolu.
+[Rapport](RAPPORT_LOT61.md), [recette complète actuelle](RECETTE_LOT61.json).
+
+## Complément — lot 60
 
 [Interface des pistes documentaires](INTERFACE_PISTES_TARIFAIRES.md), action
 explicite distincte de la recherche stricte, résumé non validé, fiches/pagination
@@ -181,7 +192,7 @@ réglementaire national ni des connexions administratives réellement qualifiée
 | 7 — API centrales | API privée de quarantaine et adaptateur douanier explicite, refus hors contrat | Connexion administrative réelle autorisée/testée et API métier sur corpus validé non qualifiées |
 | 8 — Intégrité et humain | SHA, rejeu, provenance épinglée, audit obligatoire et refus fermés | Authenticité, WORM/signature, attestation humaine et transaction multi-dossiers non établis |
 | 9 — Tests réels | Tests isolés, PDFium réel et HTTP/API réels, suite complète exécutée | OCR système non provisionné, charge nationale, navigateurs/accessibilité, cas juridiques et recette métier non qualifiés |
-| 10 — Livrables | Code, schémas, CLI/API/UI, contrats et rapports 1–60, bilan et résultats JSON | Corpus officiel, qualification juridique et réception de production non fournis |
+| 10 — Livrables | Code, schémas, CLI/API/UI, contrats et rapports 1–61, bilan et résultats JSON | Corpus officiel, qualification juridique et réception de production non fournis |
 
 Il reste **du développement** (notamment IA métier, consolidation, validation et
 publication), pas seulement des pièces externes. L'absence d'originaux ne permet

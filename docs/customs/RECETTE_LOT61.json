@@ -1,0 +1,229 @@
+{
+  "type_rapport": "recette_lot61_coherence_junit_non_validation_reglementaire",
+  "date": "2026-11-07",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "revision_code_testee": "52a20009",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_tests": 36,
+  "recette_selectionnee": {
+    "fichiers": 66,
+    "reussis": 2160,
+    "echecs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_secondes": 52.44,
+    "junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 2160,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "interface": {
+    "scenarios_jsdom_reussis": 212,
+    "nouveaux_scenarios_jsdom": 0,
+    "parcours_api_reelle": 4,
+    "exports_controles_et_rejoues_identiques": 74,
+    "rejeux_simples": 62,
+    "rejeux_paires": 12,
+    "rejeux_pdf_sur_opt_in": 14,
+    "exports_pistes": 4,
+    "copies_pdf_code_controlees": 4,
+    "navigateurs_reels_qualifies": false,
+    "version_cache_coquille": "v70-documentary-leads"
+  },
+  "suite_complete": {
+    "tests_total": 3221,
+    "reussis": 3192,
+    "echecs": 18,
+    "ignores": 11,
+    "avertissements": 1,
+    "duree_secondes": 218.99,
+    "code_sortie": 1,
+    "statut": "non_verte",
+    "echecs_identiques_a_recette60": true,
+    "echecs_detail": [
+      {
+        "test": "tests.test_api::test_health",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_api::test_engines_and_languages",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_indra_ocr::test_indra_engine_availability",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_ocr::test_tesseract_available",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_ocr::test_tesseract_recognize_real",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_ocr::test_registry_reports_availability_honestly",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_ocr::test_selection_prefers_native_when_present",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestEngineOption::test_engine_tesseract_force",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestEngineOption::test_engine_native_repli_sur_scan",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestPreprocessOptions::test_aggressive_existe",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestPreprocessOptions::test_variant_comparison_off",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestPreprocessOptions::test_variant_comparison_on",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_pipeline::test_end_to_end_scanned_pdf_ocr",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_pipeline::test_end_to_end_skewed_image",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_resources::test_registry_never_activates_unloadable_engine",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_resources::test_light_engines_always_available",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_routing_and_security::test_intelligent_routing_blurry",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_wave4::test_engines_endpoint_reports_reasons",
+        "statut": "echec"
+      }
+    ],
+    "ignores_detail": [
+      {
+        "test": "tests.test_capture_profiles.TestCaptureOCR::test_photo_conteneur",
+        "raison": "Tesseract absent de l'environnement — tests OCR raster ignorés"
+      },
+      {
+        "test": "tests.test_capture_profiles.TestCaptureOCR::test_photo_plaque_fr",
+        "raison": "Tesseract absent de l'environnement — tests OCR raster ignorés"
+      },
+      {
+        "test": "tests.test_capture_profiles.TestCaptureOCR::test_photo_plaque_dz",
+        "raison": "Tesseract absent de l'environnement — tests OCR raster ignorés"
+      },
+      {
+        "test": "tests.test_capture_profiles.TestCaptureOCR::test_photo_vin",
+        "raison": "Tesseract absent de l'environnement — tests OCR raster ignorés"
+      },
+      {
+        "test": "tests.test_capture_profiles.TestCarteGriseProfile::test_photo_carte_grise_13_champs",
+        "raison": "Tesseract absent de l'environnement — tests OCR raster ignorés"
+      },
+      {
+        "test": "tests.test_capture_profiles.TestCarteGriseProfile::test_champs_carte_grise_algerienne",
+        "raison": "Tesseract absent de l'environnement — tests OCR raster ignorés"
+      },
+      {
+        "test": "tests.test_capture_profiles.TestSecoursVariantePretraitee::test_field_hard_n_est_plus_perdu",
+        "raison": "Tesseract absent de l'environnement — tests OCR raster ignorés"
+      },
+      {
+        "test": "tests.test_i18n::test_arabic_fixture_detected_as_rtl",
+        "raison": "modèle tessdata « ara » absent (paquet tesseract-ocr-ara)"
+      },
+      {
+        "test": "tests.test_indra_ocr::test_indra_engine_recognize",
+        "raison": "Indra engine not available"
+      },
+      {
+        "test": "tests.test_ocr::test_modele_arabe_installe",
+        "raison": "modèle tessdata « ara » absent (paquet tesseract-ocr-ara)"
+      },
+      {
+        "test": "tests.test_ui_dossier::test_rendu_du_parcours_documentaire",
+        "raison": "aucun serveur sur le port 8123"
+      }
+    ],
+    "junit_verifie_par_nouveau_lecteur": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 3221,
+      "failures": 18,
+      "errors": 0,
+      "skipped": 11
+    }
+  },
+  "essais_preliminaires": {
+    "collecte_avant_correction_libgl": {
+      "erreurs": 53,
+      "cause": "libGL.so.1 absent lors import cv2"
+    },
+    "baseline_lot60_apres_headless": {
+      "reussis": 2124,
+      "echecs": 0
+    },
+    "complete_sans_apercu": {
+      "reussis": 3190,
+      "echecs": 18,
+      "ignores": 13,
+      "duree_secondes": 153.35,
+      "tests_ui_ignores_pour_absence_serveur": 2
+    }
+  },
+  "environnement": {
+    "python": "3.11.2",
+    "opencv_local": "opencv-python-headless==5.0.0.93",
+    "dependances_projet_modifiees": false,
+    "substitution_locale_package_opencv": true,
+    "apercu_actif_pour_complete_finale": true,
+    "process_id_apercu": "interface-uniocr-aaafc5bb",
+    "port_apercu": 8000,
+    "tesseract_disponible": false,
+    "indra_disponible": false
+  },
+  "integrite": {
+    "empreintes_conformes_a_recette56": 27,
+    "restauration_fixtures_effectuee": false
+  },
+  "github_actions": {
+    "run_id": 42393053789,
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42393053789",
+    "statut": "completed",
+    "conclusion": "success",
+    "revision_code": "52a20009be81c27bc257842d4a52bbc1b632ec9a",
+    "runner": "ubuntu-24.04",
+    "node": "24",
+    "python": "3.11",
+    "junit_distant_relu_localement": false
+  },
+  "artefacts_locaux": "/home/user/recettes-unocr/lot61",
+  "limites": [
+    "Cohérence des compteurs/cas XML, pas authenticité ou preuve d’exécution",
+    "Pas signature, immutabilité ou garantie de snapshot filesystem",
+    "Sélection documentaire non équivalente à suite OCR complète",
+    "Fixtures NON OFFICIELLES, aucune validation juridique ou publication"
+  ]
+}
