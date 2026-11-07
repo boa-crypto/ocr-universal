@@ -31,7 +31,7 @@ jobs:
       - name: Qualite des pages et Baidu (sans appel externe)
         run: |
           mkdir -p "$RUNNER_TEMP/customs-review"
-          python -m pytest tests/test_failed_page_quality.py tests/test_baidu_geometry.py tests/test_confidence_provenance.py tests/test_baidu_confidence.py tests/test_baidu_transport.py tests/test_baidu_ocr.py -q --junitxml="$RUNNER_TEMP/customs-review/baidu-transport.xml"
+          python -m pytest tests/test_zero_field_quality.py tests/test_failed_page_quality.py tests/test_baidu_geometry.py tests/test_confidence_provenance.py tests/test_baidu_confidence.py tests/test_baidu_transport.py tests/test_baidu_ocr.py -q --junitxml="$RUNNER_TEMP/customs-review/baidu-transport.xml"
       - name: PDFium concurrent et duree de vie native (serveur isole)
         run: |
           mkdir -p "$RUNNER_TEMP/customs-review"

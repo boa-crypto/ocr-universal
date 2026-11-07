@@ -244,8 +244,8 @@ class Pipeline:
 
         # 6. qualité (seuil de revue humaine configurable)
         report("quality", 0.9)
-        result.quality = build_quality_report(
-            result, review_threshold=options.min_confidence_review)
+        # Recalculer les champs AVANT le rapport, pour que sa liste de revue
+        # reflète les confiances effectivement enregistrées.
         # recalcule les confiances globales des champs avec le facteur qualité
         for fv in result.fields.values():
             if fv.page_num:
@@ -256,6 +256,9 @@ class Pipeline:
                     fv.confidence = round(g, 3)
                     # A2 : probabilité calibrée (égale à la confiance si inactive)
                     fv.calibrated_confidence = self._calibration.apply(fv.confidence)
+
+        result.quality = build_quality_report(
+            result, review_threshold=options.min_confidence_review)
 
         # 8. métadonnées
         result.engines_used = sorted({r.engine for p in result.pages for r in p.engine_runs})

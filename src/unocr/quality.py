@@ -70,7 +70,7 @@ def build_quality_report(result: DocumentResult,
             low_pages.append(p.page_num)
 
     low_fields = [k for k, v in result.fields.items()
-                  if v.confidence and v.confidence < review_threshold
+                  if v.confidence < review_threshold
                   and v.status not in (FieldStatus.NOT_DETECTED,)]
 
     anomalies: list[Anomaly] = []
