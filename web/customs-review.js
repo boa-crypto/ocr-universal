@@ -183,7 +183,7 @@
         q.disabled = limit.disabled = offset.disabled = chercher.disabled = typeSelection === "mesures";
         histoire.disabled = filtres.disabled; sourcesNature.disabled = filtres.disabled;
         fiscalPdfLecture.disabled = mesurePdfMatch.disabled = typeSelection !== "mesures";
-        fiche.disabled = typeSelection !== "tarif"; paireTarif.disabled = fiche.disabled;
+        fiche.disabled = criteresTarif.disabled = typeSelection !== "tarif"; paireTarif.disabled = fiche.disabled;
         mesuresRecherche.disabled = typeSelection === "code";
         arbre.disabled = fiche.disabled; tarifMesuresLecture.disabled = fiche.disabled || !lotMesures.value;
         justificationLecture.disabled = filtres.disabled; relationsLecture.disabled = filtres.disabled; matchLecture.disabled = filtres.disabled; codeArbre.disabled = filtres.disabled; lecture.disabled = filtres.disabled; diffArticle.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
@@ -223,6 +223,25 @@
         lire("/lots/" + encodeURIComponent(lot.value) + "/history?" + params, afficher);
       }));
       form.append(histoire);
+      var criteresTarif=element("fieldset");
+      criteresTarif.append(element("legend","Recherche multicritère dans les libellés tarifaires — non validée"));
+      criteresTarif.append(element("p","Tous les termes doivent apparaître dans les désignations FR/AR reçues. Matière, fonction et usage sont des critères saisis, pas des attributs certifiés ; aucun classement IA ou taux calculé."));
+      var nomsCriteres=["designation","matiere","fonction","usage","caracteristiques"],champsCriteres={};
+      nomsCriteres.forEach(function(nom){var c=champ(criteresTarif,{designation:"Termes de désignation",matiere:"Termes de matière (non certifiée)",fonction:"Termes de fonction",usage:"Termes d’usage",caracteristiques:"Termes de caractéristiques"}[nom]);c.maxLength=256;c.dir="auto";c.setAttribute("data-tariff-criteria-"+nom,"");champsCriteres[nom]=c;});
+      var criteresPrefix=champ(criteresTarif,"Préfixe de code ASCII (facultatif)");criteresPrefix.maxLength=10;criteresPrefix.setAttribute("data-tariff-criteria-prefix","");
+      var criteresLimit=champ(criteresTarif,"Limite multicritère (1–100)","input","number");criteresLimit.value=20;criteresLimit.min=1;criteresLimit.max=100;criteresLimit.setAttribute("data-tariff-criteria-limit","");
+      var criteresOffset=champ(criteresTarif,"Décalage multicritère","input","number");criteresOffset.value=0;criteresOffset.min=0;criteresOffset.max=1000000;criteresOffset.setAttribute("data-tariff-criteria-offset","");
+      function chargerCriteresTarif(){
+        if(criteresTarif.disabled)return;
+        var params=new URLSearchParams({limit:criteresLimit.value,offset:criteresOffset.value}),present=false;
+        nomsCriteres.forEach(function(nom){if(champsCriteres[nom].value.trim()){params.set(nom,champsCriteres[nom].value);present=true;}});
+        if(criteresPrefix.value){params.set("code_prefix",criteresPrefix.value);present=true;}
+        if(!present || (criteresPrefix.value && !/^[0-9]{1,10}$/.test(criteresPrefix.value)) || !entier(Number(criteresLimit.value),1,100) || !entier(Number(criteresOffset.value),0,1000000)){
+          statut.textContent="Critère ou préfixe explicite et pagination valides requis.";return;
+        }
+        lire("/lots/"+encodeURIComponent(lot.value)+"/tariff-criteria?"+params,afficher);
+      }
+      criteresTarif.append(bouton("Rechercher les critères tarifaires",chargerCriteresTarif));host.append(criteresTarif);
       var fiche = element("fieldset");
       fiche.append(element("legend", "Fiche tarifaire documentaire — tarif seulement"));
       fiche.append(element("p", "Code exact à dix chiffres ASCII. Parents et mesures déclarés, sans taux applicable ou calcul. " +
@@ -765,8 +784,19 @@
             });
           });
         }
-        if (rapport.type_recherche === "tarif_documentaire" && Array.isArray(rapport.resultats)) {
+        if (["tarif_documentaire","tarif_criteres_documentaires"].includes(rapport.type_recherche) && Array.isArray(rapport.resultats)) {
           rapport.resultats.slice(0, 100).forEach(function (v) { if (v && v.ligne) proposerCode(v.ligne.code_tarifaire_10); });
+        }
+        if(!criteresTarif.disabled && rapport.type_recherche === "tarif_criteres_documentaires" && rapport.filtres && rapport.filtres.criteres &&
+           Object.keys(rapport.filtres.criteres).length === nomsCriteres.length && nomsCriteres.every(function(nom){var v=rapport.filtres.criteres[nom];return v===null || (typeof v === "string" && v.trim() && Array.from(v).length<=256);}) &&
+           (rapport.filtres.code_prefix===null || (typeof rapport.filtres.code_prefix === "string" && /^[0-9]{1,10}$/.test(rapport.filtres.code_prefix))) &&
+           rapport.attributs_techniques_certifies===false && rapport.classement_ia_effectue===false &&
+           entier(rapport.limite,1,100) && entier(rapport.decalage,0,1000000) && entier(rapport.decalage_suivant,rapport.decalage+1,1000000) &&
+           entier(rapport.total_correspondances,rapport.decalage_suivant+1,Number.MAX_SAFE_INTEGER)){
+          actions.append(actionDocumentaire("Page suivante des critères tarifaires",function(){
+            nomsCriteres.forEach(function(nom){champsCriteres[nom].value=rapport.filtres.criteres[nom]===null?"":rapport.filtres.criteres[nom];});
+            criteresPrefix.value=rapport.filtres.code_prefix===null?"":rapport.filtres.code_prefix;criteresLimit.value=rapport.limite;criteresOffset.value=rapport.decalage_suivant;chargerCriteresTarif();
+          }));
         }
         if (rapport.type_rapport === "historique_documentaire_article") {
           var vus = new Set();

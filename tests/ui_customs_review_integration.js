@@ -201,6 +201,14 @@ const {JSDOM} = require('jsdom');
   assert.equal(rapportExporte.resultat.ligne_declaree.code_tarifaire_10,'0101000000');
   assert.equal(rapportExporte.publication_active,false); assert(rapportExporte.resultat.archive.manifest_sha256);
   assert(!texteExport.includes('TEST_ADMIN_NON_PRODUCTION'));
+  host.querySelector('[data-tariff-criteria-designation]').value='ÉQUIPEMENT';host.querySelector('[data-tariff-criteria-prefix]').value='0101';host.querySelector('[data-tariff-criteria-limit]').value=1;
+  bouton('Rechercher les critères tarifaires').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_recherche==='tarif_criteres_documentaires');
+  const criteresTarif=JSON.parse(host.querySelector('pre').textContent);assert.equal(criteresTarif.total_correspondances,2);assert.equal(criteresTarif.attributs_techniques_certifies,false);assert(criteresTarif.resultats[0].correspondances_par_critere.designation.equipement.includes('designation_officielle_fr'));
+  bouton('Page suivante des critères tarifaires').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').decalage===1);assert.equal(JSON.parse(host.querySelector('pre').textContent).filtres.criteres.designation,'ÉQUIPEMENT');
+  exportBlob=null;bouton('Exporter ce rapport').click();await attendre(()=>!!exportBlob);
+  const exportCriteres=await new Promise((resolve,reject)=>{const r=new w.FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsText(exportBlob);});console.log('EXPORT_REEL_JSON='+JSON.stringify(JSON.parse(exportCriteres)));
+
+
   host.querySelector('[data-measure-query]').value='TERME_MESURE_EXCLU';host.querySelector('[data-measure-code]').value='0101000000';
   host.querySelector('[data-measure-type]').value='restriction';bouton('Rechercher dans les mesures').click();
   await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_recherche==='mesures_tarifaires_documentaires');

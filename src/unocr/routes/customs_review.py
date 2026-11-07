@@ -46,6 +46,7 @@ from ..customs_reference.review_registry import (
 from ..customs_reference.search import ParamRechercheInvalide, rechercher_code, rechercher_tarif
 from ..customs_reference.source_catalog import inventorier_sources
 from ..customs_reference.source_pdf import copier_pdf_source
+from ..customs_reference.tariff_criteria import rechercher_tarif_criteres
 from ..customs_reference.tariff_detail import ParamFicheTarifInvalide, consulter_code
 from ..customs_reference.tariff_measures import juxtaposer_tarif_mesures
 from ..customs_reference.tariff_pair import juxtaposer_fiches_tarifaires
@@ -204,6 +205,19 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
     def couverture(lot_id: str, utilisateur=Depends(autoriser)):
         return executer(utilisateur, "couverture", [lot_id], lambda e, p, registre:
                         diagnostiquer_couverture(p[0], e[0].type_lot))
+
+    @router.get("/lots/{lot_id}/tariff-criteria")
+    def criteres_tarif(lot_id: str, designation: str | None = Query(None,max_length=256),
+                      matiere: str | None = Query(None,max_length=256), fonction: str | None = Query(None,max_length=256),
+                      usage: str | None = Query(None,max_length=256), caracteristiques: str | None = Query(None,max_length=256),
+                      code_prefix: str | None = Query(None,max_length=10), limit: int = Query(20,ge=1,le=100),
+                      offset: int = Query(0,ge=0,le=1_000_000), utilisateur=Depends(autoriser)):
+        def chercher(e,p,registre):
+            if e[0].type_lot != "tarif":
+                raise HTTPException(422, {"code":"criteres_tarif_uniquement"},headers=NO_STORE)
+            return rechercher_tarif_criteres(p[0],designation=designation,matiere=matiere,fonction=fonction,
+                usage=usage,caracteristiques=caracteristiques,code_prefix=code_prefix,limite=limit,decalage=offset)
+        return executer(utilisateur,"recherche_tarif_criteres",[lot_id],chercher)
 
     @router.get("/lots/{lot_id}/search")
     def chercher(lot_id: str, q: str = Query("", max_length=256),

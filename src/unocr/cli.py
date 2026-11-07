@@ -381,6 +381,14 @@ def main(argv=None) -> int:
     cp.add_argument("--offset", type=int, default=0)
     cp.set_defaults(func=cmd_customs_code_pdf_read)
 
+    tc = sub.add_parser("customs-tariff-criteria", help="chercher des critères explicites dans les libellés FR/AR, sans classement")
+    tc.add_argument("lot")
+    for nom in ("designation", "matiere", "fonction", "usage", "caracteristiques", "code-prefix"):
+        tc.add_argument("--"+nom, default=None)
+    tc.add_argument("--limit", type=int, default=20)
+    tc.add_argument("--offset", type=int, default=0)
+    tc.set_defaults(func=cmd_customs_tariff_criteria)
+
     mp = sub.add_parser("customs-measure-pdf-match", help="chercher un fragment de description dans une page PDF source, sans validation")
     mp.add_argument("lot")
     mp.add_argument("--measure", required=True)
@@ -518,6 +526,14 @@ def cmd_customs_code_article_diff(args) -> int:
     return _afficher_lecture_douaniere(lambda chemin: comparer_versions_article(
         chemin, args.before_id, args.after_id, args.field, args.limit, args.before_offset, args.after_offset,
         Path(args.after_lot) if args.after_lot is not None else None), args.lot)
+
+
+def cmd_customs_tariff_criteria(args) -> int:
+    from .customs_reference.tariff_criteria import rechercher_tarif_criteres
+
+    return _afficher_lecture_douaniere(lambda p: rechercher_tarif_criteres(p,designation=args.designation,
+        matiere=args.matiere,fonction=args.fonction,usage=args.usage,caracteristiques=args.caracteristiques,
+        code_prefix=args.code_prefix,limite=args.limit,decalage=args.offset),args.lot)
 
 
 def cmd_customs_measure_pdf_match(args) -> int:

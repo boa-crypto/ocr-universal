@@ -7,7 +7,15 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## Résultats vérifiés
+## Complément lot 46
+
+[Recherche tarifaire multicritère explicite](RECHERCHE_TARIF_CRITERES.md) ajoutée
+après ce bilan : 1 769 tests sélectionnés et 158 scénarios JSDOM réussis, 70 exports
+JSON contrôlés sur quatre parcours réels. Pas de matière/fonction/usage certifiés,
+synonymes ou IA de classement. La matrice et la suite complète ci-dessous décrivent
+la réception 45 ; ses 18 échecs OCR ne sont ni corrigés ni masqués par cet ajout.
+
+## Résultats vérifiés au lot 45
 
 | Recette | Résultat |
 |---|---|
