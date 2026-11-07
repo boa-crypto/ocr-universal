@@ -1,0 +1,158 @@
+{
+  "type_rapport": "recette_lot79_technique_non_validation_reglementaire",
+  "date": "2026-11-07",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "revision_code": "0a633e98793a11f8eab51f9ccfba6a6f61a69371",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_originaux_officiels": 0,
+  "articles_codes_officiellement_valides": 0,
+  "nouveaux_tests_python": 29,
+  "selection_reclassement_classification_valeurs_cloisonnement": {
+    "tests": 464,
+    "reussis": 464,
+    "echecs": 0,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 9.77,
+    "duree_junit_secondes": 8.65,
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 464,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "contre_epreuve_auto78": {
+    "tests": 29,
+    "reussis": 6,
+    "echecs": 23,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 3.52,
+    "duree_junit_secondes": 1.998,
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 29,
+      "failures": 23,
+      "errors": 0,
+      "skipped": 0
+    },
+    "code_sortie": 1,
+    "revision_chargee": "98d77cfc506690aa972164d214543951cf3a4e48",
+    "corps_classify_job_reinjecte_memoire_sans_decorateurs": true,
+    "sources_checkout_non_remplacees": true,
+    "apercu_non_modifie": true
+  },
+  "recette_documentaire_ciblee": {
+    "tests": 2160,
+    "reussis": 2160,
+    "echecs": 0,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 57.58,
+    "duree_junit_secondes": 57.544,
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 2160,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "fichiers": 66,
+    "jsdom_existants": 212
+  },
+  "suite_complete": {
+    "tests": 3863,
+    "reussis": 3860,
+    "echecs": 2,
+    "erreurs": 0,
+    "ignores": 1,
+    "avertissements": 1,
+    "duree_console_secondes": 364.39,
+    "duree_junit_secondes": 364.304,
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 3863,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 1
+    },
+    "identifiants_echecs": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ],
+    "ignores_detail": [
+      "tests.test_indra_ocr::test_indra_engine_recognize"
+    ],
+    "code_sortie": 1,
+    "identiques_lot78": true
+  },
+  "politique": {
+    "route": "POST /api/jobs/{job_id}/classify",
+    "role_operateur_explicite": true,
+    "visibilite_avant_lecture": true,
+    "job_ou_resultat_absent_http": 404,
+    "classification_manuelle_ou_ambigue_http": 409,
+    "classification_preexistante_autorisee": "None ou objet avec manual absent ou booléen False exact",
+    "garde_avant_classifieur": true,
+    "sauvegarde_avant_audit_succes": true,
+    "autres_donnees_resultat_preservees": true,
+    "profil_suggere_non_applique": true
+  },
+  "nouveaux_tests_classifieur_substitue_sortie_synthetique": true,
+  "mesure_precision_classifieur": false,
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "referentiels": {
+      "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+      "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d",
+      "conforme": false
+    },
+    "ecart_identique_lot78": true,
+    "restauration_effectuee": false,
+    "donnees_journaux_exploratoires_preserves_hors_commit": true
+  },
+  "ci": {
+    "run": 42416787172,
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42416787172",
+    "statut": "success",
+    "revision": "0a633e98793a11f8eab51f9ccfba6a6f61a69371",
+    "portee": "445 reclassement/lecture/classification/valeurs/annulation/attribution/cloisonnement/RBAC + 243 qualité/Baidu + 24 ingestion/PDF + 10 UI + documentaire ; sélections se recouvrant",
+    "ocr_complet_execute_en_ci": false,
+    "junit_distant_telecharge": false
+  },
+  "apercu": {
+    "processus": "interface-uniocr-4f62d340",
+    "backend_lot": 76,
+    "code77_79_charge": false,
+    "redemarrage_impose": false,
+    "motif": "Préserver les traitements en cours",
+    "port": 8000,
+    "rbac_json_absent": true
+  },
+  "artefacts_locaux": "/home/user/recettes-unocr/lot79",
+  "limites": [
+    "Pas verrou/transaction entre garde et écriture ; risque de décision concurrente",
+    "manual absent reste automatique historique, pas reconstruction de décisions humaines non marquées",
+    "Pas archivage intégral ou invalidation des exports en cache",
+    "Pas changement de score/profil/règles du classifieur, ni mesure de précision nouvelle",
+    "Audit legacy best-effort, pas WORM ou preuve identité humaine",
+    "Aperçu76 maintenu, code77–79 non chargé",
+    "Deux échecs Indra persistants, intégrité26/27",
+    "Aucun nouvel original officiel ou validation réglementaire"
+  ]
+}

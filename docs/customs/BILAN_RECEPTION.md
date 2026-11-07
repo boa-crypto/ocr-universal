@@ -7,7 +7,26 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 78
+## État actuel — lot 79
+
+[Reclassement automatique persistant](RECLASSEMENT_AUTOMATIQUE_PERSISTE.md) :
+sauvegarde avant audit/réponse, rôle et visibilité en amont, refus 409 des décisions
+manuelles persistées ou marqueurs ambigus avant classifieur. Autres données
+conservées, règles/scores/profil non modifiés.
+**29 nouveaux cas / 464 ciblés réussis** ; témoin ancien handler : 23 échecs
+attendus, 6 réussis. Nouveaux tests avec sortie de classifieur synthétique,
+pas mesure de précision. Documentaire **2 160 Python / 212 JSDOM historiques**.
+Complète : **3 860 réussis, 2 échecs Indra, 1 ignoré,
+1 avertissement(s), 364,39 s**.
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42416787172),
+pas suite OCR complète en CI. **26/27 empreintes conformes**, même écart partagé ;
+données et journaux préservés hors commit. Pas verrou/transaction, migration
+historique ou détection universelle de décisions humaines non marquées.
+**Aperçu backend76 maintenu**, code77–79 poussé/testé mais non chargé pour préserver
+les traitements ; RBAC toujours non configuré. [Rapport](RAPPORT_LOT79.md),
+[recette actuelle](RECETTE_LOT79.json).
+
+## Complément historique — lot 78
 
 [Lecture classification et audit](LECTURE_CLASSIFICATION_ET_AUDIT.md) :
 la décision stockée reste la référence, le journal ne requalifie plus `manual`.
