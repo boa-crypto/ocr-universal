@@ -47,8 +47,9 @@ class ChampCorrection(BaseModel):
 
 
 def _autoriser_dossier(request, dossier_id, role):
-    _exige(role)(request)
+    utilisateur = _exige(role)(request)
     _exige_dossier(dossier_id, request)
+    return utilisateur
 
 
 def _extraction_du_dossier(integration, dossier_id, extraction_id):
@@ -156,10 +157,10 @@ def valider_document_ocr(
     request: Request,
 ) -> dict:
     """Valider un document OCR (validation humaine)."""
-    _autoriser_dossier(request, dossier_id, OPERATEUR)
+    utilisateur = _autoriser_dossier(request, dossier_id, OPERATEUR)
     ocr_integration = get_ocr_integration()
     _extraction_du_dossier(ocr_integration, dossier_id, extraction_id)
-    success = ocr_integration.validate_extraction(extraction_id, "utilisateur")
+    success = ocr_integration.validate_extraction(extraction_id, utilisateur.nom)
     if not success:
         raise HTTPException(404, "Document OCR introuvable")
     extraction = ocr_integration.extraction_store.get(extraction_id)
@@ -174,10 +175,10 @@ def corriger_champ_ocr(
     correction: ChampCorrection,
 ) -> dict:
     """Corriger un champ extrait par l'OCR."""
-    _autoriser_dossier(request, dossier_id, OPERATEUR)
+    utilisateur = _autoriser_dossier(request, dossier_id, OPERATEUR)
     ocr_integration = get_ocr_integration()
     _extraction_du_dossier(ocr_integration, dossier_id, extraction_id)
-    success = ocr_integration.correct_field(extraction_id, correction.champ_nom, correction.nouvelle_valeur, "utilisateur")
+    success = ocr_integration.correct_field(extraction_id, correction.champ_nom, correction.nouvelle_valeur, utilisateur.nom)
     if not success:
         raise HTTPException(404, "Document OCR ou champ introuvable")
     extraction = ocr_integration.extraction_store.get(extraction_id)
