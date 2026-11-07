@@ -100,3 +100,6 @@ Lot 31 : `/api/v1/customs-review/tariff-compare` admise avec provenance double
 `archives.avant/apres` ; pas de provenance simple/ambiguë. Deux fiches documentaires
 séparées, pas fiscalité applicable. Anciens contrôleurs stricts susceptibles de
 refuser la nouvelle route d’enveloppe version 1.
+
+Lot 32 : la route `measure-search` est également exportable (provenance simple du lot tarifaire).
+[Contrat](RECHERCHE_MESURES.md), sans authenticité ou applicabilité déduites.

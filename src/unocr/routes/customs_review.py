@@ -26,6 +26,7 @@ from ..customs_reference.coverage import diagnostiquer_couverture
 from ..customs_reference.history import ParamHistoriqueInvalide, historique_article
 from ..customs_reference.importer import _lire
 from ..customs_reference.legal_comparison import charger_lot_code, comparer_lots_code
+from ..customs_reference.measure_search import rechercher_mesures_tarif
 from ..customs_reference.pdf_page import LecturePDFRefusee, ParamPDFInvalide, lire_page_pdf
 from ..customs_reference.relation_pdf_match import (
     ParamJustificationPDFInvalide,
@@ -136,6 +137,16 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
     def controler(lot_id: str, utilisateur=Depends(autoriser)):
         return executer(utilisateur, "controle", [lot_id], lambda e, p, registre:
                         (charger_lot(p[0]) if e[0].type_lot == "tarif" else charger_lot_code(p[0]))[1])
+
+    @router.get("/lots/{lot_id}/measure-search")
+    def mesures(lot_id: str, q: str = Query("", max_length=256), code10: str | None = Query(None, max_length=10),
+                measure_type: str | None = Query(None, max_length=16), limit: int = Query(20, ge=1, le=100),
+                offset: int = Query(0, ge=0, le=1_000_000), utilisateur=Depends(autoriser)):
+        def chercher(e, p, registre):
+            if e[0].type_lot != "tarif":
+                raise HTTPException(422, {"code": "recherche_mesures_non_applicable_au_code"}, headers=NO_STORE)
+            return rechercher_mesures_tarif(p[0], q, code10, measure_type, limit, offset)
+        return executer(utilisateur, "recherche_mesures", [lot_id], chercher)
 
     @router.get("/lots/{lot_id}/coverage")
     def couverture(lot_id: str, utilisateur=Depends(autoriser)):

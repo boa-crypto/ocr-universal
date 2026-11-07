@@ -268,6 +268,15 @@ def main(argv=None) -> int:
     ca.add_argument("--offset", type=int, default=0)
     ca.set_defaults(func=cmd_customs_code_read)
 
+    ms = sub.add_parser("customs-tariff-measure-search", help="rechercher les descriptions de mesures déclarées, sans droit applicable")
+    ms.add_argument("lot")
+    ms.add_argument("--query", default="")
+    ms.add_argument("--code", default=None)
+    ms.add_argument("--type", dest="measure_type", choices=["droit", "tva", "autre_taxe", "restriction", "autorisation", "regime"], default=None)
+    ms.add_argument("--limit", type=int, default=20)
+    ms.add_argument("--offset", type=int, default=0)
+    ms.set_defaults(func=cmd_customs_tariff_measure_search)
+
     tf = sub.add_parser("customs-tariff-compare", help="juxtaposer deux fiches sans fusion fiscale ou version applicable")
     tf.add_argument("avant")
     tf.add_argument("apres")
@@ -395,6 +404,13 @@ def cmd_customs_review_export_check(args) -> int:
     from .customs_reference.review_export import verifier_export
 
     return _afficher_lecture_douaniere(verifier_export, args.file)
+
+
+def cmd_customs_tariff_measure_search(args) -> int:
+    from .customs_reference.measure_search import rechercher_mesures_tarif
+
+    return _afficher_lecture_douaniere(lambda p: rechercher_mesures_tarif(
+        p, args.query, args.code, args.measure_type, args.limit, args.offset), args.lot)
 
 
 def cmd_customs_tariff_compare(args) -> int:

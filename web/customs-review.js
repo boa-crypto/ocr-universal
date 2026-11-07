@@ -177,7 +177,7 @@
       function adapter() {
         filtres.disabled = rep.lots.find(function (v) { return v.id === lot.value; }).type_lot !== "code";
         histoire.disabled = filtres.disabled;
-        fiche.disabled = !filtres.disabled; paireTarif.disabled = fiche.disabled;
+        fiche.disabled = !filtres.disabled; paireTarif.disabled = fiche.disabled; mesuresRecherche.disabled = fiche.disabled;
         arbre.disabled = !filtres.disabled;
         justificationLecture.disabled = filtres.disabled; relationsLecture.disabled = filtres.disabled; matchLecture.disabled = filtres.disabled; codeArbre.disabled = filtres.disabled; lecture.disabled = filtres.disabled; diffArticle.disabled = filtres.disabled; pdfLecture.disabled = filtres.disabled;
         ++requete; viderResultat();
@@ -456,6 +456,30 @@
           before_limit: measureLimit.value, before_offset: measureOffset.value, after_limit: paireLimit.value, after_offset: paireOffset.value}), afficher);
       }
       paireTarif.append(bouton("Consulter les deux fiches tarifaires séparées", chargerPaireTarif));
+      var mesuresRecherche = element("fieldset");
+      mesuresRecherche.append(element("legend", "Rechercher les descriptions de mesures — tarif seulement"));
+      mesuresRecherche.append(element("p", "Descriptions déclarées uniquement, pas désignations ou taux. Sans synonymes/traduction/IA ni droit applicable. Requête ou filtre exact requis."));
+      var mesuresQuery = champ(mesuresRecherche, "Texte FR / AR de description"); mesuresQuery.maxLength = 256; mesuresQuery.dir = "auto"; mesuresQuery.setAttribute("data-measure-query", "");
+      var mesuresCode = champ(mesuresRecherche, "Code10 exact facultatif"); mesuresCode.maxLength = 10; mesuresCode.setAttribute("data-measure-code", "");
+      var mesuresType = champ(mesuresRecherche, "Type déclaré facultatif", "select"); mesuresType.setAttribute("data-measure-type", "");
+      ["", "droit", "tva", "autre_taxe", "restriction", "autorisation", "regime"].forEach(function (v) { var o = element("option", v || "Tous"); o.value = v; mesuresType.append(o); });
+      var mesuresLimit = champ(mesuresRecherche, "Mesures trouvées par page (1–100)", "input", "number");
+      mesuresLimit.min = 1; mesuresLimit.max = 100; mesuresLimit.value = 20; mesuresLimit.required = true;
+      var mesuresOffset = champ(mesuresRecherche, "Décalage résultats mesures (0–1000000)", "input", "number");
+      mesuresOffset.min = 0; mesuresOffset.max = 1000000; mesuresOffset.value = 0; mesuresOffset.required = true;
+      function chargerRechercheMesures() {
+        if (mesuresRecherche.disabled) return;
+        if ((!mesuresQuery.value.trim() && !mesuresCode.value && !mesuresType.value) ||
+            (mesuresCode.value && !/^[0-9]{10}$/.test(mesuresCode.value))) {
+          ++requete; viderResultat(); statut.textContent = "Requête ou filtre exact requis ; code facultatif à dix chiffres ASCII."; return;
+        }
+        if (!mesuresLimit.reportValidity() || !mesuresOffset.reportValidity()) return;
+        var p = new URLSearchParams({q: mesuresQuery.value, limit: mesuresLimit.value, offset: mesuresOffset.value});
+        if (mesuresCode.value) p.set("code10", mesuresCode.value);
+        if (mesuresType.value) p.set("measure_type", mesuresType.value);
+        lire("/lots/" + encodeURIComponent(lot.value) + "/measure-search?" + p, afficher);
+      }
+      mesuresRecherche.append(bouton("Rechercher dans les mesures déclarées", chargerRechercheMesures));
       function idValide(id) {
         return typeof id === "string" && id.trim() && Array.from(id).length <= 256 && !/[\u0000-\u001f\u007f-\u009f]/.test(id);
       }
@@ -484,6 +508,27 @@
         }));
       }
       rendreActions = function (rapport) {
+        if (rapport.type_recherche === "mesures_tarifaires_documentaires" && !mesuresRecherche.disabled) {
+          var codesMesures = new Set();
+          if (Array.isArray(rapport.resultats)) rapport.resultats.slice(0, 100).forEach(function (r) {
+            if (!r || !r.mesure_declaree || !r.ligne_declaree) return;
+            var code = r.mesure_declaree.code_tarifaire_10;
+            if (typeof code !== "string" || !/^[0-9]{10}$/.test(code) || r.ligne_declaree.code_tarifaire_10 !== code || codesMesures.has(code)) return;
+            codesMesures.add(code); proposerCode(code);
+          });
+          var fm = rapport.filtres;
+          if (fm && typeof rapport.requete === "string" && Array.from(rapport.requete).length <= 256 &&
+              (fm.code10_exact === null || (typeof fm.code10_exact === "string" && /^[0-9]{10}$/.test(fm.code10_exact))) &&
+              (fm.type_mesure === null || ["droit", "tva", "autre_taxe", "restriction", "autorisation", "regime"].includes(fm.type_mesure)) &&
+              entier(rapport.limite, 1, 100) && entier(rapport.decalage, 0, 1000000) &&
+              entier(rapport.decalage_suivant, rapport.decalage + 1, 1000000) &&
+              entier(rapport.total_correspondances, rapport.decalage_suivant + 1, Number.MAX_SAFE_INTEGER)) {
+            actions.append(actionDocumentaire("Page suivante des mesures trouvées", function () {
+              mesuresQuery.value = rapport.requete; mesuresCode.value = fm.code10_exact || ""; mesuresType.value = fm.type_mesure || "";
+              mesuresLimit.value = rapport.limite; mesuresOffset.value = rapport.decalage_suivant; chargerRechercheMesures();
+            }));
+          }
+        }
         if (rapport.type_rapport === "juxtaposition_documentaire_fiches_tarifaires" && !paireTarif.disabled &&
             typeof rapport.code_tarifaire_10_exact === "string" && /^[0-9]{10}$/.test(rapport.code_tarifaire_10_exact) && rapport.lots_exacts && rapport.lots_exacts.avant === lot.value &&
             [rapport.lots_exacts.avant, rapport.lots_exacts.apres].every(function (id) {
@@ -763,7 +808,7 @@
         }
       };
       lot.addEventListener("change", adapter); adapter();
-      outils.append(form, fiche, arbre, codeArbre, lecture, pdfLecture, diffArticle, matchLecture, relationsLecture, justificationLecture, paireTarif);
+      outils.append(form, fiche, arbre, codeArbre, lecture, pdfLecture, diffArticle, matchLecture, relationsLecture, justificationLecture, paireTarif, mesuresRecherche);
     });
   }
   function demarrer() {

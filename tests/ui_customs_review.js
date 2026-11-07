@@ -685,5 +685,40 @@ await scenarioPaire('Fiches séparées : audit 503 efface les deux fiches',async
  choisirPaire(w,host);reponse(paireRapport({}));button('Consulter les deux fiches').click();await tick();reponse({detail:{code:'audit_revue_indisponible'}},503);
  button('Consulter les deux fiches').click();await tick();assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
 });
+const mesuresRapport=extra=>envelope({type_recherche:'mesures_tarifaires_documentaires',requete:'معدات',filtres:{code10_exact:'0101000000',type_mesure:'restriction'},
+ limite:1,decalage:0,decalage_suivant:1,total_correspondances:3,resultats:[{mesure_declaree:{code_tarifaire_10:'0101000000',description:'<img src=x onerror=alert(1)>'},ligne_declaree:{code_tarifaire_10:'0101000000'}}],...extra});
+await scenario('Recherche mesures : texte AR et filtres exacts, rendu sans HTML',async({w,host,appels,button,reponse})=>{
+ const l=host.querySelector('select');l.value='test-tarif';l.dispatchEvent(new w.Event('change'));
+ host.querySelector('[data-measure-query]').value='معدات';host.querySelector('[data-measure-code]').value='0101000000';host.querySelector('[data-measure-type]').value='restriction';
+ reponse(mesuresRapport({}));button('Rechercher dans les mesures').click();await tick();const u=new URL(appels.at(-1).url,'https://x');
+ assert.equal(u.pathname,'/api/v1/customs-review/lots/test-tarif/measure-search');assert.equal(u.searchParams.get('q'),'معدات');assert.equal(u.searchParams.get('code10'),'0101000000');assert.equal(u.searchParams.get('measure_type'),'restriction');assert(!host.querySelector('img'));
+});
+await scenario('Recherche mesures : suite conserve réponse et filtres',async({w,host,appels,button,reponse})=>{
+ const l=host.querySelector('select');l.value='test-tarif';l.dispatchEvent(new w.Event('change'));host.querySelector('[data-measure-type]').value='restriction';
+ reponse(mesuresRapport({}));button('Rechercher dans les mesures').click();await tick();host.querySelector('[data-measure-query]').value='AUTRE';
+ button('Page suivante des mesures trouvées').click();await tick();const u=new URL(appels.at(-1).url,'https://x');
+ assert.equal(u.searchParams.get('q'),'معدات');assert.equal(u.searchParams.get('code10'),'0101000000');assert.equal(u.searchParams.get('offset'),'1');assert.equal(u.searchParams.get('limit'),'1');
+});
+await scenario('Recherche mesures : fiche du code source sans doublons',async({w,host,appels,button,reponse})=>{
+ const l=host.querySelector('select');l.value='test-tarif';l.dispatchEvent(new w.Event('change'));host.querySelector('[data-measure-type]').value='restriction';
+ const r=mesuresRapport({}).resultat;r.resultats.push(r.resultats[0]);reponse(envelope(r));button('Rechercher dans les mesures').click();await tick();
+ assert.equal([...host.querySelectorAll('button')].filter(b=>b.textContent==='Fiche documentaire 0101000000').length,1);
+ button('Fiche documentaire 0101000000').click();await tick();assert.equal(new URL(appels.at(-1).url,'https://x').pathname,'/api/v1/customs-review/lots/test-tarif/tariff/0101000000');
+});
+await scenario('Recherche mesures : requête/filtre requis et code ASCII exact',async({w,host,appels,button})=>{
+ let n=appels.length;button('Rechercher dans les mesures').click();await tick();assert.equal(appels.length,n);
+ const l=host.querySelector('select');l.value='test-tarif';l.dispatchEvent(new w.Event('change'));button('Rechercher dans les mesures').click();await tick();assert.equal(appels.length,n);
+ host.querySelector('[data-measure-code]').value='٠١٠١٠٠٠٠٠٠';button('Rechercher dans les mesures').click();await tick();assert.equal(appels.length,n);
+});
+await scenario('Recherche mesures : action ancienne inerte sur Code',async({w,host,appels,button,reponse})=>{
+ const l=host.querySelector('select');l.value='test-tarif';l.dispatchEvent(new w.Event('change'));host.querySelector('[data-measure-type]').value='restriction';
+ reponse(mesuresRapport({}));button('Rechercher dans les mesures').click();await tick();const ancien=button('Page suivante des mesures trouvées'),n=appels.length;
+ l.value='test-code';l.dispatchEvent(new w.Event('change'));ancien.click();button('Rechercher dans les mesures').click();await tick();assert.equal(appels.length,n);assert.equal(host.querySelector('pre').textContent,'');
+});
+await scenario('Recherche mesures : audit indisponible sans ancien résultat',async({w,host,button,reponse})=>{
+ const l=host.querySelector('select');l.value='test-tarif';l.dispatchEvent(new w.Event('change'));host.querySelector('[data-measure-type]').value='restriction';
+ reponse(mesuresRapport({}));button('Rechercher dans les mesures').click();await tick();reponse({detail:{code:'audit_revue_indisponible'}},503);
+ button('Rechercher dans les mesures').click();await tick();assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-review-actions]').textContent,'');
+});
 console.log(compte+' scénarios UI réussis (contrats NON OFFICIELS isolés).');
 })().catch(e=>{console.error(e);process.exitCode=1;});

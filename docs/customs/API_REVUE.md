@@ -202,3 +202,10 @@ tarif 422 ; PDF refusé 409 ; audit indisponible 503.
 Deux lots tarifaires inscrits/épinglés, code10 exact, mesures indépendamment paginées,
 provenance double `archives.avant/apres`. Même autorisation/audit/no-store ; pas de
 fusion fiscale. [Contrat et limites](FICHES_TARIFAIRES_SEPAREES.md).
+
+### Recherche des descriptions de mesures (lot 32)
+
+`GET /lots/{lot_id}/measure-search?q=…&code10=…&measure_type=restriction&limit=20&offset=0`.
+Descriptions seulement, filtres exacts facultatifs (requête ou filtre requis).
+Lot tarifaire uniquement ; mêmes droits/empreinte/rejeu/audit/no-store.
+Pas de règle applicable ni calcul. [Contrat et limites](RECHERCHE_MESURES.md).

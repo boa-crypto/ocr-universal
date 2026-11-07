@@ -124,3 +124,5 @@ nationaux complets ne sont pas encore livrés.** L'ancien calcul avec taux
 hypothétiques est désactivé ; aucun taux de remplacement n'est supposé.
 Voir [audit et blocages documentaires](docs/customs/AUDIT_INITIAL.md) et
 [rapport de recette partielle](docs/customs/RAPPORT_AVANCEMENT.md).
+
+Recherche documentaire des descriptions de mesures (lot 32, non applicable au calcul) : [guide](docs/customs/RECHERCHE_MESURES.md), [rapport](docs/customs/RAPPORT_LOT32.md).
