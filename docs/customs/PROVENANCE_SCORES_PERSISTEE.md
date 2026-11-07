@@ -1,5 +1,7 @@
 # Provenance des scores Baidu dans les résultats — lot 67
 
+> Complément au lot 68 : [affichage dans le panneau moteurs](AFFICHAGE_PROVENANCE_SCORES.md). Les mentions d’absence de nouvelle UI ci-dessous décrivent le périmètre du lot 67.
+
 7 novembre 2026. Complète la [politique du lot 66](SCORES_BAIDU_SANS_VALEUR_INVENTEE.md), sans changer les scores.
 
 ## Champ facultatif par exécution

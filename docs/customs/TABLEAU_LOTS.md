@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État au 7 novembre 2026 après le lot 67. **Terminé = périmètre technique livré et
+État au 7 novembre 2026 après le lot 68. **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -71,7 +71,8 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 64 | PDFium sérialisé, fermeture native et dépôts concurrents testés | Terminé, local et CI ciblée | Pas garantie zéro crash/charge ; 2 échecs Indra ; intégrité 26/27, données partagées préservées |
 | 65 | Diagnostics Baidu privés, réponses bornées, TLS et refus des redirections | Terminé, doubles HTTP et CI ciblée | Pas appel fournisseur ; secrets query résiduels ; 2 échecs Indra, intégrité 26/27 |
 | 66 | Suppression du score Baidu inventé, repli zéro et contrôle qualité | Terminé, doubles HTTP et CI ciblée | Zéro non mesuré ; provenance raw non persistée à ce lot (complétée au 67) ; Indra absent, intégrité 26/27 |
-| 67 | Provenance Baidu typée conservée dans les runs, API et export JSON | Terminé, stockage/API temporaires et CI ciblée | Compteurs par run, pas statut par mot/UI/migration ; Indra absent, intégrité 26/27 |
+| 67 | Provenance Baidu typée conservée dans les runs, API et export JSON | Terminé, stockage/API temporaires et CI ciblée | Compteurs par run, pas statut par mot/migration ; UI ajoutée au 68 ; Indra absent, intégrité 26/27 |
+| 68 | Provenance affichée par run, moteur unique et historiques non requalifiés | Terminé, 47 scénarios JSDOM/2 tests Python et CI ciblée | Pas navigateur réel/calibration/recalcul historique ; Indra absent, intégrité 26/27 |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
 `RAPPORT_LOT61.md`. Les limites historiques des rapports précédents sont à lire
@@ -98,7 +99,7 @@ mais pas une validation des transcriptions.
 
 ## Bilan
 
-67 lots techniques livrés ; dernière sélection : **2 160 tests Python / 212 scénarios
+68 lots techniques livrés ; dernière sélection : **2 160 tests Python / 212 scénarios
 JSDOM réussis**. Ce n’est ni la totalité de la suite OCR ni une recette nationale.
 Données historiques conservées. **0 nouvel original officiel acquis, 0 article/code
 national officiellement validé, 0 publication active ; mission globale partielle.**
@@ -106,10 +107,10 @@ Aucun pourcentage de complétude réglementaire ou de progression globale n’es
 du nombre de lots. Références non vérifiées interdites pour calcul douanier réel.
 
 Réception technique : [bilan des dix phases](BILAN_RECEPTION.md),
-[recette complète actuelle du lot 67](RECETTE_LOT67.json) : **3 386 réussis,
+[recette complète actuelle du lot 68](RECETTE_LOT68.json) : **3 388 réussis,
 2 échecs OCR, 1 ignoré, 1 avertissement**. **26/27 empreintes historiques conformes** ;
 référentiels et quatre dossiers partagés modifiés sont préservés hors commit,
-voir [rapport 67](RAPPORT_LOT67.md) ; ne pas confondre avec la sélection
+voir [rapport 68](RAPPORT_LOT68.md) ; ne pas confondre avec la sélection
 verte. Recettes historiques : [45](RECETTE_FINALE.json), [50](RECETTE_LOT50.json), [55](RECETTE_LOT55.json).
 
 Lot 57 : [lanceur local/CI](LANCEUR_RECETTE_CIBLEE.md) et

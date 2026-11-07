@@ -7,7 +7,23 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 67
+## État actuel — lot 68
+
+[Provenance visible dans le panneau moteurs](AFFICHAGE_PROVENANCE_SCORES.md) :
+exécutions séparées, même avec un seul moteur, compteurs Baidu cohérents affichés
+et provenance historique/invalide signalée indisponible, sans requalification.
+**2 nouveaux tests Python / 47 scénarios JSDOM**, sélection UI/Baidu **143 réussis**.
+Témoin ancien renderer : intégration moteur unique échoue comme attendu après
+45 contrôles préalables. Documentaire **2 160 Python / 212 JSDOM historiques**.
+Complète : **3 388 réussis, 2 échecs Indra, 1 ignoré Indra, 1 avertissement,
+362,00 s**. [CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42402144812),
+pas suite OCR complète en CI. **26/27 empreintes historiques conformes**, même
+écart partagé et données/journaux préservés hors commit. Pas fournisseur réel,
+calibration, navigateur réel, correction géométrique ou recalcul historique des
+jauges de qualité. [Rapport](RAPPORT_LOT68.md), [recette actuelle](RECETTE_LOT68.json).
+Mission réglementaire inchangée, partielle et non recevable pour production fiscale.
+
+## Complément historique — lot 67
 
 [Provenance des scores persistée](PROVENANCE_SCORES_PERSISTEE.md) : compteurs
 Baidu typés, associés au run et conservés dans résultat/API/export JSON ; pas

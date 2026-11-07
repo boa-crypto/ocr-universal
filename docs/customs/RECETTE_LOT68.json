@@ -1,0 +1,125 @@
+{
+  "type_rapport": "recette_lot68_technique_non_validation_reglementaire",
+  "date": "2026-11-07",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "revision_code": "aaeebd4015fed63faa84f1e706cb91651dcc390e",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_originaux_officiels": 0,
+  "articles_codes_officiellement_valides": 0,
+  "nouveaux_tests_python": 2,
+  "nouveaux_scenarios_jsdom_provenance": 47,
+  "selection_ui_baidu": {
+    "reussis": 143,
+    "echecs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 44.02,
+    "duree_junit_secondes": 44.021,
+    "baidu_provenance_existants": 133,
+    "ui_existants": 8,
+    "nouveaux_python_ui": 2,
+    "fournisseur_hors_reseau": true
+  },
+  "contre_epreuve_renderer67": {
+    "revision_renderer_charge": "23377b86269ed5c2a7d65ca12070a400b322736a",
+    "temoin_hybride_html_module68_renderer67": true,
+    "scenarios_precedant_echec_integration": 45,
+    "echec_integration_attendu_observe": true,
+    "code_sortie": 1,
+    "checkout_sources_non_remplacees": true
+  },
+  "affichage": {
+    "panneau": "moteurs du resultat existant",
+    "moteur_unique_visible": true,
+    "compteurs_baidu_par_run": true,
+    "provenance_incoherente_ou_historique": "indisponible, aucun compteur deduit",
+    "pas_agregation_variantes": true,
+    "pas_classement_mesure": true,
+    "moyenne_pourcentage_entier_arrondi": true,
+    "ancien_095_non_requalifie": true,
+    "metadonnees_invalides_non_reaffichees": true,
+    "module_absent_message_explicite": true,
+    "nouveau_rendu_efface_ancien": true,
+    "service_worker": "unocr-shell-v71-engine-provenance",
+    "api_non_cachee": true,
+    "migration_historique": false,
+    "validation_humaine_scores_qualite_inchanges": true,
+    "calibration_mesuree": false
+  },
+  "harnais": {
+    "modules_complets_telecharges_http": true,
+    "rendu_resultat_complet_execute": true,
+    "donnees_provenance_injectees_synthetiques": true,
+    "baidu_reel_execute": false,
+    "navigateurs_reels_qualifies": false,
+    "cycle_offline_qualifie": false
+  },
+  "recette_documentaire_ciblee": {
+    "fichiers": 66,
+    "reussis": 2160,
+    "echecs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_secondes": 58.81,
+    "jsdom_documentaires_existants": 212,
+    "exports_existants": 74
+  },
+  "suite_complete": {
+    "tests": 3391,
+    "reussis": 3388,
+    "echecs": 2,
+    "ignores": 1,
+    "avertissements": 1,
+    "duree_console_secondes": 362.0,
+    "duree_junit_secondes": 361.923,
+    "code_sortie": 1,
+    "identifiants_echecs": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ],
+    "identiques_lot67": true,
+    "ignores_detail": [
+      "tests.test_indra_ocr::test_indra_engine_recognize"
+    ],
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 3391,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 1
+    }
+  },
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "restauration_effectuee": false,
+    "ecart_referentiels_identique_lots64_67": true,
+    "referentiels": {
+      "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+      "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d",
+      "conforme": false
+    },
+    "donnees_partagees_preservees_hors_commit": true
+  },
+  "ci": {
+    "run": 42402144812,
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42402144812",
+    "statut": "success",
+    "revision": "aaeebd4015fed63faa84f1e706cb91651dcc390e",
+    "portee": "133 Baidu/provenance + 24 ingestion/PDF + 10 UI + documentaire",
+    "ocr_complet_execute_en_ci": false,
+    "junit_distant_telecharge": false
+  },
+  "artefacts_locaux": "/home/user/recettes-unocr/lot68",
+  "limites": [
+    "Compteurs par run, pas statut par mot ou signature fournisseur",
+    "Aucun appel Baidu reel ou qualification FR/AR",
+    "Pas navigateur reel, accessibilite visuelle, charge ou cycle offline qualifie",
+    "Geometrie Baidu et risques OAuth query inchanges",
+    "Pas migration ou requalification des jauges historiques",
+    "Indra absent ; integrite historique 26/27, donnees partagees conservees"
+  ]
+}
