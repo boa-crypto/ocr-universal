@@ -351,6 +351,7 @@ class BaiduOCREngine(OCREngine):
         import os
 
         from .baidu_http import MAX_TOKEN_CHARS, MAX_WORDS, OCR_URL, TOKEN_URL, post_json
+        from .baidu_response import confidence_from_item
 
         api_key = os.environ.get("BAIDU_OCR_API_KEY") or os.environ.get("BAIDU_API_KEY")
         secret_key = os.environ.get("BAIDU_OCR_SECRET_KEY") or os.environ.get("BAIDU_SECRET_KEY")
@@ -389,6 +390,7 @@ class BaiduOCREngine(OCREngine):
                                     error="Baidu : réponse de reconnaissance invalide")
 
             words: list[Word] = []
+            score_counts = {"reported": 0, "missing": 0, "invalid": 0}
             for item in words_result:
                 if not isinstance(item, dict) or not isinstance(item.get("words"), str):
                     return EngineOutput(engine=self.name, text="", ok=False,
@@ -404,21 +406,25 @@ class BaiduOCREngine(OCREngine):
                 else:
                     bbox = BBox(x0=0, y0=0, x1=float(image.width), y1=float(image.height))
 
+                confidence, score_source = confidence_from_item(item)
+                score_counts[score_source] += 1
                 words.append(Word(
                     text=txt,
                     bbox=bbox,
-                    confidence=0.95,
+                    confidence=confidence,
                     engine=self.name,
                     page_num=page_num
                 ))
 
             text = "\n".join(w.text for w in words)
-            mean = 0.95 if words else 0.0
+            mean = sum(w.confidence for w in words) / len(words) if words else 0.0
 
             return EngineOutput(
                 engine=self.name, text=text, words=words,
                 mean_confidence=mean, languages=languages or [],
-                duration_ms=(time.perf_counter() - t0) * 1000
+                duration_ms=(time.perf_counter() - t0) * 1000,
+                raw={"confidence": {"policy": "provider_average_else_zero",
+                                    "calibrated": False, **score_counts}},
             )
         except Exception:
             # URL, identifiants, jeton, corps distant et exception ne sortent pas.
