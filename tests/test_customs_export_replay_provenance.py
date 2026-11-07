@@ -64,7 +64,7 @@ def test_refus_matrice_ou_parametres_avant_archive(fiscal,type_lot,route):
              'requete_relative':BASE+'/lots/TEST/'+route,'resultat':{'archive':{'manifest_sha256':'a'*64}}}
     fichier = cfg.root/'refus_provenance.json'
     fichier.write_text(json.dumps(objet))
-    with pytest.raises(ExportRefuse,match='Route|Paramètre|Requête|Encodage|Numéro|ID|Deux'):
+    with pytest.raises(ExportRefuse,match='Route|Paramètre|Requête|Encodage|Numéro|ID|Deux|Rejeu PDF'):
         verifier_rejeu_export(fichier,racine/'ABSENT','TEST',type_lot)
 
 

@@ -67,7 +67,7 @@ def test_hors_contrat_avant_archive(fiscal,type_lot,route):
              'resultat':{'archive':{'manifest_sha256':'a'*64}}}
     fichier = cfg.root/'export_refuse.json'
     fichier.write_text(json.dumps(objet))
-    with pytest.raises(ExportRefuse,match='Route|Paramètre|Requête|Pagination|ID article'):
+    with pytest.raises(ExportRefuse,match='Route|Paramètre|Requête|Pagination|ID article|Rejeu PDF'):
         verifier_rejeu_export(fichier,racine/'ARCHIVE_ABSENTE','TEST',type_lot)
 
 

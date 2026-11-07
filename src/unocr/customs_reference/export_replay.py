@@ -89,13 +89,15 @@ def verifier_rejeu_criteres(chemin_export: Path, repertoire: Path, lot_id: str) 
     return _verifier_rejeu(chemin_export,repertoire,lot_id)
 
 
-def verifier_rejeu_export(chemin_export: Path, repertoire: Path, lot_id: str, type_lot: str) -> dict:
+def verifier_rejeu_export(chemin_export: Path, repertoire: Path, lot_id: str, type_lot: str, *, autoriser_pdf: bool = False) -> dict:
     """Rejeu typé des seules lectures explicitement prises en charge."""
     if not isinstance(type_lot,str) or type_lot not in {"code","tarif","mesures"}:
         raise ExportRefuse("Type explicite code, tarif ou mesures requis")
+    if type(autoriser_pdf) is not bool:
+        raise ExportRefuse("Autorisation PDF booléenne explicite requise")
     from .export_replay_routes import preparer_rejeu
 
     resultat = _verifier_rejeu(chemin_export,repertoire,lot_id,
-                              lambda requete,identite: preparer_rejeu(requete,identite,type_lot))
-    resultat.update(type_controle="rejeu_local_export_documentaire",type_lot_explicite=type_lot)
+                              lambda requete,identite: preparer_rejeu(requete,identite,type_lot,autoriser_pdf=autoriser_pdf))
+    resultat.update(type_controle="rejeu_local_export_documentaire",type_lot_explicite=type_lot,rejeu_pdf_autorise=autoriser_pdf)
     return resultat

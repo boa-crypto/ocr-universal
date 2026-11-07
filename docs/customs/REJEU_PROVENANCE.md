@@ -69,3 +69,9 @@ Pas signature, WORM, transaction filesystem, identité humaine, validité juridi
 ou protection contre modification concurrente après lecture. Même mémoire/rejeu
 complet et limites de charge que les services d'origine. Aucun corpus publié,
 calcul fiscal, classement IA, acquisition réseau ou changement du cache v69.
+
+## Extension lot 53
+
+[Rejeu PDF sur autorisation explicite](REJEU_EXPORTS_PDF.md) : cinq routes PDF
+natives deviennent disponibles uniquement avec `--allow-pdf` (défaut refus). Les
+copies binaires et comparaisons multi-archives restent hors périmètre.

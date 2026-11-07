@@ -7,7 +7,15 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## Complément actuel — lot 52
+## Complément actuel — lot 53
+
+[Rejeu natif PDF sur opt-in local](REJEU_EXPORTS_PDF.md), désactivé par défaut,
+sans OCR ou droit juridique/fiscal déduit. Sélection : **1 958 tests Python**,
+**186 scénarios JSDOM** réussis ; **58 exports réels UI/API rejoués identiquement,
+dont 14 PDF**. Interface et droits HTTP inchangés. Dernière suite complète : lot 50,
+avec ses 18 échecs OCR toujours non résolus.
+
+## Complément — lot 52
 
 [Rejeu de provenance et relations déclarées](REJEU_PROVENANCE.md) : contrôles,
 sources, couverture, historique, relations, écarts du même lot et navigations,

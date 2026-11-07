@@ -411,6 +411,7 @@ def main(argv=None) -> int:
     vr.add_argument("--lot", required=True)
     vr.add_argument("--lot-id", required=True)
     vr.add_argument("--type-lot", choices=("tarif","code","mesures"), default="tarif")
+    vr.add_argument("--allow-pdf", action="store_true", help="autoriser explicitement le rejeu de lectures natives PDF bornées")
     vr.set_defaults(func=cmd_customs_review_export_replay)
 
     ve = sub.add_parser("customs-review-export-check", help="contrôler hors ligne la structure d'un export, sans authentification")
@@ -478,7 +479,7 @@ def cmd_customs_review_export_replay(args) -> int:
 
     constats = []
     def operation(fichier, lot):
-        constat = verifier_rejeu_export(fichier, lot, args.lot_id, args.type_lot)
+        constat = verifier_rejeu_export(fichier, lot, args.lot_id, args.type_lot, autoriser_pdf=args.allow_pdf)
         constats.append(constat)
         return constat
     code = _afficher_lecture_douaniere(operation, args.file, args.lot)
