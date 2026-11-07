@@ -5,6 +5,13 @@ import re
 from pathlib import Path
 from urllib.parse import parse_qsl, urlsplit
 
+from .replay_pins import (
+    constat_empreintes,
+    valider_empreinte,
+    verifier_manifeste,
+    verifier_manifeste_rejoue,
+    verifier_octets,
+)
 from .review_export import ExportRefuse, _lire_export, analyser_export
 from .tariff_criteria import CRITERES, rechercher_tarif_criteres
 
@@ -43,10 +50,14 @@ def _canonique(objet):
     return json.dumps(objet,ensure_ascii=False,sort_keys=True,separators=(",",":"),allow_nan=False).encode("utf-8")
 
 
-def _verifier_rejeu(chemin_export: Path, repertoire: Path, lot_id: str, preparer=None) -> dict:
+def _verifier_rejeu(chemin_export: Path, repertoire: Path, lot_id: str, preparer=None, *,
+                    sha256_export_attendu=None, manifest_sha256_attendu=None) -> dict:
     if not isinstance(lot_id,str) or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,63}",lot_id) is None:
         raise ExportRefuse("Identité locale de lot explicite requise")
+    valider_empreinte(sha256_export_attendu)
+    valider_empreinte(manifest_sha256_attendu)
     contenu = _lire_export(chemin_export)
+    verifier_octets(contenu,sha256_export_attendu)
     controle = analyser_export(contenu)
     # Un seul fichier lu ; le contenu déjà contrôlé (doublons, bornes et Unicode)
     # est reparsé sans rouvrir le chemin. Aucun paramètre n'est un chemin local.
@@ -57,11 +68,15 @@ def _verifier_rejeu(chemin_export: Path, repertoire: Path, lot_id: str, preparer
             return rechercher_tarif_criteres(p,**params)
     else:
         operation = preparer(objet["requete_relative"],lot_id)
+    verifier_manifeste(repertoire,manifest_sha256_attendu)
     try:
         reproduit = operation(repertoire)
     except (OSError, ValueError, KeyError, TypeError, RecursionError):
         raise ExportRefuse("Archive fournie ou paramètres de recherche incompatibles") from None
-    return _constat_rejeu(controle,objet["resultat"],reproduit)
+    verifier_manifeste_rejoue(reproduit["archive"]["manifest_sha256"],manifest_sha256_attendu)
+    resultat = _constat_rejeu(controle,objet["resultat"],reproduit)
+    resultat["empreintes_attendues"] = constat_empreintes(sha256_export_attendu,{"unique":manifest_sha256_attendu})
+    return resultat
 
 
 def _constat_rejeu(controle,exporte,reproduit):
@@ -95,12 +110,15 @@ def _constat_rejeu(controle,exporte,reproduit):
             "Contrôle en lecture seule, pas transaction filesystem ni garantie contre mutation concurrente après lecture."]}
 
 
-def verifier_rejeu_criteres(chemin_export: Path, repertoire: Path, lot_id: str) -> dict:
+def verifier_rejeu_criteres(chemin_export: Path, repertoire: Path, lot_id: str, *,
+                           sha256_export_attendu=None, manifest_sha256_attendu=None) -> dict:
     """Contrat lot 50 conservé : critères tarifaires uniquement."""
-    return _verifier_rejeu(chemin_export,repertoire,lot_id)
+    return _verifier_rejeu(chemin_export,repertoire,lot_id,sha256_export_attendu=sha256_export_attendu,
+                          manifest_sha256_attendu=manifest_sha256_attendu)
 
 
-def verifier_rejeu_export(chemin_export: Path, repertoire: Path, lot_id: str, type_lot: str, *, autoriser_pdf: bool = False) -> dict:
+def verifier_rejeu_export(chemin_export: Path, repertoire: Path, lot_id: str, type_lot: str, *, autoriser_pdf: bool = False,
+                          sha256_export_attendu=None, manifest_sha256_attendu=None) -> dict:
     """Rejeu typé des seules lectures explicitement prises en charge."""
     if not isinstance(type_lot,str) or type_lot not in {"code","tarif","mesures"}:
         raise ExportRefuse("Type explicite code, tarif ou mesures requis")
@@ -109,6 +127,7 @@ def verifier_rejeu_export(chemin_export: Path, repertoire: Path, lot_id: str, ty
     from .export_replay_routes import preparer_rejeu
 
     resultat = _verifier_rejeu(chemin_export,repertoire,lot_id,
-                              lambda requete,identite: preparer_rejeu(requete,identite,type_lot,autoriser_pdf=autoriser_pdf))
+                              lambda requete,identite: preparer_rejeu(requete,identite,type_lot,autoriser_pdf=autoriser_pdf),
+                              sha256_export_attendu=sha256_export_attendu,manifest_sha256_attendu=manifest_sha256_attendu)
     resultat.update(type_controle="rejeu_local_export_documentaire",type_lot_explicite=type_lot,rejeu_pdf_autorise=autoriser_pdf)
     return resultat

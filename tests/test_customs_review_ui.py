@@ -147,7 +147,12 @@ def test_interface_revue_sur_api_reelle(revue,format_mesures):
                 tb,db = correspondances[ib]
                 fichier_paire = cfg.root / "export_paire_ui.json"
                 fichier_paire.write_text(texte,encoding="utf-8")
-                assert verifier_rejeu_paire(fichier_paire,racine/da,racine/db,ia,ib,ta,tb)["rapport_identique"] is True
+                r_paire = verifier_rejeu_paire(fichier_paire,racine/da,racine/db,ia,ib,ta,tb,
+                    sha256_export_attendu=hashlib.sha256(fichier_paire.read_bytes()).hexdigest(),
+                    manifest_avant_attendu=hashlib.sha256((racine/da/"manifest.json").read_bytes()).hexdigest(),
+                    manifest_apres_attendu=hashlib.sha256((racine/db/"manifest.json").read_bytes()).hexdigest())
+                assert r_paire["rapport_identique"] is True
+                assert r_paire["empreintes_attendues"]["nombre_empreintes_verifiees"] == 3
                 rejeux_paires += 1
             morceaux = objet["requete_relative"].split("?",1)[0].split("/")
             route = "/".join(morceaux[6:])
@@ -158,7 +163,10 @@ def test_interface_revue_sur_api_reelle(revue,format_mesures):
                 fichier_type = cfg.root / "export_type_ui.json"
                 fichier_type.write_text(texte,encoding="utf-8")
                 autoriser_pdf = route in {"pdf","article-pdf-match","relation-pdf-match","fiscal-pdf","measure-pdf-match"}
-                r_rejeu = verifier_rejeu_export(fichier_type,racine / dossier,identite,type_rejeu,autoriser_pdf=autoriser_pdf)
+                r_rejeu = verifier_rejeu_export(fichier_type,racine / dossier,identite,type_rejeu,autoriser_pdf=autoriser_pdf,
+                    sha256_export_attendu=hashlib.sha256(fichier_type.read_bytes()).hexdigest(),
+                    manifest_sha256_attendu=hashlib.sha256((racine/dossier/"manifest.json").read_bytes()).hexdigest())
+                assert r_rejeu["empreintes_attendues"]["nombre_empreintes_verifiees"] == 2
                 assert r_rejeu["rapport_identique"] is True
                 assert r_rejeu["rejeu_pdf_autorise"] is autoriser_pdf
                 rejeux_pdf += int(autoriser_pdf)

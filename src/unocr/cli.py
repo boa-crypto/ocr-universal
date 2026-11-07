@@ -412,6 +412,9 @@ def main(argv=None) -> int:
         vp.add_argument("--"+cote+"-lot", required=True)
         vp.add_argument("--"+cote+"-id", required=True)
         vp.add_argument("--"+cote+"-type", required=True, choices=("code","tarif","mesures"))
+    vp.add_argument("--expected-export-sha256")
+    vp.add_argument("--expected-before-manifest-sha256")
+    vp.add_argument("--expected-after-manifest-sha256")
     vp.set_defaults(func=cmd_customs_review_export_replay_pair)
 
     vr = sub.add_parser("customs-review-export-replay", help="rejouer un export documentaire pris en charge contre une archive explicite, sans authentification")
@@ -420,6 +423,8 @@ def main(argv=None) -> int:
     vr.add_argument("--lot-id", required=True)
     vr.add_argument("--type-lot", choices=("tarif","code","mesures"), default="tarif")
     vr.add_argument("--allow-pdf", action="store_true", help="autoriser explicitement le rejeu de lectures natives PDF bornées")
+    vr.add_argument("--expected-export-sha256")
+    vr.add_argument("--expected-manifest-sha256")
     vr.set_defaults(func=cmd_customs_review_export_replay)
 
     ve = sub.add_parser("customs-review-export-check", help="contrôler hors ligne la structure d'un export, sans authentification")
@@ -487,7 +492,9 @@ def cmd_customs_review_export_replay_pair(args) -> int:
 
     constats = []
     def operation(fichier, avant, apres):
-        resultat = verifier_rejeu_paire(fichier,avant,apres,args.before_id,args.after_id,args.before_type,args.after_type)
+        resultat = verifier_rejeu_paire(fichier,avant,apres,args.before_id,args.after_id,args.before_type,args.after_type,
+            sha256_export_attendu=args.expected_export_sha256,manifest_avant_attendu=args.expected_before_manifest_sha256,
+            manifest_apres_attendu=args.expected_after_manifest_sha256)
         constats.append(resultat)
         return resultat
     code = _afficher_lecture_douaniere(operation,args.file,args.before_lot,args.after_lot)
@@ -501,7 +508,8 @@ def cmd_customs_review_export_replay(args) -> int:
 
     constats = []
     def operation(fichier, lot):
-        constat = verifier_rejeu_export(fichier, lot, args.lot_id, args.type_lot, autoriser_pdf=args.allow_pdf)
+        constat = verifier_rejeu_export(fichier, lot, args.lot_id, args.type_lot, autoriser_pdf=args.allow_pdf,
+            sha256_export_attendu=args.expected_export_sha256,manifest_sha256_attendu=args.expected_manifest_sha256)
         constats.append(constat)
         return constat
     code = _afficher_lecture_douaniere(operation, args.file, args.lot)

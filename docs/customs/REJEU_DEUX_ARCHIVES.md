@@ -74,3 +74,8 @@ Chargement/rejeu complet des deux lots et comparaison en mémoire, pas mémoire
 constante, streaming, qualification de charge nationale ou transaction multi-dossiers.
 Aucune garantie contre modification concurrente après lecture, aucune publication.
 L'interface et le cache v69 sont inchangés.
+
+## Complément lot 55
+
+[Empreintes attendues](EMPREINTES_ATTENDUES_REJEU.md) facultatives pour export et
+chaque manifeste, fournies séparément. Leur égalité ne certifie pas leur origine.

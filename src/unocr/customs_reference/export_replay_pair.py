@@ -8,13 +8,21 @@ from .article_diff import comparer_versions_article
 from .comparison import comparer_lots
 from .export_replay import _constat_rejeu, _parametres_export
 from .legal_comparison import comparer_lots_code
+from .replay_pins import (
+    constat_empreintes,
+    valider_empreinte,
+    verifier_manifeste,
+    verifier_manifeste_rejoue,
+    verifier_octets,
+)
 from .review_export import ExportRefuse, _lire_export, analyser_export
 from .tariff_measures import juxtaposer_tarif_mesures
 from .tariff_pair import juxtaposer_fiches_tarifaires
 
 
 def verifier_rejeu_paire(fichier: Path, avant: Path, apres: Path, avant_id: str, apres_id: str,
-                         type_avant: str, type_apres: str) -> dict:
+                         type_avant: str, type_apres: str, *, sha256_export_attendu=None,
+                         manifest_avant_attendu=None, manifest_apres_attendu=None) -> dict:
     for identite in (avant_id,apres_id):
         if not isinstance(identite,str) or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,63}",identite) is None:
             raise ExportRefuse("Deux identités explicites de lots requises")
@@ -23,7 +31,10 @@ def verifier_rejeu_paire(fichier: Path, avant: Path, apres: Path, avant_id: str,
             raise ExportRefuse("Deux types explicites de lots requis")
     if avant_id == apres_id and (avant != apres or type_avant != type_apres):
         raise ExportRefuse("Même identité associée à des dossiers ou types différents")
+    for reference in (sha256_export_attendu,manifest_avant_attendu,manifest_apres_attendu):
+        valider_empreinte(reference)
     contenu = _lire_export(fichier)
+    verifier_octets(contenu,sha256_export_attendu)
     controle = analyser_export(contenu)
     objet = json.loads(contenu)
     route = urlsplit(objet["requete_relative"]).path
@@ -57,6 +68,8 @@ def verifier_rejeu_paire(fichier: Path, avant: Path, apres: Path, avant_id: str,
             raise ExportRefuse("Deux IDs article explicites requis")
         if "field" in params:
             params["champ"] = params.pop("field")
+    verifier_manifeste(avant,manifest_avant_attendu)
+    verifier_manifeste(apres,manifest_apres_attendu)
     try:
         if nom == "diff":
             reproduit = (comparer_lots_code if type_avant == "code" else comparer_lots)(avant,apres)
@@ -70,6 +83,9 @@ def verifier_rejeu_paire(fichier: Path, avant: Path, apres: Path, avant_id: str,
         raise ExportRefuse("Archives ou paramètres de comparaison incompatibles") from None
     if nom != "diff":
         reproduit["lots_exacts"] = dict(zip(roles,(avant_id,apres_id)))
+    verifier_manifeste_rejoue(reproduit["archives"]["avant"]["manifest_sha256"],manifest_avant_attendu)
+    verifier_manifeste_rejoue(reproduit["archives"]["apres"]["manifest_sha256"],manifest_apres_attendu)
     r = _constat_rejeu(controle,objet["resultat"],reproduit)
+    r["empreintes_attendues"] = constat_empreintes(sha256_export_attendu,{"avant":manifest_avant_attendu,"apres":manifest_apres_attendu})
     r.update(type_controle="rejeu_local_export_deux_archives",types_lots_explicites={"avant":type_avant,"apres":type_apres})
     return r

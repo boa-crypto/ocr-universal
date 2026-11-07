@@ -7,7 +7,18 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## Complément actuel — lot 54
+## État actuel — lot 55
+
+[Références d’empreintes fournies séparément](EMPREINTES_ATTENDUES_REJEU.md) pour
+exports et manifestes : préconditions de rejeu, pas authenticité des références.
+Sélection : **2 016 tests Python et 186 scénarios JSDOM** réussis ; 70 exports des
+parcours UI/API rejoués avec épingles de test. **Nouvelle suite complète : 3 048
+réussis, 18 échecs, 11 ignorés, 1 avertissement, 206,23 s**. Mêmes 18 identifiants
+d’échec qu’au lot 50 ; aucun échec OCR annoncé résolu.
+[Détail machine actuel](RECETTE_LOT55.json), [rapport](RAPPORT_LOT55.md).
+Les recettes complètes 45 et 50 ci-dessous sont historiques. Mission partielle.
+
+## Complément — lot 54
 
 [Rejeu de comparaisons à deux archives](REJEU_DEUX_ARCHIVES.md), dossiers/IDs/types
 explicitement ordonnés, sans consolidation ou fusion fiscale. Sélection : **1 989
@@ -41,7 +52,7 @@ identiquement. Pas authenticité, registre ou validation juridique attestés.
 La dernière suite complète demeure celle du lot 50 ci-dessous, non relancée
 intégralement pour cette extension.
 
-## Dernière recette complète — lot 50
+## Recette complète historique — lot 50
 
 [Rejeu local d'exports multicritères](REJEU_EXPORT_CRITERES.md) ajouté contre une
 archive fournie explicitement : comparaison complète du résultat, sans authenticité,
