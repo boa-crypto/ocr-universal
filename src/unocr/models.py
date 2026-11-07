@@ -863,7 +863,7 @@ class ExtractionOCR(BaseModel):
     classification: Optional[dict[str, Any]] = None
     confiance_globale: float = 0.0
     statut: str = "extracted"  # extracted, validated, corrected
-    cree_le: str = Field(default_factory=time.strftime("%Y-%m-%d %H:%M:%S"))
+    cree_le: str = Field(default_factory=lambda: time.strftime("%Y-%m-%d %H:%M:%S"))
     modifie_le: Optional[str] = None
 
 
@@ -882,7 +882,7 @@ class ChampExtrait(BaseModel):
     bbox: Optional[BBox] = None
     statut: str = "detected"  # detected, validated, corrected, rejected
     anomalies: list[str] = Field(default_factory=list)
-    cree_le: str = Field(default_factory=time.strftime("%Y-%m-%d %H:%M:%S"))
+    cree_le: str = Field(default_factory=lambda: time.strftime("%Y-%m-%d %H:%M:%S"))
 
 
 class AnomalieDocumentaire(BaseModel):

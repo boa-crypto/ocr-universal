@@ -213,7 +213,8 @@ class OCRTransitIntegration:
         self.types_store = data_dir / "document_types"
         self.types_store.mkdir(parents=True, exist_ok=True)
 
-    def process_job_result(self, job_id: str, dossier_id: str, document_type: str) -> Optional[ExtractionOCR]:
+    def process_job_result(self, job_id: str, dossier_id: str, document_type: str,
+                           *, result_json: Optional[dict] = None) -> Optional[ExtractionOCR]:
         """
         Traite le résultat d'un job OCR et crée l'extraction structurée.
 
@@ -228,8 +229,9 @@ class OCRTransitIntegration:
         from .models import DocumentResult
         from .storage import JobStore
 
-        job_store = JobStore(cfg)
-        result_json = job_store.load_result(job_id)
+        if result_json is None:
+            job_store = JobStore(cfg)
+            result_json = job_store.load_result(job_id)
         if not result_json:
             log.warning("Aucun résultat OCR pour job %s", job_id)
             return None
