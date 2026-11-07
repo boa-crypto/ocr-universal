@@ -8,7 +8,7 @@ from .models import Mesure, SourceDocument, StrictModel
 
 
 class SourceMesuresDocumentaires(SourceDocument):
-    format: Literal["json", "csv"]
+    format: Literal["json", "csv", "xlsx"]
 
 
 # Alias conservé pour les utilisateurs Python du premier contrat (lot 36).
@@ -58,3 +58,5 @@ class MesuresAutonomesBatch(MetadataMesuresAutonomes):
 class ConfigurationMesuresAutonomes(MetadataMesuresAutonomes):
     colonnes: dict[str, str] | None = None
     delimiteur: str = ";"
+    feuille: str | None = None
+    ligne_entete: int = Field(default=1, strict=True, ge=1, le=50)

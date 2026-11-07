@@ -6,12 +6,16 @@ from .importer import ImportRefuse
 from .models import Mesure
 
 
-def lire_mesures_csv(original, configuration):
-    mapping = configuration.colonnes
+def verifier_mapping(mapping):
     requis = {"id", "code_tarifaire_10", "type_mesure", "description"}
     if (not mapping or not requis <= set(mapping) or set(mapping) - (set(Mesure.model_fields) - {"reference"})
             or len(mapping.values()) != len(set(mapping.values()))):
-        raise ImportRefuse("Mapping CSV de mesures explicite, complet, sans partage ou référence réservée requis")
+        raise ImportRefuse("Mapping de mesures explicite, complet, sans partage ou référence réservée requis")
+    return mapping
+
+
+def lire_mesures_csv(original, configuration):
+    mapping = verifier_mapping(configuration.colonnes)
     delimiteur = configuration.delimiteur
     if len(delimiteur) != 1 or delimiteur in {'"', '\r', '\n', '\x00', '\ufeff'}:
         raise ImportRefuse("Délimiteur CSV unique sûr requis")

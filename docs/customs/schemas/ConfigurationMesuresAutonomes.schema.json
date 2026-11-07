@@ -35,7 +35,8 @@
         "format": {
           "enum": [
             "json",
-            "csv"
+            "csv",
+            "xlsx"
           ],
           "title": "Format",
           "type": "string"
@@ -121,6 +122,25 @@
       "default": ";",
       "title": "Delimiteur",
       "type": "string"
+    },
+    "feuille": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Feuille"
+    },
+    "ligne_entete": {
+      "default": 1,
+      "maximum": 50,
+      "minimum": 1,
+      "title": "Ligne Entete",
+      "type": "integer"
     }
   },
   "required": [

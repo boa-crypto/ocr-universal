@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État au 7 novembre 2026 après le lot 39. **Terminé = périmètre technique livré et
+État au 7 novembre 2026 après le lot 40. **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -43,10 +43,11 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 36 | Préparation/rejeu JSON de mesures autonomes hors nomenclature | Terminé | CLI locale seulement, formats officiels/revue/rapprochement à qualifier |
 | 37 | Revue autorisée des lots de mesures autonomes, sources/recherche/couverture | Terminé | Pas de rapprochement fiscal ou qualification sur source officielle |
 | 38 | Consultation tarif + mesures autonomes, sources/paginations séparées | Terminé | Égalité de code seulement, pas rattachement juridique ou taux applicable |
-| 39 | CSV textuel de mesures autonomes, mapping explicite et rejeu | Terminé | Aucun fichier fiscal officiel qualifié, XLSX/PDF autonomes non pris en charge |
+| 39 | CSV textuel de mesures autonomes, mapping explicite et rejeu | Terminé | Aucun fichier fiscal officiel qualifié ; XLSX ajouté au lot 40 |
+| 40 | XLSX textuel autonome, feuille/mapping déclarés, cellules et archive contrôlées | Terminé | Aucun original fiscal officiel qualifié, pas de PDF autonome ou calcul |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
-`RAPPORT_LOT39.md`. Les limites historiques des rapports précédents sont à lire
+`RAPPORT_LOT40.md`. Les limites historiques des rapports précédents sont à lire
 avec les ajouts suivants ; par exemple le lot 27 ajoute un rapprochement littéral,
 mais pas une validation des transcriptions.
 
@@ -57,7 +58,7 @@ mais pas une validation des transcriptions.
 | StarterPack | Absent de l’audit | Retrouver/fournir puis inventorier |
 | Corpus officiel Code FR/AR | Non constitué intégralement | Originaux, modifications, rectificatifs, LF et textes d’application |
 | Tarif national officiel code10 | Export intégral non acquis | Acquisition, import exhaustif et rapprochement des compteurs/sources |
-| Fiscalité et mesures | Non validées ; préparation JSON/CSV, revue et consultation séparée disponibles | Acquisition/qualification des sources, revue et rapprochement multi-source |
+| Fiscalité et mesures | Non validées ; préparation JSON/CSV/XLSX, revue et consultation séparée disponibles | Acquisition/qualification des sources, revue et rapprochement multi-source |
 | Vérification documentaire | Lecture et rapprochement littéral disponibles | Contrôle humain complet de fidélité et provenance |
 | Consolidation/droit à date | Non implémentés | Versions, abrogations, effets et validation juridique |
 | Recherche métier avancée | Recherche littérale normalisée disponible | Synonymes, matière/fonction/usage et critères techniques traçables |
@@ -70,7 +71,7 @@ mais pas une validation des transcriptions.
 
 ## Bilan
 
-39 lots techniques livrés ; dernière sélection : **1 540 tests Python / 138 scénarios
+40 lots techniques livrés ; dernière sélection : **1 587 tests Python / 138 scénarios
 JSDOM réussis**. Ce n’est ni la totalité de la suite OCR ni une recette nationale.
 Données historiques conservées. **0 nouvel original officiel acquis, 0 article/code
 national officiellement validé, 0 publication active ; mission globale partielle.**

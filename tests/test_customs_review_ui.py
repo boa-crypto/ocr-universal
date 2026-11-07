@@ -13,6 +13,7 @@ from reportlab.pdfgen import canvas
 
 from tests import test_customs_review
 from tests.test_customs_fiscal_csv import fichiers as fichiers_mesures
+from tests.test_customs_fiscal_xlsx import fichiers as fichiers_mesures_xlsx
 from tests.test_customs_reference import snapshot
 from tests.test_customs_subdivisions import subdivisions
 from unocr.customs_reference.fiscal_importer import preparer_mesures_autonomes
@@ -23,7 +24,8 @@ from unocr.customs_reference.review_export import analyser_export
 revue = test_customs_review.revue
 
 
-def test_interface_revue_sur_api_reelle(revue):
+@pytest.mark.parametrize("format_mesures", ["csv", "xlsx"])
+def test_interface_revue_sur_api_reelle(revue,format_mesures):
     root = Path(__file__).resolve().parents[1]
     if not shutil.which("node") or not (root / "node_modules/jsdom").is_dir():
         pytest.skip("Node et npm ci nécessaires au test navigateur JSDOM")
@@ -78,7 +80,7 @@ def test_interface_revue_sur_api_reelle(revue):
     registre.write_text(json.dumps(reg))
     entrees_mesures = cfg.root / "mesures_ui"
     entrees_mesures.mkdir()
-    source_mesures,metadata_mesures = fichiers_mesures(entrees_mesures)
+    source_mesures,metadata_mesures = (fichiers_mesures if format_mesures == "csv" else fichiers_mesures_xlsx)(entrees_mesures)
     preparer_mesures_autonomes(source_mesures,metadata_mesures,racine / "mesures_ui")
     reg = json.loads(registre.read_text())
     reg["lots"].append({"id":"mesures_a","dossier":"mesures_ui","type_lot":"mesures",
@@ -106,7 +108,7 @@ def test_interface_revue_sur_api_reelle(revue):
     thread.start()
     try:
         resultat = subprocess.run(
-            ["node", "tests/ui_customs_review_integration.js", f"http://127.0.0.1:{serveur.server_port}"],
+            ["node", "tests/ui_customs_review_integration.js", f"http://127.0.0.1:{serveur.server_port}",format_mesures],
             cwd=root, capture_output=True, text=True, timeout=30,
         )
         assert resultat.returncode == 0, resultat.stdout + resultat.stderr

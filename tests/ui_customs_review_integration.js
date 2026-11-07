@@ -262,7 +262,7 @@ const {JSDOM} = require('jsdom');
   assert.equal(JSON.parse(host.querySelector('pre').textContent).mesures_importables,6);
   host.querySelector('[data-measure-query]').value='معدات';host.querySelector('[data-measure-code]').value='0000000001';host.querySelector('[data-measure-type]').value='';
   bouton('Rechercher dans les mesures').click();await attendre(()=>JSON.parse(host.querySelector('pre').textContent || '{}').type_recherche==='mesures_autonomes_documentaires');
-  const mesuresAutonomes=JSON.parse(host.querySelector('pre').textContent);assert.equal(mesuresAutonomes.source_declaree.format,'csv');assert.equal(mesuresAutonomes.resultats[0].mesure_declaree.reference.localisateur,'CSV, fin de ligne physique 3');assert.equal(mesuresAutonomes.total_correspondances,3);assert(mesuresAutonomes.resultats.every(r=>r.ligne_declaree===null));
+  const mesuresAutonomes=JSON.parse(host.querySelector('pre').textContent);assert.equal(mesuresAutonomes.source_declaree.format,process.argv[3]);assert.equal(mesuresAutonomes.resultats[0].mesure_declaree.reference.localisateur,process.argv[3]==='xlsx'?'XLSX, feuille Mesures déclarées, ligne 3':'CSV, fin de ligne physique 3');assert.equal(mesuresAutonomes.total_correspondances,3);assert(mesuresAutonomes.resultats.every(r=>r.ligne_declaree===null));
   assert.equal(mesuresAutonomes.resultats[0].mesure_declaree.taux,'1.230000000000000000000000001');assert(!bouton('Fiche documentaire'));
   exportBlob=null;bouton('Exporter ce rapport').click();await attendre(()=>!!exportBlob);
   const exportMesures=await new Promise((resolve,reject)=>{const r=new w.FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsText(exportBlob);});console.log('EXPORT_REEL_JSON='+JSON.stringify(JSON.parse(exportMesures)));

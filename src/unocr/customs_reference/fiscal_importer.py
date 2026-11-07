@@ -1,4 +1,4 @@
-"""Préparation/rejeu de mesures JSON/CSV autonomes, sans écrasement ou activation."""
+"""Préparation/rejeu de mesures JSON/CSV/XLSX autonomes, sans écrasement ou activation."""
 import hashlib
 import json
 import re
@@ -7,6 +7,7 @@ from pathlib import Path
 
 from .fiscal_csv import lire_mesures_csv
 from .fiscal_models import ConfigurationMesuresAutonomes, MesuresAutonomesBatch
+from .fiscal_xlsx import lire_mesures_xlsx
 from .importer import MAX_SOURCE, ImportRefuse, _json, _lire
 from .measure_search import TYPES_MESURES
 
@@ -20,7 +21,13 @@ def _analyser_mesures(original: bytes, metadata_original: bytes):
     sha = hashlib.sha256(original).hexdigest()
     if sha != meta.source.sha256:
         raise ImportRefuse("Empreinte de source de mesures différente de la déclaration")
-    if meta.source.format == "csv":
+    if meta.source.format != "xlsx" and {"feuille", "ligne_entete"} & set(brut_meta):
+        raise ImportRefuse("Options de feuille interdites hors XLSX")
+    if meta.source.format == "xlsx":
+        if "delimiteur" in brut_meta:
+            raise ImportRefuse("Délimiteur CSV interdit sur une source XLSX")
+        mesures,perimetre = lire_mesures_xlsx(original,meta)
+    elif meta.source.format == "csv":
         mesures,perimetre = lire_mesures_csv(original,meta)
     else:
         if {"colonnes", "delimiteur"} & set(brut_meta):
@@ -36,7 +43,7 @@ def _analyser_mesures(original: bytes, metadata_original: bytes):
             raise ImportRefuse("Chaque mesure doit être un objet JSON")
         if m.get("taux") is not None and not isinstance(m["taux"], str):
             raise ImportRefuse("Taux JSON : chaîne décimale exacte ou null requis, jamais nombre converti")
-    lot = MesuresAutonomesBatch.model_validate_json(json.dumps({**meta.model_dump(mode="json", exclude={"colonnes", "delimiteur"}), "mesures":mesures},
+    lot = MesuresAutonomesBatch.model_validate_json(json.dumps({**meta.model_dump(mode="json", exclude={"colonnes", "delimiteur", "feuille", "ligne_entete"}), "mesures":mesures},
                                                                ensure_ascii=False, allow_nan=False))
     rapport = {"type_lot":TYPE_LOT, "statut":"quarantaine", "publication_active":False,
         "validation_juridique":"non_validee", "validation_humaine":"requise",
@@ -55,7 +62,8 @@ def _analyser_mesures(original: bytes, metadata_original: bytes):
             "Taux inconnus distincts du zéro ; aucune mesure ne prouve ni exonération ni absence de restriction.",
             "Intégrité locale et rejeu ne prouvent ni authenticité, exhaustivité, portée juridique ou applicabilité.",
             "Format JSON strict seulement ; aucun CSV/XLSX/PDF autonome qualifié ici." if meta.source.format == "json" else
-            "Format CSV textuel à mapping explicite ; aucun XLSX/PDF autonome qualifié ici.",
+            "Format CSV textuel à mapping explicite ; aucun XLSX/PDF autonome qualifié ici." if meta.source.format == "csv" else
+            "Format XLSX textuel à feuille et mapping explicites ; aucun PDF autonome qualifié ici.",
         ], "ecrit":False}
     return lot,rapport
 
@@ -101,9 +109,9 @@ def charger_lot_mesures(repertoire: Path) -> tuple[MesuresAutonomesBatch,dict]:
     empreintes = m["fichiers_sha256"]
     if not isinstance(empreintes,dict):
         raise ImportRefuse("Table d'empreintes de mesures attendue")
-    sources = [nom for nom in empreintes if nom in {"source_mesures_recue.json", "source_mesures_recue.csv"}]
+    sources = [nom for nom in empreintes if nom in {"source_mesures_recue.json", "source_mesures_recue.csv", "source_mesures_recue.xlsx"}]
     if len(sources) != 1:
-        raise ImportRefuse("Une seule source JSON/CSV de mesures requise")
+        raise ImportRefuse("Une seule source JSON/CSV/XLSX de mesures requise")
     attendus = (FICHIERS - {"source_mesures_recue.json"}) | {sources[0]}
     if (set(empreintes) != attendus
             or {p.name for p in repertoire.iterdir()} != attendus | {"manifest.json"}):

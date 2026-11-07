@@ -140,7 +140,8 @@
         "format": {
           "enum": [
             "json",
-            "csv"
+            "csv",
+            "xlsx"
           ],
           "title": "Format",
           "type": "string"
