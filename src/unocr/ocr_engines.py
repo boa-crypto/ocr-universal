@@ -351,7 +351,7 @@ class BaiduOCREngine(OCREngine):
         import os
 
         from .baidu_http import MAX_TOKEN_CHARS, MAX_WORDS, OCR_URL, TOKEN_URL, post_json
-        from .baidu_response import confidence_from_item
+        from .baidu_response import InvalidLocation, bbox_from_location, confidence_from_item
 
         api_key = os.environ.get("BAIDU_OCR_API_KEY") or os.environ.get("BAIDU_API_KEY")
         secret_key = os.environ.get("BAIDU_OCR_SECRET_KEY") or os.environ.get("BAIDU_SECRET_KEY")
@@ -396,13 +396,12 @@ class BaiduOCREngine(OCREngine):
                     return EngineOutput(engine=self.name, text="", ok=False,
                                         error="Baidu : réponse de reconnaissance invalide")
                 txt = item["words"]
-                loc = item.get("location")
-                if loc:
-                    x0 = float(loc.get("left", 0))
-                    y0 = float(loc.get("top", 0))
-                    w = float(loc.get("width", 0))
-                    h = float(loc.get("height", 0))
-                    bbox = BBox(x0=x0, y0=y0, x1=x0+w, y1=y0+h)
+                if "location" in item:
+                    try:
+                        bbox = bbox_from_location(item["location"], image.width, image.height)
+                    except InvalidLocation:
+                        return EngineOutput(engine=self.name, text="", ok=False,
+                                            error="Baidu : localisation invalide")
                 else:
                     bbox = BBox(x0=0, y0=0, x1=float(image.width), y1=float(image.height))
 
