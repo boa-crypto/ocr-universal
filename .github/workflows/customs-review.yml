@@ -1,0 +1,39 @@
+name: Recette documentaire ciblee
+
+on:
+  push:
+    branches: [main, master, arena/2cd4c91a-ocr-universal]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  customs-review:
+    name: Selection documentaire et JSDOM (pas suite OCR complete)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - name: Installation stricte des dependances Python et Node
+        run: |
+          python -m pip install -e ".[dev]"
+          npm ci
+      - name: Recette ciblee avec donnees temporaires
+        run: python scripts/customs_review_recipe.py --artifacts "$RUNNER_TEMP/customs-review"
+      - name: Journaux, JUnit et bilan cible (meme en echec)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: customs-review-targeted-results
+          path: ${{ runner.temp }}/customs-review/
+          if-no-files-found: warn
