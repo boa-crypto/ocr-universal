@@ -104,6 +104,9 @@ class MagasinDossiers:
                          "manifest TEXT NOT NULL, version INTEGER NOT NULL, contenu TEXT NOT NULL)")
             conn.execute("CREATE TABLE IF NOT EXISTS versions (id TEXT NOT NULL, version INTEGER NOT NULL, "
                          "contenu TEXT NOT NULL, PRIMARY KEY(id,version))")
+            conn.execute("CREATE TABLE IF NOT EXISTS sorties_audit (id TEXT NOT NULL, version INTEGER NOT NULL, "
+                         "evenement TEXT NOT NULL, livre INTEGER NOT NULL DEFAULT 0 CHECK(livre IN(0,1)), "
+                         "PRIMARY KEY(id,version))")
         except Exception:
             conn.close()
             raise
@@ -153,6 +156,43 @@ class MagasinDossiers:
         finally:
             conn.close()
 
+    @staticmethod
+    def _sortie(document):
+        identite = [document["id"], document["version"], document["lot_id"], document["manifest_sha256"]]
+        return {"evenement_id": hashlib.sha256(_json(identite).encode()).hexdigest(),
+                "dossier_id":document["id"], "version":document["version"],
+                "lot_id":document["lot_id"], "manifest_sha256":document["manifest_sha256"],
+                "acteur":document["acteur"], "etat_dossier":document["statut"],
+                "sha256_contenu":hashlib.sha256(_json(document).encode()).hexdigest()}
+
+    def reconcilier_audit(self, dossier_id, lot_id, manifest, tracer):
+        # L'appelant HTTP doit déjà avoir revalidé habilitations et source.
+        self.lire(dossier_id,lot_id,manifest)
+        conn = self._connect()
+        try:
+            conn.execute("BEGIN IMMEDIATE")
+            # Migration paresseuse des versions94, sans réécriture de leur contenu.
+            for version, contenu in conn.execute("SELECT version,contenu FROM versions WHERE id=? ORDER BY version", (dossier_id,)):
+                trace = json.loads(contenu)
+                document, _ = self._verifier(_json(trace["dossier"]),contenu)
+                if (document["id"],document["lot_id"],document["manifest_sha256"],document["version"]) != (dossier_id,lot_id,manifest,version):
+                    raise DossierRefuse("Version d'audit incohérente")
+                attendu = _json(self._sortie(document))
+                conn.execute("INSERT OR IGNORE INTO sorties_audit(id,version,evenement) VALUES (?,?,?)",
+                             (dossier_id,version,attendu))
+                sortie = conn.execute("SELECT evenement,livre FROM sorties_audit WHERE id=? AND version=?", (dossier_id,version)).fetchone()
+                if sortie[0] != attendu:
+                    raise DossierRefuse("Sortie d'audit incohérente")
+                if not sortie[1]:
+                    tracer(**json.loads(sortie[0]))
+                    conn.execute("UPDATE sorties_audit SET livre=1 WHERE id=? AND version=?", (dossier_id,version))
+            conn.commit()
+        except Exception:
+            conn.rollback()
+            raise
+        finally:
+            conn.close()
+
     def enregistrer(self, dossier_id, lot_id, manifest, diagnostic, acteur, revision=None):
         conn = self._connect()
         try:
@@ -199,6 +239,8 @@ class MagasinDossiers:
                 raise DossierRefuse("Dossier trop volumineux")
             evenement = _json({"dossier": document, "sha256_contenu": hashlib.sha256(contenu.encode()).hexdigest()})
             conn.execute("INSERT INTO versions VALUES (?,?,?)", (dossier_id, version, evenement))
+            conn.execute("INSERT INTO sorties_audit(id,version,evenement) VALUES (?,?,?)",
+                         (dossier_id,version,_json(self._sortie(document))))
             conn.execute("INSERT INTO dossiers VALUES (?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET "
                          "version=excluded.version,contenu=excluded.contenu", (dossier_id,lot_id,manifest,version,contenu))
             conn.commit()

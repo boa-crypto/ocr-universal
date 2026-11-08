@@ -12,7 +12,8 @@
     "ui:terminal": "node tests/ui_terminal.js",
     "ui:finance": "node tests/ui_finance.js",
     "ui:justificatifs": "node tests/ui_justificatifs.js",
-    "ui:customs-review": "node tests/ui_customs_review.js"
+    "ui:customs-review": "node tests/ui_customs_review.js",
+    "ui:customs-assessments": "node tests/ui_customs_assessments.js"
   },
   "devDependencies": {
     "jsdom": "^24.1.3"

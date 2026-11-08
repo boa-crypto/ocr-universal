@@ -148,7 +148,7 @@
       rep.lots.forEach(function (item) {
         [lot, apres].forEach(function (select) {
           var option = element("option", item.id + " · " + item.type_lot);
-          option.value = item.id; select.append(option);
+          option.value = item.id; option.dataset.lotType = item.type_lot; select.append(option);
         });
       });
       outils.append(bouton("Contrôler l’intégrité / rejouer", function () {
@@ -1165,6 +1165,7 @@
       };
       lot.addEventListener("change", adapter); adapter();
       outils.append(form, criteresTarif, fiche, arbre, codeArbre, lecture, pdfLecture, fiscalPdfLecture, mesurePdfMatch, diffArticle, matchLecture, relationsLecture, justificationLecture, paireTarif, tarifMesuresLecture, mesuresRecherche, sourcesLecture);
+      if (window.UniOCRCustomsAssessments) window.UniOCRCustomsAssessments.mount(outils,lot,actuel);
     });
   }
   function demarrer() {

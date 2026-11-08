@@ -240,12 +240,19 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                     produit = (body.produit if body and body.produit is not None else
                                ProduitDeclare.model_validate(precedent["diagnostic"]["produit_declare"]))
                     if operation == "lecture_dossier_metier":
+                        magasin.reconcilier_audit(dossier_id, lot_id, entree.manifest_sha256,
+                            lambda **champs: tracer_operation(obligatoire=True, operation="version_dossier_metier",
+                                                             lots=[lot_id], statut=200, **champs))
                         return precedent
                 diagnostic = preparer_diagnostic(dossiers[0], produit)
                 if diagnostic["recherche"]["archive"]["manifest_sha256"] != entree.manifest_sha256:
                     raise RevisionDossierConflict("Source modifiée avant sauvegarde")
-                return magasin.enregistrer(dossier_id, lot_id, entree.manifest_sha256, diagnostic,
+                document = magasin.enregistrer(dossier_id, lot_id, entree.manifest_sha256, diagnostic,
                                            utilisateur.nom, body if isinstance(body, RevisionDossier) else None)
+                magasin.reconcilier_audit(dossier_id, lot_id, entree.manifest_sha256,
+                    lambda **champs: tracer_operation(obligatoire=True, operation="version_dossier_metier",
+                                                     lots=[lot_id], statut=200, **champs))
+                return document
             except DossierInconnu:
                 raise HTTPException(404, {"code": "dossier_metier_inconnu"}, headers=NO_STORE) from None
             except RevisionDossierConflict:

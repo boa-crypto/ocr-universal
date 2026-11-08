@@ -4,6 +4,7 @@ import json
 import shutil
 import stat
 import zipfile
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -228,3 +229,37 @@ def test_ancienne_archive_ne_peut_pas_recouvrir_un_magasin_avec_quarantaine(corp
     with pytest.raises(backup.BackupError, match="Quarantaine cible déjà présente"):
         backup.restaurer_sauvegarde(cfg, archive.chemin, force=True, inclure_quarantaine=True)
     assert snapshot(cfg.data_dir) == avant
+
+
+def test_dossiers_metier_sqlite_wal_snapshot_et_reprise(corpus, tmp_path):
+    import sqlite3
+    cfg, racine = corpus
+    db = racine / "dossiers_metier.sqlite3"
+    conn = sqlite3.connect(db)
+    try:
+        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute("CREATE TABLE sorties_audit(id TEXT, livre INTEGER)")
+        conn.execute("INSERT INTO sorties_audit VALUES ('NON-OFFICIEL',0)")
+        conn.commit()
+        assert Path(str(db)+"-wal").exists()
+        result = backup.creer_sauvegarde(cfg, inclure_quarantaine=True)
+        with zipfile.ZipFile(result.chemin) as archive:
+            assert "data/customs-quarantine/dossiers_metier.sqlite3" in archive.namelist()
+            assert not any(n.endswith((".sqlite3-wal", ".sqlite3-shm", ".sqlite3-journal")) for n in archive.namelist())
+        cible = cible_neuve(tmp_path)
+        backup.restaurer_sauvegarde(cible, result.chemin, inclure_quarantaine=True)
+        copie = sqlite3.connect(cible.data_dir / "customs-quarantine/dossiers_metier.sqlite3")
+        try:
+            assert copie.execute("PRAGMA integrity_check").fetchall() == [("ok",)]
+            assert copie.execute("SELECT * FROM sorties_audit").fetchall() == [("NON-OFFICIEL",0)]
+        finally:
+            copie.close()
+    finally:
+        conn.close()
+
+
+def test_dossiers_metier_journal_orphelin_refuse(corpus):
+    cfg, racine = corpus
+    (racine / "dossiers_metier.sqlite3-wal").write_bytes(b"NON OFFICIEL")
+    with pytest.raises(backup.BackupError, match="sans base principale"):
+        backup.creer_sauvegarde(cfg, inclure_quarantaine=True)

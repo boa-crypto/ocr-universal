@@ -173,7 +173,13 @@ def creer_sauvegarde(cfg, destination: Path | None = None,
         for src, rel in list(_fichiers_utiles(racine)) + list(
                 _fichiers_journal(cfg)):
             nom_archive = rel.as_posix()
-            if src.name == "metier.sqlite3":
+            dossier_db = Path("data/customs-quarantine/dossiers_metier.sqlite3")
+            if rel in {Path(str(dossier_db)+suffixe) for suffixe in ("-wal","-shm","-journal")}:
+                # Ces fichiers ne doivent pas rejouer un WAL antérieur sur l'instantané.
+                if not (racine / "customs-quarantine/dossiers_metier.sqlite3").is_file():
+                    raise BackupError("Journal de dossiers métier sans base principale")
+                continue
+            if src.name == "metier.sqlite3" or rel == dossier_db:
                 # L'API backup de SQLite fournit un instantané cohérent même
                 # lorsqu'une requête écrit dans la base pendant l'archivage.
                 with tempfile.TemporaryDirectory() as temporaire:
@@ -182,6 +188,8 @@ def creer_sauvegarde(cfg, destination: Path | None = None,
                     destination_db = sqlite3.connect(copie)
                     try:
                         origine.backup(destination_db)
+                        if destination_db.execute("PRAGMA quick_check").fetchall() != [("ok",)]:
+                            raise BackupError("Instantané SQLite incohérent")
                     finally:
                         destination_db.close()
                         origine.close()

@@ -221,3 +221,69 @@ except RevisionDossierConflict:
     assert all(p.returncode==0 for p in processes),outputs
     assert sorted(o[0].strip() for o in outputs)==["2","conflit"]
     assert value(revue[0].get(url(),headers=ADMIN))["version"]==2
+
+
+def test_outbox_durable_recuperable_sans_dupliquer_version(revue, monkeypatch):
+    from unocr import api
+    original = api.audit_obligatoire
+    def panne(*args, **kwargs):
+        if kwargs.get("operation") == "version_dossier_metier":
+            raise AuditIndisponible("TEST INDISPONIBLE")
+        return original(*args, **kwargs)
+    monkeypatch.setattr(api, "audit_obligatoire", panne)
+    assert create(revue).status_code == 503
+    db = revue[1]/"dossiers_metier.sqlite3"
+    with sqlite3.connect(db) as conn:
+        evenement, livre = conn.execute("SELECT evenement,livre FROM sorties_audit").fetchone()
+        assert livre == 0
+        assert conn.execute("SELECT count(*) FROM versions").fetchone() == (1,)
+    monkeypatch.setattr(api, "audit_obligatoire", original)
+    assert value(revue[0].get(url(), headers=ADMIN))["version"] == 1
+    with sqlite3.connect(db) as conn:
+        assert conn.execute("SELECT evenement,livre FROM sorties_audit").fetchone() == (evenement, 1)
+        assert conn.execute("SELECT count(*) FROM versions").fetchone() == (1,)
+    sorties = []
+    MagasinDossiers(db).reconcilier_audit("TEST94", "tarif_a", value(revue[0].get(url(), headers=ADMIN))["manifest_sha256"], lambda **kw: sorties.append(kw))
+    assert sorties == []
+
+
+def test_outbox_crash_apres_append_meme_identite_et_pas_exactly_once(revue):
+    document = value(create(revue))
+    db = revue[1]/"dossiers_metier.sqlite3"
+    # Simule une ancienne version94 : même état et historique, sans livraison connue.
+    with sqlite3.connect(db) as conn:
+        conn.execute("DELETE FROM sorties_audit")
+    sorties = []
+    def append_puis_panne(**kw):
+        sorties.append(kw)
+        raise OSError("TEST crash après append avant acquittement")
+    magasin = MagasinDossiers(db)
+    with pytest.raises(OSError):
+        magasin.reconcilier_audit("TEST94", "tarif_a", document["manifest_sha256"], append_puis_panne)
+    magasin.reconcilier_audit("TEST94", "tarif_a", document["manifest_sha256"], lambda **kw: sorties.append(kw))
+    assert len(sorties) == 2 and sorties[0] == sorties[1]
+    assert set(sorties[0]) == {"evenement_id", "dossier_id", "version", "lot_id", "manifest_sha256", "acteur", "etat_dossier", "sha256_contenu"}
+    assert len(sorties[0]["evenement_id"]) == 64
+
+
+def test_outbox_alteree_refusee_et_aucun_envoi(revue):
+    from unocr.customs_reference.assessment import DossierRefuse
+    document = value(create(revue))
+    db = revue[1]/"dossiers_metier.sqlite3"
+    with sqlite3.connect(db) as conn:
+        conn.execute("UPDATE sorties_audit SET evenement='{}',livre=0")
+    with pytest.raises(DossierRefuse):
+        MagasinDossiers(db).reconcilier_audit("TEST94", "tarif_a", document["manifest_sha256"], lambda **kw: pytest.fail("envoi interdit"))
+
+
+def test_outbox_reconciliations_concurrentes_un_seul_append_sans_panne(revue):
+    document = value(create(revue))
+    db = revue[1]/"dossiers_metier.sqlite3"
+    with sqlite3.connect(db) as conn:
+        conn.execute("DELETE FROM sorties_audit")
+    sorties = []
+    def livrer(_):
+        MagasinDossiers(db).reconcilier_audit("TEST94", "tarif_a", document["manifest_sha256"], lambda **kw: sorties.append(kw))
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        list(pool.map(livrer,range(2)))
+    assert len(sorties) == 1

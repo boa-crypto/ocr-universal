@@ -4,7 +4,7 @@
  * importé, un export ou un résultat doit toujours venir du serveur local.
  * La coquille HTML et ses modules locaux sont stockés, pour que l'app
  * s'ouvre sans réseau. */
-const CACHE = "unocr-shell-v71-engine-provenance";
+const CACHE = "unocr-shell-v95-customs-assessments";
 const SHELL = [
   "./",
   "./index.html",
@@ -26,6 +26,7 @@ const SHELL = [
   "/web/rapports.js",
   "/web/souspages.js",
   "/web/customs-review.js",
+  "/web/customs-assessments.js",
   "/web/navigation.js",
   "/web/cockpit.js",
   "/web/app-legacy.js",
