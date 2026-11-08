@@ -1913,8 +1913,13 @@ def _derniere_correction(job_id: str, name: str) -> dict | None:
             entree = json.loads(ligne)
         except ValueError:
             continue
-        if entree.get("job_id") != job_id or entree.get("field") != name:
+        if (not isinstance(entree, dict) or entree.get("event") != "field_validated"
+                or entree.get("job_id") != job_id or entree.get("field") != name):
             continue
+        # Ne pas annuler depuis une trace antérieure à une opération inexploitable.
+        if (entree.get("confirmed") is None and entree.get("corrected") is None
+                or not {"ancienne_valeur", "ancienne_origine", "ancien_statut"} <= entree.keys()):
+            return None
         entree["valeur_apres"] = (entree.get("confirmed") if entree.get("confirmed") is not None
                                   else entree.get("corrected"))
         return entree
