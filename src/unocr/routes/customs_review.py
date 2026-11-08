@@ -48,6 +48,7 @@ from ..customs_reference.measure_pdf_match import (
     rapprocher_description_mesure_pdf,
 )
 from ..customs_reference.measure_search import rechercher_mesures_tarif
+from ..customs_reference.pdf_index import rechercher_pages
 from ..customs_reference.pdf_page import LecturePDFRefusee, ParamPDFInvalide, lire_page_pdf
 from ..customs_reference.relation_pdf_match import (
     ParamJustificationPDFInvalide,
@@ -283,6 +284,27 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
     def reviser_dossier_metier(lot_id: str, dossier_id: str, body: RevisionDossier,
                              utilisateur=Depends(autoriser)):
         return dossier_metier(utilisateur, lot_id, dossier_id, "revision_dossier_metier", body)
+
+    @router.get("/lots/{lot_id}/pdf-search")
+    def rechercher_pages_pdf(lot_id: str, q: str = Query(...,min_length=1,max_length=256),
+                            document_id: str | None = Query(None,min_length=1,max_length=256),
+                            limit: int = Query(20,ge=1,le=100), offset: int = Query(0,ge=0,le=1_000_000),
+                            utilisateur=Depends(autoriser)):
+        def chercher(entrees, dossiers, registre):
+            if entrees[0].type_lot != "code":
+                raise HTTPException(422,{"code":"recherche_pages_code_uniquement"},headers=NO_STORE)
+            if entrees[0].index_pdf_sha256 is None:
+                raise HTTPException(409,{"code":"index_pdf_non_epingle"},headers=NO_STORE)
+            try:
+                resultat = rechercher_pages(dossiers[0],Path(chemin_registre()).parent/"index_pdf"/(lot_id+".json"),
+                                         entrees[0].index_pdf_sha256,q,document_id,limit,offset)
+                resultat["lot_id"] = lot_id
+                return resultat
+            except ParamRechercheInvalide:
+                raise
+            except (OSError,ValueError):
+                raise HTTPException(409,{"code":"index_pdf_incoherent_ou_absent"},headers=NO_STORE) from None
+        return executer(utilisateur,"recherche_pages_pdf",[lot_id],chercher)
 
     @router.get("/lots/{lot_id}/tariff-candidates")
     def pistes_tarif(lot_id: str, request: Request, designation: str | None = Query(None,max_length=256),

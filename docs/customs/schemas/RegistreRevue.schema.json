@@ -26,6 +26,19 @@
           "pattern": "^[a-f0-9]{64}$",
           "title": "Manifest Sha256",
           "type": "string"
+        },
+        "index_pdf_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Index Pdf Sha256"
         }
       },
       "required": [

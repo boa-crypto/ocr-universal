@@ -34,9 +34,13 @@ def test_engine_provenance_shell_loading_order_and_cache():
     assert scripts.count(path) == 1
     assert scripts.index(path) < scripts.index("/web/app-extras.js")
     worker = (ROOT / "web/sw.js").read_text()
-    assert '"unocr-shell-v97-assessment-comparison"' in worker
+    assert '"unocr-shell-v98-legal-page-search"' in worker
     assessment = "/web/customs-assessments.js"
     assert scripts.count(assessment) == 1
     assert scripts.index(assessment) < scripts.index("/web/customs-review.js")
     assert worker.count('"' + assessment + '"') == 1
+    legal_pages = "/web/customs-legal-pages.js"
+    assert scripts.count(legal_pages) == 1
+    assert scripts.index(legal_pages) < scripts.index("/web/customs-review.js")
+    assert worker.count('"' + legal_pages + '"') == 1
     assert worker.count('"' + path + '"') == 1

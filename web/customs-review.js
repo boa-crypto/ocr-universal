@@ -1166,6 +1166,7 @@
       lot.addEventListener("change", adapter); adapter();
       outils.append(form, criteresTarif, fiche, arbre, codeArbre, lecture, pdfLecture, fiscalPdfLecture, mesurePdfMatch, diffArticle, matchLecture, relationsLecture, justificationLecture, paireTarif, tarifMesuresLecture, mesuresRecherche, sourcesLecture);
       if (window.UniOCRCustomsAssessments) window.UniOCRCustomsAssessments.mount(outils,lot,actuel);
+      if (window.UniOCRCustomsLegalPages) window.UniOCRCustomsLegalPages.mount(outils,lot,actuel);
     });
   }
   function demarrer() {

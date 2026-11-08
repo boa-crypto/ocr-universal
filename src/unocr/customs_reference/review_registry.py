@@ -17,6 +17,7 @@ class LotRevue(StrictModel):
     type_lot: Literal["tarif", "code", "mesures"]
     dossier: str = Field(pattern=IDENTIFIANT)
     manifest_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
+    index_pdf_sha256: str | None = Field(None, pattern=r"^[a-f0-9]{64}$")
 
 
 class RegistreRevue(StrictModel):
