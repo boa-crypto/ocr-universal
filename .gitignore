@@ -21,3 +21,6 @@ data/metier.sqlite3*
 
 # Fichiers justificatifs locaux
 data/justificatifs/
+
+# Dossiers de proposition douanière locaux et journal transactionnel
+data/customs-quarantine/dossiers_metier.sqlite3*

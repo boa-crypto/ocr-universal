@@ -1,6 +1,7 @@
-"""Revue administrative en lecture seule ; aucun chemin fourni par HTTP."""
+"""Revue de quarantaine et propositions métier, sans publication ni chemin HTTP."""
 import hashlib
 import re
+import sqlite3
 from pathlib import Path
 from typing import Literal
 from urllib.parse import parse_qsl
@@ -22,6 +23,16 @@ from ..customs_reference.article_pdf_match import (
 from ..customs_reference.article_relations import (
     ParamRelationsArticleInvalide,
     consulter_relations_article,
+)
+from ..customs_reference.assessment import (
+    CreationDossier,
+    DossierInconnu,
+    DossierRefuse,
+    MagasinDossiers,
+    ProduitDeclare,
+    RevisionDossier,
+    RevisionDossierConflict,
+    preparer_diagnostic,
 )
 from ..customs_reference.code_tree import ParamArbreCodeInvalide, parcourir_code
 from ..customs_reference.comparison import charger_lot, comparer_lots
@@ -102,7 +113,7 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                             else [resultat["archives"]["avant"], resultat["archives"]["apres"]])
                 if any(archive["manifest_sha256"] != entree.manifest_sha256 for archive, entree in zip(archives, entrees)):
                     raise ValueError("Manifeste lu différent de l'empreinte épinglée")
-            reponse = preparer_reponse(resultat) if preparer_reponse else JSONResponse({"lecture_seule": True, "publication_active": False,
+            reponse = preparer_reponse(resultat) if preparer_reponse else JSONResponse({"lecture_seule": operation not in {"creation_dossier_metier", "revision_dossier_metier"}, "publication_active": False,
                                  "validation_juridique": "non_validee", "perimetre": "revue_administrative_quarantaine",
                                  "resultat": resultat}, headers=NO_STORE)
         except ParamRapprochementMesureInvalide:
@@ -209,6 +220,54 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
     def couverture(lot_id: str, utilisateur=Depends(autoriser)):
         return executer(utilisateur, "couverture", [lot_id], lambda e, p, registre:
                         diagnostiquer_couverture(p[0], e[0].type_lot))
+
+    def dossier_metier(utilisateur, lot_id, dossier_id, operation, body=None):
+        def agir(entrees, dossiers, registre):
+            entree = entrees[0]
+            if entree.type_lot != "tarif":
+                raise HTTPException(422, {"code": "dossier_tarif_uniquement"}, headers=NO_STORE)
+            magasin = MagasinDossiers(Path(chemin_registre()).parent / "dossiers_metier.sqlite3")
+            try:
+                if operation == "creation_dossier_metier":
+                    produit = body.produit
+                else:
+                    if operation == "lecture_dossier_metier":
+                        _, controle = charger_lot(dossiers[0])
+                        if controle["archive"]["manifest_sha256"] != entree.manifest_sha256:
+                            raise RevisionDossierConflict("Source modifiée")
+                    precedent = magasin.lire(dossier_id, lot_id, entree.manifest_sha256,
+                                             historique=operation == "lecture_dossier_metier")
+                    produit = (body.produit if body and body.produit is not None else
+                               ProduitDeclare.model_validate(precedent["diagnostic"]["produit_declare"]))
+                    if operation == "lecture_dossier_metier":
+                        return precedent
+                diagnostic = preparer_diagnostic(dossiers[0], produit)
+                if diagnostic["recherche"]["archive"]["manifest_sha256"] != entree.manifest_sha256:
+                    raise RevisionDossierConflict("Source modifiée avant sauvegarde")
+                return magasin.enregistrer(dossier_id, lot_id, entree.manifest_sha256, diagnostic,
+                                           utilisateur.nom, body if isinstance(body, RevisionDossier) else None)
+            except DossierInconnu:
+                raise HTTPException(404, {"code": "dossier_metier_inconnu"}, headers=NO_STORE) from None
+            except RevisionDossierConflict:
+                raise HTTPException(409, {"code": "revision_dossier_metier_conflictuelle"}, headers=NO_STORE) from None
+            except DossierRefuse:
+                raise HTTPException(422, {"code": "dossier_metier_refuse"}, headers=NO_STORE) from None
+            except sqlite3.Error:
+                raise HTTPException(503, {"code": "stockage_dossier_metier_indisponible"}, headers=NO_STORE) from None
+        return executer(utilisateur, operation, [lot_id], agir)
+
+    @router.post("/lots/{lot_id}/assessments")
+    def creer_dossier_metier(lot_id: str, body: CreationDossier, utilisateur=Depends(autoriser)):
+        return dossier_metier(utilisateur, lot_id, body.dossier_id, "creation_dossier_metier", body)
+
+    @router.get("/lots/{lot_id}/assessments/{dossier_id}")
+    def lire_dossier_metier(lot_id: str, dossier_id: str, utilisateur=Depends(autoriser)):
+        return dossier_metier(utilisateur, lot_id, dossier_id, "lecture_dossier_metier")
+
+    @router.patch("/lots/{lot_id}/assessments/{dossier_id}")
+    def reviser_dossier_metier(lot_id: str, dossier_id: str, body: RevisionDossier,
+                             utilisateur=Depends(autoriser)):
+        return dossier_metier(utilisateur, lot_id, dossier_id, "revision_dossier_metier", body)
 
     @router.get("/lots/{lot_id}/tariff-candidates")
     def pistes_tarif(lot_id: str, request: Request, designation: str | None = Query(None,max_length=256),
