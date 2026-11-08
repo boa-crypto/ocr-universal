@@ -28,3 +28,17 @@ def test_studio_assets_and_native_integrity():
 
 def test_source_freshness_runtime():
     subprocess.run(['node', 'tests/ui_source_freshness.cjs'], cwd=ROOT, check=True, timeout=30)
+
+
+def test_legacy_date_placeholders_do_not_invent_an_epoch_opening_date():
+    code = r"""
+const assert = require('node:assert/strict'), fs = require('node:fs'), vm = require('node:vm');
+const source = fs.readFileSync('web/ecrans.js', 'utf8');
+const formatter = vm.runInNewContext(source.slice(source.indexOf('  var MOIS ='), source.indexOf('  function nombre(')) + ';horodatage;');
+for (const value of [null, undefined, '', 0, '0']) assert.equal(formatter(value), '—');
+assert.equal(formatter('2026-11-04T12:00:00Z'), '4 nov. 2026');
+assert.equal(formatter(1793793600), '4 nov. 2026');
+assert.equal(formatter(1793793600000), '4 nov. 2026');
+assert.equal(formatter('date invalide'), 'date invalide');
+"""
+    subprocess.run(['node', '-e', code], cwd=ROOT, check=True, timeout=30)

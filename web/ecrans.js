@@ -87,7 +87,8 @@
               "juil.", "août", "sept.", "oct.", "nov.", "déc."];
 
   function horodatage(valeur) {
-    if (valeur === null || valeur === undefined || valeur === "") return "";
+    // Les horodatages nuls du magasin historique sont des dates non renseignées.
+    if (valeur === null || valeur === undefined || valeur === "" || valeur === 0 || valeur === "0") return "—";
     var d = null;
     if (typeof valeur === "number") {
       d = new Date(valeur > 1e12 ? valeur : valeur * 1000);
