@@ -74,3 +74,32 @@ def lire_page_indexee(repertoire,index_path,empreinte,document_id,page=1,limite=
             "publication_active":False,"validation_juridique":"non_validee","transcription_verification":"non_verifiee",
             "avertissements":["Copie indexée du texte natif, pas extraction fraîche ni transcription juridique validée.",
                                "Ordre des colonnes et défauts de caractères conservés, aucune correction silencieuse."]}
+
+
+def cataloguer_pages(repertoire,index_path,empreinte,document_id=None,page=None,limite=20,decalage=0):
+    """Inventaire physique paginé, y compris les pages sans texte indexé."""
+    _filtre(document_id,256)
+    _parametres("",limite,decalage,True)
+    if page is not None and (type(page) is not int or not 1<=page<=10000):
+        raise ParamRechercheInvalide("Page physique exacte invalide")
+    _,rapport,index=charger_index(repertoire,index_path,empreinte)
+    resultats,total=[],0
+    for document in index.documents:
+        if document_id is not None and document.document_id!=document_id:
+            continue
+        for native in document.pages:
+            if page is not None and native.page!=page:
+                continue
+            if decalage<=total<decalage+limite:
+                resultats.append({"document_id":document.document_id,"pdf_sha256":document.pdf_sha256,
+                                  "page_pdf":native.page,"nombre_pages_pdf":len(document.pages),
+                                  "sha256_texte_utf8":native.sha256_texte_utf8,"total_caracteres":len(native.texte),
+                                  "texte_indexe_present":bool(native.texte)})
+            total+=1
+    r=_rapport("catalogue_pages_pdf","",[],"inventaire_physique_sans_recherche_textuelle",
+               {"document_id_exact":document_id,"page_physique_exacte":page},rapport,total,resultats,limite,decalage)
+    r.update(index_sha256=empreinte,methode=index.methode,version_extracteur=index.version_extracteur,
+             pages_indexees=sum(len(d.pages) for d in index.documents),articles_localises_automatiquement=False,
+             ocr_effectue=False,transcription_verification="non_verifiee")
+    r['avertissements'].append("Inventaire de pages, pas articles ; une page sans texte indexé ne prouve pas une page PDF vide.")
+    return r

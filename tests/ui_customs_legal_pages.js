@@ -52,5 +52,20 @@ async function readerSetup(run){return setup(async ctx=>{
  await readerSetup(async({respond,click,host})=>{respond(async()=>({ok:false,status:403}));await click('[data-next-fragment]');assert.equal(host.textContent,'');});
  await readerSetup(async({respond,page,click,w,inputs,get})=>{let end,url;respond(u=>{url=u;return new Promise(r=>{end=r;});});await click('[data-next-fragment]');inputs[0].value='autre';inputs[0].dispatchEvent(new w.Event('input'));end({ok:true,json:async()=>page(url)});await tick();assert.equal(get('[data-index-page]').textContent,'');assert(get('[data-next-fragment]').disabled);});
  await readerSetup(async({respond,page,click,w,host})=>{let end,url;respond(u=>{url=u;return new Promise(r=>{end=r;});});await click('[data-next-fragment]');w.sessionStorage.setItem('uniocr_token','AUTRE');end({ok:true,json:async()=>page(url)});await tick();assert.equal(host.textContent,'');});
- console.log('17 scénarios recherche/repères/fragments PDF réussis');
+
+ function catalogueResponse(){const r=response();Object.assign(r.resultat,{type_recherche:'catalogue_pages_pdf',pages_indexees:6,requete:'',total_correspondances:1,decalage_suivant:null,filtres:{document_id_exact:'TEST_O',page_physique_exacte:2},resultats:[{document_id:'TEST_O',pdf_sha256:'c'.repeat(64),sha256_texte_utf8:'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',page_pdf:2,nombre_pages_pdf:2,total_caracteres:0,texte_indexe_present:false}]});return r;}
+ async function catalogSetup(run){return setup(async ctx=>{const mode=ctx.host.querySelector('[data-pdf-mode]');mode.value='catalogue';mode.dispatchEvent(new ctx.w.Event('change'));ctx.inputs[1].value='TEST_O';const physical=ctx.host.querySelector('[data-physical-page]');physical.value='2';await run({...ctx,physical,mode});});}
+ await catalogSetup(async({host,inputs,physical,buttons,respond,calls})=>{
+  assert(inputs[0].disabled);assert(!physical.disabled);assert.equal(calls.length,0);
+  const r=catalogueResponse();respond(async()=>({ok:true,json:async()=>r}));buttons[0].click();await tick();
+  assert(calls.at(-1).u.includes('/pdf-index-catalog?'));assert(calls.at(-1).u.includes('page=2'));assert(!calls.at(-1).u.includes('numero='));assert(host.textContent.includes('sans texte indexé'));
+  const item=r.resultat.resultats[0];const p={lecture_seule:true,publication_active:false,validation_juridique:'non_validee',perimetre:'revue_administrative_quarantaine',resultat:{...item,type_rapport:'lecture_page_pdf_indexee',lot_id:'code_a',index_sha256:r.resultat.index_sha256,archive:r.resultat.archive,publication_active:false,validation_juridique:'non_validee',ocr_effectue:false,lecture_seule:true,transcription_verification:'non_verifiee',unite_decalage:'points_de_code_unicode_python',decalage:0,limite:4000,fragment:'',decalage_suivant:null}};
+  respond(async()=>({ok:true,json:async()=>p}));host.querySelector('[data-read-index-page]').click();await tick();assert(host.querySelector('[data-index-page]').textContent.includes('page physique 2'));assert(host.querySelector('[data-next-fragment]').disabled);assert(host.querySelector('[data-previous-fragment]').disabled);
+ });
+ for(const corrupt of [r=>{r.resultat.filtres.document_id_exact='AUTRE';},r=>{r.resultat.resultats[0].page_pdf=1;},r=>{r.resultat.resultats[0].texte_indexe_present=true;}]){
+  await catalogSetup(async({host,buttons,respond})=>{const r=catalogueResponse();corrupt(r);respond(async()=>({ok:true,json:async()=>r}));buttons[0].click();await tick();assert(host.textContent.includes('non conforme'));assert.equal(host.querySelector('[data-read-index-page]'),null);});
+ }
+ await catalogSetup(async({physical,buttons,calls,host})=>{physical.value='0';buttons[0].click();await tick();assert.equal(calls.length,0);assert(host.textContent.includes('Page physique invalide'));});
+ await catalogSetup(async({physical,buttons,respond,w,host})=>{let end;respond(()=>new Promise(r=>{end=r;}));buttons[0].click();physical.value='1';physical.dispatchEvent(new w.Event('input'));end({ok:true,json:async()=>catalogueResponse()});await tick();assert.equal(host.querySelector('pre').textContent,'');assert.equal(host.querySelector('[data-read-index-page]'),null);});
+ console.log('23 scénarios recherche/repères/fragments/catalogue PDF réussis');
 })().catch(e=>{console.error(e);process.exit(1);});

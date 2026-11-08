@@ -49,7 +49,7 @@ from ..customs_reference.measure_pdf_match import (
 )
 from ..customs_reference.measure_search import rechercher_mesures_tarif
 from ..customs_reference.pdf_index import rechercher_pages
-from ..customs_reference.pdf_markers import lire_page_indexee, reperer_articles
+from ..customs_reference.pdf_markers import cataloguer_pages, lire_page_indexee, reperer_articles
 from ..customs_reference.pdf_page import LecturePDFRefusee, ParamPDFInvalide, lire_page_pdf
 from ..customs_reference.relation_pdf_match import (
     ParamJustificationPDFInvalide,
@@ -311,6 +311,14 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                     utilisateur=Depends(autoriser)):
         return lire_derive_pdf(utilisateur,lot_id,"reperes_articles_pdf",
             lambda dossier,index,sha: reperer_articles(dossier,index,sha,document_id,numero,limit,offset))
+
+    @router.get("/lots/{lot_id}/pdf-index-catalog")
+    def catalogue_pdf(lot_id: str, document_id: str | None = Query(None,min_length=1,max_length=256),
+                      page: int | None = Query(None,ge=1,le=10000),
+                      limit: int = Query(20,ge=1,le=100), offset: int = Query(0,ge=0,le=1_000_000),
+                      utilisateur=Depends(autoriser)):
+        return lire_derive_pdf(utilisateur,lot_id,"catalogue_pages_pdf",
+            lambda dossier,index,sha: cataloguer_pages(dossier,index,sha,document_id,page,limit,offset))
 
     @router.get("/lots/{lot_id}/pdf-index-page")
     def page_indexee_pdf(lot_id: str, document_id: str = Query(...,min_length=1,max_length=256),
