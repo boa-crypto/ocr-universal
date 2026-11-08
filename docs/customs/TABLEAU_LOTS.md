@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État après le lot 93 — mesures datées du 2026-11-08 (horloge environnement). **Terminé = périmètre technique livré et
+État après le lot 94 — mesures datées du 2026-11-08 (horloge environnement). **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -98,7 +98,7 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 91 | JSON groupé : réponse indépendante du fichier horodaté, entrelacement HTTP | Terminé, 26 nouveaux cas et CI ciblée | Pas snapshot atomique lot, autres formats partagés/charge ; aperçu76 ; Indra absent, intégrité26/27 |
 | 92 | CSV groupé : valeur retenue/origine ajoutées, neutraliseur sur huit colonnes | Terminé, 41 nouveaux cas et CI ciblée | Fichier partagé et sécurité tableur globale non corrigés ; aperçu76 ; Indra absent, intégrité26/27 |
 | 93 | CSV groupé mémoire : octets indépendants, entrelacement HTTP | Terminé, 18 nouveaux cas et CI ciblée | Autres formats partagés, pas transaction lot/charge ; aperçu76 ; Indra absent, intégrité26/27 |
-| 76 | Valeurs vides : sélection, traces, annulation simple et statut corrected relisible | Terminé, 106 nouveaux cas + 2 induits, CI ciblée | Pas multi-niveau undo ni audit UI exhaustif ; Indra absent, intégrité 26/27 |
+| 94 | Dossiers métier de proposition tarifaire : produit, questions, revue, historique SQLite/CAS | Terminé côté API,29 nouveaux cas | Pas UI/IA/validation juridique, audit externe postcommit ; aperçu76 ; Indra absent,26/27 SHA |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
 `RAPPORT_LOT61.md`. Les limites historiques des rapports précédents sont à lire
@@ -125,7 +125,7 @@ mais pas une validation des transcriptions.
 
 ## Bilan
 
-72 lots techniques livrés ; dernière sélection : **2 160 tests Python / 212 scénarios
+Travaux documentés jusqu’au lot94 ; dernière sélection : **2 189 tests Python / 212 scénarios
 JSDOM réussis**. Ce n’est ni la totalité de la suite OCR ni une recette nationale.
 Données historiques conservées. **0 nouvel original officiel acquis, 0 article/code
 national officiellement validé, 0 publication active ; mission globale partielle.**
@@ -133,10 +133,10 @@ Aucun pourcentage de complétude réglementaire ou de progression globale n’es
 du nombre de lots. Références non vérifiées interdites pour calcul douanier réel.
 
 Réception technique : [bilan des dix phases](BILAN_RECEPTION.md),
-[recette complète actuelle du lot 93](RECETTE_LOT93.json) : **4 315 réussis,
+[recette complète actuelle du lot 94](RECETTE_LOT94.json) : **4 344 réussis,
 2 échecs OCR, 1 ignoré, 1 avertissement(s)**. **26/27 empreintes historiques conformes** ;
 référentiels et quatre dossiers partagés modifiés sont préservés hors commit,
-voir [rapport 93](RAPPORT_LOT93.md) ; ne pas confondre avec la sélection
+voir [rapport 94](RAPPORT_LOT94.md) ; ne pas confondre avec la sélection
 verte. Recettes historiques : [45](RECETTE_FINALE.json), [50](RECETTE_LOT50.json), [55](RECETTE_LOT55.json).
 
 Lot 57 : [lanceur local/CI](LANCEUR_RECETTE_CIBLEE.md) et

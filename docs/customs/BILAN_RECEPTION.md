@@ -1,13 +1,28 @@
 # Bilan de réception — mission UniOCR douanière
 
-**7 novembre 2026 — état global : PARTIEL, NON RECEVABLE POUR PRODUCTION FISCALE.**
+**État après le lot94 : PARTIEL, NON RECEVABLE POUR PRODUCTION FISCALE.**
 
 Poursuite effectuée sans demandes d'autorisations intermédiaires : lot 44 de constat
 littéral description/PDF, puis lot 45 de recette complète et corrections de tests.
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 93
+## État actuel — lot 94 : fonction métier nouvelle
+
+[Dossiers de proposition tarifaire](DOSSIERS_PROPOSITION_TARIFAIRE.md) : API de
+produit structuré, pistes FR/AR, questions, abstention, revue/proposition humaine/
+rejet/réouverture. Versions SQLite avec CAS, auteur serveur et historique,
+concurrence deux processus testée. Pas validation juridique ou publication.
+**29 nouveaux cas /71 métier+revue réussis ;2 189 documentaires /212 JSDOM**.
+Complète **4 344 réussis,2 échecs Indra,1 ignoré** ; [CI ciblée](https://github.com/boa-crypto/ocr-universal/actions/runs/42468040297) réussie.
+Mesures `2026-11-08` selon horloge environnement ;26/27 SHA,
+même écart référentiels préservé. Audit externe postcommit peut503 après
+sauvegarde : récupérer par GET après rétablissement ; versions SQLite atomiques.
+Pas nouvelle UI/IA/moteur juridique, pas achevement global.
+[Plan d'achèvement](ACHEVEMENT_METIER.md), [rapport](RAPPORT_LOT94.md),
+[recette](RECETTE_LOT94.json). Aperçu76 maintenu, code77–94 non chargé, RBAC absent.
+
+## Complément historique — lot 93
 
 [CSV groupé mémoire](CSV_LOT_SNAPSHOT.md) : octets indépendants du fichier
 horodaté, BOM/huit colonnes92 conservés, lot.csv/text-csv/no-store.
@@ -739,8 +754,8 @@ réglementaire national ni des connexions administratives réellement qualifiée
 | 6 — Administration existante | Revue intégrée, RBAC/allowlist, types explicites, audit, exports, sauvegarde/reprise | Décisions humaines habilitées, contrôle de fidélité complet et workflow de publication non réalisés |
 | 7 — API centrales | API privée de quarantaine et adaptateur douanier explicite, refus hors contrat | Connexion administrative réelle autorisée/testée et API métier sur corpus validé non qualifiées |
 | 8 — Intégrité et humain | SHA, rejeu, provenance épinglée, audit obligatoire et refus fermés | Authenticité, WORM/signature, attestation humaine et transaction multi-dossiers non établis |
-| 9 — Tests réels | Tests isolés, PDFium réel et HTTP/API réels, suite complète exécutée | OCR système non provisionné, charge nationale, navigateurs/accessibilité, cas juridiques et recette métier non qualifiés |
-| 10 — Livrables | Code, schémas, CLI/API/UI, contrats et rapports 1–61, bilan et résultats JSON | Corpus officiel, qualification juridique et réception de production non fournis |
+| 9 — Tests réels | Tests isolés, PDFium réel et HTTP/API réels, suite complète exécutée | Indra indisponible ; charge nationale, navigateurs/accessibilité, cas juridiques et recette métier non qualifiés |
+| 10 — Livrables | Code, schémas, CLI/API/UI, contrats et rapports jusqu’au94, bilan et résultats JSON | Corpus officiel, qualification juridique et réception de production non fournis |
 
 Il reste **du développement** (notamment IA métier, consolidation, validation et
 publication), pas seulement des pièces externes. L'absence d'originaux ne permet
