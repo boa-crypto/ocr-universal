@@ -2720,7 +2720,7 @@ async def upload_batch(
 
 @app.get("/api/batches/export/{fmt}")
 def export_batch(request: Request, fmt: str,
-                 ids: str = Query(..., min_length=1)) -> FileResponse:
+                 ids: str = Query(..., min_length=1)) -> Response:
     """Export groupé de plusieurs documents.
 
     - `xlsx` : une feuille par document (reprenant les feuilles unitaires)
@@ -2748,15 +2748,19 @@ def export_batch(request: Request, fmt: str,
             raise HTTPException(409, f"résultat pas encore disponible pour '{jid}'")
         results.append((job.filename, res))
 
+    if fmt == "json":
+        response = JSONResponse([r for _, r in results], headers={
+            "Content-Disposition": 'attachment; filename="lot.json"',
+            "Cache-Control": "no-store",
+        })
+        audit(cfg.log_dir, "batch_exported", fmt=fmt, documents=len(results))
+        return response
+
     out_dir = store.export_dir("batch_" + "_".join(job_ids)[:60])
     out_dir.mkdir(parents=True, exist_ok=True)
     stamp = time.strftime("%Y%m%d_%H%M%S")
 
-    if fmt == "json":
-        path = out_dir / f"lot_{stamp}.json"
-        path.write_text(json.dumps([r for _, r in results], ensure_ascii=False,
-                                   indent=2), encoding="utf-8")
-    elif fmt == "txt":
+    if fmt == "txt":
         path = out_dir / f"lot_{stamp}.txt"
         parts = [f"══════════ {fn} ══════════\n" +
                  "\n\n".join(f"───── Page {p.get('page_num')} ─────\n{p.get('text','')}"
