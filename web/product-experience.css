@@ -216,6 +216,8 @@ html {
   height: 40px;
 }
 [data-theme] .top-search input {
+  padding-inline-start: 36px;
+  padding-inline-end: 70px;
   font-size: 12px;
 }
 [data-theme] .top-chips {
