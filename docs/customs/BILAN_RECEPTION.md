@@ -7,7 +7,24 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 88
+## État actuel — lot 89
+
+[Export JSON snapshot](EXPORT_JSON_SNAPSHOT.md) : JSON complet HTTP depuis
+résultat lu/validé, réponse mémoire sans cache fichier, no-store et nom result.json.
+Six changements reflétés malgré cache antérieur ; snapshot lu pas état dernier
+à fin transfert. Autres formats/chemins inchangés, caches anciens non réparés.
+**26 nouveaux cas / 816 ciblés réussis** ; ancien export : 18 échecs attendus,
+8 réussis. Documentaire **2 160 Python / 212 JSDOM historiques**. Complète :
+**4 204 réussis, 2 échecs Indra, 1 ignoré, 1 avertissement(s), 367,79 s**.
+Mesures JUnit datées `2026-11-08` (horloge environnement).
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42462885964), pas suite OCR complète en CI.
+**26/27 empreintes conformes**, même écart partagé ; données/journaux préservés
+hors commit. Pas invalidation globale, purge caches clients ou qualification
+mémoire/charge. **Aperçu backend76 maintenu**, code77–89 poussé/testé mais non
+chargé pour préserver les traitements ; RBAC absent.
+[Rapport](RAPPORT_LOT89.md), [recette actuelle](RECETTE_LOT89.json).
+
+## Complément historique — lot 88
 
 [Horodatage et acteur classification](HORODATAGE_ACTEUR_CLASSIFICATION.md) :
 trace attribuée exige booléen manual True et acteur non blanc égal au
