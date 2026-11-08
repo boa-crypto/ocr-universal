@@ -9,7 +9,8 @@ La correction porte sur le système, pas sur une liste de champs :
 - `uniocr-ds.css` : suppression de ces fonds sombres forcés dans les primitives, recherches et filtres ; utilisation du couple de tokens partagé.
 - `product-experience.css` : adoption du couple texte/fond et du curseur associé, plutôt qu’une surcharge du texte seul.
 - `field-accessibility.css`, chargé après les styles historiques : contrat commun aux contrôles natifs, `.edit`, contenus éditables et combobox ; options/groupes d’options et listes de recherche personnalisées inclus.
-- `sw.js` : cache v105 et nouvelle feuille précachée. Aucune réponse métier n’est mise en cache.
+- `components/forms/Form.js` : chargement du même contrat dans les Shadow DOM, tokens hérités du thème, typage natif correct et conservation du contrôle/curseur pendant la saisie. Les raccourcis globaux reconnaissent aussi les champs encapsulés via `composedPath()` : écrire « t » ne change plus le thème.
+- `sw.js` : cache v106 et nouvelle feuille précachée. Aucune réponse métier n’est mise en cache.
 
 Les `!important` sont confinés aux propriétés d’apparence du contrat central pour empêcher les anciens sélecteurs par identifiant et styles inline de dissocier à nouveau texte et fond. Les exclusions de types utilisent `:where()` pour ne pas augmenter la spécificité : focus, erreur, succès et surfaces lecture seule/désactivées restent réellement prioritaires. La recette vérifie leurs couleurs sémantiques exactes, pas seulement un ratio minimal. Dimensions, masquage, droits, données, événements et validation métier restent inchangés.
 
@@ -38,13 +39,14 @@ Les couleurs système sont respectées en mode `forced-colors`. Ne pas désactiv
 .venv/bin/python -m pytest tests/test_ui_field_contrast.py -q
 npm run ui:fields:browser -- /chemin/hors-depot/preuves
 npm run ui:fields:forms -- /chemin/hors-depot/preuves/formulaires
+npm run ui:fields:shadow -- /chemin/hors-depot/preuves/shadow
 # Variante pytest opt-in :
 UI_FIELD_BROWSER=1 .venv/bin/python -m pytest tests/test_ui_field_browser.py -q
 ```
 
 Le navigateur utilise l’application réellement servie sur le port 8000. Il parcourt la navigation autorisée dans les deux thèmes, aux largeurs 1440, 1280, 834 et 390 px ; relève les styles calculés, attend la fin des transitions de visibilité et contrôle texte, placeholder et opacité effective. Il saisit également une valeur dans la véritable modale de création, sans la soumettre.
 
-Un laboratoire **explicitement identifié**, ajouté uniquement dans le DOM du navigateur de test, couvre les variantes natives rares : texte, recherche, mot de passe, email, URL, téléphone, nombre, date, date/heure, heure, mois, semaine, textarea, select, fichier, éditable et combobox. Il exerce les états applicables : rempli, hover, focus, erreur, succès, lecture seule et désactivé ; vérifie aussi la bordure et le focus. L’autofill est exercé via le pseudo-état du moteur Chromium, sans utiliser ni enregistrer d’identifiants réels. Les options natives sont ouvertes au clavier et photographiées. Une seconde recette ouvre et annule les véritables formulaires dynamiques de création et de modification disponibles ; leurs valeurs préremplies restent issues des données réelles. Elle exerce aussi la recherche globale et ses choix personnalisés. Aucun champ factice n’est installé dans l’application livrée, aucune réponse API n’est remplacée.
+Un laboratoire **explicitement identifié**, ajouté uniquement dans le DOM du navigateur de test, couvre les variantes natives rares : texte, recherche, mot de passe, email, URL, téléphone, nombre, date, date/heure, heure, mois, semaine, textarea, select, fichier, éditable et combobox. Il exerce les états applicables : rempli, hover, focus, erreur, succès, lecture seule et désactivé ; vérifie aussi la bordure et le focus. L’autofill est exercé via le pseudo-état du moteur Chromium, sans utiliser ni enregistrer d’identifiants réels. Les options natives sont ouvertes au clavier et photographiées. Une recette dédiée aux véritables composants Shadow DOM vérifie aussi la saisie continue au clavier, les types email/mot de passe, les valeurs nulles versus zéro, les états, la préservation du focus et le maintien effectif du thème. Une seconde recette ouvre et annule les véritables formulaires dynamiques de création et de modification disponibles ; leurs valeurs préremplies restent issues des données réelles. Elle exerce aussi la recherche globale et ses choix personnalisés. Aucun champ factice n’est installé dans l’application livrée, aucune réponse API n’est remplacée.
 
 Les requêtes autres que GET/HEAD sont bloquées et comptées. Les saisies du test ne sont ni soumises ni sauvegardées. Les données utilisateur et le serveur existant sont conservés.
 

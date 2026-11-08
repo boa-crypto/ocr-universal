@@ -1,26 +1,21 @@
 /* Actual dynamic create/edit forms, opened and cancelled. Never submitted. */
-const { inspect, verify } = require("./ui_field_contrast_browser.cjs");
-const { chromium } = require("playwright-core"),
-  binary = require("@sparticuz/chromium").default,
-  fs = require("node:fs"),
+const {
+  inspect,
+  verify,
+  launchBrowser,
+} = require("./ui_field_contrast_browser.cjs");
+const fs = require("node:fs"),
   path = require("node:path"),
   assert = require("node:assert/strict");
 const out = process.argv[2] || "/home/user/recettes-unocr/field-contrast/forms";
 fs.mkdirSync(out, { recursive: true });
 const report = { forms: [], errors: [], writes: [] };
 (async () => {
-  const b = await chromium.launch({
-    executablePath: await binary.executablePath(),
-    args: binary.args.filter(
-      (a) =>
-        !a.includes("disable-web-security") &&
-        !a.includes("allow-running-insecure-content"),
-    ),
-    env: { ...process.env, LD_LIBRARY_PATH: "/tmp/uniocr-chromium-libs/lib" },
-  });
+  let b;
   try {
     for (const width of [1440, 390])
       for (const theme of ["light", "dark"]) {
+        b = await launchBrowser();
         const c = await b.newContext({
             viewport: { width, height: 1000 },
             serviceWorkers: "block",
@@ -37,10 +32,12 @@ const report = { forms: [], errors: [], writes: [] };
         await p.goto("http://127.0.0.1:8000/", {
           waitUntil: "domcontentloaded",
         });
-        await p.evaluate(
-          (t) => (document.documentElement.dataset.theme = t),
-          theme,
-        );
+        await p.evaluate((t) => {
+          if (document.documentElement.dataset.theme !== t)
+            document.getElementById("themeToggle").click();
+          if (document.documentElement.dataset.theme !== t)
+            throw Error("Theme not applied: " + t);
+        }, theme);
         const search = p.locator("#globalSearch");
         await search.fill("facture");
         await p.waitForTimeout(750);
@@ -135,6 +132,8 @@ const report = { forms: [], errors: [], writes: [] };
           }
         }
         await c.close();
+        await b.close();
+        b = null;
       }
     assert(report.forms.some((f) => f.mode === "creation"));
     assert(report.forms.some((f) => f.mode === "edition"));
@@ -153,7 +152,7 @@ const report = { forms: [], errors: [], writes: [] };
       path.join(out, "report.json"),
       JSON.stringify(report, null, 2),
     );
-    await b.close();
+    if (b) await b.close();
   }
 })().catch((e) => {
   console.error(e);

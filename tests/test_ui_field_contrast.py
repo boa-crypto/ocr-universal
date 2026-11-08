@@ -1,5 +1,6 @@
 """Semantic input colors: central pairs, state contrast and offline delivery."""
 import re
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -41,3 +42,10 @@ def test_field_contract_loaded_after_legacy_styles_and_cached():
     source = (ROOT / 'web/uniocr-ds.css').read_text()
     assert 'background: var(--field-bg, var(--ds-surface))' in source
     assert 'input:where(' in css  # exclusions must not outrank error/readonly/focus states
+
+
+def test_shadow_components_share_the_field_contract_and_preserve_typing():
+    source = (ROOT / 'web/components/forms/Form.js').read_text()
+    assert '/web/field-accessibility.css' in source
+    assert '--field-text' in source and '--field-bg' in source
+    subprocess.run(['node', 'tests/ui_field_components.cjs'], cwd=ROOT, check=True, timeout=30)

@@ -13,3 +13,4 @@ def test_all_routes_and_native_states_in_real_browser(tmp_path):
     subprocess.run(['node', 'tests/ui_field_contrast_browser.cjs', str(tmp_path)], cwd=ROOT, check=True, timeout=1200)
 
     subprocess.run(['node', 'tests/ui_field_forms_browser.cjs', str(tmp_path / 'forms')], cwd=ROOT, check=True, timeout=600)
+    subprocess.run(['node', 'tests/ui_field_shadow_browser.cjs', str(tmp_path / 'shadow')], cwd=ROOT, check=True, timeout=300)

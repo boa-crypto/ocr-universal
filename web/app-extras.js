@@ -1703,8 +1703,9 @@ async function initLangChips() {
   }
 
   document.addEventListener("keydown", e => {
-    if (typing(e.target)) {
-      if (e.key === "Escape") { e.target.blur(); closeSearch(); }
+    const inputTarget = (e.composedPath ? e.composedPath() : [e.target]).find(typing);
+    if (inputTarget) {
+      if (e.key === "Escape") { inputTarget.blur(); closeSearch(); }
       return;
     }
     if (e.metaKey || e.ctrlKey || e.altKey) return;

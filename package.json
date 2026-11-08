@@ -21,7 +21,8 @@
     "ui:motion": "node tests/ui_visual_motion.cjs",
     "ui:motion:browser": "node tests/ui_visual_motion_browser.cjs",
     "ui:fields:browser": "node tests/ui_field_contrast_browser.cjs",
-    "ui:fields:forms": "node tests/ui_field_forms_browser.cjs"
+    "ui:fields:forms": "node tests/ui_field_forms_browser.cjs",
+    "ui:fields:shadow": "node tests/ui_field_shadow_browser.cjs"
   },
   "devDependencies": {
     "@sparticuz/chromium": "153.0.0",

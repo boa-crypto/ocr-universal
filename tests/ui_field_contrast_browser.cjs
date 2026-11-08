@@ -32,12 +32,17 @@ function inspect(includeChoices = false) {
     b = lum(rgb(b));
     return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
   };
-  return [
-    ...document.querySelectorAll(
-      'input,textarea,select,[contenteditable="true"],[role="combobox"]' +
-        (includeChoices ? ',[role="listbox"],[role="option"]' : ""),
-    ),
-  ]
+  const scopes = [document];
+  for (let i = 0; i < scopes.length; i++)
+    for (const e of scopes[i].querySelectorAll("*"))
+      if (e.shadowRoot) scopes.push(e.shadowRoot);
+  return scopes
+    .flatMap((root) => [
+      ...root.querySelectorAll(
+        'input,textarea,select,[contenteditable="true"],[role="combobox"]' +
+          (includeChoices ? ', [role="listbox"],[role="option"]' : ""),
+      ),
+    ])
     .filter(
       (e) =>
         e.getClientRects().length &&
@@ -59,10 +64,11 @@ function inspect(includeChoices = false) {
       const s = getComputedStyle(e),
         p = getComputedStyle(e, "::placeholder");
       let opacity = 1;
-      for (let n = e; n; n = n.parentElement)
+      for (let n = e; n; n = n.parentElement || n.getRootNode().host)
         opacity *= Number(getComputedStyle(n).opacity);
       return {
         id: e.id,
+        host: e.getRootNode().host?.id || null,
         type: e.type || e.getAttribute("role") || e.tagName.toLowerCase(),
         text: s.color,
         fill: s.webkitTextFillColor,
@@ -91,24 +97,28 @@ function verify(rows, where) {
     assert(!f.fill.includes("rgba(0, 0, 0, 0)"), where + " transparent text");
   }
 }
-module.exports = { inspect, verify };
+async function launchBrowser() {
+  return chromium.launch({
+    executablePath: await binary.executablePath(),
+    args: binary.args.filter(
+      (a) =>
+        !a.includes("disable-web-security") &&
+        !a.includes("allow-running-insecure-content"),
+    ),
+    env: { ...process.env, LD_LIBRARY_PATH: "/tmp/uniocr-chromium-libs/lib" },
+  });
+}
+module.exports = { inspect, verify, launchBrowser };
 if (require.main === module)
   (async () => {
-    const b = await chromium.launch({
-      executablePath: await binary.executablePath(),
-      args: binary.args.filter(
-        (a) =>
-          !a.includes("disable-web-security") &&
-          !a.includes("allow-running-insecure-content"),
-      ),
-      env: { ...process.env, LD_LIBRARY_PATH: "/tmp/uniocr-chromium-libs/lib" },
-    });
+    let b;
     try {
       for (const width of [1440, 1280, 834, 390].filter(
         (w) =>
           !process.env.UI_FIELD_WIDTH ||
           w === Number(process.env.UI_FIELD_WIDTH),
       )) {
+        b = await launchBrowser();
         const c = await b.newContext({
             viewport: { width, height: 1000 },
             serviceWorkers: "block",
@@ -132,10 +142,12 @@ if (require.main === module)
           ]),
         );
         for (const theme of ["light", "dark"]) {
-          await p.evaluate(
-            (t) => (document.documentElement.dataset.theme = t),
-            theme,
-          );
+          await p.evaluate((t) => {
+            if (document.documentElement.dataset.theme !== t)
+              document.getElementById("themeToggle").click();
+            if (document.documentElement.dataset.theme !== t)
+              throw Error("Theme not applied: " + t);
+          }, theme);
           if (width === 1440) {
             await p.goto("http://127.0.0.1:8000/#dossiers/nouveau");
             await p.waitForTimeout(250);
@@ -161,11 +173,20 @@ if (require.main === module)
               [...document.querySelectorAll("input,textarea,select")]
                 .filter((e) => e.getClientRects().length)
                 .every((e) => {
-                  for (let n = e; n; n = n.parentElement)
+                  for (
+                    let n = e;
+                    n;
+                    n = n.parentElement || n.getRootNode().host
+                  )
                     if (Number(getComputedStyle(n).opacity) < 0.999)
                       return false;
                   return true;
                 }),
+            );
+            assert.equal(
+              await p.locator("html").getAttribute("data-theme"),
+              theme,
+              "route theme persisted",
             );
             const rows = await p.evaluate(inspect);
             verify(rows, `${width} ${theme} ${route}`);
@@ -179,10 +200,12 @@ if (require.main === module)
           await p.goto("http://127.0.0.1:8000/", {
             waitUntil: "domcontentloaded",
           });
-          await p.evaluate(
-            (t) => (document.documentElement.dataset.theme = t),
-            theme,
-          );
+          await p.evaluate((t) => {
+            if (document.documentElement.dataset.theme !== t)
+              document.getElementById("themeToggle").click();
+            if (document.documentElement.dataset.theme !== t)
+              throw Error("Theme not applied: " + t);
+          }, theme);
           await p.goto("http://127.0.0.1:8000/#dossiers/nouveau");
           await p.waitForTimeout(350);
           const modal = p.locator("#dos-create");
@@ -499,6 +522,8 @@ if (require.main === module)
           );
         }
         await c.close();
+        await b.close();
+        b = null;
       }
       assert.equal(report.errors.length, 0, JSON.stringify(report.errors));
       assert.equal(report.writes.length, 0, JSON.stringify(report.writes));
@@ -525,7 +550,7 @@ if (require.main === module)
         path.join(out, "report.json"),
         JSON.stringify(report, null, 2),
       );
-      await b.close();
+      if (b) await b.close();
     }
   })().catch((e) => {
     console.error(e);
