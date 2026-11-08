@@ -857,3 +857,12 @@ restent inchangés. Pagination et lecture refusent une empreinte divergente.
 72 tests ciblés et2304 documentaires réussis ; suite complète4459 réussis,
 2 échecs historiques et1 ignoré. CI du code0eabb8b1 réussie. Backend partagé
 non redémarré, publication toujours désactivée.
+
+## Parcours complet des fragments —100
+
+[Rapport100](RAPPORT_LOT100.md) : les pages longues sont entièrement parcourables
+dans la vue, sans changer les GET du99. Reconstruction API isolée exacte des
+221 pages/486098 points Unicode par256 fragments.77 ciblés et2309 documentaires
+réussis ; suite complète4464 réussis,2 échecs historiques,1 ignoré. CI du code
+e3116732 réussie. Sources, index, droits réels et backend partagé préservés ;
+aucun article juridiquement validé ou publié.

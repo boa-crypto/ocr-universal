@@ -3,7 +3,7 @@
 Le lot94 recentre les travaux sur les fonctions métier. Il ne signifie pas que
 l'ensemble de la mission est achevé. Aucun pourcentage déduit des tests/lots.
 
-| Fonction | État vérifiable après99 | Reste pour clôturer |
+| Fonction | État vérifiable après 100 | Reste pour clôturer |
 |---|---|---|
 | Fiche produit et questions | API/UI, champs déclarés/questions, pièces textuelles et citations Unicode exactes versionnées | Originaux PDF/images, authenticité des pièces et qualification opérateur |
 | Pistes et comparaison documentaire | Moteur littéral FR/AR, snapshot par révision ; matrice des valeurs déclarées/citations et candidats, écarts textuels/questions explicites | Synonymes/ontologie métier sourcés, comparaison technique discriminante |
@@ -83,3 +83,11 @@ non redémarré et aucune nouvelle habilitation réelle.
 pour la compilation. Aucun article juridiquement qualifié, aucune fusion de
 numéros et aucune relation d’abrogation inférée. La lecture garde les empreintes
 de la page sélectionnée et refuse un index changé pendant la pagination.
+
+## Parcours intégral des pages —100
+
+La lecture dispose de fragments précédent/suivant et du retour au contexte
+sélectionné, avec contrôles de longueur, curseur Unicode et empreintes.
+221 pages reconstituées exactement par API isolée en256 fragments, sans
+modifier les sources/index ou qualifier des articles. Voir le
+[rapport100](RAPPORT_LOT100.md) et le [guide](PARCOURS_FRAGMENTS_INDEXES.md).

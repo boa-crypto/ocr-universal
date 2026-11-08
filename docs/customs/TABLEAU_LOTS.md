@@ -160,3 +160,18 @@ attestés (run 42370535241) ; suite complète non relancée pour ce lot.
 
 Détails : [rapport99](RAPPORT_LOT99.md), [contrat](REPERES_ARTICLES_CANDIDATS.md),
 [recette](RECETTE_LOT99.json).
+
+## Parcours documentaire100
+
+| Élément | État vérifié |
+|---|---|
+| Fragments précédent/suivant, retour au contexte | Livrés ; même page physique |
+| Bornes, unité Unicode, longueur et empreintes | Contrôlées à chaque lecture |
+| Reconstitution réelle de l’index par API isolée |221 pages,486098 points de code,256 fragments exacts |
+| Tests |77 ciblés,2309 documentaires,17 scénarios JSDOM réussis |
+| Suite complète |4464 réussis,2 échecs historiques,1 ignoré |
+| Code/CI | e3116732 /42480093223 success |
+| Validation juridique et déploiement partagé | Inchangés, non effectués |
+
+[Rapport100](RAPPORT_LOT100.md), [guide](PARCOURS_FRAGMENTS_INDEXES.md),
+[recette100](RECETTE_LOT100.json).
