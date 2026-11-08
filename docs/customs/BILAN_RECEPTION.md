@@ -1,13 +1,24 @@
 # Bilan de réception — mission UniOCR douanière
 
-**État après le lot94 : PARTIEL, NON RECEVABLE POUR PRODUCTION FISCALE.**
+**État après le lot95 : PARTIEL, NON RECEVABLE POUR PRODUCTION FISCALE.**
 
 Poursuite effectuée sans demandes d'autorisations intermédiaires : lot 44 de constat
 littéral description/PDF, puis lot 45 de recette complète et corrections de tests.
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 94 : fonction métier nouvelle
+## État actuel — lot95 : interface et récupération de l'audit
+
+[Rapport consolidé95](RAPPORT_LOT95.md) : UI explicite des dossiers, comparaison
+littérale et historique, outbox transactionnelle de versions récupérable, snapshot
+SQLite de sauvegarde/reprise. **114 ciblés /2196 documentaires réussis ;16 JSDOM
+métier +212 historiques**. Complète corrigée **4351 réussis,2 échecs Indra,
+1 ignoré** ; CI42469367668 réussie sur2f21fb99. L'initiale avait un troisième
+échec de contrat de cache, corrigé puis complète réexécutée. 26/27 SHA, même
+écart préexistant préservé. Aperçu backend76 non redémarré. Pas de source nouvelle,
+d'IA, validation juridique, justificatifs techniques rattachés ou publication.
+
+## État antérieur — lot 94 : fonction métier nouvelle
 
 [Dossiers de proposition tarifaire](DOSSIERS_PROPOSITION_TARIFAIRE.md) : API de
 produit structuré, pistes FR/AR, questions, abstention, revue/proposition humaine/

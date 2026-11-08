@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État après le lot 94 — mesures datées du 2026-11-08 (horloge environnement). **Terminé = périmètre technique livré et
+État après le lot95 — date de référence de session : 2026-11-04. **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -99,6 +99,7 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 92 | CSV groupé : valeur retenue/origine ajoutées, neutraliseur sur huit colonnes | Terminé, 41 nouveaux cas et CI ciblée | Fichier partagé et sécurité tableur globale non corrigés ; aperçu76 ; Indra absent, intégrité26/27 |
 | 93 | CSV groupé mémoire : octets indépendants, entrelacement HTTP | Terminé, 18 nouveaux cas et CI ciblée | Autres formats partagés, pas transaction lot/charge ; aperçu76 ; Indra absent, intégrité26/27 |
 | 94 | Dossiers métier de proposition tarifaire : produit, questions, revue, historique SQLite/CAS | Terminé côté API,29 nouveaux cas | Pas UI/IA/validation juridique, audit externe postcommit ; aperçu76 ; Indra absent,26/27 SHA |
+| 95 | Interface dossiers, outbox versions et snapshot SQLite | Terminé techniquement | Au moins une fois, pas exactly-once ; pas IA/droit qualifié/déploiement ; voir RAPPORT_LOT95.md |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
 `RAPPORT_LOT61.md`. Les limites historiques des rapports précédents sont à lire
