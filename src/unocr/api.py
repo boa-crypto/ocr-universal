@@ -2774,14 +2774,16 @@ def export_batch(request: Request, fmt: str,
         with path.open("w", newline="", encoding="utf-8-sig") as f:
             w = csv.writer(f)
             w.writerow(["document", "champ", "valeur_brute", "valeur_normalisee",
-                        "confiance", "statut"])
+                        "confiance", "statut", "valeur_retenue", "origine_valeur"])
             for fn, r in results:
                 for name, fv in (r.get("fields") or {}).items():
                     w.writerow([
                         sanitize_for_csv(fn), sanitize_for_csv(name),
                         sanitize_for_csv(fv.get("raw_value")),
                         sanitize_for_csv(fv.get("normalized_value")),
-                        fv.get("confidence"), fv.get("status"),
+                        sanitize_for_csv(fv.get("confidence")), sanitize_for_csv(fv.get("status")),
+                        sanitize_for_csv(_etat_champ(fv)["valeur"]),
+                        sanitize_for_csv(fv.get("value_origin")),
                     ])
     elif fmt == "xlsx":
         path = out_dir / f"lot_{stamp}.xlsx"
