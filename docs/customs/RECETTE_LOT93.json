@@ -1,0 +1,164 @@
+{
+  "type_rapport": "recette_lot93_technique_non_validation_reglementaire",
+  "date_mesures_environnement": "2026-11-08",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "revision_code": "a2ad14314f92a050cec0d94957a8eaebfb41b783",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_originaux_officiels": 0,
+  "articles_codes_officiellement_valides": 0,
+  "nouveaux_tests_python": 18,
+  "selection_csv_exports_attribution_revision_cloisonnement": {
+    "tests": 927,
+    "reussis": 927,
+    "echecs": 0,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 26.66,
+    "duree_junit_secondes": 25.292,
+    "horodatage_junit": "2026-11-08T09:14:30.756112+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 927,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "contre_epreuve_csv92": {
+    "tests": 18,
+    "reussis": 9,
+    "echecs": 9,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 5.72,
+    "duree_junit_secondes": 3.089,
+    "horodatage_junit": "2026-11-08T09:15:11.858875+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 18,
+      "failures": 9,
+      "errors": 0,
+      "skipped": 0
+    },
+    "code_sortie": 1,
+    "revision_chargee": "337bdc27dae341b2c908ed694aff5a71e1ed7529",
+    "corps_export_batch_reinjecte_memoire_sans_decorateurs": true,
+    "sources_checkout_non_remplacees": true,
+    "apercu_non_modifie": true,
+    "entrelacement_http_csv_echec_contenu_avant_entetes_verifie": true
+  },
+  "recette_documentaire_ciblee": {
+    "tests": 2160,
+    "reussis": 2160,
+    "echecs": 0,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 58.08,
+    "duree_junit_secondes": 58.034,
+    "horodatage_junit": "2026-11-08T09:15:06.425941+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 2160,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "fichiers": 66,
+    "jsdom_existants": 212
+  },
+  "suite_complete": {
+    "tests": 4318,
+    "reussis": 4315,
+    "echecs": 2,
+    "erreurs": 0,
+    "ignores": 1,
+    "avertissements": 1,
+    "duree_console_secondes": 373.74,
+    "duree_junit_secondes": 373.64,
+    "horodatage_junit": "2026-11-08T09:15:06.346129+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 4318,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 1
+    },
+    "identifiants_echecs": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ],
+    "ignores_detail": [
+      "tests.test_indra_ocr::test_indra_engine_recognize"
+    ],
+    "code_sortie": 1,
+    "identiques_lot92": true
+  },
+  "politique": {
+    "route": "GET /api/batches/export/csv",
+    "response_octets_memoire_avant_audit": true,
+    "utf8_bom_writer_huit_colonnes92_conserves": true,
+    "sans_chemin_partage": true,
+    "anciens_fichiers_non_modifies": true,
+    "media_type": "text/csv; charset=utf-8",
+    "filename": "lot.csv",
+    "cache_control": "no-store",
+    "sans_etag_last_modified_fichier": true,
+    "entrelacement_http_meme_seconde_cliches_independants": true,
+    "lectures_par_document_pas_transaction_lot": true
+  },
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "referentiels": {
+      "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+      "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d",
+      "conforme": false
+    },
+    "ecart_identique_lot92": true,
+    "restauration_effectuee": false,
+    "donnees_journaux_exploratoires_preserves_hors_commit": true
+  },
+  "ci": {
+    "run": 42466377924,
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42466377924",
+    "statut": "success",
+    "revision": "a2ad14314f92a050cec0d94957a8eaebfb41b783",
+    "portee": "908 CSV/JSON/horodatage/audit/attribution/demo/action/statuts/annulation/champs/révision/classification/valeurs/cloisonnement/RBAC + 243 qualité/Baidu + 24 ingestion/PDF + 10 UI + documentaire ; sélections se recouvrant",
+    "ocr_complet_execute_en_ci": false,
+    "junit_distant_telecharge": false
+  },
+  "apercu": {
+    "processus": "interface-uniocr-4f62d340",
+    "backend_lot": 76,
+    "code77_93_charge": false,
+    "redemarrage_impose": false,
+    "port": 8000,
+    "rbac_json_absent": true
+  },
+  "artefacts_locaux": "/home/user/recettes-unocr/lot93",
+  "limites": [
+    "CSV groupé seulement ; TXT/XLSX/archives groupés et autres formats fichiers inchangés",
+    "Nom/media HTTP changés explicitement, colonnes/BOM/neutraliseur92 conservés",
+    "Séquence par document pas transaction multi-documents ou état final garanti",
+    "Limite200 pas borne octets/mémoire/CPU ; pas streaming ou charge qualifiés",
+    "no-store pas purge anciens caches clients/offline/proxies",
+    "Pas validation universelle/qualité/redaction/qualification tableur",
+    "Audit après préparation pas preuve livraison ou nouvelle identité",
+    "Révision processus/ABA, droits et autres écrivains inchangés",
+    "Aperçu76 maintenu, code77–93 non chargé",
+    "Deux échecs Indra persistants, intégrité26/27",
+    "Aucun nouvel original officiel ou validation réglementaire"
+  ]
+}
