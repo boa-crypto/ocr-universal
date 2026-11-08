@@ -113,3 +113,63 @@ def test_lecture_offset_apres_fin_pas_de_texte_invente(marqueurs):
     r, f, sha = marqueurs
     p = lire_page_indexee(r[1] / "code_a", f, sha, "TEST_O", 1, 20, len(TEXTE) + 20)
     assert p["fragment"] == "" and p["decalage_suivant"] is None
+
+
+@pytest.fixture()
+def page_longue(marqueurs):
+    r, f, _ = marqueurs
+    texte = "DOUANES FIXTURE NON OFFICIELLE\nArt. 137. — Candidat\n" + "😀é NON OFFICIELLE douanes\n" * 700
+    data = json.loads(f.read_text())
+    for document in data["documents"]:
+        document["pages"][0]["texte"] = texte
+        document["pages"][0]["sha256_texte_utf8"] = hashlib.sha256(texte.encode()).hexdigest()
+    f.write_text(json.dumps(data, ensure_ascii=False))
+    sha = hashlib.sha256(f.read_bytes()).hexdigest()
+    registry = json.loads(r[2].read_text())
+    next(lot for lot in registry["lots"] if lot["id"] == "code_a")["index_pdf_sha256"] = sha
+    r[2].write_text(json.dumps(registry))
+    return r, f, sha, texte
+
+
+@pytest.mark.parametrize("limite", [3999, 4000, 16000])
+def test_fragments_reconstituent_exactement_unicode_sans_trou(page_longue, limite):
+    r, f, sha, texte = page_longue
+    offset, fragments = 0, []
+    while True:
+        p = lire_page_indexee(r[1] / "code_a", f, sha, "TEST_O", 1, limite, offset)
+        assert p["fragment"] == texte[offset : offset + limite]
+        assert p["total_caracteres"] == len(texte)
+        assert p["unite_decalage"] == "points_de_code_unicode_python"
+        assert p["sha256_texte_utf8"] == hashlib.sha256(texte.encode()).hexdigest()
+        fragments.append(p["fragment"])
+        if p["decalage_suivant"] is None:
+            break
+        assert p["decalage_suivant"] == offset + len(p["fragment"]) > offset
+        offset = p["decalage_suivant"]
+    assert "".join(fragments) == texte
+
+
+def test_fragments_http_reconstruction_et_no_store(page_longue):
+    r, _, sha, texte = page_longue
+    offset, fragments = 0, []
+    while True:
+        response = r[0].get(
+            BASE + "/lots/code_a/pdf-index-page",
+            params={"document_id": "TEST_O", "page": 1, "offset": offset, "limit": 4000},
+            headers=ADMIN,
+        )
+        assert response.status_code == 200
+        assert response.headers["cache-control"] == "no-store"
+        value = response.json()["resultat"]
+        assert value["index_sha256"] == sha and value["validation_juridique"] == "non_validee"
+        fragments.append(value["fragment"])
+        if value["decalage_suivant"] is None:
+            break
+        offset = value["decalage_suivant"]
+    assert "".join(fragments) == texte
+
+
+def test_interface_fragments_sur_api_http(page_longue):
+    from test_customs_pdf_index import test_interface_sur_api_http
+
+    test_interface_sur_api_http(page_longue)

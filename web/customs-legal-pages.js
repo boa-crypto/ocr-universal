@@ -9,18 +9,23 @@
     q.maxLength=doc.maxLength=256;q.dir=doc.dir=output.dir='auto';button.type=next.type='button';status.setAttribute('role','status');label.append(q);docLabel.append(doc);root.append(legend,label,docLabel,button,next,status,output);parent.append(root);
     var modeLabel=node('label','Mode de consultation'),mode=node('select');mode.dataset.pdfMode='';['texte','reperes'].forEach(function(k){var o=node('option',k==='texte'?'Recherche de texte':'Repères d’articles candidats');o.value=k;mode.append(o);});modeLabel.append(mode);root.insertBefore(modeLabel,button);
     var navigation=node('div'),pageView=node('pre');pageView.dir='auto';pageView.dataset.indexPage='';root.append(navigation,pageView);
-    var offset=null,lastQuery=null;
+    var pageControls=node('div'),previousFragment=node('button','Fragment précédent'),nextFragment=node('button','Fragment suivant'),anchorFragment=node('button','Revenir au contexte sélectionné'),pageInfo=node('p');
+    [previousFragment,nextFragment,anchorFragment].forEach(function(b){b.type='button';pageControls.append(b);});
+    pageControls.setAttribute('role','group');pageControls.setAttribute('aria-label','Navigation du texte indexé non vérifié');
+    previousFragment.dataset.previousFragment='';nextFragment.dataset.nextFragment='';anchorFragment.dataset.anchorFragment='';pageInfo.setAttribute('role','status');root.insertBefore(pageControls,pageView);root.insertBefore(pageInfo,pageView);
+    var offset=null,lastQuery=null,pageState=null;
+    function resetPage(){pageState=null;pageView.textContent='';pageInfo.textContent='';pageControls.hidden=true;}
     mode.addEventListener('change',function(){q.value='';q.maxLength=mode.value==='texte'?256:32;label.firstChild.textContent=mode.value==='texte'?'Termes littéraux (même page)':'Numéro littéral exact (facultatif, pas article validé)';clear();});
     function current(){return !revoked&&root.isConnected&&active()&&token()===initialToken;}
-    function update(){root.disabled=busy||!lot.selectedOptions.length||lot.selectedOptions[0].dataset.lotType!=='code';next.disabled=busy||offset===null;}
-    function clear(){seq++;offset=null;lastQuery=null;output.textContent='';navigation.replaceChildren();pageView.textContent='';status.textContent='Recherche documentaire uniquement, sans correction du texte ni droit à date.';update();}
+    function update(){root.disabled=busy||!lot.selectedOptions.length||lot.selectedOptions[0].dataset.lotType!=='code';next.disabled=busy||offset===null;pageControls.hidden=pageState===null;previousFragment.disabled=busy||!pageState||pageState.start===0;nextFragment.disabled=busy||!pageState||pageState.next===null;anchorFragment.disabled=busy||!pageState||pageState.start===pageState.anchor;}
+    function clear(){seq++;offset=null;lastQuery=null;output.textContent='';navigation.replaceChildren();resetPage();status.textContent='Recherche documentaire uniquement, sans correction du texte ni droit à date.';update();}
     lot.addEventListener('change',function(){q.value=doc.value='';clear();});
     [q,doc].forEach(function(i){i.addEventListener('input',clear);});
     async function search(start){
       if(!current()){root.replaceChildren();return;}
       if(busy||(mode.value==='texte'&&!q.value.trim()))return;
       var number=++seq,selection=lot.value,query=q.value,documentId=doc.value,kind=mode.value;
-      busy=true;update();output.textContent='';navigation.replaceChildren();pageView.textContent='';status.textContent='Recherche…';
+      busy=true;update();output.textContent='';navigation.replaceChildren();resetPage();status.textContent='Recherche…';
       try{
         var params=new URLSearchParams({limit:'20',offset:String(start)});if(kind==='texte')params.set('q',query);else if(query)params.set('numero',query);if(documentId)params.set('document_id',documentId);
         var headers={Accept:'application/json'};if(initialToken)headers.Authorization='Bearer '+initialToken;
@@ -39,10 +44,11 @@
       }catch(e){if(current()&&number===seq){offset=null;lastQuery=null;output.textContent='';status.textContent=e.message||'Connexion interrompue.';}}
       finally{busy=false;if(!current())root.replaceChildren();else update();}
     }
-    async function readPage(item,origin,selection){
+    async function readPage(item,origin,selection,requestedStart,expectedTotal){
       if(!current()){root.replaceChildren();return;}if(busy||lot.value!==selection)return;
-      var number=++seq,start=Number.isInteger(item.debut)?Math.max(0,item.debut-200):0;
-      busy=true;update();pageView.textContent='';
+      var anchor=Number.isInteger(item.debut)?Math.max(0,item.debut-200):0;
+      var number=++seq,start=requestedStart===undefined?anchor:requestedStart;
+      busy=true;resetPage();update();
       try{
         var params=new URLSearchParams({document_id:item.document_id,page:String(item.page_pdf),offset:String(start),limit:'4000'}),headers={Accept:'application/json'};if(initialToken)headers.Authorization='Bearer '+initialToken;
         var response=await fetch('/api/v1/customs-review/lots/'+encodeURIComponent(selection)+'/pdf-index-page?'+params,{headers:headers,method:'GET',credentials:'same-origin',cache:'no-store'});
@@ -50,10 +56,16 @@
         if(!response.ok){if(response.status===401||response.status===403){revoked=true;root.replaceChildren();return;}throw Error('Lecture de page refusée ('+response.status+').');}
         var data=await response.json();if(!current()||number!==seq)return;var p=data.resultat;
         if(data.lecture_seule!==true||data.publication_active!==false||data.validation_juridique!=='non_validee'||data.perimetre!=='revue_administrative_quarantaine'||!p||p.type_rapport!=='lecture_page_pdf_indexee'||p.lot_id!==selection||p.document_id!==item.document_id||p.page_pdf!==item.page_pdf||p.pdf_sha256!==item.pdf_sha256||p.sha256_texte_utf8!==item.sha256_texte_utf8||p.index_sha256!==origin.index_sha256||!p.archive||p.archive.manifest_sha256!==origin.archive.manifest_sha256||p.publication_active!==false||p.validation_juridique!=='non_validee'||p.ocr_effectue!==false||p.decalage!==start||p.limite!==4000||typeof p.fragment!=='string'||Array.from(p.fragment).length>4000)throw Error('Page indexée non conforme ou index changé ; relancer la recherche.');
+        var length=Array.from(p.fragment).length;
+        if(p.lecture_seule!==true||p.transcription_verification!=='non_verifiee'||p.unite_decalage!=='points_de_code_unicode_python'||!Number.isInteger(p.nombre_pages_pdf)||p.nombre_pages_pdf<item.page_pdf||!Number.isInteger(p.total_caracteres)||p.total_caracteres<start||p.total_caracteres>67108864||length!==Math.min(4000,p.total_caracteres-start)||p.decalage_suivant!==(start+length<p.total_caracteres?start+length:null)||(expectedTotal!==undefined&&expectedTotal!==p.total_caracteres))throw Error('Pagination de page non conforme ; relancer la recherche.');
+        pageState={item:item,origin:origin,selection:selection,start:start,next:p.decalage_suivant,anchor:anchor,total:p.total_caracteres};
+        pageInfo.textContent='Fragment Unicode ['+start+', '+(start+length)+'[ sur '+p.total_caracteres+' points de code — page physique '+p.page_pdf+' sur '+p.nombre_pages_pdf+'. Les fragments ne délimitent pas des articles.';
         pageView.textContent='Copie indexée non vérifiée — '+p.document_id+' — page physique '+p.page_pdf+' — décalage Unicode '+start+'\nSHA du texte : '+p.sha256_texte_utf8+'\n'+p.fragment;
-      }catch(e){if(current()&&number===seq){pageView.textContent='';status.textContent=e.message||'Connexion interrompue.';}}
+      }catch(e){if(current()&&number===seq){resetPage();status.textContent=e.message||'Connexion interrompue.';}}
       finally{busy=false;if(!current())root.replaceChildren();else update();}
     }
+    function moveFragment(kind){if(!pageState||busy)return;var s=pageState,target=kind==='previous'?Math.max(0,s.start-4000):kind==='next'?s.next:s.anchor;if(target!==null)readPage(s.item,s.origin,s.selection,target,s.total);}
+    previousFragment.addEventListener('click',function(){moveFragment('previous');});nextFragment.addEventListener('click',function(){moveFragment('next');});anchorFragment.addEventListener('click',function(){moveFragment('anchor');});
     button.addEventListener('click',function(){search(0);});next.addEventListener('click',function(){if(offset!==null&&lastQuery&&lastQuery.q===q.value&&lastQuery.doc===doc.value&&lastQuery.kind===mode.value)search(offset);});clear();
   }
   window.UniOCRCustomsLegalPages=Object.freeze({mount:mount});

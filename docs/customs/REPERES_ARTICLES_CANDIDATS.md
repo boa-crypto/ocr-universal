@@ -90,3 +90,26 @@ Les PDF/index existants ne sont pas modifiés. Les repères sont calculés à la
 lecture et ne changent pas le registre ou ses habilitations. L'API du serveur
 partagé n'a pas été redémarrée : l'interface 99 nécessite un backend actualisé et
 un compte habilité, non une ouverture automatique des droits.
+
+## Parcours complet des fragments —100
+
+La lecture permet désormais **Fragment précédent**, **Fragment suivant** et
+**Revenir au contexte sélectionné**. Les offsets restent des points de code
+Unicode, pas des octets ou des unités UTF-16 du navigateur. Suivant commence
+exactement après le fragment courant ; précédent remonte de4000 points (sans
+passer sous0) ; retour reprend le point d'entrée initial du résultat sélectionné.
+Ces déplacements restent dans la même page physique, pas vers un autre article.
+
+La vue indique l'intervalle semi-ouvert affiché et la longueur totale de la
+page. La première/dernière commande est désactivée à sa borne ; retour l'est au
+point d'entrée. Une page longue n'est donc plus limitée à son premier fragment.
+Des retours en arrière peuvent naturellement revisiter le même texte ; un
+parcours suivant depuis0 n'a ni trou ni duplication.
+
+Chaque lecture exige les mêmes empreintes d'origine, une longueur totale
+stable, un fragment de la longueur attendue, le curseur exact et l'unité
+Unicode déclarée. Un curseur qui ne progresse pas, une troncature inattendue ou
+un index changé efface le contexte et désactive ses commandes. Changements de
+requête, document, lot, mode, route ou compte invalident les réponses tardives.
+Le texte demeure non vérifié et aucune étape de navigation n'écrit de données
+juridiques. Le backend partagé n'est pas mis à jour automatiquement.
