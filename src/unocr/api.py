@@ -3106,7 +3106,7 @@ def patch_classification(job_id: str, request: Request, body: dict) -> dict:
     if resultat is None:
         raise HTTPException(409, "résultat pas encore disponible")
     categorie = str(body.get("category") or "").strip()
-    acteur = str(body.get("user") or "utilisateur")
+    acteur = _acteur(request)
     if not categorie:
         raise HTTPException(422, "catégorie requise")
     try:

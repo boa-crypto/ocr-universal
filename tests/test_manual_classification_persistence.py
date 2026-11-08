@@ -35,7 +35,7 @@ def test_manual_category_survives_fresh_store_and_get(scoped, membership, catego
     assert response.status_code == 200, response.text
     decision = response.json()["classification"]
     assert decision["category"] == category and decision["manual"] is True
-    assert decision["corrected_by"] == "DECLARED77"  # historique déclaratif, pas identité prouvée
+    assert decision["corrected_by"] == "a"  # principal serveur, pas identité civile (lot86)
     assert decision["evidence"] == []  # ne pas attribuer les anciennes preuves à une autre catégorie
     expected = {**original, "classification": decision}
     assert JobStore(cfg).load_result(job) == expected
