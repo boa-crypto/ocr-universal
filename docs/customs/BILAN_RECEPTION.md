@@ -866,3 +866,13 @@ dans la vue, sans changer les GET du99. Reconstruction API isolée exacte des
 réussis ; suite complète4464 réussis,2 échecs historiques,1 ignoré. CI du code
 e3116732 réussie. Sources, index, droits réels et backend partagé préservés ;
 aucun article juridiquement validé ou publié.
+
+## Catalogue des pages physiques —101
+
+[Rapport101](RAPPORT_LOT101.md) : navigation sans mot-clé, filtre exact de
+document/page, pages sans texte indexé incluses et lisibles sans OCR.
+221 métadonnées conformes à l’index, catalogue parcouru en12 requêtes ;
+reconstitution exacte des221 pages en256 fragments.95 ciblés et2327
+documentaires réussis ; suite complète4482 réussis,2 échecs historiques,
+1 ignoré ; CI7f7b7827 réussie. Sources, index et habilitations préservés,
+backend partagé non redémarré. Pas de qualification juridique ou publication.

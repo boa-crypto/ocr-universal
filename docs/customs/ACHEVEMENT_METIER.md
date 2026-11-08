@@ -3,7 +3,7 @@
 Le lot94 recentre les travaux sur les fonctions métier. Il ne signifie pas que
 l'ensemble de la mission est achevé. Aucun pourcentage déduit des tests/lots.
 
-| Fonction | État vérifiable après 100 | Reste pour clôturer |
+| Fonction | État vérifiable après 101 | Reste pour clôturer |
 |---|---|---|
 | Fiche produit et questions | API/UI, champs déclarés/questions, pièces textuelles et citations Unicode exactes versionnées | Originaux PDF/images, authenticité des pièces et qualification opérateur |
 | Pistes et comparaison documentaire | Moteur littéral FR/AR, snapshot par révision ; matrice des valeurs déclarées/citations et candidats, écarts textuels/questions explicites | Synonymes/ontologie métier sourcés, comparaison technique discriminante |
@@ -91,3 +91,11 @@ sélectionné, avec contrôles de longueur, curseur Unicode et empreintes.
 221 pages reconstituées exactement par API isolée en256 fragments, sans
 modifier les sources/index ou qualifier des articles. Voir le
 [rapport100](RAPPORT_LOT100.md) et le [guide](PARCOURS_FRAGMENTS_INDEXES.md).
+
+## Catalogue physique sans mot-clé —101
+
+Le [catalogue](CATALOGUE_PAGES_INDEXEES.md) expose les pages indexées avec filtres
+exacts de document/page, y compris sans texte natif. Lecture avec les empreintes
+du catalogue, sans ajout d’article ou de relation juridique.221 métadonnées
+contrôlées sur les copies réelles ;95 ciblés et2327 documentaires réussis.
+[Rapport101](RAPPORT_LOT101.md), backend partagé et droits réels inchangés.

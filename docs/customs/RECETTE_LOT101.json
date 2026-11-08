@@ -1,0 +1,111 @@
+{
+  "type_rapport": "recette_catalogue_physique_indexe_non_validation_juridique",
+  "revision_code": "7f7b7827c3c52763b48a84a1af521a71eac4b653",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "nouveaux_tests_python": 18,
+  "selection_ciblee": {
+    "tests": 95,
+    "echecs": 0,
+    "ignores": 0,
+    "duree_secondes": 11.719,
+    "echecs_ids": []
+  },
+  "suite_complete": {
+    "tests": 4485,
+    "echecs": 2,
+    "ignores": 1,
+    "duree_secondes": 378.042,
+    "echecs_ids": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ]
+  },
+  "recette_documentaire": {
+    "lisible": true,
+    "compteurs_coherents_avec_cas": true,
+    "selection_sans_echec_ni_ignore": true,
+    "tests": 2327,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "scenarios_jsdom_pages": 23,
+  "recette_api_copies_reelles": {
+    "tests": 1,
+    "echecs": 0,
+    "ignores": 0,
+    "duree_secondes": 11.43,
+    "echecs_ids": []
+  },
+  "observations_reelles": {
+    "lot_id": "lois_recues_1979_2017",
+    "index_sha256": "e055e6dafccb2eb4f56e2b75917be81f1773c9658a8758f284572d3de40a85c5",
+    "manifest_sha256": "086ddbf89fb0770418e56a83dfe3bc5647d2494cd6a0bed6231ef0492b897605",
+    "documents": [
+      {
+        "document_id": "DZ_LOI_17_04_2017",
+        "pages_reconstituees": 35,
+        "fragments_http": 70,
+        "points_de_code_unicode": 178086,
+        "sha_pdf": "d0f2c3089769ae42949477fdb9b854c83f56eb403fb28dc81eecb125d5f866c6"
+      },
+      {
+        "document_id": "DZ_CODE_COMPILATION_JUIN_2017",
+        "pages_reconstituees": 186,
+        "fragments_http": 186,
+        "points_de_code_unicode": 308012,
+        "sha_pdf": "37c8bc3f614ffb127e2104dd70205ed279160d2ca522b9b523505fca7015b09a"
+      }
+    ],
+    "reconstitution_exacte_index": true,
+    "catalogue_conforme_index": true,
+    "pages_cataloguees": 221,
+    "pages_sans_texte_indexe": 0,
+    "appels_catalogue_pagination": 12,
+    "filtres_derniere_page_verifies": 2,
+    "extraction_pdf_fraiche": false,
+    "ocr_effectue": false,
+    "qualification_juridique": false,
+    "habilitation_reelle_modifiee": false
+  },
+  "ci": {
+    "conclusion": "success",
+    "databaseId": 42481017950,
+    "headSha": "7f7b7827c3c52763b48a84a1af521a71eac4b653",
+    "status": "completed",
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42481017950"
+  },
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "identique_au_lot100": true,
+    "ecarts": {
+      "data/referentiels.json": {
+        "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+        "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d",
+        "conforme": false
+      }
+    },
+    "restauration": false
+  },
+  "mission_globale": "partielle",
+  "authenticite_etablie": false,
+  "articles_juridiques_valides": 0,
+  "publication_active": false,
+  "limites": [
+    "Inventaire de lindex epingle seulement, pas de toutes les sources juridiques",
+    "Page sans texte indexe ne signifie pas page PDF vide",
+    "Pas extraction fraiche, OCR ou validation visuelle de la transcription",
+    "JSDOM et HTTP de test, pas navigateurs reels ou qualification de charge",
+    "Backend partage76 non redemarre, droits reels inchanges"
+  ],
+  "artefacts_locaux": "/home/user/recettes-unocr/lot101",
+  "empreintes_artefacts": {
+    "complete.xml": "0ef29ca05450661bcace19af1cede1c596ff816c858f7e0db6433408af1f9b13",
+    "cibles.xml": "0bf9fa644a6db72553a4831eaa013e331c2f2bce3d7fc142021fb1c30d4cd41e",
+    "ci.json": "e8fb9e5d1834e6024cf917c2fe6e16db2ba54ade0463c3a640887b6bde204b56",
+    "http-reels.xml": "432ac0170e3c8ab8ee9e21666c4f7e4e6c600b91ccd55557b8f933b3232d5e66",
+    "empreintes.json": "3b18e562e592bbc56df5124bdb4c74adecc975fb516efb08412664a32df86c08",
+    "catalogue-reel.json": "226132f90ad96fc93080409d87158cf1f079c4e81dc035ddfc2f2bdcf1bfc91e"
+  }
+}

@@ -55,3 +55,10 @@ Les PDF et l'index existants sont inchangés. La navigation ne corrige ni l'ordr
 des colonnes ni les caractères dégradés ; ce n'est ni un OCR, ni une délimitation
 d'articles, ni une consolidation juridique. La copie de la loi 17-04 et la
 compilation portant Juin 2017 restent des sources reçues non authentifiées.
+
+## Accès sans recherche textuelle —101
+
+Le [catalogue des pages](CATALOGUE_PAGES_INDEXEES.md) permet aussi de sélectionner
+une page par identifiant documentaire et numéro physique exact, y compris si
+aucun texte natif n’est indexé. Les mêmes commandes de fragments et contrôles
+d’empreinte s’appliquent. Ce n’est pas une extraction fraîche ou un rendu PDF.

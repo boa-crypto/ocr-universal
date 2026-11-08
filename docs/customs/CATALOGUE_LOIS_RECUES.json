@@ -1,0 +1,31 @@
+{
+  "lot_id": "lois_recues_1979_2017",
+  "index_sha256": "e055e6dafccb2eb4f56e2b75917be81f1773c9658a8758f284572d3de40a85c5",
+  "manifest_sha256": "086ddbf89fb0770418e56a83dfe3bc5647d2494cd6a0bed6231ef0492b897605",
+  "documents": [
+    {
+      "document_id": "DZ_LOI_17_04_2017",
+      "pages_reconstituees": 35,
+      "fragments_http": 70,
+      "points_de_code_unicode": 178086,
+      "sha_pdf": "d0f2c3089769ae42949477fdb9b854c83f56eb403fb28dc81eecb125d5f866c6"
+    },
+    {
+      "document_id": "DZ_CODE_COMPILATION_JUIN_2017",
+      "pages_reconstituees": 186,
+      "fragments_http": 186,
+      "points_de_code_unicode": 308012,
+      "sha_pdf": "37c8bc3f614ffb127e2104dd70205ed279160d2ca522b9b523505fca7015b09a"
+    }
+  ],
+  "reconstitution_exacte_index": true,
+  "catalogue_conforme_index": true,
+  "pages_cataloguees": 221,
+  "pages_sans_texte_indexe": 0,
+  "appels_catalogue_pagination": 12,
+  "filtres_derniere_page_verifies": 2,
+  "extraction_pdf_fraiche": false,
+  "ocr_effectue": false,
+  "qualification_juridique": false,
+  "habilitation_reelle_modifiee": false
+}

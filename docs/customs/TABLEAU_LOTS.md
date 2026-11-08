@@ -175,3 +175,18 @@ Détails : [rapport99](RAPPORT_LOT99.md), [contrat](REPERES_ARTICLES_CANDIDATS.m
 
 [Rapport100](RAPPORT_LOT100.md), [guide](PARCOURS_FRAGMENTS_INDEXES.md),
 [recette100](RECETTE_LOT100.json).
+
+## Catalogue physique101
+
+| Élément | État vérifié |
+|---|---|
+| Catalogue sans mot-clé, filtre exact document/page | Livré, paginé et protégé |
+| Pages sans texte indexé | Incluses, pas réputées vides ; fixture dédiée |
+| Concordance sur copies réelles |221 métadonnées,12 requêtes de catalogue |
+| Tests |95 ciblés,2327 documentaires,23 scénarios JSDOM réussis |
+| Suite complète |4482 réussis,2 échecs historiques,1 ignoré |
+| Code/CI |7f7b7827 /42481017950 success |
+| Qualification juridique et backend partagé | Inchangés, pas de publication ou redémarrage |
+
+[Rapport101](RAPPORT_LOT101.md), [contrat](CATALOGUE_PAGES_INDEXEES.md),
+[recette101](RECETTE_LOT101.json).
