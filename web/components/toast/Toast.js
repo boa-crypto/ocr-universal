@@ -173,10 +173,17 @@ class ToastContainer extends HTMLElement {
 
     if (toast.timeout) clearTimeout(toast.timeout);
     toast.element.classList.add('closing');
-    toast.element.addEventListener('animationend', () => {
+    // Reduced-motion styles disable animations: dismissal must not depend on an event.
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(fallback);
       toast.element.remove();
       this.toasts = this.toasts.filter(t => t.id !== id);
-    }, { once: true });
+    };
+    const fallback = setTimeout(finish, 350);
+    toast.element.addEventListener('animationend', finish, { once: true });
   }
 
   // Convenience methods
