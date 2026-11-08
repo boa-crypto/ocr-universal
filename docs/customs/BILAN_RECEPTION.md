@@ -7,7 +7,25 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 81
+## État actuel — lot 82
+
+[Sélection de trace d'annulation](SELECTION_TRACE_ANNULATION.md) : événement
+objet exact, bon job/champ, état antérieur présent et opération de valeur.
+Dernière candidate inexploitable : 409, sans revenir silencieusement plus loin.
+**Un statut seul après correction bloque désormais cette annulation.**
+**17 nouveaux cas / 522 ciblés réussis** ; témoin ancien helper : 10 échecs attendus,
+7 réussis. Documentaire **2 160 Python / 212 JSDOM historiques**. Complète :
+**3 918 réussis, 2 échecs Indra, 1 ignoré, 1 avertissement(s), 447,57 s**.
+Mesures JUnit datées `2026-11-08` (horloge environnement).
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42457705968),
+pas suite OCR complète en CI. **26/27 empreintes conformes**, même écart partagé ;
+données/journaux préservés hors commit. Pas types/authenticité qualifiés, refonte
+multi-niveau undo ou lecture bornée du journal.
+**Aperçu backend76 maintenu**, code77–82 poussé/testé mais non chargé pour préserver
+les traitements ; RBAC non configuré. [Rapport](RAPPORT_LOT82.md),
+[recette actuelle](RECETTE_LOT82.json).
+
+## Complément historique — lot 81
 
 [Révision des corrections/annulations](REVISION_CORRECTIONS_CHAMPS.md) : PATCH
 champ et POST undo refusent une sauvegarde périmée avec 409, sans écrasement
