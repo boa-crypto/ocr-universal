@@ -57,13 +57,15 @@ const tick = () => new Promise((r) => setTimeout(r, 35));
         : url === "/api/dossiers/d0"
           ? {
               ...records[0],
-              pieces: [{ job_id: "job-real-fixture", filename: "source.pdf" }],
+              pieces: [{ job_id: "job-real-fixture", filename: "source.png" }],
             }
           : url.endsWith("/documents-ocr")
             ? [
                 {
                   type_document: "Facture",
-                  champs_extraits: [{ nom: "Référence", valeur_raw: "ABC" }],
+                  champs_extraits: [
+                    { nom: "Référence", valeur_raw: 0, confiance: 0 },
+                  ],
                 },
               ]
             : url.endsWith("/anomalies")
@@ -82,7 +84,11 @@ const tick = () => new Promise((r) => setTimeout(r, 35));
     d.querySelector('[data-case-view="board"]').click();
     assert.equal(d.querySelectorAll(".case-lane").length, 5);
     assert.equal(d.querySelectorAll(".dos-row").length, 40);
-    assert(d.querySelector(".case-lane--autres").textContent.includes("8 / 9"));
+    assert(
+      d
+        .querySelector(".case-lane--autres")
+        .textContent.includes("8 affichés / 9"),
+    );
     d.querySelector("#dos-more").click();
     assert.equal(d.querySelectorAll(".dos-row").length, 45);
     const search = d.querySelector("#dos-search");
@@ -96,7 +102,9 @@ const tick = () => new Promise((r) => setTimeout(r, 35));
     d.querySelectorAll(".case-next .case-next__action")[1].click();
     await tick();
     assert(
-      d.querySelector('[role="tabpanel"]').textContent.includes("Non fournie"),
+      d
+        .querySelector('[role="tabpanel"]:not([hidden])')
+        .textContent.includes("Non fournie"),
     );
     const tab = d.querySelector('[aria-selected="true"]');
     assert.equal(
@@ -120,6 +128,7 @@ const tick = () => new Promise((r) => setTimeout(r, 35));
       "synthese",
     );
     d.querySelectorAll(".case-next .case-next__action")[0].click();
+    assert.equal(d.querySelector(".dos-doc__icon").textContent, "PNG");
     d.querySelector(".dos-doc button").click();
     await new Promise((r) => setTimeout(r, 150));
     assert.equal(opened, "job-real-fixture");

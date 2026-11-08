@@ -699,3 +699,102 @@
   display: block;
   margin-top: 20px;
 }
+/* Author display rules must not override native hidden state. */
+#dos-detail-empty[hidden],
+#dos-detail-body[hidden],
+#dos-more[hidden],
+#dos-empty[hidden],
+.studio-form-errors[hidden],
+.result-load-state[hidden] {
+  display: none !important;
+}
+/* Full source names and reachable actions, even on a narrow detail panel. */
+[data-theme] .dos-doc {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  gap: 10px 12px;
+  align-items: start;
+  background: var(--pe-white);
+  border-color: var(--pe-line);
+  border-radius: 8px;
+  padding: 14px;
+}
+[data-theme] .dos-doc__icon {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  background: var(--studio-soft);
+  color: var(--studio-accent);
+}
+[data-theme] .dos-doc__infos {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+[data-theme] .dos-doc__name {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+}
+[data-theme] .dos-doc__meta {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+[data-theme] .dos-doc > .status-pill {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: start;
+}
+[data-theme] .dos-doc > .case-next__action {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+  max-width: 100%;
+  justify-self: start;
+  white-space: normal;
+  min-height: 44px;
+}
+[data-theme] .dos-doc > .dos-doc__link {
+  grid-column: 3;
+  grid-row: 2;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  color: var(--studio-accent);
+  text-decoration: underline;
+}
+/* Beat the legacy seven-class primary selector without recoloring destructive actions. */
+html[data-theme]
+  main.workspace
+  .btn:not(.ghost):not(.btn-ghost):not(.link):not(.danger):not(.sm):not(
+    .btn-sm
+  ):not(.btn-danger):not(.btn-secondary):not(.btn-success) {
+  background: var(--pe-green);
+  border-color: var(--pe-green);
+  color: var(--pe-white);
+  box-shadow: none;
+}
+@media (max-width: 700px) {
+  [data-theme] .dos-doc {
+    grid-template-columns: 44px minmax(0, 1fr);
+    padding: 12px;
+    gap: 8px;
+  }
+  [data-theme] .dos-doc > .status-pill {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  [data-theme] .dos-doc > .case-next__action {
+    grid-column: 2;
+    grid-row: 3;
+  }
+  [data-theme] .dos-doc > .dos-doc__link {
+    grid-column: 1;
+    grid-row: 3;
+    justify-content: center;
+  }
+}
+.dos-tab-shell[hidden] {
+  display: none !important;
+}

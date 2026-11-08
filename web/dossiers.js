@@ -191,7 +191,7 @@
       colonne.setAttribute("role", "listitem");
       var titre = el("h3", "case-lane__title", definition[1]);
       var elements = affiches.filter(function (d) { return voie(d) === definition[0]; });
-      titre.appendChild(el("span", "case-lane__count", elements.length + " / " + total));
+      titre.appendChild(el("span", "case-lane__count", elements.length + " affichés / " + total));
       colonne.appendChild(titre);
       var lignes = el("div", "case-lane__items");
       lignes.setAttribute("role", "list");
@@ -202,7 +202,7 @@
         carte.appendChild(el("span", "case-card__activity", "Activité · " + dateCourte(d.updated_at || d.date_ouverture)));
         item.appendChild(carte); lignes.appendChild(item);
       });
-      if (!elements.length) lignes.appendChild(el("p", "case-lane__empty", total ? "D’autres dossiers sont disponibles avec Afficher plus." : "Aucun dossier dans cet état."));
+      if (!elements.length) colonne.appendChild(el("p", "case-lane__empty", total ? "D’autres dossiers sont disponibles avec Afficher plus." : "Aucun dossier dans cet état."));
       colonne.appendChild(lignes); liste.appendChild(colonne);
     });
   }
@@ -446,13 +446,9 @@
         b.setAttribute("aria-selected", on ? "true" : "false");
         b.tabIndex = on ? 0 : -1;
       });
-      panneaux.textContent = "";
+      Array.from(panneaux.children).forEach(function (panel) { panel.hidden = panel.id !== "dossier-panel-" + cle; panel.textContent = ""; });
       var def = definitions.filter(function (x) { return x.cle === cle; })[0];
-      if (def) {
-        var panel = def.rendu(d); panel.id = "dossier-panel-" + cle;
-        panel.setAttribute("role", "tabpanel"); panel.setAttribute("aria-labelledby", "dossier-tab-" + cle); panel.tabIndex = 0;
-        panneaux.appendChild(panel);
-      }
+      if (def) panneaux.querySelector('[id="dossier-panel-' + cle + '"]').appendChild(def.rendu(d));
     }
 
     definitions.forEach(function (def, index) {
@@ -465,6 +461,9 @@
       b.tabIndex = index === 0 ? 0 : -1;
       b.addEventListener("click", function () { activer(def.cle); });
       barre.appendChild(b);
+      var panel = el("div", "dos-tab-shell"); panel.id = "dossier-panel-" + def.cle;
+      panel.setAttribute("role", "tabpanel"); panel.setAttribute("aria-labelledby", b.id); panel.tabIndex = 0; panel.hidden = true;
+      panneaux.appendChild(panel);
     });
 
     // Navigation clavier conforme au motif ARIA « tablist ».
@@ -615,7 +614,8 @@
           champs.slice(0, 8).forEach(function (champ) {
             var tr = el("tr");
             tr.appendChild(el("td", null, champ.nom || "—"));
-            var valeur = champ.valeur_confirmee || champ.valeur_correctee || champ.valeur_normale || champ.valeur_raw || "—";
+            var valeur = valeurChamp(champ);
+            if (valeur === "") valeur = "—";
             tr.appendChild(el("td", null, valeur));
             tr.appendChild(el("td", null, confianceLisible(champ.confiance)));
             var etatChamp = champ.statut === "validated" ? ["Validé", "ok"]
@@ -661,8 +661,12 @@
   }
 
   function valeurChamp(champ) {
-    return champ.valeur_confirmee || champ.valeur_correctee ||
-      champ.valeur_normale || champ.valeur_raw || "";
+    var noms = ["valeur_confirmee", "valeur_correctee", "valeur_normale", "valeur_raw"];
+    for (var index = 0; index < noms.length; index++) {
+      var value = champ[noms[index]];
+      if (value !== undefined && value !== null && value !== "") return value;
+    }
+    return "";
   }
 
   function comparerExtractions(d, extractions) {
@@ -1109,15 +1113,16 @@
 
       var icone = el("span", "dos-doc__icon");
       icone.setAttribute("aria-hidden", "true");
-      icone.textContent = "PDF";
+      var extension = String(p.filename || "").split(".").pop().toUpperCase();
+      icone.textContent = /^(PDF|PNG|JPG|JPEG|TIFF|TIF|BMP|WEBP|TXT|DOCX)$/.test(extension) ? extension : "DOC";
       lignePiece.appendChild(icone);
 
       var infos = el("div", "dos-doc__infos");
-      infos.appendChild(el("span", "dos-doc__name", p.filename || p.job_id));
+      infos.appendChild(el("span", "dos-doc__name", p.filename || p.job_id || "Pièce sans nom"));
       var cat = CATEGORIES[p.category] || p.document_type || p.category || "Document";
       var details = [cat];
       if (p.page_count) details.push(p.page_count + " page" + (p.page_count > 1 ? "s" : ""));
-      if (typeof p.ocr_confidence === "number" && p.ocr_confidence > 0) {
+      if (typeof p.ocr_confidence === "number" && Number.isFinite(p.ocr_confidence) && p.ocr_confidence >= 0 && p.ocr_confidence <= 1) {
         details.push("confiance " + Math.round(p.ocr_confidence * 100) + " %");
       }
       infos.appendChild(el("span", "dos-doc__meta", details.join(" · ")));
@@ -1137,10 +1142,12 @@
         });
         lignePiece.appendChild(inspecter);
       }
-      var lien = el("a", "dos-doc__link", "JSON");
-      lien.href = base() + "/jobs/" + encodeURIComponent(p.job_id) + "/export/json";
-      lien.rel = "noopener";
-      lignePiece.appendChild(lien);
+      if (p.job_id) {
+        var lien = el("a", "dos-doc__link", "JSON");
+        lien.href = base() + "/jobs/" + encodeURIComponent(p.job_id) + "/export/json";
+        lien.rel = "noopener";
+        lignePiece.appendChild(lien);
+      } else lignePiece.appendChild(el("span", "dos-doc__meta", "Référence source indisponible"));
 
       zone.appendChild(lignePiece);
     });

@@ -8,6 +8,7 @@ const { chromium } = require("playwright-core"),
   let out = process.argv[2] || "/home/user/recettes-unocr/world-class/journeys";
   fs.mkdirSync(out, { recursive: true });
   let report = [];
+  const base = process.env.UI_BASE || "http://127.0.0.1:8000";
   for (const width of [1440, 1280, 834, 390]) {
     let b = await chromium.launch({
       executablePath: await binary.executablePath(),
@@ -34,7 +35,7 @@ const { chromium } = require("playwright-core"),
         }
         return r.continue();
       });
-      await p.goto("http://127.0.0.1:8000/#dossiers/tous", {
+      await p.goto(base + "/#dossiers/tous", {
         waitUntil: "networkidle",
       });
       await p.locator(".dos-row").first().waitFor();
@@ -68,6 +69,12 @@ const { chromium } = require("playwright-core"),
         (await p.locator(".dos-detail__eyebrow").textContent()) === sourceId,
       );
       assert.equal(await p.locator(".case-next .case-next__action").count(), 4);
+      assert(await p.locator("#dos-detail-empty").isHidden());
+      await p.locator(".case-identity summary").click();
+      assert(await p.locator(".dos-detail__meta").isVisible());
+      await p.screenshot({ path: path.join(out, width + "-identity.png") });
+      await p.locator(".case-identity summary").click();
+
       let tabs = p.locator(".dos-tab"),
         length = await tabs.count();
       for (let i = 0; i < length; i++) {
@@ -108,7 +115,7 @@ const { chromium } = require("playwright-core"),
         await p.screenshot({
           path: path.join(out, width + "-source-inspector.png"),
         });
-        await p.goto("http://127.0.0.1:8000/#dossiers/tous");
+        await p.goto(base + "/#dossiers/tous");
         await p.locator('.dos-row[data-id="' + sourceId + '"]').click();
         await p.waitForFunction(() => Dossiers.etat.detail !== null);
       }
@@ -152,7 +159,7 @@ const { chromium } = require("playwright-core"),
         ),
         true,
       );
-      await p.goto("http://127.0.0.1:8000/#dossiers/nouveau");
+      await p.goto(base + "/#dossiers/nouveau");
       await p.locator("#dos-create[open]").waitFor();
       assert.equal(await p.locator(".studio-form-progress").count(), 1);
       assert.equal(
@@ -172,7 +179,7 @@ const { chromium } = require("playwright-core"),
       );
       assert(await p.locator(".studio-form-errors").isHidden());
       await p.locator("#dos-create-cancel").click();
-      await p.goto("http://127.0.0.1:8000/#dossiers/tous");
+      await p.goto(base + "/#dossiers/tous");
       assert(
         await p.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth + 1,
@@ -193,6 +200,7 @@ const { chromium } = require("playwright-core"),
         sourceId,
         tabs: length,
         boardRows: expected,
+        sourceInspectorHTTP,
         search: true,
         guideAllowedOnly: true,
         formValidation: true,
