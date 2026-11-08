@@ -1785,7 +1785,7 @@ def get_quality(job_id: str, request: Request) -> dict:
 class FieldPatch(BaseModel):
     confirmed_value: Optional[str] = None
     corrected_value: Optional[str] = None
-    status: Optional[str] = None
+    status: Optional[FieldStatus] = None
     user: Optional[str] = None
     reason: Optional[str] = None
 
@@ -1819,7 +1819,7 @@ def patch_field(job_id: str, name: str, patch: FieldPatch, request: Request) -> 
         if patch.status is None:
             fv["status"] = "corrected"
     if patch.status is not None:
-        fv["status"] = patch.status
+        fv["status"] = patch.status.value
     fields[name] = fv
     result["fields"] = fields
     if not store.replace_result_revision(job_id, revision, result):
