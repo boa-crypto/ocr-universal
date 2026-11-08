@@ -24,7 +24,7 @@ from fastapi import (
     Request,
     UploadFile,
 )
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -2013,7 +2013,7 @@ def export_job(job_id: str, request: Request, fmt: str):
 
 @app.get("/api/jobs/{job_id}/export/{fmt}/selected")
 def export_selected(job_id: str, request: Request, fmt: str,
-                    fields: str = Query(..., min_length=1)) -> FileResponse:
+                    fields: str = Query(..., min_length=1)) -> Response:
     """Export limité à une sélection de champs.
 
     Généré à la volée (non mis en cache) : la sélection est propre à une
@@ -2040,32 +2040,35 @@ def export_selected(job_id: str, request: Request, fmt: str,
         raise HTTPException(400, "aucun champ de la sélection n'existe dans ce document")
     result = result.model_copy(update={"fields": kept})
 
-    out_dir = store.export_dir(job_id) / "selected"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    stem = "selection_" + "_".join(sorted(kept))[:40]
     try:
-        if fmt == "csv":
-            # Une sélection de champs ne concerne que les champs : on n'emballe
-            # pas les tableaux du document dans une archive ZIP, le résultat
-            # doit rester un CSV lisible par un tableur.
-            paths = ex.export_csv(result, out_dir, champs_seulement=True)
-            path = paths[0]
-        elif fmt == "xlsx":
-            path = ex.export_xlsx(result, out_dir / f"{stem}.xlsx")
-        elif fmt == "json":
-            path = out_dir / f"{stem}.json"
-            ex.export_json(result, path)
-        elif fmt == "txt":
-            path = out_dir / f"{stem}.txt"
-            ex.export_txt(result, path)
-        elif fmt == "xml":
-            path = out_dir / f"{stem}.xml"
-            ex.export_xml(result, path)
-        elif fmt == "pdf":
-            path = out_dir / f"{stem}.pdf"
-            ex.export_searchable_pdf(result, path, _page_images(job_id))
-        else:  # pragma: no cover - gardé par SUPPORTED_EXPORTS
-            raise HTTPException(400, f"format non supporté: {fmt}")
+        if fmt == "json":
+            response = JSONResponse(result.model_dump(mode="json"), headers={
+                "Content-Disposition": 'attachment; filename="selection.json"',
+                "Cache-Control": "no-store",
+            })
+        else:
+            out_dir = store.export_dir(job_id) / "selected"
+            out_dir.mkdir(parents=True, exist_ok=True)
+            stem = "selection_" + "_".join(sorted(kept))[:40]
+            if fmt == "csv":
+                # Une sélection de champs ne concerne que les champs : on n'emballe
+                # pas les tableaux du document dans une archive ZIP, le résultat
+                # doit rester un CSV lisible par un tableur.
+                paths = ex.export_csv(result, out_dir, champs_seulement=True)
+                path = paths[0]
+            elif fmt == "xlsx":
+                path = ex.export_xlsx(result, out_dir / f"{stem}.xlsx")
+            elif fmt == "txt":
+                path = out_dir / f"{stem}.txt"
+                ex.export_txt(result, path)
+            elif fmt == "xml":
+                path = out_dir / f"{stem}.xml"
+                ex.export_xml(result, path)
+            elif fmt == "pdf":
+                path = out_dir / f"{stem}.pdf"
+                ex.export_searchable_pdf(result, path, _page_images(job_id))
+            else:  # pragma: no cover - gardé par SUPPORTED_EXPORTS
+                raise HTTPException(400, f"format non supporté: {fmt}")
     except HTTPException:
         raise
     except Exception as exc:
@@ -2074,6 +2077,8 @@ def export_selected(job_id: str, request: Request, fmt: str,
 
     audit(cfg.log_dir, "export_selected", job_id=job_id, fmt=fmt,
           fields=sorted(kept))
+    if fmt == "json":
+        return response
     media = "application/zip" if path.suffix == ".zip" else None
     return FileResponse(path, filename=path.name, media_type=media)
 
