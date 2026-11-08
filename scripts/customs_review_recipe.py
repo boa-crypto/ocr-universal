@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SUPPORT = (
     "test_fixture_isolation.py", "test_backup.py", "test_corrections_routes.py",
     "test_referentiels.py", "test_referentiels_base.py", "test_rbac.py",
-    "test_rbac_ecritures.py", "test_rbac_reprise.py", "test_ui_premium.py",
+    "test_rbac_ecritures.py", "test_rbac_reprise.py", "test_ui_premium.py", "test_ui_product_experience.py",
     "test_web_architecture_refactored.py",
 )
 

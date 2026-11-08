@@ -1207,6 +1207,8 @@
 
   function appliquerRoute() {
     var hash = (window.location.hash || "").replace(/^#/, "");
+    // Une modale native cachée par le routeur conserve sinon le document inert.
+    if (hash !== "dossiers/nouveau") fermerCreation();
     if (hash.indexOf("dossiers") !== 0) return;
 
     if (hash === "dossiers/nouveau") {
@@ -1282,6 +1284,7 @@
     else if (dlg) dlg.removeAttribute("open");
     if (window.location.hash === "#dossiers/nouveau") {
       history.replaceState(null, "", "#dossiers");
+          window.dispatchEvent(new Event("hashchange"));
     }
   }
 
@@ -1339,6 +1342,7 @@
       dlg.addEventListener("close", function () {
         if (window.location.hash === "#dossiers/nouveau") {
           history.replaceState(null, "", "#dossiers");
+          window.dispatchEvent(new Event("hashchange"));
         }
       });
     }

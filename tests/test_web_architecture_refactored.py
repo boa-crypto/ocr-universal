@@ -70,13 +70,14 @@ def test_styles_css_existe() -> None:
     styles = WEB / "styles.css"
     assert styles.exists(), "styles.css doit exister"
     content = styles.read_text(encoding="utf-8")
-    assert len(content) > 400000, \
-        "styles.css doit contenir le CSS extrait (~490KB)"
+    assert len(content) > 60000, \
+        "styles.css doit conserver les règles après externalisation des polices"
     # Vérifier quelques éléments clés du CSS
     assert "[data-theme" in content or "data-theme" in content, \
         "styles.css doit contenir les sélecteurs de thèmes"
     # Contient les styles pour les thèmes (même si les mots exacts varient)
-    assert len(content) > 450000, "styles.css doit contenir le CSS complet"
+    for selector in (".sidebar", ".topbar", ".panel", ".tbl", "@font-face"):
+        assert selector in content, f"Style essentiel absent : {selector}"
 
 def test_service_worker_cache_architecture_refactorisee() -> None:
     """Le service worker doit cacher la nouvelle architecture."""

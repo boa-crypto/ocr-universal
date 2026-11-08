@@ -1271,16 +1271,17 @@ async function initLangChips() {
    ═══════════════════════════════════════════ */
 (function editorialExtras() {
   const root = document.documentElement;
-  // Le poste de travail est conçu sombre (identité UniOCR) : la préférence
-  // système ne l'impose plus, seule une bascule explicite change de thème.
-  const saved = localStorage.getItem("unocr_theme");
-  root.setAttribute("data-theme", saved === "light" ? "light" : "dark");
+  // Le poste documentaire privilégie la lecture claire ; le choix sombre
+  // explicite reste conservé. Aucune dépendance à une police externe.
+  let saved;
+  try { saved = localStorage.getItem("unocr_theme"); } catch (e) { /* stockage facultatif */ }
+  root.setAttribute("data-theme", saved === "dark" ? "dark" : "light");
 
   const tt = document.getElementById("themeToggle");
   if (tt) tt.addEventListener("click", () => {
     const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
     root.setAttribute("data-theme", next);
-    localStorage.setItem("unocr_theme", next);
+    try { localStorage.setItem("unocr_theme", next); } catch (e) { /* thème de session */ }
   });
 
   const app = document.getElementById("app");

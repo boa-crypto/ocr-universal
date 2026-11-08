@@ -98,6 +98,8 @@ class ToastContainer extends HTMLElement {
    * @returns {string} Toast ID
    */
   show({ type = 'info', title, message = '', duration = 5000, dismissible = true } = {}) {
+    if (!['success', 'error', 'warning', 'info'].includes(type)) type = 'info';
+    duration = Number.isFinite(duration) ? Math.min(60000, Math.max(0, duration)) : 5000;
     const container = this.shadowRoot.getElementById('container');
     if (this.toasts.length >= this.maxToasts) {
       this.remove(this.toasts[0].id);
@@ -129,7 +131,6 @@ class ToastContainer extends HTMLElement {
       <div class="toast__progress" style="animation-duration: ${duration}ms; color: ${getProgressColor(type)};"></div>
     `;
 
-    const container = this.shadowRoot.getElementById('container');
     container.appendChild(toastEl);
 
     // Track toast
@@ -188,10 +189,10 @@ class ToastContainer extends HTMLElement {
 // Utility functions
 function esc(s) {
   return String(s == null ? '' : s)
-    .replace(/&/g, '&')
-    .replace(/</g, '<')
-    .replace(/>/g, '>')
-    .replace(/"/g, '"');
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 function getProgressColor(type) {
@@ -210,7 +211,7 @@ if (!customElements.get('ocr-toast-container')) {
 }
 
 // Global toast API (for easy use from anywhere)
-window.toast = {
+window.UniOCRToast = {
   success: (title, message, options) => {
     const container = document.querySelector('ocr-toast-container');
     return container?.show({ type: 'success', title, message, ...options });
@@ -229,4 +230,13 @@ window.toast = {
   }
 };
 
+// Keep the legacy callable toast(msg, type) API; never replace it with an object.
+if (typeof window.toast === 'function') {
+  Object.assign(window.toast, window.UniOCRToast);
+} else {
+  window.toast = Object.assign(function (message, type) {
+    const kind = type === 'ok' ? 'success' : type === 'err' ? 'error' : type;
+    return document.querySelector('ocr-toast-container')?.show({ title: message, type: kind });
+  }, window.UniOCRToast);
+}
 export { ToastContainer };

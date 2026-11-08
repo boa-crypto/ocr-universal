@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+<html lang="fr" data-theme="light">
 <head>
 
   <link rel="stylesheet" href="/web/styles.css">
   <link rel="stylesheet" href="/web/refresh.css">
   <link rel="stylesheet" href="/web/uniocr-ds.css">
+  <link rel="stylesheet" href="/web/product-experience.css">
 <script src="/web/navigation.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="icon" type="image/svg+xml" href="/icon.svg">
-    <meta name="theme-color" content="#020817">
+    <meta name="theme-color" content="#112d29">
     <meta name="description" content="UniOCR — moteur OCR universel local : texte, structure, champs, tableaux, codes-barres.">
 <title>UniOCR — Poste de contrôle documentaire</title>
 <!-- Polices embarquées (SIL Open Font License 1.1) — déploiement 100 % hors ligne -->
@@ -51,7 +52,7 @@
       </div>
       <div class="brand-txt">
         <div class="name">UniOCR</div>
-        <div class="tag">Maritime Transit Management</div>
+        <div class="tag">DOCUMENTS &amp; TRANSIT</div>
       </div>
     </div>
 
@@ -138,7 +139,7 @@
     </header>
 
     <!-- Toast Container for notifications -->
-<ocr-toast-container position="top-right"></ocr-toast-container>
+<ocr-toast-container position="bottom-right"></ocr-toast-container>
 
 <div class="modal-voile hidden" id="jetonVoile" role="dialog" aria-modal="true"
          aria-labelledby="jetonTitre">
@@ -172,12 +173,12 @@
           <div class="hero-copy">
             <span class="hero-eyebrow">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6z"/></svg>
-              Poste de contrôle documentaire
+              POSTE DE TRAVAIL · <span id="cockpit-user">—</span>
             </span>
-            <h1 id="cockpit-title" class="hero-title">Bonjour <span id="cockpit-user">—</span>, votre cockpit est prêt</h1>
-            <p class="hero-sub">Dossiers de transit, alertes documentaires et échéances réunis dans une seule vue — alimentée par vos données réelles.</p>
+            <h1 id="cockpit-title" class="hero-title">Vos dossiers, en mouvement.</h1>
+            <p class="hero-sub">Importez les pièces, vérifiez les extractions, faites avancer vos dossiers. Vos priorités et vos données réelles, au même endroit.</p>
             <div class="hero-status">
-              <span class="chip glow"><span class="dot"></span><span id="hero-system">Système opérationnel</span></span>
+              <span class="chip glow"><span class="dot"></span><span id="hero-system" role="status">Connexion aux données…</span></span>
               <span class="chip" title="Dernière synchronisation avec l'API">Synchro <b id="hero-sync">—</b></span>
               <button class="btn ghost sm" id="cockpit-refresh" type="button">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>
@@ -297,9 +298,9 @@
               </div>
               <div id="cockpit-chart" class="chart-host" role="img" aria-label="Évolution des créations, traitements et clôtures de dossiers"></div>
               <div class="chart-legend">
-                <span><i style="background:#1677FF"></i>Créés</span>
-                <span><i style="background:#00D9FF"></i>Traités</span>
-                <span><i style="background:#00CBA8"></i>Clôturés</span>
+                <span><i class="series-created"></i>Créés</span>
+                <span><i class="series-processed"></i>Traités</span>
+                <span><i class="series-closed"></i>Clôturés</span>
               </div>
             </div>
 
@@ -4265,5 +4266,6 @@ var I18N = {
   <script src="/web/dossiers.js" defer></script>
   <script src="/web/workspace.js" defer></script>
 <script src="/web/transit.js" defer></script>
+<script src="/web/product-experience.js" defer></script>
 </body>
 </html>

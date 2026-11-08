@@ -462,8 +462,8 @@
     if (bouton) bouton.classList.add("is-busy");
 
     return Promise.all([
-      api("/api/dossiers").catch(function () { return []; }),
-      api("/api/dashboard/alertes").catch(function () { return { alertes: [] }; }),
+      api("/api/dossiers"),
+      api("/api/dashboard/alertes"),
       chargerSerie()
     ]).then(function (resultats) {
       if (jeton !== etat.chargement) return;
@@ -487,10 +487,12 @@
       var systeme = $("hero-system");
       if (systeme) {
         systeme.textContent = resultats[1] && resultats[1].alertes
-          ? "Système opérationnel — " + etat.alertes.length + " alerte(s)"
-          : "Système opérationnel";
+          ? "Données actualisées · " + etat.alertes.length + " alerte(s) à examiner"
+          : "Données actualisées";
       }
     }).catch(function (erreur) {
+      var systeme = $("hero-system");
+      if (systeme) systeme.textContent = "Synchronisation interrompue — données à actualiser";
       var taches = $("cockpit-tasks");
       if (taches) {
         taches.textContent = "";

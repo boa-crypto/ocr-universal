@@ -480,12 +480,12 @@ def test_service_worker_ne_sert_jamais_une_interface_perimee() -> None:
     assert 'url.pathname.startsWith("/api/")' in sw
 
 
-def test_theme_sombre_par_defaut() -> None:
-    """Le poste est sombre : une préférence système claire ne l'impose plus."""
+def test_theme_clair_par_defaut_et_preference_sombre_conservee() -> None:
+    """Le poste est clair, le choix sombre explicite reste prioritaire."""
     racine = Path(__file__).resolve().parent.parent
     extras = (racine / "web" / "app-extras.js").read_text(encoding="utf-8")
 
-    assert 'root.setAttribute("data-theme", saved === "light" ? "light" : "dark")' in extras
+    assert 'root.setAttribute("data-theme", saved === "dark" ? "dark" : "light")' in extras
     assert "prefers-color-scheme: light" not in extras
     # La bascule manuelle reste disponible.
     assert 'localStorage.setItem("unocr_theme", next)' in extras

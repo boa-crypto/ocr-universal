@@ -14,9 +14,12 @@
     "ui:justificatifs": "node tests/ui_justificatifs.js",
     "ui:customs-review": "node tests/ui_customs_review.js",
     "ui:customs-assessments": "node tests/ui_customs_assessments.js",
-    "ui:customs-legal-pages": "node tests/ui_customs_legal_pages.js"
+    "ui:customs-legal-pages": "node tests/ui_customs_legal_pages.js",
+    "ui:product": "node tests/ui_product_browser.cjs"
   },
   "devDependencies": {
-    "jsdom": "^24.1.3"
+    "@sparticuz/chromium": "153.0.0",
+    "jsdom": "^24.1.3",
+    "playwright-core": "1.65.0"
   }
 }
