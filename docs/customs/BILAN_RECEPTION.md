@@ -7,7 +7,25 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 89
+## État actuel — lot 90
+
+[JSON sélectionné snapshot](EXPORT_JSON_SELECTION_SNAPSHOT.md) : réponse mémoire
+sans fichier partagé, nom fixe selection.json/no-store. Entrelacement HTTP
+premier export → PATCH → second export → premier libéré : clichés indépendants,
+ancien handler échoue sur contenu avant en-têtes. Filtre fields seulement,
+pas redaction des autres sections ; autres formats sélectionnés non corrigés.
+**26 nouveaux cas / 842 ciblés réussis** ; ancien handler : 15 échecs attendus,
+11 réussis. Documentaire **2 160 Python / 212 JSDOM historiques**. Complète :
+**4 230 réussis, 2 échecs Indra, 1 ignoré, 1 avertissement(s), 359,51 s**.
+Mesures JUnit datées `2026-11-08` (horloge environnement).
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42463606148), pas suite OCR complète en CI.
+**26/27 empreintes conformes**, même écart partagé ; données/journaux préservés
+hors commit. Pas purge globale ou qualification mémoire/charge.
+**Aperçu backend76 maintenu**, code77–90 poussé/testé mais non chargé pour
+préserver les traitements ; RBAC absent.
+[Rapport](RAPPORT_LOT90.md), [recette actuelle](RECETTE_LOT90.json).
+
+## Complément historique — lot 89
 
 [Export JSON snapshot](EXPORT_JSON_SNAPSHOT.md) : JSON complet HTTP depuis
 résultat lu/validé, réponse mémoire sans cache fichier, no-store et nom result.json.
