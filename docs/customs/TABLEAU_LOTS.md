@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État après le lot97 — date de référence de session : 2026-11-04. **Terminé = périmètre technique livré et
+État après le lot98 — date de référence de session : 2026-11-04. **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -102,6 +102,7 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 95 | Interface dossiers, outbox versions et snapshot SQLite | Terminé techniquement | Au moins une fois, pas exactly-once ; pas IA/droit qualifié/déploiement ; voir RAPPORT_LOT95.md |
 | 96 | Pièces textuelles, citations Unicode contrôlées, lecture historique et permissions | Terminé techniquement | Pas original authentifié, expertise, IA ou droit consolidé ; voir RAPPORT_LOT96.md |
 | 97 | Matrice des déclarations/citations et pistes du dossier | Terminé techniquement | Égalité textuelle seulement, pas comparaison sémantique ni expertise ; voir RAPPORT_LOT97.md |
+| 98 | Recherche native des pages des PDF juridiques reçus, index épinglé et UI | Terminé techniquement | 221 pages réelles ; pas articles qualifiés, corpus exhaustif, consolidation ou déploiement ; voir RAPPORT_LOT98.md |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
 `RAPPORT_LOT61.md`. Les limites historiques des rapports précédents sont à lire

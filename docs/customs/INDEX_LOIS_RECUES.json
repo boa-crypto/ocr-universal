@@ -1,0 +1,37 @@
+{
+  "lot_id": "lois_recues_1979_2017",
+  "index": {
+    "index_sha256": "e055e6dafccb2eb4f56e2b75917be81f1773c9658a8758f284572d3de40a85c5",
+    "pages": 221,
+    "caracteres": 486098,
+    "manifest_lot_sha256": "086ddbf89fb0770418e56a83dfe3bc5647d2494cd6a0bed6231ef0492b897605"
+  },
+  "recherches_api_reelles": [
+    {
+      "q": "douanes",
+      "pages": 175,
+      "statut_http": 200,
+      "index_sha256": "e055e6dafccb2eb4f56e2b75917be81f1773c9658a8758f284572d3de40a85c5"
+    },
+    {
+      "q": "déclaration",
+      "pages": 87,
+      "statut_http": 200,
+      "index_sha256": "e055e6dafccb2eb4f56e2b75917be81f1773c9658a8758f284572d3de40a85c5"
+    },
+    {
+      "q": "abrogées",
+      "pages": 1,
+      "statut_http": 200,
+      "index_sha256": "e055e6dafccb2eb4f56e2b75917be81f1773c9658a8758f284572d3de40a85c5"
+    }
+  ],
+  "paquet": {
+    "nom": "documents_juridiques_1979_2017_indexes.zip",
+    "sha256": "5931b4050527f7ce341202105b434fa8e96f870aaf9aa144908c21bfa24c4f9e",
+    "octets": 3037400
+  },
+  "authenticite_etablie": false,
+  "articles_juridiques_indexes": 0,
+  "publication_active": false
+}

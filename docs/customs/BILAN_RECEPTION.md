@@ -1,11 +1,21 @@
 # Bilan de réception — mission UniOCR douanière
 
-**État après le lot97 : PARTIEL, NON RECEVABLE POUR PRODUCTION FISCALE.**
+**État après le lot98 : PARTIEL, NON RECEVABLE POUR PRODUCTION FISCALE.**
 
 Poursuite effectuée sans demandes d'autorisations intermédiaires : lot 44 de constat
 littéral description/PDF, puis lot 45 de recette complète et corrections de tests.
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
+
+## État actuel — lot98 : recherche des pages des lois reçues
+
+[Rapport98](RAPPORT_LOT98.md) :221 pages indexées,486098 caractères natifs,
+références physiques, extraits et épingle du dérivé au registre. Trois recherches
+sur les vrais PDF confirmées par API isolée : douanes175 pages, déclaration87,
+abrogées1. **70 ciblés /2290 documentaires réussis ;6 nouveaux JSDOM**.
+Complète **4445 réussis,2 échecs Indra,1 ignoré** ;CI42478038172 réussie.
+Pas article qualifié ou droit consolidé. Backend partagé non redémarré et aucun
+droit réel ajouté ; paquet documentaire/index exportable hors Git.
 
 ## Réception de deux PDF utilisateur — lois1979/2017
 
@@ -17,7 +27,7 @@ Authenticité non établie,0 article transcrit/validé et aucune consolidation.
 174 ciblés /2276 documentaires réussis ;4 lectures de pages des vrais PDF vérifiées.
 Backend partagé non redémarré et aucune habilitation automatiquement attribuée.
 
-## État actuel — lot97 : matrice des déclarations et pistes
+## État antérieur — lot97 : matrice des déclarations et pistes
 
 [Rapport97](RAPPORT_LOT97.md) : juxtaposition des caractéristiques, pièces/citations
 et candidats de la version enregistrée ; provenance et questions sur les écarts

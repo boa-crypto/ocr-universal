@@ -1,0 +1,118 @@
+{
+  "type_rapport": "recette_index_pages_natives_non_validation_juridique",
+  "date_reference_session": "2026-11-04",
+  "revision_code": "b56c302534565c80bbd53bd19cd7a87afd217f1f",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "nouveaux_tests_python": 14,
+  "tests_provenance_reception_precedents": 12,
+  "selection_ciblee": {
+    "tests": 70,
+    "echecs": 0,
+    "ignores": 0,
+    "duree_secondes": 9.133,
+    "echecs_ids": []
+  },
+  "suite_complete": {
+    "tests": 4448,
+    "echecs": 2,
+    "ignores": 1,
+    "duree_secondes": 382.423,
+    "echecs_ids": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ]
+  },
+  "recette_documentaire": {
+    "lisible": true,
+    "compteurs_coherents_avec_cas": true,
+    "selection_sans_echec_ni_ignore": true,
+    "tests": 2290,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "scenarios_jsdom_pages": 6,
+  "scenarios_jsdom_dossiers": 28,
+  "scenarios_jsdom_historiques": 212,
+  "recette_api_copies_reelles": {
+    "tests": 1,
+    "echecs": 0,
+    "ignores": 0,
+    "duree_secondes": 2.614,
+    "echecs_ids": []
+  },
+  "documents_reels": {
+    "lot_id": "lois_recues_1979_2017",
+    "index": {
+      "index_sha256": "e055e6dafccb2eb4f56e2b75917be81f1773c9658a8758f284572d3de40a85c5",
+      "pages": 221,
+      "caracteres": 486098,
+      "manifest_lot_sha256": "086ddbf89fb0770418e56a83dfe3bc5647d2494cd6a0bed6231ef0492b897605"
+    },
+    "recherches_api_reelles": [
+      {
+        "q": "douanes",
+        "pages": 175,
+        "statut_http": 200,
+        "index_sha256": "e055e6dafccb2eb4f56e2b75917be81f1773c9658a8758f284572d3de40a85c5"
+      },
+      {
+        "q": "déclaration",
+        "pages": 87,
+        "statut_http": 200,
+        "index_sha256": "e055e6dafccb2eb4f56e2b75917be81f1773c9658a8758f284572d3de40a85c5"
+      },
+      {
+        "q": "abrogées",
+        "pages": 1,
+        "statut_http": 200,
+        "index_sha256": "e055e6dafccb2eb4f56e2b75917be81f1773c9658a8758f284572d3de40a85c5"
+      }
+    ],
+    "paquet": {
+      "nom": "documents_juridiques_1979_2017_indexes.zip",
+      "sha256": "5931b4050527f7ce341202105b434fa8e96f870aaf9aa144908c21bfa24c4f9e",
+      "octets": 3037400
+    },
+    "authenticite_etablie": false,
+    "articles_juridiques_indexes": 0,
+    "publication_active": false
+  },
+  "ci": {
+    "headSha": "b56c302534565c80bbd53bd19cd7a87afd217f1f",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42478038172"
+  },
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "ecarts": {
+      "data/referentiels.json": {
+        "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+        "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d",
+        "conforme": false
+      }
+    },
+    "restauration": false
+  },
+  "mission_globale": "partielle",
+  "authenticite_etablie": false,
+  "articles_juridiques_valides": 0,
+  "publication_active": false,
+  "limites": [
+    "Pas OCR ou correction de caracteres degrades",
+    "Resultats par pages physiques, pas articles ou regles applicables",
+    "Pin du derive et source, pas signature ni WORM",
+    "Index bornes et worker separe, pas sandbox OS complet ni charge qualifiee",
+    "Backend partage76 non redemarre et aucune habilitation reelle ajoutee"
+  ],
+  "artefacts_locaux": "/home/user/recettes-unocr/lot98",
+  "empreintes_artefacts": {
+    "complete.xml": "a245efd7147ce5677c6b42511d812de3c127fce91ed42f159044893d6707d86d",
+    "cibles.xml": "8a87f723be8cbdde9e5e71438c213bf5bc493e81a2363e595a5abd33d18baa82",
+    "ci.json": "c0019dbca328c655230443fff869ddd98e90754198a26381dff349b6666e75b8",
+    "http-reels.xml": "7caccd671114f8490f712c70bea075df69156e3c092b442d8d947a87917bb17d",
+    "empreintes.json": "114e29f84285e6ab34da6bf56e231cf0123c908b6a299d7d5615eb6e6f8f8817"
+  }
+}
