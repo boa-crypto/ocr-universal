@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État après le lot 87 — mesures datées du 2026-11-08 (horloge environnement). **Terminé = périmètre technique livré et
+État après le lot 88 — mesures datées du 2026-11-08 (horloge environnement). **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -92,6 +92,7 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 85 | PATCH/undo champ : acteur serveur, pas nom déclaré client | Terminé, 65 nouveaux cas et CI ciblée | Principal pas identité civile ; autres routes inchangées ; aperçu76 ; Indra absent, intégrité26/27 |
 | 86 | Classification manuelle : corrected_by principal serveur persisté/relu/exporté | Terminé, 40 nouveaux cas et CI ciblée | Principal pas identité civile ; résumé audit inchangé ; aperçu76 ; Indra absent, intégrité26/27 |
 | 87 | Audit classification manuelle : acteur serveur après persistance, automatique inchangé | Terminé, 34 nouveaux cas et CI ciblée | Pas identité civile/transaction audit ; historique inchangé ; aperçu76 ; Indra absent, intégrité26/27 |
+| 88 | GET classification : acteur concordant pour timestamp de trace attribuée | Terminé, 35 nouveaux cas et CI ciblée | Concordance pas authenticité/révision ; legacy conservé ; aperçu76 ; Indra absent, intégrité26/27 |
 | 76 | Valeurs vides : sélection, traces, annulation simple et statut corrected relisible | Terminé, 106 nouveaux cas + 2 induits, CI ciblée | Pas multi-niveau undo ni audit UI exhaustif ; Indra absent, intégrité 26/27 |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
@@ -127,10 +128,10 @@ Aucun pourcentage de complétude réglementaire ou de progression globale n’es
 du nombre de lots. Références non vérifiées interdites pour calcul douanier réel.
 
 Réception technique : [bilan des dix phases](BILAN_RECEPTION.md),
-[recette complète actuelle du lot 87](RECETTE_LOT87.json) : **4 143 réussis,
-2 échecs OCR, 1 ignoré, 2 avertissement(s)**. **26/27 empreintes historiques conformes** ;
+[recette complète actuelle du lot 88](RECETTE_LOT88.json) : **4 178 réussis,
+2 échecs OCR, 1 ignoré, 1 avertissement(s)**. **26/27 empreintes historiques conformes** ;
 référentiels et quatre dossiers partagés modifiés sont préservés hors commit,
-voir [rapport 87](RAPPORT_LOT87.md) ; ne pas confondre avec la sélection
+voir [rapport 88](RAPPORT_LOT88.md) ; ne pas confondre avec la sélection
 verte. Recettes historiques : [45](RECETTE_FINALE.json), [50](RECETTE_LOT50.json), [55](RECETTE_LOT55.json).
 
 Lot 57 : [lanceur local/CI](LANCEUR_RECETTE_CIBLEE.md) et

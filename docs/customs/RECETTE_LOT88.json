@@ -1,0 +1,163 @@
+{
+  "type_rapport": "recette_lot88_technique_non_validation_reglementaire",
+  "date_mesures_environnement": "2026-11-08",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "revision_code": "644f5bffaffb36e26a4c3a1edb783fb1383e2df8",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_originaux_officiels": 0,
+  "articles_codes_officiellement_valides": 0,
+  "nouveaux_tests_python": 35,
+  "selection_horodatage_audit_attribution_action_revision_cloisonnement": {
+    "tests": 790,
+    "reussis": 790,
+    "echecs": 0,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 23.54,
+    "duree_junit_secondes": 22.261,
+    "horodatage_junit": "2026-11-08T08:15:17.882972+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 790,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "contre_epreuve_get87": {
+    "tests": 35,
+    "reussis": 13,
+    "echecs": 22,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 4.64,
+    "duree_junit_secondes": 2.566,
+    "horodatage_junit": "2026-11-08T08:16:05.001955+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 35,
+      "failures": 22,
+      "errors": 0,
+      "skipped": 0
+    },
+    "code_sortie": 1,
+    "revision_chargee": "ba98dff75ce2c5b66a85aa32c1be9713b725385b",
+    "corps_get_classification_reinjecte_memoire_sans_decorateurs": true,
+    "sources_checkout_non_remplacees": true,
+    "apercu_non_modifie": true
+  },
+  "recette_documentaire_ciblee": {
+    "tests": 2160,
+    "reussis": 2160,
+    "echecs": 0,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 57.29,
+    "duree_junit_secondes": 57.25,
+    "horodatage_junit": "2026-11-08T08:16:00.397502+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 2160,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "fichiers": 66,
+    "jsdom_existants": 212
+  },
+  "suite_complete": {
+    "tests": 4181,
+    "reussis": 4178,
+    "echecs": 2,
+    "erreurs": 0,
+    "ignores": 1,
+    "avertissements": 1,
+    "duree_console_secondes": 365.19,
+    "duree_junit_secondes": 365.081,
+    "horodatage_junit": "2026-11-08T08:16:00.336537+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 4181,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 1
+    },
+    "identifiants_echecs": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ],
+    "ignores_detail": [
+      "tests.test_indra_ocr::test_indra_engine_recognize"
+    ],
+    "code_sortie": 1,
+    "identiques_lot87": true
+  },
+  "politique": {
+    "route": "GET /api/jobs/{job_id}/classification",
+    "resultat_reference": true,
+    "derniere_trace_exacte_toujours_cinq_champs": true,
+    "avec_cle_acteur_exige_manuel_booleen_true": true,
+    "acteur_chaine_non_blanche_egal_corrected_by": true,
+    "trace_sans_cle_acteur_politique_legacy": true,
+    "cle_acteur_null_non_equivalente_absence": true,
+    "pas_repli_ancienne_trace": true,
+    "fallback_sans_decision_n_infere_pas_acteur": true,
+    "timestamp_deja_stocke_non_repare": true,
+    "signature_ou_identite_revision": false
+  },
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "referentiels": {
+      "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+      "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d",
+      "conforme": false
+    },
+    "ecart_identique_lot87": true,
+    "restauration_effectuee": false,
+    "donnees_journaux_exploratoires_preserves_hors_commit": true
+  },
+  "ci": {
+    "run": 42462187363,
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42462187363",
+    "statut": "success",
+    "revision": "644f5bffaffb36e26a4c3a1edb783fb1383e2df8",
+    "portee": "771 horodatage/audit/attribution/demo/action/statuts/annulation/champs/révision/classification/valeurs/cloisonnement/RBAC + 243 qualité/Baidu + 24 ingestion/PDF + 10 UI + documentaire ; sélections se recouvrant",
+    "ocr_complet_execute_en_ci": false,
+    "junit_distant_telecharge": false
+  },
+  "apercu": {
+    "processus": "interface-uniocr-4f62d340",
+    "backend_lot": 76,
+    "code77_88_charge": false,
+    "redemarrage_impose": false,
+    "motif": "Préserver les traitements en cours",
+    "port": 8000,
+    "rbac_json_absent": true
+  },
+  "artefacts_locaux": "/home/user/recettes-unocr/lot88",
+  "limites": [
+    "Concordance déclarative pas authenticité/signature/identité révision",
+    "Même acteur et cinq champs peuvent encore désigner plusieurs opérations",
+    "Legacy sans acteur moins strict, pas attribution rétroactive",
+    "ts déjà stocké non purgé et ts/types globalement non validés",
+    "Lecture entière/préfiltre journal non bornés, pas transaction globale",
+    "Trace automatique attribuée non nouveau contrat accepté",
+    "Révision processus/ABA, audit best-effort, exports/qualité inchangés",
+    "Aperçu76 maintenu, code77–88 non chargé",
+    "Deux échecs Indra persistants, intégrité26/27",
+    "Aucun nouvel original officiel ou validation réglementaire"
+  ]
+}

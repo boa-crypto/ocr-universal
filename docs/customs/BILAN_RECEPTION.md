@@ -7,7 +7,25 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 87
+## État actuel — lot 88
+
+[Horodatage et acteur classification](HORODATAGE_ACTEUR_CLASSIFICATION.md) :
+trace attribuée exige booléen manual True et acteur non blanc égal au
+`corrected_by` stocké, en plus des cinq champs ; divergence sans repli ancien.
+Legacy sans clé acteur inchangé ; pas acteur inféré dans fallback sans résultat,
+ni réparation d'un ts stocké. Concordance, pas authenticité/révision.
+**35 nouveaux cas / 790 ciblés réussis** ; ancien GET : 22 échecs attendus,
+13 réussis. Documentaire **2 160 Python / 212 JSDOM historiques**. Complète :
+**4 178 réussis, 2 échecs Indra, 1 ignoré, 1 avertissement(s), 365,19 s**.
+Mesures JUnit datées `2026-11-08` (horloge environnement).
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42462187363), pas suite OCR complète en CI.
+**26/27 empreintes conformes**, même écart partagé ; données/journaux préservés
+hors commit. Pas preuve d'identité, migration ou transaction audit/résultat.
+**Aperçu backend76 maintenu**, code77–88 poussé/testé mais non chargé pour
+préserver les traitements ; RBAC absent.
+[Rapport](RAPPORT_LOT88.md), [recette actuelle](RECETTE_LOT88.json).
+
+## Complément historique — lot 87
 
 [Acteur du nouvel audit manuel](ACTEUR_AUDIT_CLASSIFICATION.md) : après
 persistance réussie, événement `document_classified` enrichi avec le même
