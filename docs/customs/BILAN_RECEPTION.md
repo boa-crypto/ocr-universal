@@ -7,7 +7,25 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 90
+## État actuel — lot 91
+
+[JSON groupé indépendant du fichier](EXPORT_JSON_LOT_SNAPSHOT.md) : réponse
+mémoire, nom lot.json/application-json/no-store ; ordre/doublons/raw/limite200
+conservés. Entrelacement même seconde : clichés indépendants, ancien handler
+échoue sur contenu avant en-têtes. Séquence par document **pas snapshot atomique**,
+limite testée ; autres formats groupés restent partagés.
+**26 nouveaux cas / 868 ciblés réussis** ; ancien handler : 14 échecs attendus,
+12 réussis. Documentaire **2 160 Python / 212 JSDOM historiques**. Complète :
+**4 256 réussis, 2 échecs Indra, 1 ignoré, 1 avertissement(s), 365,76 s**.
+Mesures JUnit datées `2026-11-08` (horloge environnement).
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42464600616), pas suite OCR complète en CI.
+**26/27 empreintes conformes**, même écart partagé ; données/journaux préservés
+hors commit. Pas purge globale, borne octets ou qualification mémoire/charge.
+**Aperçu backend76 maintenu**, code77–91 poussé/testé mais non chargé pour
+préserver les traitements ; RBAC absent.
+[Rapport](RAPPORT_LOT91.md), [recette actuelle](RECETTE_LOT91.json).
+
+## Complément historique — lot 90
 
 [JSON sélectionné snapshot](EXPORT_JSON_SELECTION_SNAPSHOT.md) : réponse mémoire
 sans fichier partagé, nom fixe selection.json/no-store. Entrelacement HTTP
