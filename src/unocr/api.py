@@ -1796,6 +1796,8 @@ def patch_field(job_id: str, name: str, patch: FieldPatch, request: Request) -> 
     # rôle exigé : valider/corriger un champ. RBAC inactif = contrôle sans effet.
     _exige(OPERATEUR)(request)
     _exige_job(request, job_id)
+    if all(value is None for value in (patch.confirmed_value, patch.corrected_value, patch.status)):
+        raise HTTPException(422, "aucune modification de champ fournie")
     result, revision = store.load_result_revision(job_id)
     if result is None:
         raise HTTPException(409, "résultat pas encore disponible")

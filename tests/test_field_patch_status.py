@@ -55,9 +55,12 @@ def test_unknown_status_refused_without_read_write_or_success(scoped,monkeypatch
 
 @pytest.mark.parametrize("explicit_null", [False,True],ids=["absent","null"])
 @pytest.mark.parametrize("body,expected", [( {},"detected"),({"confirmed_value":""},"validated"),({"corrected_value":""},"corrected")])
-def test_missing_and_null_status_keep_existing_behavior(scoped,body,expected,explicit_null):
+def test_missing_and_null_status_keep_value_edits_but_require_an_action(scoped,body,expected,explicit_null):
     _,jobs,cfg=scoped
     response=patch(scoped,{**body,**({"status":None} if explicit_null else {})})
+    if not body:
+        assert response.status_code==422
+        return
     assert response.status_code==200
     model=DocumentResult.model_validate(JobStore(cfg).load_result(jobs["visible"]))
     assert model.fields["sample"].status.value==expected
