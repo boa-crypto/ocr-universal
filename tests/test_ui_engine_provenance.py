@@ -34,5 +34,9 @@ def test_engine_provenance_shell_loading_order_and_cache():
     assert scripts.count(path) == 1
     assert scripts.index(path) < scripts.index("/web/app-extras.js")
     worker = (ROOT / "web/sw.js").read_text()
-    assert '"unocr-shell-v71-engine-provenance"' in worker
+    assert '"unocr-shell-v95-customs-assessments"' in worker
+    assessment = "/web/customs-assessments.js"
+    assert scripts.count(assessment) == 1
+    assert scripts.index(assessment) < scripts.index("/web/customs-review.js")
+    assert worker.count('"' + assessment + '"') == 1
     assert worker.count('"' + path + '"') == 1
