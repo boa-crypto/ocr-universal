@@ -7,7 +7,24 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 82
+## État actuel — lot 83
+
+[Statuts du PATCH champ](STATUTS_PATCH_CHAMPS.md) : même enum que le résultat,
+statut inconnu refusé422 avant stockage, valeurs persistées chaînes ; six statuts,
+null/absence et valeurs humaines vides conservés. Vocabulaire, pas machine à états.
+**58 nouveaux cas / 580 ciblés réussis** ; API82 en mémoire avant compilation
+FastAPI : 13 échecs attendus, 45 réussis. Six exports JSON et OpenAPI vérifiés.
+Documentaire **2 160 Python / 212 JSDOM historiques**. Complète :
+**3 976 réussis, 2 échecs Indra, 1 ignoré, 1 avertissement(s), 369,15 s**.
+Mesures JUnit datées `2026-11-08` (horloge environnement).
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42458450997),
+pas suite OCR complète en CI. **26/27 empreintes conformes**, même écart partagé ;
+données/journaux préservés hors commit. Pas migration ou validation de toutes
+transitions/écrivains. **Aperçu backend76 maintenu**, code77–83 poussé/testé mais
+non chargé pour préserver les traitements ; RBAC non configuré.
+[Rapport](RAPPORT_LOT83.md), [recette actuelle](RECETTE_LOT83.json).
+
+## Complément historique — lot 82
 
 [Sélection de trace d'annulation](SELECTION_TRACE_ANNULATION.md) : événement
 objet exact, bon job/champ, état antérieur présent et opération de valeur.
