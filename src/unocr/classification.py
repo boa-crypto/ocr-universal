@@ -464,10 +464,11 @@ _BUILTIN_LABELS: dict[str, str] = {c.id: c.label for c in _BUILTIN}
 
 
 def consigne_classification(log_dir: Path, job_id: str, resultat: ClassificationResult,
-                            manuel: bool = False) -> None:
-    """Trace la classification dans le journal d'audit."""
+                            manuel: bool = False, *, acteur: Optional[str] = None) -> None:
+    """Trace la classification ; acteur explicite fourni par l'appelant, sans le déduire du résultat."""
+    attribution = {} if acteur is None else {"acteur": acteur}
     audit(log_dir, "document_classified", job_id=job_id,
           category=resultat.category, confidence=round(resultat.confidence, 3),
           classifier_version=resultat.classifier_version,
           needs_review=resultat.needs_review, manual=manuel or resultat.manual,
-          evidence_count=len(resultat.evidence))
+          evidence_count=len(resultat.evidence), **attribution)

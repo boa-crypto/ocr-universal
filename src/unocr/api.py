@@ -3117,7 +3117,7 @@ def patch_classification(job_id: str, request: Request, body: dict) -> dict:
     resultat["classification"] = res.as_dict()
     if not store.replace_result_revision(job_id, revision, resultat):
         raise HTTPException(409, "résultat modifié pendant la classification : relisez avant de réessayer")
-    consigne_classification(cfg.log_dir, job_id, res, manuel=True)
+    consigne_classification(cfg.log_dir, job_id, res, manuel=True, acteur=acteur)
     return {"job_id": job_id, "classification": res.as_dict(),
             "profile_suggere": _classifier.profil_pour(categorie)}
 
