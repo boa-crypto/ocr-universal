@@ -7,7 +7,25 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 85
+## État actuel — lot 86
+
+[Attribution persistée classification manuelle](ACTEUR_CLASSIFICATION_MANUELLE.md) :
+`corrected_by` principal serveur, plus nom client ; RBAC/environnement,
+**anonyme sans RBAC**, pas identité civile. Réponse/store/GET/nouveaux exports
+concordants. Journal résumé inchangé sans acteur ajouté ; helper Python non
+authentifiant. Dix-huit cas77 actualisés pour le contrat.
+**40 nouveaux cas / 721 ciblés réussis** ; ancien handler : 31 échecs attendus,
+9 réussis. Documentaire **2 160 Python / 212 JSDOM historiques**. Complète :
+**4 109 réussis, 2 échecs Indra, 1 ignoré, 1 avertissement(s), 366,96 s**.
+Mesures JUnit datées `2026-11-08` (horloge environnement).
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42460922751), pas suite OCR complète en CI.
+**26/27 empreintes conformes**, même écart partagé ; données/journaux préservés
+hors commit. Pas migration historique ou invalidation d'exports en cache ;
+score manuel1 et opérations dossiers inchangés. **Aperçu backend76 maintenu**,
+code77–86 poussé/testé mais non chargé pour préserver les traitements ; RBAC absent.
+[Rapport](RAPPORT_LOT86.md), [recette actuelle](RECETTE_LOT86.json).
+
+## Complément historique — lot 85
 
 [Acteur serveur PATCH/undo](ACTEUR_CORRECTIONS_CHAMPS.md) : événements de
 validation/annulation attribués au principal résolu, plus au `user` client.
