@@ -1826,7 +1826,7 @@ def patch_field(job_id: str, name: str, patch: FieldPatch, request: Request) -> 
     result["fields"] = fields
     if not store.replace_result_revision(job_id, revision, result):
         raise HTTPException(409, "résultat modifié pendant la correction : relisez avant de réessayer")
-    acteur = str(getattr(patch, "user", None) or "utilisateur")
+    acteur = _acteur(request)
     audit(cfg.log_dir, "field_validated", job_id=job_id, field=name,
           confirmed=patch.confirmed_value, corrected=patch.corrected_value,
           acteur=acteur, motif=getattr(patch, "reason", None),
@@ -1887,7 +1887,7 @@ def annuler_correction(job_id: str, name: str, request: Request,
     result["fields"] = fields
     if not store.replace_result_revision(job_id, revision, result):
         raise HTTPException(409, "résultat modifié pendant la correction : relisez avant de réessayer")
-    acteur = str(body.get("user") or "utilisateur")
+    acteur = _acteur(request)
     motif = str(body.get("motif") or "").strip()
     audit(cfg.log_dir, "field_correction_annulee", job_id=job_id, field=name,
           acteur=acteur, motif=motif,
