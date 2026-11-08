@@ -130,8 +130,8 @@ def test_correction_bascule_l_origine_de_la_valeur(client, tmp_path):
     journal = (api.cfg.log_dir / "audit.log").read_text(encoding="utf-8")
     ligne = [lig for lig in journal.splitlines()
              if "field_validated" in lig][-1]
-    assert "aminal" not in ligne  # garde-fou : l'acteur doit etre lisible
-    assert '"acteur": "amina"' in ligne
+    # Sans RBAC, le nom déclaré ne devient pas un principal serveur (lot85).
+    assert '"acteur": "anonyme"' in ligne
     assert "un seul conteneur" in ligne
 
 
