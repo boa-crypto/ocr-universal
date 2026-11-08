@@ -847,3 +847,13 @@ Les points ci-dessus restent ouverts. Ils ne sont remplacés ni par un nombre de
 lots, ni par un taux de tests verts. Aucune demande de permission supplémentaire
 n'est nécessaire pour lire ce bilan ; il consigne simplement les limites réelles
 de ce qui a été exécuté et livré.
+
+## Navigation documentaire99 — repères candidats
+
+[Rapport99](RAPPORT_LOT99.md) : lecture contextualisée des pages indexées et
+filtrage de591 occurrences typographiques candidates (140/451), pas d’articles
+juridiquement qualifiés. Les sources, l’index, le registre et les droits réels
+restent inchangés. Pagination et lecture refusent une empreinte divergente.
+72 tests ciblés et2304 documentaires réussis ; suite complète4459 réussis,
+2 échecs historiques et1 ignoré. CI du code0eabb8b1 réussie. Backend partagé
+non redémarré, publication toujours désactivée.

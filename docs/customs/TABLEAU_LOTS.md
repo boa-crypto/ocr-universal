@@ -146,3 +146,17 @@ verte. Recettes historiques : [45](RECETTE_FINALE.json), [50](RECETTE_LOT50.json
 Lot 57 : [lanceur local/CI](LANCEUR_RECETTE_CIBLEE.md) et
 [recette ciblée](RECETTE_LOT57.json). Réussite locale et job GitHub Actions ciblé
 attestés (run 42370535241) ; suite complète non relancée pour ce lot.
+
+## Navigation des copies PDF99
+
+| Élément | État vérifié |
+|---|---|
+| Repères français candidats, numéro littéral | Livré ;591 occurrences, pas591 articles qualifiés |
+| Lecture directe du contexte indexé | Livrée ; PDF/page/index/manifeste contrôlés |
+| Pagination sur index changé | Refusée, recherche à relancer |
+| Vérification |72 ciblés/2304 documentaires réussis ; CI code0eabb8b1 verte |
+| Qualification juridique et droits réels | Inchangés ;0 article validé pour ces copies |
+| Déploiement backend partagé | Non effectué ; mise à jour et habilitation nominative nécessaires |
+
+Détails : [rapport99](RAPPORT_LOT99.md), [contrat](REPERES_ARTICLES_CANDIDATS.md),
+[recette](RECETTE_LOT99.json).

@@ -83,3 +83,11 @@ ou fiscalité applicable. Une absence de résultat n'est pas une absence de droi
 Le paquet transportable actualisé est conservé hors Git ; les sources restent
 locales et privées. La sauvegarde de quarantaine avec option CLI explicite inclut
 le registre, les PDF et l'index ; pas de restauration d'exploitation effectuée.
+
+## Navigation complémentaire99
+
+Les résultats disposent d’une lecture directe de la copie indexée. Le mode
+[repères d’articles candidats](REPERES_ARTICLES_CANDIDATS.md) permet de filtrer
+un numéro littéral et d’ouvrir son contexte, sans créer d’article qualifié.
+La pagination refuse maintenant de poursuivre sur une nouvelle empreinte
+d’index ou de manifeste : une recherche doit être relancée.

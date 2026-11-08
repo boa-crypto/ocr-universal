@@ -3,7 +3,7 @@
 Le lot94 recentre les travaux sur les fonctions métier. Il ne signifie pas que
 l'ensemble de la mission est achevé. Aucun pourcentage déduit des tests/lots.
 
-| Fonction | État vérifiable après98 | Reste pour clôturer |
+| Fonction | État vérifiable après99 | Reste pour clôturer |
 |---|---|---|
 | Fiche produit et questions | API/UI, champs déclarés/questions, pièces textuelles et citations Unicode exactes versionnées | Originaux PDF/images, authenticité des pièces et qualification opérateur |
 | Pistes et comparaison documentaire | Moteur littéral FR/AR, snapshot par révision ; matrice des valeurs déclarées/citations et candidats, écarts textuels/questions explicites | Synonymes/ontologie métier sourcés, comparaison technique discriminante |
@@ -75,3 +75,11 @@ avec références physiques, extraits et épingle du dérivé au registre. Cela 
 transcrit pas des articles qualifiés et ne résout pas les erreurs d’encodage,
 la consolidation à date ou l’authenticité. API/interface livrées ; backend partagé
 non redémarré et aucune nouvelle habilitation réelle.
+
+## Navigation des copies reçues —99
+
+[Repères candidats et lecture contextualisée](REPERES_ARTICLES_CANDIDATS.md) :
+591 occurrences typographiques repérées dans les pages, dont140 pour17-04 et451
+pour la compilation. Aucun article juridiquement qualifié, aucune fusion de
+numéros et aucune relation d’abrogation inférée. La lecture garde les empreintes
+de la page sélectionnée et refuse un index changé pendant la pagination.
