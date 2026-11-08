@@ -79,5 +79,9 @@ async function scenario(name,run){
  await scenario('édition du texte invalide la citation locale',async({host,button,field,w,reply,calls})=>{
    const p=n=>host.querySelector('[data-piece-field="'+n+'"]');p('piece_id').value='CITE';p('nom').value='NON-OFFICIEL.txt';p('localisateur_declare').value='Section';p('texte').value='acier NON OFFICIEL';p('valeur_declaree').value='acier';p('texte').setSelectionRange(0,5);button('cite-selection').click();p('texte').value='AUTRE TEXTE NON OFFICIEL';p('texte').dispatchEvent(new w.Event('input'));button('add-piece').click();field('designation').value='Équipement';reply(doc(),false);button('create').click();await tick();assert.deepEqual(JSON.parse(calls[0].opts.body).pieces_techniques[0].declarations_attributs,[]);
  });
+
+ await scenario('nouvel identifiant après historique permet une création explicite',async({field,button,reply,w})=>{
+   field('version_lecture').value='1';reply(doc());button('load-version').click();await tick();assert(button('create').disabled);field('id').value='NOUVEAU';field('id').dispatchEvent(new w.Event('input'));field('id').dispatchEvent(new w.Event('change'));assert(!button('create').disabled);assert(button('save').disabled);
+ });
  console.log(count+' scénarios métier UI réussis');
 })().catch(e=>{console.error(e);process.exit(1);});

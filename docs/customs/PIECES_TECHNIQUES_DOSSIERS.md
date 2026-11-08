@@ -99,3 +99,18 @@ d'archivage probant et d'exploitation du contrat95 restent inchangées.
 PDF/images/binaire, pièces originales signées, vérification par expert,
 comparaison technique sémantique, ontologie, moteur RGI/droit à date, publication
 et intégration aux systèmes centraux ne sont pas livrés par cette extension.
+
+## Permissions du stockage local
+
+Avant ouverture SQLite, création en0600 et restriction des bases existantes
+à0600 sur POSIX, sans changer leur contenu ; même contrôle des sidecars présents.
+Fichiers réguliers, lien unique et propriétaire du processus exigés ; liens
+symboliques et FIFO refusés. Ouverture non bloquante et `O_NOFOLLOW` lorsque
+le système les fournit. Les journaux supprimés concurremment par SQLite sont
+ignorés après ouverture s'ils n'ont plus de lien.
+
+Ces contrôles ne protègent pas contre un autre processus hostile du **même
+compte système**, une substitution d'ancêtre du chemin ou le propriétaire du
+support ; isoler le compte de service et protéger toute l'arborescence. Les
+permissions POSIX ne valent pas une qualification des ACL Windows. Aucune
+base métier réelle n'a été ouverte par cette campagne pour modifier ses modes.

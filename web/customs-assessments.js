@@ -141,7 +141,7 @@
       request('PATCH',p);
     });
     root.append(status,result,candidates,history);lot.addEventListener('change',reset);
-    id.addEventListener('input',function(){documentState=null;uncertain=true;result.textContent=history.textContent='';candidates.replaceChildren();save.disabled=true;});
+    id.addEventListener('input',function(){documentState=null;historical=false;uncertain=true;result.textContent=history.textContent='';candidates.replaceChildren();save.disabled=true;});
     // Un nouvel identifiant permet la création, jamais la réutilisation d'une révision chargée.
     id.addEventListener('change',function(){uncertain=false;update();});
     drawPieces();update();

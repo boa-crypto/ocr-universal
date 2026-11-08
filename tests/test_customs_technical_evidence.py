@@ -208,3 +208,43 @@ def test_citation_incoherente_refusee(revue, modification):
 def test_citations_repetees_par_critere_refusees(revue):
     declaration = {"critere":"matiere","valeur_declaree":"acier", "debut":0,"fin":5,"citation":"acier"}
     assert creer(revue,[dict(PIECE,texte="acier",declarations_attributs=[declaration,declaration])]).status_code == 422
+
+
+def test_permissions_privees_et_reprise_base_ancienne_sans_modifier_contenu(revue):
+    import os
+    import stat
+    if os.name != "posix":
+        pytest.skip("Vérification POSIX des permissions")
+    doc = value(creer(revue))
+    db = revue[1]/"dossiers_metier.sqlite3"
+    assert stat.S_IMODE(db.stat().st_mode) == 0o600
+    db.chmod(0o644)
+    assert value(revue[0].get(url(),headers=ADMIN))["pieces_techniques"] == doc["pieces_techniques"]
+    assert stat.S_IMODE(db.stat().st_mode) == 0o600
+
+
+def test_stockage_multilien_refuse_sans_modifier_fichier_cible(revue):
+    import os
+    cible = revue[1]/"cible_non_officielle"
+    cible.write_bytes(b"NON OFFICIEL NE PAS TOUCHER")
+    os.link(cible,revue[1]/"dossiers_metier.sqlite3")
+    mode = cible.stat().st_mode
+    assert creer(revue).status_code == 422
+    assert cible.read_bytes() == b"NON OFFICIEL NE PAS TOUCHER" and cible.stat().st_mode == mode
+
+
+def test_stockage_fifo_refuse_sans_blocage(revue):
+    import os
+    if not hasattr(os,"mkfifo"):
+        pytest.skip("FIFO POSIX requis")
+    os.mkfifo(revue[1]/"dossiers_metier.sqlite3")
+    assert creer(revue).status_code == 422
+
+
+def test_sidecar_symbolique_refuse_sans_chmod_de_la_cible(revue):
+    cible = revue[1]/"cible_non_officielle"
+    cible.write_bytes(b"NE PAS TOUCHER")
+    mode = cible.stat().st_mode
+    (revue[1]/"dossiers_metier.sqlite3-wal").symlink_to(cible)
+    assert creer(revue).status_code == 422
+    assert cible.read_bytes() == b"NE PAS TOUCHER" and cible.stat().st_mode == mode

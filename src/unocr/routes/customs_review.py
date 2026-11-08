@@ -260,7 +260,7 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 raise HTTPException(409, {"code": "revision_dossier_metier_conflictuelle"}, headers=NO_STORE) from None
             except DossierRefuse:
                 raise HTTPException(422, {"code": "dossier_metier_refuse"}, headers=NO_STORE) from None
-            except sqlite3.Error:
+            except (sqlite3.Error, OSError):
                 raise HTTPException(503, {"code": "stockage_dossier_metier_indisponible"}, headers=NO_STORE) from None
         return executer(utilisateur, operation, [lot_id], agir)
 

@@ -1,7 +1,9 @@
 """Dossiers de proposition documentaire, jamais décisions fiscales ou publication."""
 import hashlib
 import json
+import os
 import sqlite3
+import stat
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Literal
@@ -110,6 +112,9 @@ class MagasinDossiers:
     def _connect(self):
         if self.path.is_symlink():
             raise DossierRefuse("Stockage symbolique refusé")
+        self._securiser_fichier(self.path, creer=True)
+        for suffixe in ("-wal", "-shm", "-journal"):
+            self._securiser_fichier(Path(str(self.path)+suffixe))
         conn = sqlite3.connect(self.path, timeout=5, isolation_level=None)
         try:
             conn.execute("CREATE TABLE IF NOT EXISTS dossiers (id TEXT PRIMARY KEY, lot TEXT NOT NULL, "
@@ -123,6 +128,33 @@ class MagasinDossiers:
             conn.close()
             raise
         return conn
+
+    @staticmethod
+    def _securiser_fichier(path, creer=False):
+        flags = os.O_RDWR | getattr(os,"O_NOFOLLOW",0) | getattr(os,"O_NONBLOCK",0)
+        if creer:
+            flags |= os.O_CREAT
+        if path.is_symlink():
+            raise DossierRefuse("Stockage symbolique refusé")
+        try:
+            fd = os.open(path,flags,0o600)
+        except FileNotFoundError:
+            if not creer:
+                return
+            raise
+        try:
+            etat = os.fstat(fd)
+            if not creer and etat.st_nlink == 0:
+                return  # Journal SQLite supprimé entre open et fstat.
+            if (not stat.S_ISREG(etat.st_mode) or etat.st_nlink != 1
+                    or (hasattr(os,"getuid") and etat.st_uid != os.getuid())):
+                raise DossierRefuse("Stockage non régulier, partagé ou non possédé")
+            if hasattr(os,"fchmod"):
+                os.fchmod(fd,0o600)
+            else:
+                os.chmod(path,0o600)
+        finally:
+            os.close(fd)
 
     @staticmethod
     def _verifier(contenu, evenement):
