@@ -72,12 +72,13 @@
       finally{readingFile=false;fileInput.value='';if(current())update();}
     });
     var status=node('p','Aucune décision juridique ou publication possible.');status.setAttribute('role','status');status.setAttribute('aria-live','polite');
+    var comparisonView=node('pre');comparisonView.dir='auto';comparisonView.dataset.comparison='';
     var result=node('pre');result.dir='auto';var candidates=node('div'),history=node('pre');history.dir='auto';
     function current(){return !revoked && root.isConnected && active() && initialToken===token();}
     function validId(){return /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(id.value);}
     function product(){var p={};Object.keys(fields).forEach(function(k){p[k]=fields[k].value||null;});p.designation=fields.designation.value;return p;}
-    function reset(){sequence++;documentState=null;uncertain=false;historical=false;draftPieces=[];selectedClaim=null;claimValue.value='';piecesDirty=false;versionInput.value='';Object.values(pieceFields).forEach(function(i){if(i.tagName!=='SELECT')i.value='';});fileInput.value='';drawPieces();id.value='';Object.values(fields).forEach(function(i){i.value='';});motivation.value=rgi.value=notes.value='';code.replaceChildren();result.textContent=history.textContent='';candidates.replaceChildren();status.textContent='Dossier à charger ou à créer. Aucune publication.';update();}
-    function update(){root.disabled=busy || readingFile || !lot.selectedOptions.length || lot.selectedOptions[0].dataset.lotType!=="tarif";save.disabled=busy||readingFile||historical||!documentState||uncertain;create.disabled=busy||readingFile||historical||uncertain;pieceArea.disabled=Boolean(piecesLocked());}
+    function reset(){sequence++;documentState=null;uncertain=false;historical=false;draftPieces=[];selectedClaim=null;claimValue.value='';piecesDirty=false;versionInput.value='';Object.values(pieceFields).forEach(function(i){if(i.tagName!=='SELECT')i.value='';});fileInput.value='';drawPieces();id.value='';Object.values(fields).forEach(function(i){i.value='';});motivation.value=rgi.value=notes.value='';code.replaceChildren();result.textContent=history.textContent=comparisonView.textContent='';candidates.replaceChildren();status.textContent='Dossier à charger ou à créer. Aucune publication.';update();}
+    function update(){root.disabled=busy || readingFile || !lot.selectedOptions.length || lot.selectedOptions[0].dataset.lotType!=="tarif";save.disabled=busy||readingFile||historical||!documentState||uncertain;create.disabled=busy||readingFile||historical||uncertain;pieceArea.disabled=Boolean(piecesLocked());compare.disabled=busy||readingFile||!documentState||uncertain;}
     function validate(data,expectedId,expectedLot){
       if(!data || data.publication_active!==false || data.validation_juridique!=='non_validee' || data.perimetre!=='revue_administrative_quarantaine')throw Error('Réponse de dossier non conforme.');
       var d=data.resultat;
@@ -85,7 +86,7 @@
       return d;
     }
     function render(d){
-      documentState=d;draftPieces=(d.pieces_techniques||[]).map(function(p){return JSON.parse(JSON.stringify(p));});piecesDirty=false;selectedClaim=null;claimValue.value='';Object.values(pieceFields).forEach(function(i){if(i.tagName!=='SELECT')i.value='';});drawPieces();Object.keys(fields).forEach(function(k){fields[k].value=d.diagnostic.produit_declare[k]||'';});
+      comparisonView.textContent='';documentState=d;draftPieces=(d.pieces_techniques||[]).map(function(p){return JSON.parse(JSON.stringify(p));});piecesDirty=false;selectedClaim=null;claimValue.value='';Object.values(pieceFields).forEach(function(i){if(i.tagName!=='SELECT')i.value='';});drawPieces();Object.keys(fields).forEach(function(k){fields[k].value=d.diagnostic.produit_declare[k]||'';});
       result.textContent='Version '+d.version+' — '+d.statut+' — acteur serveur : '+d.acteur+'\n'+JSON.stringify(d.diagnostic.questions_a_documenter,null,2);
       if(d.diagnostic.abstention_documentaire)result.textContent+='\nAbstention : aucune piste documentaire, pas absence de droit.';
       code.replaceChildren();var empty=node('option','Choisir explicitement');empty.value='';code.append(empty);
@@ -97,7 +98,7 @@
       });
       history.textContent=JSON.stringify(d.historique||[],null,2);
     }
-    async function request(method,payload,readVersion){
+    async function request(method,payload,readVersion,comparisonOnly){
       if(!current()){documentState=null;root.replaceChildren();return;}
       if(busy||readingFile)return;
       if(!validId()){status.textContent='Identifiant simple de 1 à 64 caractères requis.';return;}
@@ -106,29 +107,36 @@
       try{
         var headers={Accept:'application/json'};if(initialToken)headers.Authorization='Bearer '+initialToken;
         if(payload)headers['Content-Type']='application/json';
-        var path='/api/v1/customs-review/lots/'+encodeURIComponent(selection)+'/assessments'+(method==='POST'?'':'/'+encodeURIComponent(identity))+(readVersion?'?version='+readVersion:'');
+        var path='/api/v1/customs-review/lots/'+encodeURIComponent(selection)+'/assessments'+(method==='POST'?'':'/'+encodeURIComponent(identity))+(comparisonOnly?'/comparison':'')+(readVersion?'?version='+readVersion:'');
         var response=await fetch(path,{method:method,headers:headers,body:payload?JSON.stringify(payload):undefined,credentials:'same-origin',cache:'no-store'});
         if(!current() || sequence!==number || lot.value!==selection || id.value!==identity)return;
         if(!response.ok){
           definiteRejection=response.status>=400 && response.status<500 && response.status!==409;
           if(!definiteRejection)uncertain=true;
-          if(response.status===401 || response.status===403){revoked=true;documentState=null;result.textContent=history.textContent='';candidates.replaceChildren();}
+          if(response.status===401 || response.status===403){revoked=true;documentState=null;result.textContent=history.textContent=comparisonView.textContent='';candidates.replaceChildren();}
           throw Error(response.status===503?'Audit ou service indisponible : sauvegarde possible. Relire ce dossier après rétablissement, ne pas rejouer.':response.status===409?'Conflit ou identifiant existant : relire avant modification.':'Demande refusée ('+response.status+'). Aucun classement validé.');
         }
         var data=await response.json();if(!current()||sequence!==number||lot.value!==selection||id.value!==identity)return;
         if(data.lecture_seule!==(method==='GET'))throw Error('Mode de réponse incohérent.');
+        if(comparisonOnly){
+          var c=data.resultat;
+          if(data.publication_active!==false || data.validation_juridique!=='non_validee' || data.perimetre!=='revue_administrative_quarantaine' || !c || c.type_rapport!=='comparaison_declarations_et_pistes_non_validee' || c.dossier_id!==identity || c.lot_id!==selection || c.version!==readVersion || !documentState || c.manifest_sha256!==documentState.manifest_sha256 || !/^[a-f0-9]{64}$/.test(c.sha256_dossier) || c.attributs_techniques_certifies!==false || c.contradiction_semantique_etablie!==false || c.classement_ia_effectue!==false || c.candidat_retenu_automatiquement!==false || c.taux_calcules!==false || c.politique_comparaison!=='egalite_exacte_sans_normalisation_traduction_ou_synonymes' || !Array.isArray(c.questions_a_arbitrer) || c.questions_a_arbitrer.length>15 || c.publication_active!==false || c.validation_juridique!=='non_validee' || !Array.isArray(c.criteres) || c.criteres.length!==5 || c.criteres.map(function(x){return x.critere;}).join(',')!==Object.keys(fields).join(',') || !Array.isArray(c.candidats) || c.candidats.length>20)throw Error('Comparaison non conforme.');
+          comparisonView.textContent='Comparaison de la version enregistrée '+c.version+' ; pas du brouillon local. Aucune inférence technique.\n'+JSON.stringify(c,null,2);
+          status.textContent='Comparaison documentaire en lecture seule ; valeurs différentes à examiner, pas contradiction prouvée.';return;
+        }
         var checked=validate(data,identity,selection);if(readVersion&&checked.version!==readVersion)throw Error('Version historique incohérente.');
         historical=Boolean(readVersion);render(checked);uncertain=false;
         status.textContent='Dossier enregistré/lu — proposition non validée, non publiée. Version '+documentState.version+(historical?' — version historique, lecture seule.':'');
       }catch(e){
         if(!current()||sequence!==number)return;
-        if(!definiteRejection){uncertain=true;documentState=null;result.textContent=history.textContent='';candidates.replaceChildren();code.replaceChildren();}
+        if(!definiteRejection){uncertain=true;documentState=null;result.textContent=history.textContent=comparisonView.textContent='';candidates.replaceChildren();code.replaceChildren();}
         status.textContent=e.message && !/fetch|network/i.test(e.message)?e.message:'Connexion interrompue : état incertain, relire avant toute nouvelle écriture.';
       }finally{busy=false;if(!current()){documentState=null;root.replaceChildren();}else update();}
     }
     var create=button('create','Créer le brouillon',function(){if(!uncertain && fields.designation.value.trim())request('POST',{dossier_id:id.value,produit:product(),pieces_techniques:draftPieces.map(piecePayload)});});
     button('load','Charger / réconcilier le dossier',function(){request('GET');});
     button('load-version','Lire la version historique',function(){var v=Number(versionInput.value);if(!Number.isInteger(v)||v<1||v>100){status.textContent='Version de 1 à 100 requise.';return;}request('GET',undefined,v);});
+    var compare=button('compare','Comparer les déclarations de la version enregistrée',function(){if(documentState&&!uncertain)request('GET',undefined,documentState.version,true);});
     var save=button('save','Enregistrer une révision explicite',function(){
       if(historical||!documentState||uncertain||motivation.value.trim().length<10)return;
       var p={version_attendue:documentState.version,statut:state.value,justification:motivation.value};
@@ -140,8 +148,8 @@
       }
       request('PATCH',p);
     });
-    root.append(status,result,candidates,history);lot.addEventListener('change',reset);
-    id.addEventListener('input',function(){documentState=null;historical=false;uncertain=true;result.textContent=history.textContent='';candidates.replaceChildren();save.disabled=true;});
+    root.append(status,result,candidates,history,comparisonView);lot.addEventListener('change',reset);
+    id.addEventListener('input',function(){documentState=null;historical=false;uncertain=true;result.textContent=history.textContent=comparisonView.textContent='';candidates.replaceChildren();save.disabled=true;});
     // Un nouvel identifiant permet la création, jamais la réutilisation d'une révision chargée.
     id.addEventListener('change',function(){uncertain=false;update();});
     drawPieces();update();

@@ -83,5 +83,13 @@ async function scenario(name,run){
  await scenario('nouvel identifiant après historique permet une création explicite',async({field,button,reply,w})=>{
    field('version_lecture').value='1';reply(doc());button('load-version').click();await tick();assert(button('create').disabled);field('id').value='NOUVEAU';field('id').dispatchEvent(new w.Event('input'));field('id').dispatchEvent(new w.Event('change'));assert(!button('create').disabled);assert(button('save').disabled);
  });
+
+ await scenario('comparaison explicite, GET de la version enregistrée sans mutation',async({load,respond,button,host,calls})=>{
+   await load();const c={type_rapport:'comparaison_declarations_et_pistes_non_validee',dossier_id:'DEMO',lot_id:'tarif_a',version:1,manifest_sha256:'a'.repeat(64),sha256_dossier:'b'.repeat(64),attributs_techniques_certifies:false,contradiction_semantique_etablie:false,classement_ia_effectue:false,candidat_retenu_automatiquement:false,taux_calcules:false,politique_comparaison:'egalite_exacte_sans_normalisation_traduction_ou_synonymes',questions_a_arbitrer:[],publication_active:false,validation_juridique:'non_validee',criteres:['designation','matiere','fonction','usage','caracteristiques'].map(critere=>({critere})),candidats:[],texte:'<img src=x onerror=evil()>'};
+   respond(async()=>({ok:true,status:200,json:async()=>envelope(c)}));button('compare').click();await tick();assert.equal(calls.at(-1).opts.method,'GET');assert(calls.at(-1).url.endsWith('/comparison?version=1'));assert(!host.querySelector('img'));assert(host.querySelector('[data-comparison]').textContent.includes('<img'));assert(!button('save').disabled);
+ });
+ await scenario('comparaison prétendant certifier un attribut refusée',async({load,respond,button,host})=>{
+   await load();respond(async()=>({ok:true,status:200,json:async()=>envelope({type_rapport:'comparaison_declarations_et_pistes_non_validee',dossier_id:'DEMO',lot_id:'tarif_a',version:1,manifest_sha256:'a'.repeat(64),sha256_dossier:'b'.repeat(64),attributs_techniques_certifies:true})}));button('compare').click();await tick();assert.equal(host.querySelector('[data-comparison]').textContent,'');assert(button('save').disabled);assert(host.textContent.includes('Comparaison non conforme'));
+ });
  console.log(count+' scénarios métier UI réussis');
 })().catch(e=>{console.error(e);process.exit(1);});

@@ -34,6 +34,7 @@ from ..customs_reference.assessment import (
     RevisionDossierConflict,
     preparer_diagnostic,
 )
+from ..customs_reference.assessment_comparison import comparer_dossier
 from ..customs_reference.code_tree import ParamArbreCodeInvalide, parcourir_code
 from ..customs_reference.comparison import charger_lot, comparer_lots
 from ..customs_reference.coverage import diagnostiquer_couverture
@@ -231,7 +232,7 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 if operation == "creation_dossier_metier":
                     produit = body.produit
                 else:
-                    if operation == "lecture_dossier_metier":
+                    if operation in {"lecture_dossier_metier", "comparaison_dossier_metier"}:
                         _, controle = charger_lot(dossiers[0])
                         if controle["archive"]["manifest_sha256"] != entree.manifest_sha256:
                             raise RevisionDossierConflict("Source modifiée")
@@ -239,11 +240,11 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                                              historique=operation == "lecture_dossier_metier" and version is None, version=version)
                     produit = (body.produit if body and body.produit is not None else
                                ProduitDeclare.model_validate(precedent["diagnostic"]["produit_declare"]))
-                    if operation == "lecture_dossier_metier":
+                    if operation in {"lecture_dossier_metier", "comparaison_dossier_metier"}:
                         magasin.reconcilier_audit(dossier_id, lot_id, entree.manifest_sha256,
                             lambda **champs: tracer_operation(obligatoire=True, operation="version_dossier_metier",
                                                              lots=[lot_id], statut=200, **champs))
-                        return precedent
+                        return comparer_dossier(precedent) if operation == "comparaison_dossier_metier" else precedent
                 diagnostic = preparer_diagnostic(dossiers[0], produit)
                 if diagnostic["recherche"]["archive"]["manifest_sha256"] != entree.manifest_sha256:
                     raise RevisionDossierConflict("Source modifiée avant sauvegarde")
@@ -272,6 +273,11 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
     def lire_dossier_metier(lot_id: str, dossier_id: str, version: int | None = Query(None, ge=1, le=100),
                            utilisateur=Depends(autoriser)):
         return dossier_metier(utilisateur, lot_id, dossier_id, "lecture_dossier_metier", version=version)
+
+    @router.get("/lots/{lot_id}/assessments/{dossier_id}/comparison")
+    def comparer_dossier_metier(lot_id: str, dossier_id: str, version: int | None = Query(None, ge=1, le=100),
+                               utilisateur=Depends(autoriser)):
+        return dossier_metier(utilisateur, lot_id, dossier_id, "comparaison_dossier_metier", version=version)
 
     @router.patch("/lots/{lot_id}/assessments/{dossier_id}")
     def reviser_dossier_metier(lot_id: str, dossier_id: str, body: RevisionDossier,
