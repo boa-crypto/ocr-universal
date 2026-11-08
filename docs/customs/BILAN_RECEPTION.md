@@ -7,7 +7,25 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 86
+## État actuel — lot 87
+
+[Acteur du nouvel audit manuel](ACTEUR_AUDIT_CLASSIFICATION.md) : après
+persistance réussie, événement `document_classified` enrichi avec le même
+acteur serveur que `corrected_by`. Automatique/appels sans acteur explicite
+inchangés, pas déduction depuis résultat ou attribution rétroactive.
+**34 nouveaux cas / 755 ciblés réussis** ; anciens handler/helper cohérents :
+20 échecs attendus, 14 réussis. Vérification au point d'audit via nouveau store.
+Documentaire **2 160 Python / 212 JSDOM historiques**. Complète :
+**4 143 réussis, 2 échecs Indra, 1 ignoré, 2 avertissement(s), 373,36 s**.
+Mesures JUnit datées `2026-11-08` (horloge environnement).
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42461512710), pas suite OCR complète en CI.
+**26/27 empreintes conformes**, même écart partagé ; données/journaux préservés
+hors commit. Principal pas identité civile ; audit postcommit non atomique,
+GET timestamp inchangé sans contrôle acteur/révision. **Aperçu backend76 maintenu**,
+code77–87 poussé/testé mais non chargé pour préserver les traitements ; RBAC absent.
+[Rapport](RAPPORT_LOT87.md), [recette actuelle](RECETTE_LOT87.json).
+
+## Complément historique — lot 86
 
 [Attribution persistée classification manuelle](ACTEUR_CLASSIFICATION_MANUELLE.md) :
 `corrected_by` principal serveur, plus nom client ; RBAC/environnement,
