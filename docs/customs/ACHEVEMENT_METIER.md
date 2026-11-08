@@ -59,3 +59,11 @@ ou juridiquement à partir des seuls tests locaux.
 **0 nouvel original officiel, 0 article/code officiellement validé, 0 publication
 active** au titre de cette campagne. Les sources et scénarios de tests ne sont
 pas des données de production. Aperçu backend76 conservé, pas déploiement implicite.
+
+## Copies reçues après97
+
+Deux PDF utilisateur ont été [intégrés comme documents juridiques reçus](RECEPTION_LOIS_1979_2017.md),
+avec221 pages natives conservées. Ils ne sont pas des originaux officiellement
+authentifiés :17-04 modificative et compilation affichant Juin2017 pour79-07.
+Le corpus exhaustif FR/AR, la transcription qualifiée et le droit à date restent
+ouverts. Aucune publication ou habilitation ajoutée.

@@ -7,6 +7,16 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
+## Réception de deux PDF utilisateur — lois1979/2017
+
+[Reçu d'intégration](RECEPTION_LOIS_1979_2017.md) : deux copies PDF conservées
+et répertoriées en quarantaine,221 pages de texte natif extrait sans correction.
+Le fichier nommé loi79-07 est une **compilation affichant Juin2017**, pas l'édition
+originale de1979. Le PDF17-04 est un acte modificatif présentant le JO11/2017.
+Authenticité non établie,0 article transcrit/validé et aucune consolidation.
+174 ciblés /2276 documentaires réussis ;4 lectures de pages des vrais PDF vérifiées.
+Backend partagé non redémarré et aucune habilitation automatiquement attribuée.
+
 ## État actuel — lot97 : matrice des déclarations et pistes
 
 [Rapport97](RAPPORT_LOT97.md) : juxtaposition des caractéristiques, pièces/citations

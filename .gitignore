@@ -24,3 +24,7 @@ data/justificatifs/
 
 # Dossiers de proposition douanière locaux et journal transactionnel
 data/customs-quarantine/dossiers_metier.sqlite3*
+
+# PDF juridiques reçus et registres locaux (provenance privée, hors Git)
+/data/customs-quarantine/
+/data/legal-receipts/

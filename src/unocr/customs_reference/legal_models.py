@@ -1,5 +1,7 @@
 """Corpus documentaire déclaré : aucune consolidation ni applicabilité acquise."""
+import unicodedata
 from collections import defaultdict, deque
+from datetime import date
 from typing import Literal
 
 from pydantic import Field, field_validator, model_validator
@@ -12,13 +14,43 @@ class DocumentJuridique(SourceDocument):
     nature_document: Literal["code_original", "acte_modificatif", "compilation"]
 
 
+class DocumentJuridiqueRecu(StrictModel):
+    """Copie utilisateur sans URL inventée ; distincte d'une référence officielle."""
+    id: str = Field(min_length=1, max_length=256)
+    titre: str = Field(min_length=1, max_length=1024)
+    url: None = None
+    organisme: str = Field(min_length=1, max_length=256)
+    version_source: str = Field(min_length=1, max_length=1024)
+    sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
+    format: Literal["pdf"] = "pdf"
+    nature_document: Literal["code_original", "acte_modificatif", "compilation"]
+    date_publication: date | None = None
+    verification: Literal["non_verifiee"] = "non_verifiee"
+    provenance: Literal["piece_jointe_utilisateur"]
+    nom_fichier_recu: str = Field(min_length=1, max_length=256)
+
+    @field_validator("id", "titre", "organisme", "version_source", "nom_fichier_recu")
+    @classmethod
+    def non_blanc(cls, value):
+        if not value.strip() or any(unicodedata.category(c) in {"Cc", "Cs"} for c in value):
+            raise ValueError("Métadonnée non blanche sans contrôle requise")
+        return value
+
+    @field_validator("nom_fichier_recu")
+    @classmethod
+    def nom_simple(cls, value):
+        if value in {".", ".."} or any(c in value for c in "/\\:"):
+            raise ValueError("Nom simple requis")
+        return value
+
+
 class RelationJuridique(RelationDocumentee):
     type_relation: Literal["modifie", "complete", "abroge", "rectifie", "renvoie_a"]
 
 
 class CodeDocumentaireBatch(StrictModel):
     schema_version: Literal["1"] = "1"
-    documents: list[DocumentJuridique] = Field(min_length=1, max_length=64)
+    documents: list[DocumentJuridique | DocumentJuridiqueRecu] = Field(min_length=1, max_length=64)
     articles: list[ArticleVersion] = Field(default_factory=list, max_length=50_000)
     relations: list[RelationJuridique] = Field(default_factory=list, max_length=100_000)
     statut: Literal["quarantaine"] = "quarantaine"
@@ -126,7 +158,7 @@ class CodeDocumentaireBatch(StrictModel):
 
 
 class EntreeDocument(StrictModel):
-    document: DocumentJuridique
+    document: DocumentJuridique | DocumentJuridiqueRecu
     fichier_recu: str = Field(min_length=1)
 
 

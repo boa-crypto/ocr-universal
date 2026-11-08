@@ -79,11 +79,116 @@
       "title": "DocumentJuridique",
       "type": "object"
     },
+    "DocumentJuridiqueRecu": {
+      "additionalProperties": false,
+      "description": "Copie utilisateur sans URL inventée ; distincte d'une référence officielle.",
+      "properties": {
+        "id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "titre": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Titre",
+          "type": "string"
+        },
+        "url": {
+          "default": null,
+          "title": "Url",
+          "type": "null"
+        },
+        "organisme": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Organisme",
+          "type": "string"
+        },
+        "version_source": {
+          "maxLength": 1024,
+          "minLength": 1,
+          "title": "Version Source",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "format": {
+          "const": "pdf",
+          "default": "pdf",
+          "title": "Format",
+          "type": "string"
+        },
+        "nature_document": {
+          "enum": [
+            "code_original",
+            "acte_modificatif",
+            "compilation"
+          ],
+          "title": "Nature Document",
+          "type": "string"
+        },
+        "date_publication": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date Publication"
+        },
+        "verification": {
+          "const": "non_verifiee",
+          "default": "non_verifiee",
+          "title": "Verification",
+          "type": "string"
+        },
+        "provenance": {
+          "const": "piece_jointe_utilisateur",
+          "title": "Provenance",
+          "type": "string"
+        },
+        "nom_fichier_recu": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Nom Fichier Recu",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "titre",
+        "organisme",
+        "version_source",
+        "sha256",
+        "nature_document",
+        "provenance",
+        "nom_fichier_recu"
+      ],
+      "title": "DocumentJuridiqueRecu",
+      "type": "object"
+    },
     "EntreeDocument": {
       "additionalProperties": false,
       "properties": {
         "document": {
-          "$ref": "#/$defs/DocumentJuridique"
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DocumentJuridique"
+            },
+            {
+              "$ref": "#/$defs/DocumentJuridiqueRecu"
+            }
+          ],
+          "title": "Document"
         },
         "fichier_recu": {
           "minLength": 1,
