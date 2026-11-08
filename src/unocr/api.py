@@ -2748,11 +2748,34 @@ def export_batch(request: Request, fmt: str,
             raise HTTPException(409, f"résultat pas encore disponible pour '{jid}'")
         results.append((job.filename, res))
 
-    if fmt == "json":
-        response = JSONResponse([r for _, r in results], headers={
-            "Content-Disposition": 'attachment; filename="lot.json"',
-            "Cache-Control": "no-store",
-        })
+    if fmt in {"json", "csv"}:
+        if fmt == "json":
+            response = JSONResponse([r for _, r in results], headers={
+                "Content-Disposition": 'attachment; filename="lot.json"',
+                "Cache-Control": "no-store",
+            })
+        else:
+            import csv
+            from io import StringIO
+
+            f = StringIO(newline="")
+            w = csv.writer(f)
+            w.writerow(["document", "champ", "valeur_brute", "valeur_normalisee",
+                        "confiance", "statut", "valeur_retenue", "origine_valeur"])
+            for fn, r in results:
+                for name, fv in (r.get("fields") or {}).items():
+                    w.writerow([
+                        sanitize_for_csv(fn), sanitize_for_csv(name),
+                        sanitize_for_csv(fv.get("raw_value")),
+                        sanitize_for_csv(fv.get("normalized_value")),
+                        sanitize_for_csv(fv.get("confidence")), sanitize_for_csv(fv.get("status")),
+                        sanitize_for_csv(_etat_champ(fv)["valeur"]),
+                        sanitize_for_csv(fv.get("value_origin")),
+                    ])
+            response = Response(f.getvalue().encode("utf-8-sig"), media_type="text/csv", headers={
+                "Content-Disposition": 'attachment; filename="lot.csv"',
+                "Cache-Control": "no-store",
+            })
         audit(cfg.log_dir, "batch_exported", fmt=fmt, documents=len(results))
         return response
 
@@ -2767,24 +2790,6 @@ def export_batch(request: Request, fmt: str,
                              for p in (r.get("pages") or []))
                  for fn, r in results]
         path.write_text("\n\n".join(parts), encoding="utf-8")
-    elif fmt == "csv":
-        import csv
-
-        path = out_dir / f"lot_{stamp}.csv"
-        with path.open("w", newline="", encoding="utf-8-sig") as f:
-            w = csv.writer(f)
-            w.writerow(["document", "champ", "valeur_brute", "valeur_normalisee",
-                        "confiance", "statut", "valeur_retenue", "origine_valeur"])
-            for fn, r in results:
-                for name, fv in (r.get("fields") or {}).items():
-                    w.writerow([
-                        sanitize_for_csv(fn), sanitize_for_csv(name),
-                        sanitize_for_csv(fv.get("raw_value")),
-                        sanitize_for_csv(fv.get("normalized_value")),
-                        sanitize_for_csv(fv.get("confidence")), sanitize_for_csv(fv.get("status")),
-                        sanitize_for_csv(_etat_champ(fv)["valeur"]),
-                        sanitize_for_csv(fv.get("value_origin")),
-                    ])
     elif fmt == "xlsx":
         path = out_dir / f"lot_{stamp}.xlsx"
         _merge_xlsx(results, path)
