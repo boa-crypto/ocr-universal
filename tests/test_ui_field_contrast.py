@@ -23,6 +23,7 @@ def test_field_tokens_have_aa_contrast_in_every_surface(theme):
     css = (ROOT / 'web/field-accessibility.css').read_text()
     block = re.search(r'\[data-theme="' + theme + r'"\]\s*\{([^}]+)', css).group(1)
     tokens = dict(re.findall(r'--field-([\w-]+):\s*(#[\da-f]{6})', block))
+    assert contrast(tokens['choice-text'], tokens['focus']) >= 4.5
     for bg in ('bg', 'muted-bg'):
         for fg in ('text', 'placeholder'):
             assert contrast(tokens[fg], tokens[bg]) >= 4.5
@@ -39,3 +40,4 @@ def test_field_contract_loaded_after_legacy_styles_and_cached():
         assert contract in css
     source = (ROOT / 'web/uniocr-ds.css').read_text()
     assert 'background: var(--field-bg, var(--ds-surface))' in source
+    assert 'input:where(' in css  # exclusions must not outrank error/readonly/focus states

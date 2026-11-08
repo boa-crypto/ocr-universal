@@ -12,6 +12,7 @@
   --field-muted-bg: #edf2ed;
   --field-error: #a12f29;
   --field-success: #176b51;
+  --field-choice-text: #ffffff;
 }
 [data-theme="dark"] {
   color-scheme: dark;
@@ -23,17 +24,20 @@
   --field-muted-bg: #23392e;
   --field-error: #ffaaa3;
   --field-success: #a0d6b1;
+  --field-choice-text: #1b2e26;
 }
 /* !important is deliberately confined to this shared appearance contract:
    ID-scoped and inline historical widgets must not split the color pair again.
    Layout, visibility, permissions, validation and submission remain native. */
 html
   :is(
-    input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not(
-        [type="range"]
-      ):not([type="color"]):not([type="button"]):not([type="submit"]):not(
-        [type="reset"]
-      ):not([type="image"]),
+    input:where(
+      :not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not(
+          [type="range"]
+        ):not([type="color"]):not([type="button"]):not([type="submit"]):not(
+          [type="reset"]
+        ):not([type="image"])
+    ),
     textarea,
     select,
     .edit,
@@ -98,9 +102,15 @@ html
   outline-color: var(--field-error) !important;
 }
 html
-  :is(input, textarea, select, .edit):is(
-    .is-valid,
-    [data-validation="success"]
+  :is(
+    input,
+    textarea,
+    select,
+    .edit,
+    [contenteditable="true"],
+    [role="combobox"]
+  ):is(.is-valid, [data-validation="success"]):where(
+    :not([aria-invalid="true"]):not(:user-invalid):not(.is-invalid)
   ) {
   border-color: var(--field-success) !important;
 }
@@ -131,6 +141,7 @@ html input::file-selector-button {
     --field-focus: Highlight;
     --field-error: CanvasText;
     --field-success: CanvasText;
+    --field-choice-text: HighlightText;
   }
   html input:is(:autofill, :-webkit-autofill) {
     box-shadow: none !important;
@@ -151,12 +162,12 @@ html
     [role="option"][aria-selected="true"],
     [role="option"]:hover
   ) {
-  color: var(--field-bg) !important;
-  -webkit-text-fill-color: var(--field-bg) !important;
+  color: var(--field-choice-text) !important;
+  -webkit-text-fill-color: var(--field-choice-text) !important;
   background-color: var(--field-focus) !important;
 }
-html :is(option, optgroup):disabled,
-html [role="option"][aria-disabled="true"] {
+html
+  :is(option, optgroup, [role="option"]):is(:disabled, [aria-disabled="true"]) {
   color: var(--field-placeholder) !important;
   -webkit-text-fill-color: var(--field-placeholder) !important;
   background-color: var(--field-bg) !important;
