@@ -11,6 +11,12 @@ from pydantic import Field, field_validator
 from .models import SourceRef, StrictModel
 from .tariff_candidates import rechercher_pistes_tarifaires
 from .tariff_criteria import CRITERES
+from .technical_evidence import (
+    PieceTechnique,
+    preparer_pieces,
+    verifier_identifiants,
+    verifier_pieces,
+)
 
 
 class ProduitDeclare(StrictModel):
@@ -31,6 +37,9 @@ class ProduitDeclare(StrictModel):
 class CreationDossier(StrictModel):
     dossier_id: str = Field(pattern=r"^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$")
     produit: ProduitDeclare
+    pieces_techniques: list[PieceTechnique] = Field(default_factory=list, max_length=5)
+
+    _identifiants = field_validator("pieces_techniques")(verifier_identifiants)
 
 
 class RevisionDossier(StrictModel):
@@ -38,6 +47,9 @@ class RevisionDossier(StrictModel):
     statut: Literal["en_revue", "a_completer", "proposition_humaine", "rejetee"]
     justification: str = Field(min_length=10, max_length=4000)
     produit: ProduitDeclare | None = None
+    pieces_techniques: list[PieceTechnique] | None = Field(None, max_length=5)
+
+    _identifiants = field_validator("pieces_techniques")(verifier_identifiants)
     code_propose: str | None = Field(None, pattern=r"^[0-9]{10}$")
     raisonnement_rgi: str | None = Field(None, min_length=10, max_length=4000)
     notes_exclusions: str | None = Field(None, min_length=10, max_length=4000)
@@ -121,9 +133,13 @@ class MagasinDossiers:
                 or document["publication_active"] is not False
                 or document["validation_juridique"] != "non_validee"):
             raise DossierRefuse("État et trace du dossier incohérents")
+        try:
+            verifier_pieces(document.get("pieces_techniques", []))
+        except (ValueError, TypeError, KeyError):
+            raise DossierRefuse("Pièces techniques incohérentes") from None
         return document, trace["sha256_contenu"]
 
-    def lire(self, dossier_id, lot_id, manifest, historique=False):
+    def lire(self, dossier_id, lot_id, manifest, historique=False, version=None):
         if not self.path.exists():
             raise DossierInconnu(dossier_id)
         conn = self._connect()
@@ -140,6 +156,16 @@ class MagasinDossiers:
             document, _ = self._verifier(row[3],event[0])
             if (document["id"], document["lot_id"], document["manifest_sha256"], document["version"]) != (dossier_id,lot_id,manifest,row[2]):
                 raise DossierRefuse("Identité de dossier incohérente")
+            if version is not None:
+                if type(version) is not int or not 1 <= version <= row[2]:
+                    raise DossierInconnu(dossier_id)
+                ancien = conn.execute("SELECT contenu FROM versions WHERE id=? AND version=?", (dossier_id,version)).fetchone()
+                if ancien is None:
+                    raise DossierRefuse("Trace de version absente")
+                trace = json.loads(ancien[0])
+                document, _ = self._verifier(_json(trace["dossier"]), ancien[0])
+                if (document["id"], document["lot_id"], document["manifest_sha256"], document["version"]) != (dossier_id,lot_id,manifest,version):
+                    raise DossierRefuse("Identité de version incohérente")
             if historique:
                 versions = []
                 for version, contenu in conn.execute("SELECT version,contenu FROM versions WHERE id=? ORDER BY version", (dossier_id,)):
@@ -148,7 +174,7 @@ class MagasinDossiers:
                     if (d["id"],d["lot_id"],d["manifest_sha256"],d["version"]) != (dossier_id,lot_id,manifest,version):
                         raise DossierRefuse("Historique incohérent")
                     versions.append({k:d[k] for k in ("version","statut","acteur","horodatage","decision_declaree")}
-                                    | {"produit_declare":d["diagnostic"]["produit_declare"], "sha256_contenu":empreinte})
+                                    | {"produit_declare":d["diagnostic"]["produit_declare"], "pieces_techniques":[{k:v for k,v in p.items() if k not in {"texte", "declarations_attributs"}} for p in d.get("pieces_techniques", [])], "sha256_contenu":empreinte})
                 if [v["version"] for v in versions] != list(range(1,row[2]+1)):
                     raise DossierRefuse("Versions manquantes")
                 document["historique"] = versions
@@ -193,11 +219,12 @@ class MagasinDossiers:
         finally:
             conn.close()
 
-    def enregistrer(self, dossier_id, lot_id, manifest, diagnostic, acteur, revision=None):
+    def enregistrer(self, dossier_id, lot_id, manifest, diagnostic, acteur, revision=None, *, pieces_techniques=None):
         conn = self._connect()
         try:
             conn.execute("BEGIN IMMEDIATE")
             row = conn.execute("SELECT lot,manifest,version,contenu FROM dossiers WHERE id=?", (dossier_id,)).fetchone()
+            anciennes_pieces = []
             if revision is None:
                 if row is not None:
                     raise RevisionDossierConflict("Identifiant déjà utilisé")
@@ -211,10 +238,12 @@ class MagasinDossiers:
                 if trace is None:
                     raise DossierRefuse("Trace de version absente")
                 precedent, _ = self._verifier(row[3], trace[0])
+                anciennes_pieces = precedent.get("pieces_techniques", [])
+                pieces_techniques = revision.pieces_techniques
                 if revision.statut not in TRANSITIONS[precedent["statut"]]:
                     raise DossierRefuse("Transition de revue interdite")
-                if precedent["statut"] in {"proposition_humaine", "rejetee"} and revision.produit is not None:
-                    raise DossierRefuse("Rouvrir avant modification du produit")
+                if precedent["statut"] in {"proposition_humaine", "rejetee"} and (revision.produit is not None or revision.pieces_techniques is not None):
+                    raise DossierRefuse("Rouvrir avant modification du produit ou des pièces")
                 if revision.statut == "proposition_humaine":
                     candidats = diagnostic["recherche"]["resultats"]
                     retenus = [c["ligne"] for c in candidats if c["ligne"]["code_tarifaire_10"] == revision.code_propose]
@@ -227,13 +256,16 @@ class MagasinDossiers:
                 version, statut = row[2]+1, revision.statut
                 if version > 100:
                     raise DossierRefuse("Limite de versions atteinte")
+            instant = datetime.now(timezone.utc).isoformat()
             document = {"id": dossier_id, "lot_id": lot_id, "manifest_sha256": manifest,
                         "version": version, "statut": statut, "acteur": acteur,
-                        "horodatage": datetime.now(timezone.utc).isoformat(),
+                        "horodatage": instant,
                         "diagnostic": diagnostic,
-                        "decision_declaree": revision.model_dump(exclude={"produit"}) if revision else None,
+                        "pieces_techniques": preparer_pieces(pieces_techniques, anciennes_pieces, acteur, instant),
+                        "decision_declaree": revision.model_dump(exclude={"produit", "pieces_techniques"}) if revision else None,
                         "publication_active": False, "validation_juridique": "non_validee",
                         "archive": diagnostic["recherche"]["archive"]}
+            verifier_pieces(document["pieces_techniques"])
             contenu = _json(document)
             if len(contenu.encode()) > 512*1024:
                 raise DossierRefuse("Dossier trop volumineux")

@@ -221,7 +221,7 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
         return executer(utilisateur, "couverture", [lot_id], lambda e, p, registre:
                         diagnostiquer_couverture(p[0], e[0].type_lot))
 
-    def dossier_metier(utilisateur, lot_id, dossier_id, operation, body=None):
+    def dossier_metier(utilisateur, lot_id, dossier_id, operation, body=None, version=None):
         def agir(entrees, dossiers, registre):
             entree = entrees[0]
             if entree.type_lot != "tarif":
@@ -236,7 +236,7 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                         if controle["archive"]["manifest_sha256"] != entree.manifest_sha256:
                             raise RevisionDossierConflict("Source modifiée")
                     precedent = magasin.lire(dossier_id, lot_id, entree.manifest_sha256,
-                                             historique=operation == "lecture_dossier_metier")
+                                             historique=operation == "lecture_dossier_metier" and version is None, version=version)
                     produit = (body.produit if body and body.produit is not None else
                                ProduitDeclare.model_validate(precedent["diagnostic"]["produit_declare"]))
                     if operation == "lecture_dossier_metier":
@@ -248,7 +248,8 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
                 if diagnostic["recherche"]["archive"]["manifest_sha256"] != entree.manifest_sha256:
                     raise RevisionDossierConflict("Source modifiée avant sauvegarde")
                 document = magasin.enregistrer(dossier_id, lot_id, entree.manifest_sha256, diagnostic,
-                                           utilisateur.nom, body if isinstance(body, RevisionDossier) else None)
+                                           utilisateur.nom, body if isinstance(body, RevisionDossier) else None,
+                                           pieces_techniques=body.pieces_techniques if isinstance(body, CreationDossier) else None)
                 magasin.reconcilier_audit(dossier_id, lot_id, entree.manifest_sha256,
                     lambda **champs: tracer_operation(obligatoire=True, operation="version_dossier_metier",
                                                      lots=[lot_id], statut=200, **champs))
@@ -268,8 +269,9 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
         return dossier_metier(utilisateur, lot_id, body.dossier_id, "creation_dossier_metier", body)
 
     @router.get("/lots/{lot_id}/assessments/{dossier_id}")
-    def lire_dossier_metier(lot_id: str, dossier_id: str, utilisateur=Depends(autoriser)):
-        return dossier_metier(utilisateur, lot_id, dossier_id, "lecture_dossier_metier")
+    def lire_dossier_metier(lot_id: str, dossier_id: str, version: int | None = Query(None, ge=1, le=100),
+                           utilisateur=Depends(autoriser)):
+        return dossier_metier(utilisateur, lot_id, dossier_id, "lecture_dossier_metier", version=version)
 
     @router.patch("/lots/{lot_id}/assessments/{dossier_id}")
     def reviser_dossier_metier(lot_id: str, dossier_id: str, body: RevisionDossier,

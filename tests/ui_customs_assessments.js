@@ -39,5 +39,45 @@ async function scenario(name,run){
  await scenario('panne réseau en lecture verrouille ancienne version',async({load,respond,button})=>{await load();respond(async()=>{throw Error('network');});await load();assert(button('save').disabled);assert(button('create').disabled);});
  await scenario('réouverture sans modification implicite du produit',async({reply,load,field,button,calls})=>{const d=doc(2);d.statut='proposition_humaine';reply(d);await load();field('justification').value='Réouverture documentaire NON OFFICIELLE';reply(doc(3),false);button('save').click();await tick();assert(!('produit' in JSON.parse(calls.at(-1).opts.body)));});
  await scenario('réponse incomplète ne conserve pas révision utilisable',async({load,respond,button})=>{await load();const d=doc(2);delete d.diagnostic.produit_declare;respond(async()=>({ok:true,json:async()=>envelope(d)}));await load();assert(button('save').disabled);});
+
+ await scenario('pièce textuelle ajoutée localement, sauvegarde explicite',async({host,field,button,calls,reply})=>{
+   const p=n=>host.querySelector('[data-piece-field="'+n+'"]');
+   p('piece_id').value='P1';p('nom').value='NON-OFFICIEL.txt';p('localisateur_declare').value='Section déclarée';p('texte').value='<img src=x onerror=evil()> NON OFFICIEL';
+   button('add-piece').click();assert.equal(calls.length,0);assert(!host.querySelector('img'));
+   field('designation').value='Équipement';reply(doc(),false);button('create').click();await tick();
+   const pieces=JSON.parse(calls[0].opts.body).pieces_techniques;assert.equal(pieces.length,1);assert.equal(pieces[0].piece_id,'P1');assert(!('fourni_par' in pieces[0]));
+ });
+ await scenario('pièce chargée puis retrait versionné, jamais automatique',async({host,reply,load,calls,field,button})=>{
+   const d=doc();d.pieces_techniques=[{piece_id:'P1',nom:'NON-OFFICIEL.txt',nature:'notice',criteres_declares:['matiere'],localisateur_declare:'Section reçue',texte:'<img src=x onerror=evil()>',sha256:'a'.repeat(64)}];
+   reply(d);await load();assert(!host.querySelector('img'));host.querySelector('[data-remove-piece="P1"]').click();assert.equal(calls.length,1);
+   field('justification').value='Retrait explicite NON OFFICIEL';reply(doc(2),false);button('save').click();await tick();assert.deepEqual(JSON.parse(calls.at(-1).opts.body).pieces_techniques,[]);
+ });
+ await scenario('version historique seulement lecture, puis retour version courante',async({field,button,reply,calls,load})=>{
+   field('version_lecture').value='1';reply(doc());button('load-version').click();await tick();assert(calls.at(-1).url.endsWith('?version=1'));assert(button('save').disabled);assert(button('create').disabled);
+   reply(doc(2));await load();assert(!button('save').disabled);
+ });
+ await scenario('version historique incorrecte refusée',async({field,button,reply,host})=>{
+   field('version_lecture').value='1';reply(doc(2));button('load-version').click();await tick();assert(button('save').disabled);assert(host.textContent.includes('Version historique incohérente'));
+ });
+ await scenario('pièces locales effacées au changement de lot',async({host,lot,w,button})=>{
+   const p=n=>host.querySelector('[data-piece-field="'+n+'"]');p('piece_id').value='P1';p('nom').value='PIECE.txt';p('localisateur_declare').value='Section';p('texte').value='DOCUMENT NON OFFICIEL';button('add-piece').click();
+   lot.value='code_a';lot.dispatchEvent(new w.Event('change'));assert.equal(p('texte').value,'');assert(!host.querySelector('[data-remove-piece]'));
+ });
+ await scenario('texte UTF8 importé localement sans requête ni ajout automatique',async({host,w,calls})=>{
+   w.TextDecoder=TextDecoder;const input=host.querySelector('input[type=file]');const bytes=new TextEncoder().encode('مادة NON OFFICIELLE');
+   Object.defineProperty(input,'files',{configurable:true,value:[{name:'notice.txt',size:bytes.length,arrayBuffer:async()=>bytes.buffer}]});input.dispatchEvent(new w.Event('change'));await tick();
+   assert(host.querySelector('[data-piece-field=texte]').value.includes('مادة'));assert.equal(calls.length,0);assert(!host.querySelector('[data-remove-piece]'));
+ });
+ await scenario('UTF8 invalide refusé localement',async({host,w,calls})=>{
+   w.TextDecoder=TextDecoder;const input=host.querySelector('input[type=file]');Object.defineProperty(input,'files',{configurable:true,value:[{name:'notice.txt',size:1,arrayBuffer:async()=>new Uint8Array([255]).buffer}]});input.dispatchEvent(new w.Event('change'));await tick();assert.equal(host.querySelector('[data-piece-field=texte]').value,'');assert.equal(calls.length,0);assert(host.textContent.includes('Import refusé'));
+ });
+
+ await scenario('citation sélectionnée : indices Unicode, pas UTF16',async({host,button,field,reply,calls})=>{
+   const p=n=>host.querySelector('[data-piece-field="'+n+'"]');p('piece_id').value='CITE';p('nom').value='NON-OFFICIEL.txt';p('localisateur_declare').value='Section';p('critere').value='matiere';p('texte').value='😀 acier NON OFFICIEL';p('valeur_declaree').value='acier';p('texte').setSelectionRange(3,8);button('cite-selection').click();button('add-piece').click();
+   field('designation').value='Équipement';reply(doc(),false);button('create').click();await tick();const claim=JSON.parse(calls[0].opts.body).pieces_techniques[0].declarations_attributs[0];assert.equal(claim.debut,2);assert.equal(claim.fin,7);assert.equal(claim.citation,'acier');
+ });
+ await scenario('édition du texte invalide la citation locale',async({host,button,field,w,reply,calls})=>{
+   const p=n=>host.querySelector('[data-piece-field="'+n+'"]');p('piece_id').value='CITE';p('nom').value='NON-OFFICIEL.txt';p('localisateur_declare').value='Section';p('texte').value='acier NON OFFICIEL';p('valeur_declaree').value='acier';p('texte').setSelectionRange(0,5);button('cite-selection').click();p('texte').value='AUTRE TEXTE NON OFFICIEL';p('texte').dispatchEvent(new w.Event('input'));button('add-piece').click();field('designation').value='Équipement';reply(doc(),false);button('create').click();await tick();assert.deepEqual(JSON.parse(calls[0].opts.body).pieces_techniques[0].declarations_attributs,[]);
+ });
  console.log(count+' scénarios métier UI réussis');
 })().catch(e=>{console.error(e);process.exit(1);});

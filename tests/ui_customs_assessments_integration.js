@@ -10,10 +10,12 @@ const base=process.argv[2];
  const field=n=>w.document.querySelector('[data-field="'+n+'"]'),button=n=>w.document.querySelector('[data-action="'+n+'"]');
  const idle=async()=>{const start=Date.now();while(w.document.querySelector('fieldset').disabled){if(Date.now()-start>5000)throw Error('Délai UI');await new Promise(r=>setTimeout(r,10));}};
  field('id').value='HTTP-NON-OFFICIEL';field('designation').value='Équipement';
+ const piece=n=>w.document.querySelector('[data-piece-field="'+n+'"]');piece('piece_id').value='HTTP-PIECE';piece('nom').value='NON-OFFICIEL.txt';piece('localisateur_declare').value='Section technique déclarée';piece('texte').value='DOCUMENT NON OFFICIEL مادة';button('add-piece').click();
  button('create').click();await idle();assert.equal(requests.at(-1).status,200);assert(w.document.body.textContent.includes('Version 1'));assert(w.document.body.textContent.includes('Extraits reçus :'));assert(!w.document.body.textContent.includes('Extraits reçus : undefined'));
  field('justification').value='Revue documentaire HTTP NON OFFICIELLE';button('save').click();await idle();assert.equal(requests.at(-1).status,200);assert(w.document.body.textContent.includes('Version 2'));
- button('load').click();await idle();assert.equal(requests.at(-1).status,200);assert(w.document.body.textContent.includes('admin-test'));assert(w.document.body.textContent.includes('en_revue'));
- assert.deepEqual(requests.map(x=>x.method),['POST','PATCH','GET']);
+ button('load').click();await idle();assert.equal(requests.at(-1).status,200);assert(w.document.body.textContent.includes('admin-test'));assert(w.document.body.textContent.includes('en_revue'));assert(w.document.body.textContent.includes('HTTP-PIECE'));assert(w.document.body.textContent.includes('non_verifiee'));
+ field('version_lecture').value='1';button('load-version').click();await idle();assert.equal(requests.at(-1).status,200);assert(button('save').disabled);assert(w.document.body.textContent.includes('DOCUMENT NON OFFICIEL مادة'));
+ assert.deepEqual(requests.map(x=>x.method),['POST','PATCH','GET','GET']);
  console.log('HTTP_REEL_DOSSIER_OK');
  }finally{w.close();}
 })().catch(e=>{console.error(e);process.exit(1);});
