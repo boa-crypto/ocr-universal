@@ -3,16 +3,16 @@
 Le lot94 recentre les travaux sur les fonctions métier. Il ne signifie pas que
 l'ensemble de la mission est achevé. Aucun pourcentage déduit des tests/lots.
 
-| Fonction | État vérifiable après95 | Reste pour clôturer |
+| Fonction | État vérifiable après96 | Reste pour clôturer |
 |---|---|---|
-| Fiche produit et questions | API et UI explicite, champs déclarés et informations non renseignées | Justificatifs techniques rattachés au dossier et qualification opérateur |
-| Pistes et comparaison documentaire | Moteur littéral FR/AR existant, snapshot attaché à chaque révision | Synonymes/ontologie métier sourcés, comparaison technique discriminante |
+| Fiche produit et questions | API/UI, champs déclarés/questions, pièces textuelles et citations Unicode exactes versionnées | Originaux PDF/images, authenticité des pièces et qualification opérateur |
+| Pistes et comparaison documentaire | Moteur littéral FR/AR, snapshot par révision ; déclarations humaines avec citations exactes des pièces | Synonymes/ontologie métier sourcés, comparaison technique discriminante |
 | Raisonnement de classement | Proposition humaine structurée, RGI/notes/exclusions déclarés et référence candidate exigée | Moteur RGI/notes, liens réellement prouvés, citations juridiques contrôlées ; pas IA livrée |
-| Revue humaine | États et UI de revue/réouverture, historique SQLite/CAS, outbox de versions récupérable et sauvegarde SQLite | Séparation des responsabilités, sécurité/exploitation et réception de reprise réelle ; append externe au moins une fois, pas transaction distribuée |
+| Revue humaine | États et UI de revue/réouverture, historique SQLite/CAS, outbox récupérable, sauvegarde SQLite et permissions POSIX privées | Séparation des responsabilités, sécurité/exploitation et réception de reprise réelle ; append externe au moins une fois, pas transaction distribuée |
 | Droit applicable à date | Versions/documentation déjà disponibles en quarantaine | Consolidation, conflits, abrogations et règles d'effet juridiquement qualifiés |
 | Relations transversales | Relations déclarées et lectures documentaires existantes | Preuves entre articles/codes/notes/mesures/régimes/procédures |
 | Publication/retrait | Toujours interdit dans ce périmètre | Registre de confiance, actes humains habilités et mécanisme contrôlé, sans transformer les données non validées en droit |
-| API métier centrales | Revue et dossiers94 disponibles | Contrats de référentiel validé, connexion réelle autorisée, intégration transit/marchandises/facturation |
+| API métier centrales | Revue et dossiers94–96 disponibles | Contrats de référentiel validé, connexion réelle autorisée, intégration transit/marchandises/facturation |
 | Sources et fiscalité | Modèles/imports et contrôles locaux | Corpus officiel exhaustif FR/AR, tarif national10, mesures et droit à date validés |
 | Réception | Recettes techniques isolées et natives | Déploiement maîtrisé, RBAC effectif, cas métier réels, navigateurs, charge et réception habilitée |
 
@@ -20,6 +20,9 @@ Le lot95 livre ensemble l'UI, la réconciliation outbox des versions et la
 sauvegarde SQLite du dossier, avec tests intégrés. Voir
 [le contrat d'exploitation](INTERFACE_ET_AUDIT_DOSSIERS.md). Il ne clôt pas les
 autres lignes : leur développement/qualification demeure explicitement ouvert.
+Le lot96 ajoute les [pièces techniques textuelles](PIECES_TECHNIQUES_DOSSIERS.md),
+leurs citations sélectionnées, la lecture des versions anciennes et le contrôle
+des permissions locales. Il ne constitue pas une expertise documentaire.
 
 ## Dépendances et blocages de la mission complète
 
@@ -37,9 +40,9 @@ autres lignes : leur développement/qualification demeure explicitement ouvert.
 - **Responsabilités/publication** : aucune politique nominative à deux personnes,
   acte d'approbation ni autorisation de publication des sources non validées.
   Ne pas les remplacer par un bouton de publication sans gouvernance.
-- **Intégration centrale et justificatifs techniques** : rattachement sécurisé
-  des pièces et contrats d'intégration transit/marchandises/facturation encore
-  non livrés pour ces dossiers. Les systèmes cibles, périmètres et comptes
+- **Intégration centrale et justificatifs techniques** : contrats d'intégration transit/marchandises/facturation encore
+  non livrés pour ces dossiers. Pièces textuelles désormais rattachées ; PDF,
+  images et originaux authentifiés restent hors périmètre. Les systèmes cibles, périmètres et comptes
   autorisés ne sont pas fournis ; les API de quarantaine ne les remplacent pas.
 - **Exploitation** : pas de redémarrage de l'aperçu partagé/backend76 pendant
   ses traitements, ni de publication/déploiement ou restauration irréversible.

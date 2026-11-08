@@ -32,8 +32,9 @@ le formulaire à zéro. Une réponse tardive après changement de contexte est
 ignorée. Un changement de compte invalide le composant au prochain appel ; le
 parent reste responsable de retirer la vue lors de la navigation/déconnexion.
 
-Pas de liste/recherche globale des dossiers, pièces jointes métier ou traduction
-IA dans cette extension. Les modules historiques de justificatifs ne sont pas
+Pas de liste/recherche globale des dossiers ni traduction IA dans cette extension95.
+L’extension96 ajoute des pièces textuelles et la lecture des anciennes versions :
+voir [son contrat](PIECES_TECHNIQUES_DOSSIERS.md). Les modules historiques de justificatifs ne sont pas
 implicitement rattachés aux dossiers tarifaires.
 
 ## Conflit, panne et réconciliation
