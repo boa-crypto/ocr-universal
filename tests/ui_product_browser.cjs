@@ -29,7 +29,7 @@ async function main(){
     report.routes.push(result);assert(result.visible.length>0,'No visible page: '+route);if(!process.env.UI_AUDIT)assert(!result.overflow,'Horizontal overflow '+size.width+' '+route);if(route!=='#dossiers/nouveau')assert(!(await page.locator('#dos-create').evaluate(d=>d.open)),'Route-bound dialog remained modal');
    }
    for(const route of (process.env.UI_SKIPSHOTS?[]:['#cockpit','#workspace/taches','#documents/import','#dossiers/tous','#controle/anomalies','#douane','#finance','#admin/revue-douaniere'])){
-    await page.goto(base+'/'+route);await page.waitForTimeout(350);const name=size.width+'-'+route.slice(1).replaceAll('/','-')+'.png';await page.screenshot({path:path.join(out,name),fullPage:false,timeout:60000});report.screenshots.push(name);
+    await page.goto(base+'/'+route);await page.waitForFunction(()=>[...document.querySelectorAll('section.page')].filter(e=>getComputedStyle(e).display!=='none').every(e=>Number(getComputedStyle(e).opacity)===1));await page.evaluate(()=>document.fonts.ready);const name=size.width+'-'+route.slice(1).replaceAll('/','-')+'.png';await page.screenshot({path:path.join(out,name),fullPage:false,timeout:60000});report.screenshots.push(name);
    }
    await page.goto(base+'/#cockpit');await page.waitForTimeout(300);assert(await page.locator('#globalSearch').isVisible(),'Global search unavailable');
    await page.evaluate(()=>{const c=document.querySelector('ocr-toast-container');c.show({title:'<img src=x onerror=evil()>',message:'<script>evil()</script>',duration:0});if(c.shadowRoot.querySelector('img,script'))throw Error('Toast XSS');if(typeof window.toast!=='function')throw Error('Legacy toast API broken');c.shadowRoot.querySelector('.toast__close').click();});
@@ -39,7 +39,7 @@ async function main(){
    await page.goto(base+'/#dossiers/nouveau');await page.waitForTimeout(250);assert(await page.locator('#dos-create').evaluate(d=>d.open));await page.locator('#dos-create-cancel').click();await page.waitForTimeout(250);assert.equal(new URL(page.url()).hash,'#dossiers');assert(!(await page.locator('#dos-create').evaluate(d=>d.open)));
    report.interactions.push({width:size.width,commandSearch:true,keyboard:true,dialogRecovery:true,localFont:true,toastEscaped:true});
    if(size.width<1025){await page.locator('#navBurger').click();assert(await page.locator('#app').evaluate(a=>a.classList.contains('nav-open')));await page.locator('#themeToggle').click();}else await page.locator('#themeToggle').click();
-   await page.waitForTimeout(150);assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');await page.screenshot({path:path.join(out,size.width+'-dark.png'),fullPage:false,timeout:60000});
+   await page.waitForTimeout(500);assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');await page.screenshot({path:path.join(out,size.width+'-dark.png'),fullPage:false,timeout:60000});
    await context.close();await browser.close();browser=null;
   }
  }catch(error){const pages=browser?browser.contexts().flatMap(c=>c.pages()):[];if(pages.length){const p=pages.at(-1);await p.screenshot({path:path.join(out,'failure.png')});console.error(await p.evaluate(()=>{let e=document.querySelector('.intent-trigger'),r=e.getBoundingClientRect();return {scrollY,rect:r.toJSON(),hit:document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)?.outerHTML.slice(0,150)}}));}throw error;}finally{fs.writeFileSync(path.join(out,'browser-report.json'),JSON.stringify(report,null,2));if(browser)await browser.close();}
