@@ -57,6 +57,7 @@ async function main() {
   try {
     for (const size of [
       { width: 1440, height: 1000 },
+      { width: 1280, height: 900 },
       { width: 834, height: 1112 },
       { width: 390, height: 844 },
     ].filter(
@@ -107,6 +108,22 @@ async function main() {
           route,
         );
         report.routes.push(result);
+        if (process.env.UI_ALLSHOTS && size.width === 1440) {
+          await page.waitForTimeout(650);
+          await page.evaluate(() => document.fonts.ready);
+          const filename =
+            size.width +
+            "-route-" +
+            route.slice(1).replaceAll("/", "-") +
+            ".png";
+          await page.screenshot({
+            path: path.join(out, filename),
+            fullPage: false,
+            timeout: 60000,
+          });
+          report.screenshots.push(filename);
+        }
+
         assert(result.visible.length > 0, "No visible page: " + route);
         if (!process.env.UI_AUDIT)
           assert(
@@ -119,7 +136,8 @@ async function main() {
             "Route-bound dialog remained modal",
           );
       }
-      for (const route of process.env.UI_SKIPSHOTS
+      for (const route of process.env.UI_SKIPSHOTS ||
+      (process.env.UI_ALLSHOTS && size.width === 1440)
         ? []
         : [
             "#cockpit",

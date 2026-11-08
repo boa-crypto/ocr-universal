@@ -221,7 +221,9 @@
           el("span", "journey-separator", "/"),
           el("strong", "", current.title),
         );
-      var mark = el("span", "journey-local", "TRAITEMENT DOCUMENTAIRE");
+      var mark = el("button", "journey-local context-guide", "Repères");
+      mark.type = "button";
+      mark.setAttribute("aria-haspopup", "dialog");
       strip.append(mark);
       actions.replaceChildren();
       steps.forEach(function (step) {

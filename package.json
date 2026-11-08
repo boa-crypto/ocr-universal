@@ -16,6 +16,8 @@
     "ui:customs-assessments": "node tests/ui_customs_assessments.js",
     "ui:customs-legal-pages": "node tests/ui_customs_legal_pages.js",
     "ui:product": "node tests/ui_product_browser.cjs",
+    "ui:studio": "node tests/ui_operations_studio.cjs && node tests/ui_source_freshness.cjs",
+    "ui:studio:browser": "node tests/ui_operations_studio_browser.cjs",
     "ui:motion": "node tests/ui_visual_motion.cjs",
     "ui:motion:browser": "node tests/ui_visual_motion_browser.cjs"
   },

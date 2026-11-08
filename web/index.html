@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="/web/uniocr-ds.css">
   <link rel="stylesheet" href="/web/product-experience.css">
   <link rel="stylesheet" href="/web/visual-motion.css">
+  <link rel="stylesheet" href="/web/operations-studio.css">
 <script src="/web/navigation.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -419,6 +420,11 @@
           </div>
         </header>
 
+        <div class="case-view-switch" role="group" aria-label="Présentation des dossiers">
+          <button type="button" data-case-view="liste" aria-pressed="true">Liste de travail</button>
+          <button type="button" data-case-view="board" aria-pressed="false">Pilotage par état</button>
+          <span>Les mêmes dossiers, une autre lecture. Aucune transition d’état par glisser-déposer.</span>
+        </div>
         <div class="dos-toolbar">
           <div class="dos-search">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
@@ -4068,7 +4074,7 @@
 </main>
 
     <footer class="footer-note">
-      UniOCR · Future Editorial Intelligence — traçabilité · sécurité · contrôle humain · 100 % local
+      UniOCR · Pilotage documentaire — sources · extraction · contrôle humain
     </footer>
   </div>
 </div>
@@ -4264,5 +4270,6 @@ var I18N = {
 <script src="/web/transit.js" defer></script>
 <script src="/web/product-experience.js" defer></script>
 <script src="/web/visual-motion.js" defer></script>
+<script src="/web/operations-studio.js" defer></script>
 </body>
 </html>

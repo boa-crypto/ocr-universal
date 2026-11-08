@@ -250,11 +250,40 @@ async function pollJob(id) {
 }
 
 /* =================== RESULTAT =================== */
+let resultLoadGeneration = 0;
 async function loadResult(id) {
+  const generation = ++resultLoadGeneration;
+  const host = document.getElementById("tab-result");
+  let status = host && host.querySelector(".result-load-state");
+  if (host) {
+    if (!status) { status = document.createElement("div"); status.className = "result-load-state"; host.prepend(status); }
+    status.hidden = false;
+    status.setAttribute("role", "status");
+    status.textContent = "Ouverture de la pièce source et de ses champs…";
+    delete host.dataset.resultSource;
+    host.classList.add("is-result-pending");
+    host.setAttribute("aria-busy", "true");
+  }
   let res;
-  try { res = await fetchJson("/api/jobs/" + id + "/result"); }
-  catch (e) { toast(e.message, "error"); return; }
+  try {
+    res = await fetchJson("/api/jobs/" + id + "/result");
+    if (!res || typeof res !== "object" || Array.isArray(res)) throw new Error("Réponse du document invalide");
+  }
+  catch (e) {
+    if (generation !== resultLoadGeneration) return;
+    currentResult = null;
+    if (host) {
+      host.setAttribute("aria-busy", "false");
+      status.setAttribute("role", "alert");
+      status.textContent = "Document indisponible : " + e.message + ". Aucun résultat précédent n’est présenté comme celui de cette pièce.";
+      const retry = document.createElement("button"); retry.type = "button"; retry.className = "case-next__action"; retry.textContent = "Réessayer l’ouverture";
+      retry.addEventListener("click", () => loadResult(id)); status.appendChild(retry);
+    }
+    toast(e.message, "error"); return;
+  }
+  if (generation !== resultLoadGeneration) return;
   currentResult = res;
+  if (host) { host.dataset.resultSource = id; host.classList.remove("is-result-pending"); host.setAttribute("aria-busy", "false"); status.hidden = true; }
   currentPage = 1;
   renderResult();
 

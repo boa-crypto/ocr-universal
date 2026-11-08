@@ -47,6 +47,8 @@
     filtre: "tous",
     recherche: "",
     visibles: PAR_PAGE,
+    vue: "liste",
+    erreur: false,
     selection: null,
     detail: null
   };
@@ -168,12 +170,49 @@
     return d.reference || d.label || d.id;
   }
 
+  function normaliser(value) {
+    return String(value == null ? "" : value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  }
+
+  function voie(d) {
+    if (["revision_requise", "incomplet", "erreur_traitement", "en_validation"].indexOf(d.state) >= 0) return "examiner";
+    if (["exporte", "archive"].indexOf(d.state) >= 0) return "clos";
+    if (d.state === "traitement_en_cours") return "traiter";
+    if (d.state === "en_preparation") return "preparer";
+    return "autres";
+  }
+
+  function rendrePilotage(liste, affiches, tous) {
+    var definitions = [["preparer", "Préparer"], ["traiter", "Traiter"], ["examiner", "Examiner"], ["clos", "Clôturés"], ["autres", "Autres états"]];
+    definitions.forEach(function (definition) {
+      var total = tous.filter(function (d) { return voie(d) === definition[0]; }).length;
+      if (definition[0] === "autres" && !total) return;
+      var colonne = el("div", "case-lane case-lane--" + definition[0]);
+      colonne.setAttribute("role", "listitem");
+      var titre = el("h3", "case-lane__title", definition[1]);
+      var elements = affiches.filter(function (d) { return voie(d) === definition[0]; });
+      titre.appendChild(el("span", "case-lane__count", elements.length + " / " + total));
+      colonne.appendChild(titre);
+      var lignes = el("div", "case-lane__items");
+      lignes.setAttribute("role", "list");
+      lignes.setAttribute("aria-label", definition[1]);
+      elements.forEach(function (d) {
+        var item = el("div"); item.setAttribute("role", "listitem");
+        var carte = ligne(d);
+        carte.appendChild(el("span", "case-card__activity", "Activité · " + dateCourte(d.updated_at || d.date_ouverture)));
+        item.appendChild(carte); lignes.appendChild(item);
+      });
+      if (!elements.length) lignes.appendChild(el("p", "case-lane__empty", total ? "D’autres dossiers sont disponibles avec Afficher plus." : "Aucun dossier dans cet état."));
+      colonne.appendChild(lignes); liste.appendChild(colonne);
+    });
+  }
+
   function correspond(d, terme) {
     if (!terme) return true;
     var champs = [d.id, d.label, d.reference, d.client_importateur, d.fournisseur,
                   d.navire, d.reference_bl, d.state_label];
     return champs.some(function (v) {
-      return v && String(v).toLowerCase().indexOf(terme) !== -1;
+      return v && normaliser(v).indexOf(normaliser(terme)) !== -1;
     });
   }
 
@@ -196,13 +235,16 @@
     var affiches = tous.slice(0, etat.visibles);
 
     liste.textContent = "";
-    affiches.forEach(function (d) {
-      liste.appendChild(ligne(d));
-    });
+    if (etat.erreur) { var avertissement = el("p", "studio-data-warning", "Données non actualisées : la connexion a échoué. Actualisez pour retrouver une liste fiable."); avertissement.setAttribute("role", "status"); liste.appendChild(avertissement); }
+    liste.classList.toggle("is-board", etat.vue === "board");
+    var layout = document.querySelector(".dos-layout");
+    if (layout) layout.classList.toggle("is-board", etat.vue === "board");
+    if (etat.vue === "board" && (!etat.erreur || etat.dossiers.length)) rendrePilotage(liste, affiches, tous);
+    else affiches.forEach(function (d) { liste.appendChild(ligne(d)); });
 
     if (vide) {
       vide.hidden = tous.length > 0;
-      vide.textContent = etat.dossiers.length
+      vide.textContent = etat.erreur ? "Résultats non actualisés. Vérifiez votre connexion." : etat.dossiers.length
         ? "Aucun dossier ne correspond à cette recherche."
         : "Aucun dossier enregistré pour le moment.";
     }
@@ -240,7 +282,13 @@
     cote.appendChild(el("span", "dos-row__meta", pieces + " pièce" + (pieces > 1 ? "s" : "")));
     b.appendChild(cote);
 
-    b.addEventListener("click", function () { selectionner(d.id); });
+    b.addEventListener("click", function () {
+      selectionner(d.id);
+      if (etat.vue === "board" || window.innerWidth < 900) {
+        var detail = $("dos-detail");
+        if (detail) { detail.tabIndex = -1; detail.focus({preventScroll: true}); detail.scrollIntoView({block: "start", behavior: "auto"}); }
+      }
+    });
     return b;
   }
 
@@ -248,7 +296,7 @@
     Object.keys(FILTRES).forEach(function (cle) {
       var n = $("dos-count-" + cle);
       if (!n) return;
-      n.textContent = String(etat.dossiers.filter(FILTRES[cle]).length);
+      n.textContent = etat.erreur ? "—" : String(etat.dossiers.filter(FILTRES[cle]).length);
     });
   }
 
@@ -312,6 +360,14 @@
     if (d.priorite && d.priorite !== "normale") {
       actions.appendChild(pill("Priorité " + d.priorite, d.priorite === "haute" ? "danger" : "warn"));
     }
+    if (etat.vue === "board") {
+      var retour = el("button", "case-next__action case-return", "Revenir au pilotage"); retour.type = "button";
+      retour.addEventListener("click", function () {
+        var carte = Array.from(document.querySelectorAll("#dos-list .dos-row")).find(function (row) { return row.getAttribute("data-id") === d.id; });
+        var cible = carte || document.querySelector('[data-case-view="board"]');
+        if (cible) { cible.focus({preventScroll: true}); cible.scrollIntoView({block: "center", behavior: "auto"}); }
+      }); actions.appendChild(retour);
+    }
     tete.appendChild(actions);
     corps.appendChild(tete);
 
@@ -340,8 +396,23 @@
           ? "—" : String(paire[1])));
       bandeau.appendChild(item);
     });
-    corps.appendChild(bandeau);
+    var identite = el("details", "case-identity");
+    identite.appendChild(el("summary", "", "Identité et transport · afficher les références"));
+    identite.appendChild(bandeau);
+    corps.appendChild(identite);
 
+    var raccourcis = el("div", "case-next");
+    raccourcis.setAttribute("role", "group");
+    raccourcis.setAttribute("aria-label", "Accès contextuels du dossier");
+    raccourcis.appendChild(el("span", "case-next__label", "EXPLORER CE DOSSIER"));
+    [["documents", "Pièces sources"], ["ocr", "Champs extraits"], ["anomalies", "Points à examiner"], ["historique", "Chronologie"]].forEach(function (item) {
+      var bouton = el("button", "case-next__action", item[1]); bouton.type = "button";
+      bouton.addEventListener("click", function () {
+        var cible = corps.querySelector('[data-tab="' + item[0] + '"]');
+        if (cible) { cible.click(); cible.focus(); }
+      }); raccourcis.appendChild(bouton);
+    });
+    corps.appendChild(raccourcis);
     corps.appendChild(onglets(d));
   }
 
@@ -377,7 +448,11 @@
       });
       panneaux.textContent = "";
       var def = definitions.filter(function (x) { return x.cle === cle; })[0];
-      if (def) panneaux.appendChild(def.rendu(d));
+      if (def) {
+        var panel = def.rendu(d); panel.id = "dossier-panel-" + cle;
+        panel.setAttribute("role", "tabpanel"); panel.setAttribute("aria-labelledby", "dossier-tab-" + cle); panel.tabIndex = 0;
+        panneaux.appendChild(panel);
+      }
     }
 
     definitions.forEach(function (def, index) {
@@ -385,6 +460,8 @@
       b.type = "button";
       b.setAttribute("role", "tab");
       b.setAttribute("data-tab", def.cle);
+      b.id = "dossier-tab-" + def.cle;
+      b.setAttribute("aria-controls", "dossier-panel-" + def.cle);
       b.tabIndex = index === 0 ? 0 : -1;
       b.addEventListener("click", function () { activer(def.cle); });
       barre.appendChild(b);
@@ -392,11 +469,13 @@
 
     // Navigation clavier conforme au motif ARIA « tablist ».
     barre.addEventListener("keydown", function (ev) {
-      if (ev.key !== "ArrowRight" && ev.key !== "ArrowLeft") return;
+      if (["ArrowRight", "ArrowLeft", "Home", "End"].indexOf(ev.key) < 0) return;
       ev.preventDefault();
       var index = definitions.map(function (x) { return x.cle; })
         .indexOf(barre.querySelector(".dos-tab.is-active").getAttribute("data-tab"));
       var suivant = ev.key === "ArrowRight" ? index + 1 : index - 1;
+      if (ev.key === "Home") suivant = 0;
+      if (ev.key === "End") suivant = definitions.length - 1;
       if (suivant < 0) suivant = definitions.length - 1;
       if (suivant >= definitions.length) suivant = 0;
       activer(definitions[suivant].cle);
@@ -434,12 +513,13 @@
     getJSONUrl("/api/dossiers/" + encodeURIComponent(d.id) + "/documents-ocr")
       .then(function (extractions) {
         compteurs.children[2].querySelector(".dos-count__val").textContent =
-          Array.isArray(extractions) ? extractions.length : 0;
+          Array.isArray(extractions) ? extractions.length : "—";
       }).catch(function () { compteurs.children[2].querySelector(".dos-count__val").textContent = "—"; });
 
     getJSONUrl("/api/controle/" + encodeURIComponent(d.id) + "/anomalies")
       .then(function (res) {
-        var liste = (res && res.anomalies) || [];
+        if (!res || !Array.isArray(res.anomalies)) throw new Error("Anomalies indisponibles");
+        var liste = res.anomalies;
         var valeur = compteurs.children[3].querySelector(".dos-count__val");
         valeur.textContent = liste.length;
         valeur.className = "dos-count__val" + (liste.length ? " dos-count__val--danger" : "");
@@ -516,8 +596,7 @@
         var statut = extraction.statut === "validated" ? ["Validé", "ok"]
           : extraction.statut === "corrected" ? ["Corrigé", "warn"] : ["À valider", "info"];
         tete.appendChild(pill(statut[0], statut[1]));
-        var confiance = Math.round(Number(extraction.confiance_globale || 0) * 100);
-        tete.appendChild(el("span", "ocr-card__conf", confiance + " % de confiance"));
+        tete.appendChild(el("span", "ocr-card__conf", "Confiance · " + confianceLisible(extraction.confiance_globale)));
         carte.appendChild(tete);
 
         var champs = Array.isArray(extraction.champs_extraits) ? extraction.champs_extraits : [];
@@ -538,7 +617,7 @@
             tr.appendChild(el("td", null, champ.nom || "—"));
             var valeur = champ.valeur_confirmee || champ.valeur_correctee || champ.valeur_normale || champ.valeur_raw || "—";
             tr.appendChild(el("td", null, valeur));
-            tr.appendChild(el("td", null, Math.round(Number(champ.confiance || 0) * 100) + " %"));
+            tr.appendChild(el("td", null, confianceLisible(champ.confiance)));
             var etatChamp = champ.statut === "validated" ? ["Validé", "ok"]
               : champ.statut === "corrected" ? ["Corrigé", "warn"]
               : champ.statut === "rejected" ? ["Rejeté", "danger"] : ["Détecté", "info"];
@@ -575,6 +654,11 @@
   }
 
   /* ---------- 4 bis. Comparaison inter-documents ---------- */
+
+  function confianceLisible(value) {
+    if ((typeof value !== "number" && typeof value !== "string") || String(value).trim() === "" || !Number.isFinite(Number(value)) || Number(value) < 0 || Number(value) > 1) return "Non fournie";
+    return Math.round(Number(value) * 100) + " %";
+  }
 
   function valeurChamp(champ) {
     return champ.valeur_confirmee || champ.valeur_correctee ||
@@ -1044,6 +1128,15 @@
         : ["À vérifier", "warn"];
       lignePiece.appendChild(pill(statutPiece[0], statutPiece[1]));
 
+      if (p.job_id && typeof window.openJob === "function") {
+        var inspecter = el("button", "case-next__action", "Inspecter dans l’atelier");
+        inspecter.type = "button";
+        inspecter.addEventListener("click", function () {
+          window.location.hash = "#documents/ocr";
+          setTimeout(function () { window.openJob(p.job_id); }, 120);
+        });
+        lignePiece.appendChild(inspecter);
+      }
       var lien = el("a", "dos-doc__link", "JSON");
       lien.href = base() + "/jobs/" + encodeURIComponent(p.job_id) + "/export/json";
       lien.rel = "noopener";
@@ -1137,7 +1230,9 @@
       liste.appendChild(el("p", "ws-empty", "Chargement des dossiers…"));
     }
     return getJSON("/dossiers").then(function (dossiers) {
-      etat.dossiers = Array.isArray(dossiers) ? dossiers.slice() : [];
+      if (!Array.isArray(dossiers)) throw new Error("Réponse dossiers invalide");
+      etat.erreur = false;
+      etat.dossiers = dossiers.slice();
       etat.dossiers.sort(function (a, b) {
         var da = a.updated_at || a.date_ouverture || 0;
         var db = b.updated_at || b.date_ouverture || 0;
@@ -1147,9 +1242,13 @@
       rendreListe();
       if (etat.selection) {
         var d = etat.dossiers.filter(function (x) { return x.id === etat.selection; })[0];
-        if (d) rendreDetail(d, false);
+        if (d) selectionner(d.id);
       }
     }).catch(function () {
+      etat.erreur = true;
+      actualiserCompteurs();
+      if ($("dos-more")) $("dos-more").hidden = true;
+      if ($("dos-meta")) $("dos-meta").textContent = "Liste non actualisée";
       if (liste) {
         liste.textContent = "";
         liste.appendChild(el("p", "ws-empty",
@@ -1159,6 +1258,13 @@
   }
 
   function brancher() {
+    document.querySelectorAll("[data-case-view]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        etat.vue = button.getAttribute("data-case-view") === "board" ? "board" : "liste";
+        document.querySelectorAll("[data-case-view]").forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-case-view") === etat.vue ? "true" : "false"); });
+        rendreListe();
+      });
+    });
     var recherche = $("dos-search");
     if (recherche) {
       recherche.addEventListener("input", function () {
