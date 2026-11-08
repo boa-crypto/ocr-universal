@@ -7,7 +7,25 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 83
+## État actuel — lot 84
+
+[PATCH avec action requise](PATCH_CHAMP_ACTION_REQUISE.md) : corps vide,
+métadonnées seules et actions null refusés422 après gardes, avant résultat,
+sans validation fantôme. Une trace de correction légitime reste annulable.
+Valeurs vides/zéro, statuts seuls et reconfirmations explicites acceptés.
+**28 nouveaux cas / 608 ciblés réussis**, deux cas83 actualisés pour le nouveau
+contrat. Témoin ancien PATCH : 13 échecs attendus, 15 réussis.
+Documentaire **2 160 Python / 212 JSDOM historiques**. Complète :
+**4 004 réussis, 2 échecs Indra, 1 ignoré, 1 avertissement(s), 372,43 s**.
+Mesures JUnit datées `2026-11-08` (horloge environnement).
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42459208060),
+pas suite OCR complète en CI. **26/27 empreintes conformes**, même écart partagé ;
+données/journaux préservés hors commit. Pas différence sémantique calculée,
+idempotence ou réparation des anciennes traces. **Aperçu backend76 maintenu**,
+code77–84 poussé/testé mais non chargé pour préserver les traitements ; RBAC absent.
+[Rapport](RAPPORT_LOT84.md), [recette actuelle](RECETTE_LOT84.json).
+
+## Complément historique — lot 83
 
 [Statuts du PATCH champ](STATUTS_PATCH_CHAMPS.md) : même enum que le résultat,
 statut inconnu refusé422 avant stockage, valeurs persistées chaînes ; six statuts,
