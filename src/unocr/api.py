@@ -1988,6 +1988,17 @@ def export_job(job_id: str, request: Request, fmt: str):
     if store.get(job_id) is None:
         raise HTTPException(404, "job introuvable")
     try:
+        if fmt == "json":
+            # Réponse liée au résultat lu, pas à un fichier export mutable/périmé.
+            result_json = store.load_result(job_id)
+            if result_json is None:
+                raise HTTPException(409, "résultat pas encore disponible")
+            from .models import DocumentResult
+            result = DocumentResult.model_validate(result_json)
+            return JSONResponse(result.model_dump(mode="json"), headers={
+                "Content-Disposition": 'attachment; filename="result.json"',
+                "Cache-Control": "no-store",
+            })
         path = _ensure_export(job_id, fmt)
     except HTTPException:
         raise
