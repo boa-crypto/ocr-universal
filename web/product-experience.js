@@ -25,7 +25,11 @@
           var group = a.closest(".nav-group"),
             label = group && group.querySelector(".nav-label"),
             section = label ? label.textContent.trim() : "Vue d’ensemble",
-            title = a.textContent.trim();
+            titleNode = a.cloneNode(true);
+          titleNode.querySelectorAll(".nav-badge").forEach(function (badge) {
+            badge.remove();
+          });
+          var title = titleNode.textContent.trim();
           return {
             href: a.hash,
             title: title === "Vue d'ensemble" ? section : title,

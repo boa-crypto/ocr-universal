@@ -4,7 +4,7 @@ const assert = require("node:assert/strict"),
 const tick = () => new Promise((r) => setTimeout(r, 25));
 function setup() {
   const dom = new JSDOM(
-    '<div class="topbar"><h2 id="pageTitle">Cockpit</h2><div class="top-chips"></div></div><nav id="mainNav"><a href="#cockpit">Tableau de bord</a><div class="nav-group"><span class="nav-label">Documents</span><a href="#documents/import">Importer les pièces</a><a href="#documents/revue">Révision humaine</a></div></nav><main class="workspace"><section id="tab-cockpit"><div class="hero"></div></section></main>',
+    '<div class="topbar"><h2 id="pageTitle">Cockpit</h2><div class="top-chips"></div></div><nav id="mainNav"><a href="#cockpit">Tableau de bord</a><div class="nav-group"><span class="nav-label">Documents</span><a href="#documents/import">Importer les pièces<span class="nav-badge">99</span></a><a href="#documents/revue">Révision humaine</a></div></nav><main class="workspace"><section id="tab-cockpit"><div class="hero"></div></section></main>',
     {
       url: "https://test.invalid/#cockpit",
       runScripts: "outside-only",

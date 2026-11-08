@@ -798,3 +798,15 @@ html[data-theme]
 .dos-tab-shell[hidden] {
   display: none !important;
 }
+.studio-guide__principle {
+  font-size: 12px;
+  line-height: 1.7;
+  border-inline-start: 2px solid var(--studio-accent);
+  padding: 10px 14px;
+  color: var(--pe-muted);
+  background: var(--studio-soft);
+  margin-bottom: 20px;
+}
+.studio-guide__principle[hidden] {
+  display: none;
+}

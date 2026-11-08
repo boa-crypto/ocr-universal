@@ -82,7 +82,8 @@
       );
     title.id = "studio-guide-title";
     routes.setAttribute("aria-label", "Écrans liés disponibles");
-    dialog.append(close, eyebrow, title, intro, routes, foot);
+    var principle = node("p", "studio-guide__principle");
+    dialog.append(close, eyebrow, title, intro, principle, routes, foot);
     document.body.append(dialog);
     var previous;
     function paint() {
@@ -95,14 +96,23 @@
         return a.hash === hash;
       });
       var context = advice[family];
-      title.textContent = context
-        ? context[0]
-        : "Repères · " +
-          ((document.getElementById("pageTitle") || {}).textContent ||
-            "Poste de travail");
-      intro.textContent = context
-        ? context[1]
-        : "Explorez les écrans disponibles de cette rubrique. Les informations affichées gardent leur provenance et leurs règles métier existantes.";
+      var page = Array.from(document.querySelectorAll("section.page")).find(
+        function (section) {
+          return getComputedStyle(section).display !== "none";
+        },
+      );
+      var description =
+        page && page.querySelector(".ecran__desc,.ws-sub,.lead,.hero-sub");
+      title.textContent =
+        (document.getElementById("pageTitle") || {}).textContent ||
+        (context ? context[0] : "Poste de travail");
+      intro.textContent =
+        (description && description.textContent.trim()) ||
+        (context
+          ? context[1]
+          : "Explorez les écrans disponibles dans cette rubrique, selon vos droits.");
+      principle.hidden = !description || !context;
+      principle.textContent = context ? context[1] : "";
       routes.replaceChildren();
       var group = current && current.closest(".nav-group");
       var available = group
