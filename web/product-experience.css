@@ -610,8 +610,11 @@ html {
 [data-theme] input,
 [data-theme] select,
 [data-theme] textarea {
-  border-color: var(--pe-line);
-  color: var(--pe-ink);
+  border-color: var(--field-border, var(--pe-line));
+  color: var(--field-text, var(--pe-ink));
+  background-color: var(--field-bg, var(--pe-white));
+  -webkit-text-fill-color: var(--field-text, var(--pe-ink));
+  caret-color: var(--field-text, var(--pe-ink));
   border-radius: 7px;
 }
 [data-theme] table {

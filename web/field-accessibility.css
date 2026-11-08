@@ -1,0 +1,163 @@
+/* Central field contract: foreground and surface are an inseparable pair.
+   Legacy components used a dark translucent surface with light-theme ink.
+   These semantic tokens cover native fields, editable widgets and native menus. */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --field-text: #192c29;
+  --field-placeholder: #53655e;
+  --field-bg: #ffffff;
+  --field-border: #718279;
+  --field-focus: #176b51;
+  --field-muted-bg: #edf2ed;
+  --field-error: #a12f29;
+  --field-success: #176b51;
+}
+[data-theme="dark"] {
+  color-scheme: dark;
+  --field-text: #edf5ef;
+  --field-placeholder: #b3c5b9;
+  --field-bg: #1b2e26;
+  --field-border: #91a99b;
+  --field-focus: #a0d6b1;
+  --field-muted-bg: #23392e;
+  --field-error: #ffaaa3;
+  --field-success: #a0d6b1;
+}
+/* !important is deliberately confined to this shared appearance contract:
+   ID-scoped and inline historical widgets must not split the color pair again.
+   Layout, visibility, permissions, validation and submission remain native. */
+html
+  :is(
+    input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not(
+        [type="range"]
+      ):not([type="color"]):not([type="button"]):not([type="submit"]):not(
+        [type="reset"]
+      ):not([type="image"]),
+    textarea,
+    select,
+    .edit,
+    [contenteditable="true"],
+    [role="combobox"]
+  ) {
+  color: var(--field-text) !important;
+  -webkit-text-fill-color: var(--field-text) !important;
+  background-color: var(--field-bg) !important;
+  caret-color: var(--field-text) !important;
+  border-color: var(--field-border) !important;
+  opacity: 1 !important;
+  background-clip: padding-box;
+}
+html :is(input, textarea)::placeholder {
+  color: var(--field-placeholder) !important;
+  -webkit-text-fill-color: var(--field-placeholder) !important;
+  opacity: 1 !important;
+}
+html
+  :is(
+    input,
+    textarea,
+    select,
+    .edit,
+    [contenteditable="true"],
+    [role="combobox"]
+  ):hover {
+  border-color: var(--field-focus) !important;
+}
+html
+  :is(
+    input,
+    textarea,
+    select,
+    .edit,
+    [contenteditable="true"],
+    [role="combobox"]
+  ):focus {
+  outline: 2px solid var(--field-focus) !important;
+  outline-offset: 2px;
+  border-color: var(--field-focus) !important;
+}
+html :is(input, textarea, select):is(:disabled, [readonly]),
+html :is([contenteditable="true"], [role="combobox"])[aria-disabled="true"] {
+  background-color: var(--field-muted-bg) !important;
+  opacity: 1 !important;
+}
+fieldset:disabled {
+  opacity: 1;
+}
+html
+  :is(
+    input,
+    textarea,
+    select,
+    .edit,
+    [contenteditable="true"],
+    [role="combobox"]
+  ):is([aria-invalid="true"], :user-invalid, .is-invalid) {
+  border-color: var(--field-error) !important;
+  outline-color: var(--field-error) !important;
+}
+html
+  :is(input, textarea, select, .edit):is(
+    .is-valid,
+    [data-validation="success"]
+  ) {
+  border-color: var(--field-success) !important;
+}
+html :is(option, optgroup) {
+  color: var(--field-text) !important;
+  -webkit-text-fill-color: var(--field-text) !important;
+  background-color: var(--field-bg) !important;
+  opacity: 1 !important;
+}
+html input:is(:autofill, :-webkit-autofill) {
+  -webkit-text-fill-color: var(--field-text) !important;
+  caret-color: var(--field-text) !important;
+  box-shadow: 0 0 0 1000px var(--field-bg) inset !important;
+}
+html input::file-selector-button {
+  color: var(--field-text);
+  background: var(--field-muted-bg);
+  border: 1px solid var(--field-border);
+}
+@media (forced-colors: active) {
+  :root,
+  [data-theme] {
+    --field-text: CanvasText;
+    --field-placeholder: CanvasText;
+    --field-bg: Canvas;
+    --field-muted-bg: Canvas;
+    --field-border: ButtonText;
+    --field-focus: Highlight;
+    --field-error: CanvasText;
+    --field-success: CanvasText;
+  }
+  html input:is(:autofill, :-webkit-autofill) {
+    box-shadow: none !important;
+  }
+}
+html :is([role="listbox"], [role="option"]) {
+  color: var(--field-text) !important;
+  -webkit-text-fill-color: var(--field-text) !important;
+  background-color: var(--field-bg) !important;
+}
+html :is(input[type="checkbox"], input[type="radio"], input[type="range"]) {
+  accent-color: var(--field-focus);
+}
+/* A selected/pointed choice needs a distinguishable highlight as well as text. */
+html
+  :is(
+    option:checked,
+    [role="option"][aria-selected="true"],
+    [role="option"]:hover
+  ) {
+  color: var(--field-bg) !important;
+  -webkit-text-fill-color: var(--field-bg) !important;
+  background-color: var(--field-focus) !important;
+}
+html :is(option, optgroup):disabled,
+html [role="option"][aria-disabled="true"] {
+  color: var(--field-placeholder) !important;
+  -webkit-text-fill-color: var(--field-placeholder) !important;
+  background-color: var(--field-bg) !important;
+}
