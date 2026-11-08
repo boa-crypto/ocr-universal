@@ -3,10 +3,10 @@
 Le lot94 recentre les travaux sur les fonctions métier. Il ne signifie pas que
 l'ensemble de la mission est achevé. Aucun pourcentage déduit des tests/lots.
 
-| Fonction | État vérifiable après96 | Reste pour clôturer |
+| Fonction | État vérifiable après97 | Reste pour clôturer |
 |---|---|---|
 | Fiche produit et questions | API/UI, champs déclarés/questions, pièces textuelles et citations Unicode exactes versionnées | Originaux PDF/images, authenticité des pièces et qualification opérateur |
-| Pistes et comparaison documentaire | Moteur littéral FR/AR, snapshot par révision ; déclarations humaines avec citations exactes des pièces | Synonymes/ontologie métier sourcés, comparaison technique discriminante |
+| Pistes et comparaison documentaire | Moteur littéral FR/AR, snapshot par révision ; matrice des valeurs déclarées/citations et candidats, écarts textuels/questions explicites | Synonymes/ontologie métier sourcés, comparaison technique discriminante |
 | Raisonnement de classement | Proposition humaine structurée, RGI/notes/exclusions déclarés et référence candidate exigée | Moteur RGI/notes, liens réellement prouvés, citations juridiques contrôlées ; pas IA livrée |
 | Revue humaine | États et UI de revue/réouverture, historique SQLite/CAS, outbox récupérable, sauvegarde SQLite et permissions POSIX privées | Séparation des responsabilités, sécurité/exploitation et réception de reprise réelle ; append externe au moins une fois, pas transaction distribuée |
 | Droit applicable à date | Versions/documentation déjà disponibles en quarantaine | Consolidation, conflits, abrogations et règles d'effet juridiquement qualifiés |
@@ -23,6 +23,9 @@ autres lignes : leur développement/qualification demeure explicitement ouvert.
 Le lot96 ajoute les [pièces techniques textuelles](PIECES_TECHNIQUES_DOSSIERS.md),
 leurs citations sélectionnées, la lecture des versions anciennes et le contrôle
 des permissions locales. Il ne constitue pas une expertise documentaire.
+Le lot97 ajoute une [comparaison documentaire des déclarations](COMPARAISON_DECLARATIONS_DOSSIERS.md),
+avec provenance de la version, valeurs textuellement différentes et questions.
+Ce n’est pas la comparaison technique sémantique discriminante encore attendue.
 
 ## Dépendances et blocages de la mission complète
 

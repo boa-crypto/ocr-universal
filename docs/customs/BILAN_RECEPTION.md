@@ -1,13 +1,23 @@
 # Bilan de réception — mission UniOCR douanière
 
-**État après le lot96 : PARTIEL, NON RECEVABLE POUR PRODUCTION FISCALE.**
+**État après le lot97 : PARTIEL, NON RECEVABLE POUR PRODUCTION FISCALE.**
 
 Poursuite effectuée sans demandes d'autorisations intermédiaires : lot 44 de constat
 littéral description/PDF, puis lot 45 de recette complète et corrections de tests.
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot96 : pièces textuelles et citations
+## État actuel — lot97 : matrice des déclarations et pistes
+
+[Rapport97](RAPPORT_LOT97.md) : juxtaposition des caractéristiques, pièces/citations
+et candidats de la version enregistrée ; provenance et questions sur les écarts
+textuels. Pas contradiction technique certifiée, IA ou nouveau classement.
+**20 nouveaux cas ;146 ciblés /2264 documentaires réussis ;28 JSDOM métier
+et212 historiques**. Complète **4419 réussis,2 échecs Indra,1 ignoré** ;
+CI42473845675 réussie surb583cb8e. 26/27 SHA, même écart préexistant conservé.
+Aucune publication, source officielle nouvelle ou mise en production fiscale.
+
+## État antérieur — lot96 : pièces textuelles et citations
 
 [Rapport consolidé96](RAPPORT_LOT96.md) : pièces techniques UTF8 versionnées,
 citations humaines contrôlées sur la copie conservée, lecture des versions

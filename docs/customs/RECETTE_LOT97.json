@@ -1,0 +1,73 @@
+{
+  "type_rapport": "recette_comparaison_declarations_non_expertise_technique",
+  "date_reference_session": "2026-11-04",
+  "revision_code": "b583cb8e1806838f122cf4eb39016e642858ffb3",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_originaux_officiels": 0,
+  "articles_codes_officiellement_valides": 0,
+  "nouveaux_tests_python": 20,
+  "selection_metier_revue_ui": {
+    "tests": 146,
+    "echecs": 0,
+    "ignores": 0,
+    "duree_secondes": 14.171,
+    "echecs_ids": []
+  },
+  "suite_complete": {
+    "tests": 4422,
+    "echecs": 2,
+    "ignores": 1,
+    "duree_secondes": 385.318,
+    "echecs_ids": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ]
+  },
+  "recette_documentaire": {
+    "lisible": true,
+    "compteurs_coherents_avec_cas": true,
+    "selection_sans_echec_ni_ignore": true,
+    "tests": 2264,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "scenarios_jsdom_metier": 28,
+  "scenarios_jsdom_historiques": 212,
+  "http_reel": "comparaison explicite de version historique1 apres creation, revision et relecture sur fixtures isolees",
+  "ci": {
+    "headSha": "b583cb8e1806838f122cf4eb39016e642858ffb3",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42473845675"
+  },
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "ecarts": {
+      "data/referentiels.json": {
+        "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+        "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d",
+        "conforme": false
+      }
+    },
+    "restauration_donnees_reelles": false
+  },
+  "limites": [
+    "Egalite textuelle sans normalisation, synonymes, traduction ou interpretation de negation",
+    "Difference de valeurs ne prouve pas contradiction technique",
+    "Pas IA, attribut certifie, nouveau tri/admission de candidat ou taux applicable",
+    "Comparaison de version enregistree, pas du brouillon local",
+    "Audit au moins une fois et conditions de stockage/reprise96 inchangees",
+    "Apercu API backend76 conserve, statiques modifies sans qualification bout-en-bout"
+  ],
+  "artefacts_locaux": "/home/user/recettes-unocr/lot97",
+  "empreintes_artefacts": {
+    "complete.xml": "5df7a5584c3c8f5f710979be8e4ff1f0354795fe88e626204940cb2c25c75349",
+    "metier.xml": "04c22c005ca56856481368a98e553fe5ebea7e9df3d9fbbd34737cd83ebacda2",
+    "ci.json": "a9379c3020a81f59dd3605fcf399f11c241f22bbc2490625a15cf7a3b3f79a07",
+    "empreintes.json": "114e29f84285e6ab34da6bf56e231cf0123c908b6a299d7d5615eb6e6f8f8817"
+  }
+}

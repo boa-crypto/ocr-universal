@@ -1,6 +1,6 @@
 # Tableau récapitulatif — lots livrés et reste de la mission
 
-État après le lot96 — date de référence de session : 2026-11-04. **Terminé = périmètre technique livré et
+État après le lot97 — date de référence de session : 2026-11-04. **Terminé = périmètre technique livré et
 testé, pas référentiel officiel complet ou validation juridique.**
 
 | Lot | Description | État technique | Reste / limite principale |
@@ -101,6 +101,7 @@ testé, pas référentiel officiel complet ou validation juridique.**
 | 94 | Dossiers métier de proposition tarifaire : produit, questions, revue, historique SQLite/CAS | Terminé côté API,29 nouveaux cas | Pas UI/IA/validation juridique, audit externe postcommit ; aperçu76 ; Indra absent,26/27 SHA |
 | 95 | Interface dossiers, outbox versions et snapshot SQLite | Terminé techniquement | Au moins une fois, pas exactly-once ; pas IA/droit qualifié/déploiement ; voir RAPPORT_LOT95.md |
 | 96 | Pièces textuelles, citations Unicode contrôlées, lecture historique et permissions | Terminé techniquement | Pas original authentifié, expertise, IA ou droit consolidé ; voir RAPPORT_LOT96.md |
+| 97 | Matrice des déclarations/citations et pistes du dossier | Terminé techniquement | Égalité textuelle seulement, pas comparaison sémantique ni expertise ; voir RAPPORT_LOT97.md |
 
 Rapports détaillés : `RAPPORT_AVANCEMENT.md` (lot 1), puis `RAPPORT_LOT2.md` à
 `RAPPORT_LOT61.md`. Les limites historiques des rapports précédents sont à lire

@@ -114,3 +114,10 @@ compte système**, une substitution d'ancêtre du chemin ou le propriétaire du
 support ; isoler le compte de service et protéger toute l'arborescence. Les
 permissions POSIX ne valent pas une qualification des ACL Windows. Aucune
 base métier réelle n'a été ouverte par cette campagne pour modifier ses modes.
+
+## Vue comparative97
+
+La [comparaison des déclarations](COMPARAISON_DECLARATIONS_DOSSIERS.md) juxtapose
+valeurs, citations/provenance et pistes du snapshot. Les écarts exacts génèrent
+des questions, pas des contradictions techniques certifiées. Les textes des
+pièces ne servent pas à sélectionner ou reclasser les candidats.
