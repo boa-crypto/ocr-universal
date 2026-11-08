@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="/web/refresh.css">
   <link rel="stylesheet" href="/web/uniocr-ds.css">
   <link rel="stylesheet" href="/web/product-experience.css">
+  <link rel="stylesheet" href="/web/visual-motion.css">
 <script src="/web/navigation.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -164,6 +165,7 @@
     </div>
 
     <main class="workspace" id="contenu-principal" tabindex="-1">
+      <nav class="journey-strip" aria-label="Votre position"></nav>
       <!-- ═══════ NOUVELLE NAVIGATION PRINCIPALE ═══════ -->
       <div id="appNavigation" class="app-navigation"></div>
 
@@ -186,26 +188,20 @@
               </button>
             </div>
           </div>
-          <div class="hero-side">
-            <div class="hero-clock" id="cockpit-clock">--:--</div>
-            <div class="hero-date" id="cockpit-date">—</div>
-            <span class="badge badge--info" id="hero-rbac">RBAC inactif</span>
+          <div class="hero-visual">
+            <figure class="document-art">
+              <img src="/web/assets/document-flow.svg" width="600" height="400" alt="Illustration du parcours : pièces sources, lecture OCR et champs structurés" decoding="async" fetchpriority="low">
+              <figcaption>LA PIÈCE DEVIENT DONNÉE · ILLUSTRATION</figcaption>
+            </figure>
+            <div class="hero-side">
+              <div class="hero-clock" id="cockpit-clock">--:--</div>
+              <div class="hero-date" id="cockpit-date">—</div>
+              <span class="badge badge--info" id="hero-rbac">RBAC inactif</span>
+            </div>
           </div>
-          <svg class="hero-illustration" viewBox="0 0 320 200" aria-hidden="true" fill="none">
-            <defs>
-              <linearGradient id="heroWave" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0" stop-color="#1677FF" stop-opacity=".55"/>
-                <stop offset="1" stop-color="#00D9FF" stop-opacity=".15"/>
-              </linearGradient>
-            </defs>
-            <path d="M0 148c40-18 74-18 112 0s72 18 110 0 62-18 98 0" stroke="url(#heroWave)" stroke-width="2.4"/>
-            <path d="M0 168c46-14 82-14 126 0s78 14 120 0 54-14 74 0" stroke="url(#heroWave)" stroke-width="1.6" opacity=".7"/>
-            <path d="M52 132h150l-14-22H74z" fill="#0B1B35" stroke="#2f6ecb" stroke-width="1.4"/>
-            <path d="M96 110V86h52v24" fill="#0B1B35" stroke="#2f6ecb" stroke-width="1.4"/>
-            <path d="M122 86V66h14v20" fill="#0B1B35" stroke="#00D9FF" stroke-width="1.4"/>
-            <path d="M60 132v12m130-12v12" stroke="#2f6ecb" stroke-width="1.4"/>
-          </svg>
         </div>
+
+        <div class="product-action-slot"></div>
 
         <div class="kpi-grid" id="cockpit-kpis">
           <article class="kpi">
@@ -4267,5 +4263,6 @@ var I18N = {
   <script src="/web/workspace.js" defer></script>
 <script src="/web/transit.js" defer></script>
 <script src="/web/product-experience.js" defer></script>
+<script src="/web/visual-motion.js" defer></script>
 </body>
 </html>

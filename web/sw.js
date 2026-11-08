@@ -4,7 +4,7 @@
  * importé, un export ou un résultat doit toujours venir du serveur local.
  * La coquille HTML et ses modules locaux sont stockés, pour que l'app
  * s'ouvre sans réseau. */
-const CACHE = "unocr-shell-v102-product-experience";
+const CACHE = "unocr-shell-v103-visual-motion";
 const SHELL = [
   "./",
   "./index.html",
@@ -25,6 +25,9 @@ const SHELL = [
   "/web/fonts/jetbrains-mono-83c005d49d8a.woff2",
   "/web/product-experience.css",
   "/web/product-experience.js",
+  "/web/visual-motion.js",
+  "/web/visual-motion.css",
+  "/web/assets/document-flow.svg",
   "/web/palette.js",
   "/web/charts.js",
   "/web/shell.js",

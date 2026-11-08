@@ -154,7 +154,8 @@
         else open();
       }
     });
-    var strip = el("nav", "journey-strip");
+    var strip =
+      workspace.querySelector(".journey-strip") || el("nav", "journey-strip");
     strip.setAttribute("aria-label", "Votre position");
     workspace.insertBefore(strip, workspace.firstChild);
     var launch = el("div", "action-paths"),
@@ -167,7 +168,9 @@
     var actions = el("div", "action-paths-grid");
     launch.append(actions);
     var hero = document.querySelector("#tab-cockpit .hero");
-    if (hero) hero.after(launch);
+    var slot = document.querySelector(".product-action-slot");
+    if (slot) slot.append(launch);
+    else if (hero) hero.after(launch);
     var steps = [
       {
         href: "#documents/import",
