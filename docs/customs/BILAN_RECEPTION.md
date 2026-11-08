@@ -7,7 +7,26 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 84
+## État actuel — lot 85
+
+[Acteur serveur PATCH/undo](ACTEUR_CORRECTIONS_CHAMPS.md) : événements de
+validation/annulation attribués au principal résolu, plus au `user` client.
+RBAC nominatif/environnement, **anonyme sans RBAC**, pas identité civile.
+Motifs/valeurs/droits conservés. Deux tests historiques actualisés explicitement, huit cas de démonstration
+ajoutés à la CI ; complète initiale à trois échecs conservée, puis réexécutée.
+**65 nouveaux cas / 681 ciblés réussis** ; anciens handlers : 40 échecs attendus,
+25 réussis. Documentaire **2 160 Python / 212 JSDOM historiques**. Complète :
+**4 069 réussis, 2 échecs Indra, 1 ignoré, 1 avertissement(s), 365,34 s**.
+Mesures JUnit datées `2026-11-08` (horloge environnement).
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42460288284),
+pas suite OCR complète en CI. **26/27 empreintes conformes**, même écart partagé ;
+données/journaux préservés hors commit. Pas migration des anciens événements,
+refonte des autres routes à acteur client ou redaction universelle.
+**Aperçu backend76 maintenu**, code77–85 poussé/testé mais non chargé pour
+préserver les traitements ; RBAC absent.
+[Rapport](RAPPORT_LOT85.md), [recette actuelle](RECETTE_LOT85.json).
+
+## Complément historique — lot 84
 
 [PATCH avec action requise](PATCH_CHAMP_ACTION_REQUISE.md) : corps vide,
 métadonnées seules et actions null refusés422 après gardes, avant résultat,
