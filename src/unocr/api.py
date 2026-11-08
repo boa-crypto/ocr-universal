@@ -3090,8 +3090,15 @@ def get_classification(job_id: str, request: Request) -> dict:
     if trace is not None and all(trace.get(key) == payload.get(key) for key in (
         "category", "confidence", "classifier_version", "needs_review", "manual"
     )):
-        # Concordance déclarative, pas identité de révision ni preuve d'authenticité.
-        payload["ts"] = trace.get("ts")
+        # Legacy sans acteur : cinq champs. Trace attribuée : même acteur manuel.
+        acteur = trace.get("acteur")
+        if "acteur" not in trace or (
+            trace.get("manual") is True and payload.get("manual") is True
+            and isinstance(acteur, str) and acteur.strip()
+            and acteur == payload.get("corrected_by")
+        ):
+            # Concordance déclarative, pas identité de révision ni preuve d'authenticité.
+            payload["ts"] = trace.get("ts")
     return {"job_id": job_id, "classification": payload}
 
 
