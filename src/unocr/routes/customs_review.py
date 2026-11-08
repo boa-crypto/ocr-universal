@@ -49,6 +49,7 @@ from ..customs_reference.measure_pdf_match import (
 )
 from ..customs_reference.measure_search import rechercher_mesures_tarif
 from ..customs_reference.pdf_index import rechercher_pages
+from ..customs_reference.pdf_markers import lire_page_indexee, reperer_articles
 from ..customs_reference.pdf_page import LecturePDFRefusee, ParamPDFInvalide, lire_page_pdf
 from ..customs_reference.relation_pdf_match import (
     ParamJustificationPDFInvalide,
@@ -284,6 +285,39 @@ def creer_router_revue(autoriser, chemin_registre, tracer):
     def reviser_dossier_metier(lot_id: str, dossier_id: str, body: RevisionDossier,
                              utilisateur=Depends(autoriser)):
         return dossier_metier(utilisateur, lot_id, dossier_id, "revision_dossier_metier", body)
+
+    def lire_derive_pdf(utilisateur, lot_id, operation, appel):
+        def agir(entrees,dossiers,registre):
+            if entrees[0].type_lot != "code":
+                raise HTTPException(422,{"code":"derive_pdf_code_uniquement"},headers=NO_STORE)
+            if entrees[0].index_pdf_sha256 is None:
+                raise HTTPException(409,{"code":"index_pdf_non_epingle"},headers=NO_STORE)
+            try:
+                resultat = appel(dossiers[0],Path(chemin_registre()).parent/"index_pdf"/(lot_id+".json"),entrees[0].index_pdf_sha256)
+                resultat["lot_id"] = lot_id
+                return resultat
+            except (ParamRechercheInvalide,ParamPDFInvalide):
+                raise
+            except LookupError:
+                raise HTTPException(404,{"code":"page_indexee_inconnue"},headers=NO_STORE) from None
+            except (OSError,ValueError):
+                raise HTTPException(409,{"code":"index_pdf_incoherent_ou_absent"},headers=NO_STORE) from None
+        return executer(utilisateur,operation,[lot_id],agir)
+
+    @router.get("/lots/{lot_id}/pdf-article-markers")
+    def reperes_pdf(lot_id: str, document_id: str | None = Query(None,min_length=1,max_length=256),
+                    numero: str | None = Query(None,min_length=1,max_length=32),
+                    limit: int = Query(20,ge=1,le=100), offset: int = Query(0,ge=0,le=1_000_000),
+                    utilisateur=Depends(autoriser)):
+        return lire_derive_pdf(utilisateur,lot_id,"reperes_articles_pdf",
+            lambda dossier,index,sha: reperer_articles(dossier,index,sha,document_id,numero,limit,offset))
+
+    @router.get("/lots/{lot_id}/pdf-index-page")
+    def page_indexee_pdf(lot_id: str, document_id: str = Query(...,min_length=1,max_length=256),
+                         page: int = Query(1,ge=1,le=10000), limit: int = Query(4000,ge=1,le=16000),
+                         offset: int = Query(0,ge=0,le=67108864), utilisateur=Depends(autoriser)):
+        return lire_derive_pdf(utilisateur,lot_id,"lecture_page_indexee_pdf",
+            lambda dossier,index,sha: lire_page_indexee(dossier,index,sha,document_id,page,limit,offset))
 
     @router.get("/lots/{lot_id}/pdf-search")
     def rechercher_pages_pdf(lot_id: str, q: str = Query(...,min_length=1,max_length=256),

@@ -105,16 +105,7 @@ def rechercher_pages(repertoire: Path, index_path: Path, empreinte: str, requete
     termes = _parametres(requete,limite,decalage)
     if document_id is not None and (not isinstance(document_id,str) or not document_id.strip() or len(document_id)>256):
         raise ParamRechercheInvalide("Document exact invalide")
-    lot, rapport = charger_lot_code(repertoire)
-    if index_path.parent.is_symlink() or index_path.is_symlink() or not index_path.is_file():
-        raise ValueError("Index absent ou symbolique")
-    brut = _lire(index_path)
-    if len(brut)>MAX_INDEX or hashlib.sha256(brut).hexdigest() != empreinte:
-        raise ValueError("Index non épinglé")
-    index = IndexPDF.model_validate_json(json.dumps(_json(brut),ensure_ascii=False,allow_nan=False))
-    if (index.manifest_lot_sha256 != rapport["archive"]["manifest_sha256"]
-            or [(d.document_id,d.pdf_sha256) for d in index.documents] != [(d.id,d.sha256) for d in lot.documents]):
-        raise ValueError("Index et archive différents")
+    lot, rapport, index = charger_index(repertoire,index_path,empreinte)
     resultats, total = [], 0
     for doc in index.documents:
         if document_id is not None and doc.document_id != document_id:
@@ -136,3 +127,17 @@ def rechercher_pages(repertoire: Path, index_path: Path, empreinte: str, requete
     r["avertissements"].extend(["Index dérivé épinglé ; pas correction des caractères PDF ou du flux des colonnes.",
                                 "Résultats par pages physiques, pas articles ou occurrences, pas édition authentifiée."])
     return r
+
+
+def charger_index(repertoire: Path, index_path: Path, empreinte: str):
+    lot, rapport = charger_lot_code(repertoire)
+    if index_path.parent.is_symlink() or index_path.is_symlink() or not index_path.is_file():
+        raise ValueError("Index absent ou symbolique")
+    brut = _lire(index_path)
+    if len(brut)>MAX_INDEX or hashlib.sha256(brut).hexdigest() != empreinte:
+        raise ValueError("Index non épinglé")
+    index = IndexPDF.model_validate_json(json.dumps(_json(brut),ensure_ascii=False,allow_nan=False))
+    if (index.manifest_lot_sha256 != rapport["archive"]["manifest_sha256"]
+            or [(d.document_id,d.pdf_sha256) for d in index.documents] != [(d.id,d.sha256) for d in lot.documents]):
+        raise ValueError("Index et archive différents")
+    return lot, rapport, index
