@@ -7,7 +7,24 @@ littéral description/PDF, puis lot 45 de recette complète et corrections de te
 Ce document est un bilan de réception technique, **pas un certificat de conformité,
 une clôture juridique ou l'affirmation que tous les chantiers sont achevés**.
 
-## État actuel — lot 91
+## État actuel — lot 92
+
+[Valeur retenue CSV groupé](CSV_LOT_VALEUR_RETENUE.md) : deux colonnes ajoutées
+après les six existantes, priorité non None y compris vides/zéro ; origine
+stockée non recalculée. Neutraliseur existant appliqué aux huit colonnes,
+pas protection universelle tableur. **Fichier CSV partagé inchangé**.
+**41 nouveaux cas / 909 ciblés réussis** ; ancien CSV : 38 échecs attendus,
+3 réussis. Documentaire **2 160 Python / 212 JSDOM historiques**. Complète :
+**4 297 réussis, 2 échecs Indra, 1 ignoré, 1 avertissement(s), 385,72 s**.
+Mesures JUnit datées `2026-11-08` (horloge environnement).
+[CI ciblée réussie](https://github.com/boa-crypto/ocr-universal/actions/runs/42465651618), pas suite OCR complète en CI.
+**26/27 empreintes conformes**, même écart partagé ; données/journaux préservés
+hors commit. Clients six colonnes à adapter, pas certification origine/statut,
+confidentialité ou charge qualifiée. **Aperçu backend76 maintenu**,
+code77–92 poussé/testé mais non chargé pour préserver les traitements ; RBAC absent.
+[Rapport](RAPPORT_LOT92.md), [recette actuelle](RECETTE_LOT92.json).
+
+## Complément historique — lot 91
 
 [JSON groupé indépendant du fichier](EXPORT_JSON_LOT_SNAPSHOT.md) : réponse
 mémoire, nom lot.json/application-json/no-store ; ordre/doublons/raw/limite200

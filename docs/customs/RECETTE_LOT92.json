@@ -1,0 +1,178 @@
+{
+  "type_rapport": "recette_lot92_technique_non_validation_reglementaire",
+  "date_mesures_environnement": "2026-11-08",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "revision_code": "059c0b0faa2c9af2c226b8b613dd59a501c58738",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_originaux_officiels": 0,
+  "articles_codes_officiellement_valides": 0,
+  "nouveaux_tests_python": 41,
+  "selection_csv_lot_exports_attribution_revision_cloisonnement": {
+    "tests": 909,
+    "reussis": 909,
+    "echecs": 0,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 27.19,
+    "duree_junit_secondes": 25.779,
+    "horodatage_junit": "2026-11-08T09:04:31.782640+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 909,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "contre_epreuve_csv91": {
+    "tests": 41,
+    "reussis": 3,
+    "echecs": 38,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 5.48,
+    "duree_junit_secondes": 3.26,
+    "horodatage_junit": "2026-11-08T09:05:14.410997+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 41,
+      "failures": 38,
+      "errors": 0,
+      "skipped": 0
+    },
+    "code_sortie": 1,
+    "revision_chargee": "25620fda157242c0a483defb30f38b567384256f",
+    "corps_export_batch_reinjecte_memoire_sans_decorateurs": true,
+    "sources_checkout_non_remplacees": true,
+    "apercu_non_modifie": true
+  },
+  "recette_documentaire_ciblee": {
+    "tests": 2160,
+    "reussis": 2160,
+    "echecs": 0,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 60.97,
+    "duree_junit_secondes": 60.924,
+    "horodatage_junit": "2026-11-08T09:05:09.158623+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 2160,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "fichiers": 66,
+    "jsdom_existants": 212
+  },
+  "suite_complete": {
+    "tests": 4300,
+    "reussis": 4297,
+    "echecs": 2,
+    "erreurs": 0,
+    "ignores": 1,
+    "avertissements": 1,
+    "duree_console_secondes": 385.72,
+    "duree_junit_secondes": 385.598,
+    "horodatage_junit": "2026-11-08T09:05:09.085338+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 4300,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 1
+    },
+    "identifiants_echecs": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ],
+    "ignores_detail": [
+      "tests.test_indra_ocr::test_indra_engine_recognize"
+    ],
+    "code_sortie": 1,
+    "identiques_lot91": true
+  },
+  "politique": {
+    "route": "GET /api/batches/export/csv",
+    "six_colonnes_existantes_ordre_semantique_conserves": true,
+    "deux_colonnes_ajoutees": [
+      "valeur_retenue",
+      "origine_valeur"
+    ],
+    "valeur_premiere_non_none": [
+      "confirmed_value",
+      "corrected_value",
+      "normalized_value",
+      "raw_value"
+    ],
+    "vide_zero_false_conserves": true,
+    "origine_stockee_non_recalculee": true,
+    "huit_colonnes_neutraliseur_csv_existant": true,
+    "prefixes_testes": [
+      "=",
+      "+",
+      "-",
+      "@",
+      "\t",
+      "\r"
+    ],
+    "pas_protection_universelle_tableur": true,
+    "fichier_partage_inchange": true
+  },
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "referentiels": {
+      "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+      "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d",
+      "conforme": false
+    },
+    "ecart_identique_lot91": true,
+    "restauration_effectuee": false,
+    "donnees_journaux_exploratoires_preserves_hors_commit": true
+  },
+  "ci": {
+    "run": 42465651618,
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42465651618",
+    "statut": "success",
+    "revision": "059c0b0faa2c9af2c226b8b613dd59a501c58738",
+    "portee": "890 CSV/lotJSON/sélectionJSON/exportJSON/horodatage/audit/attribution/demo/action/statuts/annulation/champs/révision/classification/valeurs/cloisonnement/RBAC + 243 qualité/Baidu + 24 ingestion/PDF + 10 UI + documentaire ; sélections se recouvrant",
+    "ocr_complet_execute_en_ci": false,
+    "junit_distant_telecharge": false
+  },
+  "apercu": {
+    "processus": "interface-uniocr-4f62d340",
+    "backend_lot": 76,
+    "code77_92_charge": false,
+    "redemarrage_impose": false,
+    "motif": "Préserver les traitements en cours",
+    "port": 8000,
+    "rbac_json_absent": true
+  },
+  "artefacts_locaux": "/home/user/recettes-unocr/lot92",
+  "limites": [
+    "Deux colonnes ajoutées, clients imposant exactement six à adapter",
+    "CSV partagé/concurrence fichier inchangés, autres formats/archives hors périmètre",
+    "Origine/statut stockés pas cohérence métier recalculée",
+    "Neutraliseur existant pas protection universelle Excel/LibreOffice/Unicode",
+    "Types legacy/textualisation pas nouvelle validation numérique/structurelle",
+    "Séquence par document pas transaction lot ; limite200 pas borne octets/charge",
+    "Valeur retenue pas preuve humaine ou validation fiscale",
+    "Droits/audit/révision processus ABA/autres écrivains inchangés",
+    "Aperçu76 maintenu, code77–92 non chargé",
+    "Deux échecs Indra persistants, intégrité26/27",
+    "Aucun nouvel original officiel ou validation réglementaire"
+  ]
+}
