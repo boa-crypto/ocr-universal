@@ -30,6 +30,15 @@ jobs:
           python-version: "3.11"
           cache: pip
 
+      - name: Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Installation des dépendances Node
+        run: npm ci
+
       - name: Installation du projet
         run: |
           python -m pip install --upgrade pip
