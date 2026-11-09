@@ -18,6 +18,7 @@
     "ui:product": "node tests/ui_product_browser.cjs",
     "ui:studio": "node tests/ui_operations_studio.cjs && node tests/ui_source_freshness.cjs",
     "ui:studio:browser": "node tests/ui_operations_studio_browser.cjs",
+    "ui:docker-screenshot": "node tests/ui_docker_screenshot.cjs",
     "ui:motion": "node tests/ui_visual_motion.cjs",
     "ui:motion:browser": "node tests/ui_visual_motion_browser.cjs",
     "ui:fields:browser": "node tests/ui_field_contrast_browser.cjs",

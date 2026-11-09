@@ -34,7 +34,9 @@ function suivre(w) {
     const url = brut.startsWith("http") ? brut : base + (brut.startsWith("/") ? brut : "/" + brut);
     const methode = String((o && o.method) || "GET").toUpperCase();
     if (methode !== "GET") requetesEcriture.push(methode + " " + url.slice(base.length));
-    return realFetch(url, o).then((r) => {
+    // Ne pas réutiliser un socket que le serveur de recette a déjà fermé.
+    const options = { ...(o || {}), headers: { ...((o && o.headers) || {}), connection: "close" } };
+    return realFetch(url, options).then((r) => {
       if (r.status >= 500) erreursServeur.push(r.status + " " + url.slice(base.length));
       return r;
     });
@@ -62,6 +64,14 @@ function noter(nom, ok, detail) {
 async function ouvrirRoute(w, doc, route, delai) {
   w.location.hash = route;
   await attendre(delai || 2400);
+  const ecran = w.UniOCREcrans && w.UniOCREcrans.ecrans[route.slice(1)];
+  if (ecran) {
+    const echeance = Date.now() + 15000;
+    while ((!w.__ecranCourant || w.__ecranCourant.ecran !== ecran) &&
+      Date.now() < echeance) {
+      await attendre(50);
+    }
+  }
   return pageVisible(doc, w);
 }
 

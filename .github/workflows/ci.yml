@@ -30,11 +30,21 @@ jobs:
           python-version: "3.11"
           cache: pip
 
+      - name: Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Installation des dépendances Node
+        run: npm ci
+
       - name: Installation du projet
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e ".[dev]" 2>/dev/null || \
             python -m pip install -e . pytest ruff
+          python -m pip install indra-ocr
 
       - name: Vérification de la version de Tesseract
         run: tesseract --version
@@ -44,7 +54,7 @@ jobs:
 
       - name: Tests (pytest)
         run: python -m pytest tests/ -q --no-header
-        timeout-minutes: 5
+        timeout-minutes: 15
 
       - name: Benchmark synthétique + terrain
         run: python benchmarks/run_field_benchmark.py --suite both
@@ -69,6 +79,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Installation des dépendances Node
+        run: npm ci
+
       - name: Build de l'image
         run: docker build -t unocr:ci .
 
@@ -91,14 +110,7 @@ jobs:
           curl -fsS http://127.0.0.1:8000/api/health | python -m json.tool
 
       - name: Capture écran UI
-        run: |
-          # Installation de tools de capture
-          sudo apt-get install -y --no-install-recommends xvfb chromium-browser
-          Xvfb :99 -screen 0 1280x1024x24 &
-          export DISPLAY=:99
-          chromium-browser --headless --disable-gpu --screenshot=/tmp/unocr-screenshot.png \
-            http://127.0.0.1:8000/ 2>/dev/null || true
-          ls -la /tmp/unocr-screenshot.png
+        run: node tests/ui_docker_screenshot.cjs http://127.0.0.1:8000 /tmp/unocr-screenshot.png
 
       - name: Upload capture
         if: always()

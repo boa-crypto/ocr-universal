@@ -2314,6 +2314,7 @@
       bloc.appendChild(carte);
       zone.textContent = "";
       zone.appendChild(bloc);
+      window.__ecranCourant = { ecran: ecran, lignes: filtrees };
       return;
     }
 
@@ -3175,7 +3176,10 @@
     var zone = hote();
     if (!zone) return;
     if (!etats[route]) etats[route] = { recherche: "", page: 1, filtres: {}, tri: null };
-    if (!force && Array.isArray(cache[route])) { rendreListe(ecran, route, cache[route]); return; }
+    if (!force && Array.isArray(cache[route])) {
+      if (routeCourante() === route) rendreListe(ecran, route, cache[route]);
+      return;
+    }
 
     etats[route].page = 1;
     squelette(zone);
@@ -3194,8 +3198,11 @@
 
     promesse.then(function (lignes) {
       cache[route] = Array.isArray(lignes) ? lignes : [];
+      /* Une réponse lente ne doit pas remplacer l'écran ouvert entre-temps. */
+      if (routeCourante() !== route) return;
       rendreListe(ecran, route, cache[route]);
     }).catch(function (erreur) {
+      if (routeCourante() !== route) return;
       ecran.sectionRoute = ecran.sectionRoute || route.split("/")[0];
       erreurRendu(zone, ecran, erreur.message || "Erreur réseau",
         function () { charger(route, true); });

@@ -120,18 +120,22 @@ if (require.main === module)
       )) {
         b = await launchBrowser();
         const c = await b.newContext({
-            viewport: { width, height: 1000 },
-            serviceWorkers: "block",
-          }),
-          p = await c.newPage();
-        p.on("pageerror", (e) => report.errors.push(e.message));
-        await p.route("**/*", (r) => {
-          if (!["GET", "HEAD"].includes(r.request().method())) {
-            report.writes.push(r.request().method() + " " + r.request().url());
-            return r.abort();
-          }
-          return r.continue();
+          viewport: { width, height: 1000 },
+          serviceWorkers: "block",
         });
+        let p;
+        const openGuardedPage = async () => {
+          p = await c.newPage();
+          p.on("pageerror", (e) => report.errors.push(e.message));
+          await p.route("**/*", (r) => {
+            if (!["GET", "HEAD"].includes(r.request().method())) {
+              report.writes.push(r.request().method() + " " + r.request().url());
+              return r.abort();
+            }
+            return r.continue();
+          });
+        };
+        await openGuardedPage();
         await p.goto("http://127.0.0.1:8000/", {
           waitUntil: "domcontentloaded",
         });
@@ -168,20 +172,31 @@ if (require.main === module)
           }
           for (const route of process.env.UI_FIELD_STATES_ONLY ? [] : routes) {
             await p.goto("http://127.0.0.1:8000/" + route);
-            await p.waitForTimeout(110);
-            await p.waitForFunction(() =>
-              [...document.querySelectorAll("input,textarea,select")]
-                .filter((e) => e.getClientRects().length)
-                .every((e) => {
-                  for (
-                    let n = e;
-                    n;
-                    n = n.parentElement || n.getRootNode().host
-                  )
-                    if (Number(getComputedStyle(n).opacity) < 0.999)
-                      return false;
-                  return true;
-                }),
+            await p.waitForTimeout(400);
+            await p.waitForFunction(
+              (currentRoute) => {
+                const definition =
+                  window.UniOCREcrans?.ecrans?.[currentRoute.slice(1)];
+                if (
+                  definition &&
+                  window.__ecranCourant?.ecran !== definition
+                )
+                  return false;
+                return [...document.querySelectorAll("input,textarea,select")]
+                  .filter((e) => e.getClientRects().length)
+                  .every((e) => {
+                    for (
+                      let n = e;
+                      n;
+                      n = n.parentElement || n.getRootNode().host
+                    )
+                      if (Number(getComputedStyle(n).opacity) < 0.999)
+                        return false;
+                    return true;
+                  });
+              },
+              route,
+              { polling: 100, timeout: 30000 },
             );
             assert.equal(
               await p.locator("html").getAttribute("data-theme"),
@@ -197,6 +212,8 @@ if (require.main === module)
             if (route === "#dossiers/nouveau") await p.keyboard.press("Escape");
           }
           // Fresh document after route inventory releases historical module trees.
+          await p.close();
+          await openGuardedPage();
           await p.goto("http://127.0.0.1:8000/", {
             waitUntil: "domcontentloaded",
           });
@@ -207,7 +224,11 @@ if (require.main === module)
               throw Error("Theme not applied: " + t);
           }, theme);
           await p.goto("http://127.0.0.1:8000/#dossiers/nouveau");
-          await p.waitForTimeout(350);
+          await p.waitForFunction(
+            () => document.getElementById("dos-create")?.open,
+            null,
+            { polling: 100, timeout: 30000 },
+          );
           const modal = p.locator("#dos-create");
           if (await modal.evaluate((e) => e.open)) {
             const field = modal.locator('input:not([type="hidden"])').first();

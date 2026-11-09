@@ -16,8 +16,11 @@ async function jusque(condition, message) {
   const vc = new VirtualConsole();
   vc.on('jsdomError', e => { if(e.type !== 'not implemented') erreurs.push(e.message); });
   const dom = await JSDOM.fromURL(base + '/', {
-    runScripts: 'dangerously', resources: 'usable', pretendToBeVisual: true, virtualConsole: vc,
+    runScripts: 'dangerously', resources: 'usable', pretendToBeVisual: false, virtualConsole: vc,
     beforeParse(w) {
+      // Évite la file rAF interne de jsdom 24 lors de window.close() sous Node 22.
+      w.requestAnimationFrame = callback => w.setTimeout(() => callback(Date.now()), 16);
+      w.cancelAnimationFrame = id => w.clearTimeout(id);
       w.scrollTo = () => {}; w.confirm = () => confirmer;
       w.matchMedia = () => ({ matches: false, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {} });
       w.URL.createObjectURL = blob => { blobs.push(blob); return 'blob:test'; };
@@ -45,12 +48,16 @@ async function jusque(condition, message) {
           }
           transmis = { ...options, body: multipart };
         }
+        transmis = { ...transmis, headers: { ...transmis.headers, connection: 'close' } };
         if(methode !== 'GET') {
           assert.ok((methode === 'POST' && cible.pathname === '/api/frais/justificatif/upload') ||
                     (methode === 'DELETE' && /^\/api\/frais\/justificatif\/just_[a-z0-9]+$/.test(cible.pathname)));
           ecritures.push(methode);
         }
-        const rep = await fetch(cible, transmis);
+        const rep = await fetch(cible, transmis).catch(error => {
+          console.error('Échec fetch E2E ' + cible.href, error.cause || error);
+          throw error;
+        });
         if(!rep.ok) erreurs.push(cible.pathname + ' → ' + rep.status);
         return rep;
       };
@@ -61,7 +68,14 @@ async function jusque(condition, message) {
     await attendre(4500); w.location.hash = '#finance/frais-dossier';
     const page = doc.querySelector('#tab-ecran');
     let ouvrir;
-    await jusque(() => (ouvrir = [...page.querySelectorAll('button')].find(b => b.textContent === 'Justificatifs')), 'Action pièces absente');
+    await jusque(() => (ouvrir = [...page.querySelectorAll('button')].find(b => b.textContent === 'Justificatifs')), 'Action pièces absente').catch(e => {
+      const etat = {
+        hash: w.location.hash,
+        current: w.__ecranCourant && w.__ecranCourant.ecran.titre,
+        page: page.textContent.slice(0, 800),
+      };
+      throw new Error(e.message + ' — ' + JSON.stringify(etat));
+    });
     ouvrir.click();
     const boite = doc.querySelector('.ecran__boite[role=dialog]');
     await jusque(() => !boite.querySelector('[role=status]').textContent.includes('Chargement'), 'Liste non chargée');
