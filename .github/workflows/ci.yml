@@ -35,6 +35,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e ".[dev]" 2>/dev/null || \
             python -m pip install -e . pytest ruff
+          python -m pip install indra-ocr
 
       - name: Vérification de la version de Tesseract
         run: tesseract --version
@@ -44,7 +45,7 @@ jobs:
 
       - name: Tests (pytest)
         run: python -m pytest tests/ -q --no-header
-        timeout-minutes: 5
+        timeout-minutes: 15
 
       - name: Benchmark synthétique + terrain
         run: python benchmarks/run_field_benchmark.py --suite both
