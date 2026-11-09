@@ -27,6 +27,7 @@ dependencies = [
   "zxing-cpp>=2.2",
   "segno>=1.6",
   "fastapi>=0.110",
+  "httpx>=0.27",
   "uvicorn[standard]>=0.29",
   "python-multipart>=0.0.9",
   "aiofiles>=23.0",
@@ -39,7 +40,6 @@ dev = [
   "pytest>=8",
   "xlwt==1.3.0",  # Fixtures BIFF8 de tests uniquement, jamais utilisé par le lecteur
   "ruff>=0.6",
-  "httpx>=0.27",
   "requests>=2.32.4",  # Contrats hors reseau du transport Baidu
 ]
 
