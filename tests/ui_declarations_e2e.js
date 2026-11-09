@@ -20,9 +20,12 @@ async function jusque(condition, message) {
   vc.on('jsdomError', e => { if (e.type !== 'not implemented') erreurs.push(e.message); });
   let confirmer = false;
   const dom = await JSDOM.fromURL(base + '/', {
-    runScripts: 'dangerously', resources: 'usable', pretendToBeVisual: true,
+    runScripts: 'dangerously', resources: 'usable', pretendToBeVisual: false,
     virtualConsole: vc,
     beforeParse(w) {
+      // Évite la file rAF interne de jsdom 24 lors de window.close() sous Node 22.
+      w.requestAnimationFrame = callback => w.setTimeout(() => callback(Date.now()), 16);
+      w.cancelAnimationFrame = id => w.clearTimeout(id);
       w.scrollTo = () => {};
       w.confirm = () => confirmer;
       w.matchMedia = () => ({ matches: false, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {} });
@@ -35,7 +38,9 @@ async function jusque(condition, message) {
           assert.ok(['POST', 'PUT', 'DELETE'].includes(methode));
           ecritures.push({ methode, chemin: cible.pathname });
         }
-        const rep = await fetch(cible, options);
+        const rep = await fetch(cible, {
+          ...options, headers: { ...options.headers, connection: 'close' },
+        });
         if (rep.status >= 500) erreurs.push(cible.pathname + ' : ' + rep.status);
         return rep;
       };

@@ -15,8 +15,11 @@ async function verifier(lectureSeule) {
   const vc = new VirtualConsole();
   vc.on('jsdomError', e => { if(e.type !== 'not implemented') erreurs.push(e.message); });
   const dom = await JSDOM.fromURL(base + '/', {
-    runScripts: 'dangerously', resources: 'usable', pretendToBeVisual: true, virtualConsole: vc,
+    runScripts: 'dangerously', resources: 'usable', pretendToBeVisual: false, virtualConsole: vc,
     beforeParse(w) {
+      // Évite la file rAF interne de jsdom 24 lors de window.close() sous Node 22.
+      w.requestAnimationFrame = callback => w.setTimeout(() => callback(Date.now()), 16);
+      w.cancelAnimationFrame = id => w.clearTimeout(id);
       w.scrollTo = () => {}; w.confirm = () => confirmer;
       w.matchMedia = () => ({ matches: false, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {} });
       w.URL.createObjectURL = blob => { telechargements.push(blob); return 'blob:test'; };
@@ -44,7 +47,9 @@ async function verifier(lectureSeule) {
           assert.equal(cible.pathname, '/api/frais/justificatif/just_test');
           pieces = []; return json({ deleted: true });
         }
-        return fetch(cible, options);
+        return fetch(cible, {
+          ...options, headers: { ...options.headers, connection: 'close' },
+        });
       };
     }
   });

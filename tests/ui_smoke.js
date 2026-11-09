@@ -34,7 +34,9 @@ function suivre(w) {
     const url = brut.startsWith("http") ? brut : base + (brut.startsWith("/") ? brut : "/" + brut);
     const methode = String((o && o.method) || "GET").toUpperCase();
     if (methode !== "GET") requetesEcriture.push(methode + " " + url.slice(base.length));
-    return realFetch(url, o).then((r) => {
+    // Ne pas réutiliser un socket que le serveur de recette a déjà fermé.
+    const options = { ...(o || {}), headers: { ...((o && o.headers) || {}), connection: "close" } };
+    return realFetch(url, options).then((r) => {
       if (r.status >= 500) erreursServeur.push(r.status + " " + url.slice(base.length));
       return r;
     });
