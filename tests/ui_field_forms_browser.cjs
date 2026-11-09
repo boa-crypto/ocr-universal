@@ -17,9 +17,10 @@ const report = { forms: [], errors: [], writes: [] };
       for (const theme of ["light", "dark"]) {
         b = await launchBrowser();
         const c = await b.newContext({
-            viewport: { width, height: 1000 },
-            serviceWorkers: "block",
-          }),
+          viewport: { width, height: 1000 },
+          serviceWorkers: "block",
+          reducedMotion: "reduce",
+        }),
           p = await c.newPage();
         p.on("pageerror", (e) => report.errors.push(e.message));
         await p.route("**/*", (r) => {
@@ -49,6 +50,7 @@ const report = { forms: [], errors: [], writes: [] };
         );
         await p.screenshot({
           path: path.join(out, `${width}-${theme}-search-choices.png`),
+          animations: "disabled",
           timeout: 60000,
         });
         await search.press("Escape");
@@ -63,13 +65,27 @@ const report = { forms: [], errors: [], writes: [] };
         );
         for (const route of routes) {
           await p.goto("http://127.0.0.1:8000/" + route);
-          await p.waitForFunction(
-            (r) =>
-              window.__ecranCourant &&
-              window.__ecranCourant.ecran === UniOCREcrans.ecrans[r.slice(1)],
-            route,
-            { timeout: 15000 },
-          );
+          await p
+            .waitForFunction(
+              (r) =>
+                window.__ecranCourant &&
+                window.__ecranCourant.ecran === UniOCREcrans.ecrans[r.slice(1)],
+              route,
+              { polling: 100, timeout: 30000 },
+            )
+            .catch(async (error) => {
+              const state = await p.evaluate(() => ({
+                hash: location.hash,
+                title: document.querySelector("#ecranHost .ecran__titre")
+                  ?.textContent,
+                current: window.__ecranCourant?.ecran?.titre,
+                currentRoute: window.__ecranCourant?.ecran?.__route,
+              }));
+              throw new Error(
+                `Screen did not settle on ${route}: ${JSON.stringify(state)}`,
+                { cause: error },
+              );
+            });
           await p.waitForTimeout(200);
           for (const mode of ["creation", "edition"]) {
             const button =
@@ -86,7 +102,13 @@ const report = { forms: [], errors: [], writes: [] };
             await button.click();
             const modal = p.locator(".ecran__boite").last();
             await modal.waitFor({ state: "visible" });
-            await p.waitForTimeout(80);
+            await modal.evaluate((dialog) =>
+              Promise.all(
+                dialog
+                  .getAnimations({ subtree: true })
+                  .map((animation) => animation.finished),
+              ),
+            );
             let rows = await p.evaluate(inspect);
             verify(rows, `${width} ${theme} ${route} ${mode}`);
             const editable = modal
@@ -117,11 +139,12 @@ const report = { forms: [], errors: [], writes: [] };
                 "#douane/controles",
               ].includes(route)
             ) {
-              await p.screenshot({
+              await modal.screenshot({
                 path: path.join(
                   out,
                   `${width}-${theme}-${route.slice(1).replaceAll("/", "-")}-${mode}.png`,
                 ),
+                animations: "disabled",
                 timeout: 60000,
               });
             }

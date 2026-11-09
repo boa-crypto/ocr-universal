@@ -62,6 +62,14 @@ function noter(nom, ok, detail) {
 async function ouvrirRoute(w, doc, route, delai) {
   w.location.hash = route;
   await attendre(delai || 2400);
+  const ecran = w.UniOCREcrans && w.UniOCREcrans.ecrans[route.slice(1)];
+  if (ecran) {
+    const echeance = Date.now() + 15000;
+    while ((!w.__ecranCourant || w.__ecranCourant.ecran !== ecran) &&
+      Date.now() < echeance) {
+      await attendre(50);
+    }
+  }
   return pageVisible(doc, w);
 }
 
