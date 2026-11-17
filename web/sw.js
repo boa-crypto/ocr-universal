@@ -4,7 +4,7 @@
  * importé, un export ou un résultat doit toujours venir du serveur local.
  * La coquille HTML et ses modules locaux sont stockés, pour que l'app
  * s'ouvre sans réseau. */
-const CACHE = "unocr-shell-v3-refactored";
+const CACHE = "unocr-shell-v106-field-contrast-shadow";
 const SHELL = [
   "./",
   "./index.html",
@@ -17,6 +17,37 @@ const SHELL = [
   "./formulaire.js",
   "./tracabilite.js",
   "./transmission.js",
+  "/web/refresh.css",
+  "/web/uniocr-ds.css",
+  "/web/fonts/instrument-serif-5a51946dfffa.woff2",
+  "/web/fonts/instrument-serif-5eb09b5ac0e2.woff2",
+  "/web/fonts/inter-3100e775e861.woff2",
+  "/web/fonts/jetbrains-mono-83c005d49d8a.woff2",
+  "/web/product-experience.css",
+  "/web/product-experience.js",
+  "/web/visual-motion.js",
+  "/web/visual-motion.css",
+  "/web/operations-studio.js",
+  "/web/operations-studio.css",
+  "/web/field-accessibility.css",
+  "/web/assets/document-flow.svg",
+  "/web/palette.js",
+  "/web/charts.js",
+  "/web/shell.js",
+  "/web/modules.js",
+  "/web/rapports.js",
+  "/web/souspages.js",
+  "/web/customs-review.js",
+  "/web/customs-assessments.js",
+  "/web/customs-legal-pages.js",
+  "/web/navigation.js",
+  "/web/cockpit.js",
+  "/web/app-legacy.js",
+  "/web/engine-provenance.js",
+  "/web/app-extras.js",
+  "/web/dossiers.js",
+  "/web/workspace.js",
+  "/web/ecrans.js",
 ];
 
 self.addEventListener("install", (event) => {
@@ -33,28 +64,53 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+/* Stratégie :
+ *   - coquille (navigation, HTML, JS, CSS) → RÉSEAU D'ABORD : une correction
+ *     livrée est visible au premier rechargement, jamais une version périmée ;
+ *   - ressources statiques (icônes, polices locales) → cache d'abord, avec
+ *     rafraîchissement en arrière-plan ;
+ *   - hors ligne : on retombe sur le cache, puis sur la coquille. */
+function estCoquille(req, url) {
+  if (req.mode === "navigate") return true;
+  if (url.pathname === "/" || url.pathname.endsWith("/index.html")) return true;
+  return /\.(js|css|webmanifest)$/.test(url.pathname);
+}
+
+function mettreEnCache(req, reponse) {
+  if (!reponse || !reponse.ok) return reponse;
+  const copie = reponse.clone();
+  caches.open(CACHE).then((c) => c.put(req, copie)).catch(() => {});
+  return reponse;
+}
+
+function reseauDAbord(req) {
+  return fetch(req)
+    .then((fraiche) => mettreEnCache(req, fraiche))
+    .catch(() =>
+      caches.match(req).then((entree) => entree || caches.match("./index.html"))
+    );
+}
+
+function cacheDAbord(req) {
+  return caches.match(req).then((entree) => {
+    if (entree) {
+      fetch(req)
+        .then((fraiche) => mettreEnCache(req, fraiche))
+        .catch(() => {});
+      return entree;
+    }
+    return fetch(req)
+      .then((fraiche) => mettreEnCache(req, fraiche))
+      .catch(() => caches.match("./index.html"));
+  });
+}
+
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return;                 // POST /api/* : jamais en cache
   const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;  // ressources tierces : réseau direct
   if (url.pathname.startsWith("/api/")) return;     // données fraîches obligatoires
 
-  event.respondWith(
-    caches.match(req).then((hit) => {
-      if (hit) {
-        // sert le cache, rafraîchit en arrière-plan
-        fetch(req).then((fresh) => {
-          if (fresh && fresh.ok) caches.open(CACHE).then((c) => c.put(req, fresh.clone()));
-        }).catch(() => {});
-        return hit;
-      }
-      return fetch(req).then((fresh) => {
-        if (fresh && fresh.ok && url.origin === self.location.origin) {
-          const copy = fresh.clone();
-          caches.open(CACHE).then((c) => c.put(req, copy));
-        }
-        return fresh;
-      }).catch(() => caches.match("./index.html"));
-    })
-  );
+  event.respondWith(estCoquille(req, url) ? reseauDAbord(req) : cacheDAbord(req));
 });

@@ -2,14 +2,18 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Body, Depends, Request, HTTPException
-from pydantic import BaseModel
-from typing import Any, Optional, List
+from datetime import date
+from typing import Optional
 
-from ..models import TerminalEnlevement, new_id
+from fastapi import APIRouter, HTTPException, Request
+from pydantic import BaseModel, ValidationError
+
+from ..business_links import exiger_dossier
+from ..business_store import BusinessStore
 from ..config import get_config
 from ..logging_setup import audit, get_logger
-from ..rbac import ADMINISTRATEUR, LECTEUR
+from ..models import TerminalEnlevement, new_id
+from .dependencies import _exige_dossier, _exige_objet_dossier, _filtre_dossiers
 
 log = get_logger("terminal")
 
@@ -19,16 +23,25 @@ cfg = get_config()
 
 
 # ───────────────────────────────────────────────────────────────
-# Store en mémoire
+# Stockage local transactionnel (aucun cache en mémoire faisant autorité).
 # ───────────────────────────────────────────────────────────────
 
-_terminal_store: dict[str, TerminalEnlevement] = {}
+def _get_terminal_store(request: Request) -> BusinessStore[TerminalEnlevement]:
+    return BusinessStore(cfg.data_dir / "metier.sqlite3", "terminal", TerminalEnlevement)
 
 
-def _get_terminal_store(request: Request) -> dict:
-    if not hasattr(request.app.state, 'terminal_store'):
-        request.app.state.terminal_store = {}
-    return request.app.state.terminal_store
+def _refuser(enlevement_id: str, message: str, statut: int = 409) -> None:
+    audit(cfg.log_dir, "enlevement_transition_refusee", cible=enlevement_id, motif=message)
+    raise HTTPException(statut, message)
+
+
+def _date_iso(valeur: str, nom: str) -> str:
+    try:
+        if date.fromisoformat(valeur).isoformat() != valeur:
+            raise ValueError
+    except (ValueError, TypeError):
+        raise HTTPException(422, f"{nom} : date attendue au format AAAA-MM-JJ") from None
+    return valeur
 
 
 # ───────────────────────────────────────────────────────────────
@@ -85,6 +98,11 @@ def create_enlevement(
     enlevement: TerminalEnlevementCreate,
 ) -> dict:
     """Créer une demande d'enlèvement."""
+    _exige_dossier(enlevement.dossier_id, request)
+    if enlevement.statut != "demande":
+        _refuser("creation", "Une demande doit être créée au statut demande")
+    if not all(v.strip() for v in [enlevement.dossier_id, enlevement.numero_bl, enlevement.numero_conteneur]):
+        raise HTTPException(422, "Dossier, B/L et conteneur sont obligatoires")
     store = _get_terminal_store(request)
     enlevement_obj = TerminalEnlevement(
         id=new_id("term_"),
@@ -105,7 +123,9 @@ def create_enlevement(
         frais_portuaires_payes=enlevement.frais_portuaires_payes,
         observations=enlevement.observations,
     )
-    store[enlevement_obj.id] = enlevement_obj
+    with store.transaction() as transaction:
+        exiger_dossier(cfg, enlevement_obj.dossier_id)
+        transaction[enlevement_obj.id] = enlevement_obj
     audit(cfg.log_dir, "enlevement_cree", dossier=enlevement.dossier_id, conteneur=enlevement.numero_conteneur)
     return enlevement_obj.model_dump()
 
@@ -120,7 +140,7 @@ def list_enlevements(
     enlevements = list(store.values())
     if dossier_id:
         enlevements = [e for e in enlevements if e.dossier_id == dossier_id]
-    return [e.model_dump() for e in enlevements]
+    return [e.model_dump() for e in _filtre_dossiers(request, enlevements)]
 
 
 @router.get("/{enlevement_id}")
@@ -133,6 +153,7 @@ def get_enlevement(
     enlevement = store.get(enlevement_id)
     if not enlevement:
         raise HTTPException(404, "Enlèvement introuvable")
+    _exige_objet_dossier(request, enlevement)
     return enlevement.model_dump()
 
 
@@ -144,14 +165,32 @@ def update_enlevement(
 ) -> dict:
     """Mettre à jour un enlèvement."""
     store = _get_terminal_store(request)
-    enlevement = store.get(enlevement_id)
-    if not enlevement:
-        raise HTTPException(404, "Enlèvement introuvable")
+    with store.transaction() as transaction:
+        enlevement = transaction.get(enlevement_id)
+        if not enlevement:
+            raise HTTPException(404, "Enlèvement introuvable")
+        _exige_objet_dossier(request, enlevement)
 
-    update_data = enlevement_update.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(enlevement, key, value)
+        update_data = enlevement_update.model_dump(exclude_unset=True)
+        if "statut" in update_data and update_data["statut"] != enlevement.statut:
+            _refuser(enlevement_id, "Utilisez les actions de workflow pour changer le statut")
+        if {"date_sortie", "justificatif_sortie"} & update_data.keys():
+            _refuser(enlevement_id, "La preuve et la date de sortie sont réservées aux actions de workflow")
+        if enlevement.statut in {"sortie_autorisee", "sortis"} and any(
+            cle != "observations" and valeur != getattr(enlevement, cle)
+            for cle, valeur in update_data.items()
+        ):
+            _refuser(enlevement_id, "Après autorisation, seules les observations peuvent être modifiées")
+        try:
+            enlevement = TerminalEnlevement.model_validate({**enlevement.model_dump(), **update_data})
+        except ValidationError as exc:
+            raise HTTPException(422, exc.errors(include_context=False)) from exc
+        if not all(v.strip() for v in [enlevement.dossier_id, enlevement.numero_bl, enlevement.numero_conteneur]):
+            raise HTTPException(422, "Dossier, B/L et conteneur sont obligatoires")
 
+        _exige_objet_dossier(request, enlevement)
+        exiger_dossier(cfg, enlevement.dossier_id)
+        transaction[enlevement_id] = enlevement
     audit(cfg.log_dir, "enlevement_modifie", cible=enlevement_id)
     return enlevement.model_dump()
 
@@ -165,6 +204,7 @@ def delete_enlevement(
     store = _get_terminal_store(request)
     if enlevement_id not in store:
         raise HTTPException(404, "Enlèvement introuvable")
+    _exige_objet_dossier(request, store[enlevement_id])
 
     del store[enlevement_id]
     audit(cfg.log_dir, "enlevement_supprime", cible=enlevement_id)
@@ -189,18 +229,28 @@ def planifier_enlevement(
 ) -> dict:
     """Planifier un enlèvement."""
     store = _get_terminal_store(request)
-    enlevement = store.get(enlevement_id)
-    if not enlevement:
-        raise HTTPException(404, "Enlèvement introuvable")
+    with store.transaction() as transaction:
+        enlevement = transaction.get(enlevement_id)
+        if not enlevement:
+            raise HTTPException(404, "Enlèvement introuvable")
+        _exige_objet_dossier(request, enlevement)
 
-    enlevement.date_planifiee = date_planifiee
-    enlevement.transporteur_id = transporteur_id
-    enlevement.camion_id = camion_id
-    enlevement.chauffeur_id = chauffeur_id
-    enlevement.immatriculation = immatriculation
-    enlevement.chauffeur_nom = chauffeur_nom
-    enlevement.chauffeur_permis = chauffeur_permis
-    enlevement.statut = "planifie"
+        if enlevement.statut not in {"demande", "planifie"}:
+            _refuser(enlevement_id, "Planification permise uniquement pour une demande ou un enlèvement planifié")
+        _date_iso(date_planifiee, "Date planifiée")
+        if not all(v.strip() for v in [transporteur_id, camion_id, chauffeur_id, immatriculation,
+                                      chauffeur_nom, chauffeur_permis]):
+            raise HTTPException(422, "Les informations de transport et du chauffeur sont obligatoires")
+        enlevement.date_planifiee = date_planifiee
+        enlevement.transporteur_id = transporteur_id
+        enlevement.camion_id = camion_id
+        enlevement.chauffeur_id = chauffeur_id
+        enlevement.immatriculation = immatriculation
+        enlevement.chauffeur_nom = chauffeur_nom
+        enlevement.chauffeur_permis = chauffeur_permis
+        enlevement.statut = "planifie"
+        exiger_dossier(cfg, enlevement.dossier_id)
+        transaction[enlevement_id] = enlevement
     audit(cfg.log_dir, "enlevement_planifie", conteneur=enlevement.numero_conteneur, date=date_planifiee)
     return enlevement.model_dump()
 
@@ -216,18 +266,26 @@ def autoriser_sortie(
 ) -> dict:
     """Autoriser la sortie du conteneur du terminal."""
     store = _get_terminal_store(request)
-    enlevement = store.get(enlevement_id)
-    if not enlevement:
-        raise HTTPException(404, "Enlèvement introuvable")
+    with store.transaction() as transaction:
+        enlevement = transaction.get(enlevement_id)
+        if not enlevement:
+            raise HTTPException(404, "Enlèvement introuvable")
+        _exige_objet_dossier(request, enlevement)
 
-    if not (mainlevee_obtenue and bad_obtenu and frais_portuaires_payes):
-        raise HTTPException(400, "Mainlevée, BAD et frais portuaires requis")
+        if enlevement.statut != "planifie":
+            _refuser(enlevement_id, "Seul un enlèvement planifié peut être autorisé à sortir")
+        if not (mainlevee_obtenue and bad_obtenu and frais_portuaires_payes):
+            _refuser(enlevement_id, "Mainlevée, BAD et frais portuaires requis", 400)
+        if not justificatif_sortie.strip():
+            raise HTTPException(422, "La référence du justificatif de sortie est obligatoire")
 
-    enlevement.mainlevee_obtenue = mainlevee_obtenue
-    enlevement.bad_obtenu = bad_obtenu
-    enlevement.frais_portuaires_payes = frais_portuaires_payes
-    enlevement.statut = "sortie_autorisee"
-    enlevement.justificatif_sortie = justificatif_sortie
+        enlevement.mainlevee_obtenue = mainlevee_obtenue
+        enlevement.bad_obtenu = bad_obtenu
+        enlevement.frais_portuaires_payes = frais_portuaires_payes
+        enlevement.statut = "sortie_autorisee"
+        enlevement.justificatif_sortie = justificatif_sortie
+        exiger_dossier(cfg, enlevement.dossier_id)
+        transaction[enlevement_id] = enlevement
     audit(cfg.log_dir, "sortie_autorisee", conteneur=enlevement.numero_conteneur)
     return enlevement.model_dump()
 
@@ -240,11 +298,21 @@ def enregistrer_sortie(
 ) -> dict:
     """Enregistrer la sortie effective du terminal."""
     store = _get_terminal_store(request)
-    enlevement = store.get(enlevement_id)
-    if not enlevement:
-        raise HTTPException(404, "Enlèvement introuvable")
+    with store.transaction() as transaction:
+        enlevement = transaction.get(enlevement_id)
+        if not enlevement:
+            raise HTTPException(404, "Enlèvement introuvable")
+        _exige_objet_dossier(request, enlevement)
 
-    enlevement.date_sortie = date_sortie
-    enlevement.statut = "sortis"
+        if enlevement.statut != "sortie_autorisee":
+            _refuser(enlevement_id, "La sortie exige une autorisation préalable")
+        if not (enlevement.mainlevee_obtenue and enlevement.bad_obtenu
+                and enlevement.frais_portuaires_payes and enlevement.justificatif_sortie.strip()):
+            _refuser(enlevement_id, "Autorisation incomplète : mainlevée, BAD, frais et justificatif requis")
+        _date_iso(date_sortie, "Date de sortie")
+        enlevement.date_sortie = date_sortie
+        enlevement.statut = "sortis"
+        exiger_dossier(cfg, enlevement.dossier_id)
+        transaction[enlevement_id] = enlevement
     audit(cfg.log_dir, "sortie_terminal", conteneur=enlevement.numero_conteneur, date=date_sortie)
     return enlevement.model_dump()

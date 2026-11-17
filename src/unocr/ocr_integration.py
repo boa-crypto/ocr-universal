@@ -9,14 +9,16 @@ from __future__ import annotations
 import json
 import time
 from pathlib import Path
-from typing import Any, Optional, Dict, List
+from typing import Any, Dict, List, Optional
 
-from .models import (
-    ExtractionOCR, ChampExtrait, TypeDocument, new_id,
-    DocumentResult, PageResult, FieldValue, FieldStatus, ValueOrigin
-)
-from .config import get_config
+from .config import Config, get_config
 from .logging_setup import audit, get_logger
+from .models import (
+    ChampExtrait,
+    ExtractionOCR,
+    FieldValue,
+    new_id,
+)
 
 log = get_logger("ocr_integration")
 
@@ -64,6 +66,10 @@ class ExtractionOCRStore:
         extraction = ExtractionOCR(id=new_id("ocr_"), **kwargs)
         self._ecrire(extraction)
         return extraction
+
+    def sauvegarder(self, extraction: ExtractionOCR) -> None:
+        """Porte publique d'écriture atomique, sans exposer `_ecrire` aux routes."""
+        self._ecrire(extraction)
 
     def get(self, extraction_id: str) -> Optional[ExtractionOCR]:
         return self._lire(extraction_id)
@@ -205,13 +211,15 @@ TYPES_DOCUMENTS_TRANSIT = {
 class OCRTransitIntegration:
     """Service principal d'intégration OCR vers dossiers transit."""
 
-    def __init__(self, data_dir: Path) -> None:
-        self.data_dir = data_dir
-        self.extraction_store = ExtractionOCRStore(data_dir / "extractions_ocr")
-        self.types_store = data_dir / "document_types"
+    def __init__(self, data_dir: Path, *, config: Optional[Config] = None) -> None:
+        self.data_dir = Path(data_dir)
+        self.cfg = config or get_config()
+        self.extraction_store = ExtractionOCRStore(self.data_dir / "extractions_ocr")
+        self.types_store = self.data_dir / "document_types"
         self.types_store.mkdir(parents=True, exist_ok=True)
 
-    def process_job_result(self, job_id: str, dossier_id: str, document_type: str) -> Optional[ExtractionOCR]:
+    def process_job_result(self, job_id: str, dossier_id: str, document_type: str,
+                           *, result_json: Optional[dict] = None) -> Optional[ExtractionOCR]:
         """
         Traite le résultat d'un job OCR et crée l'extraction structurée.
 
@@ -223,24 +231,17 @@ class OCRTransitIntegration:
         Returns:
             ExtractionOCR créée ou None si erreur
         """
-        from .storage import JobStore
         from .models import DocumentResult
+        from .storage import JobStore
 
-        job_store = JobStore(cfg)
-        result_json = job_store.load_result(job_id)
+        if result_json is None:
+            job_store = JobStore(self.cfg)
+            result_json = job_store.load_result(job_id)
         if not result_json:
             log.warning("Aucun résultat OCR pour job %s", job_id)
             return None
 
         result = DocumentResult.model_validate(result_json)
-
-        # Récupérer le type de document
-        type_info = TYPES_DOCUMENTS_TRANSIT.get(document_type, {
-            "nom": document_type,
-            "code": document_type,
-            "profil": "generic",
-            "champs_cles": []
-        })
 
         # Construire le texte complet
         texte_complet = "\n\n".join(
@@ -262,10 +263,10 @@ class OCRTransitIntegration:
             cree_le=time.strftime("%Y-%m-%d %H:%M:%S"),
         )
 
-        self.extraction_store._ecrire(extraction)
+        self.extraction_store.sauvegarder(extraction)
 
         # Audit
-        audit(cfg.log_dir, "ocr_extraction_creee",
+        audit(self.cfg.log_dir, "ocr_extraction_creee",
               job_id=job_id, dossier_id=dossier_id,
               type=document_type, champs=len(extraction.champs_extraits))
 
@@ -301,8 +302,8 @@ class OCRTransitIntegration:
 
         extraction.statut = "validated"
         extraction.modifie_le = time.strftime("%Y-%m-%d %H:%M:%S")
-        self.extraction_store._ecrire(extraction)
-        audit(cfg.log_dir, "ocr_extraction_validee", extraction_id=extraction_id, user=user)
+        self.extraction_store.sauvegarder(extraction)
+        audit(self.cfg.log_dir, "ocr_extraction_validee", extraction_id=extraction_id, user=user)
         return True
 
     def correct_field(self, extraction_id: str, champ_nom: str, nouvelle_valeur: str, user: str) -> bool:
@@ -318,10 +319,13 @@ class OCRTransitIntegration:
                 champ.origine = "corrected"
                 champ.statut = "corrected"
                 break
+        else:
+            # Aucune correction : ne pas dater, persister ou auditer un succès.
+            return False
 
         extraction.modifie_le = time.strftime("%Y-%m-%d %H:%M:%S")
-        self.extraction_store._ecrire(extraction)
-        audit(cfg.log_dir, "ocr_champ_corrige", extraction_id=extraction_id, champ=champ_nom, user=user)
+        self.extraction_store.sauvegarder(extraction)
+        audit(self.cfg.log_dir, "ocr_champ_corrige", extraction_id=extraction_id, champ=champ_nom, user=user)
         return True
 
     def get_document_types(self) -> List[Dict[str, Any]]:
@@ -338,11 +342,18 @@ class OCRTransitIntegration:
 _ocr_integration: Optional[OCRTransitIntegration] = None
 
 
-def get_ocr_integration() -> OCRTransitIntegration:
-    """Récupère l'instance globale d'intégration OCR."""
+def get_ocr_integration(config: Optional[Config] = None) -> OCRTransitIntegration:
+    """Intégration liée à la configuration fournie, ou globale par compatibilité.
+
+    Les routes passent la config de requête : un serveur de test ou un poste
+    reconfiguré ne doit pas réutiliser un magasin capturé à l'import.
+    """
     global _ocr_integration
+    if config is not None:
+        return OCRTransitIntegration(config.data_dir, config=config)
     if _ocr_integration is None:
-        _ocr_integration = OCRTransitIntegration(cfg.data_dir)
+        courant = get_config()
+        _ocr_integration = OCRTransitIntegration(courant.data_dir, config=courant)
     return _ocr_integration
 
 

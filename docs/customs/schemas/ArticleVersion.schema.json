@@ -1,0 +1,297 @@
+{
+  "$defs": {
+    "NiveauJuridique": {
+      "additionalProperties": false,
+      "properties": {
+        "niveau": {
+          "enum": [
+            "texte_legislatif",
+            "livre",
+            "titre",
+            "chapitre",
+            "section",
+            "sous_section",
+            "article",
+            "paragraphe",
+            "alinea",
+            "annexe"
+          ],
+          "title": "Niveau",
+          "type": "string"
+        },
+        "identifiant": {
+          "title": "Identifiant",
+          "type": "string"
+        },
+        "intitule": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Intitule"
+        }
+      },
+      "required": [
+        "niveau",
+        "identifiant"
+      ],
+      "title": "NiveauJuridique",
+      "type": "object"
+    },
+    "SourceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "localisateur": {
+          "description": "Page, article, feuille/cellules ou ligne source",
+          "minLength": 1,
+          "title": "Localisateur",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "localisateur"
+      ],
+      "title": "SourceRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "date_entree_vigueur": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Date Entree Vigueur"
+    },
+    "date_fin_validite": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Date Fin Validite"
+    },
+    "id": {
+      "minLength": 1,
+      "title": "Id",
+      "type": "string"
+    },
+    "numero_article": {
+      "minLength": 1,
+      "title": "Numero Article",
+      "type": "string"
+    },
+    "intitule": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Intitule"
+    },
+    "hierarchie": {
+      "items": {
+        "$ref": "#/$defs/NiveauJuridique"
+      },
+      "title": "Hierarchie",
+      "type": "array"
+    },
+    "nature_version": {
+      "enum": [
+        "originale",
+        "modificative",
+        "consolidee_provisoire"
+      ],
+      "title": "Nature Version",
+      "type": "string"
+    },
+    "texte_integral": {
+      "minLength": 1,
+      "title": "Texte Integral",
+      "type": "string"
+    },
+    "texte_francais": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Texte Francais"
+    },
+    "texte_arabe": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Texte Arabe"
+    },
+    "texte_origine": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Texte Origine"
+    },
+    "texte_modificatif": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Texte Modificatif"
+    },
+    "date_publication": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Date Publication"
+    },
+    "date_abrogation": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Date Abrogation"
+    },
+    "reference_jo": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reference Jo"
+    },
+    "numero_jo": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Numero Jo"
+    },
+    "reference": {
+      "$ref": "#/$defs/SourceRef"
+    },
+    "version_juridique": {
+      "minLength": 1,
+      "title": "Version Juridique",
+      "type": "string"
+    },
+    "statut_juridique_declare": {
+      "default": "a_verifier",
+      "enum": [
+        "applicable",
+        "modifie",
+        "abroge",
+        "suspendu",
+        "a_verifier"
+      ],
+      "title": "Statut Juridique Declare",
+      "type": "string"
+    },
+    "validation_juridique": {
+      "const": "non_validee",
+      "default": "non_validee",
+      "title": "Validation Juridique",
+      "type": "string"
+    },
+    "articles_lies": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Articles Lies",
+      "type": "array"
+    },
+    "historique_modifications": {
+      "items": {
+        "$ref": "#/$defs/SourceRef"
+      },
+      "title": "Historique Modifications",
+      "type": "array"
+    },
+    "notes_explicatives_non_officielles": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Notes Explicatives Non Officielles",
+      "type": "array"
+    }
+  },
+  "required": [
+    "id",
+    "numero_article",
+    "hierarchie",
+    "nature_version",
+    "texte_integral",
+    "reference",
+    "version_juridique"
+  ],
+  "title": "ArticleVersion",
+  "type": "object"
+}

@@ -59,8 +59,8 @@ def _importer(client, chemin: Path, nom: str) -> str:
 
 # ─────────────────────────── le parcours complet ───────────────────────────
 
-def test_parcours_complet_reference(client, fixtures_dir) -> None:
-    docs = creer_fixtures()
+def test_parcours_complet_reference(client, fixtures_dir, tmp_path) -> None:
+    docs = creer_fixtures(tmp_path / "documents-parcours")
 
     # 01 · réception — trois documents, chacun avec son identifiant
     ids = {}
@@ -177,7 +177,7 @@ def test_reprise_apres_panne_conserve_originaux_et_corrections(client, tmp_path)
     """
     from unocr import api
 
-    docs = creer_fixtures()
+    docs = creer_fixtures(tmp_path / "documents-parcours")
     job_id = _importer(client, docs["facture"], "facture.pdf")
     _attend_termine(client, job_id)
 

@@ -6,7 +6,7 @@
 // Base Input Component
 class FormInput extends HTMLElement {
   static get observedAttributes() {
-    return ['label', 'type', 'placeholder', 'value', 'name', 'required', 'disabled', 'error', 'help', 'icon'];
+    return ['label', 'type', 'placeholder', 'value', 'name', 'required', 'disabled', 'readonly', 'error', 'help', 'icon'];
   }
 
   constructor() {
@@ -16,16 +16,34 @@ class FormInput extends HTMLElement {
 
   connectedCallback() {
     this.render();
+    this.bindInput();
+  }
+
+  bindInput() {
     this.input = this.shadowRoot.querySelector('input, textarea, select');
     if (this.input) {
-      this.input.addEventListener('input', () => this.handleInput());
+      this.input.addEventListener(this.input.tagName === 'SELECT' ? 'change' : 'input', () => this.handleInput());
       this.input.addEventListener('blur', () => this.validate());
       this.input.addEventListener('focus', () => this.clearError());
     }
   }
 
-  attributeChangedCallback() {
-    if (this.input) this.render();
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (!this.input) return;
+    // Preserve the live control and caret while its own value is reflected.
+    if (name === 'value') { this.input.value = newValue || ''; return; }
+    if (name === 'error') {
+      this.input.classList.toggle('error', !!newValue);
+      this.input.setAttribute('aria-invalid', String(!!newValue));
+      let message = this.shadowRoot.querySelector('.form-error');
+      if (newValue) {
+        if (!message) { message = document.createElement('div'); message.className = 'form-error'; this.shadowRoot.querySelector('.form-group').append(message); }
+        message.textContent = newValue;
+      } else message?.remove();
+      return;
+    }
+    this.render();
+    this.bindInput();
   }
 
   handleInput() {
@@ -77,9 +95,9 @@ class FormInput extends HTMLElement {
 
   get name() { return this.getAttribute('name') || ''; }
   get value() { return this.getAttribute('value') || ''; }
-  set value(v) { this.setAttribute('value', v || ''); }
+  set value(v) { this.setAttribute('value', v == null ? '' : String(v)); }
   get required() { return this.hasAttribute('required'); }
-  get inputType() { return this.getAttribute('data-type') || 'text'; }
+  get inputType() { return this.getAttribute('data-type') || this.getAttribute('type') || 'text'; }
   get minLength() { return parseInt(this.getAttribute('minlength') || '0'); }
   get pattern() { return this.getAttribute('pattern') || ''; }
   get error() { return this.getAttribute('error') || null; }
@@ -97,34 +115,32 @@ class FormInput extends HTMLElement {
     const inputHtml = this.renderInput();
 
     this.shadowRoot.innerHTML = `
+      <link rel="stylesheet" href="/web/field-accessibility.css">
       <style>
         :host { display: block; margin-bottom: 1rem; font-family: var(--font-primary, system-ui); }
         .form-group { display: flex; flex-direction: column; gap: 0.375rem; }
-        .form-label { font-size: 0.875rem; font-weight: 500; color: var(--neutral-700, #374151); }
-        .form-label .required { color: var(--semantic-error, #ef4444); margin-left: 0.25rem; }
+        .form-label { font-size: 0.875rem; font-weight: 500; color: var(--field-text, #192c29); }
+        .form-label .required { color: var(--field-error, #a12f29); margin-left: 0.25rem; }
         .input-wrapper { position: relative; display: flex; align-items: center; }
-        .input-icon { position: absolute; left: 0.75rem; color: var(--neutral-400, #9ca3af); pointer-events: none; width: 1.25rem; height: 1.25rem; }
+        .input-icon { position: absolute; left: 0.75rem; color: var(--field-border, #718279); pointer-events: none; width: 1.25rem; height: 1.25rem; }
         .form-input {
           width: 100%;
           padding: 0.625rem 0.875rem;
           font-size: 0.875rem;
-          color: var(--neutral-800, #1f2937);
-          background: var(--surface-base, #fff);
-          border: 1px solid var(--neutral-300, #d1d5db);
+          color: var(--field-text, #192c29);
+          background: var(--field-bg, #fff);
+          border: 1px solid var(--field-border, #718279);
           border-radius: 0.375rem;
           transition: all 150ms ease-out;
         }
-        .form-input:focus { outline: none; border-color: var(--brand-secondary, #0891b2); box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1); }
-        .form-input:disabled { background: var(--neutral-100, #f3f4f6); color: var(--neutral-500, #6b7280); cursor: not-allowed; }
+        .form-input:focus { outline: none; border-color: var(--field-focus, #176b51); box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1); }
+        .form-input:disabled { background: var(--field-muted-bg, #edf2ed); color: var(--field-placeholder, #53655e); cursor: not-allowed; }
         .form-input.has-icon { padding-left: 2.5rem; }
-        .form-input.error { border-color: var(--semantic-error, #ef4444); }
+        .form-input.error { border-color: var(--field-error, #a12f29); }
         .form-input.error:focus { box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1); }
-        .form-error { display: flex; align-items: center; gap: 0.375rem; font-size: 0.75rem; color: var(--semantic-error, #ef4444); }
+        .form-error { display: flex; align-items: center; gap: 0.375rem; font-size: 0.75rem; color: var(--field-error, #a12f29); }
         .form-error::before { content: '✕'; font-weight: 700; font-size: 0.7rem; }
-        .form-help { font-size: 0.75rem; color: var(--neutral-500, #6b7280); }
-        [data-theme="dark"] .form-label { color: var(--neutral-300, #d1d5db); }
-        [data-theme="dark"] .form-input { color: var(--neutral-100, #f3f4f6); background: var(--neutral-800, #1f2937); border-color: var(--neutral-600, #4b5563); }
-        [data-theme="dark"] .form-input:disabled { background: var(--neutral-900, #111827); }
+        .form-help { font-size: 0.75rem; color: var(--field-placeholder, #53655e); }
         @media (pointer: coarse) { .form-input { min-height: 44px; } }
       </style>
       <div class="form-group">
@@ -143,42 +159,31 @@ class FormInput extends HTMLElement {
     const placeholder = this.getAttribute('placeholder') || '';
     const value = this.value;
     const disabled = this.hasAttribute('disabled');
+    const readonly = this.hasAttribute('readonly');
     const hasIcon = !!this.getAttribute('icon');
     const error = this.error;
 
     if (this.inputType === 'textarea') {
-      return `<textarea class="form-input ${hasIcon ? 'has-icon' : ''} ${error ? 'error' : ''}" placeholder="${placeholder}" ${disabled ? 'disabled' : ''} rows="${this.getAttribute('rows') || 4}">${value}</textarea>`;
+      return `<textarea class="form-input ${hasIcon ? 'has-icon' : ''} ${error ? 'error' : ''}" placeholder="${placeholder}" ${readonly ? 'readonly' : ''} ${disabled ? 'disabled' : ''} rows="${this.getAttribute('rows') || 4}">${value}</textarea>`;
     }
     if (this.inputType === 'select') {
       const options = this.innerHTML || '';
       return `<select class="form-input ${hasIcon ? 'has-icon' : ''} ${error ? 'error' : ''}" ${disabled ? 'disabled' : ''}>${options}</select>`;
     }
-    return `<input type="${this.inputType}" class="form-input ${hasIcon ? 'has-icon' : ''} ${error ? 'error' : ''}" placeholder="${placeholder}" value="${value}" ${disabled ? 'disabled' : ''} ${this.required ? 'required' : ''} ${this.minLength ? `minlength="${this.minLength}"` : ''} ${this.pattern ? `pattern="${this.pattern}"` : ''}>`;
+    return `<input type="${this.inputType}" class="form-input ${hasIcon ? 'has-icon' : ''} ${error ? 'error' : ''}" placeholder="${placeholder}" value="${value}" ${readonly ? 'readonly' : ''} ${disabled ? 'disabled' : ''} ${this.required ? 'required' : ''} ${this.minLength ? `minlength="${this.minLength}"` : ''} ${this.pattern ? `pattern="${this.pattern}"` : ''}>`;
   }
 }
 
 // Select Component
 class FormSelect extends FormInput {
-  constructor() {
-    super();
-    this.setAttribute('data-type', 'select');
-  }
+  get inputType() { return 'select'; }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this.shadowRoot.querySelector('select')?.addEventListener('change', (e) => {
-      this.value = e.target.value;
-      this.handleInput();
-    });
-  }
+
 }
 
 // Textarea Component
 class FormTextarea extends FormInput {
-  constructor() {
-    super();
-    this.setAttribute('data-type', 'textarea');
-  }
+  get inputType() { return 'textarea'; }
 }
 
 // Checkbox Component
@@ -219,34 +224,28 @@ class FormCheckbox extends HTMLElement {
     const error = this.getAttribute('error') || '';
 
     this.shadowRoot.innerHTML = `
+      <link rel="stylesheet" href="/web/field-accessibility.css">
       <style>
         :host { display: block; margin-bottom: 0.75rem; font-family: var(--font-primary, system-ui); }
         .checkbox-wrapper { display: inline-flex; align-items: flex-start; gap: 0.625rem; cursor: pointer; }
         .checkbox-input {
-          appearance: none;
+          appearance: auto;
+          accent-color: var(--field-focus, #176b51);
           width: 1.25rem;
           height: 1.25rem;
-          border: 2px solid var(--neutral-400, #9ca3af);
+          border: 2px solid var(--field-border, #718279);
           border-radius: 0.25rem;
-          background: var(--surface-base, #fff);
+          background: var(--field-bg, #fff);
           cursor: pointer;
           transition: all 150ms ease-out;
           flex-shrink: 0;
           margin-top: 0.125rem;
         }
-        .checkbox-input:checked {
-          background: var(--brand-secondary, #0891b2);
-          border-color: var(--brand-secondary, #0891b2);
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='white' d='M10 3L4.5 8.5 2 6'/%3E%3C/svg%3E");
-          background-repeat: no-repeat;
-          background-position: center;
-        }
-        .checkbox-input:focus-visible { outline: 2px solid var(--brand-secondary, #0891b2); outline-offset: 2px; }
-        .checkbox-label { font-size: 0.875rem; color: var(--neutral-700, #374151); line-height: 1.5; }
-        .checkbox-wrapper:has(.checkbox-input:disabled) .checkbox-label { color: var(--neutral-500, #6b7280); cursor: not-allowed; }
-        .checkbox-error { font-size: 0.75rem; color: var(--semantic-error, #ef4444); margin-top: 0.25rem; margin-left: 1.875rem; }
-        [data-theme="dark"] .checkbox-label { color: var(--neutral-300, #d1d5db); }
-        [data-theme="dark"] .checkbox-input { background: var(--neutral-800, #1f2937); border-color: var(--neutral-600, #4b5563); }
+        .checkbox-input:checked { accent-color: var(--field-focus, #176b51); }
+        .checkbox-input:focus-visible { outline: 2px solid var(--field-focus, #176b51); outline-offset: 2px; }
+        .checkbox-label { font-size: 0.875rem; color: var(--field-text, #192c29); line-height: 1.5; }
+        .checkbox-wrapper:has(.checkbox-input:disabled) .checkbox-label { color: var(--field-placeholder, #53655e); cursor: not-allowed; }
+        .checkbox-error { font-size: 0.75rem; color: var(--field-error, #a12f29); margin-top: 0.25rem; margin-left: 1.875rem; }
       </style>
       <div class="checkbox-wrapper">
         <input type="checkbox" class="checkbox-input" name="${this.name}" ${this.checked ? 'checked' : ''} ${this.required ? 'required' : ''} ${this.hasAttribute('disabled') ? 'disabled' : ''}>
@@ -306,6 +305,7 @@ class FormRadioGroup extends HTMLElement {
     const orientation = this.getAttribute('orientation') || 'vertical';
 
     this.shadowRoot.innerHTML = `
+      <link rel="stylesheet" href="/web/field-accessibility.css">
       <style>
         :host { display: block; margin-bottom: 1rem; font-family: var(--font-primary, system-ui); }
         .radio-group { display: flex; flex-direction: ${orientation === 'horizontal' ? 'row' : 'column'}; gap: ${orientation === 'horizontal' ? '1.5rem' : '0.625rem'}; }
@@ -314,23 +314,21 @@ class FormRadioGroup extends HTMLElement {
           appearance: none;
           width: 1.25rem;
           height: 1.25rem;
-          border: 2px solid var(--neutral-400, #9ca3af);
+          border: 2px solid var(--field-border, #718279);
           border-radius: 50%;
-          background: var(--surface-base, #fff);
+          background: var(--field-bg, #fff);
           cursor: pointer;
           transition: all 150ms ease-out;
           flex-shrink: 0;
         }
         .radio-input:checked {
-          border-color: var(--brand-secondary, #0891b2);
-          background: radial-gradient(circle, var(--brand-secondary, #0891b2) 40%, transparent 40%);
+          border-color: var(--field-focus, #176b51);
+          background: radial-gradient(circle, var(--field-focus, #176b51) 40%, transparent 40%);
         }
-        .radio-input:focus-visible { outline: 2px solid var(--brand-secondary, #0891b2); outline-offset: 2px; }
-        .radio-input:disabled { cursor: not-allowed; opacity: 0.5; }
-        .radio-label { font-size: 0.875rem; color: var(--neutral-700, #374151); }
-        .radio-error { font-size: 0.75rem; color: var(--semantic-error, #ef4444); margin-top: 0.5rem; }
-        [data-theme="dark"] .radio-label { color: var(--neutral-300, #d1d5db); }
-        [data-theme="dark"] .radio-input { background: var(--neutral-800, #1f2937); border-color: var(--neutral-600, #4b5563); }
+        .radio-input:focus-visible { outline: 2px solid var(--field-focus, #176b51); outline-offset: 2px; }
+        .radio-input:disabled { cursor: not-allowed; opacity: 1; }
+        .radio-label { font-size: 0.875rem; color: var(--field-text, #192c29); }
+        .radio-error { font-size: 0.75rem; color: var(--field-error, #a12f29); margin-top: 0.5rem; }
       </style>
       <fieldset class="form-group">
         ${label ? `<legend class="form-label">${label}${this.required ? '<span class="required">*</span>' : ''}</legend>` : ''}
@@ -437,6 +435,7 @@ class FormContainer extends HTMLElement {
 
   render() {
     this.shadowRoot.innerHTML = `
+      <link rel="stylesheet" href="/web/field-accessibility.css">
       <style>
         :host { display: block; font-family: var(--font-primary, system-ui); }
         form { display: flex; flex-direction: column; gap: 1rem; }

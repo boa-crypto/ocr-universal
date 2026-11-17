@@ -83,15 +83,17 @@ class TestPreprocessOptions:
         assert res.pages[0].text  # tourne au moins
 
     def test_variant_comparison_off(self):
+        # Moteur unique forcé : le nombre de passages ne mesure que les variantes,
+        # pas le nombre de moteurs disponibles dans l'environnement.
         res = run("tests/fixtures/skewed.png", variant_comparison=False,
-                  quality_mode="accurate")
+                  quality_mode="accurate", engine="tesseract")
         p = res.pages[0]
         # une seule variante traitée → un seul passage moteur
         assert len(p.engine_runs) == 1, p.engine_runs
 
     def test_variant_comparison_on(self):
         res = run("tests/fixtures/skewed.png", variant_comparison=True,
-                  quality_mode="accurate")
+                  quality_mode="accurate", engine="tesseract")
         p = res.pages[0]
         # deux variantes (prétraitée + originale) → deux passages minimum
         assert len(p.engine_runs) >= 2, p.engine_runs

@@ -1,0 +1,169 @@
+{
+  "type_rapport": "recette_lot91_technique_non_validation_reglementaire",
+  "date_mesures_environnement": "2026-11-08",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "revision_code": "b175aeb22254b6a445aef2ccb5e4941fb1377426",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_originaux_officiels": 0,
+  "articles_codes_officiellement_valides": 0,
+  "nouveaux_tests_python": 26,
+  "selection_lot_json_exports_attribution_revision_cloisonnement": {
+    "tests": 868,
+    "reussis": 868,
+    "echecs": 0,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 24.98,
+    "duree_junit_secondes": 23.639,
+    "horodatage_junit": "2026-11-08T08:49:37.456017+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 868,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "contre_epreuve_batch90": {
+    "tests": 26,
+    "reussis": 12,
+    "echecs": 14,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 5.65,
+    "duree_junit_secondes": 3.624,
+    "horodatage_junit": "2026-11-08T08:50:17.879886+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 26,
+      "failures": 14,
+      "errors": 0,
+      "skipped": 0
+    },
+    "code_sortie": 1,
+    "revision_chargee": "914568f33431ddcb653c2ba4abebc713ead456fc",
+    "corps_export_batch_reinjecte_memoire_sans_decorateurs": true,
+    "sources_checkout_non_remplacees": true,
+    "apercu_non_modifie": true,
+    "entrelacement_http_meme_seconde_echec_contenu_avant_entetes_verifie": true
+  },
+  "recette_documentaire_ciblee": {
+    "tests": 2160,
+    "reussis": 2160,
+    "echecs": 0,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 56.91,
+    "duree_junit_secondes": 56.876,
+    "horodatage_junit": "2026-11-08T08:50:13.160761+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 2160,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "fichiers": 66,
+    "jsdom_existants": 212
+  },
+  "suite_complete": {
+    "tests": 4259,
+    "reussis": 4256,
+    "echecs": 2,
+    "erreurs": 0,
+    "ignores": 1,
+    "avertissements": 1,
+    "duree_console_secondes": 365.76,
+    "duree_junit_secondes": 365.668,
+    "horodatage_junit": "2026-11-08T08:50:13.109475+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 4259,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 1
+    },
+    "identifiants_echecs": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ],
+    "ignores_detail": [
+      "tests.test_indra_ocr::test_indra_engine_recognize"
+    ],
+    "code_sortie": 1,
+    "identiques_lot90": true
+  },
+  "politique": {
+    "route": "GET /api/batches/export/json",
+    "response_json_memoire_avant_audit": true,
+    "pas_chemin_fichier_json": true,
+    "anciens_fichiers_non_modifies": true,
+    "media_type": "application/json",
+    "filename_fixe": "lot.json",
+    "cache_control": "no-store",
+    "sans_etag_last_modified_fichier": true,
+    "resultats_bruts_ordre_doublons_conserves": true,
+    "limite_entrees": 200,
+    "entrelacement_deux_lots_patch_http_cliches_independants": true,
+    "sequence_lectures_par_document_pas_transaction_lot": true,
+    "autres_formats_groupes_fichiers_partages_inchanges": true,
+    "limites_octets_memoire_charge_non_qualifiees": true
+  },
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "referentiels": {
+      "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+      "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d",
+      "conforme": false
+    },
+    "ecart_identique_lot90": true,
+    "restauration_effectuee": false,
+    "donnees_journaux_exploratoires_preserves_hors_commit": true
+  },
+  "ci": {
+    "run": 42464600616,
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42464600616",
+    "statut": "success",
+    "revision": "b175aeb22254b6a445aef2ccb5e4941fb1377426",
+    "portee": "849 lotJSON/sélectionJSON/exportJSON/horodatage/audit/attribution/demo/action/statuts/annulation/champs/révision/classification/valeurs/cloisonnement/RBAC + 243 qualité/Baidu + 24 ingestion/PDF + 10 UI + documentaire ; sélections se recouvrant",
+    "ocr_complet_execute_en_ci": false,
+    "junit_distant_telecharge": false
+  },
+  "apercu": {
+    "processus": "interface-uniocr-4f62d340",
+    "backend_lot": 76,
+    "code77_91_charge": false,
+    "redemarrage_impose": false,
+    "motif": "Préserver les traitements en cours",
+    "port": 8000,
+    "rbac_json_absent": true
+  },
+  "artefacts_locaux": "/home/user/recettes-unocr/lot91",
+  "limites": [
+    "JSON groupé seulement, autres formats groupés toujours fichiers partagés",
+    "Séquence par document pas snapshot atomique lot ou état final garanti",
+    "Résultats bruts pas validation structurelle universelle ni redaction",
+    "Nom/media changés explicitement vers lot.json/application/json",
+    "Limite200 pas borne octets/mémoire/CPU, pas streaming/charge qualifiés",
+    "JSONResponse nombres non finis plus stricts que ancien json.dumps permissif",
+    "no-store pas purge caches clients/offline/proxies existants",
+    "Audit après préparation pas preuve livraison, pas nouvel acteur authentifié",
+    "Révision processus/ABA, droits et autres écrivains inchangés",
+    "Aperçu76 maintenu, code77–91 non chargé",
+    "Deux échecs Indra persistants, intégrité26/27",
+    "Aucun nouvel original officiel ou validation réglementaire"
+  ]
+}

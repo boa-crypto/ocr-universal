@@ -1,0 +1,55 @@
+{
+  "$defs": {
+    "SourceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "localisateur": {
+          "description": "Page, article, feuille/cellules ou ligne source",
+          "minLength": 1,
+          "title": "Localisateur",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "localisateur"
+      ],
+      "title": "SourceRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "code": {
+      "pattern": "^[0-9]{7,9}$",
+      "title": "Code",
+      "type": "string"
+    },
+    "code_parent": {
+      "pattern": "^[0-9]{6,8}$",
+      "title": "Code Parent",
+      "type": "string"
+    },
+    "designation": {
+      "minLength": 1,
+      "title": "Designation",
+      "type": "string"
+    },
+    "reference": {
+      "$ref": "#/$defs/SourceRef"
+    }
+  },
+  "required": [
+    "code",
+    "code_parent",
+    "designation",
+    "reference"
+  ],
+  "title": "SubdivisionNationale",
+  "type": "object"
+}

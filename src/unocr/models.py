@@ -8,10 +8,18 @@ from __future__ import annotations
 import time
 import uuid
 from enum import Enum
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 from fastapi import Body
-from pydantic import BaseModel, Field
+from pydantic import (
+    AliasChoices,
+    BaseModel,
+    ConfigDict,
+    Field,
+    field_validator,
+    model_serializer,
+    model_validator,
+)
 
 
 def new_id(prefix: str = "") -> str:
@@ -365,6 +373,7 @@ class FieldStatus(str, Enum):
     AMBIGUOUS = "ambiguous"
     INVALID = "invalid"
     VALIDATED = "validated"
+    CORRECTED = "corrected"
 
 
 class ValueOrigin(str, Enum):
@@ -396,12 +405,10 @@ class FieldValue(BaseModel):
     @property
     def value(self) -> Optional[str]:
         """Valeur finale : confirmée > corrigée > normalisée > brute."""
-        return (
-            self.confirmed_value
-            or self.corrected_value
-            or self.normalized_value
-            or self.raw_value
-        )
+        return next((value for value in (
+            self.confirmed_value, self.corrected_value,
+            self.normalized_value, self.raw_value,
+        ) if value is not None), None)
 
 
 # ---------------------------------------------------------------- qualité
@@ -424,6 +431,24 @@ class PreprocessOp(BaseModel):
     reason: str = ""
 
 
+class ConfidenceProvenance(BaseModel):
+    """Compteurs de scores Baidu déclarés/absents/invalides, pas calibration."""
+    model_config = ConfigDict(extra="forbid", strict=True)
+
+    policy: Literal["provider_average_else_zero"]
+    calibrated: Literal[False]
+    reported: int = Field(ge=0, le=10_000)
+    missing: int = Field(ge=0, le=10_000)
+    invalid: int = Field(ge=0, le=10_000)
+
+    @field_validator("calibrated", mode="before")
+    @classmethod
+    def calibrated_must_be_false(cls, value):
+        if value is not False:
+            raise ValueError("provenance non calibrée requise")
+        return value
+
+
 class EngineRun(BaseModel):
     engine: str
     page_num: int
@@ -433,6 +458,27 @@ class EngineRun(BaseModel):
     duration_ms: float = 0.0
     ok: bool = True
     error: Optional[str] = None
+    confidence_provenance: Optional[ConfidenceProvenance] = None
+
+    @model_validator(mode="after")
+    def check_confidence_provenance(self):
+        provenance = self.confidence_provenance
+        if provenance is not None:
+            total = provenance.reported + provenance.missing + provenance.invalid
+            if (self.engine != "baidu" or not self.ok or total != self.word_count
+                    or total > 10_000):
+                raise ValueError("provenance incompatible avec le run")
+            ceiling = provenance.reported / total if total else 0.0
+            if not 0 <= self.mean_confidence <= ceiling:
+                raise ValueError("moyenne incompatible avec les compteurs")
+        return self
+
+    @model_serializer(mode="wrap")
+    def serialize_without_absent_provenance(self, handler):
+        data = handler(self)
+        if self.confidence_provenance is None:
+            data.pop("confidence_provenance", None)
+        return data
 
 
 class Anomaly(BaseModel):
@@ -525,7 +571,7 @@ class Expeditions(BaseModel):
     arrivee_effective: Optional[str] = None
     numero_bl: str = ""
     type_bl: str = ""
-    date_émission: Optional[str] = None
+    date_emission: Optional[str] = Field(default=None, validation_alias=AliasChoices("date_emission", "date_émission"))
     nom_gestionnaire: str = ""
     priorite: str = "normale"
     observations: str = ""
@@ -816,7 +862,7 @@ class ExtractionOCR(BaseModel):
     classification: Optional[dict[str, Any]] = None
     confiance_globale: float = 0.0
     statut: str = "extracted"  # extracted, validated, corrected
-    cree_le: str = Field(default_factory=time.strftime("%Y-%m-%d %H:%M:%S"))
+    cree_le: str = Field(default_factory=lambda: time.strftime("%Y-%m-%d %H:%M:%S"))
     modifie_le: Optional[str] = None
 
 
@@ -835,7 +881,7 @@ class ChampExtrait(BaseModel):
     bbox: Optional[BBox] = None
     statut: str = "detected"  # detected, validated, corrected, rejected
     anomalies: list[str] = Field(default_factory=list)
-    cree_le: str = Field(default_factory=time.strftime("%Y-%m-%d %H:%M:%S"))
+    cree_le: str = Field(default_factory=lambda: time.strftime("%Y-%m-%d %H:%M:%S"))
 
 
 class AnomalieDocumentaire(BaseModel):
@@ -1017,10 +1063,10 @@ class DeclarationDouaniere(BaseModel):
     dossier_id: str = ""
     numero_declaration: str = ""
     bureau_douane: str = ""
-    date_depôt: Optional[str] = None
+    date_depot: Optional[str] = Field(default=None, validation_alias=AliasChoices("date_depot", "date_depôt"))
     date_validation: Optional[str] = None
     statut: str = "en_preparation"  # en_preparation, prete, validée, déposée, en_controle, en_visite, en_regularisation, liquidée, payée, mainlevee
-    agent_declarat: str = ""
+    agent_declarant: str = Field(default="", validation_alias=AliasChoices("agent_declarant", "agent_declarat"))
     regime_douanier: str = ""
     origines: list[str] = Field(default_factory=list)
     provenances: list[str] = Field(default_factory=list)
@@ -1126,7 +1172,10 @@ class Facture(BaseModel):
     statut_paiement: str = "en_attente"  # en_attente, envoyee, payee, annulee, en_retard, remboursee
     client_id: str = ""
     fournisseur_id: str = ""
-    documents_joint: list[str] = Field(default_factory=list)
+    documents_joints: list[str] = Field(default_factory=list,
+        validation_alias=AliasChoices("documents_joints", "documents_joint"))
+    rapprochee: bool = False
+    operation_bancaire_id: Optional[str] = None
     justificatifs: list[str] = Field(default_factory=list)  # IDs des justificatifs
     notes: str = ""
     date_envoi: Optional[str] = None

@@ -1,8 +1,9 @@
-# UniOCR - dépendances (pip freeze complet dans requirements.lock.txt)
+# UniOCR - dépendances applicatives minimales
+# Verrous reproductibles : requirements.lock.txt (runtime) et requirements-dev.lock.txt (CI/dev).
 pydantic>=2,<3
 pillow>=10
 numpy>=1.26
-opencv-python>=4.8
+opencv-python-headless>=4.8
 pytesseract>=0.3.10
 pypdfium2>=4
 pdfminer.six>=20231228

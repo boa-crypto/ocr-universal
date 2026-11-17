@@ -1,0 +1,48 @@
+# Environnements virtuels et caches Python (jamais versionnés)
+.venv/
+.venv-*/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Artefact généré par tests/ui_stub_check.js
+tests/_hub_render.js
+
+# Réglages écrits depuis l'interface (état local, pas une source)
+data/parametres.json
+
+# Dépendances de vérification navigateur (jsdom), jamais versionnées
+node_modules/
+
+# Stockage métier local (données utilisateur, pas une fixture)
+data/metier.sqlite3*
+
+# Fichiers justificatifs locaux
+data/justificatifs/
+
+# Dossiers de proposition douanière locaux et journal transactionnel
+data/customs-quarantine/dossiers_metier.sqlite3*
+
+# PDF juridiques reçus et registres locaux (provenance privée, hors Git)
+/data/customs-quarantine/
+/data/legal-receipts/
+
+# Secrets locaux : ne jamais versionner une clé, même « de test » ou retired.
+/data/keys/
+.agentic-qe/witness-keys/
+
+# Journaux, métadonnées d'installation et caches d'outillage locaux.
+*.log
+/logs/*.log.*
+*.egg-info/
+.agentic-qe/
+.claude/settings.local.json
+tmp_packages/
+
+# Scripts de vérification ponctuels historiques, conservés localement mais pas source.
+/verify_*.py
+/verify_result.txt
+/write_import.py
+/test_i18n_check.py

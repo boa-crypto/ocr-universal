@@ -1,0 +1,83 @@
+{
+  "type_rapport": "recette_lot59_api_pistes_non_validation_reglementaire",
+  "date": "2026-11-07",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "revision_code_testee": "8b521b9e",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_tests": 45,
+  "recette_selectionnee": {
+    "fichiers": 66,
+    "reussis": 2124,
+    "echecs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_secondes": 53.84
+  },
+  "lanceur": {
+    "code_sortie": 0,
+    "junit": {
+      "lisible": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 2124,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "etapes": [
+      {
+        "nom": "ruff",
+        "code_sortie": 0
+      },
+      {
+        "nom": "pytest",
+        "code_sortie": 0
+      },
+      {
+        "nom": "interface",
+        "code_sortie": 0
+      }
+    ]
+  },
+  "interface": {
+    "scenarios_jsdom_reussis": 186,
+    "nouveaux_scenarios_jsdom": 0,
+    "parcours_api_reelle_existants": 4,
+    "exports_ui_api_rejoues_identiques": 70,
+    "rejeux_simples": 58,
+    "rejeux_paires": 12,
+    "rejeux_pdf_sur_opt_in": 14,
+    "copies_pdf_code_controlees": 4,
+    "rapports_api_pistes_supplementaires_controles_et_rejoues": 5,
+    "nouveau_parcours_ui_pistes": false
+  },
+  "integrite": {
+    "empreintes_conformes_a_recette56": 27,
+    "restauration_effectuee": false
+  },
+  "suite_complete_executee_pour_lot59": false,
+  "derniere_suite_complete": "RECETTE_LOT58.json",
+  "echecs_ocr_derniere_complete_non_resolus": 18,
+  "artefacts_locaux": "/home/user/recettes-unocr/lot59",
+  "github_actions": {
+    "reussite_distante_lot59_attestee": true,
+    "run_id": 42391189119,
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42391189119",
+    "conclusion": "success",
+    "statut": "completed",
+    "revision_code": "8b521b9e",
+    "duree_job_secondes": 88,
+    "code_gh_watch": 0,
+    "node": "24",
+    "python": "3.11",
+    "runner": "ubuntu-24.04",
+    "junit_distant_relu_localement": false
+  },
+  "limites": [
+    "API privée en quarantaine, pas référentiel publié",
+    "Pistes littérales, pas IA ou classement validé",
+    "Export compatible construit par client, pas preuve d’émission ou audit serveur",
+    "Rejeu local sans origine officielle ou authenticité des références attestées",
+    "Pas nouvelle UI, cache, sélection automatique ou publication"
+  ]
+}

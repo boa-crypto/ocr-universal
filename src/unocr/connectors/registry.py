@@ -105,8 +105,9 @@ class ConnectorRegistry:
 def default_registry() -> ConnectorRegistry:
     """Registre préchargé avec les adaptateurs livrés.
 
-    Seul le connecteur simulé est fourni : aucun adaptateur vers une
-    administration réelle n'est écrit sans documentation et accès autorisés.
+    Catalogue : démo simulée, export assisté et adaptateur douanier explicite.
+    La présence de la classe douanière ne configure ni n’autorise une connexion ;
+    aucune instance n’est opérationnelle sans son parcours de contrôle.
     """
     reg = ConnectorRegistry()
     from .assisted_export import AssistedExportConnector

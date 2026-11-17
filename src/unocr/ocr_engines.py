@@ -330,6 +330,12 @@ class BaiduOCREngine(OCREngine):
         if not api_key or not secret_key:
             self.unavailable_reason = "Clés API Baidu manquantes (BAIDU_API_KEY / BAIDU_SECRET_KEY)"
             return False
+        try:
+            import requests  # noqa: F401
+        except ImportError:
+            self.unavailable_reason = "Transport Baidu absent (installer unocr[baidu])"
+            return False
+        self.unavailable_reason = ""
         return True
 
     def supported_languages(self) -> list[str]:
@@ -340,69 +346,89 @@ class BaiduOCREngine(OCREngine):
         if not self.is_available():
             return EngineOutput(engine=self.name, text="", ok=False, error=self.unavailable_reason)
 
-        import os
-        import requests
         import base64
         import io
+        import os
+
+        from .baidu_http import MAX_TOKEN_CHARS, MAX_WORDS, OCR_URL, TOKEN_URL, post_json
+        from .baidu_response import InvalidLocation, bbox_from_location, confidence_from_item
 
         api_key = os.environ.get("BAIDU_OCR_API_KEY") or os.environ.get("BAIDU_API_KEY")
         secret_key = os.environ.get("BAIDU_OCR_SECRET_KEY") or os.environ.get("BAIDU_SECRET_KEY")
 
         t0 = time.perf_counter()
+        stage = "authentification"
         try:
-            token_url = f"https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id={api_key}&client_secret={secret_key}"
-            resp = requests.post(token_url, timeout=10)
-            token_data = resp.json()
+            # Le fournisseur utilise des paramètres query : encodage structuré,
+            # pas interpolation. Ces URL ne doivent jamais devenir un diagnostic.
+            token_data = post_json(TOKEN_URL, params={
+                "grant_type": "client_credentials", "client_id": api_key,
+                "client_secret": secret_key,
+            }, read_timeout=10)
             access_token = token_data.get("access_token")
-            if not access_token:
-                return EngineOutput(engine=self.name, text="", ok=False, error=f"Baidu auth failed: {token_data}")
+            if ("error" in token_data or "error_code" in token_data
+                    or not isinstance(access_token, str) or not access_token
+                    or len(access_token) > MAX_TOKEN_CHARS
+                    or any(ord(ch) < 33 or ord(ch) > 126 for ch in access_token)):
+                return EngineOutput(engine=self.name, text="", ok=False,
+                                    error="Baidu : authentification refusée ou réponse invalide")
 
+            stage = "préparation image"
             buffered = io.BytesIO()
-            image.save(buffered, format="JPEG")
-            img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+            image.convert("RGB").save(buffered, format="JPEG")
+            img_str = base64.b64encode(buffered.getvalue()).decode("ascii")
 
-            ocr_url = f"https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token={access_token}"
-            headers = {'content-type': 'application/x-www-form-urlencoded'}
-            data = {'image': img_str}
-
-            response = requests.post(ocr_url, data=data, headers=headers, timeout=15)
-            result = response.json()
-
-            if "error_code" in result:
-                return EngineOutput(engine=self.name, text="", ok=False, error=result.get("error_msg", "Baidu API error"))
+            stage = "reconnaissance"
+            result = post_json(OCR_URL, params={"access_token": access_token},
+                               data={"image": img_str}, read_timeout=15)
+            if "error_code" in result or "error" in result:
+                return EngineOutput(engine=self.name, text="", ok=False,
+                                    error="Baidu : reconnaissance refusée")
+            words_result = result.get("words_result")
+            if not isinstance(words_result, list) or len(words_result) > MAX_WORDS:
+                return EngineOutput(engine=self.name, text="", ok=False,
+                                    error="Baidu : réponse de reconnaissance invalide")
 
             words: list[Word] = []
-            words_result = result.get("words_result", [])
+            score_counts = {"reported": 0, "missing": 0, "invalid": 0}
             for item in words_result:
-                txt = item.get("words", "")
-                loc = item.get("location")
-                if loc:
-                    x0 = float(loc.get("left", 0))
-                    y0 = float(loc.get("top", 0))
-                    w = float(loc.get("width", 0))
-                    h = float(loc.get("height", 0))
-                    bbox = BBox(x0=x0, y0=y0, x1=x0+w, y1=y0+h)
+                if not isinstance(item, dict) or not isinstance(item.get("words"), str):
+                    return EngineOutput(engine=self.name, text="", ok=False,
+                                        error="Baidu : réponse de reconnaissance invalide")
+                txt = item["words"]
+                if "location" in item:
+                    try:
+                        bbox = bbox_from_location(item["location"], image.width, image.height)
+                    except InvalidLocation:
+                        return EngineOutput(engine=self.name, text="", ok=False,
+                                            error="Baidu : localisation invalide")
                 else:
                     bbox = BBox(x0=0, y0=0, x1=float(image.width), y1=float(image.height))
 
+                confidence, score_source = confidence_from_item(item)
+                score_counts[score_source] += 1
                 words.append(Word(
                     text=txt,
                     bbox=bbox,
-                    confidence=0.95,
+                    confidence=confidence,
                     engine=self.name,
                     page_num=page_num
                 ))
 
             text = "\n".join(w.text for w in words)
-            mean = 0.95 if words else 0.0
+            mean = sum(w.confidence for w in words) / len(words) if words else 0.0
 
             return EngineOutput(
                 engine=self.name, text=text, words=words,
                 mean_confidence=mean, languages=languages or [],
-                duration_ms=(time.perf_counter() - t0) * 1000
+                duration_ms=(time.perf_counter() - t0) * 1000,
+                raw={"confidence": {"policy": "provider_average_else_zero",
+                                    "calibrated": False, **score_counts}},
             )
-        except Exception as exc:
-            return EngineOutput(engine=self.name, text="", ok=False, error=str(exc))
+        except Exception:
+            # URL, identifiants, jeton, corps distant et exception ne sortent pas.
+            return EngineOutput(engine=self.name, text="", ok=False,
+                                error=f"Baidu : échec {stage}")
 
 
 # ---------------------------------------------------------------- registre

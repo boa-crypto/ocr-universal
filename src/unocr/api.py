@@ -24,7 +24,7 @@ from fastapi import (
     Request,
     UploadFile,
 )
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -32,8 +32,7 @@ from .calibration import Calibration
 from .config import get_config
 from .crypto_store import SALT_LEN, CryptoStore
 from .exporters import export_all, export_xlsx
-from .fournisseur import FournisseurStore
-from .logging_setup import audit, get_logger, setup_logging
+from .logging_setup import audit, audit_obligatoire, get_logger, setup_logging
 from .models import FieldStatus, JobOptions, JobStatus, ValueOrigin
 from .observabilite import HEADER_CORRELATION, CompteurDebit, nouvel_identifiant
 from .ocr_engines import EngineRegistry
@@ -55,25 +54,30 @@ from .rbac import (
     Utilisateur,
 )
 from .resources import snapshot
-from .routes.profiles import router as profiles_router
-from .routes.system import router as system_router
-from .routes.watch import router as watch_router
 from .routes.clients import router as clients_router
-from .routes.fournisseurs import router as fournisseurs_router
-from .routes.navires import router as navires_router
-from .routes.conteneurs import router as conteneurs_router
-from .routes.expeditions import router as expeditions_router
 from .routes.connaissements import router as connaissements_router
-from .routes.declarations import router as declarations_router
-from .routes.frais import router as frais_router
-from .routes.terminal import router as terminal_router
-from .routes.dashboard import router as dashboard_router
-from .routes.transport import router as transport_router
-from .routes.rbac_roles import router as rbac_roles_router
-from .routes.documents_ocr import router as documents_ocr_router
+from .routes.conteneurs import router as conteneurs_router
 from .routes.controle_doc import router as controle_doc_router
+from .routes.customs_review import creer_router_revue
+from .routes.dashboard import router as dashboard_router
+from .routes.declarations import router as declarations_router
+from .routes.documents_ocr import router as documents_ocr_router
+from .routes.expeditions import router as expeditions_router
+from .routes.fournisseurs import router as fournisseurs_router
+from .routes.frais import router as frais_router
+from .routes.historique import router as historique_router
+from .routes.navires import router as navires_router
+from .routes.parametres import router as parametres_router
+from .routes.profiles import router as profiles_router
+from .routes.rbac_roles import router as rbac_roles_router
+from .routes.referentiels import router as referentiels_router
 from .routes.reglementation import router as reglementation_router
+from .routes.statistiques import router as statistiques_router
+from .routes.system import router as system_router
+from .routes.terminal import router as terminal_router
 from .routes.transit import router as transit_router
+from .routes.transport import router as transport_router
+from .routes.watch import router as watch_router
 from .routes.workflow import router as workflow_router
 from .security import sanitize_for_csv
 from .services.jobs import jobs_semaphore
@@ -127,10 +131,14 @@ app.include_router(frais_router)
 app.include_router(terminal_router)
 app.include_router(transport_router)
 app.include_router(rbac_roles_router)
+app.include_router(parametres_router)
+app.include_router(historique_router)
+app.include_router(statistiques_router)
 app.include_router(documents_ocr_router)
 app.include_router(controle_doc_router)
 app.include_router(dashboard_router)
 app.include_router(reglementation_router)
+app.include_router(referentiels_router)
 app.mount("/web", StaticFiles(directory=str(cfg.web_dir)), name="static")
 
 
@@ -364,6 +372,25 @@ def _utilisateur_courant(request) -> Optional[Utilisateur]:
     return getattr(request.state, "utilisateur", None)
 
 
+def _autorise_revue_douaniere(request: Request) -> Utilisateur:
+    """Frontière stricte, même quand les routes legacy sont en mode ouvert."""
+    utilisateur = _utilisateur_courant(request)
+    if (not _rbac.actif or utilisateur is None or utilisateur.environnement
+            or ADMINISTRATEUR not in utilisateur.roles):
+        audit(cfg.log_dir, "revue_douaniere_acces_refuse", methode=request.method,
+              acteur=utilisateur.nom if utilisateur else "non_identifie")
+        raise HTTPException(403, {"code": "administrateur_nominatif_rbac_requis"},
+                            headers={"Cache-Control": "no-store"})
+    return utilisateur
+
+
+app.include_router(creer_router_revue(
+    _autorise_revue_douaniere,
+    lambda: cfg.data_dir / "customs-quarantine" / "registre.json",
+    lambda **champs: audit_obligatoire(cfg.log_dir, "revue_douaniere", **champs),
+))
+
+
 def _exige(role: str):
     """Dépendance FastAPI : la route exige ce rôle au minimum.
 
@@ -414,6 +441,8 @@ def _role_requis(request: Request) -> Optional[str]:
     if method == "POST" and re.fullmatch(
             r"/api/dossiers/[^/]+/(coherence|transmission)", path):
         return SUPERVISEUR
+    if path.startswith("/api/frais/rapprochement/"):
+        return SUPERVISEUR
     return OPERATEUR
 
 
@@ -461,15 +490,25 @@ RBAC_ACTIONS = {
     "suppression_logique": "controleur_documentaire",
     "archivage": "controleur_documentaire",
     "validation_documentaire": "controleur_documentaire",
-    "resolution_anomalies": "responsable_transport",
+    "resolution_anomalies": "responsable_transit",
     "changement_statut": "agent_de_transit",
+    "gestion_financiere": "controleur_documentaire",
     "gestion_financière": "controleur_documentaire",
     "export": "controleur_documentaire",
+    "configuration_metier": "administrateur",
     "configuration_métier": "administrateur",
 }
 
 _AUTH_EXEMPT = {"/", "/docs", "/openapi.json", "/redoc", "/api/health",
                 "/api/auth/status", "/api/security"}
+
+#: Les routes métier historiques sous `/transit/` sont protégées comme `/api/`.
+_AUTH_PREFIXES = ("/api/", "/transit/")
+
+
+def _chemin_protege(path: str) -> bool:
+    return path.startswith(_AUTH_PREFIXES)
+
 # ces routes sont publiques et ne doivent pas exposer de données métier ni
 # de secrets ; la route /api/security est un diagnostic de sécurité lisible.
 
@@ -594,7 +633,8 @@ async def _security_headers(request, call_next):
             del response.headers[key]
 
     policy = _default_security_headers()
-    response.headers.setdefault("X-Frame-Options", policy["x_frame_options"])
+    if policy["x_frame_options"]:  # vide en mode aperçu (UI en iframe)
+        response.headers.setdefault("X-Frame-Options", policy["x_frame_options"])
     response.headers.setdefault("X-Content-Type-Options", policy["x_content_type_options"])
     response.headers.setdefault("Referrer-Policy", policy["referrer_policy"])
     response.headers.setdefault("Permissions-Policy", policy["permissions_policy"])
@@ -620,7 +660,7 @@ async def _optional_token_auth(request, call_next):
         # ── comportement historique, inchangé ──
         if not _AUTH_TOKEN:
             return await call_next(request)
-        if path in _AUTH_EXEMPT or not path.startswith("/api/"):
+        if path in _AUTH_EXEMPT or not _chemin_protege(path):
             return await call_next(request)
         supplied = (request.headers.get("authorization") or "").removeprefix("Bearer ").strip()
         if not hmac.compare_digest(supplied, _AUTH_TOKEN):
@@ -628,7 +668,7 @@ async def _optional_token_auth(request, call_next):
         return await call_next(request)
 
     # ── RBAC actif ──
-    if path in _AUTH_EXEMPT or not path.startswith("/api/"):
+    if path in _AUTH_EXEMPT or not _chemin_protege(path):
         return await call_next(request)
     supplied = (request.headers.get("authorization") or "").removeprefix("Bearer ").strip()
 
@@ -692,12 +732,62 @@ def i18n_controls_module():
     return FileResponse(path, media_type="text/javascript")
 
 
+# Modules chargés par index.html depuis la racine (`<script src="...">`).
+# Sans ces routes, ils tombaient en 404 et l'UI perdait connecteurs, dossiers,
+# formulaires, traçabilité et transmission.
+MODULES_WEB_RACINE = (
+    "connectors.js",
+    "dossier.js",
+    "formulaire.js",
+    "tracabilite.js",
+    "transmission.js",
+)
+
+
+def _fabrique_module_web(nom_fichier: str):
+    def _module_web() -> FileResponse:
+        path = cfg.web_dir / nom_fichier
+        if not path.is_file():
+            raise HTTPException(status_code=404, detail=f"{nom_fichier} absent")
+        return FileResponse(path, media_type="text/javascript")
+    return _module_web
+
+
+for _nom_module in MODULES_WEB_RACINE:
+    app.add_api_route(
+        f"/{_nom_module}",
+        _fabrique_module_web(_nom_module),
+        methods=["GET"],
+        include_in_schema=False,
+        name=f"web_module_{_nom_module.replace('.', '_')}",
+    )
+
+
 @app.get("/icon.svg", include_in_schema=False)
 def icon_svg():
     path = _web_dir() / "icon.svg"
     if not path.is_file():
         raise HTTPException(status_code=404, detail="icône absente")
     return FileResponse(path, media_type="image/svg+xml")
+
+
+# Le service worker précache `./index.html` et `./styles.css` ; sans ces deux
+# routes l'installation du cache échouait en 404 et l'UI hors ligne était
+# incomplète. On les sert à la racine, comme le fait déjà `sw.js`.
+@app.get("/index.html", include_in_schema=False)
+def index_html() -> HTMLResponse:
+    path = cfg.web_dir / "index.html"
+    if not path.is_file():
+        raise HTTPException(status_code=404, detail="UI non installée")
+    return HTMLResponse(path.read_text(encoding="utf-8"))
+
+
+@app.get("/styles.css", include_in_schema=False)
+def styles_css() -> FileResponse:
+    path = cfg.web_dir / "styles.css"
+    if not path.is_file():
+        raise HTTPException(status_code=404, detail="feuille de style absente")
+    return FileResponse(path, media_type="text/css")
 
 
 # ─────────────────────── A2 · calibration de confiance ───────────────────────
@@ -1365,7 +1455,9 @@ def rbac_moi(request: Request) -> dict:
                 "detail": "data/rbac.json absent : aucun cloisonnement appliqué"}
     return {"actif": True, **u.public(),
             "roles_disponibles": list(ROLES),
-            "administrateur": u.a_role(ADMINISTRATEUR)}
+            "administrateur": u.a_role(ADMINISTRATEUR),
+            "ecriture": u.a_role(OPERATEUR),
+            "supervision": u.a_role(SUPERVISEUR)}
 
 
 @app.get("/api/rbac/utilisateurs")
@@ -1707,7 +1799,7 @@ def get_quality(job_id: str, request: Request) -> dict:
 class FieldPatch(BaseModel):
     confirmed_value: Optional[str] = None
     corrected_value: Optional[str] = None
-    status: Optional[str] = None
+    status: Optional[FieldStatus] = None
     user: Optional[str] = None
     reason: Optional[str] = None
 
@@ -1717,7 +1809,10 @@ def patch_field(job_id: str, name: str, patch: FieldPatch, request: Request) -> 
     """Validation/correction humaine d'un champ. Tout est tracé (audit)."""
     # rôle exigé : valider/corriger un champ. RBAC inactif = contrôle sans effet.
     _exige(OPERATEUR)(request)
-    result = store.load_result(job_id)
+    _exige_job(request, job_id)
+    if all(value is None for value in (patch.confirmed_value, patch.corrected_value, patch.status)):
+        raise HTTPException(422, "aucune modification de champ fournie")
+    result, revision = store.load_result_revision(job_id)
     if result is None:
         raise HTTPException(409, "résultat pas encore disponible")
     fields = result.get("fields", {})
@@ -1740,11 +1835,12 @@ def patch_field(job_id: str, name: str, patch: FieldPatch, request: Request) -> 
         if patch.status is None:
             fv["status"] = "corrected"
     if patch.status is not None:
-        fv["status"] = patch.status
+        fv["status"] = patch.status.value
     fields[name] = fv
     result["fields"] = fields
-    store.save_result(job_id, result)
-    acteur = str(getattr(patch, "user", None) or "utilisateur")
+    if not store.replace_result_revision(job_id, revision, result):
+        raise HTTPException(409, "résultat modifié pendant la correction : relisez avant de réessayer")
+    acteur = _acteur(request)
     audit(cfg.log_dir, "field_validated", job_id=job_id, field=name,
           confirmed=patch.confirmed_value, corrected=patch.corrected_value,
           acteur=acteur, motif=getattr(patch, "reason", None),
@@ -1761,8 +1857,9 @@ def _etat_champ(fv: dict) -> dict:
     brute. C'est cet état qu'une annulation doit restituer, pas la valeur
     brute — sinon annuler ferait perdre la normalisation déjà faite.
     """
-    valeur = (fv.get("confirmed_value") or fv.get("corrected_value")
-              or fv.get("normalized_value") or fv.get("raw_value"))
+    valeur = next((fv.get(key) for key in (
+        "confirmed_value", "corrected_value", "normalized_value", "raw_value"
+    ) if fv.get(key) is not None), None)
     return {"valeur": valeur,
             "origine": fv.get("value_origin"),
             "statut": fv.get("status")}
@@ -1780,15 +1877,16 @@ def annuler_correction(job_id: str, name: str, request: Request,
     """
     # rôle exigé : annuler une correction. RBAC inactif = contrôle sans effet.
     _exige(OPERATEUR)(request)
+    _exige_job(request, job_id)
     body = body or {}
-    result = store.load_result(job_id)
+    result, revision = store.load_result_revision(job_id)
     if result is None:
         raise HTTPException(409, "résultat pas encore disponible")
     fields = result.get("fields", {})
     if name not in fields:
         raise HTTPException(404, f"champ '{name}' introuvable")
     fv = fields[name]
-    if not (fv.get("confirmed_value") or fv.get("corrected_value")):
+    if fv.get("confirmed_value") is None and fv.get("corrected_value") is None:
         raise HTTPException(409, "aucune correction humaine à annuler sur ce champ")
 
     precedent = _derniere_correction(job_id, name)
@@ -1801,8 +1899,9 @@ def annuler_correction(job_id: str, name: str, request: Request,
     fv["status"] = precedent.get("ancien_statut") or "detected"
     fields[name] = fv
     result["fields"] = fields
-    store.save_result(job_id, result)
-    acteur = str(body.get("user") or "utilisateur")
+    if not store.replace_result_revision(job_id, revision, result):
+        raise HTTPException(409, "résultat modifié pendant la correction : relisez avant de réessayer")
+    acteur = _acteur(request)
     motif = str(body.get("motif") or "").strip()
     audit(cfg.log_dir, "field_correction_annulee", job_id=job_id, field=name,
           acteur=acteur, motif=motif,
@@ -1830,10 +1929,15 @@ def _derniere_correction(job_id: str, name: str) -> dict | None:
             entree = json.loads(ligne)
         except ValueError:
             continue
-        if entree.get("job_id") != job_id or entree.get("field") != name:
+        if (not isinstance(entree, dict) or entree.get("event") != "field_validated"
+                or entree.get("job_id") != job_id or entree.get("field") != name):
             continue
-        entree["valeur_apres"] = (entree.get("confirmed")
-                                  or entree.get("corrected"))
+        # Ne pas annuler depuis une trace antérieure à une opération inexploitable.
+        if (entree.get("confirmed") is None and entree.get("corrected") is None
+                or not {"ancienne_valeur", "ancienne_origine", "ancien_statut"} <= entree.keys()):
+            return None
+        entree["valeur_apres"] = (entree.get("confirmed") if entree.get("confirmed") is not None
+                                  else entree.get("corrected"))
         return entree
     return None
 
@@ -1898,6 +2002,17 @@ def export_job(job_id: str, request: Request, fmt: str):
     if store.get(job_id) is None:
         raise HTTPException(404, "job introuvable")
     try:
+        if fmt == "json":
+            # Réponse liée au résultat lu, pas à un fichier export mutable/périmé.
+            result_json = store.load_result(job_id)
+            if result_json is None:
+                raise HTTPException(409, "résultat pas encore disponible")
+            from .models import DocumentResult
+            result = DocumentResult.model_validate(result_json)
+            return JSONResponse(result.model_dump(mode="json"), headers={
+                "Content-Disposition": 'attachment; filename="result.json"',
+                "Cache-Control": "no-store",
+            })
         path = _ensure_export(job_id, fmt)
     except HTTPException:
         raise
@@ -1912,7 +2027,7 @@ def export_job(job_id: str, request: Request, fmt: str):
 
 @app.get("/api/jobs/{job_id}/export/{fmt}/selected")
 def export_selected(job_id: str, request: Request, fmt: str,
-                    fields: str = Query(..., min_length=1)) -> FileResponse:
+                    fields: str = Query(..., min_length=1)) -> Response:
     """Export limité à une sélection de champs.
 
     Généré à la volée (non mis en cache) : la sélection est propre à une
@@ -1939,32 +2054,35 @@ def export_selected(job_id: str, request: Request, fmt: str,
         raise HTTPException(400, "aucun champ de la sélection n'existe dans ce document")
     result = result.model_copy(update={"fields": kept})
 
-    out_dir = store.export_dir(job_id) / "selected"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    stem = "selection_" + "_".join(sorted(kept))[:40]
     try:
-        if fmt == "csv":
-            # Une sélection de champs ne concerne que les champs : on n'emballe
-            # pas les tableaux du document dans une archive ZIP, le résultat
-            # doit rester un CSV lisible par un tableur.
-            paths = ex.export_csv(result, out_dir, champs_seulement=True)
-            path = paths[0]
-        elif fmt == "xlsx":
-            path = ex.export_xlsx(result, out_dir / f"{stem}.xlsx")
-        elif fmt == "json":
-            path = out_dir / f"{stem}.json"
-            ex.export_json(result, path)
-        elif fmt == "txt":
-            path = out_dir / f"{stem}.txt"
-            ex.export_txt(result, path)
-        elif fmt == "xml":
-            path = out_dir / f"{stem}.xml"
-            ex.export_xml(result, path)
-        elif fmt == "pdf":
-            path = out_dir / f"{stem}.pdf"
-            ex.export_searchable_pdf(result, path, _page_images(job_id))
-        else:  # pragma: no cover - gardé par SUPPORTED_EXPORTS
-            raise HTTPException(400, f"format non supporté: {fmt}")
+        if fmt == "json":
+            response = JSONResponse(result.model_dump(mode="json"), headers={
+                "Content-Disposition": 'attachment; filename="selection.json"',
+                "Cache-Control": "no-store",
+            })
+        else:
+            out_dir = store.export_dir(job_id) / "selected"
+            out_dir.mkdir(parents=True, exist_ok=True)
+            stem = "selection_" + "_".join(sorted(kept))[:40]
+            if fmt == "csv":
+                # Une sélection de champs ne concerne que les champs : on n'emballe
+                # pas les tableaux du document dans une archive ZIP, le résultat
+                # doit rester un CSV lisible par un tableur.
+                paths = ex.export_csv(result, out_dir, champs_seulement=True)
+                path = paths[0]
+            elif fmt == "xlsx":
+                path = ex.export_xlsx(result, out_dir / f"{stem}.xlsx")
+            elif fmt == "txt":
+                path = out_dir / f"{stem}.txt"
+                ex.export_txt(result, path)
+            elif fmt == "xml":
+                path = out_dir / f"{stem}.xml"
+                ex.export_xml(result, path)
+            elif fmt == "pdf":
+                path = out_dir / f"{stem}.pdf"
+                ex.export_searchable_pdf(result, path, _page_images(job_id))
+            else:  # pragma: no cover - gardé par SUPPORTED_EXPORTS
+                raise HTTPException(400, f"format non supporté: {fmt}")
     except HTTPException:
         raise
     except Exception as exc:
@@ -1973,6 +2091,8 @@ def export_selected(job_id: str, request: Request, fmt: str,
 
     audit(cfg.log_dir, "export_selected", job_id=job_id, fmt=fmt,
           fields=sorted(kept))
+    if fmt == "json":
+        return response
     media = "application/zip" if path.suffix == ".zip" else None
     return FileResponse(path, filename=path.name, media_type=media)
 
@@ -2335,6 +2455,183 @@ def _search_payload(q: str, hits: list[dict], limit: int) -> dict:
     }
 
 
+# ─────────────── recherche transverse & amorçage de la coque ───────────────
+
+def _magasin(request: Request, nom: str) -> dict:
+    """Lit un store `app.state` sans le créer (recherche en lecture seule)."""
+    magasin = getattr(request.app.state, nom, None)
+    return magasin if isinstance(magasin, dict) else {}
+
+
+def _champ(objet: object, nom: str, defaut: str = "") -> str:
+    valeur = getattr(objet, nom, defaut)
+    return str(valeur) if valeur is not None else defaut
+
+
+@app.get("/api/search/global")
+def search_global(
+    request: Request,
+    q: str = Query(..., min_length=1, max_length=120),
+    limit: int = Query(6, ge=1, le=20),
+) -> dict:
+    """Recherche transverse : dossiers, clients, B/L, conteneurs, documents.
+
+    Un dossier est trouvé par identifiant, libellé, référence, client,
+    fournisseur, B/L, conteneur, scellé, navire ou code SH. Les autres
+    groupes lisent les stores du serveur et restent vides s'ils n'ont pas
+    encore d'enregistrement : aucune entrée n'est fabriquée.
+    """
+    terme = q.strip().lower()
+
+    def contient(*valeurs: object) -> bool:
+        return terme in " ".join(str(v or "") for v in valeurs).lower()
+
+    utilisateur = _utilisateur_courant(request)
+    groupes: dict[str, list[dict]] = {
+        "dossiers": [], "clients": [], "connaissements": [], "conteneurs": [], "documents": [],
+    }
+    total = 0
+
+    for dossier in _dossiers.liste():
+        if len(groupes["dossiers"]) >= limit:
+            break
+        if utilisateur is not None and not utilisateur.voit_dossier(dossier.id):
+            continue
+        conteneurs = " ".join(str(c) for c in (getattr(dossier, "conteneurs_associes", []) or []))
+        if not contient(dossier.id, dossier.reference, dossier.label, dossier.client_importateur,
+                        dossier.fournisseur, dossier.reference_bl, dossier.numero_conteneur,
+                        dossier.numero_scelle, dossier.navire, dossier.code_sh, conteneurs):
+            continue
+        groupes["dossiers"].append({
+            "kind": "dossier",
+            "id": dossier.id,
+            "label": dossier.label or dossier.id,
+            "reference": dossier.reference or dossier.id,
+            "meta": dossier.state.value.replace("_", " "),
+            "client": dossier.client_importateur or "",
+            "route": "dossiers/tous",
+        })
+        total += 1
+
+    for identifiant, client in _magasin(request, "client_store").items():
+        if len(groupes["clients"]) >= limit:
+            break
+        if contient(identifiant, _champ(client, "name"), _champ(client, "legal_name"),
+                    _champ(client, "tax_id"), _champ(client, "email")):
+            groupes["clients"].append({
+                "kind": "client",
+                "id": identifiant,
+                "label": _champ(client, "name") or identifiant,
+                "meta": _champ(client, "legal_name"),
+                "route": "dossiers/clients",
+            })
+            total += 1
+
+    from .business_store import BusinessStore
+    from .models import Connaissement, Conteneur
+
+    metier = cfg.data_dir / "metier.sqlite3"
+    for bl in BusinessStore(metier, "connaissement", Connaissement).values():
+        if len(groupes["connaissements"]) >= limit:
+            break
+        if utilisateur is not None and not utilisateur.voit_dossier(bl.dossier_id):
+            continue
+        identifiant = bl.id
+        if contient(identifiant, _champ(bl, "numero_bl"), _champ(bl, "chargeur"),
+                    _champ(bl, "destinataire"), _champ(bl, "navire"),
+                    _champ(bl, "port_decharge"), _champ(bl, "marchandise")):
+            groupes["connaissements"].append({
+                "kind": "bl",
+                "id": identifiant,
+                "label": _champ(bl, "numero_bl") or identifiant,
+                "meta": _champ(bl, "port_decharge") or _champ(bl, "dossier_id"),
+                "route": "maritime/bl",
+            })
+            total += 1
+
+    for conteneur in BusinessStore(metier, "conteneur", Conteneur).values():
+        if len(groupes["conteneurs"]) >= limit:
+            break
+        if utilisateur is not None and not utilisateur.voit_dossier(conteneur.dossier_id):
+            continue
+        identifiant = conteneur.id
+        if contient(identifiant, _champ(conteneur, "numero_conteneur"),
+                    _champ(conteneur, "seal_number"), _champ(conteneur, "position_actuelle"),
+                    _champ(conteneur, "dossier_id")):
+            groupes["conteneurs"].append({
+                "kind": "conteneur",
+                "id": identifiant,
+                "label": _champ(conteneur, "numero_conteneur") or identifiant,
+                "meta": _champ(conteneur, "statut"),
+                "route": "maritime/conteneurs",
+            })
+            total += 1
+
+    for job in store.list_jobs(limit=500):
+        if len(groupes["documents"]) >= limit:
+            break
+        if not _job_visible(request, job.id):
+            continue
+        if contient(job.id, job.filename):
+            groupes["documents"].append({
+                "kind": "document",
+                "id": job.id,
+                "label": job.filename or job.id,
+                "meta": str(getattr(job.status, "value", job.status)),
+                "route": "documents/ocr",
+            })
+            total += 1
+
+    return {"query": q, "total": total, "limite_par_groupe": limit, "groupes": groupes}
+
+
+@app.get("/api/ui/bootstrap")
+def ui_bootstrap(request: Request) -> dict:
+    """Tout ce dont la coque a besoin à l'affichage : identité et compteurs.
+
+    Les compteurs sont recalculés sur les dossiers réels ; une clé absente
+    côté serveur vaut zéro plutôt que d'inventer une valeur.
+    """
+    utilisateur = _utilisateur_courant(request)
+    identite = utilisateur.public() if utilisateur is not None else None
+
+    etats: dict[str, int] = {}
+    total = 0
+    visibles = 0
+    for dossier in _dossiers.liste():
+        total += 1
+        if utilisateur is not None and not utilisateur.voit_dossier(dossier.id):
+            continue
+        visibles += 1
+        etat = dossier.state.value
+        etats[etat] = etats.get(etat, 0) + 1
+
+    en_cours = sum(etats.get(e, 0) for e in
+                   ("en_preparation", "traitement_en_cours", "revision_requise",
+                    "incomplet", "en_validation"))
+    a_valider = sum(etats.get(e, 0) for e in ("en_validation", "revision_requise"))
+    clos = sum(etats.get(e, 0) for e in ("exporte", "archive"))
+    bloques = etats.get("incomplet", 0) + etats.get("erreur_traitement", 0)
+
+    notifications = _magasin(request, "notification_store")
+    non_lues = sum(1 for n in notifications.values() if not getattr(n, "lue", False))
+
+    return {
+        "utilisateur": identite,
+        "rbac_actif": identite is not None,
+        "compteurs": {
+            "dossiers": visibles,
+            "dossiers_total": total,
+            "dossiers_en_cours": en_cours,
+            "dossiers_a_valider": a_valider,
+            "dossiers_clos": clos,
+            "dossiers_bloques": bloques,
+            "notifications_non_lues": non_lues,
+        },
+        "etats": etats,
+    }
+
+
 # ─────────────────────── traitement par lots ───────────────────────
 # Ajouts purs : POST /api/documents et les exports unitaires sont intacts.
 
@@ -2447,7 +2744,7 @@ async def upload_batch(
 
 @app.get("/api/batches/export/{fmt}")
 def export_batch(request: Request, fmt: str,
-                 ids: str = Query(..., min_length=1)) -> FileResponse:
+                 ids: str = Query(..., min_length=1)) -> Response:
     """Export groupé de plusieurs documents.
 
     - `xlsx` : une feuille par document (reprenant les feuilles unitaires)
@@ -2475,37 +2772,48 @@ def export_batch(request: Request, fmt: str,
             raise HTTPException(409, f"résultat pas encore disponible pour '{jid}'")
         results.append((job.filename, res))
 
-    out_dir = store.export_dir("batch_" + "_".join(job_ids)[:60])
-    out_dir.mkdir(parents=True, exist_ok=True)
-    stamp = time.strftime("%Y%m%d_%H%M%S")
+    if fmt in {"json", "csv"}:
+        if fmt == "json":
+            response = JSONResponse([r for _, r in results], headers={
+                "Content-Disposition": 'attachment; filename="lot.json"',
+                "Cache-Control": "no-store",
+            })
+        else:
+            import csv
+            from io import StringIO
 
-    if fmt == "json":
-        path = out_dir / f"lot_{stamp}.json"
-        path.write_text(json.dumps([r for _, r in results], ensure_ascii=False,
-                                   indent=2), encoding="utf-8")
-    elif fmt == "txt":
-        path = out_dir / f"lot_{stamp}.txt"
-        parts = [f"══════════ {fn} ══════════\n" +
-                 "\n\n".join(f"───── Page {p.get('page_num')} ─────\n{p.get('text','')}"
-                             for p in (r.get("pages") or []))
-                 for fn, r in results]
-        path.write_text("\n\n".join(parts), encoding="utf-8")
-    elif fmt == "csv":
-        import csv
-
-        path = out_dir / f"lot_{stamp}.csv"
-        with path.open("w", newline="", encoding="utf-8-sig") as f:
+            f = StringIO(newline="")
             w = csv.writer(f)
             w.writerow(["document", "champ", "valeur_brute", "valeur_normalisee",
-                        "confiance", "statut"])
+                        "confiance", "statut", "valeur_retenue", "origine_valeur"])
             for fn, r in results:
                 for name, fv in (r.get("fields") or {}).items():
                     w.writerow([
                         sanitize_for_csv(fn), sanitize_for_csv(name),
                         sanitize_for_csv(fv.get("raw_value")),
                         sanitize_for_csv(fv.get("normalized_value")),
-                        fv.get("confidence"), fv.get("status"),
+                        sanitize_for_csv(fv.get("confidence")), sanitize_for_csv(fv.get("status")),
+                        sanitize_for_csv(_etat_champ(fv)["valeur"]),
+                        sanitize_for_csv(fv.get("value_origin")),
                     ])
+            response = Response(f.getvalue().encode("utf-8-sig"), media_type="text/csv", headers={
+                "Content-Disposition": 'attachment; filename="lot.csv"',
+                "Cache-Control": "no-store",
+            })
+        audit(cfg.log_dir, "batch_exported", fmt=fmt, documents=len(results))
+        return response
+
+    out_dir = store.export_dir("batch_" + "_".join(job_ids)[:60])
+    out_dir.mkdir(parents=True, exist_ok=True)
+    stamp = time.strftime("%Y%m%d_%H%M%S")
+
+    if fmt == "txt":
+        path = out_dir / f"lot_{stamp}.txt"
+        parts = [f"══════════ {fn} ══════════\n" +
+                 "\n\n".join(f"───── Page {p.get('page_num')} ─────\n{p.get('text','')}"
+                             for p in (r.get("pages") or []))
+                 for fn, r in results]
+        path.write_text("\n\n".join(parts), encoding="utf-8")
     elif fmt == "xlsx":
         path = out_dir / f"lot_{stamp}.xlsx"
         _merge_xlsx(results, path)
@@ -2774,12 +3082,22 @@ def document_types() -> dict:
 
 @app.post("/api/jobs/{job_id}/classify")
 def classify_job(job_id: str, request: Request) -> dict:
-    """Classe un document traité et consigne le résultat."""
+    """Classe un document traité sans écraser une décision manuelle."""
+    _exige(OPERATEUR)(request)
     _exige_job(request, job_id)
-    result = store.load_result(job_id)
+    if store.get(job_id) is None:
+        raise HTTPException(404, "job introuvable")
+    result, revision = store.load_result_revision(job_id)
     if result is None:
         raise HTTPException(404, "résultat introuvable : traitez d'abord le document")
+    precedente = result.get("classification")
+    if precedente is not None and (not isinstance(precedente, dict)
+            or precedente.get("manual", False) is not False):
+        raise HTTPException(409, "classification manuelle ou non interprétable : reclassement automatique refusé")
     res = _classifier.classify(_texte_resultat(result))
+    result["classification"] = res.as_dict()
+    if not store.replace_result_revision(job_id, revision, result):
+        raise HTTPException(409, "résultat modifié pendant la classification : relisez avant de réessayer")
     consigne_classification(cfg.log_dir, job_id, res)
     return {"job_id": job_id, "classification": res.as_dict(),
             "profile_suggere": _classifier.profil_pour(res.category)}
@@ -2790,8 +3108,8 @@ def get_classification(job_id: str, request: Request) -> dict:
     """Classification retenue pour un document, avec ses preuves.
 
     La valeur affichée est celle du résultat (donc après correction manuelle
-    éventuelle) ; le journal d'audit n'apporte que l'horodatage et le fait
-    qu'une décision humaine soit intervenue. Renvoyer le seul journal ferait
+    éventuelle) ; le journal d'audit n'apporte qu'un horodatage déclaratif
+    si ses champs de décision concordent avec le résultat. Renvoyer le seul journal ferait
     disparaître libellé, preuves et alternatives — soit les sources mêmes qui
     permettent de contester une classification.
     """
@@ -2808,7 +3126,8 @@ def get_classification(job_id: str, request: Request) -> dict:
                 entree = _json.loads(ligne)
             except ValueError:
                 continue
-            if entree.get("job_id") == job_id:
+            if (isinstance(entree, dict) and entree.get("event") == "document_classified"
+                    and entree.get("job_id") == job_id):
                 trace = entree
     resultat = store.load_result(job_id)
     retenue = (resultat or {}).get("classification")
@@ -2819,19 +3138,33 @@ def get_classification(job_id: str, request: Request) -> dict:
                    ("category", "confidence", "classifier_version",
                     "needs_review", "manual")}
     payload = dict(retenue)
-    if trace is not None:
-        payload["ts"] = trace.get("ts")
-        # une correction humaine consignée après coup reste une correction
-        payload["manual"] = bool(payload.get("manual")) or bool(trace.get("manual"))
+    if trace is not None and all(trace.get(key) == payload.get(key) for key in (
+        "category", "confidence", "classifier_version", "needs_review", "manual"
+    )):
+        # Legacy sans acteur : cinq champs. Trace attribuée : même acteur manuel.
+        acteur = trace.get("acteur")
+        if "acteur" not in trace or (
+            trace.get("manual") is True and payload.get("manual") is True
+            and isinstance(acteur, str) and acteur.strip()
+            and acteur == payload.get("corrected_by")
+        ):
+            # Concordance déclarative, pas identité de révision ni preuve d'authenticité.
+            payload["ts"] = trace.get("ts")
     return {"job_id": job_id, "classification": payload}
 
 
 @app.patch("/api/jobs/{job_id}/classification")
 def patch_classification(job_id: str, request: Request, body: dict) -> dict:
     """Correction manuelle de la catégorie (document inconnu classé à la main)."""
+    _exige(OPERATEUR)(request)
     _exige_job(request, job_id)
+    if store.get(job_id) is None:
+        raise HTTPException(404, "job introuvable")
+    resultat, revision = store.load_result_revision(job_id)
+    if resultat is None:
+        raise HTTPException(409, "résultat pas encore disponible")
     categorie = str(body.get("category") or "").strip()
-    acteur = str(body.get("user") or "utilisateur")
+    acteur = _acteur(request)
     if not categorie:
         raise HTTPException(422, "catégorie requise")
     try:
@@ -2839,7 +3172,10 @@ def patch_classification(job_id: str, request: Request, body: dict) -> dict:
                                       categories=set(_classifier.categories))
     except ValueError as exc:
         raise HTTPException(422, str(exc)) from exc
-    consigne_classification(cfg.log_dir, job_id, res, manuel=True)
+    resultat["classification"] = res.as_dict()
+    if not store.replace_result_revision(job_id, revision, resultat):
+        raise HTTPException(409, "résultat modifié pendant la classification : relisez avant de réessayer")
+    consigne_classification(cfg.log_dir, job_id, res, manuel=True, acteur=acteur)
     return {"job_id": job_id, "classification": res.as_dict(),
             "profile_suggere": _classifier.profil_pour(categorie)}
 
@@ -2850,13 +3186,31 @@ def patch_classification(job_id: str, request: Request, body: dict) -> dict:
 def creer_dossier(body: dict, request: Request) -> dict:
     # rôle exigé : creer un dossier. RBAC inactif = contrôle sans effet.
     _exige(OPERATEUR)(request)
-    label = str(body.get("label") or "").strip()
+    # `ref`/`reference` sont acceptés comme libellé : le formulaire Transit
+    # envoie une référence, l'écran Dossiers un libellé — les deux désignent
+    # le même champ, et refuser l'un des deux rendait le formulaire inutilisable.
+    label = str(body.get("label") or body.get("ref") or body.get("reference") or "").strip()
     if not label:
         raise HTTPException(422, "libellé de dossier requis")
     profil = str(body.get("profile") or "personnalise")
     if profil not in PROFILS_DOSSIER:
         raise HTTPException(422, f"profil inconnu : {profil}")
-    dossier = _dossiers.creer(label, profil, acteur=str(body.get("user") or "utilisateur"))
+    acteur = str(body.get("user") or "utilisateur")
+    dossier = _dossiers.creer(label, profil, acteur=acteur)
+    # Champs facultatifs fournis à la création (client, référence, priorité…).
+    champs_initiaux = {
+        nom: body[cle] for cle, nom in (
+            ("client", "client_importateur"),
+            ("client_importateur", "client_importateur"),
+            ("reference", "reference"),
+            ("priorite", "priorite"),
+            ("gestionnaire", "gestionnaire"),
+            ("port_chargement", "port_chargement"),
+            ("port_destination", "port_destination"),
+        ) if body.get(cle) not in (None, "")
+    }
+    if champs_initiaux:
+        dossier = _dossiers.mettre_a_jour(dossier.id, champs_initiaux, acteur=acteur) or dossier
     # Un opérateur au périmètre restreint doit voir le dossier qu'il vient de
     # créer : son identifiant est généré par le système, il ne peut pas figurer
     # à l'avance dans son périmètre. Sans cet ajout, créer un dossier le
@@ -2913,8 +3267,16 @@ def get_dossier(dossier_id: str, request: Request) -> dict:
 def supprimer_dossier(dossier_id: str, request: Request) -> dict:
     """Supprime le dossier — les documents, eux, restent en place."""
     _exige_dossier(dossier_id, request)
-    if not _dossiers.supprimer(dossier_id, acteur="utilisateur"):
-        raise HTTPException(404, "dossier introuvable")
+    from .business_links import exiger_dossier, exiger_dossier_sans_liens
+    from .business_store import BusinessStore
+    from .models import DeclarationDouaniere
+
+    magasin = BusinessStore(cfg.data_dir / "metier.sqlite3", "declaration", DeclarationDouaniere)
+    with magasin.transaction() as transaction:
+        exiger_dossier(cfg, dossier_id, absent=404)
+        exiger_dossier_sans_liens(transaction, dossier_id)
+        if not _dossiers.supprimer(dossier_id, acteur="utilisateur"):
+            raise HTTPException(404, "dossier introuvable")
     return {"deleted": True}
 
 

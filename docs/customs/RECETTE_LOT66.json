@@ -1,0 +1,102 @@
+{
+  "type_rapport": "recette_lot66_technique_non_validation_reglementaire",
+  "date": "2026-11-07",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "revision_code": "1330335405a583f4aa685b139c22bd8efed023ed",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_originaux_officiels": 0,
+  "articles_codes_officiellement_valides": 0,
+  "nouveaux_tests_python": 30,
+  "selection_baidu": {
+    "reussis": 90,
+    "echecs": 0,
+    "ignores": 0,
+    "duree_secondes": 2.64,
+    "tests_fournisseur_hors_reseau": true
+  },
+  "contre_epreuve_lot65": {
+    "tests": 30,
+    "echecs_attendus_observes": 30,
+    "code_sortie": 1,
+    "duree_secondes": 4.63,
+    "revision_chargee": "b55974bc06dc2df6b65ef21adc5670f7892e0fcc",
+    "sources_checkout_non_remplacees": true
+  },
+  "politique_scores": {
+    "constante_095_supprimee_pour_baidu": true,
+    "score_declare_accepte": "probability.average numerique fini [0,1], sans coercition texte/bool",
+    "score_absent_invalide": 0,
+    "zero_repli_est_une_probabilite_mesuree": false,
+    "moyenne_inclut_tous_elements": true,
+    "calibration_mesuree": false,
+    "compteurs_provenance_dans_engineoutput_raw": true,
+    "compteurs_raw_persistes_par_pipeline": false,
+    "pipeline_runs_mots_qualite_zero_verifies": true,
+    "page_signalee_a_revoir_si_score_absent": true
+  },
+  "recette_documentaire_ciblee": {
+    "fichiers": 66,
+    "reussis": 2160,
+    "echecs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_secondes": 56.15,
+    "jsdom": 212,
+    "exports_existants": 74
+  },
+  "suite_complete": {
+    "tests": 3346,
+    "reussis": 3343,
+    "echecs": 2,
+    "ignores": 1,
+    "avertissements": 1,
+    "duree_console_secondes": 353.43,
+    "duree_junit_secondes": 353.346,
+    "code_sortie": 1,
+    "identifiants_echecs": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ],
+    "identiques_lot65": true,
+    "ignore": "tests.test_indra_ocr::test_indra_engine_recognize",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 3346,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 1
+    }
+  },
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "ecarts": {
+      "data/referentiels.json": {
+        "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+        "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d"
+      }
+    }
+  },
+  "donnees_partagees_modifiees_lot64_preservees_hors_commit": true,
+  "aucune_restauration_pour_forcer_empreintes": true,
+  "ci": {
+    "run": 42400091694,
+    "revision": "1330335405a583f4aa685b139c22bd8efed023ed",
+    "statut": "success",
+    "portee": "90 Baidu hors reseau + 24 ingestion/PDF + 8 UI + selection documentaire",
+    "ocr_complet_execute_en_ci": false,
+    "junit_distant_telecharge": false
+  },
+  "artefacts_locaux": "/home/user/recettes-unocr/lot66",
+  "limites": [
+    "Aucun appel fournisseur reel ni precision OCR mesuree",
+    "Zero de repli conservateur, pas score nul mesure ; raw provenance non persiste",
+    "Scores fournisseurs non calibres ni automatiquement comparables entre moteurs",
+    "Geometrie approximative sans location non corrigee ni qualifiee",
+    "Query OAuth sensible et risques de traces externes inchanges",
+    "Indra absent ; integrite historique 26/27, donnees partagees conservees"
+  ]
+}

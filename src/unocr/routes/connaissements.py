@@ -2,14 +2,17 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Body, Depends, Request, HTTPException
-from pydantic import BaseModel
-from typing import Any, Optional, List
+from typing import Optional
 
-from ..models import Connaissement, BonADelivrer, new_id
+from fastapi import APIRouter, HTTPException, Request
+from pydantic import BaseModel, ValidationError
+
+from ..business_links import exiger_dossier
+from ..business_store import BusinessStore
 from ..config import get_config
 from ..logging_setup import audit, get_logger
-from ..rbac import ADMINISTRATEUR, LECTEUR
+from ..models import BonADelivrer, Connaissement, Expeditions, TerminalEnlevement, new_id
+from .dependencies import _exige_dossier, _exige_objet_dossier, _filtre_dossiers
 
 log = get_logger("connaissements")
 
@@ -19,23 +22,55 @@ cfg = get_config()
 
 
 # ───────────────────────────────────────────────────────────────
-# Stores en mémoire
+# Stockage SQLite local, partagé avec les autres modules métier.
 # ───────────────────────────────────────────────────────────────
 
-_bl_store: dict[str, Connaissement] = {}
-_bad_store: dict[str, BonADelivrer] = {}
+def _get_bl_store(request: Request) -> BusinessStore[Connaissement]:
+    return BusinessStore(cfg.data_dir / "metier.sqlite3", "connaissement", Connaissement)
 
 
-def _get_bl_store(request: Request) -> dict:
-    if not hasattr(request.app.state, 'bl_store'):
-        request.app.state.bl_store = {}
-    return request.app.state.bl_store
+def _get_bad_store(request: Request) -> BusinessStore[BonADelivrer]:
+    return BusinessStore(cfg.data_dir / "metier.sqlite3", "bon_a_delivrer", BonADelivrer)
 
 
-def _get_bad_store(request: Request) -> dict:
-    if not hasattr(request.app.state, 'bad_store'):
-        request.app.state.bad_store = {}
-    return request.app.state.bad_store
+def _valider_bl(bl: Connaissement) -> None:
+    if not bl.dossier_id.strip() or not bl.numero_bl.strip():
+        raise HTTPException(422, "Dossier et numéro de connaissement sont obligatoires")
+    if bl.nombre_colis < 0 or bl.originals_count < 0 or bl.originals_received < 0:
+        raise HTTPException(422, "Les quantités ne peuvent pas être négatives")
+    if bl.originals_received > bl.originals_count:
+        raise HTTPException(422, "Originaux reçus supérieurs aux originaux émis")
+    if bl.poids_brut < 0 or bl.poids_net < 0 or bl.valeur < 0 or bl.frais_maritimes < 0:
+        raise HTTPException(422, "Poids, valeur et frais ne peuvent pas être négatifs")
+
+
+def _valider_bad(bad: BonADelivrer) -> None:
+    if not bad.dossier_id.strip() or not bad.numero_bl.strip() or not bad.numero_bad.strip():
+        raise HTTPException(422, "Dossier, numéro de BL et numéro de BAD sont obligatoires")
+
+
+def _bl_existant(transaction: BusinessStore, dossier_id: str, numero_bl: str) -> bool:
+    return any(
+        bl.dossier_id == dossier_id and bl.numero_bl == numero_bl
+        for bl in transaction.related("connaissement", Connaissement).values()
+    )
+
+
+def _bl_reference(transaction: BusinessStore, numero_bl: str) -> bool:
+    if any(b.numero_bl == numero_bl for b in transaction.related("bon_a_delivrer", BonADelivrer).values()):
+        return True
+    if any(e.numero_bl == numero_bl for e in transaction.related("expedition", Expeditions).values()):
+        return True
+    return any(e.numero_bl == numero_bl for e in transaction.related("terminal", TerminalEnlevement).values())
+
+
+def _aliases_update(data: dict) -> dict:
+    """Accepte les noms ASCII historiques et les mappe vers le modèle métier."""
+    if "frais_payes" in data:
+        data["frais_payés"] = data.pop("frais_payes")
+    if "bad_recu" in data:
+        data["bad_reçu"] = data.pop("bad_recu")
+    return data
 
 
 # ───────────────────────────────────────────────────────────────
@@ -132,32 +167,13 @@ def create_bl(
     bl: ConnaissementCreate,
 ) -> dict:
     """Créer un nouveau connaissement."""
+    _exige_dossier(bl.dossier_id, request)
+    bl_obj = Connaissement(id=new_id("bl_"), **bl.model_dump())
+    _valider_bl(bl_obj)
     store = _get_bl_store(request)
-    bl_obj = Connaissement(
-        id=new_id("bl_"),
-        dossier_id=bl.dossier_id,
-        numero_bl=bl.numero_bl,
-        type_bl=bl.type_bl,
-        date_emission=bl.date_emission,
-        emetteur=bl.emetteur,
-        emitant=bl.emitant,
-        chargeur=bl.chargeur,
-        destinataire=bl.destinataire,
-        notify_party=bl.notify_party,
-        port_charge=bl.port_charge,
-        port_decharge=bl.port_decharge,
-        marchandise=bl.marchandise,
-        nombre_colis=bl.nombre_colis,
-        poids_brut=bl.poids_brut,
-        poids_net=bl.poids_net,
-        incoterm=bl.incoterm,
-        devise=bl.devise,
-        valeur=bl.valeur,
-        originals_count=bl.originals_count,
-        frais_maritimes=bl.frais_maritimes,
-        observations=bl.observations,
-    )
-    store[bl_obj.id] = bl_obj
+    with store.transaction() as transaction:
+        exiger_dossier(cfg, bl_obj.dossier_id)
+        transaction[bl_obj.id] = bl_obj
     audit(cfg.log_dir, "bl_cree", numero=bl.numero_bl, dossier=bl.dossier_id)
     return bl_obj.model_dump()
 
@@ -172,7 +188,7 @@ def list_bl(
     bls = list(store.values())
     if dossier_id:
         bls = [b for b in bls if b.dossier_id == dossier_id]
-    return [b.model_dump() for b in bls]
+    return [b.model_dump() for b in _filtre_dossiers(request, bls)]
 
 
 @router.get("/bl/{bl_id}")
@@ -185,6 +201,7 @@ def get_bl(
     bl = store.get(bl_id)
     if not bl:
         raise HTTPException(404, "Connaissement introuvable")
+    _exige_objet_dossier(request, bl)
     return bl.model_dump()
 
 
@@ -196,16 +213,25 @@ def update_bl(
 ) -> dict:
     """Mettre à jour un connaissement."""
     store = _get_bl_store(request)
-    bl = store.get(bl_id)
-    if not bl:
-        raise HTTPException(404, "Connaissement introuvable")
+    with store.transaction() as transaction:
+        bl = transaction.get(bl_id)
+        if not bl:
+            raise HTTPException(404, "Connaissement introuvable")
+        _exige_objet_dossier(request, bl)
 
-    update_data = bl_update.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(bl, key, value)
-
+        update_data = _aliases_update(bl_update.model_dump(exclude_unset=True))
+        try:
+            candidate = Connaissement.model_validate({**bl.model_dump(), **update_data})
+        except ValidationError as exc:
+            raise HTTPException(422, exc.errors(include_context=False)) from exc
+        _valider_bl(candidate)
+        _exige_objet_dossier(request, candidate)
+        exiger_dossier(cfg, candidate.dossier_id)
+        if (candidate.dossier_id != bl.dossier_id or candidate.numero_bl != bl.numero_bl) and _bl_reference(transaction, bl.numero_bl):
+            raise HTTPException(409, "Impossible de changer le dossier ou le numéro : ce connaissement est référencé")
+        transaction[bl_id] = candidate
     audit(cfg.log_dir, "bl_modifie", cible=bl_id)
-    return bl.model_dump()
+    return candidate.model_dump()
 
 
 @router.delete("/bl/{bl_id}")
@@ -215,10 +241,14 @@ def delete_bl(
 ) -> dict:
     """Supprimer un connaissement."""
     store = _get_bl_store(request)
-    if bl_id not in store:
-        raise HTTPException(404, "Connaissement introuvable")
-
-    del store[bl_id]
+    with store.transaction() as transaction:
+        bl = transaction.get(bl_id)
+        if not bl:
+            raise HTTPException(404, "Connaissement introuvable")
+        _exige_objet_dossier(request, bl)
+        if _bl_reference(transaction, bl.numero_bl):
+            raise HTTPException(409, "Connaissement référencé par un BAD, une expédition ou un enlèvement : suppression refusée")
+        del transaction[bl_id]
     audit(cfg.log_dir, "bl_supprime", cible=bl_id)
     return {"deleted": True, "id": bl_id}
 
@@ -233,19 +263,15 @@ def create_bad(
     bad: BonADelivrerCreate,
 ) -> dict:
     """Créer un nouveau bon à délivrer."""
+    _exige_dossier(bad.dossier_id, request)
+    bad_obj = BonADelivrer(id=new_id("bad_"), **bad.model_dump())
+    _valider_bad(bad_obj)
     store = _get_bad_store(request)
-    bad_obj = BonADelivrer(
-        id=new_id("bad_"),
-        dossier_id=bad.dossier_id,
-        numero_bl=bad.numero_bl,
-        numero_bad=bad.numero_bad,
-        emetteur=bad.emetteur,
-        date_emission=bad.date_emission,
-        valabilite=bad.valabilite,
-        statut=bad.statut,
-        observations=bad.observations,
-    )
-    store[bad_obj.id] = bad_obj
+    with store.transaction() as transaction:
+        exiger_dossier(cfg, bad_obj.dossier_id)
+        if not _bl_existant(transaction, bad_obj.dossier_id, bad_obj.numero_bl):
+            raise HTTPException(422, "Le BAD doit référencer un connaissement existant du même dossier")
+        transaction[bad_obj.id] = bad_obj
     audit(cfg.log_dir, "bad_cree", numero=bad.numero_bad, dossier=bad.dossier_id)
     return bad_obj.model_dump()
 
@@ -260,7 +286,7 @@ def list_bad(
     bads = list(store.values())
     if dossier_id:
         bads = [b for b in bads if b.dossier_id == dossier_id]
-    return [b.model_dump() for b in bads]
+    return [b.model_dump() for b in _filtre_dossiers(request, bads)]
 
 
 @router.get("/bad/{bad_id}")
@@ -273,6 +299,7 @@ def get_bad(
     bad = store.get(bad_id)
     if not bad:
         raise HTTPException(404, "Bon à délivrer introuvable")
+    _exige_objet_dossier(request, bad)
     return bad.model_dump()
 
 
@@ -284,16 +311,25 @@ def update_bad(
 ) -> dict:
     """Mettre à jour un bon à délivrer."""
     store = _get_bad_store(request)
-    bad = store.get(bad_id)
-    if not bad:
-        raise HTTPException(404, "Bon à délivrer introuvable")
+    with store.transaction() as transaction:
+        bad = transaction.get(bad_id)
+        if not bad:
+            raise HTTPException(404, "Bon à délivrer introuvable")
+        _exige_objet_dossier(request, bad)
 
-    update_data = bad_update.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(bad, key, value)
-
+        update_data = bad_update.model_dump(exclude_unset=True)
+        try:
+            candidate = BonADelivrer.model_validate({**bad.model_dump(), **update_data})
+        except ValidationError as exc:
+            raise HTTPException(422, exc.errors(include_context=False)) from exc
+        _valider_bad(candidate)
+        _exige_objet_dossier(request, candidate)
+        exiger_dossier(cfg, candidate.dossier_id)
+        if not _bl_existant(transaction, candidate.dossier_id, candidate.numero_bl):
+            raise HTTPException(422, "Le BAD doit référencer un connaissement existant du même dossier")
+        transaction[bad_id] = candidate
     audit(cfg.log_dir, "bad_modifie", cible=bad_id)
-    return bad.model_dump()
+    return candidate.model_dump()
 
 
 @router.delete("/bad/{bad_id}")
@@ -303,9 +339,11 @@ def delete_bad(
 ) -> dict:
     """Supprimer un bon à délivrer."""
     store = _get_bad_store(request)
-    if bad_id not in store:
-        raise HTTPException(404, "Bon à délivrer introuvable")
-
-    del store[bad_id]
+    with store.transaction() as transaction:
+        bad = transaction.get(bad_id)
+        if not bad:
+            raise HTTPException(404, "Bon à délivrer introuvable")
+        _exige_objet_dossier(request, bad)
+        del transaction[bad_id]
     audit(cfg.log_dir, "bad_supprime", cible=bad_id)
     return {"deleted": True, "id": bad_id}

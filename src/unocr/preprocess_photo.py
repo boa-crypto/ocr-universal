@@ -9,12 +9,13 @@ carte grise) là où le prétraitement standard peut sous-performer :
 """
 from __future__ import annotations
 
-import cv2
-import numpy as np
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 from typing import Optional
+
+import cv2
+import numpy as np
 
 
 class PreprocessStage(str, Enum):
@@ -158,10 +159,10 @@ class PhotoPreprocessor:
         """CLAHE (Contrast Limited Adaptive Histogram Equalization)."""
         if len(image.shape) == 3:
             lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
-            l, a, b = cv2.split(lab)
+            l_chan, a_chan, b_chan = cv2.split(lab)
             clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
-            l = clahe.apply(l)
-            merged = cv2.merge([l, a, b])
+            l_chan = clahe.apply(l_chan)
+            merged = cv2.merge([l_chan, a_chan, b_chan])
             return cv2.cvtColor(merged, cv2.COLOR_LAB2BGR)
         else:
             clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))

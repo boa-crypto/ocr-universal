@@ -29,6 +29,13 @@ python -m pytest tests/ -q
 ./scripts/run_server.sh          # UI : http://localhost:8000  ·  API : /docs
 ```
 
+Aperçu dans un bac à sable distant (écoute sur `0.0.0.0`, UI affichable en
+iframe, hôte `*.e2b.app` autorisé — **usage aperçu uniquement**) :
+
+```bash
+./scripts/run_preview.sh         # UNOCR_PREVIEW=1, port 8000
+```
+
 Ou en une commande avec Docker (embarque Tesseract + 11 langues + Poppler + zbar) :
 
 ```bash
@@ -107,3 +114,27 @@ séparation des modules) et [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 Tesseract (Apache-2.0), OpenCV (Apache-2.0), pdfminer.six (MIT), pypdfium2
 (BSD/Apache-2.0), reportlab (BSD), zxing-cpp (Apache-2.0), FastAPI (MIT)…
 Toutes compatibles usage local et redistribution prudente.
+
+
+## Référentiels douaniers algériens — chantier réglementaire
+
+Le [socle douanier et son état de complétude](docs/customs/README.md) distinguent
+les sources vérifiées des préparations en quarantaine. **Les deux référentiels
+nationaux complets ne sont pas encore livrés.** L'ancien calcul avec taux
+hypothétiques est désactivé ; aucun taux de remplacement n'est supposé.
+Voir [audit et blocages documentaires](docs/customs/AUDIT_INITIAL.md) et
+[rapport de recette partielle](docs/customs/RAPPORT_AVANCEMENT.md).
+
+Recherche documentaire des descriptions de mesures (lot 32, non applicable au calcul) : [guide](docs/customs/RECHERCHE_MESURES.md), [rapport](docs/customs/RAPPORT_LOT32.md).
+
+Lot 33 : la recherche Code conserve ses aperçus et ajoute des [extraits contextualisés](docs/customs/EXTRAITS_RECHERCHE_CODE.md) originaux avec positions Unicode, exportables et ouvrables par lecture exacte. Pas de fidélité PDF ou droit applicable déduits.
+
+Lot 34 : [inventaire local des sources déclarées](docs/customs/INVENTAIRE_SOURCES.md) via `customs-sources` et `GET /lots/{lot_id}/sources`, filtres/recherche métadonnées et export partiel audité. Aucun corpus exhaustif ou document authentifié déduit.
+
+Lot 35 : [téléchargement contrôlé du PDF archivé](docs/customs/COPIE_PDF_SOURCE.md) via `GET /lots/{lot_id}/pdf-source?document_id=…`, audit obligatoire et SHA navigateur, pièce jointe non validée (pas antivirus).
+
+Lot 36 : [préparer/rejouer des mesures JSON indépendantes de la nomenclature](docs/customs/MESURES_AUTONOMES.md) via CLI explicite, sans activation ni calcul.
+
+Lot 37 : [revue intégrée des mesures autonomes](docs/customs/REVUE_MESURES_AUTONOMES.md), type de registre `mesures`. Contrôle/recherche de mesures/sources/couverture et exports existants, autres opérations explicitement refusées ; aucun rapprochement fiscal.
+
+Lot 38 : [consultation nomenclature et mesures autonomes](docs/customs/CONSULTATION_TARIF_MESURES.md), CLI `customs-tariff-measures`, API racine `/tariff-measures`. Paire tarif/mesures explicitement autorisée pour cette seule opération, sources/paginations séparées et export à double provenance. Aucun rattachement juridique établi.

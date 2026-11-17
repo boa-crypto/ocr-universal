@@ -1,10 +1,16 @@
-import sqlite3
+"""Cache historique indexé uniquement par pixels, non utilisé par Pipeline.
+
+Ne pas réactiver sur un traitement OCR sans qualifier son contexte complet.
+Conservé pour compatibilité et lecture des données existantes ; pas de purge.
+"""
 import hashlib
 import json
-from pathlib import Path
-from typing import Optional, Any
-from .models import PageResult
+import sqlite3
+from typing import Optional
+
 from .config import get_config
+from .models import PageResult
+
 
 class PageCache:
     def __init__(self):

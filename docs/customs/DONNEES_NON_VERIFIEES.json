@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-04",
+  "statut": "ne_pas_utiliser_pour_calcul_douanier",
+  "legacy": {
+    "fichier": "data/reglementation/base.json",
+    "sha256": "688cb720eaeeddd8a88ea2e47021b6b9b17192d7226cc9e5218006b5adcb961f",
+    "codes_non_verifies": [
+      "0101",
+      "0102",
+      "0103",
+      "0104",
+      "0105",
+      "0201",
+      "0202",
+      "0203",
+      "0204"
+    ],
+    "doublons_cles_avec_litteral": [
+      "0101",
+      "0102",
+      "0103",
+      "0104",
+      "0105",
+      "0201",
+      "0202",
+      "0203",
+      "0204"
+    ],
+    "codes_10_chiffres": 0,
+    "regles_sans_justificatif_applicabilite": 9,
+    "types_certificats_non_valides": 4
+  },
+  "sources_originales_archivees_pendant_ce_lot": 0,
+  "articles_valides_importes": 0,
+  "codes_nationaux_valides_importes": 0,
+  "denominateur_completude": null,
+  "validation_humaine_effectuee": false,
+  "starterpack": "absent_des_fichiers_accessibles"
+}

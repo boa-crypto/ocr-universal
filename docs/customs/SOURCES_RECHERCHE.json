@@ -1,0 +1,181 @@
+{
+  "date_consultation": "2026-11-04",
+  "nature": "journal_de_recherche_non_normatif",
+  "documents": [
+    {
+      "id": "joradp-index",
+      "url": "https://www.joradp.dz/HFR/Index.htm",
+      "constat": "page_consultee",
+      "note": "Accueil, pas corpus exhaustif",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    },
+    {
+      "id": "joradp-1979",
+      "url": "https://www.joradp.dz/JRN/ZF1979.htm",
+      "constat": "page_consultee",
+      "note": "Calendrier, textes non acquis",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    },
+    {
+      "id": "joradp-1998",
+      "url": "https://www.joradp.dz/JRN/ZF1998.htm",
+      "constat": "page_consultee",
+      "note": "Calendrier, textes non acquis",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    },
+    {
+      "id": "joradp-2017",
+      "url": "https://www.joradp.dz/JRN/ZF2017.htm",
+      "constat": "echec_consultation",
+      "note": "Échec outil fetch",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    },
+    {
+      "id": "dgd-lois",
+      "url": "https://www.douane.gov.dz/spip.php?article23=",
+      "constat": "page_consultee",
+      "note": "Liste paginée non exhaustive",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    },
+    {
+      "id": "dgd-code-juin2017",
+      "url": "https://www.douane.gov.dz/IMG/pdf/loi_no79-07_du_21_juillet_1979.pdf",
+      "constat": "extraction_partielle",
+      "note": "En-tête Mise à jour Juin 2017 ; pas original 1979",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    },
+    {
+      "id": "dgd-loi17-04",
+      "url": "https://www.douane.gov.dz/IMG/pdf/loi_no_17-04_du_16_fevrier_2017_code_des_douanes.pdf",
+      "constat": "echec_consultation",
+      "note": "Original non acquis",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    },
+    {
+      "id": "dgd-tarif-catalogue",
+      "url": "https://www.douane.gov.dz/spip.php?rubrique170&lang=fr",
+      "constat": "page_consultee",
+      "note": "Catalogue accessible avec cette variante URL",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    },
+    {
+      "id": "dgd-tarif-en-ligne",
+      "url": "https://www.douane.gov.dz/spip.php?page=tarif_douanier",
+      "constat": "page_consultee",
+      "note": "Sections/formulaire, pas export intégral",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    },
+    {
+      "id": "dgd-note2024",
+      "url": "https://www.douane.gov.dz/spip.php?article530",
+      "constat": "page_consultee",
+      "note": "Liens vers note 4121 et corrélation ; applicabilité non validée",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    },
+    {
+      "id": "dgd-lf2026",
+      "url": "https://www.douane.gov.dz/IMG/pdf/loi_de_finance_2026.pdf",
+      "constat": "extraction_partielle",
+      "note": "En-tête loi 25-17 du 14 décembre 2025 ; dispositions non dépouillées intégralement",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    },
+    {
+      "id": "dgd-decisions2025",
+      "url": "https://www.douane.gov.dz/spip.php?article790",
+      "constat": "page_consultee",
+      "note": "Recueil décisions 2025 édition 2026, pas tarif national intégral",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    },
+    {
+      "id": "commerce-tarif",
+      "url": "https://www.commerce.gov.dz/fr/tarif-douanier-10-chiffres",
+      "constat": "echec_consultation",
+      "note": "HTTP 500 dans cette tentative",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    },
+    {
+      "id": "alces",
+      "url": "https://alces.douane.gov.dz/main",
+      "constat": "page_consultee",
+      "note": "Entrée Code SH, export/API non acquis",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    },
+    {
+      "id": "omd",
+      "url": "https://www.wcoomd.org/",
+      "constat": "echec_consultation",
+      "note": "Page Service Unavailable HTTP Error 503",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    },
+    {
+      "id": "omc",
+      "url": "https://www.wto.org/",
+      "constat": "page_consultee",
+      "note": "Accueil uniquement, aucune ligne nationale importée",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    },
+    {
+      "id": "onu",
+      "url": "https://www.un.org/",
+      "constat": "page_consultee",
+      "note": "Accueil uniquement, aucune ligne nationale importée",
+      "fichier_original_archive": false,
+      "sha256_original": null,
+      "validation_juridique": "non_effectuee"
+    }
+  ],
+  "chronologie_a_controler": [
+    {
+      "reference": "Loi 79-07 du 21 juillet 1979",
+      "origine_identification": "mission_utilisateur",
+      "texte_original_acquis": false,
+      "date_effet_verifiee": null
+    },
+    {
+      "reference": "Loi 98-10 du 22 août 1998",
+      "origine_identification": "mission_utilisateur",
+      "texte_original_acquis": false,
+      "date_effet_verifiee": null
+    },
+    {
+      "reference": "Loi 17-04 du 16 février 2017",
+      "origine_identification": "mission_utilisateur",
+      "texte_original_acquis": false,
+      "date_effet_verifiee": null
+    }
+  ],
+  "couverture_chronologique": "non_exhaustive",
+  "completude": null
+}

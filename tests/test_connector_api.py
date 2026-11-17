@@ -40,14 +40,15 @@ def client(tmp_cfg, fixtures_dir, tmp_path):
 def test_catalog_lists_adapters(client):
     rows = client.get("/api/connectors/catalog").json()
     ids = {r["connector_id"] for r in rows}
-    assert ids == {"demo_simulated", "assisted_export"}
-    assert all(r["is_real_external_system"] is False for r in rows)
+    assert ids == {"demo_simulated", "assisted_export", "customs_api"}
+    assert {r["connector_id"] for r in rows if r["is_real_external_system"]} == {"customs_api"}
 
 
 def test_overview_endpoint(client):
     body = client.get("/api/connectors").json()
     assert "summary" in body and "catalog" in body and "configured" in body
-    assert body["summary"]["real_external_adapters"] == 0
+    assert body["summary"]["real_external_adapters"] == 1
+    assert body["configured"] == []
 
 
 def test_create_then_state_is_to_test(client):

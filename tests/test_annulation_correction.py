@@ -58,12 +58,14 @@ def test_annulation_est_tracee_et_garde_la_correction(client):
     annulees = [json.loads(ligne) for ligne in lignes if "field_correction_annulee" in ligne]
     assert len(annulees) == 1
     e = annulees[0]
-    assert e["acteur"] == "marie" and e["motif"] == "erreur de ma part"
+    # Sans RBAC, le nom client ne devient pas une identité serveur (lot85).
+    assert e["acteur"] == "anonyme" and e["motif"] == "erreur de ma part"
     # la valeur supprimée reste connue : l'audit ne perd rien
     assert e["valeur_annulee"] == "FA-CORRIGEE" and e["valeur_restauree"] == "FA-1"
     # la correction d'origine est toujours là, pas écrasée par l'annulation
     validees = [json.loads(ligne) for ligne in lignes if "field_validated" in ligne]
     assert validees and validees[0]["corrected"] == "FA-CORRIGEE"
+    assert validees[0]["acteur"] == "anonyme"
 
 
 def test_annuler_une_valeur_normalisee_restaure_la_normalisation(client):

@@ -1,0 +1,188 @@
+{
+  "type_rapport": "recette_lot85_technique_non_validation_reglementaire",
+  "date_mesures_environnement": "2026-11-08",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "revision_code": "7e6e0bdb89cc41d893ea00a071e26850d98d3e2d",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_originaux_officiels": 0,
+  "articles_codes_officiellement_valides": 0,
+  "nouveaux_tests_python": 65,
+  "tests_historiques_actualises_pour_nouveau_contrat": 2,
+  "selection_attribution_action_statuts_annulation_revision_cloisonnement": {
+    "tests": 681,
+    "reussis": 681,
+    "echecs": 0,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 19.57,
+    "duree_junit_secondes": 18.353,
+    "horodatage_junit": "2026-11-08T07:48:12.061751+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 681,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "contre_epreuve_handlers84": {
+    "tests": 65,
+    "reussis": 25,
+    "echecs": 40,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 4.61,
+    "duree_junit_secondes": 3.907,
+    "horodatage_junit": "2026-11-08T07:41:40.310332+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 65,
+      "failures": 40,
+      "errors": 0,
+      "skipped": 0
+    },
+    "code_sortie": 1,
+    "revision_chargee": "d745a883a21244cdd2c12f263d4bd5b472755cb7",
+    "sources_checkout_non_remplacees": true,
+    "apercu_non_modifie": true,
+    "corps_patch_et_undo_reinjectes_memoire_sans_decorateurs": true
+  },
+  "recette_documentaire_ciblee": {
+    "tests": 2160,
+    "reussis": 2160,
+    "echecs": 0,
+    "erreurs": 0,
+    "ignores": 0,
+    "avertissements": 1,
+    "duree_console_secondes": 57.83,
+    "duree_junit_secondes": 56.669,
+    "horodatage_junit": "2026-11-08T07:48:39.198113+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": true,
+      "tests": 2160,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "fichiers": 66,
+    "jsdom_existants": 212
+  },
+  "suite_complete": {
+    "tests": 4072,
+    "reussis": 4069,
+    "echecs": 2,
+    "erreurs": 0,
+    "ignores": 1,
+    "avertissements": 1,
+    "duree_console_secondes": 365.34,
+    "duree_junit_secondes": 365.225,
+    "horodatage_junit": "2026-11-08T07:48:39.136292+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 4072,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 1
+    },
+    "identifiants_echecs": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ],
+    "ignores_detail": [
+      "tests.test_indra_ocr::test_indra_engine_recognize"
+    ],
+    "code_sortie": 1,
+    "identiques_lot84": true
+  },
+  "politique": {
+    "routes": [
+      "PATCH /api/jobs/{job_id}/fields/{name}",
+      "POST /api/jobs/{job_id}/fields/{name}/undo"
+    ],
+    "evenements": [
+      "field_validated",
+      "field_correction_annulee"
+    ],
+    "acteur_helper": "_acteur(request)",
+    "user_client_accepte_non_attributif": true,
+    "rbac_principal_nom": true,
+    "jeton_global_rbac_actif": "environnement",
+    "sans_rbac": "anonyme",
+    "motifs_et_valeurs_declares_conserves": true,
+    "acteur_apres_compare_replace_reussi": true,
+    "identite_civile_ou_signature": false
+  },
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "referentiels": {
+      "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+      "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d",
+      "conforme": false
+    },
+    "ecart_identique_lot84": true,
+    "restauration_effectuee": false,
+    "donnees_journaux_exploratoires_preserves_hors_commit": true
+  },
+  "ci": {
+    "run": 42460288284,
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42460288284",
+    "statut": "success",
+    "revision": "7e6e0bdb89cc41d893ea00a071e26850d98d3e2d",
+    "portee": "662 attribution/action/statuts/annulation/champs/révision/classification/valeurs/cloisonnement/RBAC + 243 qualité/Baidu + 24 ingestion/PDF + 10 UI + documentaire ; sélections se recouvrant",
+    "ocr_complet_execute_en_ci": false,
+    "junit_distant_telecharge": false
+  },
+  "apercu": {
+    "processus": "interface-uniocr-4f62d340",
+    "backend_lot": 76,
+    "code77_85_charge": false,
+    "redemarrage_impose": false,
+    "motif": "Préserver les traitements en cours",
+    "port": 8000,
+    "rbac_json_absent": true
+  },
+  "artefacts_locaux": "/home/user/recettes-unocr/lot85",
+  "limites": [
+    "Nom principal, pas identité civile/ID immuable/signature",
+    "Registre modifiable, jetons partageables, fallback anonyme non individuel",
+    "user ignoré pour attribution, motifs/valeurs sensibles toujours possibles",
+    "Événements historiques et autres routes à acteur déclaratif non migrés",
+    "Pas transaction globale résultat/audit ou journal WORM",
+    "Révision processus/ABA, undo, exports/qualité inchangés",
+    "Aperçu76 maintenu, code77–85 non chargé",
+    "Deux échecs Indra persistants, intégrité26/27",
+    "Aucun nouvel original officiel ou validation réglementaire"
+  ],
+  "suite_complete_initiale_conservee": {
+    "tests": 4072,
+    "reussis": 4068,
+    "echecs": 3,
+    "erreurs": 0,
+    "ignores": 1,
+    "avertissements": 1,
+    "duree_console_secondes": 369.88,
+    "duree_junit_secondes": 369.763,
+    "horodatage_junit": "2026-11-08T07:41:35.029578+00:00",
+    "bilan_junit": {
+      "lisible": true,
+      "compteurs_coherents_avec_cas": true,
+      "selection_sans_echec_ni_ignore": false,
+      "tests": 4072,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 1
+    }
+  }
+}

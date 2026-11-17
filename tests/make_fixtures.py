@@ -205,8 +205,10 @@ def make_injection_image(path: Path) -> str:
     return make_image_doc(path, text=text)
 
 
-def make_capture_images() -> dict:
+def make_capture_images(destination: Path | None = None) -> dict:
     """Photos synthétiques (conteneur, plaque FR/DZ, VIN) pour l'OCR de capture."""
+    destination = FIXTURES if destination is None else Path(destination)
+    destination.mkdir(parents=True, exist_ok=True)
     out = {}
     # Polices en ordre de préférence : Linux (DejaVu), puis Windows (Arial/Courier)
     _BOLD_CANDIDATES = [
@@ -233,7 +235,7 @@ def make_capture_images() -> dict:
         img = Image.new("RGB", size, (235, 235, 235))
         d = ImageDraw.Draw(img)
         d.text((60, 80), text, font=font, fill=(15, 15, 15))
-        img.save(FIXTURES / fname)
+        img.save(destination / fname)
         out[fname] = text
 
     shot("photo_container.png", "CSQU 3054383", bold)
@@ -272,27 +274,29 @@ def make_capture_images() -> dict:
     for line in lines:
         d.text((50, y), line[0], font=line[1], fill=(25, 25, 25))
         y += 72
-    cg.save(FIXTURES / "photo_carte_grise.png")
+    cg.save(destination / "photo_carte_grise.png")
     out["photo_carte_grise.png"] = "carte grise synthétique (14 champs)"
     return out
 
 
-def make_all() -> dict:
-    FIXTURES.mkdir(parents=True, exist_ok=True)
+def make_all(destination: Path | None = None) -> dict:
+    """Génère dans une destination explicite, sans changer la constante du module."""
+    destination = FIXTURES if destination is None else Path(destination)
+    destination.mkdir(parents=True, exist_ok=True)
     gt = {}
-    gt["text_pdf.pdf"] = make_text_pdf(FIXTURES / "text_pdf.pdf")
-    gt["scanned_pdf.pdf"] = make_scanned_pdf(FIXTURES / "scanned_pdf.pdf")
-    gt["skewed.png"] = make_image_doc(FIXTURES / "skewed.png", skew=8)
-    gt["dark.png"] = make_image_doc(FIXTURES / "dark.png", dark=True)
-    gt["table_pdf.pdf"] = make_table_pdf(FIXTURES / "table_pdf.pdf")
-    gt["bl_port.pdf"] = make_bl_pdf(FIXTURES / "bl_port.pdf")
-    gt["qr_code.png"] = make_qr_image(FIXTURES / "qr_code.png")
-    gt["letter.docx"] = make_docx(FIXTURES / "letter.docx")
-    gt["data.csv"] = make_csv(FIXTURES / "data.csv")
-    make_corrupt_pdf(FIXTURES / "corrupt.pdf")
-    gt["injection.png"] = make_injection_image(FIXTURES / "injection.png")
-    gt.update(make_capture_images())
-    (FIXTURES / "ground_truth.json").write_text(
+    gt["text_pdf.pdf"] = make_text_pdf(destination / "text_pdf.pdf")
+    gt["scanned_pdf.pdf"] = make_scanned_pdf(destination / "scanned_pdf.pdf")
+    gt["skewed.png"] = make_image_doc(destination / "skewed.png", skew=8)
+    gt["dark.png"] = make_image_doc(destination / "dark.png", dark=True)
+    gt["table_pdf.pdf"] = make_table_pdf(destination / "table_pdf.pdf")
+    gt["bl_port.pdf"] = make_bl_pdf(destination / "bl_port.pdf")
+    gt["qr_code.png"] = make_qr_image(destination / "qr_code.png")
+    gt["letter.docx"] = make_docx(destination / "letter.docx")
+    gt["data.csv"] = make_csv(destination / "data.csv")
+    make_corrupt_pdf(destination / "corrupt.pdf")
+    gt["injection.png"] = make_injection_image(destination / "injection.png")
+    gt.update(make_capture_images(destination))
+    (destination / "ground_truth.json").write_text(
         json.dumps(gt, ensure_ascii=False, indent=2), encoding="utf-8")
     return gt
 

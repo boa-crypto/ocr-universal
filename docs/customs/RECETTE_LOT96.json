@@ -1,0 +1,78 @@
+{
+  "type_rapport": "recette_pieces_textuelles_non_validation_technique_ou_juridique",
+  "date_reference_session": "2026-11-04",
+  "revision_code": "f12c57c5308a32cc7c6bb1f05d4182f00ad87425",
+  "revision_fonction": "bfd75aca2b9f7caeef322e68b5cb097dad5db960",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_originaux_officiels": 0,
+  "articles_codes_officiellement_valides": 0,
+  "nouveaux_tests_python": 48,
+  "selection_metier_revue_sauvegarde_permissions": {
+    "tests": 164,
+    "echecs": 0,
+    "ignores": 0,
+    "duree_secondes": 26.022,
+    "echecs_ids": []
+  },
+  "suite_complete_finale": {
+    "tests": 4402,
+    "echecs": 2,
+    "ignores": 1,
+    "duree_secondes": 388.354,
+    "echecs_ids": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ]
+  },
+  "recette_documentaire": {
+    "lisible": true,
+    "compteurs_coherents_avec_cas": true,
+    "selection_sans_echec_ni_ignore": true,
+    "tests": 2244,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "scenarios_jsdom_historiques": 212,
+  "scenarios_jsdom_metier": 26,
+  "http_reel": "POST creation avec piece, PATCH conservation, GET courant et version1, fixtures NON OFFICIELLES",
+  "ci": {
+    "headSha": "f12c57c5308a32cc7c6bb1f05d4182f00ad87425",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42472069963"
+  },
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "ecarts": {
+      "data/referentiels.json": {
+        "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+        "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d",
+        "conforme": false
+      }
+    },
+    "restauration_donnees_reelles": false
+  },
+  "limites": [
+    "Texte UTF8 seulement, pas original PDF/image authentifie",
+    "SHA du texte conserve, pas des octets du fichier original si decodage modifie BOM",
+    "Citation exacte ne certifie pas la verite de la valeur declaree",
+    "Pas inference technique, IA, ontologie ou consolidation juridique",
+    "Historique conserve les pieces retirees ; pas effacement RGPD ni chiffrement",
+    "Permissions POSIX et controle proprietaire ne protegent pas contre meme UID hostile ou ancetre substitue",
+    "Outbox au moins une fois, pas exactly-once ni WORM",
+    "Apercu API backend76 conserve ; statiques sur disque modifies, pas validation deploiement bout-en-bout"
+  ],
+  "artefacts_locaux": "/home/user/recettes-unocr/lot96",
+  "recette_documentaire_locale": "/home/user/recettes-unocr/lot96/documentaire-final/recette-5n7h4vrb/recette.json",
+  "empreintes_artefacts": {
+    "complete-finale.xml": "4ca8c5032f87ac4bdf2042ede9b27d0c63136cd8011bcdef1c195f537f43b997",
+    "metier-final.xml": "eb58be600ed1fc29e580d2650dc55b243c506613e6076a017afe6e7296b2ea44",
+    "ci-final.json": "0cd41ea73a97dc24e2be70f6c1085d25c9afc590ba7bb5e59972803bd3fd18cf",
+    "empreintes.json": "114e29f84285e6ab34da6bf56e231cf0123c908b6a299d7d5615eb6e6f8f8817",
+    "recette.json": "64075773964e9486ebe43b2e614945151e44a2076ed8f87200293d368a6fb5b4"
+  }
+}

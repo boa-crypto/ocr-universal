@@ -120,7 +120,12 @@ def test_rtl_switching_logic_present():
     """Le passage en arabe doit basculer dir=rtl sur <html>."""
     html = _html()
     assert 'document.documentElement.dir = rtl' in html
-    assert "rtl" in html and '[dir="rtl"]' in html      # CSS miroir présent
+    # Les feuilles de style sont servies séparément : le miroir visuel vit
+    # dans web/*.css, il faut donc les lire pour constater le comportement.
+    css = "\n".join(
+        f.read_text(encoding="utf-8") for f in sorted(WEB.glob("*.css"))
+    )
+    assert "rtl" in html and '[dir="rtl"]' in css, "CSS miroir absent"
 
 
 def test_no_external_resource_for_i18n():

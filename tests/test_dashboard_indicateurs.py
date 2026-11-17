@@ -1,6 +1,7 @@
 """Tests unitaires pour les indicateurs et le dashboard maritime."""
 
 from fastapi.testclient import TestClient
+
 from unocr.api import app
 
 

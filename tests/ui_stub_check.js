@@ -31,12 +31,13 @@ const html = fs.readFileSync(HTML, "utf8");
 const blocks = [];
 for (const m of html.matchAll(/<script>([\s\S]*?)<\/script>/g)) blocks.push(m[1]);
 if (!blocks.length) { console.error("bloc <script> introuvable"); process.exit(1); }
-const jsPath = path.join(__dirname, "_ui_extracted.js");
+const tempDir = fs.mkdtempSync(path.join(require("os").tmpdir(), "unocr-ui-"));
+const jsPath = path.join(tempDir, "_ui_extracted.js");
 fs.writeFileSync(jsPath, blocks.join("\n;\n"));
 
 // ── 1. syntaxe ──────────────────────────────────────────────────────────────
 for (let i = 0; i < blocks.length; i++) {
-  const one = path.join(__dirname, `_ui_bloc_${i}.js`);
+  const one = path.join(tempDir, `_ui_bloc_${i}.js`);
   fs.writeFileSync(one, blocks[i]);
   try {
     execFileSync(process.execPath, ["--check", one], { stdio: "pipe" });
@@ -166,59 +167,34 @@ if (tailleKo > PLAFOND_KO) {
   ok(`taille du fichier unique : ${tailleKo} Ko (plafond ${PLAFOND_KO} Ko)`);
 }
 
-// ── 3bis. la rubrique Connecteurs rend-elle du contenu ? ────────────────────
-// Sans navigateur, on exécute le module du hub sur un DOM simulé branché sur
-// l'API réelle : chaque sous-menu doit produire des éléments, pas du texte seul.
-(function checkConnectorHub() {
-  const http = require("http");
-  const get = path => new Promise((res, rej) => {
-    http.get("http://127.0.0.1:" + (process.env.PORT || 8000) + path, r => {
-      let t = ""; r.on("data", d => t += d); r.on("end", () => res(t));
-    }).on("error", rej);
-  });
-  get("/api/connectors").then(() => {
-    const script = path.join(__dirname, "_hub_render.js");
-    fs.writeFileSync(script, fs.readFileSync(
-      path.join(__dirname, "_hub_render_src.js"), "utf8"));
-    const out = execFileSync(process.execPath, [script], {
-      encoding: "utf8", timeout: 120000, env: Object.assign({}, process.env) });
-    try { fs.unlinkSync(script); } catch (e) { /* déjà absent */ }
-    const lignes = out.split("\n").filter(l => /\[OK\]|\[KO\]/.test(l));
-    const ko = lignes.filter(l => l.indexOf("[KO]") !== -1);
-    ok(`Connecteur Hub : ${lignes.length} contrôles de rendu exécutés`);
-    if (ko.length) ko("Connecteur Hub :\n" + ko.join("\n"));
-  }).catch((e) => {
-    const raison = (e && e.code) ? "API locale injoignable (" + e.code + ")" : String(e).slice(0, 120);
-    console.log("  [--]   Connecteur Hub : contrôle de rendu ignoré — " + raison);
-    console.log("         (attendu hors serveur ; sinon lancer uvicorn sur le port 8000)");
-  });
-})();
-
-// ── 3ter. la rubrique Parcours documentaire rend-elle du contenu ? ─────────
-// Même méthode que pour le hub : le module *servi* (extrait de index.html) est
-// posé sur un DOM simulé et tourné contre l'API réelle. Le port suit PORT.
-(function checkDossierModule() {
-  const http = require("http");
-  const port = process.env.PORT || 8000;
-  const get = p => new Promise((res, rej) => {
-    http.get("http://127.0.0.1:" + port + p, r => {
-      let t = ""; r.on("data", d => t += d); r.on("end", () => res(t));
-    }).on("error", rej);
-  });
-  get("/api/dossier-profiles").then(() => {
-    const out = execFileSync(process.execPath,
-      [path.join(__dirname, "_dossier_render_src.js"), String(port)],
-      { encoding: "utf8", timeout: 180000, env: Object.assign({}, process.env) });
-    const lignes = out.split("\n").filter(l => /\[OK\]|\[FAIL\]/.test(l));
-    const ko = lignes.filter(l => l.indexOf("[FAIL]") !== -1);
-    ok(`Parcours documentaire : ${lignes.length} controles de rendu executes`);
-    if (ko.length) ko("Parcours documentaire :\n" + ko.join("\n"));
-  }).catch((e) => {
-    const raison = (e && e.code) ? "API locale injoignable (" + e.code + ")"
-                                 : String(e).slice(0, 120);
-    console.log("  [--]   Parcours documentaire : controle de rendu ignore — " + raison);
-  });
-})();
+// Les erreurs de rendu sont des échecs ; seul ECONNREFUSED est facultatif.
+async function checkRenders() {
+  if (process.argv.includes("--static")) return;
+  const {readLocal} = require("./served_modules");
+  const port = process.env.PORT || "8000";
+  try { await readLocal(port, "/api/health"); }
+  catch (error) {
+    if (error.code === "ECONNREFUSED" && !process.argv.includes("--require-render")) {
+      console.log("  [--]   serveur absent : rendu non exécuté"); return;
+    }
+    ko("serveur de rendu : " + error.message); return;
+  }
+  for (const [name, script, expected] of [
+    ["Connecteur Hub", "_hub_render_src.js", 21],
+    ["Parcours documentaire", "_dossier_render_src.js", 55],
+  ]) {
+    try {
+      const out = execFileSync(process.execPath,
+        [path.join(__dirname, script), String(port)],
+        {encoding: "utf8", timeout: 180000, env: {...process.env, PORT: String(port)}});
+      const {validateRenderOutput} = require("./render_output");
+      const count = validateRenderOutput(out, expected);
+      ok(`${name} : ${count} controles de rendu executes`);
+    } catch (error) {
+      ko(name + " : échec du harnais\n" + (error.stdout || "") + (error.stderr || error.message));
+    }
+  }
+}
 
 // ── 4. aucune ressource réseau externe ──────────────────────────────────────
 // On n'interdit que ce qui quitte la machine : URL absolue, autre hôte, CDN.
@@ -231,14 +207,10 @@ else ok(`aucune ressource externe (${links.length} lien(s) local/locale)`);
 
 fs.unlinkSync(jsPath);
 console.log("");
-if (failures) { console.log(failures + " contrôle(s) en échec."); process.exit(1); }
-console.log("Tous les contrôles statiques de l'interface passent.");
+if (failures) console.log(failures + " contrôle(s) statiques en échec.");
+else console.log("Tous les contrôles statiques de l'interface passent.");
 
-// ── Nettoyage des fichiers temporaires générés par ce contrôle ──────────────
-try {
-  fs.readdirSync(__dirname).forEach(function (f) {
-    if (/^_ui_bloc_\d+\.js$/.test(f) || f === "_hub_render.js") {
-      fs.unlinkSync(path.join(__dirname, f));
-    }
-  });
-} catch (e) { /* sans importance */ }
+// Le statut final attend tous les contrôles asynchrones.
+fs.rmSync(tempDir, {recursive: true, force: true});
+checkRenders().then(() => { process.exitCode = failures ? 1 : 0; })
+  .catch(error => { console.error(error); process.exitCode = 1; });

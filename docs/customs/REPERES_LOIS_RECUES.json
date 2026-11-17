@@ -1,0 +1,33 @@
+{
+  "lot_id": "lois_recues_1979_2017",
+  "manifest_sha256": "086ddbf89fb0770418e56a83dfe3bc5647d2494cd6a0bed6231ef0492b897605",
+  "index_sha256": "e055e6dafccb2eb4f56e2b75917be81f1773c9658a8758f284572d3de40a85c5",
+  "documents": [
+    {
+      "document_id": "DZ_LOI_17_04_2017",
+      "reperes_candidats": 140,
+      "exemples_137": [
+        {
+          "numero_litteral": "137",
+          "page_pdf": 35,
+          "repere_id": "a2ef5c2a08d1218d0c6b24507c9f5808523aeed7c7a2a3dfff095f94f0857e21",
+          "sha256_texte_utf8": "41060b837f58880c7bd2562dd04b3dd56b4708930fe63a7fd7dec098b1d1c9a4"
+        }
+      ]
+    },
+    {
+      "document_id": "DZ_CODE_COMPILATION_JUIN_2017",
+      "reperes_candidats": 451,
+      "exemples_137": [
+        {
+          "numero_litteral": "137",
+          "page_pdf": 89,
+          "repere_id": "60f2b35c0844e419d02a7b72705106531f37a4f2d644756066eb9ca2031f9147",
+          "sha256_texte_utf8": "a530e0247a165f86686f2b6e6f19aca66bb282f14513a633d6c8dc155f7d27ea"
+        }
+      ]
+    }
+  ],
+  "articles_juridiquement_valides": 0,
+  "publication_active": false
+}

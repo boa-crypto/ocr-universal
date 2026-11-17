@@ -100,18 +100,20 @@ def test_submission_result_defaults_to_pending():
 
 # ─────────────────────────── registre ───────────────────────────
 
-def test_default_registry_has_two_adapters():
+def test_default_registry_has_three_adapters():
     reg = default_registry()
     ids = {a["connector_id"] for a in reg.available_adapters()}
-    assert ids == {"demo_simulated", "assisted_export"}
+    assert ids == {"demo_simulated", "assisted_export", "customs_api"}
 
 
-def test_registry_has_no_real_external_adapter():
-    """Aucun adaptateur vers une administration réelle n'est livré sans
-    documentation et accès autorisés."""
+def test_real_adapter_catalog_does_not_make_it_operational():
+    """Classe douanière disponible ≠ connexion configurée ou réellement testée."""
     reg = default_registry()
-    assert all(not a["is_real_external_system"]
-               for a in reg.available_adapters())
+    assert {a["connector_id"] for a in reg.available_adapters() if a["is_real_external_system"]} == {"customs_api"}
+    assert reg.instances() == reg.operational() == []
+    inst = reg.create("customs_api")
+    assert inst.state is ConnectorState.UNCONFIGURED
+    assert reg.operational() == []
 
 
 def test_registering_new_adapter_needs_no_core_change():
@@ -230,8 +232,8 @@ def test_summary_counts_states(hub):
     hub.create("assisted_export")
     s = hub.summary()
     assert s["configured"] == 2
-    assert s["adapters_available"] == 2
-    assert s["real_external_adapters"] == 0
+    assert s["adapters_available"] == 3
+    assert s["real_external_adapters"] == 1
 
 
 # ─────────────────────────── connecteur simulé ───────────────────────────

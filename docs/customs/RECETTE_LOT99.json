@@ -1,0 +1,114 @@
+{
+  "type_rapport": "recette_reperes_candidats_et_lecture_indexee_non_validation_juridique",
+  "revision_code": "0eabb8b123c8726398c6e00cd55357339bd2f58f",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "nouveaux_tests_python": 14,
+  "selection_ciblee": {
+    "tests": 72,
+    "echecs": 0,
+    "ignores": 0,
+    "duree_secondes": 9.866,
+    "echecs_ids": []
+  },
+  "suite_complete": {
+    "tests": 4462,
+    "echecs": 2,
+    "ignores": 1,
+    "duree_secondes": 373.978,
+    "echecs_ids": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ]
+  },
+  "recette_documentaire": {
+    "lisible": true,
+    "compteurs_coherents_avec_cas": true,
+    "selection_sans_echec_ni_ignore": true,
+    "tests": 2304,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "scenarios_jsdom_pages": 8,
+  "recette_api_copies_reelles": {
+    "tests": 1,
+    "echecs": 0,
+    "ignores": 0,
+    "duree_secondes": 1.321,
+    "echecs_ids": []
+  },
+  "observations_reelles": {
+    "lot_id": "lois_recues_1979_2017",
+    "manifest_sha256": "086ddbf89fb0770418e56a83dfe3bc5647d2494cd6a0bed6231ef0492b897605",
+    "index_sha256": "e055e6dafccb2eb4f56e2b75917be81f1773c9658a8758f284572d3de40a85c5",
+    "documents": [
+      {
+        "document_id": "DZ_LOI_17_04_2017",
+        "reperes_candidats": 140,
+        "exemples_137": [
+          {
+            "numero_litteral": "137",
+            "page_pdf": 35,
+            "repere_id": "a2ef5c2a08d1218d0c6b24507c9f5808523aeed7c7a2a3dfff095f94f0857e21",
+            "sha256_texte_utf8": "41060b837f58880c7bd2562dd04b3dd56b4708930fe63a7fd7dec098b1d1c9a4"
+          }
+        ]
+      },
+      {
+        "document_id": "DZ_CODE_COMPILATION_JUIN_2017",
+        "reperes_candidats": 451,
+        "exemples_137": [
+          {
+            "numero_litteral": "137",
+            "page_pdf": 89,
+            "repere_id": "60f2b35c0844e419d02a7b72705106531f37a4f2d644756066eb9ca2031f9147",
+            "sha256_texte_utf8": "a530e0247a165f86686f2b6e6f19aca66bb282f14513a633d6c8dc155f7d27ea"
+          }
+        ]
+      }
+    ],
+    "articles_juridiquement_valides": 0,
+    "publication_active": false
+  },
+  "ci": {
+    "conclusion": "success",
+    "databaseId": 42479137420,
+    "headSha": "0eabb8b123c8726398c6e00cd55357339bd2f58f",
+    "status": "completed",
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42479137420"
+  },
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "identique_au_lot98": true,
+    "ecarts": {
+      "data/referentiels.json": {
+        "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+        "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d",
+        "conforme": false
+      }
+    },
+    "restauration": false
+  },
+  "mission_globale": "partielle",
+  "authenticite_etablie": false,
+  "articles_juridiques_valides": 0,
+  "publication_active": false,
+  "limites": [
+    "Detection typographique francaise non exhaustive, pas segmentation ou qualification des articles",
+    "Meme numero dans deux documents ne constitue pas une relation juridique",
+    "Texte natif indexe non corrige ; pas OCR",
+    "UI ne parcourt pas encore tous les fragments dune longue page ; API paginee disponible",
+    "JSDOM et HTTP de test, pas navigateurs reels ou qualification de charge",
+    "Backend partage76 non redemarre et aucune habilitation reelle ajoutee"
+  ],
+  "artefacts_locaux": "/home/user/recettes-unocr/lot99",
+  "empreintes_artefacts": {
+    "complete.xml": "379998974225fc7c928f6f912e8a6064eb4bb9f71d2c62e35ff7dbe32ef98853",
+    "cibles.xml": "a73a9f79df66ea879ee002743e418798b5bbee8172f34db096dc1e74f49be4a9",
+    "ci.json": "8454ee686b7e84469622e1d7b62d3c5a3b44cb0b0b29f9acaa9456752eff7c64",
+    "http-reels.xml": "75d8487d597ca0a6eccdc573e75ce1d8396a721e99bde83f96bc4a22616ddb08",
+    "empreintes.json": "3b18e562e592bbc56df5124bdb4c74adecc975fb516efb08412664a32df86c08",
+    "reels.json": "ea9a2971e7876fa33fec6b06f399e7cd442ffa7ecf191ccdbef43e7d68744ef8"
+  }
+}

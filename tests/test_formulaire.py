@@ -319,7 +319,7 @@ def test_quantite_sans_separateur_reste_lue() -> None:
     assert m is not None and m.group(1) == "40"
 
 
-def test_liste_de_colisage_ne_capture_pas_le_mot_cle_suivant() -> None:
+def test_liste_de_colisage_ne_capture_pas_le_mot_cle_suivant(tmp_path, tmp_cfg) -> None:
     """« PACKING LIST / Invoice ref: … » ne doit pas rendre « INVOICE ».
 
     Le champ `packing_list_number` doit rester vide quand la liste de
@@ -337,12 +337,12 @@ def test_liste_de_colisage_ne_capture_pas_le_mot_cle_suivant() -> None:
     from unocr.pipeline import Pipeline
 
     res = Pipeline(get_config()).process_file(
-        creer_fixtures()["colisage"], JobOptions(export_formats=["json"]))
+        creer_fixtures(tmp_path / "documents-parcours")["colisage"], JobOptions(export_formats=["json"]))
     valeur = res.fields["packing_list_number"].value
     assert valeur in (None, ""), f"mot-clé capturé comme numéro : {valeur!r}"
 
 
-def test_poids_divergents_restent_justes_dans_le_formulaire() -> None:
+def test_poids_divergents_restent_justes_dans_le_formulaire(tmp_path, tmp_cfg) -> None:
     """Les valeurs du formulaire sont les vraies, pas des troncatures."""
     import sys
     from pathlib import Path
@@ -354,7 +354,7 @@ def test_poids_divergents_restent_justes_dans_le_formulaire() -> None:
     from unocr.models import JobOptions
     from unocr.pipeline import Pipeline
 
-    docs = creer_fixtures()
+    docs = creer_fixtures(tmp_path / "documents-parcours")
     valeurs = {}
     for role in ("bl", "colisage"):
         res = Pipeline(get_config()).process_file(

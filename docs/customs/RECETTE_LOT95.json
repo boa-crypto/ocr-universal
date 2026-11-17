@@ -1,0 +1,86 @@
+{
+  "type_rapport": "recette_technique_non_validation_reglementaire",
+  "date_reference_session": "2026-11-04",
+  "revision_code": "2f21fb99d03a98ced4c074b47f969661a84d249e",
+  "revision_fonction": "dfdc8dff6dd3a13d7d2bd6bf1253c57cd97f8a38",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_originaux_officiels": 0,
+  "articles_codes_officiellement_valides": 0,
+  "nouveaux_tests_python": 7,
+  "selection_metier_revue_sauvegarde": {
+    "tests": 114,
+    "echecs": 0,
+    "ignores": 0,
+    "duree_secondes": 11.113,
+    "echecs_ids": []
+  },
+  "suite_complete_initiale": {
+    "tests": 4354,
+    "echecs": 3,
+    "ignores": 1,
+    "duree_secondes": 370.855,
+    "echecs_ids": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present",
+      "tests.test_ui_engine_provenance::test_engine_provenance_shell_loading_order_and_cache"
+    ]
+  },
+  "suite_complete_corrigee": {
+    "tests": 4354,
+    "echecs": 2,
+    "ignores": 1,
+    "duree_secondes": 379.487,
+    "echecs_ids": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ]
+  },
+  "recette_documentaire": {
+    "lisible": true,
+    "compteurs_coherents_avec_cas": true,
+    "selection_sans_echec_ni_ignore": true,
+    "tests": 2196,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "scenarios_jsdom_historiques": 212,
+  "scenarios_jsdom_metier": 16,
+  "ui_metier_api_reelle": "POST creation, PATCH revision, GET historique, fixtures non officielles",
+  "ci": {
+    "headSha": "2f21fb99d03a98ced4c074b47f969661a84d249e",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42469367668"
+  },
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "ecarts": {
+      "data/referentiels.json": {
+        "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+        "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d",
+        "conforme": false
+      }
+    },
+    "restauration": false
+  },
+  "apercu": "backend76 conserve, pas de redemarrage ni deploiement",
+  "limites": [
+    "Pas de corpus officiel nouveau ni classement IA",
+    "Outbox versions au moins une fois ; doublon possible après append avant acquittement",
+    "Résumé HTTP externe distinct : 503 postcommit encore possible",
+    "Pas de transaction distribuée de sauvegarde ni archivage WORM",
+    "Justificatifs rattachés, ontologie, consolidation juridique et intégration centrale non livrés",
+    "Pas de réception navigateur réel/charge/exploitation habilitée"
+  ],
+  "artefacts_locaux": "/home/user/recettes-unocr/lot95",
+  "empreintes_artefacts": {
+    "complete.xml": "ba44c37d80a4084b21c3a1b56edc27c5a63ca9e346e52ec61650f5e6b47fe646",
+    "complete-corrigee.xml": "bf65cd8e58e3aea6cc79cae857fc031c5e4172f74e96fc1b6d0d158631b75b06",
+    "ci-final.json": "b344b880df79bc5f66d6e01a511454ae5cefef32e5dcff54b65d4f090ddd9026",
+    "empreintes.json": "114e29f84285e6ab34da6bf56e231cf0123c908b6a299d7d5615eb6e6f8f8817"
+  }
+}

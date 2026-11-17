@@ -3393,3 +3393,13 @@
 {"ts": 1793630835.8040082, "event": "dossier_created", "dossier_id": "dos_4baf07dbac30", "acteur": "utilisateur", "profile": "personnalise"}
 {"ts": 1793630840.323933, "event": "dossier_created", "dossier_id": "dos_c70e672ffdca", "acteur": "utilisateur", "profile": "personnalise"}
 {"ts": 1793630844.1106105, "event": "dossier_created", "dossier_id": "dos_6035948a8d14", "acteur": "utilisateur", "profile": "personnalise"}
+{"ts": 1793805753.868803, "event": "referentiel_cree", "cible": "port_90da01f141f9", "collection": "ports", "libelle": "Port d Oran"}
+{"ts": 1793806241.9650466, "event": "referentiel_cree", "cible": "port_f1b44123fb72", "collection": "ports", "libelle": "Port de test jsdom"}
+{"ts": 1793806251.273625, "event": "referentiel_supprime", "cible": "port_90da01f141f9", "collection": "ports", "libelle": "Port d Oran"}
+{"ts": 1793806251.2766516, "event": "referentiel_supprime", "cible": "port_f1b44123fb72", "collection": "ports", "libelle": "Port de test jsdom"}
+{"ts": 1793806281.3453484, "event": "document_classified", "job_id": "doc_87d22d673522", "category": "invoice", "confidence": 0.714, "classifier_version": "1.0.0", "needs_review": false, "manual": false, "evidence_count": 8}
+{"ts": 1793806282.5257897, "event": "document_classified", "job_id": "doc_5e37cc2d77ad", "category": "invoice", "confidence": 0.714, "classifier_version": "1.0.0", "needs_review": false, "manual": false, "evidence_count": 8}
+{"ts": 1793806283.6646857, "event": "job_created", "job_id": "job_10a5701ccc9f", "filename": "attente.pdf", "size": 10, "profile": "generic"}
+{"ts": 1793806508.6432147, "event": "document_classified", "job_id": "doc_ed1d99e4bb04", "category": "invoice", "confidence": 0.714, "classifier_version": "1.0.0", "needs_review": false, "manual": false, "evidence_count": 8}
+{"ts": 1793806509.7273831, "event": "document_classified", "job_id": "doc_c1a483319af3", "category": "invoice", "confidence": 0.714, "classifier_version": "1.0.0", "needs_review": false, "manual": false, "evidence_count": 8}
+{"ts": 1793806510.8773777, "event": "job_created", "job_id": "job_47c70ced4194", "filename": "attente.pdf", "size": 10, "profile": "generic"}

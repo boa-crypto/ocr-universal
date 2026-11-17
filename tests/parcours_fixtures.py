@@ -72,11 +72,12 @@ COLISAGE = [
 ]
 
 
-def creer_fixtures() -> dict[str, Path]:
+def creer_fixtures(destination: Path | None = None) -> dict[str, Path]:
     """Écrit les trois documents et renvoie leurs chemins."""
-    FIXTURES.mkdir(parents=True, exist_ok=True)
+    destination = FIXTURES if destination is None else Path(destination)
+    destination.mkdir(parents=True, exist_ok=True)
     return {
-        "facture": _pdf(FACTURE, FIXTURES / "parcours_facture.pdf"),
-        "bl": _pdf(BL, FIXTURES / "parcours_bl.pdf"),
-        "colisage": _pdf(COLISAGE, FIXTURES / "parcours_colisage.pdf"),
+        "facture": _pdf(FACTURE, destination / "parcours_facture.pdf"),
+        "bl": _pdf(BL, destination / "parcours_bl.pdf"),
+        "colisage": _pdf(COLISAGE, destination / "parcours_colisage.pdf"),
     }

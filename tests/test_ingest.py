@@ -63,11 +63,24 @@ def test_page_limit_est_verifie_avant_extraction_et_rendu_pdf(fixtures_dir,
     import pypdfium2
 
     class Pdf:
+        closed = False
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            self.closed = True
+
         def __len__(self):
             return 2
 
-    monkeypatch.setattr(pypdfium2, "PdfDocument", lambda _path: Pdf())
+        def __getitem__(self, index):
+            pytest.fail("page demandée avant refus de limite")
+
+    pdf = Pdf()
+    monkeypatch.setattr(pypdfium2, "PdfDocument", lambda _path: pdf)
     monkeypatch.setattr(pdfminer.high_level, "extract_pages",
                         lambda *args, **kwargs: pytest.fail("extraction trop tôt"))
     with pytest.raises(SecurityError, match="trop de pages"):
         load_document(fixtures_dir / "text_pdf.pdf", max_pages=1)
+    assert pdf.closed

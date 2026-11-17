@@ -135,8 +135,10 @@ def degrade(img: Image.Image, p: dict, rng: random.Random) -> Image.Image:
     return img
 
 
-def make_field_samples() -> dict:
-    SAMPLES_DIR.mkdir(parents=True, exist_ok=True)
+def make_field_samples(destination: Path | None = None) -> dict:
+    """Destination explicite pour les tests ; défaut manuel historique conservé."""
+    output = Path(destination) if destination is not None else SAMPLES_DIR
+    output.mkdir(parents=True, exist_ok=True)
     rng = random.Random(20261017)
     gt = {}
     for doc_name, doc in DOCS.items():
@@ -144,7 +146,7 @@ def make_field_samples() -> dict:
         for vname, params in VARIANTS.items():
             img = degrade(base.copy(), params, rng)
             fname = f"{doc_name}__{vname}.png"
-            img.save(SAMPLES_DIR / fname)
+            img.save(output / fname)
             gt[fname] = {
                 "profile": doc["profile"],
                 "text": "\n".join(doc["text_lines"]),
@@ -152,7 +154,7 @@ def make_field_samples() -> dict:
                 "variant": vname,
                 "synthetic": True,
             }
-    (SAMPLES_DIR / "ground_truth.json").write_text(
+    (output / "ground_truth.json").write_text(
         json.dumps(gt, ensure_ascii=False, indent=2), encoding="utf-8")
     return gt
 

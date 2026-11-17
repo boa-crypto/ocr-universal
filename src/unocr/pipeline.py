@@ -16,6 +16,7 @@ from PIL import Image
 
 from .calibration import Calibration
 from .classification import DocumentClassifier, consigne_classification
+from .confidence_provenance import attach_confidence_provenance
 from .config import Config, get_config
 from .direction import detect_direction, dominant_direction
 from .extract_fields import extract_generic_fields, locate_value
@@ -243,8 +244,8 @@ class Pipeline:
 
         # 6. qualité (seuil de revue humaine configurable)
         report("quality", 0.9)
-        result.quality = build_quality_report(
-            result, review_threshold=options.min_confidence_review)
+        # Recalculer les champs AVANT le rapport, pour que sa liste de revue
+        # reflète les confiances effectivement enregistrées.
         # recalcule les confiances globales des champs avec le facteur qualité
         for fv in result.fields.values():
             if fv.page_num:
@@ -255,6 +256,9 @@ class Pipeline:
                     fv.confidence = round(g, 3)
                     # A2 : probabilité calibrée (égale à la confiance si inactive)
                     fv.calibrated_confidence = self._calibration.apply(fv.confidence)
+
+        result.quality = build_quality_report(
+            result, review_threshold=options.min_confidence_review)
 
         # 8. métadonnées
         result.engines_used = sorted({r.engine for p in result.pages for r in p.engine_runs})
@@ -322,17 +326,10 @@ class Pipeline:
                 mean_confidence=0.95, word_count=len(native_words), ok=True))
             return page_res
 
-        # Vérification du cache SQLite
-        from .cache import PageCache
-        import io
-        cache = PageCache()
-        buffered = io.BytesIO()
-        lpage.image.save(buffered, format="PNG")
-        img_bytes = buffered.getvalue()
-        cached_res = cache.get(img_bytes)
-        if cached_res is not None:
-            cached_res.page_num = lpage.page_num
-            return cached_res
+        # Le cache historique ne distinguait que les pixels : options, couche
+        # native, moteurs/modèles et pagination pouvaient être réutilisés à tort.
+        # Ne pas le consulter ni l'alimenter tant qu'une identité complète du
+        # calcul n'est pas qualifiée. Les bases existantes restent intactes.
 
         quality = analyze_quality(lpage.image, lpage.estimated_dpi)
         page_res.quality = quality
@@ -441,11 +438,12 @@ class Pipeline:
                     calibrated = self._calibration.apply(out.mean_confidence)
                 else:
                     calibrated = out.mean_confidence
-                engine_runs.append(EngineRun(
+                run = EngineRun(
                     engine=eng.name, page_num=lpage.page_num,
                     languages=languages, mean_confidence=out.mean_confidence,
                     word_count=len(out.words),
-                    duration_ms=out.duration_ms, ok=out.ok, error=out.error))
+                    duration_ms=out.duration_ms, ok=out.ok, error=out.error)
+                engine_runs.append(attach_confidence_provenance(run, out))
                 if out.ok:
                     outputs.append(out)
                 # Fallback intelligent : si Indra échoue ou confiance trop faible, tenter Tesseract
@@ -457,9 +455,6 @@ class Pipeline:
                         try:
                             out2 = tesseract_eng.recognize(img, languages, lpage.page_num)
                             if out2.ok:
-                                calibrated2 = self._calibration.apply(out2.mean_confidence) \
-                                    if hasattr(self, '_calibration') and self._calibration.active \
-                                    else out2.mean_confidence
                                 engine_runs.append(EngineRun(
                                     engine="tesseract", page_num=lpage.page_num,
                                     languages=languages, mean_confidence=out2.mean_confidence,
@@ -501,12 +496,6 @@ class Pipeline:
         if page_res.blocks:
             page_res.text = "\n".join(b.text for b in page_res.blocks)
         page_res.detected_languages = _detect_languages(page_res.text)
-
-        # Stockage dans le cache pour les traitements futurs
-        try:
-            cache.set(img_bytes, page_res)
-        except Exception:
-            pass  # le cache est un optimiseur, jamais un point de défaillance
 
         return page_res
 

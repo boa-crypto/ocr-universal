@@ -16,11 +16,8 @@ from unocr.dossier import DossierStore
 from unocr.rbac import (
     ADMINISTRATEUR,
     LECTEUR,
-    AGENT_DE_TRANSIT,
-    RESPONSABLE_TRANSPORT,
-    DECLARANT_HABILE,
-    CONTROLEUR_DOCUMENTAIRE,
-    RESPONSABLE_FINANCIER,
+    OPERATEUR,
+    SUPERVISEUR,
     TOUS,
     RBACError,
     RegistreRBAC,

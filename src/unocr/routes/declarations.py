@@ -2,14 +2,17 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Body, Depends, Request, HTTPException
-from pydantic import BaseModel
-from typing import Any, Optional, List
+from typing import List, Optional
 
-from ..models import DeclarationDouaniere, Liquidation, new_id
+from fastapi import APIRouter, HTTPException, Request
+from pydantic import BaseModel, ValidationError
+
+from ..business_links import exiger_dossier
+from ..business_store import BusinessStore
 from ..config import get_config
 from ..logging_setup import audit, get_logger
-from ..rbac import ADMINISTRATEUR, LECTEUR
+from ..models import DeclarationDouaniere, Liquidation, new_id
+from .dependencies import _exige_dossier, _exige_objet_dossier, _filtre_dossiers
 
 log = get_logger("declarations")
 
@@ -19,23 +22,30 @@ cfg = get_config()
 
 
 # ───────────────────────────────────────────────────────────────
-# Stores en mémoire
+# Stockage local transactionnel (aucun cache en mémoire faisant autorité).
 # ───────────────────────────────────────────────────────────────
 
-_declaration_store: dict[str, DeclarationDouaniere] = {}
-_liquidation_store: dict[str, Liquidation] = {}
+def _get_declaration_store(request: Request) -> BusinessStore[DeclarationDouaniere]:
+    return BusinessStore(cfg.data_dir / "metier.sqlite3", "declaration", DeclarationDouaniere)
 
 
-def _get_declaration_store(request: Request) -> dict:
-    if not hasattr(request.app.state, 'declaration_store'):
-        request.app.state.declaration_store = {}
-    return request.app.state.declaration_store
+def _get_liquidation_store(request: Request) -> BusinessStore[Liquidation]:
+    return BusinessStore(cfg.data_dir / "metier.sqlite3", "liquidation", Liquidation)
 
 
-def _get_liquidation_store(request: Request) -> dict:
-    if not hasattr(request.app.state, 'liquidation_store'):
-        request.app.state.liquidation_store = {}
-    return request.app.state.liquidation_store
+def _verifier_lien(store: BusinessStore[Liquidation], liquidation: Liquidation) -> None:
+    exiger_dossier(cfg, liquidation.dossier_id)
+    declarations = store.related("declaration", DeclarationDouaniere)
+    declaration = declarations.get(liquidation.declaration_id)
+    if declaration is None:
+        raise HTTPException(422, "La liquidation doit référencer une déclaration existante")
+    if not liquidation.dossier_id.strip() or declaration.dossier_id != liquidation.dossier_id:
+        raise HTTPException(409, "La liquidation et la déclaration doivent appartenir au même dossier")
+
+
+def _liquidations_liees(store: BusinessStore[DeclarationDouaniere], identifiant: str) -> bool:
+    return any(liq.declaration_id == identifiant
+               for liq in store.related("liquidation", Liquidation).values())
 
 
 # ───────────────────────────────────────────────────────────────
@@ -134,6 +144,7 @@ def create_declaration(
     declaration: DeclarationCreate,
 ) -> dict:
     """Créer une nouvelle déclaration douanière."""
+    _exige_dossier(declaration.dossier_id, request)
     store = _get_declaration_store(request)
     decl_obj = DeclarationDouaniere(
         id=new_id("decl_"),
@@ -158,7 +169,9 @@ def create_declaration(
         mainlevee_obtenue=declaration.mainlevee_obtenue,
         date_mainlevee=declaration.date_mainlevee,
     )
-    store[decl_obj.id] = decl_obj
+    with store.transaction() as transaction:
+        exiger_dossier(cfg, decl_obj.dossier_id)
+        transaction[decl_obj.id] = decl_obj
     audit(cfg.log_dir, "declaration_creee", dossier=declaration.dossier_id, numero=declaration.numero_declaration)
     return decl_obj.model_dump()
 
@@ -173,7 +186,20 @@ def list_declarations(
     decls = list(store.values())
     if dossier_id:
         decls = [d for d in decls if d.dossier_id == dossier_id]
-    return [d.model_dump() for d in decls]
+    return [d.model_dump() for d in _filtre_dossiers(request, decls)]
+
+
+@router.get("/liquidation")
+def list_liquidations(
+    request: Request,
+    dossier_id: Optional[str] = None,
+) -> list[dict]:
+    """Lister toutes les liquidations."""
+    store = _get_liquidation_store(request)
+    liqs = list(store.values())
+    if dossier_id:
+        liqs = [liq for liq in liqs if liq.dossier_id == dossier_id]
+    return [liq.model_dump() for liq in _filtre_dossiers(request, liqs)]
 
 
 @router.get("/{declaration_id}")
@@ -186,6 +212,7 @@ def get_declaration(
     decl = store.get(declaration_id)
     if not decl:
         raise HTTPException(404, "Déclaration introuvable")
+    _exige_objet_dossier(request, decl)
     return decl.model_dump()
 
 
@@ -197,14 +224,22 @@ def update_declaration(
 ) -> dict:
     """Mettre à jour une déclaration."""
     store = _get_declaration_store(request)
-    decl = store.get(declaration_id)
-    if not decl:
-        raise HTTPException(404, "Déclaration introuvable")
-
-    update_data = declaration_update.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(decl, key, value)
-
+    with store.transaction() as transaction:
+        decl = transaction.get(declaration_id)
+        if not decl:
+            raise HTTPException(404, "Déclaration introuvable")
+        _exige_objet_dossier(request, decl)
+        update_data = declaration_update.model_dump(exclude_unset=True)
+        try:
+            candidate = DeclarationDouaniere.model_validate({**decl.model_dump(), **update_data})
+        except ValidationError as exc:
+            raise HTTPException(422, exc.errors(include_context=False)) from exc
+        _exige_objet_dossier(request, candidate)
+        exiger_dossier(cfg, candidate.dossier_id)
+        if candidate.dossier_id != decl.dossier_id and _liquidations_liees(transaction, declaration_id):
+            raise HTTPException(409, "Impossible de changer le dossier : des liquidations utilisent cette déclaration")
+        transaction[declaration_id] = candidate
+        decl = candidate
     audit(cfg.log_dir, "declaration_modifiee", cible=declaration_id)
     return decl.model_dump()
 
@@ -216,10 +251,13 @@ def delete_declaration(
 ) -> dict:
     """Supprimer une déclaration."""
     store = _get_declaration_store(request)
-    if declaration_id not in store:
-        raise HTTPException(404, "Déclaration introuvable")
-
-    del store[declaration_id]
+    with store.transaction() as transaction:
+        if declaration_id not in transaction:
+            raise HTTPException(404, "Déclaration introuvable")
+        _exige_objet_dossier(request, transaction.get(declaration_id))
+        if _liquidations_liees(transaction, declaration_id):
+            raise HTTPException(409, "Déclaration utilisée par une liquidation : suppression refusée")
+        del transaction[declaration_id]
     audit(cfg.log_dir, "declaration_supprimee", cible=declaration_id)
     return {"deleted": True, "id": declaration_id}
 
@@ -234,6 +272,7 @@ def create_liquidation(
     liquidation: LiquidationCreate,
 ) -> dict:
     """Créer une nouvelle liquidation."""
+    _exige_dossier(liquidation.dossier_id, request)
     store = _get_liquidation_store(request)
     liq_obj = Liquidation(
         id=new_id("liqu_"),
@@ -251,22 +290,11 @@ def create_liquidation(
         documents_liquidation=liquidation.documents_liquidation,
         observations=liquidation.observations,
     )
-    store[liq_obj.id] = liq_obj
+    with store.transaction() as transaction:
+        _verifier_lien(transaction, liq_obj)
+        transaction[liq_obj.id] = liq_obj
     audit(cfg.log_dir, "liquidation_creee", dossier=liquidation.dossier_id, declaration=liquidation.declaration_id)
     return liq_obj.model_dump()
-
-
-@router.get("/liquidation")
-def list_liquidations(
-    request: Request,
-    dossier_id: Optional[str] = None,
-) -> list[dict]:
-    """Lister toutes les liquidations."""
-    store = _get_liquidation_store(request)
-    liqs = list(store.values())
-    if dossier_id:
-        liqs = [l for l in liqs if l.dossier_id == dossier_id]
-    return [l.model_dump() for l in liqs]
 
 
 @router.get("/liquidation/{liquidation_id}")
@@ -279,6 +307,7 @@ def get_liquidation(
     liq = store.get(liquidation_id)
     if not liq:
         raise HTTPException(404, "Liquidation introuvable")
+    _exige_objet_dossier(request, liq)
     return liq.model_dump()
 
 
@@ -290,14 +319,21 @@ def update_liquidation(
 ) -> dict:
     """Mettre à jour une liquidation."""
     store = _get_liquidation_store(request)
-    liq = store.get(liquidation_id)
-    if not liq:
-        raise HTTPException(404, "Liquidation introuvable")
-
-    update_data = liquidation_update.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(liq, key, value)
-
+    with store.transaction() as transaction:
+        liq = transaction.get(liquidation_id)
+        if not liq:
+            raise HTTPException(404, "Liquidation introuvable")
+        _exige_objet_dossier(request, liq)
+        update_data = liquidation_update.model_dump(exclude_unset=True)
+        if "dossier_id" in update_data:
+            _exige_dossier(update_data["dossier_id"], request)
+        try:
+            liq = Liquidation.model_validate({**liq.model_dump(), **update_data})
+        except ValidationError as exc:
+            raise HTTPException(422, exc.errors(include_context=False)) from exc
+        _exige_objet_dossier(request, liq)
+        _verifier_lien(transaction, liq)
+        transaction[liquidation_id] = liq
     audit(cfg.log_dir, "liquidation_modifiee", cible=liquidation_id)
     return liq.model_dump()
 
@@ -311,6 +347,7 @@ def delete_liquidation(
     store = _get_liquidation_store(request)
     if liquidation_id not in store:
         raise HTTPException(404, "Liquidation introuvable")
+    _exige_objet_dossier(request, store[liquidation_id])
 
     del store[liquidation_id]
     audit(cfg.log_dir, "liquidation_supprimee", cible=liquidation_id)

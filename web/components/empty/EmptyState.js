@@ -180,7 +180,7 @@ class ErrorState extends HTMLElement {
 
   render() {
     const actionHtml = this.actionText
-      ? `<button class="error-state__action" onclick="${this.escape(this.actionCallback) || 'this.dispatchEvent(new CustomEvent(\"retry\"))'}">${this.escape(this.actionText)}</button>`
+      ? `<button class="error-state__action" type="button">${this.escape(this.actionText)}</button>`
       : '';
 
     this.shadowRoot.innerHTML = `
@@ -235,6 +235,18 @@ class ErrorState extends HTMLElement {
         ${actionHtml}
       </div>
     `;
+
+    // L'action est branchée ici : un `onclick` composé depuis un attribut
+    // exécutait du texte arbitraire (injection de script).
+    const bouton = this.shadowRoot.querySelector('.error-state__action');
+    if (bouton) {
+      bouton.addEventListener('click', () => {
+        const nom = (this.actionCallback || '').trim();
+        const fn = nom ? window[nom] : null;
+        if (typeof fn === 'function') fn();
+        else this.dispatchEvent(new CustomEvent('retry'));
+      });
+    }
   }
 
   escape(s) {

@@ -142,24 +142,661 @@ def main(argv=None) -> int:
 
     b = sub.add_parser("backup", help="sauvegarder le magasin (jobs, dossiers, exports, audit)")
     b.add_argument("--out", default="",
-                   help="répertoire de destination (défaut : <data>/../sauvegardes)")
+                   help="répertoire de destination (défaut : sauvegardes, ou sauvegardes-quarantaine avec option explicite)")
     b.add_argument("--tag", default="", help="étiquette ajoutée au nom du fichier")
     b.add_argument("--keep", type=int, default=5,
                    help="nombre de sauvegardes à conserver (0 = ne pas purger)")
+    b.add_argument("--include-customs-quarantine", action="store_true", help="inclure explicitement la quarantaine (CLI local seulement)")
     b.set_defaults(func=cmd_backup)
 
     r = sub.add_parser("restore", help="restaurer le magasin depuis une sauvegarde")
     r.add_argument("fichier", help="chemin du .zip de sauvegarde")
     r.add_argument("--force", action="store_true",
                    help="autoriser l'écriture sur un magasin non vide")
+    r.add_argument("--include-customs-quarantine", action="store_true", help="reprendre explicitement la quarantaine dans un magasin neuf")
     r.set_defaults(func=cmd_restore)
 
     lb = sub.add_parser("backups", help="lister les sauvegardes disponibles")
     lb.add_argument("--dir", default="", help="répertoire des sauvegardes")
     lb.set_defaults(func=cmd_backups)
 
+    pc = sub.add_parser("pieces-check", help="diagnostiquer les justificatifs sans rien modifier")
+    pc.add_argument("--data-dir", default="", help="répertoire du magasin à inspecter")
+    pc.add_argument("--json", action="store_true", dest="json_output", help="rapport structuré")
+    pc.set_defaults(func=cmd_pieces_check)
+
+    pr = sub.add_parser("pieces-recover", help="préparer la copie vérifiée d'une quarantaine référencée")
+    pr.add_argument("id", help="identifiant du justificatif")
+    pr.add_argument("--data-dir", default="", help="magasin à examiner")
+    pr.add_argument("--apply", action="store_true", help="appliquer explicitement le plan, sans écrasement")
+    pr.add_argument("--json", action="store_true", dest="json_output", help="rapport structuré")
+    pr.set_defaults(func=cmd_pieces_recover)
+
+    pe = sub.add_parser("pieces-receipt", help="consulter le reçu local de suppression d'une pièce")
+    pe.add_argument("id", help="identifiant du justificatif supprimé")
+    pe.add_argument("--data-dir", default="", help="magasin à examiner sans modification")
+    pe.add_argument("--json", action="store_true", dest="json_output", help="rapport structuré")
+    pe.set_defaults(func=cmd_pieces_receipt)
+
+    pa = sub.add_parser("pieces-audit", help="préparer le relais ciblé d'un reçu vers audit.log")
+    pa.add_argument("id", help="identifiant du justificatif supprimé")
+    pa.add_argument("--data-dir", default="", help="magasin source")
+    pa.add_argument("--audit-file", required=True, help="journal JSONL cible, parent existant")
+    pa.add_argument("--apply", action="store_true", help="ajouter explicitement après arrêt des écritures")
+    pa.add_argument("--json", action="store_true", dest="json_output", help="rapport structuré")
+    pa.set_defaults(func=cmd_pieces_audit)
+
+    cr = sub.add_parser("customs-prepare", help="préparer un tarif CSV/JSON/XLSX/XLS/XML/ZIP en quarantaine, jamais l'activer")
+    cr.add_argument("source", help="fichier source local")
+    cr.add_argument("--metadata", required=True, help="provenance, hiérarchie et mapping explicites")
+    cr.add_argument("--out", default="", help="nouveau répertoire de préparation")
+    cr.add_argument("--write", action="store_true", help="écrire explicitement le lot en quarantaine")
+    cr.set_defaults(func=cmd_customs_prepare)
+
+    fm = sub.add_parser("customs-fiscal-prepare", help="préparer des mesures autonomes JSON/CSV/XLSX/XLS ou PDF avec transcription explicite")
+    fm.add_argument("source")
+    fm.add_argument("--metadata", required=True)
+    fm.add_argument("--transcription", default="", help="tableau JSON de mesures déclarées, requis seulement avec un PDF")
+    fm.add_argument("--out", default="")
+    fm.add_argument("--write", action="store_true")
+    fm.set_defaults(func=cmd_customs_fiscal_prepare)
+
+    fs = sub.add_parser("customs-fiscal-search", help="rechercher les descriptions de mesures autonomes contrôlées")
+    fs.add_argument("lot")
+    fs.add_argument("--query", default="")
+    fs.add_argument("--code", default=None)
+    fs.add_argument("--type", dest="measure_type", choices=["droit", "tva", "autre_taxe", "restriction", "autorisation", "regime"], default=None)
+    fs.add_argument("--limit", type=int, default=20)
+    fs.add_argument("--offset", type=int, default=0)
+    fs.set_defaults(func=cmd_customs_fiscal_search)
+
+    tm = sub.add_parser("customs-tariff-measures", help="consulter tarif et mesures autonomes sans fusion ou règle applicable")
+    tm.add_argument("tarif")
+    tm.add_argument("mesures")
+    tm.add_argument("--code", required=True)
+    tm.add_argument("--tariff-limit", type=int, default=20)
+    tm.add_argument("--tariff-offset", type=int, default=0)
+    tm.add_argument("--measures-limit", type=int, default=20)
+    tm.add_argument("--measures-offset", type=int, default=0)
+    tm.set_defaults(func=cmd_customs_tariff_measures)
+
+    fc = sub.add_parser("customs-fiscal-check", help="contrôler et rejouer un lot autonome de mesures")
+    fc.add_argument("lot")
+    fc.set_defaults(func=cmd_customs_fiscal_check)
+
+    cd = sub.add_parser("customs-diff", help="comparer deux lots en quarantaine sans modification")
+    cd.add_argument("avant", help="répertoire du premier lot préparé")
+    cd.add_argument("apres", help="répertoire du second lot préparé")
+    cd.set_defaults(func=cmd_customs_diff)
+
+    cc = sub.add_parser("customs-code-prepare", help="archiver PDF et transcriptions du Code en quarantaine")
+    cc.add_argument("transcription", help="JSON déclaré : articles et relations, éventuellement vides")
+    cc.add_argument("--metadata", required=True, help="documents, empreintes et noms locaux des PDF reçus")
+    cc.add_argument("--out", default="", help="nouveau répertoire de préparation")
+    cc.add_argument("--write", action="store_true", help="écrire explicitement, sans publication")
+    cc.set_defaults(func=cmd_customs_code_prepare)
+
+    ck = sub.add_parser("customs-code-check", help="vérifier et rejouer un lot Code sans le modifier")
+    ck.add_argument("lot", help="répertoire du lot Code préparé")
+    ck.set_defaults(func=cmd_customs_code_check)
+
+    dc = sub.add_parser("customs-code-diff", help="comparer deux lots Code vérifiés sans modification")
+    dc.add_argument("avant", help="premier lot Code")
+    dc.add_argument("apres", help="second lot Code")
+    dc.set_defaults(func=cmd_customs_code_diff)
+
+    ts = sub.add_parser("customs-tariff-search", help="rechercher des désignations ou préfixes dans un lot tarifaire contrôlé")
+    ts.add_argument("lot", help="lot tarifaire en quarantaine")
+    ts.add_argument("--query", required=True, help="texte FR/AR ou préfixe de 1 à 10 chiffres ASCII")
+    ts.add_argument("--limit", type=int, default=20, help="résultats par page, 1 à 100")
+    ts.add_argument("--offset", type=int, default=0, help="décalage, 0 à 1000000")
+    ts.set_defaults(func=cmd_customs_tariff_search)
+
+    cs = sub.add_parser("customs-code-search", help="rechercher des textes ou filtrer les articles d'un lot Code contrôlé")
+    cs.add_argument("lot", help="lot documentaire Code en quarantaine")
+    cs.add_argument("--query", default="", help="texte FR/AR, ou filtre explicite requis")
+    cs.add_argument("--article", default=None, help="numéro d'article exactement tel que déclaré")
+    cs.add_argument("--source", default=None, help="ID exact du document déclaré")
+    cs.add_argument("--nature", choices=["originale", "modificative", "consolidee_provisoire"], default=None)
+    cs.add_argument("--limit", type=int, default=20)
+    cs.add_argument("--offset", type=int, default=0)
+    cs.set_defaults(func=cmd_customs_code_search)
+
+    ch = sub.add_parser("customs-code-history", help="historique documentaire d'un article, sans droit applicable")
+    ch.add_argument("lot", help="lot Code en quarantaine")
+    ch.add_argument("--article", required=True, help="numéro exactement tel que déclaré")
+    ch.add_argument("--limit", type=int, default=20)
+    ch.add_argument("--offset", type=int, default=0)
+    ch.add_argument("--relations-limit", type=int, default=20)
+    ch.add_argument("--relations-offset", type=int, default=0)
+    ch.set_defaults(func=cmd_customs_code_history)
+
+    tf = sub.add_parser("customs-tariff-show", help="fiche documentaire d'un code exact, sans droits applicables")
+    tf.add_argument("lot", help="lot tarifaire contrôlé en quarantaine")
+    tf.add_argument("--code", required=True, help="chaîne exacte de dix chiffres ASCII")
+    tf.add_argument("--measures-limit", type=int, default=20)
+    tf.add_argument("--measures-offset", type=int, default=0)
+    tf.set_defaults(func=cmd_customs_tariff_show)
+
+    cv = sub.add_parser("customs-coverage", help="compteurs documentaires, jamais complétude réglementaire")
+    cv.add_argument("lot", help="lot en quarantaine")
+    cv.add_argument("--type", required=True, choices=["tarif", "code", "mesures"], dest="type_lot")
+    cv.set_defaults(func=cmd_customs_coverage)
+
+    tr = sub.add_parser("customs-tariff-tree", help="parcourir les parents/enfants tarifaires déclarés")
+    tr.add_argument("lot", help="lot tarifaire en quarantaine")
+    tr.add_argument("--level", choices=["sections", "chapitres", "positions", "sh6", "codes", "subdivisions"], default="sections")
+    tr.add_argument("--parent", default=None, help="ID ou code parent exact ; absent pour la racine")
+    tr.add_argument("--limit", type=int, default=20)
+    tr.add_argument("--offset", type=int, default=0)
+    tr.set_defaults(func=cmd_customs_tariff_tree)
+
+    ca = sub.add_parser("customs-code-read", help="lire une transcription exacte par fragments, sans droit applicable")
+    ca.add_argument("lot", help="lot Code en quarantaine")
+    ca.add_argument("--id", required=True, dest="article_id", help="identifiant exact de version, pas numéro d’article")
+    ca.add_argument("--field", choices=["texte_integral", "texte_francais", "texte_arabe", "texte_origine", "texte_modificatif"], default="texte_integral")
+    ca.add_argument("--limit", type=int, default=4000)
+    ca.add_argument("--offset", type=int, default=0)
+    ca.set_defaults(func=cmd_customs_code_read)
+
+    sc = sub.add_parser("customs-sources", help="inventorier les seules sources déclarées d'un lot contrôlé")
+    sc.add_argument("lot")
+    sc.add_argument("--type", dest="type_lot", choices=["code", "tarif", "mesures"], required=True)
+    sc.add_argument("--query", default="")
+    sc.add_argument("--source", default=None)
+    sc.add_argument("--nature", choices=["code_original", "acte_modificatif", "compilation"], default=None)
+    sc.add_argument("--limit", type=int, default=20)
+    sc.add_argument("--offset", type=int, default=0)
+    sc.set_defaults(func=cmd_customs_sources)
+
+    ms = sub.add_parser("customs-tariff-measure-search", help="rechercher les descriptions de mesures déclarées, sans droit applicable")
+    ms.add_argument("lot")
+    ms.add_argument("--query", default="")
+    ms.add_argument("--code", default=None)
+    ms.add_argument("--type", dest="measure_type", choices=["droit", "tva", "autre_taxe", "restriction", "autorisation", "regime"], default=None)
+    ms.add_argument("--limit", type=int, default=20)
+    ms.add_argument("--offset", type=int, default=0)
+    ms.set_defaults(func=cmd_customs_tariff_measure_search)
+
+    tf = sub.add_parser("customs-tariff-compare", help="juxtaposer deux fiches sans fusion fiscale ou version applicable")
+    tf.add_argument("avant")
+    tf.add_argument("apres")
+    tf.add_argument("--code", required=True)
+    tf.add_argument("--before-limit", type=int, default=20)
+    tf.add_argument("--before-offset", type=int, default=0)
+    tf.add_argument("--after-limit", type=int, default=20)
+    tf.add_argument("--after-offset", type=int, default=0)
+    tf.set_defaults(func=cmd_customs_tariff_compare)
+
+    rp = sub.add_parser("customs-code-relation-pdf-match", help="présence littérale d'une justification dans sa page source")
+    rp.add_argument("lot")
+    rp.add_argument("--id", required=True, dest="relation_id")
+    rp.add_argument("--page", required=True, type=int)
+    rp.add_argument("--limit", type=int, default=4000)
+    rp.add_argument("--offset", type=int, default=0)
+    rp.set_defaults(func=cmd_customs_code_relation_pdf_match)
+
+    ar = sub.add_parser("customs-code-article-relations", help="liens déclarés d'une version exacte, sans graphe inféré")
+    ar.add_argument("lot")
+    ar.add_argument("--id", required=True, dest="article_id")
+    ar.add_argument("--direction", choices=["tous", "entrantes", "sortantes"], default="tous")
+    ar.add_argument("--relation-type", choices=["modifie", "complete", "abroge", "rectifie", "renvoie_a"], default=None)
+    ar.add_argument("--limit", type=int, default=20)
+    ar.add_argument("--offset", type=int, default=0)
+    ar.set_defaults(func=cmd_customs_code_article_relations)
+
+    ap = sub.add_parser("customs-code-article-pdf-match", help="présence littérale d'un fragment dans sa page PDF source")
+    ap.add_argument("lot")
+    ap.add_argument("--id", required=True, dest="article_id")
+    ap.add_argument("--page", required=True, type=int)
+    ap.add_argument("--field", choices=["texte_integral", "texte_francais", "texte_arabe", "texte_origine", "texte_modificatif"], default="texte_integral")
+    ap.add_argument("--limit", type=int, default=4000)
+    ap.add_argument("--offset", type=int, default=0)
+    ap.set_defaults(func=cmd_customs_code_article_pdf_match)
+
+    ct = sub.add_parser("customs-code-tree", help="parcourir les chemins Code déclarés sans consolidation")
+    ct.add_argument("lot")
+    ct.add_argument("--source", default=None)
+    ct.add_argument("--path", default="[]", help="JSON des couples niveau/identifiant exacts")
+    ct.add_argument("--limit", type=int, default=20)
+    ct.add_argument("--offset", type=int, default=0)
+    ct.set_defaults(func=cmd_customs_code_tree)
+
+    ad = sub.add_parser("customs-code-article-diff", help="écart littéral de deux versions exactes, sans consolidation")
+    ad.add_argument("lot")
+    ad.add_argument("--after-lot", default=None, help="second lot Code explicite ; absent : même lot")
+    ad.add_argument("--before-id", required=True)
+    ad.add_argument("--after-id", required=True)
+    ad.add_argument("--field", choices=["texte_integral", "texte_francais", "texte_arabe", "texte_origine", "texte_modificatif"], default="texte_integral")
+    ad.add_argument("--limit", type=int, default=4000)
+    ad.add_argument("--before-offset", type=int, default=0)
+    ad.add_argument("--after-offset", type=int, default=0)
+    ad.set_defaults(func=cmd_customs_code_article_diff)
+
+    cp = sub.add_parser("customs-code-pdf-read", help="lire le texte natif d'une page PDF reçue, sans validation")
+    cp.add_argument("lot")
+    cp.add_argument("--document", required=True)
+    cp.add_argument("--page", type=int, default=1)
+    cp.add_argument("--limit", type=int, default=4000)
+    cp.add_argument("--offset", type=int, default=0)
+    cp.set_defaults(func=cmd_customs_code_pdf_read)
+
+    tc = sub.add_parser("customs-tariff-criteria", help="chercher des critères explicites dans les libellés FR/AR, sans classement")
+    tc.add_argument("lot")
+    for nom in ("designation", "matiere", "fonction", "usage", "caracteristiques", "code-prefix"):
+        tc.add_argument("--"+nom, default=None)
+    tc.add_argument("--match-mode", choices=("sous_chaine", "mots_entiers"), default="sous_chaine")
+    tc.add_argument("--limit", type=int, default=20)
+    tc.add_argument("--offset", type=int, default=0)
+    tc.set_defaults(func=cmd_customs_tariff_criteria)
+
+    pc = sub.add_parser("customs-tariff-candidates", help="pistes documentaires partielles triées, sans IA ou classement validé")
+    pc.add_argument("lot")
+    for nom in ("designation", "matiere", "fonction", "usage", "caracteristiques", "code-prefix"):
+        pc.add_argument("--"+nom, default=None)
+    pc.add_argument("--match-mode", choices=("sous_chaine", "mots_entiers"), default="sous_chaine")
+    pc.add_argument("--limit", type=int, default=20)
+    pc.add_argument("--offset", type=int, default=0)
+    pc.set_defaults(func=cmd_customs_tariff_candidates)
+
+    mp = sub.add_parser("customs-measure-pdf-match", help="chercher un fragment de description dans une page PDF source, sans validation")
+    mp.add_argument("lot")
+    mp.add_argument("--measure", required=True)
+    mp.add_argument("--page", type=int, required=True)
+    mp.add_argument("--limit", type=int, default=4000)
+    mp.add_argument("--offset", type=int, default=0)
+    mp.set_defaults(func=cmd_customs_measure_pdf_match)
+
+    fp = sub.add_parser("customs-fiscal-pdf-read", help="lire une page native du PDF fiscal reçu, sans vérifier les mesures")
+    fp.add_argument("lot")
+    fp.add_argument("--document", required=True)
+    fp.add_argument("--page", type=int, default=1)
+    fp.add_argument("--limit", type=int, default=4000)
+    fp.add_argument("--offset", type=int, default=0)
+    fp.set_defaults(func=cmd_customs_fiscal_pdf_read)
+
+    vp = sub.add_parser("customs-review-export-replay-pair", help="rejouer une comparaison contre deux archives explicitement ordonnées")
+    vp.add_argument("file")
+    for cote in ("before","after"):
+        vp.add_argument("--"+cote+"-lot", required=True)
+        vp.add_argument("--"+cote+"-id", required=True)
+        vp.add_argument("--"+cote+"-type", required=True, choices=("code","tarif","mesures"))
+    vp.add_argument("--expected-export-sha256")
+    vp.add_argument("--expected-before-manifest-sha256")
+    vp.add_argument("--expected-after-manifest-sha256")
+    vp.set_defaults(func=cmd_customs_review_export_replay_pair)
+
+    vr = sub.add_parser("customs-review-export-replay", help="rejouer un export documentaire pris en charge contre une archive explicite, sans authentification")
+    vr.add_argument("file")
+    vr.add_argument("--lot", required=True)
+    vr.add_argument("--lot-id", required=True)
+    vr.add_argument("--type-lot", choices=("tarif","code","mesures"), default="tarif")
+    vr.add_argument("--allow-pdf", action="store_true", help="autoriser explicitement le rejeu de lectures natives PDF bornées")
+    vr.add_argument("--expected-export-sha256")
+    vr.add_argument("--expected-manifest-sha256")
+    vr.set_defaults(func=cmd_customs_review_export_replay)
+
+    ve = sub.add_parser("customs-review-export-check", help="contrôler hors ligne la structure d'un export, sans authentification")
+    ve.add_argument("file", help="export JSON non validé de 10 Mio maximum")
+    ve.set_defaults(func=cmd_customs_review_export_check)
+
     args = parser.parse_args(argv)
     return args.func(args)
+
+
+def _racine_pieces(data_dir: str) -> Path:
+    if data_dir:
+        return Path(data_dir)
+    else:
+        import os
+
+        from .config import get_config
+        cfg = get_config()
+        # Ne pas utiliser cfg.data_dir : cette propriété crée le répertoire.
+        chemin_env = os.environ.get("UNOCR_DATA_DIR")
+        return Path(chemin_env).resolve() if chemin_env else cfg.root / cfg.get("jobs.data_dir", "data")
+
+
+def cmd_pieces_check(args) -> int:
+    from .justificatifs_diagnostic import diagnostiquer_pieces
+
+    racine = _racine_pieces(args.data_dir)
+    resultat = diagnostiquer_pieces(racine)
+    if args.json_output:
+        print(json.dumps(resultat, ensure_ascii=False, indent=2))
+    else:
+        print(f"Justificatifs — {resultat['etat']} — {resultat['pieces_referencees']} pièce(s) référencée(s)")
+        print(resultat["limite"])
+        for anomalie in resultat["anomalies"]:
+            print(f"  {anomalie['categorie']} : {anomalie['cible']} — {anomalie['detail']}")
+    return {"conforme": 0, "anomalies": 1, "indisponible": 2}[resultat["etat"]]
+
+
+def _afficher_lecture_douaniere(operation, *chemins) -> int:
+    try:
+        resultat = operation(*(Path(chemin) for chemin in chemins))
+    except (OSError, ValueError, KeyError, TypeError, RecursionError) as exc:
+        print(json.dumps({"statut": "refuse", "lecture_seule": True, "publication_active": False,
+                          "validation_juridique": "non_validee", "detail": str(exc)}, ensure_ascii=False))
+        return 2
+    print(json.dumps(resultat, ensure_ascii=False, indent=2))
+    return 0
+
+
+def cmd_customs_tariff_search(args) -> int:
+    from .customs_reference.search import rechercher_tarif
+
+    return _afficher_lecture_douaniere(lambda chemin: rechercher_tarif(chemin, args.query, args.limit, args.offset), args.lot)
+
+
+def cmd_customs_code_search(args) -> int:
+    from .customs_reference.search import rechercher_code
+
+    return _afficher_lecture_douaniere(lambda chemin: rechercher_code(chemin, args.query, args.limit, args.offset,
+                                       args.article, args.source, args.nature), args.lot)
+
+
+def cmd_customs_review_export_replay_pair(args) -> int:
+    from .customs_reference.export_replay_pair import verifier_rejeu_paire
+
+    constats = []
+    def operation(fichier, avant, apres):
+        resultat = verifier_rejeu_paire(fichier,avant,apres,args.before_id,args.after_id,args.before_type,args.after_type,
+            sha256_export_attendu=args.expected_export_sha256,manifest_avant_attendu=args.expected_before_manifest_sha256,
+            manifest_apres_attendu=args.expected_after_manifest_sha256)
+        constats.append(resultat)
+        return resultat
+    code = _afficher_lecture_douaniere(operation,args.file,args.before_lot,args.after_lot)
+    if code:
+        return code
+    return 0 if constats[0]["rapport_identique"] else 1
+
+
+def cmd_customs_review_export_replay(args) -> int:
+    from .customs_reference.export_replay import verifier_rejeu_export
+
+    constats = []
+    def operation(fichier, lot):
+        constat = verifier_rejeu_export(fichier, lot, args.lot_id, args.type_lot, autoriser_pdf=args.allow_pdf,
+            sha256_export_attendu=args.expected_export_sha256,manifest_sha256_attendu=args.expected_manifest_sha256)
+        constats.append(constat)
+        return constat
+    code = _afficher_lecture_douaniere(operation, args.file, args.lot)
+    if code:
+        return code
+    return 0 if constats[0]["rapport_identique"] else 1
+
+
+def cmd_customs_review_export_check(args) -> int:
+    from .customs_reference.review_export import verifier_export
+
+    return _afficher_lecture_douaniere(verifier_export, args.file)
+
+
+def cmd_customs_sources(args) -> int:
+    from .customs_reference.source_catalog import inventorier_sources
+
+    return _afficher_lecture_douaniere(lambda p: inventorier_sources(
+        p, args.type_lot, args.query, args.source, args.nature, args.limit, args.offset), args.lot)
+
+
+def cmd_customs_tariff_measure_search(args) -> int:
+    from .customs_reference.measure_search import rechercher_mesures_tarif
+
+    return _afficher_lecture_douaniere(lambda p: rechercher_mesures_tarif(
+        p, args.query, args.code, args.measure_type, args.limit, args.offset), args.lot)
+
+
+def cmd_customs_tariff_compare(args) -> int:
+    from .customs_reference.tariff_pair import juxtaposer_fiches_tarifaires
+
+    return _afficher_lecture_douaniere(lambda a, b: juxtaposer_fiches_tarifaires(
+        a, b, args.code, args.before_limit, args.before_offset, args.after_limit, args.after_offset), args.avant, args.apres)
+
+
+def cmd_customs_code_relation_pdf_match(args) -> int:
+    from .customs_reference.relation_pdf_match import rapprocher_justification_pdf
+
+    return _afficher_lecture_douaniere(lambda chemin: rapprocher_justification_pdf(
+        chemin, args.relation_id, args.page, args.limit, args.offset), args.lot)
+
+
+def cmd_customs_code_article_relations(args) -> int:
+    from .customs_reference.article_relations import consulter_relations_article
+
+    return _afficher_lecture_douaniere(lambda chemin: consulter_relations_article(
+        chemin, args.article_id, args.direction, args.relation_type, args.limit, args.offset), args.lot)
+
+
+def cmd_customs_code_article_pdf_match(args) -> int:
+    from .customs_reference.article_pdf_match import rapprocher_fragment_article_pdf
+
+    return _afficher_lecture_douaniere(lambda chemin: rapprocher_fragment_article_pdf(
+        chemin, args.article_id, args.page, args.field, args.limit, args.offset), args.lot)
+
+
+def cmd_customs_code_tree(args) -> int:
+    from .customs_reference.code_tree import parcourir_code
+
+    return _afficher_lecture_douaniere(lambda chemin: parcourir_code(
+        chemin, args.source, args.path, args.limit, args.offset), args.lot)
+
+
+def cmd_customs_code_article_diff(args) -> int:
+    from .customs_reference.article_diff import comparer_versions_article
+
+    return _afficher_lecture_douaniere(lambda chemin: comparer_versions_article(
+        chemin, args.before_id, args.after_id, args.field, args.limit, args.before_offset, args.after_offset,
+        Path(args.after_lot) if args.after_lot is not None else None), args.lot)
+
+
+def cmd_customs_tariff_candidates(args) -> int:
+    from .customs_reference.tariff_candidates import rechercher_pistes_tarifaires
+
+    return _afficher_lecture_douaniere(lambda p: rechercher_pistes_tarifaires(p,designation=args.designation,
+        matiere=args.matiere,fonction=args.fonction,usage=args.usage,caracteristiques=args.caracteristiques,
+        code_prefix=args.code_prefix,limite=args.limit,decalage=args.offset,match_mode=args.match_mode),args.lot)
+
+
+def cmd_customs_tariff_criteria(args) -> int:
+    from .customs_reference.tariff_criteria import rechercher_tarif_criteres
+
+    return _afficher_lecture_douaniere(lambda p: rechercher_tarif_criteres(p,designation=args.designation,
+        matiere=args.matiere,fonction=args.fonction,usage=args.usage,caracteristiques=args.caracteristiques,
+        code_prefix=args.code_prefix,limite=args.limit,decalage=args.offset,match_mode=args.match_mode),args.lot)
+
+
+def cmd_customs_measure_pdf_match(args) -> int:
+    from .customs_reference.measure_pdf_match import rapprocher_description_mesure_pdf
+
+    return _afficher_lecture_douaniere(lambda p: rapprocher_description_mesure_pdf(
+        p,args.measure,args.page,args.limit,args.offset),args.lot)
+
+
+def cmd_customs_fiscal_pdf_read(args) -> int:
+    from .customs_reference.fiscal_pdf_page import lire_page_pdf_mesures
+
+    return _afficher_lecture_douaniere(lambda chemin: lire_page_pdf_mesures(
+        chemin,args.document,args.page,args.limit,args.offset),args.lot)
+
+
+def cmd_customs_code_pdf_read(args) -> int:
+    from .customs_reference.pdf_page import lire_page_pdf
+
+    return _afficher_lecture_douaniere(lambda chemin: lire_page_pdf(
+        chemin, args.document, args.page, args.limit, args.offset), args.lot)
+
+
+def cmd_customs_code_read(args) -> int:
+    from .customs_reference.article_detail import consulter_article
+
+    return _afficher_lecture_douaniere(lambda chemin: consulter_article(
+        chemin, args.article_id, args.field, args.limit, args.offset), args.lot)
+
+
+def cmd_customs_tariff_tree(args) -> int:
+    from .customs_reference.tariff_tree import parcourir_tarif
+
+    return _afficher_lecture_douaniere(lambda chemin: parcourir_tarif(
+        chemin, args.level, args.parent, args.limit, args.offset), args.lot)
+
+
+def cmd_customs_coverage(args) -> int:
+    from .customs_reference.coverage import diagnostiquer_couverture
+
+    return _afficher_lecture_douaniere(lambda chemin: diagnostiquer_couverture(chemin, args.type_lot), args.lot)
+
+
+def cmd_customs_tariff_show(args) -> int:
+    from .customs_reference.tariff_detail import consulter_code
+
+    return _afficher_lecture_douaniere(lambda chemin: consulter_code(
+        chemin, args.code, args.measures_limit, args.measures_offset), args.lot)
+
+
+def cmd_customs_code_history(args) -> int:
+    from .customs_reference.history import historique_article
+
+    return _afficher_lecture_douaniere(lambda chemin: historique_article(
+        chemin, args.article, args.limit, args.offset, args.relations_limit, args.relations_offset), args.lot)
+
+
+def cmd_customs_code_check(args) -> int:
+    from .customs_reference.legal_comparison import charger_lot_code
+
+    return _afficher_lecture_douaniere(lambda chemin: charger_lot_code(chemin)[1], args.lot)
+
+
+def cmd_customs_code_diff(args) -> int:
+    from .customs_reference.legal_comparison import comparer_lots_code
+
+    return _afficher_lecture_douaniere(comparer_lots_code, args.avant, args.apres)
+
+
+def cmd_customs_code_prepare(args) -> int:
+    from .customs_reference.legal_importer import preparer_code
+
+    if args.write and not args.out:
+        print("--out est requis avec --write", file=sys.stderr)
+        return 2
+    try:
+        resultat = preparer_code(Path(args.transcription), Path(args.metadata), Path(args.out) if args.write else None)
+    except (OSError, ValueError, KeyError, TypeError, RecursionError) as exc:
+        print(json.dumps({"statut": "refuse", "publication_active": False, "detail": str(exc)}, ensure_ascii=False))
+        return 2
+    print(json.dumps(resultat, ensure_ascii=False, indent=2))
+    return 0
+
+
+def cmd_customs_diff(args) -> int:
+    from .customs_reference.comparison import comparer_lots
+
+    try:
+        resultat = comparer_lots(Path(args.avant), Path(args.apres))
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        print(json.dumps({"statut": "refuse", "lecture_seule": True, "publication_active": False, "detail": str(exc)}, ensure_ascii=False))
+        return 2
+    print(json.dumps(resultat, ensure_ascii=False, indent=2))
+    return 0
+
+
+def cmd_customs_fiscal_prepare(args) -> int:
+    from .customs_reference.fiscal_importer import preparer_mesures_autonomes
+
+    if args.write and not args.out:
+        print("--out est requis avec --write", file=sys.stderr)
+        return 2
+    return _afficher_lecture_douaniere(lambda s, m: preparer_mesures_autonomes(
+        s, m, Path(args.out) if args.write else None,
+        transcription=Path(args.transcription) if args.transcription else None), args.source, args.metadata)
+
+
+def cmd_customs_fiscal_search(args) -> int:
+    from .customs_reference.measure_search import rechercher_mesures_tarif
+
+    return _afficher_lecture_douaniere(lambda p: rechercher_mesures_tarif(
+        p, args.query, args.code, args.measure_type, args.limit, args.offset, "mesures"), args.lot)
+
+
+def cmd_customs_tariff_measures(args) -> int:
+    from .customs_reference.tariff_measures import juxtaposer_tarif_mesures
+
+    return _afficher_lecture_douaniere(lambda a, b: juxtaposer_tarif_mesures(
+        a, b, args.code, args.tariff_limit, args.tariff_offset, args.measures_limit, args.measures_offset),
+        args.tarif, args.mesures)
+
+
+def cmd_customs_fiscal_check(args) -> int:
+    from .customs_reference.fiscal_importer import charger_lot_mesures
+
+    return _afficher_lecture_douaniere(lambda p: charger_lot_mesures(p)[1], args.lot)
+
+
+def cmd_customs_prepare(args) -> int:
+    from pydantic import ValidationError
+
+    from .customs_reference.importer import preparer_tarif
+
+    if args.write and not args.out:
+        print("--out est requis avec --write", file=sys.stderr)
+        return 2
+    try:
+        resultat = preparer_tarif(Path(args.source), Path(args.metadata), Path(args.out) if args.write else None)
+    except (OSError, ValueError, KeyError, TypeError, ValidationError) as exc:
+        print(json.dumps({"statut": "refuse", "publication_active": False, "detail": str(exc)}, ensure_ascii=False))
+        return 2
+    print(json.dumps(resultat, ensure_ascii=False, indent=2))
+    return 0
+
+
+def cmd_pieces_audit(args) -> int:
+    from .pieces_audit import relayer_suppression
+
+    resultat = relayer_suppression(_racine_pieces(args.data_dir), args.id, Path(args.audit_file), args.apply)
+    if args.json_output:
+        print(json.dumps(resultat, ensure_ascii=False, indent=2))
+    else:
+        print(f"Relais {args.id} : {resultat['etat']}.")
+        print(resultat["limite"])
+        if resultat.get("detail"):
+            print(resultat["detail"], file=sys.stderr)
+    return 2 if resultat["etat"] in {"refuse", "indetermine"} else 0
+
+
+def cmd_pieces_receipt(args) -> int:
+    from .pieces_receipts import consulter_suppression
+
+    resultat = consulter_suppression(_racine_pieces(args.data_dir), args.id)
+    if args.json_output:
+        print(json.dumps(resultat, ensure_ascii=False, indent=2))
+    else:
+        print(f"Reçu de suppression {args.id} : {resultat['etat']}.")
+        print(resultat["limite"])
+        if resultat.get("detail"):
+            print(resultat["detail"], file=sys.stderr)
+    return 2 if resultat["etat"] == "indisponible" else 0
+
+
+def cmd_pieces_recover(args) -> int:
+    from .justificatifs_recovery import RecuperationRefusee, recuperer_piece
+
+    try:
+        resultat = recuperer_piece(_racine_pieces(args.data_dir), args.id, appliquer=args.apply)
+        code = 0
+    except RecuperationRefusee as exc:
+        resultat = {"etat": "refuse", "applique": False, "detail": str(exc)}
+        code = 2
+    if args.json_output:
+        print(json.dumps(resultat, ensure_ascii=False, indent=2))
+    elif code:
+        print("Récupération refusée : " + resultat["detail"], file=sys.stderr)
+    else:
+        print(f"Justificatif {args.id} : {resultat['etat']}. Quarantaine conservée.")
+        if not args.apply:
+            print("Plan uniquement. Sauvegarder, copier la quarantaine à part et suspendre les écritures avant --apply.")
+        if resultat.get("residu_temporaire"):
+            print("Nettoyage manuel à examiner : " + resultat["residu_temporaire"])
+    return code
 
 
 def cmd_backup(args) -> int:
@@ -172,7 +809,8 @@ def cmd_backup(args) -> int:
     cfg = get_config()
     destination = Path(args.out) if args.out else None
     try:
-        res = creer_sauvegarde(cfg, destination=destination, etiquette=args.tag)
+        res = creer_sauvegarde(cfg, destination=destination, etiquette=args.tag,
+                               inclure_quarantaine=getattr(args, "include_customs_quarantine", False))
     except BackupError as exc:
         print(f"sauvegarde refusée : {exc}", file=sys.stderr)
         return 2
@@ -197,7 +835,8 @@ def cmd_restore(args) -> int:
 
     cfg = get_config()
     try:
-        res = restaurer_sauvegarde(cfg, Path(args.fichier), force=args.force)
+        res = restaurer_sauvegarde(cfg, Path(args.fichier), force=args.force,
+                                    inclure_quarantaine=getattr(args, "include_customs_quarantine", False))
     except BackupError as exc:
         print(f"restauration refusée : {exc}", file=sys.stderr)
         return 2

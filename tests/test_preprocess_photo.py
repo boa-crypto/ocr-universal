@@ -4,8 +4,8 @@ Valide les étapes du pipeline PhotoPreprocessor et les fonctions utilitaires.
 """
 from __future__ import annotations
 
-import pytest
 import numpy as np
+import pytest
 
 from unocr.preprocess_photo import (
     PhotoPreprocessor,
@@ -14,7 +14,6 @@ from unocr.preprocess_photo import (
     preprocess_photo,
     save_variant,
 )
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -215,9 +214,9 @@ class TestFunctional:
 class TestIntegration:
     def test_preprocess_then_ocr(self):
         """Vérifie que le prétraitement photo ne casse pas le pipeline OCR."""
+
         from unocr.models import JobOptions
         from unocr.pipeline import Pipeline
-        import shutil
 
         # Utilise une image fixture existante
         fixture = "tests/fixtures/photo_plate_fr.png"

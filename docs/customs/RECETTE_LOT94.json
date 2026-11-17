@@ -1,0 +1,101 @@
+{
+  "type_rapport": "recette_lot94_nouvelle_fonction_metier_non_validation_juridique",
+  "revision_code": "f6d7db2e1f127780ef6c935ca10c3717773c8ee6",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "nouveaux_tests_python": 29,
+  "mission_globale": "partielle",
+  "publication_active": false,
+  "nouveaux_originaux_officiels": 0,
+  "articles_codes_officiellement_valides": 0,
+  "selection_metier_et_revue": {
+    "tests": 71,
+    "reussis": 71,
+    "echecs": 0,
+    "erreurs": 0,
+    "ignores": 0,
+    "duree_junit_secondes": 4.016,
+    "horodatage_junit": "2026-11-08T09:38:04.847264+00:00",
+    "identifiants_echecs": [],
+    "ignores_detail": []
+  },
+  "suite_complete": {
+    "tests": 4347,
+    "reussis": 4344,
+    "echecs": 2,
+    "erreurs": 0,
+    "ignores": 1,
+    "duree_junit_secondes": 368.766,
+    "horodatage_junit": "2026-11-08T09:38:31.883703+00:00",
+    "identifiants_echecs": [
+      "tests.test_indra_ocr::test_indra_engine_availability",
+      "tests.test_ocr::test_selection_prefers_native_when_present"
+    ],
+    "ignores_detail": [
+      "tests.test_indra_ocr::test_indra_engine_recognize"
+    ]
+  },
+  "recette_documentaire": {
+    "tests": 2189,
+    "reussis": 2189,
+    "echecs": 0,
+    "erreurs": 0,
+    "ignores": 0,
+    "duree_junit_secondes": 56.421,
+    "horodatage_junit": "2026-11-08T09:38:31.959825+00:00",
+    "identifiants_echecs": [],
+    "ignores_detail": [],
+    "fichiers": 67,
+    "jsdom_historiques": 212
+  },
+  "ci": {
+    "run": 42468040297,
+    "url": "https://github.com/boa-crypto/ocr-universal/actions/runs/42468040297",
+    "revision": "f6d7db2e1f127780ef6c935ca10c3717773c8ee6",
+    "statut": "success",
+    "selection_backend_avec_metier": 937,
+    "portee": "Ciblée, recouvrements ; pas complète OCR distante ou JUnit distant téléchargé"
+  },
+  "integrite": {
+    "conformes": 26,
+    "total": 27,
+    "referentiels": {
+      "attendu": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b",
+      "observe": "b4f12a1fb9873c191e6a120db2715b605f61864a6b7034ce8816150572533a7d",
+      "conforme": false
+    },
+    "ecart_identique_lot93": true,
+    "donnees_journaux_partages_preserves": true,
+    "restauration": false
+  },
+  "fonction": {
+    "api": [
+      "POST /api/v1/customs-review/lots/{lot_id}/assessments",
+      "GET /api/v1/customs-review/lots/{lot_id}/assessments/{id}",
+      "PATCH /api/v1/customs-review/lots/{lot_id}/assessments/{id}"
+    ],
+    "produit_declare_questions_manquantes": true,
+    "pistes_litterales_fr_ar_maximum": 20,
+    "abstention_si_aucune_piste": true,
+    "proposition_humaine_non_validante": true,
+    "versions_sqlite_transactionnelles": true,
+    "revision_attendue_et_concurrence_deux_processus_testees": true,
+    "publication_interdite": true,
+    "identite_http_principal_nominatif_allowlist": true,
+    "source_epinglee_et_lot_revalide": true,
+    "sha_etat_trace_non_signature": true,
+    "maximum_versions": 100,
+    "maximum_octets_etat": 524288
+  },
+  "limites": [
+    "Pas nouvelle IA/synonymes ou moteur RGI/notes/exclusions ; raisonnement déclaré",
+    "Pas validation juridique/attributs certifiés/corpus officiel ou publication",
+    "Proposition humaine possible après saisie, pas séparation des tâches obligatoire",
+    "Audit SQLite atomique mais audit externe postcommit peut échouer503 ; récupération GET par id connu après rétablissement",
+    "Historique résumé, pas WORM/signature, propriétaire DB peut falsifier état et empreintes",
+    "Pas nouvelle UI ou sauvegarde/chiffrement opérationnel qualifiés",
+    "Limites par état/versions, pas quota global/charge ; pas navigateur ou cas réel national",
+    "Aperçu76 maintenu ; code77–94 non chargé"
+  ],
+  "contre_epreuve_ancienne_implementation": "Non applicable : nouvelle fonction absente du socle précédent, pas correction d’un ancien handler",
+  "artefacts_locaux": "/home/user/recettes-unocr/lot94"
+}

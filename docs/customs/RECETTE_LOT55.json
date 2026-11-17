@@ -1,0 +1,143 @@
+{
+  "type_rapport": "recette_lot55_technique_non_validation_reglementaire",
+  "date": "2026-11-07",
+  "branche": "arena/2cd4c91a-ocr-universal",
+  "perimetre_revision": "lot55_empreintes_attendues",
+  "mission_globale": "partielle",
+  "pret_pour_calcul_douanier_reel": false,
+  "publication_active": false,
+  "recette_selectionnee": {
+    "fichiers": 62,
+    "reussis": 2016,
+    "echecs": 0,
+    "duree_secondes": 47.05,
+    "avertissements": 1
+  },
+  "interface": {
+    "scenarios_jsdom_reussis": 186,
+    "parcours_api_reelle": 4,
+    "exports_json_controles_hors_ligne": 70,
+    "rejeux_exports_criteres_identiques": 4,
+    "copies_pdf_code_controlees": 4,
+    "navigateurs_reels_qualifies": false,
+    "nouveaux_scenarios_jsdom_lot55": 0,
+    "rejeux_exports_totaux_identiques": 70,
+    "rejeux_simples": 58,
+    "rejeux_paires": 12,
+    "rejeux_pdf_sur_opt_in": 14,
+    "empreintes_attendues_fournies_sur_70_exports": true
+  },
+  "suite_complete": {
+    "tests_total": 3077,
+    "reussis": 3048,
+    "echecs": 18,
+    "ignores": 11,
+    "avertissements": 1,
+    "duree_secondes": 206.23,
+    "statut": "non_verte",
+    "echecs_identiques_a_recette45": true,
+    "echecs_detail": [
+      {
+        "test": "tests.test_api::test_health",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_api::test_engines_and_languages",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_indra_ocr::test_indra_engine_availability",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_ocr::test_tesseract_available",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_ocr::test_tesseract_recognize_real",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_ocr::test_registry_reports_availability_honestly",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_ocr::test_selection_prefers_native_when_present",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestEngineOption::test_engine_tesseract_force",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestEngineOption::test_engine_native_repli_sur_scan",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestPreprocessOptions::test_aggressive_existe",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestPreprocessOptions::test_variant_comparison_off",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_options.TestPreprocessOptions::test_variant_comparison_on",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_pipeline::test_end_to_end_scanned_pdf_ocr",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_pipeline::test_end_to_end_skewed_image",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_resources::test_registry_never_activates_unloadable_engine",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_resources::test_light_engines_always_available",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_routing_and_security::test_intelligent_routing_blurry",
+        "statut": "echec"
+      },
+      {
+        "test": "tests.test_wave4::test_engines_endpoint_reports_reasons",
+        "statut": "echec"
+      }
+    ],
+    "echecs_identiques_a_recette50": true
+  },
+  "environnement_ocr": {
+    "binaire_tesseract_present": false,
+    "module_indra_ocr_present": false
+  },
+  "avertissements_suite_complete": [
+    "StarletteDeprecationWarning: TestClient httpx, préexistant"
+  ],
+  "empreintes_historiques": {
+    "data/reglementation/base.json": "688cb720eaeeddd8a88ea2e47021b6b9b17192d7226cc9e5218006b5adcb961f",
+    "data/referentiels.json": "b292d47e67f52c2fa7478b8a0d3dd963d1016b58efbb5964cf95420c55e17c3b"
+  },
+  "inventaire_local": {
+    "quarantaine_locale_presente": false,
+    "nouveaux_originaux_officiels_acquis": 0,
+    "codes_articles_officiels_valides": 0,
+    "codes_legacy": 9,
+    "regles_legacy": 9,
+    "certificats_legacy": 4,
+    "collections_referentiels_vides": 11
+  },
+  "limites": [
+    "Matrice fermée de routes typées simples ou comparaisons à deux archives, pas toute requête/version",
+    "Empreintes fournies séparément par opérateur, authenticité des références non attestée",
+    "Registre, authenticité officielle, audit serveur et signature non vérifiés",
+    "Différence de version logicielle peut produire un rejeu différent sans prouver une fraude",
+    "Tests sur fixtures NON OFFICIELLES, aucun corpus officiel validé ni calcul réel autorisé",
+    "Les 18 échecs OCR ne sont ni masqués ni annoncés résolus"
+  ]
+}

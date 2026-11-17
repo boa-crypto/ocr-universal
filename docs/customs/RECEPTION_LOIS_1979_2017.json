@@ -1,0 +1,55 @@
+{
+  "type_rapport": "reception_documents_juridiques_utilisateur",
+  "lot_id": "lois_recues_1979_2017",
+  "manifest_sha256": "086ddbf89fb0770418e56a83dfe3bc5647d2494cd6a0bed6231ef0492b897605",
+  "documents": [
+    {
+      "document_id": "DZ_LOI_17_04_2017",
+      "nom_recu": "loi_no_17-04_du_16_fevrier_2017_code_des_douanes.pdf",
+      "sha256": "d0f2c3089769ae42949477fdb9b854c83f56eb403fb28dc81eecb125d5f866c6",
+      "octets": 194106,
+      "nature_document": "acte_modificatif",
+      "pages_pdf": 35,
+      "caracteres_extraits": 178086,
+      "extraction_sha256": "20494730900dd0014b5c0cd36c06074088e22adc55940dbf6225df4a829bada3",
+      "extraction_fichier": "DZ_LOI_17_04_2017.pages.json",
+      "date_publication_indiquee": "2017-02-19"
+    },
+    {
+      "document_id": "DZ_CODE_COMPILATION_JUIN_2017",
+      "nom_recu": "loi_no79-07_du_21_juillet_1979.pdf",
+      "sha256": "37c8bc3f614ffb127e2104dd70205ed279160d2ca522b9b523505fca7015b09a",
+      "octets": 1360777,
+      "nature_document": "compilation",
+      "pages_pdf": 186,
+      "caracteres_extraits": 308012,
+      "extraction_sha256": "b71928baa115285f3ef78b3c50a4e53473f3f59b3024612360bb4a45fdcecd4f",
+      "extraction_fichier": "DZ_CODE_COMPILATION_JUIN_2017.pages.json",
+      "date_publication_indiquee": null
+    }
+  ],
+  "articles_transcrits": 0,
+  "relations_juridiques_inferrees": 0,
+  "authenticite_etablie": false,
+  "validation_juridique": "non_validee",
+  "publication_active": false,
+  "avertissements": [
+    "Le fichier nommé loi79-07 est une compilation affichant Juin2017, pas le texte original de1979.",
+    "Texte natif de17-04 présentant des caractères dégradés ; aucune correction silencieuse.",
+    "Aucun téléchargement officiel ou consolidation automatique.",
+    "Registre créé sans nouveau réviseur habilité ; RBAC non activé et serveur partagé non redémarré."
+  ],
+  "paquet_transport": {
+    "nom": "documents_juridiques_1979_2017.zip",
+    "sha256": "4b7455caaef152a2c274741df436465cd3874c7965f99f193dcb582301b2103a",
+    "octets": 2893890
+  },
+  "recette": {
+    "cibles_reussis": 174,
+    "nouveaux_cas": 12,
+    "documentaires_reussis": 2276,
+    "lectures_pdf_reelles_reussies": 4,
+    "scenarios_jsdom_historiques": 212,
+    "suite_ocr_complete_relancee": false
+  }
+}
