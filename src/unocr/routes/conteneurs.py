@@ -5,11 +5,14 @@ from __future__ import annotations
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Request
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
+from ..business_links import exiger_dossier
+from ..business_store import BusinessStore
 from ..config import get_config
 from ..logging_setup import audit, get_logger
-from ..models import Conteneur, new_id
+from ..models import Conteneur, TerminalEnlevement, new_id
+from .dependencies import _exige_dossier, _exige_objet_dossier, _filtre_dossiers
 
 log = get_logger("conteneurs")
 
@@ -17,18 +20,34 @@ router = APIRouter(prefix="/api/conteneurs", tags=["conteneurs"])
 
 cfg = get_config()
 
+STATUTS_CONTENEUR = {
+    "reserve", "charged", "transit", "arrived", "discharged",
+    "available", "waiting", "picked_up", "delivered",
+}
+
 
 # ───────────────────────────────────────────────────────────────
-# Store en mémoire
+# Stockage SQLite local, partagé avec les autres modules métier.
 # ───────────────────────────────────────────────────────────────
 
-_conteneur_store: dict[str, Conteneur] = {}
+def _get_conteneur_store(request: Request) -> BusinessStore[Conteneur]:
+    return BusinessStore(cfg.data_dir / "metier.sqlite3", "conteneur", Conteneur)
 
 
-def _get_conteneur_store(request: Request) -> dict:
-    if not hasattr(request.app.state, 'conteneur_store'):
-        request.app.state.conteneur_store = {}
-    return request.app.state.conteneur_store
+def _valider(conteneur: Conteneur) -> None:
+    if not conteneur.dossier_id.strip() or not conteneur.numero_conteneur.strip():
+        raise HTTPException(422, "Dossier et numéro de conteneur sont obligatoires")
+    if conteneur.statut not in STATUTS_CONTENEUR:
+        raise HTTPException(422, "Statut de conteneur invalide")
+    if conteneur.poids < 0:
+        raise HTTPException(422, "Le poids ne peut pas être négatif")
+
+
+def _utilise_par_terminal(transaction: BusinessStore[Conteneur], numero: str) -> bool:
+    return any(
+        e.numero_conteneur == numero
+        for e in transaction.related("terminal", TerminalEnlevement).values()
+    )
 
 
 # ───────────────────────────────────────────────────────────────
@@ -41,7 +60,7 @@ class ConteneurCreate(BaseModel):
     type_conteneur: str = ""
     poids: float = 0.0
     seal_number: str = ""
-    statut: str = "reserve"  # reserve, charged, transit, arrived, discharged, available, waiting, picked_up, delivered
+    statut: str = "reserve"
     position_actuelle: str = ""
     date_arrivee_port: Optional[str] = None
     date_depart_port: Optional[str] = None
@@ -71,21 +90,16 @@ def create_conteneur(
     conteneur: ConteneurCreate,
 ) -> dict:
     """Créer un nouveau conteneur."""
-    store = _get_conteneur_store(request)
+    _exige_dossier(conteneur.dossier_id, request)
     conteneur_obj = Conteneur(
         id=new_id("cont_"),
-        dossier_id=conteneur.dossier_id,
-        numero_conteneur=conteneur.numero_conteneur,
-        type_conteneur=conteneur.type_conteneur,
-        poids=conteneur.poids,
-        seal_number=conteneur.seal_number,
-        statut=conteneur.statut,
-        position_actuelle=conteneur.position_actuelle,
-        date_arrivee_port=conteneur.date_arrivee_port,
-        date_depart_port=conteneur.date_depart_port,
-        observations=conteneur.observations,
+        **conteneur.model_dump(),
     )
-    store[conteneur_obj.id] = conteneur_obj
+    _valider(conteneur_obj)
+    store = _get_conteneur_store(request)
+    with store.transaction() as transaction:
+        exiger_dossier(cfg, conteneur_obj.dossier_id)
+        transaction[conteneur_obj.id] = conteneur_obj
     audit(cfg.log_dir, "conteneur_cree", numero=conteneur.numero_conteneur, dossier=conteneur.dossier_id)
     return conteneur_obj.model_dump()
 
@@ -100,7 +114,7 @@ def list_conteneurs(
     conteneurs = list(store.values())
     if dossier_id:
         conteneurs = [c for c in conteneurs if c.dossier_id == dossier_id]
-    return [c.model_dump() for c in conteneurs]
+    return [c.model_dump() for c in _filtre_dossiers(request, conteneurs)]
 
 
 @router.get("/{conteneur_id}")
@@ -113,6 +127,7 @@ def get_conteneur(
     conteneur = store.get(conteneur_id)
     if not conteneur:
         raise HTTPException(404, "Conteneur introuvable")
+    _exige_objet_dossier(request, conteneur)
     return conteneur.model_dump()
 
 
@@ -124,16 +139,27 @@ def update_conteneur(
 ) -> dict:
     """Mettre à jour un conteneur."""
     store = _get_conteneur_store(request)
-    conteneur = store.get(conteneur_id)
-    if not conteneur:
-        raise HTTPException(404, "Conteneur introuvable")
+    with store.transaction() as transaction:
+        conteneur = transaction.get(conteneur_id)
+        if not conteneur:
+            raise HTTPException(404, "Conteneur introuvable")
+        _exige_objet_dossier(request, conteneur)
 
-    update_data = conteneur_update.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(conteneur, key, value)
-
+        update_data = conteneur_update.model_dump(exclude_unset=True)
+        try:
+            candidate = Conteneur.model_validate({**conteneur.model_dump(), **update_data})
+        except ValidationError as exc:
+            raise HTTPException(422, exc.errors(include_context=False)) from exc
+        _valider(candidate)
+        _exige_objet_dossier(request, candidate)
+        exiger_dossier(cfg, candidate.dossier_id)
+        if candidate.dossier_id != conteneur.dossier_id and _utilise_par_terminal(transaction, conteneur.numero_conteneur):
+            raise HTTPException(409, "Impossible de changer le dossier : un enlèvement terminal utilise ce conteneur")
+        if candidate.numero_conteneur != conteneur.numero_conteneur and _utilise_par_terminal(transaction, conteneur.numero_conteneur):
+            raise HTTPException(409, "Impossible de changer le numéro : un enlèvement terminal utilise ce conteneur")
+        transaction[conteneur_id] = candidate
     audit(cfg.log_dir, "conteneur_modifie", cible=conteneur_id)
-    return conteneur.model_dump()
+    return candidate.model_dump()
 
 
 @router.delete("/{conteneur_id}")
@@ -143,9 +169,13 @@ def delete_conteneur(
 ) -> dict:
     """Supprimer un conteneur."""
     store = _get_conteneur_store(request)
-    if conteneur_id not in store:
-        raise HTTPException(404, "Conteneur introuvable")
-
-    del store[conteneur_id]
+    with store.transaction() as transaction:
+        conteneur = transaction.get(conteneur_id)
+        if not conteneur:
+            raise HTTPException(404, "Conteneur introuvable")
+        _exige_objet_dossier(request, conteneur)
+        if _utilise_par_terminal(transaction, conteneur.numero_conteneur):
+            raise HTTPException(409, "Conteneur utilisé par un enlèvement terminal : suppression refusée")
+        del transaction[conteneur_id]
     audit(cfg.log_dir, "conteneur_supprime", cible=conteneur_id)
     return {"deleted": True, "id": conteneur_id}

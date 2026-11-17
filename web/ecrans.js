@@ -50,11 +50,12 @@
   }
 
   function ecrire(url, methode, corps) {
+    var multipart = typeof FormData !== "undefined" && corps instanceof FormData;
     return fetch(url, {
       method: methode,
-      headers: entetes({ "Content-Type": "application/json" }),
+      headers: entetes(multipart ? {} : { "Content-Type": "application/json" }),
       credentials: "same-origin",
-      body: corps ? JSON.stringify(corps) : undefined
+      body: multipart ? corps : (corps ? JSON.stringify(corps) : undefined)
     }).then(function (r) {
       if (!r.ok) {
         return r.text().then(function (txt) {
@@ -69,6 +70,16 @@
         });
       }
       return r.status === 204 ? null : r.json().catch(function () { return null; });
+    });
+  }
+
+  function lireFichierTexte(fichier) {
+    if (typeof fichier.text === "function") return fichier.text();
+    return new Promise(function (resolve, reject) {
+      var lecteur = new FileReader();
+      lecteur.onload = function () { resolve(String(lecteur.result)); };
+      lecteur.onerror = function () { reject(lecteur.error || new Error("Lecture impossible")); };
+      lecteur.readAsText(fichier);
     });
   }
 
@@ -753,7 +764,7 @@
           { cle: "date", libelle: "Date", type: "date" },
           { cle: "reference_facture", libelle: "Référence facture" },
           { cle: "statut_paiement", libelle: "Paiement", type: "select",
-            options: ["en_attente", "paye", "partiel", "litige"] },
+            options: ["en_attente", "envoyee", "payee", "annulee", "en_retard", "remboursee"] },
           { cle: "avance_client", libelle: "Avancé par le client", type: "checkbox" },
           { cle: "commentaire", libelle: "Commentaire", type: "textarea" }
         ]
@@ -765,7 +776,7 @@
           { cle: "fournisseur", libelle: "Fournisseur" },
           { cle: "montant", libelle: "Montant", type: "number" },
           { cle: "statut_paiement", libelle: "Paiement", type: "select",
-            options: ["en_attente", "paye", "partiel", "litige"] },
+            options: ["en_attente", "envoyee", "payee", "annulee", "en_retard", "remboursee"] },
           { cle: "commentaire", libelle: "Commentaire", type: "textarea" }
         ]
       },
@@ -819,7 +830,7 @@
         url: "/api/frais/facture",
         champs: [
           { cle: "dossier_id", libelle: "Dossier", requis: true },
-          { cle: "type_facture", libelle: "Type", type: "select", options: ["recue", "emise"] },
+          { cle: "type_facture", libelle: "Type", type: "select", options: ["recue", "emisee"] },
           { cle: "numero_facture", libelle: "Numéro", requis: true },
           { cle: "date_facture", libelle: "Date", type: "date" },
           { cle: "fournisseur_id", libelle: "Fournisseur" },
@@ -842,7 +853,7 @@
       desc: "Factures émises vers les clients et reste à encaisser.",
       source: { url: "/api/frais/facture" },
       id: "id",
-      filtreLocal: function (ligne) { return String(ligne.type_facture || "") === "emise"; },
+      filtreLocal: function (ligne) { return String(ligne.type_facture || "") === "emisee"; },
       colonnes: [
         { cle: "numero_facture", libelle: "N° facture" },
         { cle: "dossier_id", libelle: "Dossier" },
@@ -856,7 +867,7 @@
         url: "/api/frais/facture",
         champs: [
           { cle: "dossier_id", libelle: "Dossier", requis: true },
-          { cle: "type_facture", libelle: "Type", type: "select", options: ["emise", "recue"] },
+          { cle: "type_facture", libelle: "Type", type: "select", options: ["emisee", "recue"] },
           { cle: "numero_facture", libelle: "Numéro", requis: true },
           { cle: "client_id", libelle: "Client" },
           { cle: "date_facture", libelle: "Date", type: "date" },
@@ -872,7 +883,7 @@
         champs: [
           { cle: "montant_ttc", libelle: "Montant TTC", type: "number" },
           { cle: "statut_paiement", libelle: "Paiement", type: "select",
-            options: ["en_attente", "paye", "partiel", "litige"] },
+            options: ["en_attente", "envoyee", "payee", "annulee", "en_retard", "remboursee"] },
           { cle: "notes", libelle: "Notes", type: "textarea" }
         ]
       },
@@ -948,41 +959,133 @@
     "finance/reconciliation": {
       section: "Finance & facturation",
       titre: "Rapprochement financier",
-      desc: "Rapprochez les frais engagés des factures enregistrées sur une " +
-            "période. Le calcul est fait par le serveur. Limite connue : aucun " +
-            "flux bancaire n'est importé sur ce poste, le rapprochement porte " +
-            "donc sur les factures et retournera zéro opération tant que " +
-            "l'import bancaire n'est pas branché.",
-      source: { url: "/api/frais" },
+      desc: "Rapprochez les factures des opérations bancaires réellement importées. " +
+            "Le pointage automatique exige une correspondance unique corroborée par " +
+            "une référence ou une date proche ; les ambiguïtés se pointent manuellement. " +
+            "Rôle superviseur requis.",
+      source: { url: "/api/frais/facture" },
       id: "id",
       colonnes: [
         { cle: "dossier_id", libelle: "Dossier" },
-        { cle: "categorie", libelle: "Catégorie" },
-        { cle: "montant", libelle: "Montant", format: "montant", devise: "devise" },
-        { cle: "reference_facture", libelle: "Facture" },
-        { cle: "statut_paiement", libelle: "Paiement" }
+        { cle: "numero_facture", libelle: "Facture" },
+        { cle: "type_facture", libelle: "Sens" },
+        { cle: "montant_ttc", libelle: "Montant", format: "montant", devise: "devise" },
+        { cle: "statut_paiement", libelle: "Paiement" },
+        { cle: "operation_bancaire_id", libelle: "Opération liée" }
       ],
-      filtres: [{ cle: "statut_paiement", libelle: "Paiement" }],
+      filtres: [{ cle: "statut_paiement", libelle: "Paiement" }, { cle: "devise", libelle: "Devise" }],
       actions: [{
         libelle: "Lancer le rapprochement",
         url: "/api/frais/rapprochement/auto",
         methode: "POST",
         global: true,
-        confirmation: "Lancer le rapprochement automatique des frais et factures ?",
+        role: "superviseur",
         succes: "Rapprochement exécuté",
         resultat: true,
-        /* L'API exige le dossier et la période : l'écran les demande au lieu
-           d'envoyer une requête incomplète (422). */
         champs: [
           { cle: "dossier_id", libelle: "Dossier", requis: true,
             aide: "Identifiant du dossier concerné (dos_…)." },
           { cle: "date_debut", libelle: "Début de période", type: "date", requis: true },
           { cle: "date_fin", libelle: "Fin de période", type: "date", requis: true }
         ]
+      }, {
+        libelle: "Pointer manuellement",
+        url: "/api/frais/rapprochement/manuel",
+        methode: "POST",
+        role: "superviseur",
+        masquer: function (ligne) { return Boolean(ligne.rapprochee || ligne.operation_bancaire_id); },
+        champs: [
+          { cle: "operation_id", libelle: "Opération bancaire", requis: true,
+            aide: "Identifiant op_… visible dans Opérations bancaires." },
+          { cle: "motif", libelle: "Motif du pointage", requis: true, longueurMax: 2000 }
+        ],
+        corps: function (ligne, valeurs) {
+          return { dossier_id: ligne.dossier_id, facture_id: ligne.id,
+                   operation_id: valeurs.operation_id, motif: valeurs.motif };
+        },
+        succes: "Pointage manuel enregistré"
+      }, {
+        libelle: "Annuler le pointage",
+        url: "/api/frais/rapprochement/annuler",
+        methode: "POST",
+        role: "superviseur",
+        masquer: function (ligne) { return !(ligne.rapprochee || ligne.operation_bancaire_id); },
+        champs: [
+          { cle: "motif", libelle: "Motif d'annulation", requis: true, longueurMax: 2000 }
+        ],
+        corps: function (ligne, valeurs) {
+          return { dossier_id: ligne.dossier_id, facture_id: ligne.id, motif: valeurs.motif };
+        },
+        confirmation: "Annuler ce pointage ? L'état de paiement antérieur sera restauré.",
+        succes: "Pointage annulé"
       }],
       vide: {
-        message: "Aucun frais à rapprocher pour le moment.",
-        action: { libelle: "Ouvrir les frais", route: "#finance/frais-dossier" }
+        message: "Aucune facture à rapprocher pour le moment.",
+        action: { libelle: "Ouvrir la facturation client", route: "#finance/facturation" }
+      }
+    },
+
+    "finance/banque": {
+      section: "Finance & facturation",
+      titre: "Opérations bancaires",
+      desc: "Opérations importées et dédupliquées. Un import ne crée pas de " +
+            "rapprochement : il alimente le pointage automatique ou manuel. " +
+            "Aucune connexion bancaire automatique ni conversion de change.",
+      source: { url: "/api/frais/banque/operations" },
+      id: "id",
+      colonnes: [
+        { cle: "date", libelle: "Date", format: "date" },
+        { cle: "dossier_id", libelle: "Dossier" },
+        { cle: "montant", libelle: "Montant", format: "montant", devise: "devise" },
+        { cle: "devise", libelle: "Devise" },
+        { cle: "reference", libelle: "Référence" },
+        { cle: "libelle", libelle: "Libellé" },
+        { cle: "statut", libelle: "Pointage" },
+        { cle: "facture_id", libelle: "Facture liée" }
+      ],
+      filtres: [{ cle: "statut", libelle: "Pointage" }, { cle: "devise", libelle: "Devise" }],
+      actions: [{
+        libelle: "Importer CSV",
+        url: "/api/frais/banque/import-csv",
+        methode: "POST",
+        global: true,
+        role: "operateur",
+        emplacement: "multipart",
+        champs: [
+          { cle: "dossier_id", libelle: "Dossier", requis: true },
+          { cle: "fichier", libelle: "Relevé CSV", type: "fichier", requis: true,
+            accept: ".csv,text/csv", tailleMax: 20 * 1024 * 1024,
+            aide: "Colonnes date et montant requises ; délimiteur , ou ; — 20 Mio max." }
+        ],
+        resultat: true,
+        resumer: function (reponse) {
+          return reponse.importees + " importée(s), " + reponse.doublons +
+            " doublon(s), " + (reponse.rejetees || []).length + " rejetée(s).";
+        },
+        succes: "Import CSV traité"
+      }, {
+        libelle: "Importer JSON",
+        url: "/api/frais/banque/import",
+        methode: "POST",
+        global: true,
+        role: "operateur",
+        emplacement: "json-fichier",
+        champs: [
+          { cle: "dossier_id", libelle: "Dossier", requis: true },
+          { cle: "fichier", libelle: "Relevé JSON", type: "fichier", requis: true,
+            accept: ".json,application/json", tailleMax: 20 * 1024 * 1024,
+            aide: "Tableau d'opérations ou objet { operations: [...] } — 20 Mio max." }
+        ],
+        resultat: true,
+        resumer: function (reponse) {
+          return reponse.importees + " importée(s), " + reponse.doublons +
+            " doublon(s), " + (reponse.rejetees || []).length + " rejetée(s).";
+        },
+        succes: "Import JSON traité"
+      }],
+      vide: {
+        message: "Aucune opération bancaire importée. Importez un relevé CSV ou JSON pour commencer.",
+        action: { libelle: "Ouvrir le rapprochement", route: "#finance/reconciliation" }
       }
     },
 
@@ -2071,12 +2174,24 @@
      - `administrateur`/rôle admin → écriture ;
      - sinon permission explicite `ecriture` ou joker.
      Le serveur re-vérifie systématiquement : l'UI ne fait que masquer. */
-  function peutEcrire() {
+  function peutEcrire(minimum) {
     if (!moi) return false;
     if (moi.actif === false || moi.rbac_actif === false) return true;
     if (moi.administrateur === true) return true;
     var roles = moi.roles || (moi.role ? [moi.role] : []);
     if (roles.indexOf("administrateur") !== -1 || roles.indexOf("admin") !== -1) return true;
+    if (minimum === "superviseur") {
+      if (moi.supervision === true) return true;
+      return roles.some(function (role) {
+        return ["superviseur", "responsable_transit", "declarant_habile",
+                "controleur_documentaire", "responsable_financier"].indexOf(role) !== -1;
+      });
+    }
+    if (moi.ecriture === true) return true;
+    if (roles.some(function (role) {
+      return ["operateur", "superviseur", "agent_de_transit", "responsable_transit",
+              "declarant_habile", "controleur_documentaire", "responsable_financier"].indexOf(role) !== -1;
+    })) return true;
     var droits = moi.permissions || moi.droits || [];
     return droits.indexOf("ecriture") !== -1 || droits.indexOf("*") !== -1;
   }
@@ -2153,8 +2268,8 @@
       nouveau.addEventListener("click", function () { ouvrirFormulaire(ecran, null); });
       actions.appendChild(nouveau);
     }
-    if ((ecran.actions || []).some(function (a) { return a.global; }) && peutEcrire()) {
-      (ecran.actions || []).filter(function (a) { return a.global; }).forEach(function (action) {
+    if ((ecran.actions || []).some(function (a) { return a.global && peutEcrire(a.role); })) {
+      (ecran.actions || []).filter(function (a) { return a.global && peutEcrire(a.role); }).forEach(function (action) {
         var bouton = elt("button", "btn", action.libelle);
         bouton.type = "button";
         bouton.addEventListener("click", function () { executerAction(ecran, action, null); });
@@ -2367,6 +2482,7 @@
         var tdActions = elt("td", "ecran__td-actions");
         (ecran.actions || []).forEach(function (action) {
           if (action.global) return;
+          if (action.role && !peutEcrire(action.role)) return;
           if (typeof action.masquer === "function" && action.masquer(ligne)) return;
           var bouton = elt("button", "btn ghost sm", action.libelle);
           bouton.type = "button";
@@ -2538,6 +2654,10 @@
           o.value = option.valeur;
           controle.appendChild(o);
         });
+      } else if (champ.type === "fichier") {
+        controle = elt("input", "inp");
+        controle.type = "file";
+        if (champ.accept) controle.accept = champ.accept;
       } else {
         controle = elt("input", "inp");
         controle.type = champ.type === "date" ? "date"
@@ -2585,23 +2705,46 @@
       var manquants = [];
       Object.keys(entrees).forEach(function (cle) {
         var entree = entrees[cle];
-        var valeur = entree.controle.value.trim();
-        if (entree.definition.requis && !valeur) {
-          manquants.push(entree.definition.libelle);
-          entree.bloc.classList.add("is-invalide");
-          return;
+        var valeur;
+        if (entree.definition.type === "fichier") {
+          valeur = entree.controle.files && entree.controle.files[0];
+          if (entree.definition.requis && !valeur) {
+            manquants.push(entree.definition.libelle);
+            entree.bloc.classList.add("is-invalide");
+            return;
+          }
+          if (valeur && entree.definition.tailleMax && valeur.size > entree.definition.tailleMax) {
+            erreurs.textContent = entree.definition.libelle + " : fichier trop volumineux.";
+            entree.bloc.classList.add("is-invalide");
+            return;
+          }
+        } else {
+          valeur = entree.controle.value.trim();
+          if (entree.definition.requis && !valeur) {
+            manquants.push(entree.definition.libelle);
+            entree.bloc.classList.add("is-invalide");
+            return;
+          }
+          if (entree.definition.type === "number") valeur = Number(valeur);
         }
         entree.bloc.classList.remove("is-invalide");
-        if (entree.definition.type === "number") valeur = Number(valeur);
         valeurs[cle] = valeur;
       });
       if (manquants.length) {
         erreurs.textContent = "Champs obligatoires : " + manquants.join(", ");
         return;
       }
+      if (erreurs.textContent) return;
       var url = urlRemplie(action.url, ligne || {}, ecran);
       var corps;
-      if (action.emplacement === "query") {
+      if (action.emplacement === "multipart") {
+        corps = new FormData();
+        Object.keys(valeurs).forEach(function (cle) {
+          var valeur = valeurs[cle];
+          if (valeur === "" || valeur === undefined || valeur === null) return;
+          corps.append(cle, valeur);
+        });
+      } else if (action.emplacement === "query") {
         /* Beaucoup de routes d'écriture attendent des paramètres d'URL
            (FastAPI : scalaires = query string), pas un corps JSON.
            Envoyer un corps produisait un 422 systématique. */
@@ -2615,6 +2758,25 @@
           url += (url.indexOf("?") === -1 ? "?" : "&") + paires.join("&");
         }
         corps = undefined;
+      } else if (action.emplacement === "json-fichier") {
+        var fichier = valeurs[action.champFichier || "fichier"];
+        valider.disabled = true;
+        lireFichierTexte(fichier).then(function (texte) {
+          var contenu = JSON.parse(texte);
+          var operations = Array.isArray(contenu) ? contenu : contenu.operations;
+          if (!Array.isArray(operations)) {
+            throw new Error("Le JSON doit contenir un tableau d'opérations.");
+          }
+          var charges = Object.assign({}, valeurs);
+          delete charges[action.champFichier || "fichier"];
+          charges.operations = operations;
+          voile.remove();
+          envoyerAction(ecran, action, url, action.methode || "POST", charges);
+        }).catch(function (erreur) {
+          valider.disabled = false;
+          erreurs.textContent = "Import JSON impossible : " + erreur.message;
+        });
+        return;
       } else {
         corps = action.corps ? action.corps(ligne || {}, valeurs) : valeurs;
       }
@@ -2633,6 +2795,10 @@
   }
 
   function executerAction(ecran, action, ligne) {
+    if (action.role && !peutEcrire(action.role)) {
+      toast("Votre rôle ne permet pas cette action", "error");
+      return;
+    }
     if (action.confirmation && !window.confirm(action.confirmation)) return;
     if (typeof action.executer === "function") {
       action.executer(ligne || {});

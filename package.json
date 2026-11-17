@@ -11,6 +11,7 @@
     "ui:declarations": "node tests/ui_declarations.js",
     "ui:terminal": "node tests/ui_terminal.js",
     "ui:finance": "node tests/ui_finance.js",
+    "ui:finance-banque": "node tests/ui_finance_banque.js",
     "ui:justificatifs": "node tests/ui_justificatifs.js",
     "ui:customs-review": "node tests/ui_customs_review.js",
     "ui:customs-assessments": "node tests/ui_customs_assessments.js",

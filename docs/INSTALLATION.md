@@ -3,7 +3,7 @@
 ## 1. Prérequis système
 
 - OS : Linux (Debian/Ubuntu testé), Windows 10/11, macOS (non testés ici)
-- Python 3.11+ (testé sur 3.13)
+- Python 3.11+ (verrous Linux/CI générés et testés sur 3.11)
 - RAM : 2 Go minimum (4 Go recommandés pour de gros lots)
 - Disque : ~1 Go (dont ~200 Mo de modèles tessdata)
 - **Aucun GPU requis** ; aucune accélération matérielle n'est utilisée
@@ -38,8 +38,13 @@ jamais une langue supportée si son modèle est absent.
 ```bash
 python -m venv .venv
 source .venv/bin/activate       # Windows : .venv\Scripts\activate
-pip install -r requirements.txt
-pip install -r requirements.lock.txt   # versions exactes verrouillées (recommandé)
+pip install -r requirements.txt        # plages minimales, multiplateforme
+# ou, sous Linux/CI Python 3.11, verrouillage reproductible :
+pip install -r requirements.lock.txt   # runtime seul
+pip install --no-deps .
+# développement/CI :
+pip install -r requirements-dev.lock.txt
+pip install --no-deps -e .
 ```
 
 ## 3. Vérification
@@ -102,6 +107,7 @@ docker compose up --build     # → http://localhost:8000 (UI) · /docs (API)
 ```
 
 - L'image embarque Tesseract 5 et **11 modèles de langue**, poppler et zbar.
+- Les dépendances Python runtime sont installées depuis `requirements.lock.txt`, puis le projet sans résolution supplémentaire (`--no-deps`).
 - Les documents et journaux sont écrits dans le volume `unocr-data` monté sur
   `/data` (via `UNOCR_DATA_DIR`), jamais dans l'image.
 - `HEALTHCHECK` interroge `/api/health` ; un healthcheck est aussi présent dans

@@ -8,27 +8,31 @@ import re
 import sqlite3
 import tempfile
 import uuid
-from datetime import datetime
 from pathlib import Path, PurePosixPath
 from typing import List, Optional
 from urllib.parse import quote
 
-from fastapi import APIRouter, Body, File, Form, HTTPException, Request, UploadFile
+from fastapi import APIRouter, Body, Depends, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import Response
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, Field, ValidationError
 
+from .. import finance
 from ..business_links import exiger_dossier
 from ..business_store import BusinessStore
-from ..config import get_config
+from ..config import Config, get_config
 from ..logging_setup import audit, get_logger
 from ..models import Facture, Frais, Justificatif, new_id
 from ..pieces_receipts import enregistrer_suppression
+from ..rbac import SUPERVISEUR
+from .dependencies import _exige, _exige_dossier, _exige_objet_dossier, _filtre_dossiers
 
 log = get_logger("frais")
 
 router = APIRouter(prefix="/api/frais", tags=["frais"])
 
-cfg = get_config()
+def _cfg(request: Request) -> Config:
+    """Configuration de l'application courante, jamais un singleton de module."""
+    return getattr(request.app.state, "cfg", None) or get_config()
 
 
 # ───────────────────────────────────────────────────────────────
@@ -39,15 +43,15 @@ MAX_JUSTIFICATIF = 20 * 1024 * 1024
 
 
 def _get_justificatif_store(request: Request) -> BusinessStore[Justificatif]:
-    return BusinessStore(cfg.data_dir / "metier.sqlite3", "justificatif", Justificatif)
+    return BusinessStore(_cfg(request).data_dir / "metier.sqlite3", "justificatif", Justificatif)
 
 
 def _get_frais_store(request: Request) -> BusinessStore[Frais]:
-    return BusinessStore(cfg.data_dir / "metier.sqlite3", "frais", Frais)
+    return BusinessStore(_cfg(request).data_dir / "metier.sqlite3", "frais", Frais)
 
 
 def _get_facture_store(request: Request) -> BusinessStore[Facture]:
-    return BusinessStore(cfg.data_dir / "metier.sqlite3", "facture", Facture)
+    return BusinessStore(_cfg(request).data_dir / "metier.sqlite3", "facture", Facture)
 
 
 # ───────────────────────────────────────────────────────────────
@@ -128,6 +132,7 @@ def create_frais(
     frais: FraisCreate,
 ) -> dict:
     """Créer un nouveau frais."""
+    _exige_dossier(frais.dossier_id, request)
     store = _get_frais_store(request)
     frais_obj = Frais(
         id=new_id("frais_"),
@@ -144,9 +149,9 @@ def create_frais(
         avance_client=frais.avance_client,
     )
     with store.transaction() as transaction:
-        exiger_dossier(cfg, frais_obj.dossier_id)
+        exiger_dossier(_cfg(request), frais_obj.dossier_id)
         transaction[frais_obj.id] = frais_obj
-    audit(cfg.log_dir, "frais_cree", dossier=frais.dossier_id, montant=frais.montant)
+    audit(_cfg(request).log_dir, "frais_cree", dossier=frais.dossier_id, montant=frais.montant)
     return frais_obj.model_dump()
 
 
@@ -160,7 +165,7 @@ def list_frais(
     frais_list = list(store.values())
     if dossier_id:
         frais_list = [f for f in frais_list if f.dossier_id == dossier_id]
-    return [f.model_dump() for f in frais_list]
+    return [f.model_dump() for f in _filtre_dossiers(request, frais_list)]
 
 
 @router.get("/facture")
@@ -173,7 +178,7 @@ def list_factures(
     factures = list(store.values())
     if dossier_id:
         factures = [f for f in factures if f.dossier_id == dossier_id]
-    return [f.model_dump() for f in factures]
+    return [f.model_dump() for f in _filtre_dossiers(request, factures)]
 
 
 @router.get("/{frais_id}")
@@ -186,6 +191,7 @@ def get_frais(
     frais = store.get(frais_id)
     if not frais:
         raise HTTPException(404, "Frais introuvable")
+    _exige_objet_dossier(request, frais)
     return frais.model_dump()
 
 
@@ -201,15 +207,17 @@ def update_frais(
         frais = transaction.get(frais_id)
         if not frais:
             raise HTTPException(404, "Frais introuvable")
+        _exige_objet_dossier(request, frais)
         update_data = frais_update.model_dump(exclude_unset=True)
         try:
             frais = Frais.model_validate({**frais.model_dump(), **update_data})
         except ValidationError as exc:
             raise HTTPException(422, exc.errors(include_context=False)) from exc
-        exiger_dossier(cfg, frais.dossier_id)
+        _exige_objet_dossier(request, frais)
+        exiger_dossier(_cfg(request), frais.dossier_id)
         transaction[frais_id] = frais
 
-    audit(cfg.log_dir, "frais_modifie", cible=frais_id)
+    audit(_cfg(request).log_dir, "frais_modifie", cible=frais_id)
     return frais.model_dump()
 
 
@@ -224,11 +232,12 @@ def delete_frais(
         frais = transaction.get(frais_id)
         if frais is None:
             raise HTTPException(404, "Frais introuvable")
+        _exige_objet_dossier(request, frais)
         if frais.justificatifs or any(j.frais_id == frais_id for j in
                 transaction.related("justificatif", Justificatif).values()):
             raise HTTPException(409, "Ce frais possède des justificatifs : suppression refusée")
         del transaction[frais_id]
-    audit(cfg.log_dir, "frais_supprime", cible=frais_id)
+    audit(_cfg(request).log_dir, "frais_supprime", cible=frais_id)
     return {"deleted": True, "id": frais_id}
 
 
@@ -242,6 +251,7 @@ def create_facture(
     facture: FactureCreate,
 ) -> dict:
     """Créer une nouvelle facture."""
+    _exige_dossier(facture.dossier_id, request)
     store = _get_facture_store(request)
     facture_obj = Facture(
         id=new_id("fac_"),
@@ -260,9 +270,9 @@ def create_facture(
         notes=facture.notes,
     )
     with store.transaction() as transaction:
-        exiger_dossier(cfg, facture_obj.dossier_id)
+        exiger_dossier(_cfg(request), facture_obj.dossier_id)
         transaction[facture_obj.id] = facture_obj
-    audit(cfg.log_dir, "facture_creee", dossier=facture.dossier_id, numero=facture.numero_facture)
+    audit(_cfg(request).log_dir, "facture_creee", dossier=facture.dossier_id, numero=facture.numero_facture)
     return facture_obj.model_dump()
 
 
@@ -276,6 +286,7 @@ def get_facture(
     facture = store.get(facture_id)
     if not facture:
         raise HTTPException(404, "Facture introuvable")
+    _exige_objet_dossier(request, facture)
     return facture.model_dump()
 
 
@@ -291,16 +302,20 @@ def update_facture(
         facture = transaction.get(facture_id)
         if not facture:
             raise HTTPException(404, "Facture introuvable")
+        _exige_objet_dossier(request, facture)
         update_data = facture_update.model_dump(exclude_unset=True)
         try:
-            facture = Facture.model_validate({**facture.model_dump(), **update_data})
+            candidate = Facture.model_validate({**facture.model_dump(), **update_data})
         except ValidationError as exc:
             raise HTTPException(422, exc.errors(include_context=False)) from exc
-        exiger_dossier(cfg, facture.dossier_id)
-        transaction[facture_id] = facture
+        _exige_objet_dossier(request, candidate)
+        finance.verifier_modification_facture(facture, candidate)
+        exiger_dossier(_cfg(request), candidate.dossier_id)
+        transaction[facture_id] = candidate
 
-    audit(cfg.log_dir, "facture_modifiee", cible=facture_id)
-    return facture.model_dump()
+    audit(_cfg(request).log_dir, "facture_modifiee", cible=facture_id,
+          dossier=candidate.dossier_id, champs=sorted(update_data))
+    return candidate.model_dump()
 
 
 @router.delete("/facture/{facture_id}")
@@ -308,13 +323,18 @@ def delete_facture(
     facture_id: str,
     request: Request,
 ) -> dict:
-    """Supprimer une facture."""
+    """Supprimer une facture non pointée, sans laisser d'opération orpheline."""
     store = _get_facture_store(request)
-    if facture_id not in store:
-        raise HTTPException(404, "Facture introuvable")
-
-    del store[facture_id]
-    audit(cfg.log_dir, "facture_supprimee", cible=facture_id)
+    with store.transaction() as transaction:
+        facture = transaction.get(facture_id)
+        if facture is None:
+            raise HTTPException(404, "Facture introuvable")
+        _exige_objet_dossier(request, facture)
+        if facture.rapprochee or facture.operation_bancaire_id:
+            raise HTTPException(
+                409, "Facture rapprochée : annulez le pointage avant suppression")
+        del transaction[facture_id]
+    audit(_cfg(request).log_dir, "facture_supprimee", cible=facture_id, dossier=facture.dossier_id)
     return {"deleted": True, "id": facture_id}
 
 
@@ -327,147 +347,104 @@ def resume_financier_dossier(
     dossier_id: str,
     request: Request,
 ) -> dict:
-    """Résumé financier complet d'un dossier."""
-    frais_store = _get_frais_store(request)
-    facture_store = _get_facture_store(request)
+    """Résumé financier par devise, sans conversion implicite."""
+    _exige_dossier(dossier_id, request)
+    return finance.resume_financier(_cfg(request), dossier_id)
 
-    frais_dossier = [f for f in frais_store.values() if f.dossier_id == dossier_id]
-    factures_dossier = [f for f in facture_store.values() if f.dossier_id == dossier_id]
-
-    total_frais = sum(f.montant for f in frais_dossier)
-    total_avances = sum(f.montant for f in frais_dossier if f.avance_client)
-    total_honoraires = sum(f.montant for f in frais_dossier if f.categorie == "honoraires_transitaire")
-    total_factures_client = sum(f.montant_ttc for f in factures_dossier if f.type_facture == "emisee")
-    total_factures_fournisseurs = sum(f.montant_ttc for f in factures_dossier if f.type_facture == "recue")
-
-    frais_payes = sum(f.montant for f in frais_dossier if f.statut_paiement == "paye")
-    frais_en_attente = sum(f.montant for f in frais_dossier if f.statut_paiement == "en_attente")
-    factures_payees = sum(f.montant_ttc for f in factures_dossier if f.statut_paiement == "payee")
-    factures_en_attente = sum(f.montant_ttc for f in factures_dossier if f.statut_paiement == "en_attente")
-
-    return {
-        "dossier_id": dossier_id,
-        "total_frais": total_frais,
-        "total_avances": total_avances,
-        "total_honoraires": total_honoraires,
-        "total_factures_client": total_factures_client,
-        "total_factures_fournisseurs": total_factures_fournisseurs,
-        "frais_payes": frais_payes,
-        "frais_en_attente": frais_en_attente,
-        "factures_payees": factures_payees,
-        "factures_en_attente": factures_en_attente,
-        "solde_restant": total_factures_client - total_frais,
-        "rentabilite": total_factures_client - total_frais,
-        "par_categorie": {
-            cat: sum(f.montant for f in frais_dossier if f.categorie == cat)
-            for cat in set(f.categorie for f in frais_dossier)
-        },
-        "par_statut_frais": {
-            "payes": frais_payes,
-            "en_attente": frais_en_attente,
-            "en_retard": sum(f.montant for f in frais_dossier if f.statut_paiement == "en_retard"),
-        },
-        "par_statut_factures": {
-            "payees": factures_payees,
-            "en_attente": factures_en_attente,
-            "annulees": sum(f.montant_ttc for f in factures_dossier if f.statut_paiement == "annulee"),
-        },
-    }
 
 # ───────────────────────────────────────────────────────────────
-# Rapprochement Bancaire / Factures Automatique
+# Rapprochement bancaire / factures
 # ───────────────────────────────────────────────────────────────
+
+class ImportBanqueRequest(BaseModel):
+    dossier_id: str = Field(min_length=1, max_length=128)
+    operations: List[dict] = Field(max_length=finance.MAX_OPERATIONS_IMPORT)
+
+
+class RapprochementManuelRequest(BaseModel):
+    dossier_id: str
+    facture_id: str
+    operation_id: str
+    motif: str = ""
+
+
+class AnnulationRapprochementRequest(BaseModel):
+    dossier_id: str
+    facture_id: str
+    motif: str = ""
+
+
+def _acteur(request: Request) -> str:
+    utilisateur = getattr(request.state, "utilisateur", None)
+    return getattr(utilisateur, "nom", "local")
+
+
+@router.get("/banque/operations")
+def list_operations_bancaires(request: Request, dossier_id: Optional[str] = None) -> list[dict]:
+    store = finance.store_operations(_cfg(request))
+    operations = list(store.values())
+    if dossier_id:
+        operations = [op for op in operations if op.dossier_id == dossier_id]
+    return [op.model_dump() for op in _filtre_dossiers(request, operations)]
+
+
+@router.post("/banque/import")
+def import_operations_bancaires(request: Request, body: ImportBanqueRequest) -> dict:
+    _exige_dossier(body.dossier_id, request)
+    exiger_dossier(_cfg(request), body.dossier_id)
+    return finance.importer_operations(_cfg(request), body.dossier_id, body.operations, _acteur(request))
+
+
+@router.post("/banque/import-csv")
+async def import_operations_bancaires_csv(
+    request: Request,
+    dossier_id: str = Form(...),
+    fichier: UploadFile = File(...),
+) -> dict:
+    _exige_dossier(dossier_id, request)
+    exiger_dossier(_cfg(request), dossier_id)
+    try:
+        contenu = (await fichier.read(MAX_JUSTIFICATIF + 1)).decode("utf-8-sig")
+    finally:
+        await fichier.close()
+    if len(contenu.encode("utf-8")) > MAX_JUSTIFICATIF:
+        raise HTTPException(413, "CSV bancaire trop volumineux")
+    lignes = finance.parser_csv_banque(contenu)
+    return finance.importer_operations(_cfg(request), dossier_id, lignes, _acteur(request))
+
 
 @router.post("/rapprochement/auto")
-async def auto_rapprochement(
+def auto_rapprochement(
     request: Request,
     dossier_id: str = Body(...),
     date_debut: str = Body(...),
     date_fin: str = Body(...),
+    current_user=Depends(_exige(SUPERVISEUR)),
 ) -> dict:
-    """Rapprochement automatique des opérations bancaires avec les factures."""
-
-    facture_store = _get_facture_store(request)
-
-    # Récupérer les opérations bancaires (simulé - en réalité viendrait d'un import bancaire)
-    operations_bancaires = []  # TODO: récupérer depuis import bancaire
-
-    # Récupérer factures du dossier non rapprochées
-    factures = [f for f in facture_store.values() if f.dossier_id == dossier_id and not f.rapprochee]
-
-    rapprochees = []
-    non_rapprochees = []
-
-    for facture in factures:
-        # Recherche de correspondance par montant, date, référence
-        matches = []
-        for op in operations_bancaires:
-            if _match_transaction(facture, op):
-                matches.append(op)
-
-        if len(matches) == 1:
-            # Rapprochement automatique unique
-            facture.rapprochee = True
-            facture.operation_bancaire_id = matches[0].get("id")
-            facture_store[facture.id] = facture
-            rapprochees.append({
-                "facture_id": facture.id,
-                "operation_id": matches[0].get("id"),
-                "type": "automatique",
-                "confiance": 1.0
-            })
-        elif len(matches) > 1:
-            # Ambiguïté - mettre en attente
-            non_rapprochees.append({
-                "facture_id": facture.id,
-                "candidats": [m.get("id") for m in matches],
-                "raison": "multiples_correspondances"
-            })
-        else:
-            # Aucune correspondance
-            non_rapprochees.append({
-                "facture_id": facture.id,
-                "raison": "aucune_correspondance"
-            })
-
-    return {
-        "rapprochees": rapprochees,
-        "non_rapprochees": non_rapprochees,
-        "total_factures": len(factures),
-        "taux_rapprochement": len(rapprochees) / len(factures) if factures else 0
-    }
+    """Rapproche les factures des opérations bancaires réellement importées."""
+    _exige_dossier(dossier_id, request)
+    return finance.rapprochement_auto(_cfg(request), dossier_id, date_debut, date_fin, _acteur(request))
 
 
-def _match_transaction(facture: Facture, operation: dict) -> bool:
-    """Vérifie si une opération bancaire correspond à une facture."""
-    # Comparaison par montant (avec tolérance)
-    montant_facture = facture.montant_ttc
-    montant_op = operation.get("montant", 0)
-    if abs(montant_facture - montant_op) > 0.01:  # tolérance 1 centime
-        return False
+@router.post("/rapprochement/manuel")
+def rapprochement_manuel(request: Request, body: RapprochementManuelRequest,
+                         current_user=Depends(_exige(SUPERVISEUR))) -> dict:
+    _exige_dossier(body.dossier_id, request)
+    return finance.rapprochement_manuel(_cfg(request), body.dossier_id, body.facture_id,
+                                        body.operation_id, _acteur(request), body.motif)
 
-    # Comparaison par date (fenêtre de 3 jours)
-    date_facture = facture.date_facture
-    date_op = operation.get("date")
-    if date_facture and date_op:
-        try:
-            df = datetime.fromisoformat(date_facture)
-            do = datetime.fromisoformat(date_op)
-            if abs((df - do).days) > 3:
-                return False
-        except (TypeError, ValueError):
-            pass
 
-    # Comparaison par référence (numéro facture, IBAN, etc.)
-    ref_facture = facture.numero_facture
-    ref_op = operation.get("reference", "")
-    if ref_facture and ref_facture in ref_op:
-        return True
+@router.post("/rapprochement/annuler")
+def annuler_rapprochement(request: Request, body: AnnulationRapprochementRequest,
+                          current_user=Depends(_exige(SUPERVISEUR))) -> dict:
+    _exige_dossier(body.dossier_id, request)
+    return finance.annuler_rapprochement(_cfg(request), body.dossier_id, body.facture_id,
+                                         _acteur(request), body.motif)
 
-    return False
+
 # ───────────────────────────────────────────────────────────────
 
-def _repertoire_justificatifs() -> Path:
+def _repertoire_justificatifs(cfg: Config) -> Path:
     repertoire = cfg.data_dir / "justificatifs"
     if repertoire.is_symlink():
         raise HTTPException(503, "Répertoire des justificatifs non sûr")
@@ -475,12 +452,12 @@ def _repertoire_justificatifs() -> Path:
     return repertoire
 
 
-def _chemin_justificatif(justificatif: Justificatif) -> Path:
+def _chemin_justificatif(cfg: Config, justificatif: Justificatif) -> Path:
     relatif = PurePosixPath(justificatif.chemin_fichier)
     if (len(relatif.parts) != 2 or relatif.parts[0] != "justificatifs"
             or not re.fullmatch(r"[a-f0-9]{32}\.bin", relatif.parts[1])):
         raise HTTPException(403, "Chemin de justificatif refusé")
-    chemin = _repertoire_justificatifs() / relatif.parts[1]
+    chemin = _repertoire_justificatifs(cfg) / relatif.parts[1]
     if chemin.is_symlink():
         raise HTTPException(403, "Lien symbolique de justificatif refusé")
     return chemin
@@ -514,14 +491,15 @@ async def upload_justificatif(
         uploaded_by=getattr(utilisateur, "nom", "utilisateur"),
         hash_sha256=hashlib.sha256(contenu).hexdigest(),
     )
-    chemin = _chemin_justificatif(justificatif)
+    chemin = _chemin_justificatif(_cfg(request), justificatif)
     temporaire = None
     try:
         with _get_frais_store(request).transaction() as transaction:
             frais = transaction.get(frais_id)
             if frais is None:
                 raise HTTPException(404, "Frais introuvable")
-            exiger_dossier(cfg, frais.dossier_id)
+            _exige_objet_dossier(request, frais)
+            exiger_dossier(_cfg(request), frais.dossier_id)
             with tempfile.NamedTemporaryFile(dir=chemin.parent, suffix=".tmp", delete=False) as fichier_tmp:
                 temporaire = Path(fichier_tmp.name)
                 fichier_tmp.write(contenu)
@@ -538,7 +516,7 @@ async def upload_justificatif(
         if isinstance(exc, (OSError, sqlite3.Error)):
             raise HTTPException(503, "Enregistrement du justificatif impossible") from exc
         raise
-    audit(cfg.log_dir, "justificatif_ajoute", cible=justificatif.id, frais=frais_id)
+    audit(_cfg(request).log_dir, "justificatif_ajoute", cible=justificatif.id, frais=frais_id)
     return {"id": justificatif.id, "nom_fichier": nom, "hash": justificatif.hash_sha256}
 
 
@@ -547,6 +525,7 @@ def list_justificatifs(frais_id: str, request: Request) -> list[dict]:
     with _get_frais_store(request).transaction() as transaction:
         if frais_id not in transaction:
             raise HTTPException(404, "Frais introuvable")
+        _exige_objet_dossier(request, transaction.get(frais_id))
         return [j.model_dump(exclude={"chemin_fichier"}) for j in
                 transaction.related("justificatif", Justificatif).values() if j.frais_id == frais_id]
 
@@ -557,7 +536,11 @@ def download_justificatif(justificatif_id: str, request: Request) -> Response:
         justificatif = transaction.get(justificatif_id)
         if justificatif is None:
             raise HTTPException(404, "Justificatif introuvable")
-        chemin = _chemin_justificatif(justificatif)
+        frais_parent = transaction.related("frais", Frais).get(justificatif.frais_id)
+        if frais_parent is None:
+            raise HTTPException(404, "Frais lié au justificatif introuvable")
+        _exige_objet_dossier(request, frais_parent)
+        chemin = _chemin_justificatif(_cfg(request), justificatif)
         try:
             with chemin.open("rb") as fichier:
                 contenu = fichier.read(MAX_JUSTIFICATIF + 1)
@@ -582,7 +565,11 @@ def delete_justificatif(justificatif_id: str, request: Request) -> dict:
             justificatif = transaction.get(justificatif_id)
             if justificatif is None:
                 raise HTTPException(404, "Justificatif introuvable")
-            chemin = _chemin_justificatif(justificatif)
+            frais_parent = transaction.related("frais", Frais).get(justificatif.frais_id)
+            if frais_parent is None:
+                raise HTTPException(404, "Frais lié au justificatif introuvable")
+            _exige_objet_dossier(request, frais_parent)
+            chemin = _chemin_justificatif(_cfg(request), justificatif)
             quarantaine = chemin.with_name("." + chemin.name + ".deleted.tmp")
             if quarantaine.exists() or quarantaine.is_symlink():
                 raise HTTPException(409, "Quarantaine déjà présente : examiner avec pieces-check avant suppression")
@@ -622,5 +609,5 @@ def delete_justificatif(justificatif_id: str, request: Request) -> dict:
             quarantaine.unlink(missing_ok=True)
         except OSError:
             log.error("justificatif supprimé, nettoyage de quarantaine requis : %s", quarantaine)
-    audit(cfg.log_dir, "justificatif_supprime", cible=justificatif_id)
+    audit(_cfg(request).log_dir, "justificatif_supprime", cible=justificatif_id)
     return {"deleted": True, "id": justificatif_id}

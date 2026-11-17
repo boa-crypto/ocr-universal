@@ -2,14 +2,18 @@
 
 from __future__ import annotations
 
+from datetime import date
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Request
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
+from ..business_links import exiger_dossier
+from ..business_store import BusinessStore
 from ..config import get_config
 from ..logging_setup import audit, get_logger
 from ..models import Camion, Livraison, Transporteur, new_id
+from .dependencies import _exige_dossier, _exige_objet_dossier, _filtre_dossiers
 
 log = get_logger("transport")
 
@@ -17,32 +21,49 @@ router = APIRouter(prefix="/api/transport", tags=["transport"])
 
 cfg = get_config()
 
+STATUTS_LIVRAISON = {"planifie", "affecte", "enleve", "en_route", "arrive", "reponse", "confirme"}
+CHAMPS_WORKFLOW_LIVRAISON = {
+    "statut", "date_depart", "date_reelle", "reserves_eventuelles",
+    "preuve_livraison_signee", "date_signature",
+}
+
 
 # ───────────────────────────────────────────────────────────────
-# Stores en mémoire
+# Stockage SQLite local, partagé avec les autres modules métier.
 # ───────────────────────────────────────────────────────────────
 
-_transporteur_store: dict[str, Transporteur] = {}
-_camion_store: dict[str, Camion] = {}
-_livraison_store: dict[str, Livraison] = {}
+def _get_transporteur_store(request: Request) -> BusinessStore[Transporteur]:
+    return BusinessStore(cfg.data_dir / "metier.sqlite3", "transporteur", Transporteur)
 
 
-def _get_transporteur_store(request: Request) -> dict:
-    if not hasattr(request.app.state, 'transporteur_store'):
-        request.app.state.transporteur_store = {}
-    return request.app.state.transporteur_store
+def _get_camion_store(request: Request) -> BusinessStore[Camion]:
+    return BusinessStore(cfg.data_dir / "metier.sqlite3", "camion", Camion)
 
 
-def _get_camion_store(request: Request) -> dict:
-    if not hasattr(request.app.state, 'camion_store'):
-        request.app.state.camion_store = {}
-    return request.app.state.camion_store
+def _get_livraison_store(request: Request) -> BusinessStore[Livraison]:
+    return BusinessStore(cfg.data_dir / "metier.sqlite3", "livraison", Livraison)
 
 
-def _get_livraison_store(request: Request) -> dict:
-    if not hasattr(request.app.state, 'livraison_store'):
-        request.app.state.livraison_store = {}
-    return request.app.state.livraison_store
+def _refuser(livraison_id: str, message: str, statut: int = 409) -> None:
+    audit(cfg.log_dir, "livraison_transition_refusee", cible=livraison_id, motif=message)
+    raise HTTPException(statut, message)
+
+
+def _date_iso(valeur: str, champ: str) -> None:
+    try:
+        date.fromisoformat(valeur)
+    except (TypeError, ValueError) as exc:
+        raise HTTPException(422, f"{champ} : date ISO attendue (AAAA-MM-JJ)") from exc
+
+
+def _valider_liens(transaction: BusinessStore, transporteur_id: str, camion_id: str) -> None:
+    if transporteur_id and transaction.related("transporteur", Transporteur).get(transporteur_id) is None:
+        raise HTTPException(422, "Transporteur référencé introuvable")
+    camion = transaction.related("camion", Camion).get(camion_id) if camion_id else None
+    if camion_id and camion is None:
+        raise HTTPException(422, "Camion référencé introuvable")
+    if camion is not None and transporteur_id and camion.transporteur_id != transporteur_id:
+        raise HTTPException(422, "Le camion n'appartient pas au transporteur indiqué")
 
 
 # ───────────────────────────────────────────────────────────────
@@ -153,22 +174,12 @@ def create_transporteur(
     transporteur: TransporteurCreate,
 ) -> dict:
     """Créer un nouveau transporteur."""
+    if not transporteur.nom.strip():
+        raise HTTPException(422, "Le nom du transporteur est obligatoire")
+    t = Transporteur(id=new_id("transp_"), **transporteur.model_dump())
     store = _get_transporteur_store(request)
-    t = Transporteur(
-        id=new_id("transp_"),
-        nom=transporteur.nom,
-        raison_sociale=transporteur.raison_sociale,
-        nif=transporteur.nif,
-        rc=transporteur.rc,
-        adresse=transporteur.adresse,
-        telephone=transporteur.telephone,
-        email=transporteur.email,
-        conducteur_principal=transporteur.conducteur_principal,
-        permis_transport=transporteur.permis_transport,
-        statut=transporteur.statut,
-        notes=transporteur.notes,
-    )
-    store[t.id] = t
+    with store.transaction() as transaction:
+        transaction[t.id] = t
     audit(cfg.log_dir, "transporteur_cree", nom=transporteur.nom)
     return t.model_dump()
 
@@ -203,16 +214,20 @@ def update_transporteur(
 ) -> dict:
     """Mettre à jour un transporteur."""
     store = _get_transporteur_store(request)
-    t = store.get(transporteur_id)
-    if not t:
-        raise HTTPException(404, "Transporteur introuvable")
-
-    update_data = transporteur_update.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(t, key, value)
-
+    with store.transaction() as transaction:
+        t = transaction.get(transporteur_id)
+        if not t:
+            raise HTTPException(404, "Transporteur introuvable")
+        update_data = transporteur_update.model_dump(exclude_unset=True)
+        try:
+            candidate = Transporteur.model_validate({**t.model_dump(), **update_data})
+        except ValidationError as exc:
+            raise HTTPException(422, exc.errors(include_context=False)) from exc
+        if not candidate.nom.strip():
+            raise HTTPException(422, "Le nom du transporteur est obligatoire")
+        transaction[transporteur_id] = candidate
     audit(cfg.log_dir, "transporteur_modifie", cible=transporteur_id)
-    return t.model_dump()
+    return candidate.model_dump()
 
 
 @router.delete("/transporteurs/{transporteur_id}")
@@ -222,9 +237,14 @@ def delete_transporteur(
 ) -> dict:
     """Supprimer un transporteur."""
     store = _get_transporteur_store(request)
-    if transporteur_id not in store:
-        raise HTTPException(404, "Transporteur introuvable")
-    del store[transporteur_id]
+    with store.transaction() as transaction:
+        if transaction.get(transporteur_id) is None:
+            raise HTTPException(404, "Transporteur introuvable")
+        if any(c.transporteur_id == transporteur_id for c in transaction.related("camion", Camion).values()):
+            raise HTTPException(409, "Transporteur utilisé par des camions : suppression refusée")
+        if any(liv.transporteur_id == transporteur_id for liv in transaction.related("livraison", Livraison).values()):
+            raise HTTPException(409, "Transporteur utilisé par des livraisons : suppression refusée")
+        del transaction[transporteur_id]
     audit(cfg.log_dir, "transporteur_supprime", cible=transporteur_id)
     return {"deleted": True, "id": transporteur_id}
 
@@ -239,20 +259,14 @@ def create_camion(
     camion: CamionCreate,
 ) -> dict:
     """Créer un nouveau camion."""
+    if not camion.transporteur_id.strip() or not camion.immatriculation.strip():
+        raise HTTPException(422, "Transporteur et immatriculation sont obligatoires")
+    c = Camion(id=new_id("cam_"), **camion.model_dump())
     store = _get_camion_store(request)
-    c = Camion(
-        id=new_id("cam_"),
-        transporteur_id=camion.transporteur_id,
-        immatriculation=camion.immatriculation,
-        marque_modele=camion.marque_modele,
-        capacite=camion.capacite,
-        annee=camion.annee,
-        assurance_valide=camion.assurance_valide,
-        technique_valide=camion.technique_valide,
-        statut=camion.statut,
-        chauffeur_id=camion.chauffeur_id,
-    )
-    store[c.id] = c
+    with store.transaction() as transaction:
+        if transaction.related("transporteur", Transporteur).get(c.transporteur_id) is None:
+            raise HTTPException(422, "Transporteur référencé introuvable")
+        transaction[c.id] = c
     audit(cfg.log_dir, "camion_cree", immatriculation=camion.immatriculation)
     return c.model_dump()
 
@@ -291,16 +305,26 @@ def update_camion(
 ) -> dict:
     """Mettre à jour un camion."""
     store = _get_camion_store(request)
-    c = store.get(camion_id)
-    if not c:
-        raise HTTPException(404, "Camion introuvable")
-
-    update_data = camion_update.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(c, key, value)
-
+    with store.transaction() as transaction:
+        c = transaction.get(camion_id)
+        if not c:
+            raise HTTPException(404, "Camion introuvable")
+        update_data = camion_update.model_dump(exclude_unset=True)
+        try:
+            candidate = Camion.model_validate({**c.model_dump(), **update_data})
+        except ValidationError as exc:
+            raise HTTPException(422, exc.errors(include_context=False)) from exc
+        if not candidate.transporteur_id.strip() or not candidate.immatriculation.strip():
+            raise HTTPException(422, "Transporteur et immatriculation sont obligatoires")
+        if transaction.related("transporteur", Transporteur).get(candidate.transporteur_id) is None:
+            raise HTTPException(422, "Transporteur référencé introuvable")
+        if candidate.transporteur_id != c.transporteur_id and any(
+            liv.camion_id == camion_id for liv in transaction.related("livraison", Livraison).values()
+        ):
+            raise HTTPException(409, "Impossible de changer le transporteur : ce camion est utilisé par des livraisons")
+        transaction[camion_id] = candidate
     audit(cfg.log_dir, "camion_modifie", cible=camion_id)
-    return c.model_dump()
+    return candidate.model_dump()
 
 
 @router.delete("/camions/{camion_id}")
@@ -310,9 +334,12 @@ def delete_camion(
 ) -> dict:
     """Supprimer un camion."""
     store = _get_camion_store(request)
-    if camion_id not in store:
-        raise HTTPException(404, "Camion introuvable")
-    del store[camion_id]
+    with store.transaction() as transaction:
+        if transaction.get(camion_id) is None:
+            raise HTTPException(404, "Camion introuvable")
+        if any(liv.camion_id == camion_id for liv in transaction.related("livraison", Livraison).values()):
+            raise HTTPException(409, "Camion utilisé par des livraisons : suppression refusée")
+        del transaction[camion_id]
     audit(cfg.log_dir, "camion_supprime", cible=camion_id)
     return {"deleted": True, "id": camion_id}
 
@@ -327,24 +354,15 @@ def create_livraison(
     livraison: LivraisonCreate,
 ) -> dict:
     """Créer une nouvelle livraison."""
+    _exige_dossier(livraison.dossier_id, request)
+    if livraison.statut not in STATUTS_LIVRAISON:
+        raise HTTPException(422, "Statut de livraison invalide")
+    liv = Livraison(id=new_id("liv_"), **livraison.model_dump())
     store = _get_livraison_store(request)
-    liv = Livraison(
-        id=new_id("liv_"),
-        dossier_id=livraison.dossier_id,
-        transport_id=livraison.transport_id,
-        client_id=livraison.client_id,
-        transporteur_id=livraison.transporteur_id,
-        camion_id=livraison.camion_id,
-        chauffeur_id=livraison.chauffeur_id,
-        lieu_livraison=livraison.lieu_livraison,
-        date_depart=livraison.date_depart,
-        date_prevue=livraison.date_prevue,
-        date_reelle=livraison.date_reelle,
-        statut=livraison.statut,
-        reserves_eventuelles=livraison.reserves_eventuelles,
-        observations=livraison.observations,
-    )
-    store[liv.id] = liv
+    with store.transaction() as transaction:
+        exiger_dossier(cfg, liv.dossier_id)
+        _valider_liens(transaction, liv.transporteur_id, liv.camion_id)
+        transaction[liv.id] = liv
     audit(cfg.log_dir, "livraison_creee", dossier=livraison.dossier_id)
     return liv.model_dump()
 
@@ -359,7 +377,7 @@ def list_livraisons(
     livraisons = list(store.values())
     if dossier_id:
         livraisons = [liv for liv in livraisons if liv.dossier_id == dossier_id]
-    return [liv.model_dump() for liv in livraisons]
+    return [liv.model_dump() for liv in _filtre_dossiers(request, livraisons)]
 
 
 @router.get("/livraisons/{livraison_id}")
@@ -372,6 +390,7 @@ def get_livraison(
     liv = store.get(livraison_id)
     if not liv:
         raise HTTPException(404, "Livraison introuvable")
+    _exige_objet_dossier(request, liv)
     return liv.model_dump()
 
 
@@ -383,16 +402,33 @@ def update_livraison(
 ) -> dict:
     """Mettre à jour une livraison."""
     store = _get_livraison_store(request)
-    liv = store.get(livraison_id)
-    if not liv:
-        raise HTTPException(404, "Livraison introuvable")
+    with store.transaction() as transaction:
+        liv = transaction.get(livraison_id)
+        if not liv:
+            raise HTTPException(404, "Livraison introuvable")
+        _exige_objet_dossier(request, liv)
 
-    update_data = livraison_update.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(liv, key, value)
-
+        update_data = livraison_update.model_dump(exclude_unset=True)
+        champs_workflow = CHAMPS_WORKFLOW_LIVRAISON & update_data.keys()
+        if champs_workflow and any(update_data[c] != getattr(liv, c) for c in champs_workflow):
+            _refuser(livraison_id, "Utilisez les actions de workflow pour changer le statut, les dates et la preuve")
+        if liv.statut == "confirme" and any(
+            cle != "observations" and valeur != getattr(liv, cle)
+            for cle, valeur in update_data.items()
+        ):
+            _refuser(livraison_id, "Après confirmation, seules les observations peuvent être modifiées")
+        try:
+            candidate = Livraison.model_validate({**liv.model_dump(), **update_data})
+        except ValidationError as exc:
+            raise HTTPException(422, exc.errors(include_context=False)) from exc
+        if candidate.statut not in STATUTS_LIVRAISON:
+            raise HTTPException(422, "Statut de livraison invalide")
+        _exige_objet_dossier(request, candidate)
+        exiger_dossier(cfg, candidate.dossier_id)
+        _valider_liens(transaction, candidate.transporteur_id, candidate.camion_id)
+        transaction[livraison_id] = candidate
     audit(cfg.log_dir, "livraison_modifiee", cible=livraison_id)
-    return liv.model_dump()
+    return candidate.model_dump()
 
 
 @router.delete("/livraisons/{livraison_id}")
@@ -402,9 +438,12 @@ def delete_livraison(
 ) -> dict:
     """Supprimer une livraison."""
     store = _get_livraison_store(request)
-    if livraison_id not in store:
-        raise HTTPException(404, "Livraison introuvable")
-    del store[livraison_id]
+    with store.transaction() as transaction:
+        liv = transaction.get(livraison_id)
+        if not liv:
+            raise HTTPException(404, "Livraison introuvable")
+        _exige_objet_dossier(request, liv)
+        del transaction[livraison_id]
     audit(cfg.log_dir, "livraison_supprimee", cible=livraison_id)
     return {"deleted": True, "id": livraison_id}
 
@@ -421,12 +460,18 @@ def demarrer_livraison(
 ) -> dict:
     """Démarrer une livraison (en route)."""
     store = _get_livraison_store(request)
-    liv = store.get(livraison_id)
-    if not liv:
-        raise HTTPException(404, "Livraison introuvable")
-
-    liv.date_depart = date_depart
-    liv.statut = "en_route"
+    with store.transaction() as transaction:
+        liv = transaction.get(livraison_id)
+        if not liv:
+            raise HTTPException(404, "Livraison introuvable")
+        _exige_objet_dossier(request, liv)
+        if liv.statut not in {"planifie", "affecte", "enleve"}:
+            _refuser(livraison_id, "Seule une livraison planifiée, affectée ou enlevée peut démarrer")
+        _date_iso(date_depart, "Date de départ")
+        liv.date_depart = date_depart
+        liv.statut = "en_route"
+        exiger_dossier(cfg, liv.dossier_id)
+        transaction[livraison_id] = liv
     audit(cfg.log_dir, "livraison_demarree", livraison=livraison_id)
     return liv.model_dump()
 
@@ -438,15 +483,21 @@ def arriver_livraison(
     date_reelle: str,
     reserves: str = "",
 ) -> dict:
-    """Enregistrer liv'arrivée chez le client."""
+    """Enregistrer l'arrivée chez le client."""
     store = _get_livraison_store(request)
-    liv = store.get(livraison_id)
-    if not liv:
-        raise HTTPException(404, "Livraison introuvable")
-
-    liv.date_reelle = date_reelle
-    liv.reserves_eventuelles = reserves
-    liv.statut = "arrive" if not reserves else "reponse"
+    with store.transaction() as transaction:
+        liv = transaction.get(livraison_id)
+        if not liv:
+            raise HTTPException(404, "Livraison introuvable")
+        _exige_objet_dossier(request, liv)
+        if liv.statut != "en_route":
+            _refuser(livraison_id, "Seule une livraison en route peut être enregistrée comme arrivée")
+        _date_iso(date_reelle, "Date réelle d'arrivée")
+        liv.date_reelle = date_reelle
+        liv.reserves_eventuelles = reserves
+        liv.statut = "arrive" if not reserves else "reponse"
+        exiger_dossier(cfg, liv.dossier_id)
+        transaction[livraison_id] = liv
     audit(cfg.log_dir, "livraison_arrivee", livraison=livraison_id, reserves=reserves)
     return liv.model_dump()
 
@@ -460,12 +511,20 @@ def confirmer_livraison(
 ) -> dict:
     """Confirmer la livraison avec preuve signée."""
     store = _get_livraison_store(request)
-    liv = store.get(livraison_id)
-    if not liv:
-        raise HTTPException(404, "Livraison introuvable")
-
-    liv.preuve_livraison_signee = preuve_signee
-    liv.date_signature = date_signature
-    liv.statut = "confirme"
+    with store.transaction() as transaction:
+        liv = transaction.get(livraison_id)
+        if not liv:
+            raise HTTPException(404, "Livraison introuvable")
+        _exige_objet_dossier(request, liv)
+        if liv.statut not in {"arrive", "reponse"}:
+            _refuser(livraison_id, "Seule une livraison arrivée ou avec réserves peut être confirmée")
+        if not preuve_signee:
+            _refuser(livraison_id, "Une preuve de livraison signée est obligatoire", 400)
+        _date_iso(date_signature, "Date de signature")
+        liv.preuve_livraison_signee = preuve_signee
+        liv.date_signature = date_signature
+        liv.statut = "confirme"
+        exiger_dossier(cfg, liv.dossier_id)
+        transaction[livraison_id] = liv
     audit(cfg.log_dir, "livraison_confirmee", livraison=livraison_id, preuve=preuve_signee)
     return liv.model_dump()

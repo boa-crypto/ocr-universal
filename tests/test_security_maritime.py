@@ -328,3 +328,12 @@ __all__ = [
     "TestPersistanceRBAC",
     "TestConstantesRBAC",
 ]
+
+
+def test_actions_financieres_et_configuration_cles_canoniques():
+    assert ACTIONS["gestion_financiere"] == ACTIONS["gestion_financière"]
+    assert ACTIONS["configuration_metier"] == ACTIONS["configuration_métier"]
+    financier = Utilisateur(nom="financier", roles=frozenset({RESPONSABLE_FINANCIER}))
+    assert any(financier.a_role(role) for role in ACTIONS["gestion_financiere"])
+    agent = Utilisateur(nom="agent", roles=frozenset({AGENT_DE_TRANSIT}))
+    assert not any(agent.a_role(role) for role in ACTIONS["gestion_financiere"])

@@ -17,7 +17,12 @@ log = get_logger("dashboard")
 
 router = APIRouter(prefix="/api/dashboard", tags=["dashboard"])
 
-cfg = get_config()
+def _cfg(request: Request):
+    return getattr(request.app.state, "cfg", None) or get_config()
+
+
+def _service(request: Request):
+    return get_dashboard_service(_cfg(request))
 
 
 # ───────────────────────────────────────────────────────────────
@@ -38,7 +43,7 @@ def etat_systeme(
     request: Request,
 ) -> dict:
     """État général du système UniOCR."""
-    service = get_dashboard_service()
+    service = _service(request)
     return service.statistiques_generales()
 
 
@@ -47,7 +52,7 @@ def indicateurs_operationnels(
     request: Request,
 ) -> dict:
     """15+ indicateurs opérationnels clés pour le pilotage maritime."""
-    service = get_dashboard_service()
+    service = _service(request)
     return service.indicateurs_operationnels(
         _get_frais_store(request), _get_facture_store(request)
     )
@@ -58,7 +63,7 @@ def alertes_systeme(
     request: Request,
 ) -> dict:
     """Alertes système actives."""
-    service = get_dashboard_service()
+    service = _service(request)
     return service.alertes_systeme()
 
 
@@ -68,7 +73,7 @@ def resume_financier(
     request: Request,
 ) -> dict:
     """Résumé financier d'un dossier."""
-    service = get_dashboard_service()
+    service = _service(request)
     return service.resume_financier_dossier(
         dossier_id, _get_frais_store(request), _get_facture_store(request)
     )
@@ -80,7 +85,7 @@ def historique_etat(
     request: Request,
 ) -> dict:
     """Historique des états d'un dossier."""
-    service = get_dashboard_service()
+    service = _service(request)
     return service.historique_statuts_dossier(dossier_id)
 
 
@@ -155,7 +160,7 @@ def graphique_etat_dossiers(
     request: Request,
 ) -> dict:
     """Graphique: répartition des dossiers par état."""
-    service = get_dashboard_service()
+    service = _service(request)
     return service.graphique_etat_dossiers()
 
 
@@ -166,7 +171,7 @@ def graphique_financier_mensuel(
     mois_fin: Optional[int] = None,
 ) -> dict:
     """Graphique: évolution financière mensuelle."""
-    service = get_dashboard_service()
+    service = _service(request)
     return service.graphique_financier_mensuel(
         mois_debut, mois_fin,
         _get_frais_store(request), _get_facture_store(request),
@@ -178,7 +183,7 @@ def graphique_repartition_par_port(
     request: Request,
 ) -> dict:
     """Graphique: répartition des opérations par port de chargement."""
-    service = get_dashboard_service()
+    service = _service(request)
     return service.graphique_repartition_par_port()
 
 
@@ -188,7 +193,7 @@ def graphique_top_clients(
     limite: int = 10,
 ) -> dict:
     """Graphique: top des clients par nombre de dossiers."""
-    service = get_dashboard_service()
+    service = _service(request)
     return service.graphique_repartition_par_client(limite)
 
 
@@ -197,7 +202,7 @@ def graphique_fret_par_gestionnaire(
     request: Request,
 ) -> dict:
     """Graphique: coût du fret par gestionnaire."""
-    service = get_dashboard_service()
+    service = _service(request)
     return service.graphique_fret_par_gestionnaire()
 
 
@@ -206,7 +211,7 @@ def graphique_anomalies_par_type(
     request: Request,
 ) -> dict:
     """Graphique: répartition des anomalies par type."""
-    service = get_dashboard_service()
+    service = _service(request)
     return service.graphique_anomalies_par_type()
 
 
@@ -217,7 +222,7 @@ def graphique_taux_reussite_par_mois(
     mois_fin: Optional[int] = None,
 ) -> dict:
     """Graphique: taux de réussite par mois."""
-    service = get_dashboard_service()
+    service = _service(request)
     return service.graphique_taux_reussite_par_mois(mois_debut, mois_fin)
 
 
@@ -226,7 +231,7 @@ def sante_systeme(
     request: Request,
 ) -> dict:
     """État de santé du système UniOCR."""
-    service = get_dashboard_service()
+    service = _service(request)
     stats = service.statistiques_generales()
     alertes = service.alertes_systeme()
     financiers = service.resume_financier_dossier(

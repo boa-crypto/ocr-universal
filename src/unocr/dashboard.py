@@ -15,7 +15,7 @@ from __future__ import annotations
 import time
 from datetime import datetime, timedelta
 
-from unocr.config import get_config
+from unocr.config import Config, get_config
 from unocr.logging_setup import get_logger
 from unocr.ocr_integration import get_ocr_integration
 
@@ -31,15 +31,16 @@ cfg = get_config()
 class DashboardService:
     """Service principal de génération des statistiques et graphiques."""
 
-    def __init__(self) -> None:
+    def __init__(self, config: Config | None = None) -> None:
         from unocr.storage import JobStore
-        self.job_store = JobStore(cfg)
+        self.cfg = config or get_config()
+        self.job_store = JobStore(self.cfg)
         self.dossier_store = None  # Sera initialisé au besoin
 
     def _get_dossier_store(self):
         from unocr.dossier import DossierStore
         if self.dossier_store is None:
-            self.dossier_store = DossierStore(cfg.data_dir / "dossiers", log_dir=cfg.log_dir)
+            self.dossier_store = DossierStore(self.cfg.data_dir / "dossiers", log_dir=self.cfg.log_dir)
         return self.dossier_store
 
     # ───────────────────────────────────────────────────────────────
@@ -571,7 +572,7 @@ class DashboardService:
     # ───────────────────────────────────────────────────────────────
 
     def _get_ocr_integration(self):
-        return get_ocr_integration()
+        return get_ocr_integration(self.cfg)
 
     # Méthode statistiques_generales ajoutée au DashboardService
     def statistiques_generales(self) -> dict:
@@ -612,9 +613,11 @@ class DashboardService:
 _dashboard_service = None
 
 
-def get_dashboard_service() -> DashboardService:
-    """Récupère l'instance globale du dashboard."""
+def get_dashboard_service(config: Config | None = None) -> DashboardService:
+    """Dashboard lié à la configuration fournie, ou global par compatibilité."""
     global _dashboard_service
+    if config is not None:
+        return DashboardService(config)
     if _dashboard_service is None:
         _dashboard_service = DashboardService()
     return _dashboard_service

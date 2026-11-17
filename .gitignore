@@ -28,3 +28,21 @@ data/customs-quarantine/dossiers_metier.sqlite3*
 # PDF juridiques reçus et registres locaux (provenance privée, hors Git)
 /data/customs-quarantine/
 /data/legal-receipts/
+
+# Secrets locaux : ne jamais versionner une clé, même « de test » ou retired.
+/data/keys/
+.agentic-qe/witness-keys/
+
+# Journaux, métadonnées d'installation et caches d'outillage locaux.
+*.log
+/logs/*.log.*
+*.egg-info/
+.agentic-qe/
+.claude/settings.local.json
+tmp_packages/
+
+# Scripts de vérification ponctuels historiques, conservés localement mais pas source.
+/verify_*.py
+/verify_result.txt
+/write_import.py
+/test_i18n_check.py

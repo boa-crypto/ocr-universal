@@ -144,6 +144,7 @@
         { key: 'billing', title: 'Facturation client', route: '#finance/facturation', icon: 'file-plus' },
         { key: 'payments', title: 'Paiements', route: '#finance/paiements', icon: 'dollar-sign' },
         { key: 'reconciliation', title: 'Rapprochement', route: '#finance/reconciliation', icon: 'git-compare' },
+        { key: 'bank', title: 'Opérations bancaires', route: '#finance/banque', icon: 'landmark' },
         { key: 'closure', title: 'Clôture financière', route: '#finance/cloture', icon: 'ban' }
       ]
     },
@@ -661,6 +662,7 @@
       'finance/facturation': 'tab-ecran',
       'finance/paiements': 'tab-ecran',
       'finance/reconciliation': 'tab-ecran',
+      'finance/banque': 'tab-ecran',
       'finance/cloture': 'tab-ecran',
       'rapports/graphes': 'tab-graphiques',
       'rapports/statistiques': 'tab-ecran',

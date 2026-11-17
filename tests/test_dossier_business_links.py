@@ -15,7 +15,7 @@ from unocr.models import (
     Liquidation,
     TerminalEnlevement,
 )
-from unocr.routes import declarations, expeditions, frais, terminal
+from unocr.routes import declarations, expeditions, terminal
 
 
 @pytest.fixture
@@ -23,7 +23,6 @@ def contexte(tmp_cfg, monkeypatch):
     monkeypatch.setattr(declarations, "cfg", tmp_cfg)
     monkeypatch.setattr(terminal, "cfg", tmp_cfg)
     monkeypatch.setattr(expeditions, "cfg", tmp_cfg)
-    monkeypatch.setattr(frais, "cfg", tmp_cfg)
     api._recharge_rbac()
     dossier = api._dossiers.creer("Dossier temporaire")
     with TestClient(api.app) as client:

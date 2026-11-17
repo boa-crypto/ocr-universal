@@ -519,9 +519,10 @@
       .then(function (res) {
         if (!res || !Array.isArray(res.anomalies)) throw new Error("Anomalies indisponibles");
         var liste = res.anomalies;
+        var actives = liste.filter(function (a) { return !a.resolue; });
         var valeur = compteurs.children[3].querySelector(".dos-count__val");
-        valeur.textContent = liste.length;
-        valeur.className = "dos-count__val" + (liste.length ? " dos-count__val--danger" : "");
+        valeur.textContent = actives.length;
+        valeur.className = "dos-count__val" + (actives.length ? " dos-count__val--danger" : "");
       }).catch(function () { compteurs.children[3].querySelector(".dos-count__val").textContent = "—"; });
 
     getJSONUrl("/api/frais/dossier/" + encodeURIComponent(d.id) + "/resume")
@@ -1002,11 +1003,39 @@
       ].forEach(function (paire) {
         var tuile = el("div", "dos-count");
         tuile.appendChild(el("span", "dos-count__val" + (paire[2] ? " dos-count__val--" + paire[2] : ""),
-          numero(paire[1]) + " " + (d.devise || "")));
+          numero(paire[1]) + " " + (resume.devise || d.devise || "")));
         tuile.appendChild(el("span", "dos-count__lbl", paire[0]));
         grille.appendChild(tuile);
       });
       zone.appendChild(grille);
+
+      if (resume.consolide === false) {
+        zone.appendChild(el("p", "dos-detail__empty-txt",
+          resume.avertissement || "Plusieurs devises : totaux non consolidés."));
+        var tableDev = el("table", "table table--compact");
+        var theadDev = el("thead");
+        var trhDev = el("tr");
+        ["Devise", "Total frais", "Facturé client", "Solde"].forEach(function (t) {
+          trhDev.appendChild(el("th", null, t));
+        });
+        theadDev.appendChild(trhDev);
+        tableDev.appendChild(theadDev);
+        var tbodyDev = el("tbody");
+        Object.keys(resume.par_devise || {}).forEach(function (devise) {
+          var totaux = resume.par_devise[devise] || {};
+          var tr = el("tr");
+          tr.appendChild(el("td", null, devise));
+          tr.appendChild(el("td", null, numero(totaux.total_frais)));
+          tr.appendChild(el("td", null, numero(totaux.total_factures_client)));
+          tr.appendChild(el("td", null, numero(totaux.solde_restant)));
+          tbodyDev.appendChild(tr);
+        });
+        tableDev.appendChild(tbodyDev);
+        var scrollDev = el("div", "table-wrap");
+        scrollDev.appendChild(tableDev);
+        zone.appendChild(scrollDev);
+        return;
+      }
 
       var categories = resume.par_categorie || {};
       var cles = Object.keys(categories);

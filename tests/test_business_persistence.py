@@ -172,3 +172,33 @@ def test_expedition_date_emission_et_validation(client_factory):
         assert client.get(url).json() == avant
     ancien = Expeditions.model_validate({"dossier_id": "dos_test", "date_émission": "2026-01-01"})
     assert ancien.date_emission == "2026-01-01"
+
+
+def test_transaction_imbriquee_savepoint_rollback_partiel(tmp_path):
+    store = BusinessStore(tmp_path / "metier.sqlite3", "declaration", DeclarationDouaniere)
+    with store.transaction() as parent:
+        parent["parent"] = DeclarationDouaniere(id="parent", dossier_id="dos_test")
+        with pytest.raises(RuntimeError, match="enfant"):
+            with parent.transaction() as enfant:
+                enfant["enfant"] = DeclarationDouaniere(id="enfant", dossier_id="dos_test")
+                enfant.related("frais", Frais)["frais_enfant"] = Frais(
+                    id="frais_enfant", dossier_id="dos_test", montant=12)
+                raise RuntimeError("enfant")
+        assert parent.get("parent") is not None
+        assert parent.get("enfant") is None
+        assert parent.related("frais", Frais).get("frais_enfant") is None
+        with parent.related("frais", Frais).transaction() as lie:
+            lie["frais_ok"] = Frais(id="frais_ok", dossier_id="dos_test", montant=5)
+    relu = BusinessStore(tmp_path / "metier.sqlite3", "declaration", DeclarationDouaniere)
+    assert relu.get("parent") is not None and relu.get("enfant") is None
+    assert BusinessStore(tmp_path / "metier.sqlite3", "frais", Frais).get("frais_ok") is not None
+
+
+def test_transaction_imbriquee_validee_rollback_parent_si_echec(tmp_path):
+    store = BusinessStore(tmp_path / "metier.sqlite3", "declaration", DeclarationDouaniere)
+    with pytest.raises(RuntimeError, match="parent"):
+        with store.transaction() as parent:
+            with parent.transaction() as enfant:
+                enfant["enfant"] = DeclarationDouaniere(id="enfant", dossier_id="dos_test")
+            raise RuntimeError("parent")
+    assert BusinessStore(tmp_path / "metier.sqlite3", "declaration", DeclarationDouaniere).get("enfant") is None

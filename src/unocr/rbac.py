@@ -112,6 +112,9 @@ ACTIONS = {
                    CONTROLEUR_DOCUMENTAIRE, ADMINISTRATEUR),
     "frais_creation": (RESPONSABLE_TRANSPORT, RESPONSABLE_FINANCIER,
                        ADMINISTRATEUR),
+    "paiement_frais": (RESPONSABLE_FINANCIER, ADMINISTRATEUR),
+    "cloture_dossier": (ADMINISTRATEUR,),
+    "restauration_dossier": (ADMINISTRATEUR,),
     "mainlevee_obtenir": (RESPONSABLE_TRANSPORT, RESPONSABLE_FINANCIER,
                           ADMINISTRATEUR),
     "conteneur_liberer": (AGENT_DE_TRANSIT, RESPONSABLE_TRANSPORT,
@@ -136,13 +139,17 @@ ACTIONS = {
     "changement_statut": (AGENT_DE_TRANSIT, RESPONSABLE_TRANSPORT,
                           DECLARANT_HABILE, CONTROLEUR_DOCUMENTAIRE,
                           RESPONSABLE_FINANCIER, ADMINISTRATEUR),
-    # Gestion financière — frais, paiements
+    # Gestion financière — frais, paiements. La clé canonique est ASCII
+    # (utilisée par les routes) ; l'orthographe accentuée reste un alias.
+    "gestion_financiere": (CONTROLEUR_DOCUMENTAIRE,
+                           RESPONSABLE_FINANCIER, ADMINISTRATEUR),
     "gestion_financière": (CONTROLEUR_DOCUMENTAIRE,
                            RESPONSABLE_FINANCIER, ADMINISTRATEUR),
     # Export — exporter des données
     "export": (CONTROLEUR_DOCUMENTAIRE,
                RESPONSABLE_FINANCIER, ADMINISTRATEUR),
     # Configuration métier — paramètres du système
+    "configuration_metier": (ADMINISTRATEUR,),
     "configuration_métier": (ADMINISTRATEUR,),
 }
 

@@ -12,6 +12,7 @@ from ..business_store import BusinessStore
 from ..config import get_config
 from ..logging_setup import audit, get_logger
 from ..models import Expeditions, new_id
+from .dependencies import _exige_dossier, _exige_objet_dossier, _filtre_dossiers
 
 log = get_logger("expeditions")
 
@@ -73,6 +74,7 @@ def create_expedition(
     expedition: ExpeditionCreate,
 ) -> dict:
     """Créer une nouvelle expédition."""
+    _exige_dossier(expedition.dossier_id, request)
     store = _get_expedition_store(request)
     expedition_obj = Expeditions(
         id=new_id("exp_"),
@@ -106,7 +108,7 @@ def list_expeditions(
     expeditions = list(store.values())
     if dossier_id:
         expeditions = [e for e in expeditions if e.dossier_id == dossier_id]
-    return [e.model_dump() for e in expeditions]
+    return [e.model_dump() for e in _filtre_dossiers(request, expeditions)]
 
 
 @router.get("/{expedition_id}")
@@ -119,6 +121,7 @@ def get_expedition(
     expedition = store.get(expedition_id)
     if not expedition:
         raise HTTPException(404, "Expédition introuvable")
+    _exige_objet_dossier(request, expedition)
     return expedition.model_dump()
 
 
@@ -134,11 +137,13 @@ def update_expedition(
         expedition = transaction.get(expedition_id)
         if not expedition:
             raise HTTPException(404, "Expédition introuvable")
+        _exige_objet_dossier(request, expedition)
         update_data = expedition_update.model_dump(exclude_unset=True)
         try:
             expedition = Expeditions.model_validate({**expedition.model_dump(), **update_data})
         except ValidationError as exc:
             raise HTTPException(422, exc.errors(include_context=False)) from exc
+        _exige_objet_dossier(request, expedition)
         exiger_dossier(cfg, expedition.dossier_id)
         transaction[expedition_id] = expedition
 
@@ -155,6 +160,7 @@ def delete_expedition(
     store = _get_expedition_store(request)
     if expedition_id not in store:
         raise HTTPException(404, "Expédition introuvable")
+    _exige_objet_dossier(request, store[expedition_id])
 
     del store[expedition_id]
     audit(cfg.log_dir, "expedition_supprime", cible=expedition_id)

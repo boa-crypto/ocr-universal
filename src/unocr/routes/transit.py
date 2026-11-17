@@ -8,13 +8,20 @@ Ce module implémente les opérations de transit maritime avec :
 """
 from __future__ import annotations
 
+import math
+import time
+from datetime import datetime, timezone
 from typing import Any, Optional
 
 from fastapi import APIRouter, Body, HTTPException, Query, Request
-from pydantic import BaseModel
+from pydantic import AliasChoices, BaseModel, ConfigDict, Field, field_validator
 
-from ..config import get_config
+from .. import finance
+from ..business_links import exiger_dossier
+from ..business_store import BusinessStore
+from ..config import Config, get_config
 from ..logging_setup import audit
+from ..models import Conteneur, Frais, TerminalEnlevement
 from ..rbac import (
     ACTIONS,
     ADMINISTRATEUR,
@@ -24,6 +31,10 @@ from ..rbac import (
 from ..routes.dependencies import _exige, _exige_dossier, _utilisateur_ou_ouvert
 
 router = APIRouter(prefix="/transit", tags=["transit"])
+
+
+def _cfg(request: Request) -> Config:
+    return getattr(request.app.state, "cfg", None) or get_config()
 
 
 # ============================================================================
@@ -43,6 +54,7 @@ def _action_maritime_autorisee(request: Request, action: str,
         L'utilisateur si autorisé, sinon lève HTTPException(403)
     """
     u = _utilisateur_ou_ouvert(request)
+    cfg = _cfg(request)
 
     # Vérifier le rôle pour l'action
     roles_autorises = ACTIONS.get(action, ())
@@ -50,7 +62,7 @@ def _action_maritime_autorisee(request: Request, action: str,
         raise HTTPException(500, f"action inconnue : {action}")
 
     if not any(u.a_role(role) for role in roles_autorises):
-        audit(get_config().log_dir, "acces_refuse_role",
+        audit(cfg.log_dir, "acces_refuse_role",
               route=request.url.path,
               methode=request.method,
               acteur=u.nom,
@@ -60,14 +72,14 @@ def _action_maritime_autorisee(request: Request, action: str,
 
     # Vérifier le périmètre par dossier si spécifié
     if dossier_id and not u.voit_dossier(dossier_id):
-        audit(get_config().log_dir, "acces_refuse_dossier",
+        audit(cfg.log_dir, "acces_refuse_dossier",
               route=request.url.path,
               methode=request.method,
               acteur=u.nom,
               dossier=dossier_id)
         raise HTTPException(403, "dossier hors de votre périmètre")
 
-    audit(get_config().log_dir, "acces_applique",
+    audit(cfg.log_dir, "acces_applique",
           route=request.url.path,
           methode=request.method,
           acteur=u.nom,
@@ -102,7 +114,7 @@ def create_dossier(
     if profile not in PROFILS_DOSSIER:
         raise HTTPException(400, f"profil de dossier inconnu: {profile}")
 
-    config = get_config()
+    config = _cfg(request)
     store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
     dossier = store.creer(label.strip(), profile, acteur=u.nom)
     if reference:
@@ -147,7 +159,7 @@ def list_dossiers(
     u = _exige(LECTEUR)(request)
 
     from ..dossier import DossierStore
-    config = get_config()
+    config = _cfg(request)
     store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
     dossiers = [d.as_dict() for d in store.liste()]
 
@@ -160,7 +172,13 @@ def list_dossiers(
 
     # Application des filtres port
     if port:
-        visibles = [d for d in visibles if port.lower() in (d.get("port_chargement") or "").lower() or (d.get("port_destination") or "").lower()]
+        port_lower = port.lower()
+        visibles = [
+            d
+            for d in visibles
+            if port_lower in (d.get("port_chargement") or "").lower()
+            or port_lower in (d.get("port_destination") or "").lower()
+        ]
 
     # Application des filtres statut
     if statut:
@@ -206,7 +224,7 @@ def get_dossier(request: Request, dossier_id: str) -> dict:
     _exige_dossier(dossier_id, request)
 
     from ..dossier import DossierStore
-    config = get_config()
+    config = _cfg(request)
     store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
     dossier = store.get_dossier(dossier_id)
 
@@ -230,7 +248,7 @@ def update_dossier(
     u = _action_maritime_autorisee(request, "modification", dossier_id)
 
     from ..dossier import DossierStore
-    config = get_config()
+    config = _cfg(request)
     store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
     dossier = store.get_dossier(dossier_id)
 
@@ -248,9 +266,9 @@ def update_dossier(
         if cle in champs_autorises and valeur is not None:
             dossier[cle] = str(valeur)
 
-    store.update_dossier(dossier_id, dossier)
+    store.update_dossier(dossier_id, dossier, acteur=u.nom)
 
-    audit(get_config().log_dir, "dossier_modifie",
+    audit(config.log_dir, "dossier_modifie",
           acteur=u.nom,
           dossier=dossier_id,
           champs=list(data.keys()))
@@ -277,7 +295,7 @@ def prise_emplacement(
     u = _action_maritime_autorisee(request, "prise_emplacement", dossier_id)
 
     from ..dossier import DossierStore
-    config = get_config()
+    config = _cfg(request)
     store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
@@ -288,9 +306,10 @@ def prise_emplacement(
     dossier["quai"] = quai
     dossier["prise_emplacement"] = True
 
-    store.update_dossier(dossier_id, dossier)
+    store.mettre_a_jour(dossier_id, {"numero_conteneur": conteneur}, acteur=u.nom)
+    store.journaliser(dossier_id, "prise_emplacement", {"conteneur": conteneur, "quai": quai}, acteur=u.nom)
 
-    audit(get_config().log_dir, "prise_emplacement_enregistree",
+    audit(config.log_dir, "prise_emplacement_enregistree",
           acteur=u.nom,
           dossier=dossier_id,
           conteneur=conteneur,
@@ -314,7 +333,7 @@ def mettre_a_jour_eta(
     u = _action_maritime_autorisee(request, "eta_update", dossier_id)
 
     from ..dossier import DossierStore
-    config = get_config()
+    config = _cfg(request)
     store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
@@ -325,9 +344,9 @@ def mettre_a_jour_eta(
     dossier["eta"] = eta
     dossier["eta_type"] = eta_type
 
-    store.update_dossier(dossier_id, dossier)
+    store.mettre_a_jour(dossier_id, {"eta": eta}, acteur=u.nom)
 
-    audit(get_config().log_dir, "eta_mis_a_jour",
+    audit(config.log_dir, "eta_mis_a_jour",
           acteur=u.nom,
           dossier=dossier_id,
           ancien_eta=ancien_eta,
@@ -352,7 +371,7 @@ def bl_receive(
     u = _action_maritime_autorisee(request, "bl_receive", dossier_id)
 
     from ..dossier import DossierStore
-    config = get_config()
+    config = _cfg(request)
     store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
@@ -363,9 +382,10 @@ def bl_receive(
     dossier["date_bl"] = date_bl
     dossier["bl_reçu"] = True
 
-    store.update_dossier(dossier_id, dossier)
+    store.mettre_a_jour(dossier_id, {"reference_bl": reference_bl}, acteur=u.nom)
+    store.journaliser(dossier_id, "bl_receive", {"reference_bl": reference_bl, "date_bl": date_bl}, acteur=u.nom)
 
-    audit(get_config().log_dir, "bl_reçu",
+    audit(config.log_dir, "bl_reçu",
           acteur=u.nom,
           dossier=dossier_id,
           reference_bl=reference_bl)
@@ -377,99 +397,142 @@ def bl_receive(
 # Routes Gestion Financière
 # ============================================================================
 
+class TransitFraisCreate(BaseModel):
+    """Charge historique `/transit/.../frais`, persistée dans le magasin métier."""
+    type_frais: str = Field(min_length=1, max_length=100)
+    montant: float = Field(gt=0)
+    devise: str = Field(default="EUR", min_length=3, max_length=3)
+    description: str = Field(default="", max_length=500)
+
+    @field_validator("type_frais")
+    @classmethod
+    def _type_non_vide(cls, valeur: str) -> str:
+        propre = valeur.strip()
+        if not propre:
+            raise ValueError("type_frais requis")
+        return propre
+
+    @field_validator("montant")
+    @classmethod
+    def _montant_fini(cls, valeur: float) -> float:
+        if not math.isfinite(valeur):
+            raise ValueError("montant fini requis")
+        return valeur
+
+    @field_validator("devise")
+    @classmethod
+    def _devise_iso(cls, valeur: str) -> str:
+        propre = valeur.strip().upper()
+        if len(propre) != 3 or not propre.isalpha():
+            raise ValueError("devise ISO 4217 à trois lettres attendue")
+        return propre
+
+
+class TransitPaiementCreate(BaseModel):
+    """Paiement d'un frais identifié ; `frai_id` reste un alias historique."""
+    model_config = ConfigDict(populate_by_name=True)
+
+    frais_id: str = Field(min_length=1, max_length=128,
+                          validation_alias=AliasChoices("frais_id", "frai_id"))
+    montant: float = Field(gt=0)
+    reference_paiement: str = Field(default="", max_length=100)
+    mode_paiement: str = Field(default="", max_length=50)
+
+    @field_validator("montant")
+    @classmethod
+    def _montant_fini(cls, valeur: float) -> float:
+        if not math.isfinite(valeur):
+            raise ValueError("montant fini requis")
+        return valeur
+
+
 @router.post("/dossiers/{dossier_id}/frais")
 def creer_frais(
     request: Request,
     dossier_id: str,
-    type_frais: str = Body(..., min_length=1),
-    montant: float = Body(..., gt=0),
-    devise: str = Body("EUR", max_length=3),
-    description: str = Body("", max_length=500),
+    payload: TransitFraisCreate,
 ) -> dict:
-    """Créer un frai pour un dossier.
+    """Créer un frais persistant pour un dossier.
 
-    Exige le rôle: responsable_financier ou administrateur.
-    Vérifie l'accès au dossier.
+    Exige le rôle responsable_transit ou supérieur et l'accès au dossier.
+    Le frais est écrit dans `metier.sqlite3`, plus dans une liste JSON annexe.
     """
     u = _action_maritime_autorisee(request, "frais_creation", dossier_id)
+    cfg = _cfg(request)
+    store = BusinessStore(cfg.data_dir / "metier.sqlite3", "frais", Frais)
+    frais_obj = Frais(
+        dossier_id=dossier_id,
+        categorie=payload.type_frais,
+        montant=payload.montant,
+        montant_devise=payload.montant,
+        devise=payload.devise,
+        taux_change=1.0,
+        date=time.strftime("%Y-%m-%d"),
+        statut_paiement="en_attente",
+        commentaire=payload.description,
+    )
+    with store.transaction() as transaction:
+        exiger_dossier(cfg, dossier_id, absent=404)
+        transaction[frais_obj.id] = frais_obj
 
-    from ..dossier import DossierStore
-    config = get_config()
-    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
-
-    dossier = store.get_dossier(dossier_id)
-    if not dossier:
-        raise HTTPException(404, "dossier introuvable")
-
-    frais = dossier.get("frais", [])
-    frais.append({
-        "type": type_frais,
-        "montant": float(montant),
-        "devise": devise.upper(),
-        "description": description,
-        "date_creation": str(get_config().get_current_timestamp()),
-        "create_par": u.nom,
-    })
-
-    dossier["frais"] = frais
-    store.update_dossier(dossier_id, dossier)
-
-    audit(get_config().log_dir, "frais_cree",
+    audit(cfg.log_dir, "frais_cree",
           acteur=u.nom,
           dossier=dossier_id,
-          type_frais=type_frais,
-          montant=montant,
-          devise=devise)
+          frais_id=frais_obj.id,
+          type_frais=frais_obj.categorie,
+          montant=frais_obj.montant,
+          devise=frais_obj.devise)
 
-    return {"dossier_id": dossier_id, "frais": frais[-1]}
+    return {"dossier_id": dossier_id, "frais": frais_obj.model_dump()}
 
 
 @router.post("/dossiers/{dossier_id}/paiement")
 def enregistrer_paiement(
     request: Request,
     dossier_id: str,
-    frai_id: str = Body(...),
-    montant: float = Body(..., gt=0),
-    reference_paiement: str = Body("", max_length=100),
+    payload: TransitPaiementCreate,
 ) -> dict:
-    """Enregistrer un paiement pour un frai spécifique.
+    """Enregistrer le paiement complet d'un frais du dossier.
 
-    Exige le rôle: responsable_financier ou administrateur.
-    Vérifie l'accès au dossier.
+    Exige le rôle responsable_financier ou supérieur. Les paiements partiels
+    ou divergents sont refusés tant qu'un modèle d'échéancier n'existe pas.
     """
-    u = _action_maritime_autorisee(request, "gestion_financiere", dossier_id)
+    u = _action_maritime_autorisee(request, "paiement_frais", dossier_id)
+    cfg = _cfg(request)
+    store = BusinessStore(cfg.data_dir / "metier.sqlite3", "frais", Frais)
+    with store.transaction() as transaction:
+        frais = transaction.get(payload.frais_id)
+        if frais is None or frais.dossier_id != dossier_id:
+            raise HTTPException(404, "frais introuvable pour ce dossier")
+        exiger_dossier(cfg, dossier_id, absent=404)
+        if frais.statut_paiement == "paye":
+            raise HTTPException(409, "frais déjà payé")
+        if finance._decimal(payload.montant) != finance._decimal(frais.montant):
+            raise HTTPException(422, "le paiement doit couvrir exactement le montant du frais")
+        frais.statut_paiement = "paye"
+        frais.date_paiement = time.strftime("%Y-%m-%d")
+        frais.reference_paiement = payload.reference_paiement
+        frais.mode_paiement = payload.mode_paiement
+        transaction[frais.id] = frais
 
-    from ..dossier import DossierStore
-    config = get_config()
-    store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
-
-    dossier = store.get_dossier(dossier_id)
-    if not dossier:
-        raise HTTPException(404, "dossier introuvable")
-
-    frais = dossier.get("frais", [])
-    frai = next((f for f in frais if f.get("id") == frai_id), None)
-    if not frai:
-        raise HTTPException(404, "frai introuvable")
-
-    frai["paiement"] = {
-        "montant": montant,
-        "reference": reference_paiement,
-        "date": str(get_config().get_current_timestamp()),
+    paiement = {
+        "montant": frais.montant,
+        "devise": frais.devise,
+        "reference": frais.reference_paiement,
+        "mode": frais.mode_paiement,
+        "date": frais.date_paiement,
         "par": u.nom,
     }
-
-    dossier["frais"] = frais
-    store.update_dossier(dossier_id, dossier)
-
-    audit(get_config().log_dir, "paiement_enregistre",
+    audit(cfg.log_dir, "paiement_enregistre",
           acteur=u.nom,
           dossier=dossier_id,
-          frai_id=frai_id,
-          montant=montant,
-          reference=reference_paiement)
+          frais_id=frais.id,
+          montant=frais.montant,
+          devise=frais.devise,
+          reference=frais.reference_paiement)
 
-    return {"dossier_id": dossier_id, "paiement": frai.get("paiement")}
+    return {"dossier_id": dossier_id, "frais_id": frais.id,
+            "frais": frais.model_dump(), "paiement": paiement}
 
 
 # ============================================================================
@@ -490,7 +553,7 @@ def exporter_dossier(
     u = _action_maritime_autorisee(request, "export", dossier_id)
 
     from ..dossier import DossierStore
-    config = get_config()
+    config = _cfg(request)
     store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
@@ -510,7 +573,7 @@ def exporter_dossier(
     if formats_interdits:
         raise HTTPException(400, f"formats non supportés: {formats_interdits}")
 
-    audit(get_config().log_dir, "dossier_exporte",
+    audit(config.log_dir, "dossier_exporte",
           acteur=u.nom,
           dossier=dossier_id,
           formats=formats_demandes)
@@ -526,31 +589,32 @@ def exporter_dossier(
 def cloturer_dossier(
     request: Request,
     dossier_id: str,
-    motif: str = Body("", max_length=500),
+    motif: str = Body("", max_length=500, embed=True),
 ) -> dict:
     """Clôturer un dossier de transit.
 
     Exige le rôle: administrateur.
     Vérifie l'accès au dossier.
     """
-    u = _action_maritime_autorisee(request, "changement_statut", dossier_id)
+    u = _action_maritime_autorisee(request, "cloture_dossier", dossier_id)
 
     from ..dossier import DossierStore
-    config = get_config()
+    config = _cfg(request)
     store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
         raise HTTPException(404, "dossier introuvable")
 
-    dossier["cloture"] = True
-    dossier["cloture_motif"] = motif
-    dossier["cloture_date"] = str(get_config().get_current_timestamp())
-    dossier["cloture_par"] = u.nom
+    if dossier.get("statut_documentaire") == "cloture":
+        raise HTTPException(409, "dossier déjà clôturé")
+    horodatage = datetime.now(timezone.utc).isoformat()
+    store.mettre_a_jour(dossier_id, {"statut_documentaire": "cloture"}, acteur=u.nom)
+    store.journaliser(dossier_id, "cloture", {
+        "motif": motif, "date": horodatage, "par": u.nom,
+    }, acteur=u.nom)
 
-    store.update_dossier(dossier_id, dossier)
-
-    audit(get_config().log_dir, "dossier_cloture",
+    audit(config.log_dir, "dossier_cloture",
           acteur=u.nom,
           dossier=dossier_id,
           motif=motif)
@@ -566,7 +630,7 @@ def cloturer_dossier(
 def archiver_dossier(
     request: Request,
     dossier_id: str,
-    motif: str = Body("", max_length=500),
+    motif: str = Body("", max_length=500, embed=True),
 ) -> dict:
     """Archiver un dossier de transit.
 
@@ -574,29 +638,32 @@ def archiver_dossier(
     L'archivage marque le dossier comme archivé et le retire de la vue active,
     mais il peut être restauré plus tard.
     """
-    u = _action_maritime_autorisee(request, "changement_statut", dossier_id)
+    u = _action_maritime_autorisee(request, "archivage", dossier_id)
 
     from ..dossier import DossierStore
-    config = get_config()
+    config = _cfg(request)
     store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
         raise HTTPException(404, "dossier introuvable")
 
-    dossier["archive"] = True
-    dossier["archive_date"] = str(get_config().get_current_timestamp())
-    dossier["archive_par"] = u.nom
-    dossier["archive_motif"] = motif
+    from ..tracabilite import archiver_dossier as archiver_metier
 
-    store.update_dossier(dossier_id, dossier)
+    try:
+        synthese = archiver_metier(store, dossier_id, motif=motif, acteur=u.nom)
+    except KeyError as exc:
+        raise HTTPException(404, "dossier introuvable") from exc
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
 
-    audit(get_config().log_dir, "dossier_archive",
+    audit(config.log_dir, "dossier_archive",
           acteur=u.nom,
           dossier=dossier_id,
           motif=motif)
 
-    return {"id": dossier_id, "status": "archive", "motif": motif}
+    return {"id": dossier_id, "status": "archive", "state": synthese["state"],
+            "motif": motif, "avertissements": synthese.get("avertissements_archivage", [])}
 
 
 @router.post("/dossiers/{dossier_id}/restorer")
@@ -609,31 +676,39 @@ def restaurer_dossier(
     Exige le rôle: administrateur.
     Restaure un dossier archivé pour le rendre à nouveau actif.
     """
-    u = _action_maritime_autorisee(request, "changement_statut", dossier_id)
+    u = _action_maritime_autorisee(request, "restauration_dossier", dossier_id)
 
     from ..dossier import DossierStore
-    config = get_config()
+    config = _cfg(request)
     store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
         raise HTTPException(404, "dossier introuvable")
 
-    if not dossier.get("archive"):
+    if dossier.get("state") != "archive":
         raise HTTPException(400, "Ce dossier n'est pas archivé")
 
-    dossier["archive"] = False
-    dossier.pop("archive_date", None)
-    dossier.pop("archive_par", None)
-    dossier.pop("archive_motif", None)
+    from ..dossier import DossierState
 
-    store.update_dossier(dossier_id, dossier)
+    precedent = DossierState.EN_PREPARATION
+    for evenement in reversed(dossier.get("history", [])):
+        detail = evenement.get("detail") or {}
+        if evenement.get("action") == "state_forced" and detail.get("to") == "archive":
+            try:
+                precedent = DossierState(detail.get("from"))
+            except ValueError:
+                precedent = DossierState.EN_PREPARATION
+            break
+    restaure = store.forcer_etat(dossier_id, precedent, acteur=u.nom,
+                                 motif="restauration depuis l'archive")
 
-    audit(get_config().log_dir, "dossier_restaurer",
+    audit(config.log_dir, "dossier_restaurer",
           acteur=u.nom,
           dossier=dossier_id)
 
-    return {"id": dossier_id, "status": "actif", "message": "Dossier restauré avec succès"}
+    return {"id": dossier_id, "status": "actif", "state": restaure.state.value,
+            "message": "Dossier restauré avec succès"}
 
 
 @router.post("/dossiers/{dossier_id}/conteneurs")
@@ -652,34 +727,43 @@ def lier_conteneur_dossier(
     u = _action_maritime_autorisee(request, "prise_emplacement", dossier_id)
 
     from ..dossier import DossierStore
-    config = get_config()
+    config = _cfg(request)
     store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
         raise HTTPException(404, "dossier introuvable")
 
-    conteneurs = dossier.get("conteneurs", [])
-    if conteneur in [c.get("numero") for c in conteneurs]:
-        raise HTTPException(400, "Ce conteneur est déjà lié à ce dossier")
+    numero = conteneur.strip()
+    if not numero:
+        raise HTTPException(422, "numéro de conteneur requis")
+    if not math.isfinite(poids) or poids < 0:
+        raise HTTPException(422, "poids fini positif ou nul requis")
 
-    conteneurs.append({
-        "numero": conteneur,
-        "scelle": scelle,
-        "poids": poids,
-        "date_liaison": str(get_config().get_current_timestamp()),
-        "lie_par": u.nom,
-    })
-    dossier["conteneurs"] = conteneurs
+    metier = BusinessStore(config.data_dir / "metier.sqlite3", "conteneur", Conteneur)
+    with metier.transaction() as transaction:
+        exiger_dossier(config, dossier_id, absent=404)
+        existant = next((c for c in transaction.values() if c.numero_conteneur == numero), None)
+        if existant is not None:
+            if existant.dossier_id == dossier_id:
+                raise HTTPException(400, "Ce conteneur est déjà lié à ce dossier")
+            raise HTTPException(409, "Ce conteneur est déjà lié à un autre dossier")
+        objet = Conteneur(dossier_id=dossier_id, numero_conteneur=numero,
+                          seal_number=scelle, poids=poids)
+        transaction[objet.id] = objet
 
-    store.update_dossier(dossier_id, dossier)
-
-    audit(get_config().log_dir, "conteneur_lie",
+    store.journaliser(dossier_id, "conteneur_lie", {
+        "conteneur_id": objet.id, "numero": numero, "scelle": scelle,
+        "poids": poids, "lie_par": u.nom,
+    }, acteur=u.nom)
+    audit(config.log_dir, "conteneur_lie",
           acteur=u.nom,
           dossier=dossier_id,
-          conteneur=conteneur)
+          conteneur=numero,
+          conteneur_id=objet.id)
 
-    return {"dossier_id": dossier_id, "conteneur": conteneur, "message": "Conteneur lié avec succès"}
+    return {"dossier_id": dossier_id, "conteneur": numero, "conteneur_id": objet.id,
+            "message": "Conteneur lié avec succès"}
 
 
 @router.delete("/dossiers/{dossier_id}/conteneurs/{conteneur}")
@@ -696,25 +780,32 @@ def delier_conteneur_dossier(
     u = _action_maritime_autorisee(request, "prise_emplacement", dossier_id)
 
     from ..dossier import DossierStore
-    config = get_config()
+    config = _cfg(request)
     store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
         raise HTTPException(404, "dossier introuvable")
 
-    conteneurs = dossier.get("conteneurs", [])
-    if conteneur not in [c.get("numero") for c in conteneurs]:
-        raise HTTPException(404, "Ce conteneur n'est pas lié à ce dossier")
+    metier = BusinessStore(config.data_dir / "metier.sqlite3", "conteneur", Conteneur)
+    with metier.transaction() as transaction:
+        objet = next((c for c in transaction.values()
+                      if c.dossier_id == dossier_id and c.numero_conteneur == conteneur), None)
+        if objet is None:
+            raise HTTPException(404, "Ce conteneur n'est pas lié à ce dossier")
+        if any(e.numero_conteneur == conteneur for e in
+               transaction.related("terminal", TerminalEnlevement).values()):
+            raise HTTPException(409, "Conteneur référencé par un enlèvement terminal")
+        del transaction[objet.id]
 
-    dossier["conteneurs"] = [c for c in conteneurs if c.get("numero") != conteneur]
-
-    store.update_dossier(dossier_id, dossier)
-
-    audit(get_config().log_dir, "conteneur_delié",
+    store.journaliser(dossier_id, "conteneur_delie", {
+        "conteneur_id": objet.id, "numero": conteneur, "delie_par": u.nom,
+    }, acteur=u.nom)
+    audit(config.log_dir, "conteneur_delié",
           acteur=u.nom,
           dossier=dossier_id,
-          conteneur=conteneur)
+          conteneur=conteneur,
+          conteneur_id=objet.id)
 
     return {"dossier_id": dossier_id, "conteneur": conteneur, "message": "Conteneur délié avec succès"}
 
@@ -733,14 +824,22 @@ def lister_conteneurs_dossier(
     _exige_dossier(dossier_id, request)
 
     from ..dossier import DossierStore
-    config = get_config()
+    config = _cfg(request)
     store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
         raise HTTPException(404, "dossier introuvable")
 
-    return {"dossier_id": dossier_id, "conteneurs": dossier.get("conteneurs", [])}
+    metier = BusinessStore(config.data_dir / "metier.sqlite3", "conteneur", Conteneur)
+    conteneurs = []
+    for objet in metier.values():
+        if objet.dossier_id != dossier_id:
+            continue
+        donnees = objet.model_dump()
+        donnees["numero"] = objet.numero_conteneur
+        conteneurs.append(donnees)
+    return {"dossier_id": dossier_id, "conteneurs": conteneurs}
 
 
 # ───────────────────────────────────────────────────────────────
@@ -761,14 +860,14 @@ def historique_dossier(
     _exige_dossier(dossier_id, request)
 
     from ..dossier import DossierStore
-    config = get_config()
+    config = _cfg(request)
     store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
     if not dossier:
         raise HTTPException(404, "dossier introuvable")
 
-    return {"dossier_id": dossier_id, "historique": dossier.get("historique", [])}
+    return {"dossier_id": dossier_id, "historique": dossier.get("history", [])}
 
 
 @router.get("/dossiers/{dossier_id}/export")
@@ -785,7 +884,7 @@ def export_dossier(
     u = _action_maritime_autorisee(request, "export", dossier_id)
 
     from ..dossier import DossierStore
-    config = get_config()
+    config = _cfg(request)
     store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
 
     dossier = store.get_dossier(dossier_id)
@@ -836,12 +935,12 @@ def rechercher_doublons(
     Exige le rôle: lecteur ou supérieur.
     Compare les dossiers selon les critères fournis.
     """
-    _exige(LECTEUR)(request)
+    u = _exige(LECTEUR)(request)
 
     from ..dossier import DossierStore
-    config = get_config()
+    config = _cfg(request)
     dossier_store = DossierStore(config.data_dir / "dossiers", log_dir=config.log_dir)
-    dossiers = [d.as_dict() for d in dossier_store.liste()]
+    dossiers = [d.as_dict() for d in dossier_store.liste() if u.voit_dossier(d.id)]
 
     doublons = []
 
@@ -872,7 +971,12 @@ def rechercher_doublons(
     # Recherche par port
     if recherche.port:
         port_lower = recherche.port.lower().strip()
-        candidats = [d for d in dossiers if port_lower in (d.get("port_chargement") or "").lower() or (d.get("port_destination") or "").lower()]
+        candidats = [
+            d
+            for d in dossiers
+            if port_lower in (d.get("port_chargement") or "").lower()
+            or port_lower in (d.get("port_destination") or "").lower()
+        ]
         if len(candidats) > 1:
             doublons.append({
                 "type": "port",
@@ -902,42 +1006,37 @@ def audit_logs(
     """
     u = _exige(LECTEUR)(request)
 
-    audit_file = get_config().log_dir / "audit.log"
+    audit_file = _cfg(request).log_dir / "audit.log"
 
     if not audit_file.exists():
         return {"logs": [], "total": 0}
 
-    lignes = audit_file.read_text(encoding="utf-8").splitlines()
-    lignes = lignes[-min(limit * 2, len(lignes)):]  # Lire un peu plus pour filtrer
+    import json
 
+    lignes = audit_file.read_text(encoding="utf-8").splitlines()
     logs_filtres = []
-    for ligne in lignes[-limit:]:
+    for ligne in reversed(lignes):
         try:
-            import json
             entree = json.loads(ligne)
         except (json.JSONDecodeError, ValueError):
             continue
-
-        # Filtrer par dossier si demandé
-        if dossier_id:
-            if entree.get("dossier") != dossier_id:
-                continue
-
-        # Filtrer par action si demandé
-        if action:
-            if entree.get("action") != action:
-                continue
-
-        # Vérifier le périmètre pour les utilisateurs non-admin
+        if not isinstance(entree, dict):
+            continue
+        entree_dossier = entree.get("dossier") or entree.get("dossier_id")
+        if dossier_id and entree_dossier != dossier_id:
+            continue
+        if action and entree.get("action") != action and entree.get("event") != action:
+            continue
         if not u.a_role(ADMINISTRATEUR):
-            entree_dossier = entree.get("dossier")
-            if entree_dossier and not u.voit_dossier(entree_dossier):
+            if not entree_dossier or not u.voit_dossier(entree_dossier):
                 continue
-
         logs_filtres.append(entree)
+        if len(logs_filtres) >= limit:
+            break
+    logs_filtres.reverse()
 
     return {
-        "logs": logs_filtres[-limit:],
+        "logs": logs_filtres,
         "total": len(logs_filtres),
         "filtres": {
             "dossier": dossier_id,

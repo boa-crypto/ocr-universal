@@ -41,12 +41,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # ── application ──────────────────────────────────────────────────────────────
 WORKDIR /app
-COPY pyproject.toml README.md ./
+COPY pyproject.toml README.md requirements.lock.txt ./
 COPY src ./src
-RUN pip install --upgrade pip && pip install .
+RUN pip install --upgrade pip \
+    && pip install --no-cache-dir -r requirements.lock.txt \
+    && pip install --no-cache-dir --no-deps .
 
 COPY web ./web
 COPY profiles ./profiles
+# Configuration embarquée explicite : sans elle, l'image retombe sur les
+# défauts Python (ordre des moteurs différent) au lieu de config/default.json.
+COPY config ./config
 
 # les données (documents, journaux, exports) vivent hors de l'image
 RUN groupadd --system unocr && useradd --system --gid unocr --home-dir /data \

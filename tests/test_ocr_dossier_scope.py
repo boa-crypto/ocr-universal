@@ -48,7 +48,7 @@ def scoped(tmp_cfg, monkeypatch):
     monkeypatch.setattr(api, "_AUTH_TOKEN", "FAKE73-master")
     monkeypatch.setattr(ocr_integration, "cfg", tmp_cfg)
     integration = OCRTransitIntegration(tmp_cfg.data_dir)
-    monkeypatch.setattr(routes, "get_ocr_integration", lambda: integration)
+    monkeypatch.setattr(routes, "_integration", lambda request: integration)
     jobs, extractions = {}, {}
     for key in ("a", "b"):
         job = api.store.create_job(key + ".txt", key.encode())
@@ -71,9 +71,9 @@ def snapshot(cfg):
 def test_hidden_dossier_refused_before_integration(scoped, monkeypatch, action):
     client, f, j, e, integration, cfg = scoped
     before = snapshot(cfg)
-    def forbidden():
+    def forbidden(*args, **kwargs):
         raise AssertionError("accès intégration avant autorisation")
-    monkeypatch.setattr(routes, "get_ocr_integration", forbidden)
+    monkeypatch.setattr(routes, "_integration", forbidden)
     response = perform(client, f["b"], e["b"], j["b"], action)
     assert response.status_code == 403
     assert "PRIVATE73" not in response.text
@@ -202,3 +202,46 @@ def test_rbac_disabled_does_not_activate_implicit_permissions(scoped, monkeypatc
     monkeypatch.setattr(api, "_rbac", RegistreRBAC.charger(empty))
     monkeypatch.setattr(api, "_AUTH_TOKEN", None)
     assert perform(client, f["b"], e["b"], j["b"], action, user=None).status_code == 200
+
+
+def test_update_rejects_invalid_status_and_null_without_mutation(scoped):
+    client, f, _, e, integration, cfg = scoped
+    before = snapshot(cfg)
+    for body in ({"statut": "approved"}, {"statut": None}, {"type_document": None}):
+        response = client.put(f'/api/dossiers/{f["a"]}/documents-ocr/{e["a"]}',
+                              headers=headers("a"), json=body)
+        assert response.status_code == 422
+        assert snapshot(cfg) == before
+    assert integration.extraction_store.get(e["a"]).statut == "extracted"
+
+
+def test_update_and_auto_classification_audit_server_actor(scoped):
+    import json
+
+    client, f, _, e, integration, cfg = scoped
+    response = client.put(f'/api/dossiers/{f["a"]}/documents-ocr/{e["a"]}',
+                          headers=headers("a"), json={"type_document": "invoice", "statut": "corrected"})
+    assert response.status_code == 200
+    assert integration.extraction_store.get(e["a"]).type_document == "invoice"
+    events = [json.loads(line) for line in (cfg.log_dir / "audit.log").read_text().splitlines()]
+    modifie = [evt for evt in events if evt["event"] == "document_ocr_modifie"][-1]
+    assert modifie["acteur"] == "a" and modifie["dossier_id"] == f["a"]
+    assert modifie["champs"] == ["statut", "type_document"]
+
+    integration.extraction_store.get(e["a"]).type_document = "generic"
+    integration.extraction_store.sauvegarder(integration.extraction_store.get(e["a"]))
+    response = client.post(f'/api/dossiers/{f["a"]}/documents-ocr/auto-classifier', headers=headers("a"))
+    assert response.status_code == 200
+    events = [json.loads(line) for line in (cfg.log_dir / "audit.log").read_text().splitlines()]
+    assert [evt for evt in events if evt["event"] == "documents_auto_classes"][-1]["acteur"] == "a"
+
+
+def test_routes_use_request_config_not_import_singleton(tmp_cfg, monkeypatch):
+    from unocr import ocr_integration
+    from unocr.routes import documents_ocr as routes
+
+    monkeypatch.setattr(ocr_integration, "_ocr_integration", None)
+    integration = routes._integration(type("Req", (), {"app": type("App", (), {"state": type("State", (), {"cfg": tmp_cfg})})})())
+    assert integration.data_dir == tmp_cfg.data_dir
+    assert integration.cfg is tmp_cfg
+    assert ocr_integration._ocr_integration is None

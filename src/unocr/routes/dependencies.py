@@ -1,6 +1,7 @@
 """Dépendances partagées pour les routes — évite les imports circulaires."""
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import Any, Optional
 
 from fastapi import Depends, HTTPException, Request
@@ -80,6 +81,25 @@ def _exige_dossier(dossier_id: str, request) -> None:
     log.warning("accès refusé : %s sur le dossier %s (hors périmètre)",
                 u.nom, dossier_id)
     raise HTTPException(403, "dossier hors de votre périmètre")
+
+
+def _dossier_objet(objet: Any, champ: str = "dossier_id") -> str:
+    if isinstance(objet, Mapping):
+        return str(objet.get(champ) or "")
+    return str(getattr(objet, champ, "") or "")
+
+
+def _exige_objet_dossier(request: Request, objet: Any, champ: str = "dossier_id") -> None:
+    """Garde un objet métier par son dossier d'origine, avant lecture/écriture."""
+    _exige_dossier(_dossier_objet(objet, champ), request)
+
+
+def _filtre_dossiers(request: Request, objets: Any, champ: str = "dossier_id") -> list:
+    """Filtre une liste avant réponse ; sans RBAC, le comportement reste ouvert."""
+    utilisateur = _utilisateur_courant(request)
+    if utilisateur is None:
+        return list(objets)
+    return [objet for objet in objets if utilisateur.voit_dossier(_dossier_objet(objet, champ))]
 
 
 # ───────────────────────────────────────────────────────────────

@@ -14,7 +14,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from .config import get_config
+from .config import Config, get_config
 from .logging_setup import get_logger
 from .ocr_integration import get_ocr_integration
 
@@ -156,8 +156,9 @@ class AnomalieDetectee:
 class ControleDocumentaireEngine:
     """Moteur de contrôle documentaire inter-documentaire."""
 
-    def __init__(self) -> None:
-        self.ocr_integration = get_ocr_integration()
+    def __init__(self, config: Optional[Config] = None) -> None:
+        self.cfg = config or get_config()
+        self.ocr_integration = get_ocr_integration(self.cfg)
 
     def _normalize_value(self, value: str) -> str:
         """Normalise une valeur pour comparaison."""
@@ -447,35 +448,30 @@ class ControleDocumentaireEngine:
 # Fonction principale
 # ───────────────────────────────────────────────────────────────
 
-def analyser_dossier_complet(dossier_id: str) -> Dict[str, Any]:
-    """Point d'entrée principal pour analyser un dossier."""
-    engine = ControleDocumentaireEngine()
+def analyser_dossier_complet(dossier_id: str, config: Optional[Config] = None) -> Dict[str, Any]:
+    """Analyse un dossier et réapplique les acceptations de risque persistantes.
+
+    Les compteurs `total_anomalies`, `par_gravite` et `anomalies_bloquantes`
+    portent sur les anomalies encore actives. Les anomalies acceptées restent
+    lisibles avec leur résolution ; une empreinte différente les réactive.
+    """
+    from .controle_resolutions import appliquer_resolutions
+
+    cfg = config or get_config()
+    engine = ControleDocumentaireEngine(cfg)
     anomalies = engine.analyser_dossier(dossier_id)
-
-    # Compter par gravité
-    par_gravite = {}
-    for a in anomalies:
-        par_gravite[a.gravite] = par_gravite.get(a.gravite, 0) + 1
-
-    # Bloquant = ne peut pas passer à l'étape suivante
-    bloquantes = [a for a in anomalies if a.gravite == Gravite.BLOCKING]
-
-    return {
-        "dossier_id": dossier_id,
-        "total_anomalies": len(anomalies),
-        "par_gravite": par_gravite,
-        "anomalies_bloquantes": len(bloquantes),
-        "peut_continuer": len(bloquantes) == 0,
-        "anomalies": [
-            {
-                "type": a.type_anomalie,
-                "regle": a.regle,
-                "gravite": a.gravite,
-                "message": a.message,
-                "documents": a.documents_concernes,
-                "champ": a.champ,
-                "valeurs": a.valeurs,
-            }
-            for a in anomalies
-        ]
-    }
+    serialisees = [
+        {
+            "type": a.type_anomalie,
+            "regle": a.regle,
+            "gravite": a.gravite,
+            "message": a.message,
+            "documents": a.documents_concernes,
+            "champ": a.champ,
+            "valeurs": a.valeurs,
+        }
+        for a in anomalies
+    ]
+    resultat = appliquer_resolutions(cfg, dossier_id, serialisees)
+    resultat["dossier_id"] = dossier_id
+    return resultat

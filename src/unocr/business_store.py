@@ -9,6 +9,7 @@ collections dans une transaction explicite.
 from __future__ import annotations
 
 import sqlite3
+import uuid
 from collections.abc import Iterator, MutableMapping
 from contextlib import contextmanager
 from pathlib import Path
@@ -49,9 +50,25 @@ class BusinessStore(MutableMapping[str, T], Generic[T]):
 
     @contextmanager
     def transaction(self) -> Iterator[BusinessStore[T]]:
-        """Réserve l'écriture avant les contrôles ; rollback sur toute exception."""
+        """Réserve l'écriture avant les contrôles ; rollback sur toute exception.
+
+        Une transaction imbriquée devient un savepoint : son échec annule son
+        propre travail sans effacer celui du parent, et sa validation reste
+        subordonnée au commit du parent. Les collections `related` partagent le
+        même verrou et la même transaction SQLite.
+        """
         if self._connection is not None:
-            yield self
+            nom = "sp_" + uuid.uuid4().hex
+            self._connection.execute("SAVEPOINT " + nom)
+            try:
+                yield BusinessStore(self.path, self.collection, self.model,
+                                    _connection=self._connection)
+            except BaseException:
+                self._connection.execute("ROLLBACK TO " + nom)
+                self._connection.execute("RELEASE " + nom)
+                raise
+            else:
+                self._connection.execute("RELEASE " + nom)
             return
         with self._connect() as db:
             db.execute("BEGIN IMMEDIATE")

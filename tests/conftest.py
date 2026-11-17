@@ -85,13 +85,25 @@ def client_factory(tmp_path, monkeypatch):
     from fastapi import FastAPI
     from fastapi.testclient import TestClient
 
-    from unocr.routes import declarations, expeditions, frais, terminal
+    from unocr.routes import (
+        connaissements,
+        conteneurs,
+        controle_doc,
+        declarations,
+        expeditions,
+        frais,
+        terminal,
+        transport,
+        workflow,
+    )
 
     cfg = SimpleNamespace(data_dir=tmp_path, log_dir=tmp_path / "logs")
     monkeypatch.setattr(declarations, "cfg", cfg)
     monkeypatch.setattr(terminal, "cfg", cfg)
     monkeypatch.setattr(expeditions, "cfg", cfg)
-    monkeypatch.setattr(frais, "cfg", cfg)
+    monkeypatch.setattr(transport, "cfg", cfg)
+    monkeypatch.setattr(conteneurs, "cfg", cfg)
+    monkeypatch.setattr(connaissements, "cfg", cfg)
     # Dossiers réellement présents sur disque, pas des identifiants fictifs.
     import json
     (tmp_path / "dossiers").mkdir(exist_ok=True)
@@ -99,11 +111,17 @@ def client_factory(tmp_path, monkeypatch):
         (tmp_path / "dossiers" / f"{identifiant}.json").write_text(
             json.dumps({"id": identifiant, "label": identifiant}), encoding="utf-8")
 
-    def nouveau():
+    def nouveau(config=None):
         app = FastAPI()
+        app.state.cfg = cfg if config is None else config
         app.include_router(declarations.router)
         app.include_router(terminal.router)
         app.include_router(expeditions.router)
         app.include_router(frais.router)
+        app.include_router(transport.router)
+        app.include_router(conteneurs.router)
+        app.include_router(connaissements.router)
+        app.include_router(workflow.router)
+        app.include_router(controle_doc.router)
         return TestClient(app)
     return nouveau

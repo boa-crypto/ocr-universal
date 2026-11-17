@@ -323,6 +323,12 @@ class Dossier:
             "reference_bl": self.reference_bl,
             "incoterm": self.incoterm,
             "lieu_incoterm": self.lieu_incoterm,
+            "numero_conteneur": self.numero_conteneur,
+            "numero_scelle": self.numero_scelle,
+            "type_conteneur": self.type_conteneur,
+            "poids": self.poids,
+            "statut_documentaire": self.statut_documentaire,
+            "statut_enlèvement": self.statut_enlèvement,
             "devise": self.devise,
             "valeur_commerciale": self.valeur_commerciale,
             "nombre_colis": self.nombre_colis,
@@ -344,6 +350,20 @@ class Dossier:
             "history": [e.as_dict() for e in self.history],
             "arbitrages": dict(self.arbitrages),
         }
+
+    def as_storage_dict(self) -> dict[str, Any]:
+        """Sérialisation complète pour le disque.
+
+        `as_dict()` reste une vue API partielle ; le stockage ne doit perdre
+        aucun champ du dataclass, sinon une mise à jour acceptée disparaît au
+        rechargement suivant.
+        """
+        donnees = {nom: getattr(self, nom) for nom in self.__dataclass_fields__}
+        donnees["state"] = self.state.value
+        donnees["pieces"] = [p.as_dict() for p in self.pieces]
+        donnees["history"] = [e.as_dict() for e in self.history]
+        donnees["arbitrages"] = dict(self.arbitrages)
+        return donnees
 
 
 class DossierStore:
@@ -416,7 +436,7 @@ class DossierStore:
     def _ecrire(self, dossier: Dossier) -> None:
         dossier.updated_at = time.time()
         tmp = self._chemin(dossier.id).with_suffix(".tmp")
-        tmp.write_text(json.dumps(dossier.as_dict(), ensure_ascii=False, indent=1),
+        tmp.write_text(json.dumps(dossier.as_storage_dict(), ensure_ascii=False, indent=1),
                        encoding="utf-8")
         tmp.replace(self._chemin(dossier.id))
         self._cache[dossier.id] = dossier

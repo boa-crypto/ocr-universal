@@ -441,6 +441,8 @@ def _role_requis(request: Request) -> Optional[str]:
     if method == "POST" and re.fullmatch(
             r"/api/dossiers/[^/]+/(coherence|transmission)", path):
         return SUPERVISEUR
+    if path.startswith("/api/frais/rapprochement/"):
+        return SUPERVISEUR
     return OPERATEUR
 
 
@@ -488,15 +490,25 @@ RBAC_ACTIONS = {
     "suppression_logique": "controleur_documentaire",
     "archivage": "controleur_documentaire",
     "validation_documentaire": "controleur_documentaire",
-    "resolution_anomalies": "responsable_transport",
+    "resolution_anomalies": "responsable_transit",
     "changement_statut": "agent_de_transit",
+    "gestion_financiere": "controleur_documentaire",
     "gestion_financière": "controleur_documentaire",
     "export": "controleur_documentaire",
+    "configuration_metier": "administrateur",
     "configuration_métier": "administrateur",
 }
 
 _AUTH_EXEMPT = {"/", "/docs", "/openapi.json", "/redoc", "/api/health",
                 "/api/auth/status", "/api/security"}
+
+#: Les routes métier historiques sous `/transit/` sont protégées comme `/api/`.
+_AUTH_PREFIXES = ("/api/", "/transit/")
+
+
+def _chemin_protege(path: str) -> bool:
+    return path.startswith(_AUTH_PREFIXES)
+
 # ces routes sont publiques et ne doivent pas exposer de données métier ni
 # de secrets ; la route /api/security est un diagnostic de sécurité lisible.
 
@@ -648,7 +660,7 @@ async def _optional_token_auth(request, call_next):
         # ── comportement historique, inchangé ──
         if not _AUTH_TOKEN:
             return await call_next(request)
-        if path in _AUTH_EXEMPT or not path.startswith("/api/"):
+        if path in _AUTH_EXEMPT or not _chemin_protege(path):
             return await call_next(request)
         supplied = (request.headers.get("authorization") or "").removeprefix("Bearer ").strip()
         if not hmac.compare_digest(supplied, _AUTH_TOKEN):
@@ -656,7 +668,7 @@ async def _optional_token_auth(request, call_next):
         return await call_next(request)
 
     # ── RBAC actif ──
-    if path in _AUTH_EXEMPT or not path.startswith("/api/"):
+    if path in _AUTH_EXEMPT or not _chemin_protege(path):
         return await call_next(request)
     supplied = (request.headers.get("authorization") or "").removeprefix("Bearer ").strip()
 
@@ -1443,7 +1455,9 @@ def rbac_moi(request: Request) -> dict:
                 "detail": "data/rbac.json absent : aucun cloisonnement appliqué"}
     return {"actif": True, **u.public(),
             "roles_disponibles": list(ROLES),
-            "administrateur": u.a_role(ADMINISTRATEUR)}
+            "administrateur": u.a_role(ADMINISTRATEUR),
+            "ecriture": u.a_role(OPERATEUR),
+            "supervision": u.a_role(SUPERVISEUR)}
 
 
 @app.get("/api/rbac/utilisateurs")
@@ -2513,9 +2527,16 @@ def search_global(
             })
             total += 1
 
-    for identifiant, bl in _magasin(request, "bl_store").items():
+    from .business_store import BusinessStore
+    from .models import Connaissement, Conteneur
+
+    metier = cfg.data_dir / "metier.sqlite3"
+    for bl in BusinessStore(metier, "connaissement", Connaissement).values():
         if len(groupes["connaissements"]) >= limit:
             break
+        if utilisateur is not None and not utilisateur.voit_dossier(bl.dossier_id):
+            continue
+        identifiant = bl.id
         if contient(identifiant, _champ(bl, "numero_bl"), _champ(bl, "chargeur"),
                     _champ(bl, "destinataire"), _champ(bl, "navire"),
                     _champ(bl, "port_decharge"), _champ(bl, "marchandise")):
@@ -2528,9 +2549,12 @@ def search_global(
             })
             total += 1
 
-    for identifiant, conteneur in _magasin(request, "conteneur_store").items():
+    for conteneur in BusinessStore(metier, "conteneur", Conteneur).values():
         if len(groupes["conteneurs"]) >= limit:
             break
+        if utilisateur is not None and not utilisateur.voit_dossier(conteneur.dossier_id):
+            continue
+        identifiant = conteneur.id
         if contient(identifiant, _champ(conteneur, "numero_conteneur"),
                     _champ(conteneur, "seal_number"), _champ(conteneur, "position_actuelle"),
                     _champ(conteneur, "dossier_id")):

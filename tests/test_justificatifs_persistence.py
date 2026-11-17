@@ -119,12 +119,11 @@ def test_fichier_altere_detecte(client_factory, piece, tmp_path):
 def test_sauvegarde_restauree_autre_emplacement(client_factory, piece, tmp_path, monkeypatch):
     with client_factory() as client:
         identifiant = upload(client, piece).json()["id"]
-    cfg = frais.cfg
+    cfg = SimpleNamespace(data_dir=tmp_path, log_dir=tmp_path / "logs")
     sauvegarde = creer_sauvegarde(cfg, destination=tmp_path / "archives")
     autre = SimpleNamespace(data_dir=tmp_path / "restaure", log_dir=tmp_path / "logs_restaures")
     restaurer_sauvegarde(autre, sauvegarde.chemin)
-    monkeypatch.setattr(frais, "cfg", autre)
-    with client_factory() as client:
+    with client_factory(autre) as client:
         rep = client.get(f"/api/frais/justificatif/{identifiant}/download")
         assert rep.status_code == 200, rep.text
         assert rep.content == b"piece test"
@@ -176,12 +175,11 @@ def test_sauvegarde_coordonne_suppression(client_factory, piece, tmp_path, monke
                 assert not travail[0].done(), "Suppression non bloquée par le verrou de sauvegarde"
             return original(self, fichier, *args, **kwargs)
         monkeypatch.setattr(zipfile.ZipFile, "write", copie)
-        sauvegarde = creer_sauvegarde(frais.cfg, destination=tmp_path / "archives")
+        sauvegarde = creer_sauvegarde(SimpleNamespace(data_dir=tmp_path, log_dir=tmp_path / "logs"), destination=tmp_path / "archives")
         assert travail[0].result(timeout=15) == 200
     autre = SimpleNamespace(data_dir=tmp_path / "restaure", log_dir=tmp_path / "autres_logs")
     restaurer_sauvegarde(autre, sauvegarde.chemin)
-    monkeypatch.setattr(frais, "cfg", autre)
-    with client_factory() as client:
+    with client_factory(autre) as client:
         rep = client.get(f"/api/frais/justificatif/{identifiant}/download")
         assert rep.status_code == 200 and rep.content == b"piece test"
 
@@ -200,7 +198,7 @@ def test_sauvegarde_refuse_symlink_justificatif(client_factory, piece, tmp_path,
         racine.mkdir()
         (racine / ("a" * 32 + ".bin")).symlink_to(cible / "secret.bin")
     with pytest.raises(BackupError, match="symbolique"):
-        creer_sauvegarde(frais.cfg, destination=tmp_path / "archives")
+        creer_sauvegarde(SimpleNamespace(data_dir=tmp_path, log_dir=tmp_path / "logs"), destination=tmp_path / "archives")
 
 
 @pytest.mark.parametrize("etat", ["fichier", "symlink", "source_absente"])
@@ -437,7 +435,7 @@ def test_recu_dans_sauvegarde_restauree(client_factory, piece, tmp_path):
         identifiant = upload(client, piece).json()["id"]
         assert client.delete(f"/api/frais/justificatif/{identifiant}").status_code == 200
     attendu = consulter_suppression(tmp_path, identifiant)
-    archive = creer_sauvegarde(frais.cfg, destination=tmp_path / "archives")
+    archive = creer_sauvegarde(SimpleNamespace(data_dir=tmp_path, log_dir=tmp_path / "logs"), destination=tmp_path / "archives")
     autre = SimpleNamespace(data_dir=tmp_path / "restaure", log_dir=tmp_path / "logs_restaures")
     restaurer_sauvegarde(autre, archive.chemin)
     assert consulter_suppression(autre.data_dir, identifiant) == attendu
@@ -450,7 +448,8 @@ def test_audit_fichier_indisponible_recu_conserve(client_factory, piece, tmp_pat
         identifiant = upload(client, piece).json()["id"]
         log_bloque = tmp_path / "pas_un_repertoire"
         log_bloque.write_bytes(b"ne pas modifier")
-        monkeypatch.setattr(frais, "cfg", SimpleNamespace(data_dir=tmp_path, log_dir=log_bloque))
+    cfg_bloque = SimpleNamespace(data_dir=tmp_path, log_dir=log_bloque)
+    with client_factory(cfg_bloque) as client:
         assert client.delete(f"/api/frais/justificatif/{identifiant}").status_code == 200
         assert consulter_suppression(tmp_path, identifiant)["etat"] == "trouve"
         assert log_bloque.read_bytes() == b"ne pas modifier"

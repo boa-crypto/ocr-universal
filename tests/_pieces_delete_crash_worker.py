@@ -20,11 +20,11 @@ def run() -> int:
     if phase not in {"apres_lien", "apres_retrait", "avant_commit", "apres_commit"}:
         raise ValueError("Phase de test inconnue")
     racine = Path(racine)
-    frais.cfg = SimpleNamespace(data_dir=racine, log_dir=racine / "logs")
+    cfg = SimpleNamespace(data_dir=racine, log_dir=racine / "logs")
     # Identifie uniquement le chemin déclaré pour cette fixture.
     from unocr.models import Justificatif
     piece = BusinessStore(racine / "metier.sqlite3", "justificatif", Justificatif)[identifiant]
-    cible = frais._chemin_justificatif(piece)
+    cible = frais._chemin_justificatif(cfg, piece)
     quarantaine = cible.with_name("." + cible.name + ".deleted.tmp")
 
     def barriere():
@@ -56,6 +56,7 @@ def run() -> int:
 
     os.link, Path.unlink, BusinessStore.__delitem__ = lien, retrait, suppression
     app = FastAPI()
+    app.state.cfg = cfg
     app.include_router(frais.router)
     with TestClient(app) as client:
         rep = client.delete(f"/api/frais/justificatif/{identifiant}")

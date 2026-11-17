@@ -3,22 +3,31 @@
 from __future__ import annotations
 
 import time
-from typing import Optional
+from typing import Literal, Optional
 
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 
-from ..config import get_config
+from ..config import Config, get_config
 from ..logging_setup import audit, get_logger
-from ..ocr_integration import get_ocr_integration, suggest_document_type
+from ..ocr_integration import OCRTransitIntegration, suggest_document_type
 from ..rbac import LECTEUR, OPERATEUR
-from .dependencies import _exige, _exige_dossier
+from .dependencies import _exige, _exige_dossier, _utilisateur_ou_ouvert
 
 log = get_logger("documents_ocr")
 
 router = APIRouter(prefix="/api/dossiers", tags=["documents-ocr"])
 
-cfg = get_config()
+def _cfg(request: Request) -> Config:
+    return getattr(request.app.state, "cfg", None) or get_config()
+
+
+def _integration(request: Request) -> OCRTransitIntegration:
+    return OCRTransitIntegration(_cfg(request).data_dir, config=_cfg(request))
+
+
+def _acteur(request: Request) -> str:
+    return _utilisateur_ou_ouvert(request).nom
 
 
 # ───────────────────────────────────────────────────────────────
@@ -33,7 +42,7 @@ class DocumentOCRCreate(BaseModel):
 
 class DocumentOCRUpdate(BaseModel):
     type_document: Optional[str] = None
-    statut: Optional[str] = None  # extracted, validated, corrected
+    statut: Optional[Literal["extracted", "validated", "corrected"]] = None
 
 
 class ChampCorrection(BaseModel):
@@ -83,7 +92,7 @@ def creer_document_ocr(
     if not type_doc:
         texte = "\n\n".join(page.get("text", "") for page in result_json.get("pages", []))
         type_doc = suggest_document_type(texte) or "generic"
-    ocr_integration = get_ocr_integration()
+    ocr_integration = _integration(request)
     extraction = ocr_integration.process_job_result(
         doc.job_id, dossier_id, type_doc, result_json=result_json)
     if not extraction:
@@ -99,7 +108,8 @@ def creer_document_ocr(
     )
     store.recalculer_etat(dossier_id, {})
 
-    audit(request.app.state.cfg.log_dir, "document_ocr_ajoute", dossier_id=dossier_id, job_id=doc.job_id, type=type_doc)
+    audit(_cfg(request).log_dir, "document_ocr_ajoute", dossier_id=dossier_id,
+          job_id=doc.job_id, type=type_doc, acteur=_acteur(request))
     return extraction.model_dump()
 
 
@@ -110,7 +120,7 @@ def lister_documents_ocr(
 ) -> list[dict]:
     """Lister tous les documents OCR d'un dossier."""
     _autoriser_dossier(request, dossier_id, LECTEUR)
-    ocr_integration = get_ocr_integration()
+    ocr_integration = _integration(request)
     extractions = ocr_integration.extraction_store.par_dossier(dossier_id)
     return [e.model_dump() for e in extractions]
 
@@ -123,7 +133,7 @@ def get_document_ocr(
 ) -> dict:
     """Obtenir un document OCR spécifique."""
     _autoriser_dossier(request, dossier_id, LECTEUR)
-    ocr_integration = get_ocr_integration()
+    ocr_integration = _integration(request)
     extraction = _extraction_du_dossier(ocr_integration, dossier_id, extraction_id)
     return extraction.model_dump()
 
@@ -137,16 +147,19 @@ def update_document_ocr(
 ) -> dict:
     """Mettre à jour un document OCR."""
     _autoriser_dossier(request, dossier_id, OPERATEUR)
-    ocr_integration = get_ocr_integration()
+    ocr_integration = _integration(request)
     extraction = _extraction_du_dossier(ocr_integration, dossier_id, extraction_id)
 
     update_data = doc_update.model_dump(exclude_unset=True)
+    if any(value is None for value in update_data.values()):
+        raise HTTPException(422, "les champs fournis ne peuvent pas être nuls")
     for key, value in update_data.items():
         setattr(extraction, key, value)
 
     extraction.modifie_le = time.strftime("%Y-%m-%d %H:%M:%S")
-    ocr_integration.extraction_store._ecrire(extraction)
-    audit(request.app.state.cfg.log_dir, "document_ocr_modifie", extraction_id=extraction_id)
+    ocr_integration.extraction_store.sauvegarder(extraction)
+    audit(_cfg(request).log_dir, "document_ocr_modifie", dossier_id=dossier_id,
+          extraction_id=extraction_id, acteur=_acteur(request), champs=sorted(update_data))
     return extraction.model_dump()
 
 
@@ -158,7 +171,7 @@ def valider_document_ocr(
 ) -> dict:
     """Valider un document OCR (validation humaine)."""
     utilisateur = _autoriser_dossier(request, dossier_id, OPERATEUR)
-    ocr_integration = get_ocr_integration()
+    ocr_integration = _integration(request)
     _extraction_du_dossier(ocr_integration, dossier_id, extraction_id)
     success = ocr_integration.validate_extraction(extraction_id, utilisateur.nom)
     if not success:
@@ -176,7 +189,7 @@ def corriger_champ_ocr(
 ) -> dict:
     """Corriger un champ extrait par l'OCR."""
     utilisateur = _autoriser_dossier(request, dossier_id, OPERATEUR)
-    ocr_integration = get_ocr_integration()
+    ocr_integration = _integration(request)
     _extraction_du_dossier(ocr_integration, dossier_id, extraction_id)
     success = ocr_integration.correct_field(extraction_id, correction.champ_nom, correction.nouvelle_valeur, utilisateur.nom)
     if not success:
@@ -186,10 +199,9 @@ def corriger_champ_ocr(
 
 
 @router.get("/types-documents")
-def lister_types_documents() -> list[dict]:
+def lister_types_documents(request: Request) -> list[dict]:
     """Lister tous les types de documents supportés pour le transit."""
-    ocr_integration = get_ocr_integration()
-    return ocr_integration.get_document_types()
+    return _integration(request).get_document_types()
 
 
 @router.post("/{dossier_id}/documents-ocr/auto-classifier")
@@ -199,7 +211,7 @@ def auto_classifier_documents(
 ) -> dict:
     """Classifie automatiquement tous les documents non classifiés d'un dossier."""
     _autoriser_dossier(request, dossier_id, OPERATEUR)
-    ocr_integration = get_ocr_integration()
+    ocr_integration = _integration(request)
     extractions = ocr_integration.extraction_store.par_dossier(dossier_id)
 
     results = []
@@ -209,11 +221,12 @@ def auto_classifier_documents(
             if suggested:
                 extraction.type_document = suggested
                 extraction.modifie_le = time.strftime("%Y-%m-%d %H:%M:%S")
-                ocr_integration.extraction_store._ecrire(extraction)
+                ocr_integration.extraction_store.sauvegarder(extraction)
                 results.append({
                     "extraction_id": extraction.id,
                     "type_detecte": suggested
                 })
 
-    audit(request.app.state.cfg.log_dir, "documents_auto_classes", dossier_id=dossier_id, count=len(results))
+    audit(_cfg(request).log_dir, "documents_auto_classes", dossier_id=dossier_id,
+          count=len(results), acteur=_acteur(request))
     return {"documents_classes": results}
